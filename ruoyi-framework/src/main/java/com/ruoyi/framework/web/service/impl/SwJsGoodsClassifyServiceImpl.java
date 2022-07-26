@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.GSSystemUseEnum;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -201,6 +202,8 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
     }
 
+
+
     public List<Cbpa> buildDeptTree(List<Cbpa> depts) {
         List<Cbpa> returnList = new ArrayList<>();
         List<Long> tempList = new ArrayList<Long>();
@@ -254,5 +257,71 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
     private boolean hasChild(List<Cbpa> list, Cbpa t)
     {
         return getChildList(list, t).size() > 0;
+    }
+
+
+    @Override
+    public String importSwJsGoodsClassify(List<Cbpa> swJsGoodsClassifyList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsClassifyList) || swJsGoodsClassifyList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        for (Cbpa swJsGoodsClassify : swJsGoodsClassifyList)
+        {
+            try
+            {
+                // 验证是否存在这个用户
+                Cbpa u = cbpaMapper.selectByPrimaryKey(swJsGoodsClassify.getId() );
+                log.info(swJsGoodsClassify.getCbpa07()+"");
+                if (StringUtils.isNull(u))
+                {
+                    swJsGoodsClassify.setCbpa07(swJsGoodsClassify.getCbpa07());
+                    this.insertCBPA(swJsGoodsClassify);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("商品分类信息").append(swJsGoodsClassify.getCbpa07()).append(" 导入成功");
+                }
+                else if (updateSupport)
+                {
+                    swJsGoodsClassify.setCbpa05(Integer.valueOf(operName));
+                    this.updateCBPB(swJsGoodsClassify);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("商品分类信息 ").append(swJsGoodsClassify.getCbpa07()).append(" 更新成功");
+                }
+                else
+                {
+                    failureNum++;
+                    failureMsg.append("<br/>").append(failureNum).append("商品分类信息").append(swJsGoodsClassify.getCbpa07()).append(" 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "商品分类信息" + swJsGoodsClassify.getCbpa07() + " 导入失败：";
+                failureMsg.append(msg).append(e.getMessage());
+                log.error(msg, e);
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
+    }
+    public int insertCBPA(Cbpa cbpa)
+    {
+        return cbpaMapper.insertCBPA(cbpa);
+    }
+    public int updateCBPB(Cbpa cbpa)
+    {
+        return cbpaMapper.updateCBPB(cbpa);
     }
 }

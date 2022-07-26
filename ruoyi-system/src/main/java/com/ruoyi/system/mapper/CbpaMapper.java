@@ -21,4 +21,10 @@ public interface CbpaMapper {
     int updateByExample(@Param("record") Cbpa record, @Param("example") CbpaCriteria example);
 
     List<Cbpa> selectDeptList(Cbpa cbpa);
+
+    Cbpa selectByPrimaryKey(Integer cbpa01);
+
+    int insertCBPA(Cbpa cbpa);
+
+    int updateCBPB(Cbpa cbpa);
 }

@@ -27,4 +27,6 @@ public interface ISwJsGoodsClassifyService {
      * @return 下拉树结构列表
      */
     public List<TreeSelect> buildDeptTreeSelect(List<Cbpa> depts);
+
+    String importSwJsGoodsClassify(List<Cbpa> swJsGoodsClassifyList, boolean updateSupport, String operName);
 }
