@@ -1,7 +1,11 @@
-package com.ruoyi.system.domain;
+package com.ruoyi.common.core.domain.entity;
+
+import io.lettuce.core.ScanIterator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Cbpa implements Serializable {
     private Integer cbpa01;
@@ -179,5 +183,23 @@ public class Cbpa implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    public Integer getParentId() {
+        return cbpa09;
+    }
+
+    public Integer getId() {
+        return cbpa01;
+    }
+    private List<Cbpa> children = new ArrayList<Cbpa>();
+
+    public void setChildren(List<Cbpa> children) {
+        this.children = children;
+
+    }
+
+    public List<Cbpa> getChildren() {
+        return children;
     }
 }

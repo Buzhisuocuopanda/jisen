@@ -1,12 +1,14 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
-import com.ruoyi.common.utils.IdContant;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.Cbpa;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.system.domain.CbpaCriteria;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.GsSystemUse;
@@ -18,7 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,6 +129,39 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
         cbpa.setCbpa12(cbpaDo.getCbpa12());
         CbpaCriteria example3=new CbpaCriteria();
+       //判断是否在用
+        example3.createCriteria().
+                andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpa01EqualTo(cbpaDo.getCbpa01());
+        List<Cbpa> cbpas = cbpaMapper.selectByExample(example3);
+        List<String> collect = cbpas.stream().map(Cbpa::getCbpa11).collect(Collectors.toList());
+        String[] strs = collect.toArray(new String[]{});
+        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        use.createCriteria()
+                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
+                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
+        if(gsSystemUses.size()>0){
+            cbpa.setCbpa11(cbpaDo.getCbpa11());
+        }
+        return cbpaMapper.updateByExampleSelective(cbpa,example3);
+    }
+    /**
+     * 删除商品分类
+     *
+     * @param cbpaDo 需要删除的数据主键集合
+     * @return 结果
+     */
+    @Override
+    public int deleteSwJsGoodsClassifyById(CbpaDo cbpaDo) {
+
+        Long userid = SecurityUtils.getUserId();
+        Cbpa cbpa = BeanCopyUtils.coypToClass(cbpaDo, Cbpa.class, null);
+        Date date = new Date();
+        cbpa.setCbpa03(date);
+        cbpa.setCbpa05(Math.toIntExact(userid));
+        CbpaCriteria example3=new CbpaCriteria();
 
         example3.createCriteria().
                 andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
@@ -133,13 +170,89 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         List<String> collect = cbpas.stream().map(Cbpa::getCbpa11).collect(Collectors.toList());
         String[] strs = collect.toArray(new String[]{});
         GsSystemUseCriteria use=new GsSystemUseCriteria();
-        use.createCriteria().andTypeIdEqualTo(Integer.valueOf(strs[0]))
-                .andTypeIdEqualTo(1)
+        use.createCriteria()
+                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
+                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
         if(gsSystemUses.size()>0){
-            cbpa.setCbpa11(cbpaDo.getCbpa11());
+            throw new SwException("在用商品分类不可删除");
         }
+        cbpa.setCbpa06(DeleteFlagEnum.NOT_DELETE.getCode());
+
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
+    }
+    /**
+     * 查询商品分类管理数据
+     *
+     * @param cbpa 部门信息
+     * @return 商品分类信息集合
+     */
+    @Override
+    public List<Cbpa> selectDeptList(Cbpa cbpa) {
+        return cbpaMapper.selectDeptList(cbpa);
+    }
+
+    @Override
+    public List<TreeSelect> buildDeptTreeSelect(List<Cbpa> depts) {
+        List<Cbpa> deptTrees = buildDeptTree(depts);
+        return deptTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
+
+
+    }
+
+    public List<Cbpa> buildDeptTree(List<Cbpa> depts) {
+        List<Cbpa> returnList = new ArrayList<>();
+        List<Long> tempList = new ArrayList<Long>();
+        for (Cbpa dept : depts)
+        {
+            tempList.add(Long.valueOf(dept.getCbpa01()));
+        }
+        for (Cbpa dept : depts)
+        {
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!tempList.contains(dept.getCbpa09()))
+            {
+                recursionFn(depts, dept);
+                returnList.add(dept);
+            }
+        }
+        if (returnList.isEmpty())
+        {
+            returnList = depts;
+        }
+        return returnList;
+    }
+    private void recursionFn(List<Cbpa> list, Cbpa t)
+    {
+        // 得到子节点列表
+        List<Cbpa> childList = getChildList(list, t);
+        t.setChildren(childList);
+        for (Cbpa tChild : childList)
+        {
+            if (hasChild(list, tChild))
+            {
+                recursionFn(list, tChild);
+            }
+        }
+    }
+
+    private List<Cbpa> getChildList(List<Cbpa> list, Cbpa t)
+    {
+        List<Cbpa> tlist = new ArrayList<Cbpa>();
+        Iterator<Cbpa> it = list.iterator();
+        while (it.hasNext())
+        {
+            Cbpa n = (Cbpa) it.next();
+            if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getId().longValue())
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+    private boolean hasChild(List<Cbpa> list, Cbpa t)
+    {
+        return getChildList(list, t).size() > 0;
     }
 }

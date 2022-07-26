@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CbpaMapper">
-  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpa">
+  <resultMap id="BaseResultMap" type="com.ruoyi.common.core.domain.entity.Cbpa">
     <result column="CBPA01" jdbcType="INTEGER" property="cbpa01" />
     <result column="CBPA02" jdbcType="TIMESTAMP" property="cbpa02" />
     <result column="CBPA03" jdbcType="TIMESTAMP" property="cbpa03" />
@@ -95,17 +95,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpa">
-    insert into `CBPA` (CBPA01, CBPA02, CBPA03, 
-      CBPA04, CBPA05, CBPA06, 
-      CBPA07, CBPA08, CBPA09, 
+  <insert id="insert" parameterType="com.ruoyi.common.core.domain.entity.Cbpa">
+    insert into `CBPA` (CBPA01, CBPA02, CBPA03,
+      CBPA04, CBPA05, CBPA06,
+      CBPA07, CBPA08, CBPA09,
       CBPA11, CBPA12)
-    values (#{cbpa01,jdbcType=INTEGER}, #{cbpa02,jdbcType=TIMESTAMP}, #{cbpa03,jdbcType=TIMESTAMP}, 
-      #{cbpa04,jdbcType=INTEGER}, #{cbpa05,jdbcType=INTEGER}, #{cbpa06,jdbcType=INTEGER}, 
-      #{cbpa07,jdbcType=VARCHAR}, #{cbpa08,jdbcType=VARCHAR}, #{cbpa09,jdbcType=INTEGER}, 
+    values (#{cbpa01,jdbcType=INTEGER}, #{cbpa02,jdbcType=TIMESTAMP}, #{cbpa03,jdbcType=TIMESTAMP},
+      #{cbpa04,jdbcType=INTEGER}, #{cbpa05,jdbcType=INTEGER}, #{cbpa06,jdbcType=INTEGER},
+      #{cbpa07,jdbcType=VARCHAR}, #{cbpa08,jdbcType=VARCHAR}, #{cbpa09,jdbcType=INTEGER},
       #{cbpa11,jdbcType=VARCHAR}, #{cbpa12,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpa">
+  <insert id="insertSelective" parameterType="com.ruoyi.common.core.domain.entity.Cbpa">
     insert into `CBPA`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cbpa01 != null">
@@ -184,7 +184,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBPA`
     <set>
       <if test="record.cbpa01 != null">
@@ -242,4 +242,33 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <sql id="selectCBPAVo">
+    select CBPA01, CBPA02, CBPA03, CBPA04, CBPA05, CBPA06, CBPA07, CBPA08, CBPA09, CBPA11, CBPA12 from CBPA
+  </sql>
+  <resultMap type="CBPA" id="CBPAResult">
+    <result property="cbpa01"    column="CBPA01"    />
+    <result property="cbpa02"    column="CBPA02"    />
+    <result property="cbpa03"    column="CBPA03"    />
+    <result property="cbpa04"    column="CBPA04"    />
+    <result property="cbpa05"    column="CBPA05"    />
+    <result property="cbpa06"    column="CBPA06"    />
+    <result property="cbpa07"    column="CBPA07"    />
+    <result property="cbpa08"    column="CBPA08"    />
+    <result property="cbpa09"    column="CBPA09"    />
+    <result property="cbpa11"    column="CBPA11"    />
+    <result property="cbpa12"    column="CBPA12"    />
+  </resultMap>
+  <select id="selectDeptList" parameterType="Cbpa" resultMap="CBPAResult">
+    <include refid="selectCBPAVo"/>
+    <where>
+
+      <if test="cbpa06 != null "> and CBPA06 = #{cbpa06}</if>
+      <if test="cbpa07 != null  and cbpa07 != ''"> and CBPA07 like concat( '%', #{cbpa07}, '%') </if>
+      <if test="cbpa09 != null "> and CBPA09 = #{cbpa09}</if>
+      <if test="cbpa11 != null  and cbpa11 != ''"> and CBPA11 = #{cbpa11}</if>
+      <if test="cbpa12 != null  and cbpa12 != ''"> and CBPA12 = #{cbpa12}</if>
+    </where>
+  </select>
+
 </mapper>
