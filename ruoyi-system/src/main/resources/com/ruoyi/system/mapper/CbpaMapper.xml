@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbpaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.common.core.domain.entity.Cbpa">
+    <result column="CBPA01" jdbcType="INTEGER" property="cbpa01" />
+    <result column="CBPA02" jdbcType="TIMESTAMP" property="cbpa02" />
+    <result column="CBPA03" jdbcType="TIMESTAMP" property="cbpa03" />
+    <result column="CBPA04" jdbcType="INTEGER" property="cbpa04" />
+    <result column="CBPA05" jdbcType="INTEGER" property="cbpa05" />
+    <result column="CBPA06" jdbcType="INTEGER" property="cbpa06" />
+    <result column="CBPA07" jdbcType="VARCHAR" property="cbpa07" />
+    <result column="CBPA08" jdbcType="VARCHAR" property="cbpa08" />
+    <result column="CBPA09" jdbcType="INTEGER" property="cbpa09" />
+    <result column="CBPA11" jdbcType="VARCHAR" property="cbpa11" />
+    <result column="CBPA12" jdbcType="VARCHAR" property="cbpa12" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPA01, CBPA02, CBPA03, CBPA04, CBPA05, CBPA06, CBPA07, CBPA08, CBPA09, CBPA11, CBPA12
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpaCriteria">
+    delete from `CBPA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.common.core.domain.entity.Cbpa">
+    insert into `CBPA` (CBPA01, CBPA02, CBPA03,
+      CBPA04, CBPA05, CBPA06,
+      CBPA07, CBPA08, CBPA09,
+      CBPA11, CBPA12)
+    values (#{cbpa01,jdbcType=INTEGER}, #{cbpa02,jdbcType=TIMESTAMP}, #{cbpa03,jdbcType=TIMESTAMP},
+      #{cbpa04,jdbcType=INTEGER}, #{cbpa05,jdbcType=INTEGER}, #{cbpa06,jdbcType=INTEGER},
+      #{cbpa07,jdbcType=VARCHAR}, #{cbpa08,jdbcType=VARCHAR}, #{cbpa09,jdbcType=INTEGER},
+      #{cbpa11,jdbcType=VARCHAR}, #{cbpa12,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.common.core.domain.entity.Cbpa">
+    insert into `CBPA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpa01 != null">
+        CBPA01,
+      </if>
+      <if test="cbpa02 != null">
+        CBPA02,
+      </if>
+      <if test="cbpa03 != null">
+        CBPA03,
+      </if>
+      <if test="cbpa04 != null">
+        CBPA04,
+      </if>
+      <if test="cbpa05 != null">
+        CBPA05,
+      </if>
+      <if test="cbpa06 != null">
+        CBPA06,
+      </if>
+      <if test="cbpa07 != null">
+        CBPA07,
+      </if>
+      <if test="cbpa08 != null">
+        CBPA08,
+      </if>
+      <if test="cbpa09 != null">
+        CBPA09,
+      </if>
+      <if test="cbpa11 != null">
+        CBPA11,
+      </if>
+      <if test="cbpa12 != null">
+        CBPA12,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpa01 != null">
+        #{cbpa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpa02 != null">
+        #{cbpa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpa03 != null">
+        #{cbpa03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpa04 != null">
+        #{cbpa04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpa05 != null">
+        #{cbpa05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpa06 != null">
+        #{cbpa06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpa07 != null">
+        #{cbpa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpa08 != null">
+        #{cbpa08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpa09 != null">
+        #{cbpa09,jdbcType=INTEGER},
+      </if>
+      <if test="cbpa11 != null">
+        #{cbpa11,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpa12 != null">
+        #{cbpa12,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBPA`
+    <set>
+      <if test="record.cbpa01 != null">
+        CBPA01 = #{record.cbpa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpa02 != null">
+        CBPA02 = #{record.cbpa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpa03 != null">
+        CBPA03 = #{record.cbpa03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpa04 != null">
+        CBPA04 = #{record.cbpa04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpa05 != null">
+        CBPA05 = #{record.cbpa05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpa06 != null">
+        CBPA06 = #{record.cbpa06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpa07 != null">
+        CBPA07 = #{record.cbpa07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpa08 != null">
+        CBPA08 = #{record.cbpa08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpa09 != null">
+        CBPA09 = #{record.cbpa09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpa11 != null">
+        CBPA11 = #{record.cbpa11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpa12 != null">
+        CBPA12 = #{record.cbpa12,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPA`
+    set CBPA01 = #{record.cbpa01,jdbcType=INTEGER},
+      CBPA02 = #{record.cbpa02,jdbcType=TIMESTAMP},
+      CBPA03 = #{record.cbpa03,jdbcType=TIMESTAMP},
+      CBPA04 = #{record.cbpa04,jdbcType=INTEGER},
+      CBPA05 = #{record.cbpa05,jdbcType=INTEGER},
+      CBPA06 = #{record.cbpa06,jdbcType=INTEGER},
+      CBPA07 = #{record.cbpa07,jdbcType=VARCHAR},
+      CBPA08 = #{record.cbpa08,jdbcType=VARCHAR},
+      CBPA09 = #{record.cbpa09,jdbcType=INTEGER},
+      CBPA11 = #{record.cbpa11,jdbcType=VARCHAR},
+      CBPA12 = #{record.cbpa12,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBPA`
+    where CBPA01 = #{cbpa01,jdbcType=INTEGER}
+  </select>
+
+  <sql id="selectCBPAVo">
+    select CBPA01, CBPA02, CBPA03, CBPA04, CBPA05, CBPA06, CBPA07, CBPA08, CBPA09, CBPA11, CBPA12 from CBPA
+  </sql>
+  <resultMap type="CBPA" id="CBPAResult">
+    <result property="cbpa01"    column="CBPA01"    />
+    <result property="cbpa02"    column="CBPA02"    />
+    <result property="cbpa03"    column="CBPA03"    />
+    <result property="cbpa04"    column="CBPA04"    />
+    <result property="cbpa05"    column="CBPA05"    />
+    <result property="cbpa06"    column="CBPA06"    />
+    <result property="cbpa07"    column="CBPA07"    />
+    <result property="cbpa08"    column="CBPA08"    />
+    <result property="cbpa09"    column="CBPA09"    />
+    <result property="cbpa11"    column="CBPA11"    />
+    <result property="cbpa12"    column="CBPA12"    />
+  </resultMap>
+  <select id="selectDeptList" parameterType="Cbpa" resultMap="CBPAResult">
+    <include refid="selectCBPAVo"/>
+    <where>
+
+      <if test="cbpa06 != null "> and CBPA06 = #{cbpa06}</if>
+      <if test="cbpa07 != null  and cbpa07 != ''"> and CBPA07 like concat( '%', #{cbpa07}, '%') </if>
+      <if test="cbpa09 != null "> and CBPA09 = #{cbpa09}</if>
+      <if test="cbpa11 != null  and cbpa11 != ''"> and CBPA11 = #{cbpa11}</if>
+      <if test="cbpa12 != null  and cbpa12 != ''"> and CBPA12 = #{cbpa12}</if>
+    </where>
+  </select>
+  <insert id="insertCBPA" parameterType="Cbpa">
+    insert into CBPA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpa01 != null">CBPA01,</if>
+      <if test="cbpa02 != null">CBPA02,</if>
+      <if test="cbpa03 != null">CBPA03,</if>
+      <if test="cbpa04 != null">CBPA04,</if>
+      <if test="cbpa05 != null">CBPA05,</if>
+      <if test="cbpa06 != null">CBPA06,</if>
+      <if test="cbpa07 != null">CBPA07,</if>
+      <if test="cbpa08 != null">CBPA08,</if>
+      <if test="cbpa09 != null">CBPA09,</if>
+      <if test="cbpa11 != null">CBPA11,</if>
+      <if test="cbpa12 != null">CBPA12,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpa01 != null">#{cbpa01},</if>
+      <if test="cbpa02 != null">#{cbpa02},</if>
+      <if test="cbpa03 != null">#{cbpa03},</if>
+      <if test="cbpa04 != null">#{cbpa04},</if>
+      <if test="cbpa05 != null">#{cbpa05},</if>
+      <if test="cbpa06 != null">#{cbpa06},</if>
+      <if test="cbpa07 != null">#{cbpa07},</if>
+      <if test="cbpa08 != null">#{cbpa08},</if>
+      <if test="cbpa09 != null">#{cbpa09},</if>
+      <if test="cbpa11 != null">#{cbpa11},</if>
+      <if test="cbpa12 != null">#{cbpa12},</if>
+    </trim>
+  </insert>
+  <update id="updateCBPB" parameterType="Cbpa">
+    update CBPB
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbpb02 != null">CBPB02 = #{cbpb02},</if>
+      <if test="cbpb03 != null">CBPB03 = #{cbpb03},</if>
+      <if test="cbpb04 != null">CBPB04 = #{cbpb04},</if>
+      <if test="cbpb05 != null">CBPB05 = #{cbpb05},</if>
+      <if test="cbpb06 != null">CBPB06 = #{cbpb06},</if>
+      <if test="cbpb07 != null">CBPB07 = #{cbpb07},</if>
+      <if test="cbpb08 != null">CBPB08 = #{cbpb08},</if>
+      <if test="cbpb09 != null">CBPB09 = #{cbpb09},</if>
+      <if test="cbpb10 != null">CBPB10 = #{cbpb10},</if>
+      <if test="cbpb11 != null">CBPB11 = #{cbpb11},</if>
+      <if test="cbpb12 != null">CBPB12 = #{cbpb12},</if>
+      <if test="cbpb13 != null">CBPB13 = #{cbpb13},</if>
+      <if test="cbpb14 != null">CBPB14 = #{cbpb14},</if>
+      <if test="cbpb15 != null">CBPB15 = #{cbpb15},</if>
+    </trim>
+    where CBPB01 = #{cbpb01}
+  </update>
+
+</mapper>
