@@ -162,6 +162,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         Date date = new Date();
         cbpa.setCbpa03(date);
         cbpa.setCbpa05(Math.toIntExact(userid));
+
         CbpaCriteria example3=new CbpaCriteria();
 
         example3.createCriteria().

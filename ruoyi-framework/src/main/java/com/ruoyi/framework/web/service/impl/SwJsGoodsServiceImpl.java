@@ -2,16 +2,18 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.domain.Cbpb;
-import com.ruoyi.system.domain.CbpbCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.mapper.CbpbMapper;
+import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 商品分类Service业务层处理
@@ -31,6 +34,9 @@ import java.util.List;
 public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     @Resource
     private CbpbMapper cbpbMapper;
+
+    @Resource
+    private GsSystemUseMapper gsSystemUseMapper;
     /**
      * 新增商品
      *
@@ -118,10 +124,27 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
         Date date = new Date();
         cbpb.setCbpb03(date);
         cbpb.setCbpb05(Math.toIntExact(userid));
+
+     CbpbCriteria example3=new CbpbCriteria();
+
+        example3.createCriteria().
+                andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpb01EqualTo(cbpbDo.getCbpb01());
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
+        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
+        String[] strs = collect.toArray(new String[]{});
+        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        use.createCriteria()
+                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
+                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
+        if(gsSystemUses.size()>0){
+            throw new SwException("在用商品不可删除");
+        }
         cbpb.setCbpb06(DeleteFlagEnum.DELETE.getCode());
-        CbpbCriteria example1= new CbpbCriteria();
-        example1.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01());
-        return  cbpbMapper.updateByExampleSelective(cbpb,example1);
+
+        return cbpbMapper.updateByExampleSelective(cbpb,example3);
     }
     /**
      * 查询商品列表
