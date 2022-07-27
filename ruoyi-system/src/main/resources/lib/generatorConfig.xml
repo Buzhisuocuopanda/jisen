@@ -33,7 +33,7 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://117.78.3.177:3306/cloudpivot?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;tinyInt1isBit=false&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://117.78.3.177:3306/SK_WMS?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;tinyInt1isBit=false&amp;useSSL=false"
                         userId="root" password="test123456!@#$%">
         </jdbcConnection>
         <!--        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"-->
