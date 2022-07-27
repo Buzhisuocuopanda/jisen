@@ -1,7 +1,10 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
+
+import java.util.List;
 
 public interface ISwJsGoodsService {
     /**
@@ -18,4 +21,15 @@ public interface ISwJsGoodsService {
      * @return 结果
      */
     int updateSwJsGoodsClassify(CbpbDo cbpbDo);
+    /**
+     * 删除商品
+     *
+     * @param cbpbDo 需要删除的商品分类主键
+     * @return 结果
+     */
+    int deleteSwJsGoodsClassifyById(CbpbDo cbpbDo);
+
+    List<Cbpb> selectSwJsGoodsList(Cbpb cbpb);
+
+    String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName);
 }

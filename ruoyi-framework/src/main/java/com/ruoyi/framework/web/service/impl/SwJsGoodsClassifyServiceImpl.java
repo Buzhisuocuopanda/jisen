@@ -179,7 +179,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         if(gsSystemUses.size()>0){
             throw new SwException("在用商品分类不可删除");
         }
-        cbpa.setCbpa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpa.setCbpa06(DeleteFlagEnum.DELETE.getCode());
 
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
     }

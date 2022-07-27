@@ -27,4 +27,10 @@ public interface CbpbMapper {
     int updateByPrimaryKeySelective(Cbpb record);
 
     int updateByPrimaryKey(Cbpb record);
+
+    List<Cbpb> selectSwJsGoodsList(Cbpb cbpb);
+
+    int insertCBPB(Cbpb cbpb);
+
+    int updateCBPB(Cbpb cbpb);
 }

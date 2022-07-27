@@ -3,7 +3,7 @@ package com.ruoyi.common.enums;
 public enum DeleteFlagEnum {
 
     DELETE(new Integer("1"), "已删除"),
-    NOT_DELETE(new Integer("-1"), "未删除"),
+    NOT_DELETE(new Integer("0"), "未删除"),
     ;
 
     private Integer code;

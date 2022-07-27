@@ -2,9 +2,11 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.CbpbCriteria;
 import com.ruoyi.system.domain.Do.CbpaDo;
@@ -102,5 +104,92 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         example1.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01())
                 .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 return  cbpbMapper.updateByExampleSelective(cbpb,example1);
+    }
+    /**
+     * 删除商品信息
+     *
+     * @param cbpbDo 商品主键
+     * @return 结果
+     */
+    @Override
+    public int deleteSwJsGoodsClassifyById(CbpbDo cbpbDo) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);
+        Date date = new Date();
+        cbpb.setCbpb03(date);
+        cbpb.setCbpb05(Math.toIntExact(userid));
+        cbpb.setCbpb06(DeleteFlagEnum.DELETE.getCode());
+        CbpbCriteria example1= new CbpbCriteria();
+        example1.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01());
+        return  cbpbMapper.updateByExampleSelective(cbpb,example1);
+    }
+    /**
+     * 查询商品列表
+     *
+     * @param cbpb 商品
+     * @return 商品
+     */
+    @Override
+    public List<Cbpb> selectSwJsGoodsList(Cbpb cbpb) {
+        return cbpbMapper.selectSwJsGoodsList(cbpb);
+    }
+
+    @Override
+    public String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        for (Cbpb swJsGoods : swJsGoodsList)
+        {
+            try {
+                // 验证是否存在这个用户
+                Cbpb u = cbpbMapper.selectByPrimaryKey(swJsGoods.getCbpb01());
+                log.info(swJsGoods.getCbpb01() + "");
+                if (StringUtils.isNull(u)) {
+                    swJsGoods.setCbpb08(swJsGoods.getCbpb08());
+                    this.insertSwJsGoods(swJsGoods);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbpb08()).append(" 导入成功");
+                } else if (updateSupport) {
+                    //  swJsGoods.setUpdateBy(Long.valueOf(operName));
+                    this.updateSwJsGoods(swJsGoods);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbpb08()).append(" 更新成功");
+                } else {
+                    failureNum++;
+                    failureMsg.append("<br/>").append(failureNum).append("商品信息").append(swJsGoods.getCbpb08()).append(" 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "商品分类信息" + swJsGoods.getCbpb01() + " 导入失败：";
+                failureMsg.append(msg).append(e.getMessage());
+                log.error(msg, e);
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();    }
+
+    public int insertSwJsGoods(Cbpb cbpb)
+    {
+        return cbpbMapper.insertCBPB(cbpb);
+    }
+    public int updateSwJsGoods(Cbpb cbpb)
+    {
+        return cbpbMapper.updateCBPB(cbpb);
     }
 }

@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, 
+    CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11,
     CBPB12, CBPB13, CBPB14, CBPB15
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria" resultMap="BaseResultMap">
@@ -95,7 +95,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPB`
     where CBPB01 = #{cbpb01,jdbcType=INTEGER}
@@ -111,16 +111,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpb">
-    insert into `CBPB` (CBPB01, CBPB02, CBPB03, 
-      CBPB04, CBPB05, CBPB06, 
-      CBPB07, CBPB08, CBPB09, 
-      CBPB10, CBPB11, CBPB12, 
+    insert into `CBPB` (CBPB01, CBPB02, CBPB03,
+      CBPB04, CBPB05, CBPB06,
+      CBPB07, CBPB08, CBPB09,
+      CBPB10, CBPB11, CBPB12,
       CBPB13, CBPB14, CBPB15
       )
-    values (#{cbpb01,jdbcType=INTEGER}, #{cbpb02,jdbcType=TIMESTAMP}, #{cbpb03,jdbcType=TIMESTAMP}, 
-      #{cbpb04,jdbcType=INTEGER}, #{cbpb05,jdbcType=INTEGER}, #{cbpb06,jdbcType=INTEGER}, 
-      #{cbpb07,jdbcType=VARCHAR}, #{cbpb08,jdbcType=VARCHAR}, #{cbpb09,jdbcType=VARCHAR}, 
-      #{cbpb10,jdbcType=INTEGER}, #{cbpb11,jdbcType=INTEGER}, #{cbpb12,jdbcType=VARCHAR}, 
+    values (#{cbpb01,jdbcType=INTEGER}, #{cbpb02,jdbcType=TIMESTAMP}, #{cbpb03,jdbcType=TIMESTAMP},
+      #{cbpb04,jdbcType=INTEGER}, #{cbpb05,jdbcType=INTEGER}, #{cbpb06,jdbcType=INTEGER},
+      #{cbpb07,jdbcType=VARCHAR}, #{cbpb08,jdbcType=VARCHAR}, #{cbpb09,jdbcType=VARCHAR},
+      #{cbpb10,jdbcType=INTEGER}, #{cbpb11,jdbcType=INTEGER}, #{cbpb12,jdbcType=VARCHAR},
       #{cbpb13,jdbcType=DOUBLE}, #{cbpb14,jdbcType=INTEGER}, #{cbpb15,jdbcType=VARCHAR}
       )
   </insert>
@@ -227,7 +227,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBPB`
     <set>
       <if test="record.cbpb01 != null">
@@ -367,4 +367,103 @@
       CBPB15 = #{cbpb15,jdbcType=VARCHAR}
     where CBPB01 = #{cbpb01,jdbcType=INTEGER}
   </update>
+  <resultMap type="CBPB" id="CBPBResult">
+    <result property="cbpb01"    column="CBPB01"    />
+    <result property="cbpb02"    column="CBPB02"    />
+    <result property="cbpb03"    column="CBPB03"    />
+    <result property="cbpb04"    column="CBPB04"    />
+    <result property="cbpb05"    column="CBPB05"    />
+    <result property="cbpb06"    column="CBPB06"    />
+    <result property="cbpb07"    column="CBPB07"    />
+    <result property="cbpb08"    column="CBPB08"    />
+    <result property="cbpb09"    column="CBPB09"    />
+    <result property="cbpb10"    column="CBPB10"    />
+    <result property="cbpb11"    column="CBPB11"    />
+    <result property="cbpb12"    column="CBPB12"    />
+    <result property="cbpb13"    column="CBPB13"    />
+    <result property="cbpb14"    column="CBPB14"    />
+    <result property="cbpb15"    column="CBPB15"    />
+  </resultMap>
+  <sql id="selectCBPBVo">
+    select CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, CBPB12, CBPB13, CBPB14, CBPB15 from CBPB
+  </sql>
+  <select id="selectSwJsGoodsList"  parameterType="CBPB" resultMap="CBPBResult">
+    <include refid="selectCBPBVo"/>
+    <where>
+      <if test="cbpb01 != null "> and CBPB01 = #{cbpb01}</if>
+      <if test="cbpb02 != null "> and CBPB02 = #{cbpb02}</if>
+      <if test="cbpb03 != null "> and CBPB03 = #{cbpb03}</if>
+      <if test="cbpb04 != null "> and CBPB04 = #{cbpb04}</if>
+      <if test="cbpb05 != null "> and CBPB05 = #{cbpb05}</if>
+      <if test="cbpb06 != null "> and CBPB06 = #{cbpb06}</if>
+      <if test="cbpb07 != null  and cbpb07 != ''"> and CBPB07 = #{cbpb07}</if>
+      <if test="cbpb08 != null  and cbpb08 != ''"> and CBPB08 = #{cbpb08}</if>
+      <if test="cbpb09 != null  and cbpb09 != ''"> and CBPB09 = #{cbpb09}</if>
+      <if test="cbpb10 != null "> and CBPB10 = #{cbpb10}</if>
+      <if test="cbpb11 != null "> and CBPB11 = #{cbpb11}</if>
+      <if test="cbpb12 != null  and cbpb12 != ''"> and CBPB12 = #{cbpb12}</if>
+      <if test="cbpb13 != null "> and CBPB13 = #{cbpb13}</if>
+      <if test="cbpb14 != null "> and CBPB14 = #{cbpb14}</if>
+      <if test="cbpb15 != null  and cbpb15 != ''"> and CBPB15 like concat( '%', #{cbpb15}, '%')</if>
+    </where>
+  </select>
+
+  <insert id="insertCBPB" parameterType="CBPB">
+    insert into CBPB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpb01 != null">CBPB01,</if>
+      <if test="cbpb02 != null">CBPB02,</if>
+      <if test="cbpb03 != null">CBPB03,</if>
+      <if test="cbpb04 != null">CBPB04,</if>
+      <if test="cbpb05 != null">CBPB05,</if>
+      <if test="cbpb06 != null">CBPB06,</if>
+      <if test="cbpb07 != null">CBPB07,</if>
+      <if test="cbpb08 != null">CBPB08,</if>
+      <if test="cbpb09 != null">CBPB09,</if>
+      <if test="cbpb10 != null">CBPB10,</if>
+      <if test="cbpb11 != null">CBPB11,</if>
+      <if test="cbpb12 != null">CBPB12,</if>
+      <if test="cbpb13 != null">CBPB13,</if>
+      <if test="cbpb14 != null">CBPB14,</if>
+      <if test="cbpb15 != null">CBPB15,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpb01 != null">#{cbpb01},</if>
+      <if test="cbpb02 != null">#{cbpb02},</if>
+      <if test="cbpb03 != null">#{cbpb03},</if>
+      <if test="cbpb04 != null">#{cbpb04},</if>
+      <if test="cbpb05 != null">#{cbpb05},</if>
+      <if test="cbpb06 != null">#{cbpb06},</if>
+      <if test="cbpb07 != null">#{cbpb07},</if>
+      <if test="cbpb08 != null">#{cbpb08},</if>
+      <if test="cbpb09 != null">#{cbpb09},</if>
+      <if test="cbpb10 != null">#{cbpb10},</if>
+      <if test="cbpb11 != null">#{cbpb11},</if>
+      <if test="cbpb12 != null">#{cbpb12},</if>
+      <if test="cbpb13 != null">#{cbpb13},</if>
+      <if test="cbpb14 != null">#{cbpb14},</if>
+      <if test="cbpb15 != null">#{cbpb15},</if>
+    </trim>
+  </insert>
+  <update id="updateCBPB" parameterType="CBPB">
+    update CBPB
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbpb02 != null">CBPB02 = #{cbpb02},</if>
+      <if test="cbpb03 != null">CBPB03 = #{cbpb03},</if>
+      <if test="cbpb04 != null">CBPB04 = #{cbpb04},</if>
+      <if test="cbpb05 != null">CBPB05 = #{cbpb05},</if>
+      <if test="cbpb06 != null">CBPB06 = #{cbpb06},</if>
+      <if test="cbpb07 != null">CBPB07 = #{cbpb07},</if>
+      <if test="cbpb08 != null">CBPB08 = #{cbpb08},</if>
+      <if test="cbpb09 != null">CBPB09 = #{cbpb09},</if>
+      <if test="cbpb10 != null">CBPB10 = #{cbpb10},</if>
+      <if test="cbpb11 != null">CBPB11 = #{cbpb11},</if>
+      <if test="cbpb12 != null">CBPB12 = #{cbpb12},</if>
+      <if test="cbpb13 != null">CBPB13 = #{cbpb13},</if>
+      <if test="cbpb14 != null">CBPB14 = #{cbpb14},</if>
+      <if test="cbpb15 != null">CBPB15 = #{cbpb15},</if>
+    </trim>
+    where CBPB01 = #{cbpb01}
+  </update>
+
 </mapper>
