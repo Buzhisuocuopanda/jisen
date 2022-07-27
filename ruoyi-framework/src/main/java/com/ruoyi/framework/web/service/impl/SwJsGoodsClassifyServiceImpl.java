@@ -143,7 +143,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
                 .andTypeIdEqualTo(Integer.valueOf(strs[0]))
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+        if(gsSystemUses.size()==0){
             cbpa.setCbpa11(cbpaDo.getCbpa11());
         }
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
