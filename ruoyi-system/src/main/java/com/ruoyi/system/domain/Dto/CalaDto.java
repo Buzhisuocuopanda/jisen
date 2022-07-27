@@ -2,6 +2,7 @@ package com.ruoyi.system.domain.Dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 @Data
 public class CalaDto {
@@ -18,11 +19,11 @@ public class CalaDto {
     private Integer cala06;
 
     private Integer cala07;
-
+    @NotBlank(message = "名称不能为空")
     private String cala08;
 
     private String cala09;
-
+    @NotBlank(message = "类别不能为空")
     private String cala10;
 
     private String cala11;
