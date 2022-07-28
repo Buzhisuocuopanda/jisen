@@ -106,4 +106,9 @@ private CbwaMapper cbwaMapper;
         }
         return  cbwaMapper.updateByExampleSelective(cbwa,example3);
     }
+
+    @Override
+    public List<Cbwa> selectSwJsStoreSkuList(Cbwa cbwa) {
+        return cbwaMapper.selectCBWAList(cbwa);
+    }
 }

@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11, 
+    CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11,
     CBWA12, CBWA13, CBWA14, CBWA15
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbwaCriteria" resultMap="BaseResultMap">
@@ -95,7 +95,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBWA`
     where CBWA01 = #{cbwa01,jdbcType=INTEGER}
@@ -111,16 +111,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbwa">
-    insert into `CBWA` (CBWA01, CBWA02, CBWA03, 
-      CBWA04, CBWA05, CBWA06, 
-      CBWA07, CBWA08, CBWA09, 
-      CBWA10, CBWA11, CBWA12, 
+    insert into `CBWA` (CBWA01, CBWA02, CBWA03,
+      CBWA04, CBWA05, CBWA06,
+      CBWA07, CBWA08, CBWA09,
+      CBWA10, CBWA11, CBWA12,
       CBWA13, CBWA14, CBWA15
       )
-    values (#{cbwa01,jdbcType=INTEGER}, #{cbwa02,jdbcType=TIMESTAMP}, #{cbwa03,jdbcType=INTEGER}, 
-      #{cbwa04,jdbcType=TIMESTAMP}, #{cbwa05,jdbcType=INTEGER}, #{cbwa06,jdbcType=INTEGER}, 
-      #{cbwa07,jdbcType=INTEGER}, #{cbwa08,jdbcType=VARCHAR}, #{cbwa09,jdbcType=VARCHAR}, 
-      #{cbwa10,jdbcType=VARCHAR}, #{cbwa11,jdbcType=VARCHAR}, #{cbwa12,jdbcType=VARCHAR}, 
+    values (#{cbwa01,jdbcType=INTEGER}, #{cbwa02,jdbcType=TIMESTAMP}, #{cbwa03,jdbcType=INTEGER},
+      #{cbwa04,jdbcType=TIMESTAMP}, #{cbwa05,jdbcType=INTEGER}, #{cbwa06,jdbcType=INTEGER},
+      #{cbwa07,jdbcType=INTEGER}, #{cbwa08,jdbcType=VARCHAR}, #{cbwa09,jdbcType=VARCHAR},
+      #{cbwa10,jdbcType=VARCHAR}, #{cbwa11,jdbcType=VARCHAR}, #{cbwa12,jdbcType=VARCHAR},
       #{cbwa13,jdbcType=INTEGER}, #{cbwa14,jdbcType=INTEGER}, #{cbwa15,jdbcType=INTEGER}
       )
   </insert>
@@ -367,4 +367,45 @@
       CBWA15 = #{cbwa15,jdbcType=INTEGER}
     where CBWA01 = #{cbwa01,jdbcType=INTEGER}
   </update>
+  <resultMap type="CBWA" id="CBWAResult">
+    <result property="cbwa01"    column="CBWA01"    />
+    <result property="cbwa02"    column="CBWA02"    />
+    <result property="cbwa03"    column="CBWA03"    />
+    <result property="cbwa04"    column="CBWA04"    />
+    <result property="cbwa05"    column="CBWA05"    />
+    <result property="cbwa06"    column="CBWA06"    />
+    <result property="cbwa07"    column="CBWA07"    />
+    <result property="cbwa08"    column="CBWA08"    />
+    <result property="cbwa09"    column="CBWA09"    />
+    <result property="cbwa10"    column="CBWA10"    />
+    <result property="cbwa11"    column="CBWA11"    />
+    <result property="cbwa12"    column="CBWA12"    />
+    <result property="cbwa13"    column="CBWA13"    />
+    <result property="cbwa14"    column="CBWA14"    />
+    <result property="cbwa15"    column="CBWA15"    />
+  </resultMap>
+  <sql id="selectCBWAVo">
+    select CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11, CBWA12, CBWA13, CBWA14, CBWA15 from CBWA
+  </sql>
+  <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
+    <include refid="selectCBWAVo"/>
+    <where>
+      <if test="cbwa01 != null "> and CBWA01 = #{cbwa01}</if>
+      <if test="cbwa02 != null "> and CBWA02 = #{cbwa02}</if>
+      <if test="cbwa03 != null "> and CBWA03 = #{cbwa03}</if>
+      <if test="cbwa04 != null "> and CBWA04 = #{cbwa04}</if>
+      <if test="cbwa05 != null "> and CBWA05 = #{cbwa05}</if>
+      <if test="cbwa06 != null "> and CBWA06 = #{cbwa06}</if>
+      <if test="cbwa07 != null "> and CBWA07 = #{cbwa07}</if>
+      <if test="cbwa08 != null  and cbwa08 != ''"> and CBWA08 = #{cbwa08}</if>
+      <if test="cbwa09 != null  and cbwa09 != ''"> and CBWA09 = #{cbwa09}</if>
+      <if test="cbwa10 != null  and cbwa10 != ''"> and CBWA10 = #{cbwa10}</if>
+      <if test="cbwa11 != null  and cbwa11 != ''"> and CBWA11 = #{cbwa11}</if>
+      <if test="cbwa12 != null  and cbwa12 != ''"> and CBWA12 = #{cbwa12}</if>
+      <if test="cbwa13 != null "> and CBWA13 = #{cbwa13}</if>
+      <if test="cbwa14 != null "> and CBWA14 = #{cbwa14}</if>
+      <if test="cbwa15 != null "> and CBWA15 = #{cbwa15}</if>
+    </where>
+  </select>
+
 </mapper>
