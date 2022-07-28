@@ -1,22 +1,31 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Dto.CbcaDto;
 import com.ruoyi.system.mapper.CbcaMapper;
+import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Service
 public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
-
+    @Resource
+    private GsSystemUseMapper gsSystemUseMapper;
     @Resource
     private CbcaMapper cbcaMapper;
     @Override
@@ -86,17 +95,121 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
 
     @Override
     public int deleteSwJsCustomerById(CbcaDto cbcaDto) {
-        return 0;
+        Long userid = SecurityUtils.getUserId();
+
+        Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
+        Date date = new Date();
+        cbca.setCbca04(date);
+        cbca.setCbca05(Math.toIntExact(userid));
+
+
+        CbcaCriteria example3=new CbcaCriteria();
+
+        example3.createCriteria().
+                andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbca01EqualTo(cbcaDto.getCbca01());
+//        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
+//        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
+//        String[] strs = collect.toArray(new String[]{});
+        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        use.createCriteria()
+                .andTypeEqualTo(GSSystemUseEnum.KHXX.getCode())
+                .andTypeIdEqualTo(cbcaDto.getCbca01())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
+        if(gsSystemUses.size()>0){
+            throw new SwException("在用商品不可删除");
+        }
+        cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
+
+        return cbcaMapper.updateByExampleSelective(cbca,example3);
     }
 
     @Override
     public int updateSwJsCustomer(CbcaDto cbcaDto) {
-        return 0;
-    }
+        Long userid = SecurityUtils.getUserId();
+
+        CbcaCriteria example = new CbcaCriteria();
+        example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())
+                .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbca> cbcas = cbcaMapper.selectByExample(example);
+        if(cbcas.size()>0){
+            throw new SwException("客户名称不能重复");
+        }
+        Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
+        Date date = new Date();
+        cbca.setCbca04(date);
+        cbca.setCbca05(Math.toIntExact(userid));
+        cbca.setCbca07(cbcaDto.getCbca07());
+        cbca.setCbca08(cbcaDto.getCbca08());
+        cbca.setCbca09(cbcaDto.getCbca09());
+        cbca.setCbca10(cbcaDto.getCbca10());
+        cbca.setCbca11(cbcaDto.getCbca11());
+        cbca.setCbca12(cbcaDto.getCbca12());
+        cbca.setCbca13(cbcaDto.getCbca13());
+        cbca.setCbca14(cbcaDto.getCbca14());
+        cbca.setCbca15(cbcaDto.getCbca15());
+        cbca.setCbca16(cbcaDto.getCbca16());
+        cbca.setCbca17(cbcaDto.getCbca17());
+        cbca.setCbca18(cbcaDto.getCbca18());
+        cbca.setCbca19(cbcaDto.getCbca19());
+        cbca.setCbca20(cbcaDto.getCbca20());
+        cbca.setCbca21(cbcaDto.getCbca21());
+        cbca.setCbca22(cbcaDto.getCbca22());
+        cbca.setCbca23(cbcaDto.getCbca23());
+        cbca.setCbca24(cbcaDto.getCbca24());
+        cbca.setCbca25(cbcaDto.getCbca25());
+        cbca.setCbca26(cbcaDto.getCbca26());
+        cbca.setCbca27(cbcaDto.getCbca27());
+        cbca.setCbca28(cbcaDto.getCbca28());
+        CbcaCriteria example1= new CbcaCriteria();
+        example1.createCriteria().andCbca01EqualTo(cbcaDto.getCbca01())
+                .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return  cbcaMapper.updateByExampleSelective(cbca,example1);    }
 
     @Override
     public int insertSwJsCustomer(CbcaDto cbcaDto) {
-        return 0;
+        Long userid = SecurityUtils.getUserId();
+
+        CbcaCriteria example = new CbcaCriteria();
+        example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())
+                .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbca> cbcas = cbcaMapper.selectByExample(example);
+        if(cbcas.size()>0){
+            throw new SwException("客户名称不能重复");
+        }
+        Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
+        Date date = new Date();
+        cbca.setCbca02(date);
+        cbca.setCbca03(Math.toIntExact(userid));
+        cbca.setCbca04(date);
+        cbca.setCbca05(Math.toIntExact(userid));
+        cbca.setCbca06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbca.setCbca07(cbcaDto.getCbca07());
+        cbca.setCbca08(cbcaDto.getCbca08());
+        cbca.setCbca09(cbcaDto.getCbca09());
+        cbca.setCbca10(cbcaDto.getCbca10());
+        cbca.setCbca11(cbcaDto.getCbca11());
+        cbca.setCbca12(cbcaDto.getCbca12());
+        cbca.setCbca13(cbcaDto.getCbca13());
+        cbca.setCbca14(cbcaDto.getCbca14());
+        cbca.setCbca15(cbcaDto.getCbca15());
+        cbca.setCbca16(cbcaDto.getCbca16());
+        cbca.setCbca17(cbcaDto.getCbca17());
+        cbca.setCbca18(cbcaDto.getCbca18());
+        cbca.setCbca19(cbcaDto.getCbca19());
+        cbca.setCbca20(cbcaDto.getCbca20());
+        cbca.setCbca21(cbcaDto.getCbca21());
+        cbca.setCbca22(cbcaDto.getCbca22());
+        cbca.setCbca23(cbcaDto.getCbca23());
+        cbca.setCbca24(cbcaDto.getCbca24());
+        cbca.setCbca25(cbcaDto.getCbca25());
+        cbca.setCbca26(cbcaDto.getCbca26());
+        cbca.setCbca27(cbcaDto.getCbca27());
+        cbca.setCbca28(cbcaDto.getCbca28());
+
+
+        return cbcaMapper.insertSelective(cbca);
     }
 
     public int insertSwJsCustomer(Cbca cbca)
