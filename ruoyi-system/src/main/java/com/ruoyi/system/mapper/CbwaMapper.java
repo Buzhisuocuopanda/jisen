@@ -29,4 +29,6 @@ public interface CbwaMapper {
     int updateByPrimaryKey(Cbwa record);
 
     List<Cbwa> selectCBWAList(Cbwa cbwa);
+
+    String selectCBWAByCbwa01(Long cbwa01);
 }

@@ -407,5 +407,8 @@
       <if test="cbwa15 != null "> and CBWA15 = #{cbwa15}</if>
     </where>
   </select>
-
+  <select id="selectCBWAByCbwa01" parameterType="Long" resultMap="CBWAResult">
+    <include refid="selectCBWAVo"/>
+    where CBWA06=0
+  </select>
 </mapper>

@@ -111,4 +111,9 @@ private CbwaMapper cbwaMapper;
     public List<Cbwa> selectSwJsStoreSkuList(Cbwa cbwa) {
         return cbwaMapper.selectCBWAList(cbwa);
     }
+
+    @Override
+    public String selectCBWAByCbwa01(Long cbwa01) {
+        return cbwaMapper.selectCBWAByCbwa01(cbwa01);
+    }
 }

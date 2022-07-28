@@ -13,4 +13,6 @@ public interface ISwJsStoreSkuService {
     int deleteSwJsStoreremoveById(CbwaDto cbwaDto);
 
     List<Cbwa> selectSwJsStoreSkuList(Cbwa cbwa);
+
+    String selectCBWAByCbwa01(Long cbwa01);
 }

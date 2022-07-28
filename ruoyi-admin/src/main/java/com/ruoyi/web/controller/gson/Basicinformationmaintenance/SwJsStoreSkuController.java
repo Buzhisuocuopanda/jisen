@@ -109,8 +109,8 @@ public class SwJsStoreSkuController extends BaseController {
         }
     }
     @ApiOperation(
-            value ="查询库位信息列表",
-            notes = "查询库位信息列表"
+            value ="查询仓库信息列表",
+            notes = "查询仓库信息列表"
     )
     @GetMapping("/SwJsStorelist")
     public AjaxResult<TableDataInfo> SwJsStorelist(Cbwa cbwa) {
@@ -122,7 +122,25 @@ public class SwJsStoreSkuController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询库位信息列表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbwa), ExceptionUtils.getStackTrace(e));
+            log.error("【查询仓库信息列表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbwa), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    @ApiOperation(
+            value ="仓库信息列表",
+            notes = "仓库信息列表"
+    )
+    @GetMapping(value = "/{cbwa01}")
+    public AjaxResult getInfo(@PathVariable("cbwa01") Long cbwa01) {
+        try {
+        return AjaxResult.success(swJsStoreSkuService.selectCBWAByCbwa01(cbwa01));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询仓库信息列表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbwa01), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
