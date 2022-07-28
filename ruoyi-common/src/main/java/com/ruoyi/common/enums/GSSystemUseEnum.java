@@ -6,6 +6,8 @@ public enum GSSystemUseEnum {
     KWXX(new Byte("3"), "库位信息"),
     KHXX(new Byte("4"), "客户信息"),
     GYSXX(new Byte("5"), "供应商信息"),
+    CKXX(new Byte("5"), "仓库信息"),
+
     ;
 
     private Byte code;

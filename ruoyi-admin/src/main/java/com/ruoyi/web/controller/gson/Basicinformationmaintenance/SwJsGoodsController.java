@@ -85,7 +85,6 @@ public class SwJsGoodsController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsGoodsService.updateSwJsGoodsClassify(cbpbDo));
         }catch (SwException e) {
-            log.error("【修改商品】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpbDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -107,7 +106,6 @@ public class SwJsGoodsController extends BaseController {
         try {
             return toAjax(swJsGoodsService.deleteSwJsGoodsClassifyById(cbpbDo));
         }catch (SwException e) {
-            log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpbDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -131,7 +129,6 @@ public class SwJsGoodsController extends BaseController {
             List<Cbpb> list = swJsGoodsService.selectSwJsGoodsList(cbpb);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
-            log.error("【查询商品列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpb),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {

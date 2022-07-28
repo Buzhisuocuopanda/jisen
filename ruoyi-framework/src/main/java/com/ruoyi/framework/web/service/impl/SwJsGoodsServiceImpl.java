@@ -130,13 +130,13 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
         example3.createCriteria().
                 andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbpb01EqualTo(cbpbDo.getCbpb01());
-        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
-        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
-        String[] strs = collect.toArray(new String[]{});
+//        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
+//        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
+//        String[] strs = collect.toArray(new String[]{});
         GsSystemUseCriteria use=new GsSystemUseCriteria();
         use.createCriteria()
                 .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
-                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
+                .andTypeIdEqualTo(cbpbDo.getCbpb01())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
         if(gsSystemUses.size()>0){

@@ -52,7 +52,6 @@ public class SwJsListController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsListService.insertSwJsGoodsClassify(calaDto));
         }catch (SwException e) {
-            log.error("【新增列维护】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(calaDto),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -76,7 +75,6 @@ public class SwJsListController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsListService.updateSwJsGoodsClassify(calaDto));
         }catch (SwException e) {
-            log.error("【修改列表维护】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(calaDto),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -99,7 +97,6 @@ public class SwJsListController extends BaseController {
         try {
             return toAjax(swJsListService.deleteSwJsListById(calaDto));
         }catch (SwException e) {
-            log.error("【删除列表维护】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(calaDto),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -123,7 +120,6 @@ public class SwJsListController extends BaseController {
             List<Cala> list = swJsListService.selectSwJsListList(cala);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
-            log.error("【查询列维护列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cala),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -144,7 +140,6 @@ public class SwJsListController extends BaseController {
         try {
             return AjaxResult.success(swJsListService.selectSwJsListById(id));
         }catch (SwException e) {
-            log.error("【详情列维护列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(id),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
