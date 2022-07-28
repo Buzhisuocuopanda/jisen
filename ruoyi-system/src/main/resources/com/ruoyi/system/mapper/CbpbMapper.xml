@@ -390,12 +390,12 @@
   <select id="selectSwJsGoodsList"  parameterType="CBPB" resultMap="CBPBResult">
     <include refid="selectCBPBVo"/>
     <where>
+      CBPB06=0
       <if test="cbpb01 != null "> and CBPB01 = #{cbpb01}</if>
       <if test="cbpb02 != null "> and CBPB02 = #{cbpb02}</if>
       <if test="cbpb03 != null "> and CBPB03 = #{cbpb03}</if>
       <if test="cbpb04 != null "> and CBPB04 = #{cbpb04}</if>
       <if test="cbpb05 != null "> and CBPB05 = #{cbpb05}</if>
-      <if test="cbpb06 != null "> and CBPB06 = #{cbpb06}</if>
       <if test="cbpb07 != null  and cbpb07 != ''"> and CBPB07 = #{cbpb07}</if>
       <if test="cbpb08 != null  and cbpb08 != ''"> and CBPB08 = #{cbpb08}</if>
       <if test="cbpb09 != null  and cbpb09 != ''"> and CBPB09 = #{cbpb09}</if>
