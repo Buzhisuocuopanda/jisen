@@ -104,6 +104,6 @@ private CbwaMapper cbwaMapper;
         if(gsSystemUses.size()>0){
             throw new SwException("在用仓库不可删除");
         }
-        return 0;
+        return  cbwaMapper.updateByExampleSelective(cbwa,example3);
     }
 }

@@ -4,6 +4,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.Cbca;
+import com.ruoyi.system.domain.Dto.CbcaDto;
 import com.ruoyi.system.mapper.CbcaMapper;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,27 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         }
         return successMsg.toString();
     }
+
+    @Override
+    public List<Cbca> selectSwJsCustomerList(Cbca cbca) {
+        return null;
+    }
+
+    @Override
+    public int deleteSwJsCustomerById(CbcaDto cbcaDto) {
+        return 0;
+    }
+
+    @Override
+    public int updateSwJsCustomer(CbcaDto cbcaDto) {
+        return 0;
+    }
+
+    @Override
+    public int insertSwJsCustomer(CbcaDto cbcaDto) {
+        return 0;
+    }
+
     public int insertSwJsCustomer(Cbca cbca)
     {
         return cbcaMapper.insertCBCA(cbca);
