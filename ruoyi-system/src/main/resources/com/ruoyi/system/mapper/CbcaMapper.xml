@@ -327,7 +327,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBCA`
     <set>
       <if test="record.cbca01 != null">
@@ -667,5 +667,70 @@
       <if test="cbca28 != null">#{cbca28},</if>
     </trim>
   </insert>
-
+  <resultMap type="CBCA" id="CBCAResult">
+    <result property="cbca01"    column="CBCA01"    />
+    <result property="cbca02"    column="CBCA02"    />
+    <result property="cbca03"    column="CBCA03"    />
+    <result property="cbca04"    column="CBCA04"    />
+    <result property="cbca05"    column="CBCA05"    />
+    <result property="cbca06"    column="CBCA06"    />
+    <result property="cbca07"    column="CBCA07"    />
+    <result property="cbca08"    column="CBCA08"    />
+    <result property="cbca09"    column="CBCA09"    />
+    <result property="cbca10"    column="CBCA10"    />
+    <result property="cbca11"    column="CBCA11"    />
+    <result property="cbca12"    column="CBCA12"    />
+    <result property="cbca13"    column="CBCA13"    />
+    <result property="cbca14"    column="CBCA14"    />
+    <result property="cbca15"    column="CBCA15"    />
+    <result property="cbca16"    column="CBCA16"    />
+    <result property="cbca17"    column="CBCA17"    />
+    <result property="cbca18"    column="CBCA18"    />
+    <result property="cbca19"    column="CBCA19"    />
+    <result property="cbca20"    column="CBCA20"    />
+    <result property="cbca21"    column="CBCA21"    />
+    <result property="cbca22"    column="CBCA22"    />
+    <result property="cbca23"    column="CBCA23"    />
+    <result property="cbca24"    column="CBCA24"    />
+    <result property="cbca25"    column="CBCA25"    />
+    <result property="cbca26"    column="CBCA26"    />
+    <result property="cbca27"    column="CBCA27"    />
+    <result property="cbca28"    column="CBCA28"    />
+  </resultMap>
+  <sql id="selectCBCAVo">
+    select CBCA01, CBCA02, CBCA03, CBCA04, CBCA05, CBCA06, CBCA07, CBCA08, CBCA09, CBCA10, CBCA11, CBCA12, CBCA13, CBCA14, CBCA15, CBCA16, CBCA17, CBCA18, CBCA19, CBCA20, CBCA21, CBCA22, CBCA23, CBCA24, CBCA25, CBCA26, CBCA27, CBCA28 from CBCA
+  </sql>
+  <select id="selectCBWAList" parameterType="CBCA" resultMap="CBCAResult">
+    <include refid="selectCBCAVo"/>
+    <where>
+      CBCA06=0
+    <if test="cbca01 != null "> and CBCA01 = #{cbca01}</if>
+    <if test="cbca02 != null "> and CBCA02 = #{cbca02}</if>
+    <if test="cbca03 != null "> and CBCA03 = #{cbca03}</if>
+    <if test="cbca04 != null "> and CBCA04 = #{cbca04}</if>
+    <if test="cbca05 != null "> and CBCA05 = #{cbca05}</if>
+    <if test="cbca07 != null  and cbca07 != ''"> and CBCA07 = #{cbca07}</if>
+    <if test="cbca08 != null  and cbca08 != ''"> and CBCA08 = #{cbca08}</if>
+    <if test="cbca09 != null  and cbca09 != ''"> and CBCA09 = #{cbca09}</if>
+    <if test="cbca10 != null  and cbca10 != ''"> and CBCA10 = #{cbca10}</if>
+    <if test="cbca11 != null  and cbca11 != ''"> and CBCA11 = #{cbca11}</if>
+    <if test="cbca12 != null  and cbca12 != ''"> and CBCA12 = #{cbca12}</if>
+    <if test="cbca13 != null  and cbca13 != ''"> and CBCA13 = #{cbca13}</if>
+    <if test="cbca14 != null  and cbca14 != ''"> and CBCA14 = #{cbca14}</if>
+    <if test="cbca15 != null  and cbca15 != ''"> and CBCA15 = #{cbca15}</if>
+    <if test="cbca16 != null  and cbca16 != ''"> and CBCA16 = #{cbca16}</if>
+    <if test="cbca17 != null  and cbca17 != ''"> and CBCA17 = #{cbca17}</if>
+    <if test="cbca18 != null  and cbca18 != ''"> and CBCA18 = #{cbca18}</if>
+    <if test="cbca19 != null  and cbca19 != ''"> and CBCA19 = #{cbca19}</if>
+    <if test="cbca20 != null  and cbca20 != ''"> and CBCA20 = #{cbca20}</if>
+    <if test="cbca21 != null  and cbca21 != ''"> and CBCA21 = #{cbca21}</if>
+    <if test="cbca22 != null  and cbca22 != ''"> and CBCA22 = #{cbca22}</if>
+    <if test="cbca23 != null  and cbca23 != ''"> and CBCA23 = #{cbca23}</if>
+    <if test="cbca24 != null  and cbca24 != ''"> and CBCA24 = #{cbca24}</if>
+    <if test="cbca25 != null  and cbca25 != ''"> and CBCA25 = #{cbca25}</if>
+    <if test="cbca26 != null  and cbca26 != ''"> and CBCA26 = #{cbca26}</if>
+    <if test="cbca27 != null  and cbca27 != ''"> and CBCA27 = #{cbca27}</if>
+    <if test="cbca28 != null "> and CBCA28 = #{cbca28}</if>
+    </where>
+  </select>
 </mapper>

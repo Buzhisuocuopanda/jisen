@@ -90,7 +90,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
 
     @Override
     public List<Cbca> selectSwJsCustomerList(Cbca cbca) {
-        return null;
+        return cbcaMapper.selectCBWAList(cbca);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
         if(gsSystemUses.size()>0){
-            throw new SwException("在用商品不可删除");
+            throw new SwException("在不可删用客户除");
         }
         cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
 

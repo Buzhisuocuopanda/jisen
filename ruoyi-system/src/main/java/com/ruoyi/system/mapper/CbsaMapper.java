@@ -27,4 +27,10 @@ public interface CbsaMapper {
     int updateByPrimaryKeySelective(Cbsa record);
 
     int updateByPrimaryKey(Cbsa record);
+
+    List<Cbsa> selectCBSAList(Cbsa cbsa);
+
+    int insertCBSA(Cbsa cbsa);
+
+    int updateCBSA(Cbsa cbsa);
 }

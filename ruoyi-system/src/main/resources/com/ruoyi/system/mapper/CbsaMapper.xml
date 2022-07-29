@@ -80,7 +80,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBSA01, CBSA02, CBSA03, CBSA04, CBSA05, CBSA06, CBSA07, CBSA08, CBSA09, CBSA10, CBSA11, 
+    CBSA01, CBSA02, CBSA03, CBSA04, CBSA05, CBSA06, CBSA07, CBSA08, CBSA09, CBSA10, CBSA11,
     CBSA12, CBSA13, CBSA14, CBSA15, CBSA16, CBSA17, CBSA18
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbsaCriteria" resultMap="BaseResultMap">
@@ -98,7 +98,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBSA`
     where CBSA01 = #{cbsa01,jdbcType=INTEGER}
@@ -114,18 +114,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsa">
-    insert into `CBSA` (CBSA01, CBSA02, CBSA03, 
-      CBSA04, CBSA05, CBSA06, 
-      CBSA07, CBSA08, CBSA09, 
-      CBSA10, CBSA11, CBSA12, 
-      CBSA13, CBSA14, CBSA15, 
+    insert into `CBSA` (CBSA01, CBSA02, CBSA03,
+      CBSA04, CBSA05, CBSA06,
+      CBSA07, CBSA08, CBSA09,
+      CBSA10, CBSA11, CBSA12,
+      CBSA13, CBSA14, CBSA15,
       CBSA16, CBSA17, CBSA18
       )
-    values (#{cbsa01,jdbcType=INTEGER}, #{cbsa02,jdbcType=TIMESTAMP}, #{cbsa03,jdbcType=INTEGER}, 
-      #{cbsa04,jdbcType=TIMESTAMP}, #{cbsa05,jdbcType=INTEGER}, #{cbsa06,jdbcType=INTEGER}, 
-      #{cbsa07,jdbcType=VARCHAR}, #{cbsa08,jdbcType=VARCHAR}, #{cbsa09,jdbcType=VARCHAR}, 
-      #{cbsa10,jdbcType=VARCHAR}, #{cbsa11,jdbcType=VARCHAR}, #{cbsa12,jdbcType=VARCHAR}, 
-      #{cbsa13,jdbcType=VARCHAR}, #{cbsa14,jdbcType=VARCHAR}, #{cbsa15,jdbcType=VARCHAR}, 
+    values (#{cbsa01,jdbcType=INTEGER}, #{cbsa02,jdbcType=TIMESTAMP}, #{cbsa03,jdbcType=INTEGER},
+      #{cbsa04,jdbcType=TIMESTAMP}, #{cbsa05,jdbcType=INTEGER}, #{cbsa06,jdbcType=INTEGER},
+      #{cbsa07,jdbcType=VARCHAR}, #{cbsa08,jdbcType=VARCHAR}, #{cbsa09,jdbcType=VARCHAR},
+      #{cbsa10,jdbcType=VARCHAR}, #{cbsa11,jdbcType=VARCHAR}, #{cbsa12,jdbcType=VARCHAR},
+      #{cbsa13,jdbcType=VARCHAR}, #{cbsa14,jdbcType=VARCHAR}, #{cbsa15,jdbcType=VARCHAR},
       #{cbsa16,jdbcType=VARCHAR}, #{cbsa17,jdbcType=VARCHAR}, #{cbsa18,jdbcType=INTEGER}
       )
   </insert>
@@ -250,7 +250,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBSA`
     <set>
       <if test="record.cbsa01 != null">
@@ -414,4 +414,119 @@
       CBSA18 = #{cbsa18,jdbcType=INTEGER}
     where CBSA01 = #{cbsa01,jdbcType=INTEGER}
   </update>
+  <resultMap type="CBSA" id="CBSAResult">
+    <result property="cbsa01"    column="CBSA01"    />
+    <result property="cbsa02"    column="CBSA02"    />
+    <result property="cbsa03"    column="CBSA03"    />
+    <result property="cbsa04"    column="CBSA04"    />
+    <result property="cbsa05"    column="CBSA05"    />
+    <result property="cbsa06"    column="CBSA06"    />
+    <result property="cbsa07"    column="CBSA07"    />
+    <result property="cbsa08"    column="CBSA08"    />
+    <result property="cbsa09"    column="CBSA09"    />
+    <result property="cbsa10"    column="CBSA10"    />
+    <result property="cbsa11"    column="CBSA11"    />
+    <result property="cbsa12"    column="CBSA12"    />
+    <result property="cbsa13"    column="CBSA13"    />
+    <result property="cbsa14"    column="CBSA14"    />
+    <result property="cbsa15"    column="CBSA15"    />
+    <result property="cbsa16"    column="CBSA16"    />
+    <result property="cbsa17"    column="CBSA17"    />
+    <result property="cbsa18"    column="CBSA18"    />
+  </resultMap>
+  <sql id="selectCBSAVo">
+    select CBSA01, CBSA02, CBSA03, CBSA04, CBSA05, CBSA06, CBSA07, CBSA08, CBSA09, CBSA10, CBSA11, CBSA12, CBSA13, CBSA14, CBSA15, CBSA16, CBSA17, CBSA18 from CBSA
+  </sql>
+  <select id="selectCBSAList" parameterType="CBSA" resultMap="CBSAResult">
+    <include refid="selectCBSAVo"/>
+    <where>
+      CBSA06=0
+      <if test="cbsa01 != null "> and CBSA01 = #{cbsa01}</if>
+      <if test="cbsa02 != null "> and CBSA02 = #{cbsa02}</if>
+      <if test="cbsa03 != null "> and CBSA03 = #{cbsa03}</if>
+      <if test="cbsa04 != null "> and CBSA04 = #{cbsa04}</if>
+      <if test="cbsa05 != null "> and CBSA05 = #{cbsa05}</if>
+      <if test="cbsa07 != null  and cbsa07 != ''"> and CBSA07 = #{cbsa07}</if>
+      <if test="cbsa08 != null  and cbsa08 != ''"> and CBSA08 = #{cbsa08}</if>
+      <if test="cbsa09 != null  and cbsa09 != ''"> and CBSA09 = #{cbsa09}</if>
+      <if test="cbsa10 != null  and cbsa10 != ''"> and CBSA10 = #{cbsa10}</if>
+      <if test="cbsa11 != null  and cbsa11 != ''"> and CBSA11 = #{cbsa11}</if>
+      <if test="cbsa12 != null  and cbsa12 != ''"> and CBSA12 = #{cbsa12}</if>
+      <if test="cbsa13 != null  and cbsa13 != ''"> and CBSA13 = #{cbsa13}</if>
+      <if test="cbsa14 != null  and cbsa14 != ''"> and CBSA14 = #{cbsa14}</if>
+      <if test="cbsa15 != null  and cbsa15 != ''"> and CBSA15 = #{cbsa15}</if>
+      <if test="cbsa16 != null  and cbsa16 != ''"> and CBSA16 = #{cbsa16}</if>
+      <if test="cbsa17 != null  and cbsa17 != ''"> and CBSA17 = #{cbsa17}</if>
+      <if test="cbsa18 != null "> and CBSA18 = #{cbsa18}</if>
+    </where>
+  </select>
+
+  <insert id="insertCBSA" parameterType="CBSA">
+    insert into CBSA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbsa01 != null">CBSA01,</if>
+      <if test="cbsa02 != null">CBSA02,</if>
+      <if test="cbsa03 != null">CBSA03,</if>
+      <if test="cbsa04 != null">CBSA04,</if>
+      <if test="cbsa05 != null">CBSA05,</if>
+      <if test="cbsa06 != null">CBSA06,</if>
+      <if test="cbsa07 != null">CBSA07,</if>
+      <if test="cbsa08 != null">CBSA08,</if>
+      <if test="cbsa09 != null">CBSA09,</if>
+      <if test="cbsa10 != null">CBSA10,</if>
+      <if test="cbsa11 != null">CBSA11,</if>
+      <if test="cbsa12 != null">CBSA12,</if>
+      <if test="cbsa13 != null">CBSA13,</if>
+      <if test="cbsa14 != null">CBSA14,</if>
+      <if test="cbsa15 != null">CBSA15,</if>
+      <if test="cbsa16 != null">CBSA16,</if>
+      <if test="cbsa17 != null">CBSA17,</if>
+      <if test="cbsa18 != null">CBSA18,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbsa01 != null">#{cbsa01},</if>
+      <if test="cbsa02 != null">#{cbsa02},</if>
+      <if test="cbsa03 != null">#{cbsa03},</if>
+      <if test="cbsa04 != null">#{cbsa04},</if>
+      <if test="cbsa05 != null">#{cbsa05},</if>
+      <if test="cbsa06 != null">#{cbsa06},</if>
+      <if test="cbsa07 != null">#{cbsa07},</if>
+      <if test="cbsa08 != null">#{cbsa08},</if>
+      <if test="cbsa09 != null">#{cbsa09},</if>
+      <if test="cbsa10 != null">#{cbsa10},</if>
+      <if test="cbsa11 != null">#{cbsa11},</if>
+      <if test="cbsa12 != null">#{cbsa12},</if>
+      <if test="cbsa13 != null">#{cbsa13},</if>
+      <if test="cbsa14 != null">#{cbsa14},</if>
+      <if test="cbsa15 != null">#{cbsa15},</if>
+      <if test="cbsa16 != null">#{cbsa16},</if>
+      <if test="cbsa17 != null">#{cbsa17},</if>
+      <if test="cbsa18 != null">#{cbsa18},</if>
+    </trim>
+  </insert>
+
+  <update id="updateCBSA" parameterType="CBSA">
+    update CBSA
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbsa02 != null">CBSA02 = #{cbsa02},</if>
+      <if test="cbsa03 != null">CBSA03 = #{cbsa03},</if>
+      <if test="cbsa04 != null">CBSA04 = #{cbsa04},</if>
+      <if test="cbsa05 != null">CBSA05 = #{cbsa05},</if>
+      <if test="cbsa06 != null">CBSA06 = #{cbsa06},</if>
+      <if test="cbsa07 != null">CBSA07 = #{cbsa07},</if>
+      <if test="cbsa08 != null">CBSA08 = #{cbsa08},</if>
+      <if test="cbsa09 != null">CBSA09 = #{cbsa09},</if>
+      <if test="cbsa10 != null">CBSA10 = #{cbsa10},</if>
+      <if test="cbsa11 != null">CBSA11 = #{cbsa11},</if>
+      <if test="cbsa12 != null">CBSA12 = #{cbsa12},</if>
+      <if test="cbsa13 != null">CBSA13 = #{cbsa13},</if>
+      <if test="cbsa14 != null">CBSA14 = #{cbsa14},</if>
+      <if test="cbsa15 != null">CBSA15 = #{cbsa15},</if>
+      <if test="cbsa16 != null">CBSA16 = #{cbsa16},</if>
+      <if test="cbsa17 != null">CBSA17 = #{cbsa17},</if>
+      <if test="cbsa18 != null">CBSA18 = #{cbsa18},</if>
+    </trim>
+    where CBSA01 = #{cbsa01}
+  </update>
+
 </mapper>

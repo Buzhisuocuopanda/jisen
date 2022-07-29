@@ -31,4 +31,6 @@ public interface CbcaMapper {
     int insertCBCA(Cbca cbca);
 
     int updateCBCA(Cbca cbca);
+
+    List<Cbca> selectCBWAList(Cbca cbca);
 }
