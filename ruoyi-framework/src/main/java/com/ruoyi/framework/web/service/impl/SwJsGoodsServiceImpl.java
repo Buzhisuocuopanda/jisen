@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.mapper.CbpbMapper;
+import com.ruoyi.system.mapper.CbpdMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
+    @Resource
+    private CbpdMapper cbpdMapper;
     @Resource
     private CbpbMapper cbpbMapper;
 
@@ -133,13 +136,12 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        CbpdCriteria use=new CbpdCriteria();
         use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
-                .andTypeIdEqualTo(cbpbDo.getCbpb01())
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+                .andCbpd08EqualTo(cbpbDo.getCbpb01())
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpd> cbpds = cbpdMapper.selectByExample(use);
+        if(cbpds.size()>0){
             throw new SwException("在用商品不可删除");
         }
         cbpb.setCbpb06(DeleteFlagEnum.DELETE.getCode());

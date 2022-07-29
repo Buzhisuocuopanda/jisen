@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.CbsaCriteria;
 import com.ruoyi.system.domain.Dto.CbsaDto;
 import com.ruoyi.system.mapper.CbsaMapper;
+import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsSupplierService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class SwJsSupplierServiceImpl implements ISwJsSupplierService {
 private CbsaMapper cbsaMapper;
     @Resource
     private GsSystemUseMapper gsSystemUseMapper;
+    @Resource
+    private CbscMapper cbscMapper;
     @Override
     public int insertSwJsSupplier(CbsaDto cbsaDto) {
         Long userid = SecurityUtils.getUserId();
@@ -115,13 +118,12 @@ private CbsaMapper cbsaMapper;
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        CbscCriteria use=new CbscCriteria();
         use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.KHXX.getCode())
-                .andTypeIdEqualTo(cbsaDto.getCbsa01())
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+                .andCbsc15EqualTo(cbsaDto.getCbsa01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsc> cbscs = cbscMapper.selectByExample(use);
+        if(cbscs.size()>0){
             throw new SwException("在用供应商不可删除");
         }
         cbsa.setCbsa06(DeleteFlagEnum.DELETE.getCode());

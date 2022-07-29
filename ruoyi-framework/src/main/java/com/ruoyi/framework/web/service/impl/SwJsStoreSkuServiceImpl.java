@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Dto.CbwaDto;
+import com.ruoyi.system.mapper.CbpcMapper;
 import com.ruoyi.system.mapper.CbwaMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsStoreSkuService;
@@ -32,6 +33,8 @@ public class SwJsStoreSkuServiceImpl implements ISwJsStoreSkuService {
 private GsSystemUseMapper gsSystemUseMapper;
 @Resource
 private CbwaMapper cbwaMapper;
+@Resource
+private CbpcMapper cbpcMapper;
     @Override
     public int insertSwJsStoreSku(CbwaDto cbwaDto) {
         Long userid = SecurityUtils.getUserId();
@@ -92,16 +95,13 @@ private CbwaMapper cbwaMapper;
         example3.createCriteria().
                 andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbwa01EqualTo(cbwaDto.getCbwa01());
-//        List<Cbwa> cbwas = cbwaMapper.selectByExample(example3);
-//        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
-//        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
+
+        CbpcCriteria use=new CbpcCriteria();
         use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.CKXX.getCode())
-                .andTypeIdEqualTo(cbwaDto.getCbwa01())
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+                .andCbpc10EqualTo(cbwaDto.getCbwa01())
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs = cbpcMapper.selectByExample(use);
+        if(cbpcs.size()>0){
             throw new SwException("在用仓库不可删除");
         }
         return  cbwaMapper.updateByExampleSelective(cbwa,example3);

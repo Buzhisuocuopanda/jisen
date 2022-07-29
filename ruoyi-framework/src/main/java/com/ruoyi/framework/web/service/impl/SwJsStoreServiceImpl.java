@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.mapper.CblaMapper;
+import com.ruoyi.system.mapper.CbpeMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsStoreService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     private GsSystemUseMapper gsSystemUseMapper;
     @Resource
     private CblaMapper cblaMapper;
+    @Resource
+    private CbpeMapper cbpeMapper;
     @Override
     public int insertSwJsStore(CblaDto cblaDto) {
         //库位码唯一
@@ -115,14 +118,13 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
 //        List<Cbla> cblas = cblaMapper.selectByExample(example3);
 //        List<String> collect = cblas.stream().map(Cbla::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        CbpeCriteria use=new CbpeCriteria();
         use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.KWXX.getCode())
-                .andTypeIdEqualTo(cblaDto.getCbla01())
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
-            throw new SwException("在用位不可删除");
+                .andCbpe10EqualTo(cblaDto.getCbla01())
+                .andCbpe07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpe> cbpes = cbpeMapper.selectByExample(use);
+        if(cbpes.size()>0){
+            throw new SwException("在用库位不可删除");
         }
         cbla.setCbla06(DeleteFlagEnum.DELETE.getCode());
 

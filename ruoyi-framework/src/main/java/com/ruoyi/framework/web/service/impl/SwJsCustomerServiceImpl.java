@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Dto.CbcaDto;
 import com.ruoyi.system.mapper.CbcaMapper;
+import com.ruoyi.system.mapper.CbsbMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     private GsSystemUseMapper gsSystemUseMapper;
     @Resource
     private CbcaMapper cbcaMapper;
+    @Resource
+    private CbsbMapper cbsbMapper;
     @Override
     public String importSwJsCustomer(List<Cbca> swJsCustomersList, boolean updateSupport, String operName) {
         Long userid = SecurityUtils.getUserId();
@@ -111,14 +114,13 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
+        CbsbCriteria use=new CbsbCriteria();
         use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.KHXX.getCode())
-                .andTypeIdEqualTo(cbcaDto.getCbca01())
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
-            throw new SwException("在不可删用客户除");
+                .andCbsb09EqualTo(cbcaDto.getCbca01())
+                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsb> cbsbs = cbsbMapper.selectByExample(use);
+        if(cbsbs.size()>0){
+            throw new SwException("不可删除在用客户");
         }
         cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
 
