@@ -437,25 +437,14 @@ public class OrderDistributionServiceImpl2 implements OrderDistributionService {
     }
 
 
-        @Override
-    public Cbba purhaseOrderWarehousing(OrderDistributionDo orderDistributionDo) {
-        return null;
-    }
 
-    @Override
-    public Cbba purchaseWarehousing(OrderDistributionDo orderDistributionDo) {
-        return null;
-    }
 
     @Override
     public Cbba directWarehousing(OrderDistributionDo orderDistributionDo) {
         return null;
     }
 
-    @Override
-    public Cbba purchaseExit(OrderDistributionDo orderDistributionDo) {
-        return null;
-    }
+
 
     @Override
     public Cbba saleOrderExit(OrderDistributionDo orderDistributionDo) {

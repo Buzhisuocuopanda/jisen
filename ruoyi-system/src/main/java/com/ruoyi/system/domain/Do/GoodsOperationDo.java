@@ -18,6 +18,8 @@ import lombok.Data;
     //占用库存
     private Integer num;
 
+    private String goodsName;
+
 //    private String orderNo;
 
 }

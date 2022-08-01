@@ -4,36 +4,42 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GsGoodsUse implements Serializable {
-    private Integer id;
+public class GsPurchaseOrderDetail implements Serializable {
+    private Long id;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private Integer createBy;
+    private Long createBy;
 
-    private Integer updateBy;
+    private Long updateBy;
 
     private Byte deleteFlag;
 
     private Integer goodsId;
 
-    private String orderNo;
+    private BigDecimal qty;
 
-    private BigDecimal orderQty;
+    private BigDecimal price;
 
-    private Byte orderType;
+    private String remark;
 
-    private BigDecimal lockQty;
+    private Integer inQty;
+
+    private BigDecimal changeQty;
+
+    private BigDecimal surplusQty;
+
+    private Integer purchaseOrderId;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,19 +59,19 @@ public class GsGoodsUse implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getCreateBy() {
+    public Long getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Integer createBy) {
+    public void setCreateBy(Long createBy) {
         this.createBy = createBy;
     }
 
-    public Integer getUpdateBy() {
+    public Long getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(Integer updateBy) {
+    public void setUpdateBy(Long updateBy) {
         this.updateBy = updateBy;
     }
 
@@ -85,36 +91,60 @@ public class GsGoodsUse implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public BigDecimal getQty() {
+        return qty;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo == null ? null : orderNo.trim();
+    public void setQty(BigDecimal qty) {
+        this.qty = qty;
     }
 
-    public BigDecimal getOrderQty() {
-        return orderQty;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setOrderQty(BigDecimal orderQty) {
-        this.orderQty = orderQty;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public Byte getOrderType() {
-        return orderType;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setOrderType(Byte orderType) {
-        this.orderType = orderType;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
-    public BigDecimal getLockQty() {
-        return lockQty;
+    public Integer getInQty() {
+        return inQty;
     }
 
-    public void setLockQty(BigDecimal lockQty) {
-        this.lockQty = lockQty;
+    public void setInQty(Integer inQty) {
+        this.inQty = inQty;
+    }
+
+    public BigDecimal getChangeQty() {
+        return changeQty;
+    }
+
+    public void setChangeQty(BigDecimal changeQty) {
+        this.changeQty = changeQty;
+    }
+
+    public BigDecimal getSurplusQty() {
+        return surplusQty;
+    }
+
+    public void setSurplusQty(BigDecimal surplusQty) {
+        this.surplusQty = surplusQty;
+    }
+
+    public Integer getPurchaseOrderId() {
+        return purchaseOrderId;
+    }
+
+    public void setPurchaseOrderId(Integer purchaseOrderId) {
+        this.purchaseOrderId = purchaseOrderId;
     }
 
     @Override
@@ -128,7 +158,7 @@ public class GsGoodsUse implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        GsGoodsUse other = (GsGoodsUse) that;
+        GsPurchaseOrderDetail other = (GsPurchaseOrderDetail) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
@@ -136,10 +166,13 @@ public class GsGoodsUse implements Serializable {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()))
             && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
-            && (this.getOrderNo() == null ? other.getOrderNo() == null : this.getOrderNo().equals(other.getOrderNo()))
-            && (this.getOrderQty() == null ? other.getOrderQty() == null : this.getOrderQty().equals(other.getOrderQty()))
-            && (this.getOrderType() == null ? other.getOrderType() == null : this.getOrderType().equals(other.getOrderType()))
-            && (this.getLockQty() == null ? other.getLockQty() == null : this.getLockQty().equals(other.getLockQty()));
+            && (this.getQty() == null ? other.getQty() == null : this.getQty().equals(other.getQty()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+            && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
+            && (this.getInQty() == null ? other.getInQty() == null : this.getInQty().equals(other.getInQty()))
+            && (this.getChangeQty() == null ? other.getChangeQty() == null : this.getChangeQty().equals(other.getChangeQty()))
+            && (this.getSurplusQty() == null ? other.getSurplusQty() == null : this.getSurplusQty().equals(other.getSurplusQty()))
+            && (this.getPurchaseOrderId() == null ? other.getPurchaseOrderId() == null : this.getPurchaseOrderId().equals(other.getPurchaseOrderId()));
     }
 
     @Override
@@ -153,10 +186,13 @@ public class GsGoodsUse implements Serializable {
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
         result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
         result = prime * result + ((getGoodsId() == null) ? 0 : getGoodsId().hashCode());
-        result = prime * result + ((getOrderNo() == null) ? 0 : getOrderNo().hashCode());
-        result = prime * result + ((getOrderQty() == null) ? 0 : getOrderQty().hashCode());
-        result = prime * result + ((getOrderType() == null) ? 0 : getOrderType().hashCode());
-        result = prime * result + ((getLockQty() == null) ? 0 : getLockQty().hashCode());
+        result = prime * result + ((getQty() == null) ? 0 : getQty().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
+        result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
+        result = prime * result + ((getInQty() == null) ? 0 : getInQty().hashCode());
+        result = prime * result + ((getChangeQty() == null) ? 0 : getChangeQty().hashCode());
+        result = prime * result + ((getSurplusQty() == null) ? 0 : getSurplusQty().hashCode());
+        result = prime * result + ((getPurchaseOrderId() == null) ? 0 : getPurchaseOrderId().hashCode());
         return result;
     }
 
@@ -173,10 +209,13 @@ public class GsGoodsUse implements Serializable {
         sb.append(", updateBy=").append(updateBy);
         sb.append(", deleteFlag=").append(deleteFlag);
         sb.append(", goodsId=").append(goodsId);
-        sb.append(", orderNo=").append(orderNo);
-        sb.append(", orderQty=").append(orderQty);
-        sb.append(", orderType=").append(orderType);
-        sb.append(", lockQty=").append(lockQty);
+        sb.append(", qty=").append(qty);
+        sb.append(", price=").append(price);
+        sb.append(", remark=").append(remark);
+        sb.append(", inQty=").append(inQty);
+        sb.append(", changeQty=").append(changeQty);
+        sb.append(", surplusQty=").append(surplusQty);
+        sb.append(", purchaseOrderId=").append(purchaseOrderId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

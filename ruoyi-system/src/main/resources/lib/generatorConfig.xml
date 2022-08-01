@@ -71,7 +71,7 @@
         </javaClientGenerator>
 
         <!-- 要生成哪些表-->
-        <table schema="" tableName="CBPE" delimitIdentifiers="true"/>
+        <table schema="" tableName="gs_purchase_order_detail" delimitIdentifiers="true"/>
 
     </context>
 </generatorConfiguration>

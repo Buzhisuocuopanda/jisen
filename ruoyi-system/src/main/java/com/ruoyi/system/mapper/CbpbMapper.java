@@ -33,4 +33,6 @@ public interface CbpbMapper {
     int insertCBPB(Cbpb cbpb);
 
     int updateCBPB(Cbpb cbpb);
+
+    Cbpb selectByPrimaryKeyForUpdate(@Param("id") Integer id);
 }

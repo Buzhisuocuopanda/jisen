@@ -468,4 +468,12 @@
     where CBPB01 = #{cbpb01}
   </update>
 
+<!--  加锁获取商品信息-->
+  <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBPB`
+    where CBPB01 = #{cbpb01,jdbcType=INTEGER}
+    for update
+  </select>
 </mapper>

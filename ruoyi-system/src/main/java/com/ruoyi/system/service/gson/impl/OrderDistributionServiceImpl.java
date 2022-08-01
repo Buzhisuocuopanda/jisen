@@ -1,16 +1,16 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.UseFlagEnum;
 import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.GoodsOperationDo;
 import com.ruoyi.system.domain.Do.OrderDistributionDo;
-import com.ruoyi.system.domain.GsGoodsUse;
-import com.ruoyi.system.domain.GsUnDistributionGoods;
-import com.ruoyi.system.domain.GsUnDistributionGoodsCriteria;
 import com.ruoyi.system.mapper.CbbaMapper;
+import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.mapper.GsGoodsUseMapper;
 import com.ruoyi.system.mapper.GsUnDistributionGoodsMapper;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
@@ -39,6 +39,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     private GsUnDistributionGoodsMapper gsUnDistributionGoodsMapper;
 
     private GsGoodsUseMapper gsGoodsUseMapper;
+
+    private CbpbMapper cbpbMapper;
+
+    private BaseCheckService baseCheckService;
 
     /**
      * 总订单重新分配的key
@@ -486,7 +490,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         //国内订单是在销售下单的时候
         //先判断库存是否够用
         //国内订单判断库存是否可用通过仓库台账来判断 先锁商品表
-
+        Cbpb cbpb = baseCheckService.checkGoodsForUpdate(goodsOperationDo.getGoodsId(), goodsOperationDo.getGoodsName());
 
 
         //国际订单库存是否可用通过生产总订单减去占用数量

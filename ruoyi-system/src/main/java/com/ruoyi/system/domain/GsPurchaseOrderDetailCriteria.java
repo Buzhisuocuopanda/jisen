@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GsGoodsUseCriteria {
+public class GsPurchaseOrderDetailCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GsGoodsUseCriteria() {
+    public GsPurchaseOrderDetailCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -116,52 +116,52 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(Integer value) {
+        public Criteria andIdEqualTo(Long value) {
             addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(Integer value) {
+        public Criteria andIdNotEqualTo(Long value) {
             addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(Integer value) {
+        public Criteria andIdGreaterThan(Long value) {
             addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andIdGreaterThanOrEqualTo(Long value) {
             addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(Integer value) {
+        public Criteria andIdLessThan(Long value) {
             addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(Integer value) {
+        public Criteria andIdLessThanOrEqualTo(Long value) {
             addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Integer> values) {
+        public Criteria andIdIn(List<Long> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<Integer> values) {
+        public Criteria andIdNotIn(List<Long> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(Integer value1, Integer value2) {
+        public Criteria andIdBetween(Long value1, Long value2) {
             addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andIdNotBetween(Long value1, Long value2) {
             addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
@@ -296,52 +296,52 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCreateByEqualTo(Integer value) {
+        public Criteria andCreateByEqualTo(Long value) {
             addCriterion("create_by =", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByNotEqualTo(Integer value) {
+        public Criteria andCreateByNotEqualTo(Long value) {
             addCriterion("create_by <>", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByGreaterThan(Integer value) {
+        public Criteria andCreateByGreaterThan(Long value) {
             addCriterion("create_by >", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCreateByGreaterThanOrEqualTo(Long value) {
             addCriterion("create_by >=", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByLessThan(Integer value) {
+        public Criteria andCreateByLessThan(Long value) {
             addCriterion("create_by <", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByLessThanOrEqualTo(Integer value) {
+        public Criteria andCreateByLessThanOrEqualTo(Long value) {
             addCriterion("create_by <=", value, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByIn(List<Integer> values) {
+        public Criteria andCreateByIn(List<Long> values) {
             addCriterion("create_by in", values, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByNotIn(List<Integer> values) {
+        public Criteria andCreateByNotIn(List<Long> values) {
             addCriterion("create_by not in", values, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByBetween(Integer value1, Integer value2) {
+        public Criteria andCreateByBetween(Long value1, Long value2) {
             addCriterion("create_by between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
-        public Criteria andCreateByNotBetween(Integer value1, Integer value2) {
+        public Criteria andCreateByNotBetween(Long value1, Long value2) {
             addCriterion("create_by not between", value1, value2, "createBy");
             return (Criteria) this;
         }
@@ -356,52 +356,52 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByEqualTo(Integer value) {
+        public Criteria andUpdateByEqualTo(Long value) {
             addCriterion("update_by =", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByNotEqualTo(Integer value) {
+        public Criteria andUpdateByNotEqualTo(Long value) {
             addCriterion("update_by <>", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByGreaterThan(Integer value) {
+        public Criteria andUpdateByGreaterThan(Long value) {
             addCriterion("update_by >", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUpdateByGreaterThanOrEqualTo(Long value) {
             addCriterion("update_by >=", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByLessThan(Integer value) {
+        public Criteria andUpdateByLessThan(Long value) {
             addCriterion("update_by <", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByLessThanOrEqualTo(Integer value) {
+        public Criteria andUpdateByLessThanOrEqualTo(Long value) {
             addCriterion("update_by <=", value, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByIn(List<Integer> values) {
+        public Criteria andUpdateByIn(List<Long> values) {
             addCriterion("update_by in", values, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByNotIn(List<Integer> values) {
+        public Criteria andUpdateByNotIn(List<Long> values) {
             addCriterion("update_by not in", values, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByBetween(Integer value1, Integer value2) {
+        public Criteria andUpdateByBetween(Long value1, Long value2) {
             addCriterion("update_by between", value1, value2, "updateBy");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateByNotBetween(Integer value1, Integer value2) {
+        public Criteria andUpdateByNotBetween(Long value1, Long value2) {
             addCriterion("update_by not between", value1, value2, "updateBy");
             return (Criteria) this;
         }
@@ -526,253 +526,433 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoIsNull() {
-            addCriterion("order_no is null");
+        public Criteria andQtyIsNull() {
+            addCriterion("qty is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoIsNotNull() {
-            addCriterion("order_no is not null");
+        public Criteria andQtyIsNotNull() {
+            addCriterion("qty is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoEqualTo(String value) {
-            addCriterion("order_no =", value, "orderNo");
+        public Criteria andQtyEqualTo(BigDecimal value) {
+            addCriterion("qty =", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoNotEqualTo(String value) {
-            addCriterion("order_no <>", value, "orderNo");
+        public Criteria andQtyNotEqualTo(BigDecimal value) {
+            addCriterion("qty <>", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoGreaterThan(String value) {
-            addCriterion("order_no >", value, "orderNo");
+        public Criteria andQtyGreaterThan(BigDecimal value) {
+            addCriterion("qty >", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoGreaterThanOrEqualTo(String value) {
-            addCriterion("order_no >=", value, "orderNo");
+        public Criteria andQtyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("qty >=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoLessThan(String value) {
-            addCriterion("order_no <", value, "orderNo");
+        public Criteria andQtyLessThan(BigDecimal value) {
+            addCriterion("qty <", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoLessThanOrEqualTo(String value) {
-            addCriterion("order_no <=", value, "orderNo");
+        public Criteria andQtyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("qty <=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoLike(String value) {
-            addCriterion("order_no like", value, "orderNo");
+        public Criteria andQtyIn(List<BigDecimal> values) {
+            addCriterion("qty in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoNotLike(String value) {
-            addCriterion("order_no not like", value, "orderNo");
+        public Criteria andQtyNotIn(List<BigDecimal> values) {
+            addCriterion("qty not in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoIn(List<String> values) {
-            addCriterion("order_no in", values, "orderNo");
+        public Criteria andQtyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("qty between", value1, value2, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoNotIn(List<String> values) {
-            addCriterion("order_no not in", values, "orderNo");
+        public Criteria andQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("qty not between", value1, value2, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoBetween(String value1, String value2) {
-            addCriterion("order_no between", value1, value2, "orderNo");
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNoNotBetween(String value1, String value2) {
-            addCriterion("order_no not between", value1, value2, "orderNo");
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyIsNull() {
-            addCriterion("order_qty is null");
+        public Criteria andPriceEqualTo(BigDecimal value) {
+            addCriterion("price =", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyIsNotNull() {
-            addCriterion("order_qty is not null");
+        public Criteria andPriceNotEqualTo(BigDecimal value) {
+            addCriterion("price <>", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyEqualTo(BigDecimal value) {
-            addCriterion("order_qty =", value, "orderQty");
+        public Criteria andPriceGreaterThan(BigDecimal value) {
+            addCriterion("price >", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotEqualTo(BigDecimal value) {
-            addCriterion("order_qty <>", value, "orderQty");
+        public Criteria andPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("price >=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyGreaterThan(BigDecimal value) {
-            addCriterion("order_qty >", value, "orderQty");
+        public Criteria andPriceLessThan(BigDecimal value) {
+            addCriterion("price <", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("order_qty >=", value, "orderQty");
+        public Criteria andPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("price <=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyLessThan(BigDecimal value) {
-            addCriterion("order_qty <", value, "orderQty");
+        public Criteria andPriceIn(List<BigDecimal> values) {
+            addCriterion("price in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("order_qty <=", value, "orderQty");
+        public Criteria andPriceNotIn(List<BigDecimal> values) {
+            addCriterion("price not in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyIn(List<BigDecimal> values) {
-            addCriterion("order_qty in", values, "orderQty");
+        public Criteria andPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price between", value1, value2, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotIn(List<BigDecimal> values) {
-            addCriterion("order_qty not in", values, "orderQty");
+        public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price not between", value1, value2, "price");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("order_qty between", value1, value2, "orderQty");
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("order_qty not between", value1, value2, "orderQty");
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeIsNull() {
-            addCriterion("order_type is null");
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeIsNotNull() {
-            addCriterion("order_type is not null");
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeEqualTo(Byte value) {
-            addCriterion("order_type =", value, "orderType");
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeNotEqualTo(Byte value) {
-            addCriterion("order_type <>", value, "orderType");
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeGreaterThan(Byte value) {
-            addCriterion("order_type >", value, "orderType");
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeGreaterThanOrEqualTo(Byte value) {
-            addCriterion("order_type >=", value, "orderType");
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeLessThan(Byte value) {
-            addCriterion("order_type <", value, "orderType");
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeLessThanOrEqualTo(Byte value) {
-            addCriterion("order_type <=", value, "orderType");
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeIn(List<Byte> values) {
-            addCriterion("order_type in", values, "orderType");
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeNotIn(List<Byte> values) {
-            addCriterion("order_type not in", values, "orderType");
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeBetween(Byte value1, Byte value2) {
-            addCriterion("order_type between", value1, value2, "orderType");
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andOrderTypeNotBetween(Byte value1, Byte value2) {
-            addCriterion("order_type not between", value1, value2, "orderType");
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyIsNull() {
-            addCriterion("lock_qty is null");
+        public Criteria andInQtyIsNull() {
+            addCriterion("in_qty is null");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyIsNotNull() {
-            addCriterion("lock_qty is not null");
+        public Criteria andInQtyIsNotNull() {
+            addCriterion("in_qty is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyEqualTo(BigDecimal value) {
-            addCriterion("lock_qty =", value, "lockQty");
+        public Criteria andInQtyEqualTo(Integer value) {
+            addCriterion("in_qty =", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotEqualTo(BigDecimal value) {
-            addCriterion("lock_qty <>", value, "lockQty");
+        public Criteria andInQtyNotEqualTo(Integer value) {
+            addCriterion("in_qty <>", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyGreaterThan(BigDecimal value) {
-            addCriterion("lock_qty >", value, "lockQty");
+        public Criteria andInQtyGreaterThan(Integer value) {
+            addCriterion("in_qty >", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("lock_qty >=", value, "lockQty");
+        public Criteria andInQtyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("in_qty >=", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyLessThan(BigDecimal value) {
-            addCriterion("lock_qty <", value, "lockQty");
+        public Criteria andInQtyLessThan(Integer value) {
+            addCriterion("in_qty <", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("lock_qty <=", value, "lockQty");
+        public Criteria andInQtyLessThanOrEqualTo(Integer value) {
+            addCriterion("in_qty <=", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyIn(List<BigDecimal> values) {
-            addCriterion("lock_qty in", values, "lockQty");
+        public Criteria andInQtyIn(List<Integer> values) {
+            addCriterion("in_qty in", values, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotIn(List<BigDecimal> values) {
-            addCriterion("lock_qty not in", values, "lockQty");
+        public Criteria andInQtyNotIn(List<Integer> values) {
+            addCriterion("in_qty not in", values, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("lock_qty between", value1, value2, "lockQty");
+        public Criteria andInQtyBetween(Integer value1, Integer value2) {
+            addCriterion("in_qty between", value1, value2, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("lock_qty not between", value1, value2, "lockQty");
+        public Criteria andInQtyNotBetween(Integer value1, Integer value2) {
+            addCriterion("in_qty not between", value1, value2, "inQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyIsNull() {
+            addCriterion("change_qty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyIsNotNull() {
+            addCriterion("change_qty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyEqualTo(BigDecimal value) {
+            addCriterion("change_qty =", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyNotEqualTo(BigDecimal value) {
+            addCriterion("change_qty <>", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyGreaterThan(BigDecimal value) {
+            addCriterion("change_qty >", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("change_qty >=", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyLessThan(BigDecimal value) {
+            addCriterion("change_qty <", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("change_qty <=", value, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyIn(List<BigDecimal> values) {
+            addCriterion("change_qty in", values, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyNotIn(List<BigDecimal> values) {
+            addCriterion("change_qty not in", values, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("change_qty between", value1, value2, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("change_qty not between", value1, value2, "changeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyIsNull() {
+            addCriterion("surplus_qty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyIsNotNull() {
+            addCriterion("surplus_qty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyEqualTo(BigDecimal value) {
+            addCriterion("surplus_qty =", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyNotEqualTo(BigDecimal value) {
+            addCriterion("surplus_qty <>", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyGreaterThan(BigDecimal value) {
+            addCriterion("surplus_qty >", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("surplus_qty >=", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyLessThan(BigDecimal value) {
+            addCriterion("surplus_qty <", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("surplus_qty <=", value, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyIn(List<BigDecimal> values) {
+            addCriterion("surplus_qty in", values, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyNotIn(List<BigDecimal> values) {
+            addCriterion("surplus_qty not in", values, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("surplus_qty between", value1, value2, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurplusQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("surplus_qty not between", value1, value2, "surplusQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdIsNull() {
+            addCriterion("purchase_order_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdIsNotNull() {
+            addCriterion("purchase_order_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdEqualTo(Integer value) {
+            addCriterion("purchase_order_id =", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdNotEqualTo(Integer value) {
+            addCriterion("purchase_order_id <>", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdGreaterThan(Integer value) {
+            addCriterion("purchase_order_id >", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("purchase_order_id >=", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdLessThan(Integer value) {
+            addCriterion("purchase_order_id <", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdLessThanOrEqualTo(Integer value) {
+            addCriterion("purchase_order_id <=", value, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdIn(List<Integer> values) {
+            addCriterion("purchase_order_id in", values, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdNotIn(List<Integer> values) {
+            addCriterion("purchase_order_id not in", values, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdBetween(Integer value1, Integer value2) {
+            addCriterion("purchase_order_id between", value1, value2, "purchaseOrderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseOrderIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("purchase_order_id not between", value1, value2, "purchaseOrderId");
             return (Criteria) this;
         }
     }
