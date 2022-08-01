@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.GsUnDistributionGoodsMapper">
-  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.GsUnDistributionGoods">
-    <id column="id" jdbcType="INTEGER" property="id" />
+<mapper namespace="com.ruoyi.system.mapper.GsPurchaseOrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.GsPurchaseOrderDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_by" jdbcType="BIGINT" property="createBy" />
     <result column="update_by" jdbcType="BIGINT" property="updateBy" />
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
-    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="qty" jdbcType="DECIMAL" property="qty" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="in_qty" jdbcType="INTEGER" property="inQty" />
+    <result column="change_qty" jdbcType="DECIMAL" property="changeQty" />
+    <result column="surplus_qty" jdbcType="DECIMAL" property="surplusQty" />
+    <result column="purchase_order_id" jdbcType="INTEGER" property="purchaseOrderId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,15 +76,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, goods_id, num
+    id, create_time, update_time, create_by, update_by, delete_flag, goods_id, qty, price,
+    remark, in_qty, change_qty, surplus_qty, purchase_order_id
   </sql>
-  <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsUnDistributionGoodsCriteria" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetailCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from `gs_un_distribution_goods`
+    from `gs_purchase_order_detail`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,32 +93,36 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from `gs_un_distribution_goods`
-    where id = #{id,jdbcType=INTEGER}
+    from `gs_purchase_order_detail`
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from `gs_un_distribution_goods`
-    where id = #{id,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from `gs_purchase_order_detail`
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.GsUnDistributionGoodsCriteria">
-    delete from `gs_un_distribution_goods`
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetailCriteria">
+    delete from `gs_purchase_order_detail`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.GsUnDistributionGoods">
-    insert into `gs_un_distribution_goods` (id, create_time, update_time,
+  <insert id="insert" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetail">
+    insert into `gs_purchase_order_detail` (id, create_time, update_time,
       create_by, update_by, delete_flag,
-      goods_id, num)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      goods_id, qty, price,
+      remark, in_qty, change_qty,
+      surplus_qty, purchase_order_id)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
-      #{goodsId,jdbcType=INTEGER}, #{num,jdbcType=INTEGER})
+      #{goodsId,jdbcType=INTEGER}, #{qty,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL},
+      #{remark,jdbcType=VARCHAR}, #{inQty,jdbcType=INTEGER}, #{changeQty,jdbcType=DECIMAL},
+      #{surplusQty,jdbcType=DECIMAL}, #{purchaseOrderId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsUnDistributionGoods">
-    insert into `gs_un_distribution_goods`
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetail">
+    insert into `gs_purchase_order_detail`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -134,13 +145,31 @@
       <if test="goodsId != null">
         goods_id,
       </if>
-      <if test="num != null">
-        num,
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="inQty != null">
+        in_qty,
+      </if>
+      <if test="changeQty != null">
+        change_qty,
+      </if>
+      <if test="surplusQty != null">
+        surplus_qty,
+      </if>
+      <if test="purchaseOrderId != null">
+        purchase_order_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -160,22 +189,40 @@
       <if test="goodsId != null">
         #{goodsId,jdbcType=INTEGER},
       </if>
-      <if test="num != null">
-        #{num,jdbcType=INTEGER},
+      <if test="qty != null">
+        #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="inQty != null">
+        #{inQty,jdbcType=INTEGER},
+      </if>
+      <if test="changeQty != null">
+        #{changeQty,jdbcType=DECIMAL},
+      </if>
+      <if test="surplusQty != null">
+        #{surplusQty,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseOrderId != null">
+        #{purchaseOrderId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.GsUnDistributionGoodsCriteria" resultType="java.lang.Long">
-    select count(*) from `gs_un_distribution_goods`
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetailCriteria" resultType="java.lang.Long">
+    select count(*) from `gs_purchase_order_detail`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update `gs_un_distribution_goods`
+    update `gs_purchase_order_detail`
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -195,8 +242,26 @@
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=INTEGER},
       </if>
-      <if test="record.num != null">
-        num = #{record.num,jdbcType=INTEGER},
+      <if test="record.qty != null">
+        qty = #{record.qty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inQty != null">
+        in_qty = #{record.inQty,jdbcType=INTEGER},
+      </if>
+      <if test="record.changeQty != null">
+        change_qty = #{record.changeQty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.surplusQty != null">
+        surplus_qty = #{record.surplusQty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.purchaseOrderId != null">
+        purchase_order_id = #{record.purchaseOrderId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -204,21 +269,27 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update `gs_un_distribution_goods`
-    set id = #{record.id,jdbcType=INTEGER},
+    update `gs_purchase_order_detail`
+    set id = #{record.id,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_by = #{record.createBy,jdbcType=BIGINT},
       update_by = #{record.updateBy,jdbcType=BIGINT},
       delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
-      num = #{record.num,jdbcType=INTEGER}
+      qty = #{record.qty,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      in_qty = #{record.inQty,jdbcType=INTEGER},
+      change_qty = #{record.changeQty,jdbcType=DECIMAL},
+      surplus_qty = #{record.surplusQty,jdbcType=DECIMAL},
+      purchase_order_id = #{record.purchaseOrderId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsUnDistributionGoods">
-    update `gs_un_distribution_goods`
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetail">
+    update `gs_purchase_order_detail`
     <set>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -238,29 +309,53 @@
       <if test="goodsId != null">
         goods_id = #{goodsId,jdbcType=INTEGER},
       </if>
-      <if test="num != null">
-        num = #{num,jdbcType=INTEGER},
+      <if test="qty != null">
+        qty = #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="inQty != null">
+        in_qty = #{inQty,jdbcType=INTEGER},
+      </if>
+      <if test="changeQty != null">
+        change_qty = #{changeQty,jdbcType=DECIMAL},
+      </if>
+      <if test="surplusQty != null">
+        surplus_qty = #{surplusQty,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseOrderId != null">
+        purchase_order_id = #{purchaseOrderId,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsUnDistributionGoods">
-    update `gs_un_distribution_goods`
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsPurchaseOrderDetail">
+    update `gs_purchase_order_detail`
     set create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=BIGINT},
       update_by = #{updateBy,jdbcType=BIGINT},
       delete_flag = #{deleteFlag,jdbcType=TINYINT},
       goods_id = #{goodsId,jdbcType=INTEGER},
-      num = #{num,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+      qty = #{qty,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      in_qty = #{inQty,jdbcType=INTEGER},
+      change_qty = #{changeQty,jdbcType=DECIMAL},
+      surplus_qty = #{surplusQty,jdbcType=DECIMAL},
+      purchase_order_id = #{purchaseOrderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="gs_un_distribution_goods" resultMap="BaseResultMap">
     SELECT
-	*
+   *
 FROM
-	`gs_un_distribution_goods` g
+   `gs_un_distribution_goods` g
 WHERE
-	g.goods_id = #{goodsId} FOR UPDATE
+   g.goods_id = #{goodsId} FOR UPDATE
   </select>
 </mapper>

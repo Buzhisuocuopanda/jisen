@@ -10,9 +10,9 @@
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-    <result column="order_qty" jdbcType="INTEGER" property="orderQty" />
+    <result column="order_qty" jdbcType="DECIMAL" property="orderQty" />
     <result column="order_type" jdbcType="TINYINT" property="orderType" />
-    <result column="lock_qty" jdbcType="INTEGER" property="lockQty" />
+    <result column="lock_qty" jdbcType="DECIMAL" property="lockQty" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -113,8 +113,8 @@
       order_type, lock_qty)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{goodsId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{orderQty,jdbcType=INTEGER}, 
-      #{orderType,jdbcType=TINYINT}, #{lockQty,jdbcType=INTEGER})
+      #{goodsId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{orderQty,jdbcType=DECIMAL}, 
+      #{orderType,jdbcType=TINYINT}, #{lockQty,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsGoodsUse">
     insert into `gs_goods_use`
@@ -179,13 +179,13 @@
         #{orderNo,jdbcType=VARCHAR},
       </if>
       <if test="orderQty != null">
-        #{orderQty,jdbcType=INTEGER},
+        #{orderQty,jdbcType=DECIMAL},
       </if>
       <if test="orderType != null">
         #{orderType,jdbcType=TINYINT},
       </if>
       <if test="lockQty != null">
-        #{lockQty,jdbcType=INTEGER},
+        #{lockQty,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -223,13 +223,13 @@
         order_no = #{record.orderNo,jdbcType=VARCHAR},
       </if>
       <if test="record.orderQty != null">
-        order_qty = #{record.orderQty,jdbcType=INTEGER},
+        order_qty = #{record.orderQty,jdbcType=DECIMAL},
       </if>
       <if test="record.orderType != null">
         order_type = #{record.orderType,jdbcType=TINYINT},
       </if>
       <if test="record.lockQty != null">
-        lock_qty = #{record.lockQty,jdbcType=INTEGER},
+        lock_qty = #{record.lockQty,jdbcType=DECIMAL},
       </if>
     </set>
     <if test="_parameter != null">
@@ -246,9 +246,9 @@
       delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       order_no = #{record.orderNo,jdbcType=VARCHAR},
-      order_qty = #{record.orderQty,jdbcType=INTEGER},
+      order_qty = #{record.orderQty,jdbcType=DECIMAL},
       order_type = #{record.orderType,jdbcType=TINYINT},
-      lock_qty = #{record.lockQty,jdbcType=INTEGER}
+      lock_qty = #{record.lockQty,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -278,13 +278,13 @@
         order_no = #{orderNo,jdbcType=VARCHAR},
       </if>
       <if test="orderQty != null">
-        order_qty = #{orderQty,jdbcType=INTEGER},
+        order_qty = #{orderQty,jdbcType=DECIMAL},
       </if>
       <if test="orderType != null">
         order_type = #{orderType,jdbcType=TINYINT},
       </if>
       <if test="lockQty != null">
-        lock_qty = #{lockQty,jdbcType=INTEGER},
+        lock_qty = #{lockQty,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -298,9 +298,9 @@
       delete_flag = #{deleteFlag,jdbcType=TINYINT},
       goods_id = #{goodsId,jdbcType=INTEGER},
       order_no = #{orderNo,jdbcType=VARCHAR},
-      order_qty = #{orderQty,jdbcType=INTEGER},
+      order_qty = #{orderQty,jdbcType=DECIMAL},
       order_type = #{orderType,jdbcType=TINYINT},
-      lock_qty = #{lockQty,jdbcType=INTEGER}
+      lock_qty = #{lockQty,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
