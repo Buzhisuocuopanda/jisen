@@ -55,7 +55,6 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0){
             throw new SwException("upc已存在");
-
         }
 
         Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);

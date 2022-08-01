@@ -1,8 +1,12 @@
 package com.ruoyi.system.mapper;
 
+import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.CbpdCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbpcVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbpdMapper {
@@ -27,4 +31,12 @@ public interface CbpdMapper {
     int updateByPrimaryKeySelective(Cbpd record);
 
     int updateByPrimaryKey(Cbpd record);
+
+    List<CbpcVo> getInfoss(CbpcVo cbpcVo);
+
+    List<Cbpc> selectCBPCList(Cbpc cbpc);
+
+    int insertCBPC(Cbpc cbpc);
+
+    int updateCBPC(Cbpc cbpc);
 }

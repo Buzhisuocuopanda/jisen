@@ -4,10 +4,7 @@ import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.Cbpc;
-import com.ruoyi.system.domain.CbpcCriteria;
-import com.ruoyi.system.domain.Cbwa;
-import com.ruoyi.system.domain.CbwaCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Dto.CbwaDto;
 import com.ruoyi.system.mapper.CbpcMapper;
 import com.ruoyi.system.mapper.CbwaMapper;
@@ -37,6 +34,14 @@ private CbwaMapper cbwaMapper;
 private CbpcMapper cbpcMapper;
     @Override
     public int insertSwJsStoreSku(CbwaDto cbwaDto) {
+        CbwaCriteria example = new CbwaCriteria();
+        example.createCriteria().andCbwa09EqualTo(cbwaDto.getCbwa09())
+                .andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(example);
+        if(cbwas.size()>0){
+            throw new SwException("仓库名称已存在");
+        }
+
         Long userid = SecurityUtils.getUserId();
 
         Cbwa cbwa = BeanCopyUtils.coypToClass(cbwaDto, Cbwa.class, null);

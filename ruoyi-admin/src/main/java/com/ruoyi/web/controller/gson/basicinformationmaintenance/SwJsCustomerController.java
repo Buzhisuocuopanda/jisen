@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.gson.Basicinformationmaintenance;
+package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;
@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

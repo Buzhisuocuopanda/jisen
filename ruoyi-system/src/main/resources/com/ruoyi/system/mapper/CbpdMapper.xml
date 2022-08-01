@@ -368,4 +368,149 @@
     where CBPD01 = #{cbpd01,jdbcType=INTEGER}
   </update>
 
+  <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
+
+    SELECT a.CBPC06,a.CBPC07,a.CBPC08,a.CBPC09,a.CBPC10,a.CBPC16,
+    b.CBPD09,b.CBPD11,b.CBPD12,
+    c.CBPE09,c.CBPE10,
+    d.CBPB08,CBPD12
+    from CBPC a
+    LEFT JOIN
+    CBPD b
+    on a.CBPC01=b.CBPC01
+    LEFT JOIN
+    CBPE c
+    ON a.CBPC01=c.CBPC01
+    LEFT JOIN
+    CBPB d
+    on b.CBPD08=d.CBPB01
+    order by a.CBPC08 desc
+    <where>
+      a.CBPC06=0
+      <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
+      <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
+    <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
+    <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
+
+
+
+      <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
+      <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
+    </where>
+  </select>
+  <resultMap type="CBPC" id="CBPCResult">
+    <result property="cbpc01"    column="CBPC01"    />
+    <result property="cbpc02"    column="CBPC02"    />
+    <result property="cbpc03"    column="CBPC03"    />
+    <result property="cbpc04"    column="CBPC04"    />
+    <result property="cbpc05"    column="CBPC05"    />
+    <result property="cbpc06"    column="CBPC06"    />
+    <result property="cbpc07"    column="CBPC07"    />
+    <result property="cbpc08"    column="CBPC08"    />
+    <result property="cbpc09"    column="CBPC09"    />
+    <result property="cbpc10"    column="CBPC10"    />
+    <result property="cbpc11"    column="CBPC11"    />
+    <result property="cbpc12"    column="CBPC12"    />
+    <result property="cbpc13"    column="CBPC13"    />
+    <result property="cbpc14"    column="CBPC14"    />
+    <result property="cbpc15"    column="CBPC15"    />
+    <result property="cbpc16"    column="CBPC16"    />
+    <result property="cbpc17"    column="CBPC17"    />
+    <result property="userId"    column="user_id"    />
+  </resultMap>
+
+  <sql id="selectCBPCVo">
+    select CBPC01, CBPC02, CBPC03, CBPC04, CBPC05, CBPC06, CBPC07, CBPC08, CBPC09, CBPC10, CBPC11, CBPC12, CBPC13, CBPC14, CBPC15, CBPC16, CBPC17, user_id from CBPC
+  </sql>
+  <select id="selectCBPCList" parameterType="CBPC" resultMap="CBPCResult">
+    <include refid="selectCBPCVo"/>
+    <where>
+    <if test="cbpc02 != null "> and CBPC02 = #{cbpc02}</if>
+    <if test="cbpc03 != null "> and CBPC03 = #{cbpc03}</if>
+    <if test="cbpc04 != null "> and CBPC04 = #{cbpc04}</if>
+    <if test="cbpc05 != null "> and CBPC05 = #{cbpc05}</if>
+    <if test="cbpc06 != null "> and CBPC06 = #{cbpc06}</if>
+    <if test="cbpc07 != null  and cbpc07 != ''"> and CBPC07 = #{cbpc07}</if>
+    <if test="cbpc08 != null "> and CBPC08 = #{cbpc08}</if>
+    <if test="cbpc09 != null "> and CBPC09 = #{cbpc09}</if>
+    <if test="cbpc10 != null "> and CBPC10 = #{cbpc10}</if>
+    <if test="cbpc11 != null "> and CBPC11 = #{cbpc11}</if>
+    <if test="cbpc12 != null "> and CBPC12 = #{cbpc12}</if>
+    <if test="cbpc13 != null "> and CBPC13 = #{cbpc13}</if>
+    <if test="cbpc14 != null "> and CBPC14 = #{cbpc14}</if>
+    <if test="cbpc15 != null "> and CBPC15 = #{cbpc15}</if>
+    <if test="cbpc16 != null "> and CBPC16 = #{cbpc16}</if>
+    <if test="cbpc17 != null  and cbpc17 != ''"> and CBPC17 = #{cbpc17}</if>
+    <if test="userId != null "> and user_id = #{userId}</if>
+    </where>
+  </select>
+
+  <insert id="insertCBPC" parameterType="CBPC" useGeneratedKeys="true" keyProperty="cbpc01">
+    insert into CBPC
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpc02 != null">CBPC02,</if>
+      <if test="cbpc03 != null">CBPC03,</if>
+      <if test="cbpc04 != null">CBPC04,</if>
+      <if test="cbpc05 != null">CBPC05,</if>
+      <if test="cbpc06 != null">CBPC06,</if>
+      <if test="cbpc07 != null">CBPC07,</if>
+      <if test="cbpc08 != null">CBPC08,</if>
+      <if test="cbpc09 != null">CBPC09,</if>
+      <if test="cbpc10 != null">CBPC10,</if>
+      <if test="cbpc11 != null">CBPC11,</if>
+      <if test="cbpc12 != null">CBPC12,</if>
+      <if test="cbpc13 != null">CBPC13,</if>
+      <if test="cbpc14 != null">CBPC14,</if>
+      <if test="cbpc15 != null">CBPC15,</if>
+      <if test="cbpc16 != null">CBPC16,</if>
+      <if test="cbpc17 != null">CBPC17,</if>
+      <if test="userId != null">user_id,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpc02 != null">#{cbpc02},</if>
+      <if test="cbpc03 != null">#{cbpc03},</if>
+      <if test="cbpc04 != null">#{cbpc04},</if>
+      <if test="cbpc05 != null">#{cbpc05},</if>
+      <if test="cbpc06 != null">#{cbpc06},</if>
+      <if test="cbpc07 != null">#{cbpc07},</if>
+      <if test="cbpc08 != null">#{cbpc08},</if>
+      <if test="cbpc09 != null">#{cbpc09},</if>
+      <if test="cbpc10 != null">#{cbpc10},</if>
+      <if test="cbpc11 != null">#{cbpc11},</if>
+      <if test="cbpc12 != null">#{cbpc12},</if>
+      <if test="cbpc13 != null">#{cbpc13},</if>
+      <if test="cbpc14 != null">#{cbpc14},</if>
+      <if test="cbpc15 != null">#{cbpc15},</if>
+      <if test="cbpc16 != null">#{cbpc16},</if>
+      <if test="cbpc17 != null">#{cbpc17},</if>
+      <if test="userId != null">#{userId},</if>
+    </trim>
+  </insert>
+
+
+  <update id="updateCBPC" parameterType="CBPC">
+    update CBPC
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbpc02 != null">CBPC02 = #{cbpc02},</if>
+      <if test="cbpc03 != null">CBPC03 = #{cbpc03},</if>
+      <if test="cbpc04 != null">CBPC04 = #{cbpc04},</if>
+      <if test="cbpc05 != null">CBPC05 = #{cbpc05},</if>
+      <if test="cbpc06 != null">CBPC06 = #{cbpc06},</if>
+      <if test="cbpc07 != null">CBPC07 = #{cbpc07},</if>
+      <if test="cbpc08 != null">CBPC08 = #{cbpc08},</if>
+      <if test="cbpc09 != null">CBPC09 = #{cbpc09},</if>
+      <if test="cbpc10 != null">CBPC10 = #{cbpc10},</if>
+      <if test="cbpc11 != null">CBPC11 = #{cbpc11},</if>
+      <if test="cbpc12 != null">CBPC12 = #{cbpc12},</if>
+      <if test="cbpc13 != null">CBPC13 = #{cbpc13},</if>
+      <if test="cbpc14 != null">CBPC14 = #{cbpc14},</if>
+      <if test="cbpc15 != null">CBPC15 = #{cbpc15},</if>
+      <if test="cbpc16 != null">CBPC16 = #{cbpc16},</if>
+      <if test="cbpc17 != null">CBPC17 = #{cbpc17},</if>
+      <if test="userId != null">user_id = #{userId},</if>
+    </trim>
+    where CBPC01 = #{cbpc01}
+
+  </update>
+
 </mapper>
