@@ -1,16 +1,19 @@
 package com.ruoyi.common.core.domain;
 
-import java.util.HashMap;
 import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
+
+import java.util.HashMap;
 
 /**
  * 操作消息提醒
- * 
+ *
  * @author ruoyi
  */
-public class AjaxResult extends HashMap<String, Object>
+public class AjaxResult<T> extends HashMap<String, Object>
 {
+
     private static final long serialVersionUID = 1L;
 
     /** 状态码 */
@@ -31,7 +34,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 初始化一个新创建的 AjaxResult 对象
-     * 
+     *
      * @param code 状态码
      * @param msg 返回内容
      */
@@ -43,7 +46,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 初始化一个新创建的 AjaxResult 对象
-     * 
+     *
      * @param code 状态码
      * @param msg 返回内容
      * @param data 数据对象
@@ -60,7 +63,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回成功消息
-     * 
+     *
      * @return 成功消息
      */
     public static AjaxResult success()
@@ -70,7 +73,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回成功数据
-     * 
+     *
      * @return 成功消息
      */
     public static AjaxResult success(Object data)
@@ -80,7 +83,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回成功消息
-     * 
+     *
      * @param msg 返回内容
      * @return 成功消息
      */
@@ -91,7 +94,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回成功消息
-     * 
+     *
      * @param msg 返回内容
      * @param data 数据对象
      * @return 成功消息
@@ -103,7 +106,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
-     * 
+     *
      * @return
      */
     public static AjaxResult error()
@@ -113,7 +116,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
-     * 
+     *
      * @param msg 返回内容
      * @return 警告消息
      */
@@ -124,7 +127,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
-     * 
+     *
      * @param msg 返回内容
      * @param data 数据对象
      * @return 警告消息
@@ -136,7 +139,7 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
-     * 
+     *
      * @param code 状态码
      * @param msg 返回内容
      * @return 警告消息
@@ -145,6 +148,8 @@ public class AjaxResult extends HashMap<String, Object>
     {
         return new AjaxResult(code, msg, null);
     }
+
+
 
     /**
      * 方便链式调用
@@ -159,4 +164,56 @@ public class AjaxResult extends HashMap<String, Object>
         super.put(key, value);
         return this;
     }
+    private Long errcode;
+    private String errmsg;
+    private T data;
+    private String traceId;
+    AjaxResult(final Long errcode, final String errmsg, final T data, final String traceId) {
+        this.errcode = errcode;
+        this.errmsg = errmsg;
+        this.data = data;
+        this.traceId = traceId;
+    }
+    public static class AjaxResultBuilder<T> {
+        private Long errcode;
+        private String errmsg;
+        private T data;
+        private String traceId;
+
+        AjaxResultBuilder() {
+        }
+
+        public AjaxResultBuilder<T> errcode(final Long errcode) {
+            this.errcode = errcode;
+            return this;
+        }
+
+        public AjaxResultBuilder<T> errmsg(final String errmsg) {
+            this.errmsg = errmsg;
+            return this;
+        }
+
+        public AjaxResultBuilder<T> data(final T data) {
+            this.data = data;
+            return this;
+        }
+
+        public AjaxResultBuilder<T> traceId(final String traceId) {
+            this.traceId = traceId;
+            return this;
+        }
+
+        public AjaxResult<TableDataInfo> build() {
+            return new AjaxResult(this.errcode, this.errmsg, this.data, this.traceId);
+        }
+
+        public String toString() {
+            return "ResponseResult.AjaxResultBuilder(errcode=" + this.errcode + ", errmsg=" + this.errmsg + ", data=" + this.data + ", traceId=" + this.traceId + ")";
+        }
+    }
+
+    public static <T> AjaxResultBuilder<T> builder() {
+        return new AjaxResultBuilder();
+    }
+
 }

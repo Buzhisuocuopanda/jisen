@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CblaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbla">
+    <result column="CBLA01" jdbcType="INTEGER" property="cbla01" />
+    <result column="CBLA02" jdbcType="TIMESTAMP" property="cbla02" />
+    <result column="CBLA03" jdbcType="INTEGER" property="cbla03" />
+    <result column="CBLA04" jdbcType="TIMESTAMP" property="cbla04" />
+    <result column="CBLA05" jdbcType="INTEGER" property="cbla05" />
+    <result column="CBLA06" jdbcType="INTEGER" property="cbla06" />
+    <result column="CBLA07" jdbcType="INTEGER" property="cbla07" />
+    <result column="CBLA08" jdbcType="VARCHAR" property="cbla08" />
+    <result column="CBLA09" jdbcType="VARCHAR" property="cbla09" />
+    <result column="CBLA10" jdbcType="INTEGER" property="cbla10" />
+    <result column="CBLA11" jdbcType="DOUBLE" property="cbla11" />
+    <result column="CBLA12" jdbcType="VARCHAR" property="cbla12" />
+    <result column="CBLA13" jdbcType="VARCHAR" property="cbla13" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBLA01, CBLA02, CBLA03, CBLA04, CBLA05, CBLA06, CBLA07, CBLA08, CBLA09, CBLA10, CBLA11,
+    CBLA12, CBLA13
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CblaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBLA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CblaCriteria">
+    delete from `CBLA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbla">
+    insert into `CBLA` (CBLA01, CBLA02, CBLA03,
+      CBLA04, CBLA05, CBLA06,
+      CBLA07, CBLA08, CBLA09,
+      CBLA10, CBLA11, CBLA12,
+      CBLA13)
+    values (#{cbla01,jdbcType=INTEGER}, #{cbla02,jdbcType=TIMESTAMP}, #{cbla03,jdbcType=INTEGER},
+      #{cbla04,jdbcType=TIMESTAMP}, #{cbla05,jdbcType=INTEGER}, #{cbla06,jdbcType=INTEGER},
+      #{cbla07,jdbcType=INTEGER}, #{cbla08,jdbcType=VARCHAR}, #{cbla09,jdbcType=VARCHAR},
+      #{cbla10,jdbcType=INTEGER}, #{cbla11,jdbcType=DOUBLE}, #{cbla12,jdbcType=VARCHAR},
+      #{cbla13,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbla">
+    insert into `CBLA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbla01 != null">
+        CBLA01,
+      </if>
+      <if test="cbla02 != null">
+        CBLA02,
+      </if>
+      <if test="cbla03 != null">
+        CBLA03,
+      </if>
+      <if test="cbla04 != null">
+        CBLA04,
+      </if>
+      <if test="cbla05 != null">
+        CBLA05,
+      </if>
+      <if test="cbla06 != null">
+        CBLA06,
+      </if>
+      <if test="cbla07 != null">
+        CBLA07,
+      </if>
+      <if test="cbla08 != null">
+        CBLA08,
+      </if>
+      <if test="cbla09 != null">
+        CBLA09,
+      </if>
+      <if test="cbla10 != null">
+        CBLA10,
+      </if>
+      <if test="cbla11 != null">
+        CBLA11,
+      </if>
+      <if test="cbla12 != null">
+        CBLA12,
+      </if>
+      <if test="cbla13 != null">
+        CBLA13,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbla01 != null">
+        #{cbla01,jdbcType=INTEGER},
+      </if>
+      <if test="cbla02 != null">
+        #{cbla02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbla03 != null">
+        #{cbla03,jdbcType=INTEGER},
+      </if>
+      <if test="cbla04 != null">
+        #{cbla04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbla05 != null">
+        #{cbla05,jdbcType=INTEGER},
+      </if>
+      <if test="cbla06 != null">
+        #{cbla06,jdbcType=INTEGER},
+      </if>
+      <if test="cbla07 != null">
+        #{cbla07,jdbcType=INTEGER},
+      </if>
+      <if test="cbla08 != null">
+        #{cbla08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbla09 != null">
+        #{cbla09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbla10 != null">
+        #{cbla10,jdbcType=INTEGER},
+      </if>
+      <if test="cbla11 != null">
+        #{cbla11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbla12 != null">
+        #{cbla12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbla13 != null">
+        #{cbla13,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CblaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBLA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBLA`
+    <set>
+      <if test="record.cbla01 != null">
+        CBLA01 = #{record.cbla01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla02 != null">
+        CBLA02 = #{record.cbla02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbla03 != null">
+        CBLA03 = #{record.cbla03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla04 != null">
+        CBLA04 = #{record.cbla04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbla05 != null">
+        CBLA05 = #{record.cbla05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla06 != null">
+        CBLA06 = #{record.cbla06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla07 != null">
+        CBLA07 = #{record.cbla07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla08 != null">
+        CBLA08 = #{record.cbla08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbla09 != null">
+        CBLA09 = #{record.cbla09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbla10 != null">
+        CBLA10 = #{record.cbla10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbla11 != null">
+        CBLA11 = #{record.cbla11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbla12 != null">
+        CBLA12 = #{record.cbla12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbla13 != null">
+        CBLA13 = #{record.cbla13,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBLA`
+    set CBLA01 = #{record.cbla01,jdbcType=INTEGER},
+      CBLA02 = #{record.cbla02,jdbcType=TIMESTAMP},
+      CBLA03 = #{record.cbla03,jdbcType=INTEGER},
+      CBLA04 = #{record.cbla04,jdbcType=TIMESTAMP},
+      CBLA05 = #{record.cbla05,jdbcType=INTEGER},
+      CBLA06 = #{record.cbla06,jdbcType=INTEGER},
+      CBLA07 = #{record.cbla07,jdbcType=INTEGER},
+      CBLA08 = #{record.cbla08,jdbcType=VARCHAR},
+      CBLA09 = #{record.cbla09,jdbcType=VARCHAR},
+      CBLA10 = #{record.cbla10,jdbcType=INTEGER},
+      CBLA11 = #{record.cbla11,jdbcType=DOUBLE},
+      CBLA12 = #{record.cbla12,jdbcType=VARCHAR},
+      CBLA13 = #{record.cbla13,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBLA`
+    where CBLA01 = #{cbla01,jdbcType=INTEGER}
+  </select>
+
+  <resultMap type="CBLA" id="CBLAResult">
+    <result property="cbla01"    column="CBLA01"    />
+    <result property="cbla02"    column="CBLA02"    />
+    <result property="cbla03"    column="CBLA03"    />
+    <result property="cbla04"    column="CBLA04"    />
+    <result property="cbla05"    column="CBLA05"    />
+    <result property="cbla06"    column="CBLA06"    />
+    <result property="cbla07"    column="CBLA07"    />
+    <result property="cbla08"    column="CBLA08"    />
+    <result property="cbla09"    column="CBLA09"    />
+    <result property="cbla10"    column="CBLA10"    />
+    <result property="cbla11"    column="CBLA11"    />
+    <result property="cbla12"    column="CBLA12"    />
+    <result property="cbla13"    column="CBLA13"    />
+  </resultMap>
+  <sql id="selectCBLAVo">
+    select CBLA01, CBLA02, CBLA03, CBLA04, CBLA05, CBLA06, CBLA07, CBLA08, CBLA09, CBLA10, CBLA11, CBLA12, CBLA13 from CBLA
+  </sql>
+  <select id="selectSwJsStoreList" parameterType="CBLA" resultMap="CBLAResult">
+    <include refid="selectCBLAVo"/>
+    <where>
+      <if test="cbla01 != null "> and CBLA01 = #{cbla01}</if>
+      <if test="cbla02 != null "> and CBLA02 = #{cbla02}</if>
+      <if test="cbla03 != null "> and CBLA03 = #{cbla03}</if>
+      <if test="cbla04 != null "> and CBLA04 = #{cbla04}</if>
+      <if test="cbla05 != null "> and CBLA05 = #{cbla05}</if>
+      <if test="cbla06 != null "> and CBLA06 = #{cbla06}</if>
+      <if test="cbla07 != null "> and CBLA07 = #{cbla07}</if>
+      <if test="cbla08 != null  and cbla08 != ''"> and CBLA08 = #{cbla08}</if>
+      <if test="cbla09 != null  and cbla09 != ''"> and CBLA09 = #{cbla09}</if>
+      <if test="cbla10 != null "> and CBLA10 = #{cbla10}</if>
+      <if test="cbla11 != null "> and CBLA11 = #{cbla11}</if>
+      <if test="cbla12 != null  and cbla12 != ''"> and CBLA12 = #{cbla12}</if>
+      <if test="cbla13 != null  and cbla13 != ''"> and CBLA13 = #{cbla13}</if>
+    </where>
+  </select>
+  <insert id="insertCBLA" parameterType="CBLA">
+    insert into CBLA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbla01 != null">CBLA01,</if>
+      <if test="cbla02 != null">CBLA02,</if>
+      <if test="cbla03 != null">CBLA03,</if>
+      <if test="cbla04 != null">CBLA04,</if>
+      <if test="cbla05 != null">CBLA05,</if>
+      <if test="cbla06 != null">CBLA06,</if>
+      <if test="cbla07 != null">CBLA07,</if>
+      <if test="cbla08 != null">CBLA08,</if>
+      <if test="cbla09 != null">CBLA09,</if>
+      <if test="cbla10 != null">CBLA10,</if>
+      <if test="cbla11 != null">CBLA11,</if>
+      <if test="cbla12 != null">CBLA12,</if>
+      <if test="cbla13 != null">CBLA13,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbla01 != null">#{cbla01},</if>
+      <if test="cbla02 != null">#{cbla02},</if>
+      <if test="cbla03 != null">#{cbla03},</if>
+      <if test="cbla04 != null">#{cbla04},</if>
+      <if test="cbla05 != null">#{cbla05},</if>
+      <if test="cbla06 != null">#{cbla06},</if>
+      <if test="cbla07 != null">#{cbla07},</if>
+      <if test="cbla08 != null">#{cbla08},</if>
+      <if test="cbla09 != null">#{cbla09},</if>
+      <if test="cbla10 != null">#{cbla10},</if>
+      <if test="cbla11 != null">#{cbla11},</if>
+      <if test="cbla12 != null">#{cbla12},</if>
+      <if test="cbla13 != null">#{cbla13},</if>
+    </trim>
+  </insert>
+  <update id="updateCBLA" parameterType="CBLA">
+    update CBLA
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbla02 != null">CBLA02 = #{cbla02},</if>
+      <if test="cbla03 != null">CBLA03 = #{cbla03},</if>
+      <if test="cbla04 != null">CBLA04 = #{cbla04},</if>
+      <if test="cbla05 != null">CBLA05 = #{cbla05},</if>
+      <if test="cbla06 != null">CBLA06 = #{cbla06},</if>
+      <if test="cbla07 != null">CBLA07 = #{cbla07},</if>
+      <if test="cbla08 != null">CBLA08 = #{cbla08},</if>
+      <if test="cbla09 != null">CBLA09 = #{cbla09},</if>
+      <if test="cbla10 != null">CBLA10 = #{cbla10},</if>
+      <if test="cbla11 != null">CBLA11 = #{cbla11},</if>
+      <if test="cbla12 != null">CBLA12 = #{cbla12},</if>
+      <if test="cbla13 != null">CBLA13 = #{cbla13},</if>
+    </trim>
+    where CBLA01 = #{cbla01}
+  </update>
+
+</mapper>

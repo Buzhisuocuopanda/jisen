@@ -269,7 +269,7 @@
     <include refid="selectCBPAVo"/>
     <where>
 
-      <if test="cbpa06 != null "> and CBPA06 = #{cbpa06}</if>
+      CBPA06 = 0
       <if test="cbpa07 != null  and cbpa07 != ''"> and CBPA07 like concat( '%', #{cbpa07}, '%') </if>
       <if test="cbpa09 != null "> and CBPA09 = #{cbpa09}</if>
       <if test="cbpa11 != null  and cbpa11 != ''"> and CBPA11 = #{cbpa11}</if>

@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbcaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbca">
+    <id column="CBCA01" jdbcType="INTEGER" property="cbca01" />
+    <result column="CBCA02" jdbcType="TIMESTAMP" property="cbca02" />
+    <result column="CBCA03" jdbcType="INTEGER" property="cbca03" />
+    <result column="CBCA04" jdbcType="TIMESTAMP" property="cbca04" />
+    <result column="CBCA05" jdbcType="INTEGER" property="cbca05" />
+    <result column="CBCA06" jdbcType="INTEGER" property="cbca06" />
+    <result column="CBCA07" jdbcType="VARCHAR" property="cbca07" />
+    <result column="CBCA08" jdbcType="VARCHAR" property="cbca08" />
+    <result column="CBCA09" jdbcType="VARCHAR" property="cbca09" />
+    <result column="CBCA10" jdbcType="VARCHAR" property="cbca10" />
+    <result column="CBCA11" jdbcType="VARCHAR" property="cbca11" />
+    <result column="CBCA12" jdbcType="VARCHAR" property="cbca12" />
+    <result column="CBCA13" jdbcType="VARCHAR" property="cbca13" />
+    <result column="CBCA14" jdbcType="VARCHAR" property="cbca14" />
+    <result column="CBCA15" jdbcType="VARCHAR" property="cbca15" />
+    <result column="CBCA16" jdbcType="VARCHAR" property="cbca16" />
+    <result column="CBCA17" jdbcType="VARCHAR" property="cbca17" />
+    <result column="CBCA18" jdbcType="VARCHAR" property="cbca18" />
+    <result column="CBCA19" jdbcType="VARCHAR" property="cbca19" />
+    <result column="CBCA20" jdbcType="VARCHAR" property="cbca20" />
+    <result column="CBCA21" jdbcType="VARCHAR" property="cbca21" />
+    <result column="CBCA22" jdbcType="VARCHAR" property="cbca22" />
+    <result column="CBCA23" jdbcType="VARCHAR" property="cbca23" />
+    <result column="CBCA24" jdbcType="VARCHAR" property="cbca24" />
+    <result column="CBCA25" jdbcType="VARCHAR" property="cbca25" />
+    <result column="CBCA26" jdbcType="VARCHAR" property="cbca26" />
+    <result column="CBCA27" jdbcType="VARCHAR" property="cbca27" />
+    <result column="CBCA28" jdbcType="INTEGER" property="cbca28" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBCA01, CBCA02, CBCA03, CBCA04, CBCA05, CBCA06, CBCA07, CBCA08, CBCA09, CBCA10, CBCA11,
+    CBCA12, CBCA13, CBCA14, CBCA15, CBCA16, CBCA17, CBCA18, CBCA19, CBCA20, CBCA21, CBCA22,
+    CBCA23, CBCA24, CBCA25, CBCA26, CBCA27, CBCA28
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbcaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBCA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBCA`
+    where CBCA01 = #{cbca01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBCA`
+    where CBCA01 = #{cbca01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbcaCriteria">
+    delete from `CBCA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbca">
+    insert into `CBCA` (CBCA01, CBCA02, CBCA03,
+      CBCA04, CBCA05, CBCA06,
+      CBCA07, CBCA08, CBCA09,
+      CBCA10, CBCA11, CBCA12,
+      CBCA13, CBCA14, CBCA15,
+      CBCA16, CBCA17, CBCA18,
+      CBCA19, CBCA20, CBCA21,
+      CBCA22, CBCA23, CBCA24,
+      CBCA25, CBCA26, CBCA27,
+      CBCA28)
+    values (#{cbca01,jdbcType=INTEGER}, #{cbca02,jdbcType=TIMESTAMP}, #{cbca03,jdbcType=INTEGER},
+      #{cbca04,jdbcType=TIMESTAMP}, #{cbca05,jdbcType=INTEGER}, #{cbca06,jdbcType=INTEGER},
+      #{cbca07,jdbcType=VARCHAR}, #{cbca08,jdbcType=VARCHAR}, #{cbca09,jdbcType=VARCHAR},
+      #{cbca10,jdbcType=VARCHAR}, #{cbca11,jdbcType=VARCHAR}, #{cbca12,jdbcType=VARCHAR},
+      #{cbca13,jdbcType=VARCHAR}, #{cbca14,jdbcType=VARCHAR}, #{cbca15,jdbcType=VARCHAR},
+      #{cbca16,jdbcType=VARCHAR}, #{cbca17,jdbcType=VARCHAR}, #{cbca18,jdbcType=VARCHAR},
+      #{cbca19,jdbcType=VARCHAR}, #{cbca20,jdbcType=VARCHAR}, #{cbca21,jdbcType=VARCHAR},
+      #{cbca22,jdbcType=VARCHAR}, #{cbca23,jdbcType=VARCHAR}, #{cbca24,jdbcType=VARCHAR},
+      #{cbca25,jdbcType=VARCHAR}, #{cbca26,jdbcType=VARCHAR}, #{cbca27,jdbcType=VARCHAR},
+      #{cbca28,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbca">
+    insert into `CBCA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbca01 != null">
+        CBCA01,
+      </if>
+      <if test="cbca02 != null">
+        CBCA02,
+      </if>
+      <if test="cbca03 != null">
+        CBCA03,
+      </if>
+      <if test="cbca04 != null">
+        CBCA04,
+      </if>
+      <if test="cbca05 != null">
+        CBCA05,
+      </if>
+      <if test="cbca06 != null">
+        CBCA06,
+      </if>
+      <if test="cbca07 != null">
+        CBCA07,
+      </if>
+      <if test="cbca08 != null">
+        CBCA08,
+      </if>
+      <if test="cbca09 != null">
+        CBCA09,
+      </if>
+      <if test="cbca10 != null">
+        CBCA10,
+      </if>
+      <if test="cbca11 != null">
+        CBCA11,
+      </if>
+      <if test="cbca12 != null">
+        CBCA12,
+      </if>
+      <if test="cbca13 != null">
+        CBCA13,
+      </if>
+      <if test="cbca14 != null">
+        CBCA14,
+      </if>
+      <if test="cbca15 != null">
+        CBCA15,
+      </if>
+      <if test="cbca16 != null">
+        CBCA16,
+      </if>
+      <if test="cbca17 != null">
+        CBCA17,
+      </if>
+      <if test="cbca18 != null">
+        CBCA18,
+      </if>
+      <if test="cbca19 != null">
+        CBCA19,
+      </if>
+      <if test="cbca20 != null">
+        CBCA20,
+      </if>
+      <if test="cbca21 != null">
+        CBCA21,
+      </if>
+      <if test="cbca22 != null">
+        CBCA22,
+      </if>
+      <if test="cbca23 != null">
+        CBCA23,
+      </if>
+      <if test="cbca24 != null">
+        CBCA24,
+      </if>
+      <if test="cbca25 != null">
+        CBCA25,
+      </if>
+      <if test="cbca26 != null">
+        CBCA26,
+      </if>
+      <if test="cbca27 != null">
+        CBCA27,
+      </if>
+      <if test="cbca28 != null">
+        CBCA28,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbca01 != null">
+        #{cbca01,jdbcType=INTEGER},
+      </if>
+      <if test="cbca02 != null">
+        #{cbca02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbca03 != null">
+        #{cbca03,jdbcType=INTEGER},
+      </if>
+      <if test="cbca04 != null">
+        #{cbca04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbca05 != null">
+        #{cbca05,jdbcType=INTEGER},
+      </if>
+      <if test="cbca06 != null">
+        #{cbca06,jdbcType=INTEGER},
+      </if>
+      <if test="cbca07 != null">
+        #{cbca07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca08 != null">
+        #{cbca08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca09 != null">
+        #{cbca09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca10 != null">
+        #{cbca10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca11 != null">
+        #{cbca11,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca12 != null">
+        #{cbca12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca13 != null">
+        #{cbca13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca14 != null">
+        #{cbca14,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca15 != null">
+        #{cbca15,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca16 != null">
+        #{cbca16,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca17 != null">
+        #{cbca17,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca18 != null">
+        #{cbca18,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca19 != null">
+        #{cbca19,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca20 != null">
+        #{cbca20,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca21 != null">
+        #{cbca21,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca22 != null">
+        #{cbca22,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca23 != null">
+        #{cbca23,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca24 != null">
+        #{cbca24,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca25 != null">
+        #{cbca25,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca26 != null">
+        #{cbca26,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca27 != null">
+        #{cbca27,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca28 != null">
+        #{cbca28,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.CbcaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBCA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBCA`
+    <set>
+      <if test="record.cbca01 != null">
+        CBCA01 = #{record.cbca01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbca02 != null">
+        CBCA02 = #{record.cbca02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbca03 != null">
+        CBCA03 = #{record.cbca03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbca04 != null">
+        CBCA04 = #{record.cbca04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbca05 != null">
+        CBCA05 = #{record.cbca05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbca06 != null">
+        CBCA06 = #{record.cbca06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbca07 != null">
+        CBCA07 = #{record.cbca07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca08 != null">
+        CBCA08 = #{record.cbca08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca09 != null">
+        CBCA09 = #{record.cbca09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca10 != null">
+        CBCA10 = #{record.cbca10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca11 != null">
+        CBCA11 = #{record.cbca11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca12 != null">
+        CBCA12 = #{record.cbca12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca13 != null">
+        CBCA13 = #{record.cbca13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca14 != null">
+        CBCA14 = #{record.cbca14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca15 != null">
+        CBCA15 = #{record.cbca15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca16 != null">
+        CBCA16 = #{record.cbca16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca17 != null">
+        CBCA17 = #{record.cbca17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca18 != null">
+        CBCA18 = #{record.cbca18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca19 != null">
+        CBCA19 = #{record.cbca19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca20 != null">
+        CBCA20 = #{record.cbca20,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca21 != null">
+        CBCA21 = #{record.cbca21,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca22 != null">
+        CBCA22 = #{record.cbca22,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca23 != null">
+        CBCA23 = #{record.cbca23,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca24 != null">
+        CBCA24 = #{record.cbca24,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca25 != null">
+        CBCA25 = #{record.cbca25,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca26 != null">
+        CBCA26 = #{record.cbca26,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca27 != null">
+        CBCA27 = #{record.cbca27,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbca28 != null">
+        CBCA28 = #{record.cbca28,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBCA`
+    set CBCA01 = #{record.cbca01,jdbcType=INTEGER},
+      CBCA02 = #{record.cbca02,jdbcType=TIMESTAMP},
+      CBCA03 = #{record.cbca03,jdbcType=INTEGER},
+      CBCA04 = #{record.cbca04,jdbcType=TIMESTAMP},
+      CBCA05 = #{record.cbca05,jdbcType=INTEGER},
+      CBCA06 = #{record.cbca06,jdbcType=INTEGER},
+      CBCA07 = #{record.cbca07,jdbcType=VARCHAR},
+      CBCA08 = #{record.cbca08,jdbcType=VARCHAR},
+      CBCA09 = #{record.cbca09,jdbcType=VARCHAR},
+      CBCA10 = #{record.cbca10,jdbcType=VARCHAR},
+      CBCA11 = #{record.cbca11,jdbcType=VARCHAR},
+      CBCA12 = #{record.cbca12,jdbcType=VARCHAR},
+      CBCA13 = #{record.cbca13,jdbcType=VARCHAR},
+      CBCA14 = #{record.cbca14,jdbcType=VARCHAR},
+      CBCA15 = #{record.cbca15,jdbcType=VARCHAR},
+      CBCA16 = #{record.cbca16,jdbcType=VARCHAR},
+      CBCA17 = #{record.cbca17,jdbcType=VARCHAR},
+      CBCA18 = #{record.cbca18,jdbcType=VARCHAR},
+      CBCA19 = #{record.cbca19,jdbcType=VARCHAR},
+      CBCA20 = #{record.cbca20,jdbcType=VARCHAR},
+      CBCA21 = #{record.cbca21,jdbcType=VARCHAR},
+      CBCA22 = #{record.cbca22,jdbcType=VARCHAR},
+      CBCA23 = #{record.cbca23,jdbcType=VARCHAR},
+      CBCA24 = #{record.cbca24,jdbcType=VARCHAR},
+      CBCA25 = #{record.cbca25,jdbcType=VARCHAR},
+      CBCA26 = #{record.cbca26,jdbcType=VARCHAR},
+      CBCA27 = #{record.cbca27,jdbcType=VARCHAR},
+      CBCA28 = #{record.cbca28,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbca">
+    update `CBCA`
+    <set>
+      <if test="cbca02 != null">
+        CBCA02 = #{cbca02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbca03 != null">
+        CBCA03 = #{cbca03,jdbcType=INTEGER},
+      </if>
+      <if test="cbca04 != null">
+        CBCA04 = #{cbca04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbca05 != null">
+        CBCA05 = #{cbca05,jdbcType=INTEGER},
+      </if>
+      <if test="cbca06 != null">
+        CBCA06 = #{cbca06,jdbcType=INTEGER},
+      </if>
+      <if test="cbca07 != null">
+        CBCA07 = #{cbca07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca08 != null">
+        CBCA08 = #{cbca08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca09 != null">
+        CBCA09 = #{cbca09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca10 != null">
+        CBCA10 = #{cbca10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca11 != null">
+        CBCA11 = #{cbca11,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca12 != null">
+        CBCA12 = #{cbca12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca13 != null">
+        CBCA13 = #{cbca13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca14 != null">
+        CBCA14 = #{cbca14,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca15 != null">
+        CBCA15 = #{cbca15,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca16 != null">
+        CBCA16 = #{cbca16,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca17 != null">
+        CBCA17 = #{cbca17,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca18 != null">
+        CBCA18 = #{cbca18,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca19 != null">
+        CBCA19 = #{cbca19,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca20 != null">
+        CBCA20 = #{cbca20,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca21 != null">
+        CBCA21 = #{cbca21,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca22 != null">
+        CBCA22 = #{cbca22,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca23 != null">
+        CBCA23 = #{cbca23,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca24 != null">
+        CBCA24 = #{cbca24,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca25 != null">
+        CBCA25 = #{cbca25,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca26 != null">
+        CBCA26 = #{cbca26,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca27 != null">
+        CBCA27 = #{cbca27,jdbcType=VARCHAR},
+      </if>
+      <if test="cbca28 != null">
+        CBCA28 = #{cbca28,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBCA01 = #{cbca01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbca">
+    update `CBCA`
+    set CBCA02 = #{cbca02,jdbcType=TIMESTAMP},
+      CBCA03 = #{cbca03,jdbcType=INTEGER},
+      CBCA04 = #{cbca04,jdbcType=TIMESTAMP},
+      CBCA05 = #{cbca05,jdbcType=INTEGER},
+      CBCA06 = #{cbca06,jdbcType=INTEGER},
+      CBCA07 = #{cbca07,jdbcType=VARCHAR},
+      CBCA08 = #{cbca08,jdbcType=VARCHAR},
+      CBCA09 = #{cbca09,jdbcType=VARCHAR},
+      CBCA10 = #{cbca10,jdbcType=VARCHAR},
+      CBCA11 = #{cbca11,jdbcType=VARCHAR},
+      CBCA12 = #{cbca12,jdbcType=VARCHAR},
+      CBCA13 = #{cbca13,jdbcType=VARCHAR},
+      CBCA14 = #{cbca14,jdbcType=VARCHAR},
+      CBCA15 = #{cbca15,jdbcType=VARCHAR},
+      CBCA16 = #{cbca16,jdbcType=VARCHAR},
+      CBCA17 = #{cbca17,jdbcType=VARCHAR},
+      CBCA18 = #{cbca18,jdbcType=VARCHAR},
+      CBCA19 = #{cbca19,jdbcType=VARCHAR},
+      CBCA20 = #{cbca20,jdbcType=VARCHAR},
+      CBCA21 = #{cbca21,jdbcType=VARCHAR},
+      CBCA22 = #{cbca22,jdbcType=VARCHAR},
+      CBCA23 = #{cbca23,jdbcType=VARCHAR},
+      CBCA24 = #{cbca24,jdbcType=VARCHAR},
+      CBCA25 = #{cbca25,jdbcType=VARCHAR},
+      CBCA26 = #{cbca26,jdbcType=VARCHAR},
+      CBCA27 = #{cbca27,jdbcType=VARCHAR},
+      CBCA28 = #{cbca28,jdbcType=INTEGER}
+    where CBCA01 = #{cbca01,jdbcType=INTEGER}
+  </update>
+  <update id="updateCBCA" parameterType="CBCA">
+    update CBCA
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbca02 != null">CBCA02 = #{cbca02},</if>
+      <if test="cbca03 != null">CBCA03 = #{cbca03},</if>
+      <if test="cbca04 != null">CBCA04 = #{cbca04},</if>
+      <if test="cbca05 != null">CBCA05 = #{cbca05},</if>
+      <if test="cbca06 != null">CBCA06 = #{cbca06},</if>
+      <if test="cbca07 != null">CBCA07 = #{cbca07},</if>
+      <if test="cbca08 != null">CBCA08 = #{cbca08},</if>
+      <if test="cbca09 != null">CBCA09 = #{cbca09},</if>
+      <if test="cbca10 != null">CBCA10 = #{cbca10},</if>
+      <if test="cbca11 != null">CBCA11 = #{cbca11},</if>
+      <if test="cbca12 != null">CBCA12 = #{cbca12},</if>
+      <if test="cbca13 != null">CBCA13 = #{cbca13},</if>
+      <if test="cbca14 != null">CBCA14 = #{cbca14},</if>
+      <if test="cbca15 != null">CBCA15 = #{cbca15},</if>
+      <if test="cbca16 != null">CBCA16 = #{cbca16},</if>
+      <if test="cbca17 != null">CBCA17 = #{cbca17},</if>
+      <if test="cbca18 != null">CBCA18 = #{cbca18},</if>
+      <if test="cbca19 != null">CBCA19 = #{cbca19},</if>
+      <if test="cbca20 != null">CBCA20 = #{cbca20},</if>
+      <if test="cbca21 != null">CBCA21 = #{cbca21},</if>
+      <if test="cbca22 != null">CBCA22 = #{cbca22},</if>
+      <if test="cbca23 != null">CBCA23 = #{cbca23},</if>
+      <if test="cbca24 != null">CBCA24 = #{cbca24},</if>
+      <if test="cbca25 != null">CBCA25 = #{cbca25},</if>
+      <if test="cbca26 != null">CBCA26 = #{cbca26},</if>
+      <if test="cbca27 != null">CBCA27 = #{cbca27},</if>
+      <if test="cbca28 != null">CBCA28 = #{cbca28},</if>
+    </trim>
+    where CBCA01 = #{cbca01}
+  </update>
+  <insert id="insertCBCA" parameterType="CBCA">
+    insert into CBCA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbca01 != null">CBCA01,</if>
+      <if test="cbca02 != null">CBCA02,</if>
+      <if test="cbca03 != null">CBCA03,</if>
+      <if test="cbca04 != null">CBCA04,</if>
+      <if test="cbca05 != null">CBCA05,</if>
+      <if test="cbca06 != null">CBCA06,</if>
+      <if test="cbca07 != null">CBCA07,</if>
+      <if test="cbca08 != null">CBCA08,</if>
+      <if test="cbca09 != null">CBCA09,</if>
+      <if test="cbca10 != null">CBCA10,</if>
+      <if test="cbca11 != null">CBCA11,</if>
+      <if test="cbca12 != null">CBCA12,</if>
+      <if test="cbca13 != null">CBCA13,</if>
+      <if test="cbca14 != null">CBCA14,</if>
+      <if test="cbca15 != null">CBCA15,</if>
+      <if test="cbca16 != null">CBCA16,</if>
+      <if test="cbca17 != null">CBCA17,</if>
+      <if test="cbca18 != null">CBCA18,</if>
+      <if test="cbca19 != null">CBCA19,</if>
+      <if test="cbca20 != null">CBCA20,</if>
+      <if test="cbca21 != null">CBCA21,</if>
+      <if test="cbca22 != null">CBCA22,</if>
+      <if test="cbca23 != null">CBCA23,</if>
+      <if test="cbca24 != null">CBCA24,</if>
+      <if test="cbca25 != null">CBCA25,</if>
+      <if test="cbca26 != null">CBCA26,</if>
+      <if test="cbca27 != null">CBCA27,</if>
+      <if test="cbca28 != null">CBCA28,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbca01 != null">#{cbca01},</if>
+      <if test="cbca02 != null">#{cbca02},</if>
+      <if test="cbca03 != null">#{cbca03},</if>
+      <if test="cbca04 != null">#{cbca04},</if>
+      <if test="cbca05 != null">#{cbca05},</if>
+      <if test="cbca06 != null">#{cbca06},</if>
+      <if test="cbca07 != null">#{cbca07},</if>
+      <if test="cbca08 != null">#{cbca08},</if>
+      <if test="cbca09 != null">#{cbca09},</if>
+      <if test="cbca10 != null">#{cbca10},</if>
+      <if test="cbca11 != null">#{cbca11},</if>
+      <if test="cbca12 != null">#{cbca12},</if>
+      <if test="cbca13 != null">#{cbca13},</if>
+      <if test="cbca14 != null">#{cbca14},</if>
+      <if test="cbca15 != null">#{cbca15},</if>
+      <if test="cbca16 != null">#{cbca16},</if>
+      <if test="cbca17 != null">#{cbca17},</if>
+      <if test="cbca18 != null">#{cbca18},</if>
+      <if test="cbca19 != null">#{cbca19},</if>
+      <if test="cbca20 != null">#{cbca20},</if>
+      <if test="cbca21 != null">#{cbca21},</if>
+      <if test="cbca22 != null">#{cbca22},</if>
+      <if test="cbca23 != null">#{cbca23},</if>
+      <if test="cbca24 != null">#{cbca24},</if>
+      <if test="cbca25 != null">#{cbca25},</if>
+      <if test="cbca26 != null">#{cbca26},</if>
+      <if test="cbca27 != null">#{cbca27},</if>
+      <if test="cbca28 != null">#{cbca28},</if>
+    </trim>
+  </insert>
+  <resultMap type="CBCA" id="CBCAResult">
+    <result property="cbca01"    column="CBCA01"    />
+    <result property="cbca02"    column="CBCA02"    />
+    <result property="cbca03"    column="CBCA03"    />
+    <result property="cbca04"    column="CBCA04"    />
+    <result property="cbca05"    column="CBCA05"    />
+    <result property="cbca06"    column="CBCA06"    />
+    <result property="cbca07"    column="CBCA07"    />
+    <result property="cbca08"    column="CBCA08"    />
+    <result property="cbca09"    column="CBCA09"    />
+    <result property="cbca10"    column="CBCA10"    />
+    <result property="cbca11"    column="CBCA11"    />
+    <result property="cbca12"    column="CBCA12"    />
+    <result property="cbca13"    column="CBCA13"    />
+    <result property="cbca14"    column="CBCA14"    />
+    <result property="cbca15"    column="CBCA15"    />
+    <result property="cbca16"    column="CBCA16"    />
+    <result property="cbca17"    column="CBCA17"    />
+    <result property="cbca18"    column="CBCA18"    />
+    <result property="cbca19"    column="CBCA19"    />
+    <result property="cbca20"    column="CBCA20"    />
+    <result property="cbca21"    column="CBCA21"    />
+    <result property="cbca22"    column="CBCA22"    />
+    <result property="cbca23"    column="CBCA23"    />
+    <result property="cbca24"    column="CBCA24"    />
+    <result property="cbca25"    column="CBCA25"    />
+    <result property="cbca26"    column="CBCA26"    />
+    <result property="cbca27"    column="CBCA27"    />
+    <result property="cbca28"    column="CBCA28"    />
+  </resultMap>
+  <sql id="selectCBCAVo">
+    select CBCA01, CBCA02, CBCA03, CBCA04, CBCA05, CBCA06, CBCA07, CBCA08, CBCA09, CBCA10, CBCA11, CBCA12, CBCA13, CBCA14, CBCA15, CBCA16, CBCA17, CBCA18, CBCA19, CBCA20, CBCA21, CBCA22, CBCA23, CBCA24, CBCA25, CBCA26, CBCA27, CBCA28 from CBCA
+  </sql>
+  <select id="selectCBWAList" parameterType="CBCA" resultMap="CBCAResult">
+    <include refid="selectCBCAVo"/>
+    <where>
+      CBCA06=0
+    <if test="cbca01 != null "> and CBCA01 = #{cbca01}</if>
+    <if test="cbca02 != null "> and CBCA02 = #{cbca02}</if>
+    <if test="cbca03 != null "> and CBCA03 = #{cbca03}</if>
+    <if test="cbca04 != null "> and CBCA04 = #{cbca04}</if>
+    <if test="cbca05 != null "> and CBCA05 = #{cbca05}</if>
+    <if test="cbca07 != null  and cbca07 != ''"> and CBCA07 = #{cbca07}</if>
+    <if test="cbca08 != null  and cbca08 != ''"> and CBCA08 = #{cbca08}</if>
+    <if test="cbca09 != null  and cbca09 != ''"> and CBCA09 = #{cbca09}</if>
+    <if test="cbca10 != null  and cbca10 != ''"> and CBCA10 = #{cbca10}</if>
+    <if test="cbca11 != null  and cbca11 != ''"> and CBCA11 = #{cbca11}</if>
+    <if test="cbca12 != null  and cbca12 != ''"> and CBCA12 = #{cbca12}</if>
+    <if test="cbca13 != null  and cbca13 != ''"> and CBCA13 = #{cbca13}</if>
+    <if test="cbca14 != null  and cbca14 != ''"> and CBCA14 = #{cbca14}</if>
+    <if test="cbca15 != null  and cbca15 != ''"> and CBCA15 = #{cbca15}</if>
+    <if test="cbca16 != null  and cbca16 != ''"> and CBCA16 = #{cbca16}</if>
+    <if test="cbca17 != null  and cbca17 != ''"> and CBCA17 = #{cbca17}</if>
+    <if test="cbca18 != null  and cbca18 != ''"> and CBCA18 = #{cbca18}</if>
+    <if test="cbca19 != null  and cbca19 != ''"> and CBCA19 = #{cbca19}</if>
+    <if test="cbca20 != null  and cbca20 != ''"> and CBCA20 = #{cbca20}</if>
+    <if test="cbca21 != null  and cbca21 != ''"> and CBCA21 = #{cbca21}</if>
+    <if test="cbca22 != null  and cbca22 != ''"> and CBCA22 = #{cbca22}</if>
+    <if test="cbca23 != null  and cbca23 != ''"> and CBCA23 = #{cbca23}</if>
+    <if test="cbca24 != null  and cbca24 != ''"> and CBCA24 = #{cbca24}</if>
+    <if test="cbca25 != null  and cbca25 != ''"> and CBCA25 = #{cbca25}</if>
+    <if test="cbca26 != null  and cbca26 != ''"> and CBCA26 = #{cbca26}</if>
+    <if test="cbca27 != null  and cbca27 != ''"> and CBCA27 = #{cbca27}</if>
+    <if test="cbca28 != null "> and CBCA28 = #{cbca28}</if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbscMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbsc">
+    <result column="CBSC01" jdbcType="INTEGER" property="cbsc01" />
+    <result column="CBSC02" jdbcType="INTEGER" property="cbsc02" />
+    <result column="CBSC03" jdbcType="TIMESTAMP" property="cbsc03" />
+    <result column="CBSC04" jdbcType="INTEGER" property="cbsc04" />
+    <result column="CBSC05" jdbcType="TIMESTAMP" property="cbsc05" />
+    <result column="CBSC06" jdbcType="INTEGER" property="cbsc06" />
+    <result column="CBSC07" jdbcType="INTEGER" property="cbsc07" />
+    <result column="CBSC08" jdbcType="INTEGER" property="cbsc08" />
+    <result column="CBSC09" jdbcType="DOUBLE" property="cbsc09" />
+    <result column="CBSC10" jdbcType="DOUBLE" property="cbsc10" />
+    <result column="CBSC11" jdbcType="DOUBLE" property="cbsc11" />
+    <result column="CBSC12" jdbcType="DOUBLE" property="cbsc12" />
+    <result column="CBSC13" jdbcType="VARCHAR" property="cbsc13" />
+    <result column="CBSB01" jdbcType="INTEGER" property="cbsb01" />
+    <result column="CBSC14" jdbcType="INTEGER" property="cbsc14" />
+    <result column="CBSC15" jdbcType="INTEGER" property="cbsc15" />
+    <result column="CBSC16" jdbcType="INTEGER" property="cbsc16" />
+    <result column="CBSC17" jdbcType="INTEGER" property="cbsc17" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBSC01, CBSC02, CBSC03, CBSC04, CBSC05, CBSC06, CBSC07, CBSC08, CBSC09, CBSC10, CBSC11, 
+    CBSC12, CBSC13, CBSB01, CBSC14, CBSC15, CBSC16, CBSC17
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbscCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBSC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbscCriteria">
+    delete from `CBSC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsc">
+    insert into `CBSC` (CBSC01, CBSC02, CBSC03, 
+      CBSC04, CBSC05, CBSC06, 
+      CBSC07, CBSC08, CBSC09, 
+      CBSC10, CBSC11, CBSC12, 
+      CBSC13, CBSB01, CBSC14, 
+      CBSC15, CBSC16, CBSC17
+      )
+    values (#{cbsc01,jdbcType=INTEGER}, #{cbsc02,jdbcType=INTEGER}, #{cbsc03,jdbcType=TIMESTAMP}, 
+      #{cbsc04,jdbcType=INTEGER}, #{cbsc05,jdbcType=TIMESTAMP}, #{cbsc06,jdbcType=INTEGER}, 
+      #{cbsc07,jdbcType=INTEGER}, #{cbsc08,jdbcType=INTEGER}, #{cbsc09,jdbcType=DOUBLE}, 
+      #{cbsc10,jdbcType=DOUBLE}, #{cbsc11,jdbcType=DOUBLE}, #{cbsc12,jdbcType=DOUBLE}, 
+      #{cbsc13,jdbcType=VARCHAR}, #{cbsb01,jdbcType=INTEGER}, #{cbsc14,jdbcType=INTEGER}, 
+      #{cbsc15,jdbcType=INTEGER}, #{cbsc16,jdbcType=INTEGER}, #{cbsc17,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsc">
+    insert into `CBSC`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbsc01 != null">
+        CBSC01,
+      </if>
+      <if test="cbsc02 != null">
+        CBSC02,
+      </if>
+      <if test="cbsc03 != null">
+        CBSC03,
+      </if>
+      <if test="cbsc04 != null">
+        CBSC04,
+      </if>
+      <if test="cbsc05 != null">
+        CBSC05,
+      </if>
+      <if test="cbsc06 != null">
+        CBSC06,
+      </if>
+      <if test="cbsc07 != null">
+        CBSC07,
+      </if>
+      <if test="cbsc08 != null">
+        CBSC08,
+      </if>
+      <if test="cbsc09 != null">
+        CBSC09,
+      </if>
+      <if test="cbsc10 != null">
+        CBSC10,
+      </if>
+      <if test="cbsc11 != null">
+        CBSC11,
+      </if>
+      <if test="cbsc12 != null">
+        CBSC12,
+      </if>
+      <if test="cbsc13 != null">
+        CBSC13,
+      </if>
+      <if test="cbsb01 != null">
+        CBSB01,
+      </if>
+      <if test="cbsc14 != null">
+        CBSC14,
+      </if>
+      <if test="cbsc15 != null">
+        CBSC15,
+      </if>
+      <if test="cbsc16 != null">
+        CBSC16,
+      </if>
+      <if test="cbsc17 != null">
+        CBSC17,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbsc01 != null">
+        #{cbsc01,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc02 != null">
+        #{cbsc02,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc03 != null">
+        #{cbsc03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsc04 != null">
+        #{cbsc04,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc05 != null">
+        #{cbsc05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsc06 != null">
+        #{cbsc06,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc07 != null">
+        #{cbsc07,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc08 != null">
+        #{cbsc08,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc09 != null">
+        #{cbsc09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc10 != null">
+        #{cbsc10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc11 != null">
+        #{cbsc11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc12 != null">
+        #{cbsc12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc13 != null">
+        #{cbsc13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbsb01 != null">
+        #{cbsb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc14 != null">
+        #{cbsc14,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc15 != null">
+        #{cbsc15,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc16 != null">
+        #{cbsc16,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc17 != null">
+        #{cbsc17,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbscCriteria" resultType="java.lang.Long">
+    select count(*) from `CBSC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBSC`
+    <set>
+      <if test="record.cbsc01 != null">
+        CBSC01 = #{record.cbsc01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc02 != null">
+        CBSC02 = #{record.cbsc02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc03 != null">
+        CBSC03 = #{record.cbsc03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsc04 != null">
+        CBSC04 = #{record.cbsc04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc05 != null">
+        CBSC05 = #{record.cbsc05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsc06 != null">
+        CBSC06 = #{record.cbsc06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc07 != null">
+        CBSC07 = #{record.cbsc07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc08 != null">
+        CBSC08 = #{record.cbsc08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc09 != null">
+        CBSC09 = #{record.cbsc09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbsc10 != null">
+        CBSC10 = #{record.cbsc10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbsc11 != null">
+        CBSC11 = #{record.cbsc11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbsc12 != null">
+        CBSC12 = #{record.cbsc12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbsc13 != null">
+        CBSC13 = #{record.cbsc13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbsb01 != null">
+        CBSB01 = #{record.cbsb01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc14 != null">
+        CBSC14 = #{record.cbsc14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc15 != null">
+        CBSC15 = #{record.cbsc15,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc16 != null">
+        CBSC16 = #{record.cbsc16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsc17 != null">
+        CBSC17 = #{record.cbsc17,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBSC`
+    set CBSC01 = #{record.cbsc01,jdbcType=INTEGER},
+      CBSC02 = #{record.cbsc02,jdbcType=INTEGER},
+      CBSC03 = #{record.cbsc03,jdbcType=TIMESTAMP},
+      CBSC04 = #{record.cbsc04,jdbcType=INTEGER},
+      CBSC05 = #{record.cbsc05,jdbcType=TIMESTAMP},
+      CBSC06 = #{record.cbsc06,jdbcType=INTEGER},
+      CBSC07 = #{record.cbsc07,jdbcType=INTEGER},
+      CBSC08 = #{record.cbsc08,jdbcType=INTEGER},
+      CBSC09 = #{record.cbsc09,jdbcType=DOUBLE},
+      CBSC10 = #{record.cbsc10,jdbcType=DOUBLE},
+      CBSC11 = #{record.cbsc11,jdbcType=DOUBLE},
+      CBSC12 = #{record.cbsc12,jdbcType=DOUBLE},
+      CBSC13 = #{record.cbsc13,jdbcType=VARCHAR},
+      CBSB01 = #{record.cbsb01,jdbcType=INTEGER},
+      CBSC14 = #{record.cbsc14,jdbcType=INTEGER},
+      CBSC15 = #{record.cbsc15,jdbcType=INTEGER},
+      CBSC16 = #{record.cbsc16,jdbcType=INTEGER},
+      CBSC17 = #{record.cbsc17,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

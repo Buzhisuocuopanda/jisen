@@ -10,11 +10,10 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.core.domain.entity.Cbpa;
-import com.ruoyi.system.domain.CbpaCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpaDo;
-import com.ruoyi.system.domain.GsSystemUse;
-import com.ruoyi.system.domain.GsSystemUseCriteria;
 import com.ruoyi.system.mapper.CbpaMapper;
+import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsGoodsClassifyService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +41,9 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
     @Resource
     private GsSystemUseMapper gsSystemUseMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
     /**
      * 新增商品分类
      *
@@ -143,7 +145,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
                 .andTypeIdEqualTo(Integer.valueOf(strs[0]))
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+        if(gsSystemUses.size()==0){
             cbpa.setCbpa11(cbpaDo.getCbpa11());
         }
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
@@ -163,23 +165,23 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         cbpa.setCbpa03(date);
         cbpa.setCbpa05(Math.toIntExact(userid));
         CbpaCriteria example3=new CbpaCriteria();
-
+        //判断是否在用
         example3.createCriteria().
                 andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbpa01EqualTo(cbpaDo.getCbpa01());
-        List<Cbpa> cbpas = cbpaMapper.selectByExample(example3);
-        List<String> collect = cbpas.stream().map(Cbpa::getCbpa11).collect(Collectors.toList());
-        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
-        use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
-                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()>0){
+
+        CbpbCriteria example2=new CbpbCriteria();
+
+        example2.createCriteria().
+                andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpb14EqualTo(cbpaDo.getCbpa01());
+
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example2);
+        if(cbpbs.size()>0){
             throw new SwException("在用商品分类不可删除");
         }
-        cbpa.setCbpa06(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        cbpa.setCbpa06(DeleteFlagEnum.DELETE.getCode());
 
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
     }

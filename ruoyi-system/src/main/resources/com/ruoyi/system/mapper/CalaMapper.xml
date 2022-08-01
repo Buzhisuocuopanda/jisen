@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CalaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cala">
+    <result column="CALA01" jdbcType="INTEGER" property="cala01" />
+    <result column="CALA02" jdbcType="VARCHAR" property="cala02" />
+    <result column="CALA03" jdbcType="TIMESTAMP" property="cala03" />
+    <result column="CALA04" jdbcType="TIMESTAMP" property="cala04" />
+    <result column="CALA05" jdbcType="INTEGER" property="cala05" />
+    <result column="CALA06" jdbcType="INTEGER" property="cala06" />
+    <result column="CALA07" jdbcType="INTEGER" property="cala07" />
+    <result column="CALA08" jdbcType="VARCHAR" property="cala08" />
+    <result column="CALA09" jdbcType="VARCHAR" property="cala09" />
+    <result column="CALA10" jdbcType="VARCHAR" property="cala10" />
+    <result column="CALA11" jdbcType="VARCHAR" property="cala11" />
+    <result column="CALA12" jdbcType="VARCHAR" property="cala12" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CALA01, CALA02, CALA03, CALA04, CALA05, CALA06, CALA07, CALA08, CALA09, CALA10, CALA11,
+    CALA12
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CalaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CALA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CalaCriteria">
+    delete from `CALA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cala">
+    insert into `CALA` (CALA01, CALA02, CALA03,
+      CALA04, CALA05, CALA06,
+      CALA07, CALA08, CALA09,
+      CALA10, CALA11, CALA12
+      )
+    values (#{cala01,jdbcType=INTEGER}, #{cala02,jdbcType=VARCHAR}, #{cala03,jdbcType=TIMESTAMP},
+      #{cala04,jdbcType=TIMESTAMP}, #{cala05,jdbcType=INTEGER}, #{cala06,jdbcType=INTEGER},
+      #{cala07,jdbcType=INTEGER}, #{cala08,jdbcType=VARCHAR}, #{cala09,jdbcType=VARCHAR},
+      #{cala10,jdbcType=VARCHAR}, #{cala11,jdbcType=VARCHAR}, #{cala12,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cala">
+    insert into `CALA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cala01 != null">
+        CALA01,
+      </if>
+      <if test="cala02 != null">
+        CALA02,
+      </if>
+      <if test="cala03 != null">
+        CALA03,
+      </if>
+      <if test="cala04 != null">
+        CALA04,
+      </if>
+      <if test="cala05 != null">
+        CALA05,
+      </if>
+      <if test="cala06 != null">
+        CALA06,
+      </if>
+      <if test="cala07 != null">
+        CALA07,
+      </if>
+      <if test="cala08 != null">
+        CALA08,
+      </if>
+      <if test="cala09 != null">
+        CALA09,
+      </if>
+      <if test="cala10 != null">
+        CALA10,
+      </if>
+      <if test="cala11 != null">
+        CALA11,
+      </if>
+      <if test="cala12 != null">
+        CALA12,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cala01 != null">
+        #{cala01,jdbcType=INTEGER},
+      </if>
+      <if test="cala02 != null">
+        #{cala02,jdbcType=VARCHAR},
+      </if>
+      <if test="cala03 != null">
+        #{cala03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cala04 != null">
+        #{cala04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cala05 != null">
+        #{cala05,jdbcType=INTEGER},
+      </if>
+      <if test="cala06 != null">
+        #{cala06,jdbcType=INTEGER},
+      </if>
+      <if test="cala07 != null">
+        #{cala07,jdbcType=INTEGER},
+      </if>
+      <if test="cala08 != null">
+        #{cala08,jdbcType=VARCHAR},
+      </if>
+      <if test="cala09 != null">
+        #{cala09,jdbcType=VARCHAR},
+      </if>
+      <if test="cala10 != null">
+        #{cala10,jdbcType=VARCHAR},
+      </if>
+      <if test="cala11 != null">
+        #{cala11,jdbcType=VARCHAR},
+      </if>
+      <if test="cala12 != null">
+        #{cala12,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CalaCriteria" resultType="java.lang.Long">
+    select count(*) from `CALA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CALA`
+    <set>
+      <if test="record.cala01 != null">
+        CALA01 = #{record.cala01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cala02 != null">
+        CALA02 = #{record.cala02,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cala03 != null">
+        CALA03 = #{record.cala03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cala04 != null">
+        CALA04 = #{record.cala04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cala05 != null">
+        CALA05 = #{record.cala05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cala06 != null">
+        CALA06 = #{record.cala06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cala07 != null">
+        CALA07 = #{record.cala07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cala08 != null">
+        CALA08 = #{record.cala08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cala09 != null">
+        CALA09 = #{record.cala09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cala10 != null">
+        CALA10 = #{record.cala10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cala11 != null">
+        CALA11 = #{record.cala11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cala12 != null">
+        CALA12 = #{record.cala12,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CALA`
+    set CALA01 = #{record.cala01,jdbcType=INTEGER},
+      CALA02 = #{record.cala02,jdbcType=VARCHAR},
+      CALA03 = #{record.cala03,jdbcType=TIMESTAMP},
+      CALA04 = #{record.cala04,jdbcType=TIMESTAMP},
+      CALA05 = #{record.cala05,jdbcType=INTEGER},
+      CALA06 = #{record.cala06,jdbcType=INTEGER},
+      CALA07 = #{record.cala07,jdbcType=INTEGER},
+      CALA08 = #{record.cala08,jdbcType=VARCHAR},
+      CALA09 = #{record.cala09,jdbcType=VARCHAR},
+      CALA10 = #{record.cala10,jdbcType=VARCHAR},
+      CALA11 = #{record.cala11,jdbcType=VARCHAR},
+      CALA12 = #{record.cala12,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <resultMap type="CALA" id="CALAResult">
+    <result property="cala01"    column="CALA01"    />
+    <result property="cala02"    column="CALA02"    />
+    <result property="cala03"    column="CALA03"    />
+    <result property="cala04"    column="CALA04"    />
+    <result property="cala05"    column="CALA05"    />
+    <result property="cala06"    column="CALA06"    />
+    <result property="cala07"    column="CALA07"    />
+    <result property="cala08"    column="CALA08"    />
+    <result property="cala09"    column="CALA09"    />
+    <result property="cala10"    column="CALA10"    />
+    <result property="cala11"    column="CALA11"    />
+    <result property="cala12"    column="CALA12"    />
+  </resultMap>
+  <sql id="selectCALAVo">
+    select CALA01, CALA02, CALA03, CALA04, CALA05, CALA06, CALA07, CALA08, CALA09, CALA10, CALA11, CALA12 from CALA
+  </sql>
+
+  <select id="selectSwJsListList" parameterType="CALA" resultMap="CALAResult">
+    <include refid="selectCALAVo"/>
+    <where>
+    <if test="cala01 != null "> and CALA01 = #{cala01}</if>
+    <if test="cala02 != null  and cala02 != ''"> and CALA02 = #{cala02}</if>
+    <if test="cala03 != null "> and CALA03 = #{cala03}</if>
+    <if test="cala04 != null "> and CALA04 = #{cala04}</if>
+    <if test="cala05 != null "> and CALA05 = #{cala05}</if>
+    <if test="cala06 != null "> and CALA06 = #{cala06}</if>
+    <if test="cala07 != null "> and CALA07 = #{cala07}</if>
+    <if test="cala08 != null  and cala08 != ''"> and CALA08 like concat('%', #{cala08}, '%')</if>
+    <if test="cala09 != null  and cala09 != ''"> and CALA09 like concat('%', #{cala09}, '%')</if>
+    <if test="cala10 != null  and cala10 != ''"> and CALA10 like concat('%', #{cala10}, '%')</if>
+    <if test="cala11 != null  and cala11 != ''"> and CALA11 like concat('%', #{cala11}, '%')</if>
+    <if test="cala12 != null  and cala12 != ''"> and CALA12 like concat('%', #{cala12}, '%')</if>
+    </where>
+  </select>
+  <select id="selectSwJsListById" parameterType="Long" resultMap="CALAResult">
+    <include refid="selectCALAVo"/>
+  <where>
+
+     CALA01 = #{cala01}
+    and CALA06 = 0
+  </where>
+  </select>
+
+</mapper>

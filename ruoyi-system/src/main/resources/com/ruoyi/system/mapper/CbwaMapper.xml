@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbwaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbwa">
+    <id column="CBWA01" jdbcType="INTEGER" property="cbwa01" />
+    <result column="CBWA02" jdbcType="TIMESTAMP" property="cbwa02" />
+    <result column="CBWA03" jdbcType="INTEGER" property="cbwa03" />
+    <result column="CBWA04" jdbcType="TIMESTAMP" property="cbwa04" />
+    <result column="CBWA05" jdbcType="INTEGER" property="cbwa05" />
+    <result column="CBWA06" jdbcType="INTEGER" property="cbwa06" />
+    <result column="CBWA07" jdbcType="INTEGER" property="cbwa07" />
+    <result column="CBWA08" jdbcType="VARCHAR" property="cbwa08" />
+    <result column="CBWA09" jdbcType="VARCHAR" property="cbwa09" />
+    <result column="CBWA10" jdbcType="VARCHAR" property="cbwa10" />
+    <result column="CBWA11" jdbcType="VARCHAR" property="cbwa11" />
+    <result column="CBWA12" jdbcType="VARCHAR" property="cbwa12" />
+    <result column="CBWA13" jdbcType="INTEGER" property="cbwa13" />
+    <result column="CBWA14" jdbcType="INTEGER" property="cbwa14" />
+    <result column="CBWA15" jdbcType="INTEGER" property="cbwa15" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11,
+    CBWA12, CBWA13, CBWA14, CBWA15
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbwaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBWA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBWA`
+    where CBWA01 = #{cbwa01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBWA`
+    where CBWA01 = #{cbwa01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbwaCriteria">
+    delete from `CBWA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbwa">
+    insert into `CBWA` (CBWA01, CBWA02, CBWA03,
+      CBWA04, CBWA05, CBWA06,
+      CBWA07, CBWA08, CBWA09,
+      CBWA10, CBWA11, CBWA12,
+      CBWA13, CBWA14, CBWA15
+      )
+    values (#{cbwa01,jdbcType=INTEGER}, #{cbwa02,jdbcType=TIMESTAMP}, #{cbwa03,jdbcType=INTEGER},
+      #{cbwa04,jdbcType=TIMESTAMP}, #{cbwa05,jdbcType=INTEGER}, #{cbwa06,jdbcType=INTEGER},
+      #{cbwa07,jdbcType=INTEGER}, #{cbwa08,jdbcType=VARCHAR}, #{cbwa09,jdbcType=VARCHAR},
+      #{cbwa10,jdbcType=VARCHAR}, #{cbwa11,jdbcType=VARCHAR}, #{cbwa12,jdbcType=VARCHAR},
+      #{cbwa13,jdbcType=INTEGER}, #{cbwa14,jdbcType=INTEGER}, #{cbwa15,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbwa">
+    insert into `CBWA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbwa01 != null">
+        CBWA01,
+      </if>
+      <if test="cbwa02 != null">
+        CBWA02,
+      </if>
+      <if test="cbwa03 != null">
+        CBWA03,
+      </if>
+      <if test="cbwa04 != null">
+        CBWA04,
+      </if>
+      <if test="cbwa05 != null">
+        CBWA05,
+      </if>
+      <if test="cbwa06 != null">
+        CBWA06,
+      </if>
+      <if test="cbwa07 != null">
+        CBWA07,
+      </if>
+      <if test="cbwa08 != null">
+        CBWA08,
+      </if>
+      <if test="cbwa09 != null">
+        CBWA09,
+      </if>
+      <if test="cbwa10 != null">
+        CBWA10,
+      </if>
+      <if test="cbwa11 != null">
+        CBWA11,
+      </if>
+      <if test="cbwa12 != null">
+        CBWA12,
+      </if>
+      <if test="cbwa13 != null">
+        CBWA13,
+      </if>
+      <if test="cbwa14 != null">
+        CBWA14,
+      </if>
+      <if test="cbwa15 != null">
+        CBWA15,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbwa01 != null">
+        #{cbwa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa02 != null">
+        #{cbwa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbwa03 != null">
+        #{cbwa03,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa04 != null">
+        #{cbwa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbwa05 != null">
+        #{cbwa05,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa06 != null">
+        #{cbwa06,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa07 != null">
+        #{cbwa07,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa08 != null">
+        #{cbwa08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa09 != null">
+        #{cbwa09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa10 != null">
+        #{cbwa10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa11 != null">
+        #{cbwa11,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa12 != null">
+        #{cbwa12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa13 != null">
+        #{cbwa13,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa14 != null">
+        #{cbwa14,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa15 != null">
+        #{cbwa15,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbwaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBWA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBWA`
+    <set>
+      <if test="record.cbwa01 != null">
+        CBWA01 = #{record.cbwa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa02 != null">
+        CBWA02 = #{record.cbwa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbwa03 != null">
+        CBWA03 = #{record.cbwa03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa04 != null">
+        CBWA04 = #{record.cbwa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbwa05 != null">
+        CBWA05 = #{record.cbwa05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa06 != null">
+        CBWA06 = #{record.cbwa06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa07 != null">
+        CBWA07 = #{record.cbwa07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa08 != null">
+        CBWA08 = #{record.cbwa08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbwa09 != null">
+        CBWA09 = #{record.cbwa09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbwa10 != null">
+        CBWA10 = #{record.cbwa10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbwa11 != null">
+        CBWA11 = #{record.cbwa11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbwa12 != null">
+        CBWA12 = #{record.cbwa12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbwa13 != null">
+        CBWA13 = #{record.cbwa13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa14 != null">
+        CBWA14 = #{record.cbwa14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbwa15 != null">
+        CBWA15 = #{record.cbwa15,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBWA`
+    set CBWA01 = #{record.cbwa01,jdbcType=INTEGER},
+      CBWA02 = #{record.cbwa02,jdbcType=TIMESTAMP},
+      CBWA03 = #{record.cbwa03,jdbcType=INTEGER},
+      CBWA04 = #{record.cbwa04,jdbcType=TIMESTAMP},
+      CBWA05 = #{record.cbwa05,jdbcType=INTEGER},
+      CBWA06 = #{record.cbwa06,jdbcType=INTEGER},
+      CBWA07 = #{record.cbwa07,jdbcType=INTEGER},
+      CBWA08 = #{record.cbwa08,jdbcType=VARCHAR},
+      CBWA09 = #{record.cbwa09,jdbcType=VARCHAR},
+      CBWA10 = #{record.cbwa10,jdbcType=VARCHAR},
+      CBWA11 = #{record.cbwa11,jdbcType=VARCHAR},
+      CBWA12 = #{record.cbwa12,jdbcType=VARCHAR},
+      CBWA13 = #{record.cbwa13,jdbcType=INTEGER},
+      CBWA14 = #{record.cbwa14,jdbcType=INTEGER},
+      CBWA15 = #{record.cbwa15,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbwa">
+    update `CBWA`
+    <set>
+      <if test="cbwa02 != null">
+        CBWA02 = #{cbwa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbwa03 != null">
+        CBWA03 = #{cbwa03,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa04 != null">
+        CBWA04 = #{cbwa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbwa05 != null">
+        CBWA05 = #{cbwa05,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa06 != null">
+        CBWA06 = #{cbwa06,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa07 != null">
+        CBWA07 = #{cbwa07,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa08 != null">
+        CBWA08 = #{cbwa08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa09 != null">
+        CBWA09 = #{cbwa09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa10 != null">
+        CBWA10 = #{cbwa10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa11 != null">
+        CBWA11 = #{cbwa11,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa12 != null">
+        CBWA12 = #{cbwa12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbwa13 != null">
+        CBWA13 = #{cbwa13,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa14 != null">
+        CBWA14 = #{cbwa14,jdbcType=INTEGER},
+      </if>
+      <if test="cbwa15 != null">
+        CBWA15 = #{cbwa15,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBWA01 = #{cbwa01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbwa">
+    update `CBWA`
+    set CBWA02 = #{cbwa02,jdbcType=TIMESTAMP},
+      CBWA03 = #{cbwa03,jdbcType=INTEGER},
+      CBWA04 = #{cbwa04,jdbcType=TIMESTAMP},
+      CBWA05 = #{cbwa05,jdbcType=INTEGER},
+      CBWA06 = #{cbwa06,jdbcType=INTEGER},
+      CBWA07 = #{cbwa07,jdbcType=INTEGER},
+      CBWA08 = #{cbwa08,jdbcType=VARCHAR},
+      CBWA09 = #{cbwa09,jdbcType=VARCHAR},
+      CBWA10 = #{cbwa10,jdbcType=VARCHAR},
+      CBWA11 = #{cbwa11,jdbcType=VARCHAR},
+      CBWA12 = #{cbwa12,jdbcType=VARCHAR},
+      CBWA13 = #{cbwa13,jdbcType=INTEGER},
+      CBWA14 = #{cbwa14,jdbcType=INTEGER},
+      CBWA15 = #{cbwa15,jdbcType=INTEGER}
+    where CBWA01 = #{cbwa01,jdbcType=INTEGER}
+  </update>
+  <resultMap type="CBWA" id="CBWAResult">
+    <result property="cbwa01"    column="CBWA01"    />
+    <result property="cbwa02"    column="CBWA02"    />
+    <result property="cbwa03"    column="CBWA03"    />
+    <result property="cbwa04"    column="CBWA04"    />
+    <result property="cbwa05"    column="CBWA05"    />
+    <result property="cbwa06"    column="CBWA06"    />
+    <result property="cbwa07"    column="CBWA07"    />
+    <result property="cbwa08"    column="CBWA08"    />
+    <result property="cbwa09"    column="CBWA09"    />
+    <result property="cbwa10"    column="CBWA10"    />
+    <result property="cbwa11"    column="CBWA11"    />
+    <result property="cbwa12"    column="CBWA12"    />
+    <result property="cbwa13"    column="CBWA13"    />
+    <result property="cbwa14"    column="CBWA14"    />
+    <result property="cbwa15"    column="CBWA15"    />
+  </resultMap>
+  <sql id="selectCBWAVo">
+    select CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11, CBWA12, CBWA13, CBWA14, CBWA15 from CBWA
+  </sql>
+  <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
+    <include refid="selectCBWAVo"/>
+    <where>
+      <if test="cbwa01 != null "> and CBWA01 = #{cbwa01}</if>
+      <if test="cbwa02 != null "> and CBWA02 = #{cbwa02}</if>
+      <if test="cbwa03 != null "> and CBWA03 = #{cbwa03}</if>
+      <if test="cbwa04 != null "> and CBWA04 = #{cbwa04}</if>
+      <if test="cbwa05 != null "> and CBWA05 = #{cbwa05}</if>
+      <if test="cbwa06 != null "> and CBWA06 = #{cbwa06}</if>
+      <if test="cbwa07 != null "> and CBWA07 = #{cbwa07}</if>
+      <if test="cbwa08 != null  and cbwa08 != ''"> and CBWA08 = #{cbwa08}</if>
+      <if test="cbwa09 != null  and cbwa09 != ''"> and CBWA09 = #{cbwa09}</if>
+      <if test="cbwa10 != null  and cbwa10 != ''"> and CBWA10 = #{cbwa10}</if>
+      <if test="cbwa11 != null  and cbwa11 != ''"> and CBWA11 = #{cbwa11}</if>
+      <if test="cbwa12 != null  and cbwa12 != ''"> and CBWA12 = #{cbwa12}</if>
+      <if test="cbwa13 != null "> and CBWA13 = #{cbwa13}</if>
+      <if test="cbwa14 != null "> and CBWA14 = #{cbwa14}</if>
+      <if test="cbwa15 != null "> and CBWA15 = #{cbwa15}</if>
+    </where>
+  </select>
+  <select id="selectCBWAByCbwa01" parameterType="Long" resultMap="CBWAResult">
+    <include refid="selectCBWAVo"/>
+    where CBWA06=0
+  </select>
+</mapper>
