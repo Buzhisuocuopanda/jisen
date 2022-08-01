@@ -1,11 +1,12 @@
 package com.ruoyi.system.domain;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Cbpb implements Serializable {
+public class Cbpb extends BaseEntity implements Serializable {
     @Excel(name = "主键id")
     private Integer cbpb01;
     @Excel(name = "创建时间")

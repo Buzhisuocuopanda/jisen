@@ -385,7 +385,8 @@
     <result property="cbpb15"    column="CBPB15"    />
   </resultMap>
   <sql id="selectCBPBVo">
-    select CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, CBPB12, CBPB13, CBPB14, CBPB15 from CBPB
+    select CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, CBPB12, CBPB13,
+           CBPB14, CBPB15 from CBPB recruit
   </sql>
   <select id="selectSwJsGoodsList"  parameterType="CBPB" resultMap="CBPBResult">
     <include refid="selectCBPBVo"/>
@@ -405,6 +406,7 @@
       <if test="cbpb13 != null "> and CBPB13 = #{cbpb13}</if>
       <if test="cbpb14 != null "> and CBPB14 = #{cbpb14}</if>
       <if test="cbpb15 != null  and cbpb15 != ''"> and CBPB15 like concat( '%', #{cbpb15}, '%')</if>
+      ${params.dataScope}
     </where>
   </select>
 

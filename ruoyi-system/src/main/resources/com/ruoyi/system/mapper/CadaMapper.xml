@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CadaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cada">
+    <id column="CADA01" jdbcType="INTEGER" property="cada01" />
+    <result column="CADA02" jdbcType="INTEGER" property="cada02" />
+    <result column="CADA03" jdbcType="TIMESTAMP" property="cada03" />
+    <result column="CADA04" jdbcType="TIMESTAMP" property="cada04" />
+    <result column="CADA05" jdbcType="INTEGER" property="cada05" />
+    <result column="CADA06" jdbcType="INTEGER" property="cada06" />
+    <result column="CADA07" jdbcType="INTEGER" property="cada07" />
+    <result column="CADA08" jdbcType="VARCHAR" property="cada08" />
+    <result column="CADA09" jdbcType="VARCHAR" property="cada09" />
+    <result column="CADA10" jdbcType="INTEGER" property="cada10" />
+    <result column="CADA11" jdbcType="VARCHAR" property="cada11" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CADA01, CADA02, CADA03, CADA04, CADA05, CADA06, CADA07, CADA08, CADA09, CADA10, CADA11,
+    user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CadaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CADA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CADA`
+    where CADA01 = #{cada01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CADA`
+    where CADA01 = #{cada01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CadaCriteria">
+    delete from `CADA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cada">
+    insert into `CADA` (CADA01, CADA02, CADA03,
+      CADA04, CADA05, CADA06,
+      CADA07, CADA08, CADA09,
+      CADA10, CADA11, user_id
+      )
+    values (#{cada01,jdbcType=INTEGER}, #{cada02,jdbcType=INTEGER}, #{cada03,jdbcType=TIMESTAMP},
+      #{cada04,jdbcType=TIMESTAMP}, #{cada05,jdbcType=INTEGER}, #{cada06,jdbcType=INTEGER},
+      #{cada07,jdbcType=INTEGER}, #{cada08,jdbcType=VARCHAR}, #{cada09,jdbcType=VARCHAR},
+      #{cada10,jdbcType=INTEGER}, #{cada11,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cada">
+    insert into `CADA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cada01 != null">
+        CADA01,
+      </if>
+      <if test="cada02 != null">
+        CADA02,
+      </if>
+      <if test="cada03 != null">
+        CADA03,
+      </if>
+      <if test="cada04 != null">
+        CADA04,
+      </if>
+      <if test="cada05 != null">
+        CADA05,
+      </if>
+      <if test="cada06 != null">
+        CADA06,
+      </if>
+      <if test="cada07 != null">
+        CADA07,
+      </if>
+      <if test="cada08 != null">
+        CADA08,
+      </if>
+      <if test="cada09 != null">
+        CADA09,
+      </if>
+      <if test="cada10 != null">
+        CADA10,
+      </if>
+      <if test="cada11 != null">
+        CADA11,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cada01 != null">
+        #{cada01,jdbcType=INTEGER},
+      </if>
+      <if test="cada02 != null">
+        #{cada02,jdbcType=INTEGER},
+      </if>
+      <if test="cada03 != null">
+        #{cada03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cada04 != null">
+        #{cada04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cada05 != null">
+        #{cada05,jdbcType=INTEGER},
+      </if>
+      <if test="cada06 != null">
+        #{cada06,jdbcType=INTEGER},
+      </if>
+      <if test="cada07 != null">
+        #{cada07,jdbcType=INTEGER},
+      </if>
+      <if test="cada08 != null">
+        #{cada08,jdbcType=VARCHAR},
+      </if>
+      <if test="cada09 != null">
+        #{cada09,jdbcType=VARCHAR},
+      </if>
+      <if test="cada10 != null">
+        #{cada10,jdbcType=INTEGER},
+      </if>
+      <if test="cada11 != null">
+        #{cada11,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CadaCriteria" resultType="java.lang.Long">
+    select count(*) from `CADA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CADA`
+    <set>
+      <if test="record.cada01 != null">
+        CADA01 = #{record.cada01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada02 != null">
+        CADA02 = #{record.cada02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada03 != null">
+        CADA03 = #{record.cada03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cada04 != null">
+        CADA04 = #{record.cada04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cada05 != null">
+        CADA05 = #{record.cada05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada06 != null">
+        CADA06 = #{record.cada06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada07 != null">
+        CADA07 = #{record.cada07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada08 != null">
+        CADA08 = #{record.cada08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cada09 != null">
+        CADA09 = #{record.cada09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cada10 != null">
+        CADA10 = #{record.cada10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cada11 != null">
+        CADA11 = #{record.cada11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CADA`
+    set CADA01 = #{record.cada01,jdbcType=INTEGER},
+      CADA02 = #{record.cada02,jdbcType=INTEGER},
+      CADA03 = #{record.cada03,jdbcType=TIMESTAMP},
+      CADA04 = #{record.cada04,jdbcType=TIMESTAMP},
+      CADA05 = #{record.cada05,jdbcType=INTEGER},
+      CADA06 = #{record.cada06,jdbcType=INTEGER},
+      CADA07 = #{record.cada07,jdbcType=INTEGER},
+      CADA08 = #{record.cada08,jdbcType=VARCHAR},
+      CADA09 = #{record.cada09,jdbcType=VARCHAR},
+      CADA10 = #{record.cada10,jdbcType=INTEGER},
+      CADA11 = #{record.cada11,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cada">
+    update `CADA`
+    <set>
+      <if test="cada02 != null">
+        CADA02 = #{cada02,jdbcType=INTEGER},
+      </if>
+      <if test="cada03 != null">
+        CADA03 = #{cada03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cada04 != null">
+        CADA04 = #{cada04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cada05 != null">
+        CADA05 = #{cada05,jdbcType=INTEGER},
+      </if>
+      <if test="cada06 != null">
+        CADA06 = #{cada06,jdbcType=INTEGER},
+      </if>
+      <if test="cada07 != null">
+        CADA07 = #{cada07,jdbcType=INTEGER},
+      </if>
+      <if test="cada08 != null">
+        CADA08 = #{cada08,jdbcType=VARCHAR},
+      </if>
+      <if test="cada09 != null">
+        CADA09 = #{cada09,jdbcType=VARCHAR},
+      </if>
+      <if test="cada10 != null">
+        CADA10 = #{cada10,jdbcType=INTEGER},
+      </if>
+      <if test="cada11 != null">
+        CADA11 = #{cada11,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CADA01 = #{cada01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cada">
+    update `CADA`
+    set CADA02 = #{cada02,jdbcType=INTEGER},
+      CADA03 = #{cada03,jdbcType=TIMESTAMP},
+      CADA04 = #{cada04,jdbcType=TIMESTAMP},
+      CADA05 = #{cada05,jdbcType=INTEGER},
+      CADA06 = #{cada06,jdbcType=INTEGER},
+      CADA07 = #{cada07,jdbcType=INTEGER},
+      CADA08 = #{cada08,jdbcType=VARCHAR},
+      CADA09 = #{cada09,jdbcType=VARCHAR},
+      CADA10 = #{cada10,jdbcType=INTEGER},
+      CADA11 = #{cada11,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CADA01 = #{cada01,jdbcType=INTEGER}
+  </update>
+  <resultMap type="CADA" id="CADAResult">
+    <result property="cada01"    column="CADA01"    />
+    <result property="cada02"    column="CADA02"    />
+    <result property="cada03"    column="CADA03"    />
+    <result property="cada04"    column="CADA04"    />
+    <result property="cada05"    column="CADA05"    />
+    <result property="cada06"    column="CADA06"    />
+    <result property="cada07"    column="CADA07"    />
+    <result property="cada08"    column="CADA08"    />
+    <result property="cada09"    column="CADA09"    />
+    <result property="cada10"    column="CADA10"    />
+    <result property="cada11"    column="CADA11"    />
+    <result property="userId"    column="user_id"    />
+  </resultMap>
+  <sql id="selectCADAVo">
+    select CADA01, CADA02, CADA03, CADA04, CADA05, CADA06, CADA07, CADA08, CADA09, CADA10,
+           CADA11, user_id from CADA recruit
+  </sql>
+  <select id="selectCADAList" parameterType="CADA" resultMap="CADAResult">
+    <include refid="selectCADAVo"/>
+    <where>
+      <if test="cada02 != null "> and CADA02 = #{cada02}</if>
+      <if test="cada03 != null "> and CADA03 = #{cada03}</if>
+      <if test="cada04 != null "> and CADA04 = #{cada04}</if>
+      <if test="cada05 != null "> and CADA05 = #{cada05}</if>
+      <if test="cada06 != null "> and CADA06 = #{cada06}</if>
+      <if test="cada07 != null "> and CADA07 = #{cada07}</if>
+      <if test="cada08 != null  and cada08 != ''"> and CADA08 = #{cada08}</if>
+      <if test="cada09 != null  and cada09 != ''"> and CADA09 = #{cada09}</if>
+      <if test="cada10 != null "> and CADA10 = #{cada10}</if>
+      <if test="cada11 != null  and cada11 != ''"> and CADA11 = #{cada11}</if>
+      <if test="userId != null "> and user_id = #{userId}</if>
+      ${params.dataScope}
+    </where>
+  </select>
+
+</mapper>

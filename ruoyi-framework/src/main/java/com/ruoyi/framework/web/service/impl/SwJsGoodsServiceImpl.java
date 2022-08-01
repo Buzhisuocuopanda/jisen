@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
@@ -155,6 +156,7 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
      * @return 商品
      */
     @Override
+    @DataScope(userAlias = "recruit.CBPB04")
     public List<Cbpb> selectSwJsGoodsList(Cbpb cbpb) {
         return cbpbMapper.selectSwJsGoodsList(cbpb);
     }

@@ -30,6 +30,8 @@ public class Cbpe implements Serializable {
 
     private Integer cbpc01;
 
+    private Integer userId;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbpe01() {
@@ -136,6 +138,14 @@ public class Cbpe implements Serializable {
         this.cbpc01 = cbpc01;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -160,7 +170,8 @@ public class Cbpe implements Serializable {
             && (this.getCbpe10() == null ? other.getCbpe10() == null : this.getCbpe10().equals(other.getCbpe10()))
             && (this.getCbpe11() == null ? other.getCbpe11() == null : this.getCbpe11().equals(other.getCbpe11()))
             && (this.getCbpe12() == null ? other.getCbpe12() == null : this.getCbpe12().equals(other.getCbpe12()))
-            && (this.getCbpc01() == null ? other.getCbpc01() == null : this.getCbpc01().equals(other.getCbpc01()));
+            && (this.getCbpc01() == null ? other.getCbpc01() == null : this.getCbpc01().equals(other.getCbpc01()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
     }
 
     @Override
@@ -180,6 +191,7 @@ public class Cbpe implements Serializable {
         result = prime * result + ((getCbpe11() == null) ? 0 : getCbpe11().hashCode());
         result = prime * result + ((getCbpe12() == null) ? 0 : getCbpe12().hashCode());
         result = prime * result + ((getCbpc01() == null) ? 0 : getCbpc01().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         return result;
     }
 
@@ -202,6 +214,7 @@ public class Cbpe implements Serializable {
         sb.append(", cbpe11=").append(cbpe11);
         sb.append(", cbpe12=").append(cbpe12);
         sb.append(", cbpc01=").append(cbpc01);
+        sb.append(", userId=").append(userId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
