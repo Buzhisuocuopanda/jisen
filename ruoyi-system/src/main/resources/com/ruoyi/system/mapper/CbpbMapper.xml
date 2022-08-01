@@ -476,4 +476,6 @@
     where CBPB01 = #{cbpb01,jdbcType=INTEGER}
     for update
   </select>
+
+
 </mapper>

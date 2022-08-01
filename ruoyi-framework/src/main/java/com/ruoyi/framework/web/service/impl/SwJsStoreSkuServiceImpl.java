@@ -1,12 +1,13 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.DeleteFlagEnum1;
-import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Cbpc;
+import com.ruoyi.system.domain.CbpcCriteria;
+import com.ruoyi.system.domain.Cbwa;
+import com.ruoyi.system.domain.CbwaCriteria;
 import com.ruoyi.system.domain.Dto.CbwaDto;
 import com.ruoyi.system.mapper.CbpcMapper;
 import com.ruoyi.system.mapper.CbwaMapper;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 库位信息Service业务层处理

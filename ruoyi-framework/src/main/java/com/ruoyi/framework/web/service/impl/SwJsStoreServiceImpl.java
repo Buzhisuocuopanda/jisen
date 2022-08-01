@@ -1,8 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.DeleteFlagEnum1;
-import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -32,8 +30,7 @@ import java.util.List;
 @Service
 public class SwJsStoreServiceImpl implements ISwJsStoreService {
 
-    @Resource
-    private GsSystemUseMapper gsSystemUseMapper;
+
     @Resource
     private CblaMapper cblaMapper;
     @Resource
