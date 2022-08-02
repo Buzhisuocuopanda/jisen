@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbibMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbib">
+    <result column="CBIB01" jdbcType="INTEGER" property="cbib01" />
+    <result column="CBIB02" jdbcType="INTEGER" property="cbib02" />
+    <result column="CBIB03" jdbcType="VARCHAR" property="cbib03" />
+    <result column="CBIB04" jdbcType="TIMESTAMP" property="cbib04" />
+    <result column="CBIB05" jdbcType="VARCHAR" property="cbib05" />
+    <result column="CBIB06" jdbcType="VARCHAR" property="cbib06" />
+    <result column="CBIB07" jdbcType="INTEGER" property="cbib07" />
+    <result column="CBIB08" jdbcType="INTEGER" property="cbib08" />
+    <result column="CBIB09" jdbcType="DOUBLE" property="cbib09" />
+    <result column="CBIB10" jdbcType="DOUBLE" property="cbib10" />
+    <result column="CBIB11" jdbcType="DOUBLE" property="cbib11" />
+    <result column="CBIB12" jdbcType="DOUBLE" property="cbib12" />
+    <result column="CBIB13" jdbcType="DOUBLE" property="cbib13" />
+    <result column="CBIB14" jdbcType="DOUBLE" property="cbib14" />
+    <result column="CBIB15" jdbcType="DOUBLE" property="cbib15" />
+    <result column="CBIB16" jdbcType="DOUBLE" property="cbib16" />
+    <result column="CBIB17" jdbcType="VARCHAR" property="cbib17" />
+    <result column="CBIB18" jdbcType="INTEGER" property="cbib18" />
+    <result column="CBIB19" jdbcType="INTEGER" property="cbib19" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBIB01, CBIB02, CBIB03, CBIB04, CBIB05, CBIB06, CBIB07, CBIB08, CBIB09, CBIB10, CBIB11, 
+    CBIB12, CBIB13, CBIB14, CBIB15, CBIB16, CBIB17, CBIB18, CBIB19
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbibCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBIB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbibCriteria">
+    delete from `CBIB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbib">
+    insert into `CBIB` (CBIB01, CBIB02, CBIB03, 
+      CBIB04, CBIB05, CBIB06, 
+      CBIB07, CBIB08, CBIB09, 
+      CBIB10, CBIB11, CBIB12, 
+      CBIB13, CBIB14, CBIB15, 
+      CBIB16, CBIB17, CBIB18, 
+      CBIB19)
+    values (#{cbib01,jdbcType=INTEGER}, #{cbib02,jdbcType=INTEGER}, #{cbib03,jdbcType=VARCHAR}, 
+      #{cbib04,jdbcType=TIMESTAMP}, #{cbib05,jdbcType=VARCHAR}, #{cbib06,jdbcType=VARCHAR}, 
+      #{cbib07,jdbcType=INTEGER}, #{cbib08,jdbcType=INTEGER}, #{cbib09,jdbcType=DOUBLE}, 
+      #{cbib10,jdbcType=DOUBLE}, #{cbib11,jdbcType=DOUBLE}, #{cbib12,jdbcType=DOUBLE}, 
+      #{cbib13,jdbcType=DOUBLE}, #{cbib14,jdbcType=DOUBLE}, #{cbib15,jdbcType=DOUBLE}, 
+      #{cbib16,jdbcType=DOUBLE}, #{cbib17,jdbcType=VARCHAR}, #{cbib18,jdbcType=INTEGER}, 
+      #{cbib19,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbib">
+    insert into `CBIB`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbib01 != null">
+        CBIB01,
+      </if>
+      <if test="cbib02 != null">
+        CBIB02,
+      </if>
+      <if test="cbib03 != null">
+        CBIB03,
+      </if>
+      <if test="cbib04 != null">
+        CBIB04,
+      </if>
+      <if test="cbib05 != null">
+        CBIB05,
+      </if>
+      <if test="cbib06 != null">
+        CBIB06,
+      </if>
+      <if test="cbib07 != null">
+        CBIB07,
+      </if>
+      <if test="cbib08 != null">
+        CBIB08,
+      </if>
+      <if test="cbib09 != null">
+        CBIB09,
+      </if>
+      <if test="cbib10 != null">
+        CBIB10,
+      </if>
+      <if test="cbib11 != null">
+        CBIB11,
+      </if>
+      <if test="cbib12 != null">
+        CBIB12,
+      </if>
+      <if test="cbib13 != null">
+        CBIB13,
+      </if>
+      <if test="cbib14 != null">
+        CBIB14,
+      </if>
+      <if test="cbib15 != null">
+        CBIB15,
+      </if>
+      <if test="cbib16 != null">
+        CBIB16,
+      </if>
+      <if test="cbib17 != null">
+        CBIB17,
+      </if>
+      <if test="cbib18 != null">
+        CBIB18,
+      </if>
+      <if test="cbib19 != null">
+        CBIB19,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbib01 != null">
+        #{cbib01,jdbcType=INTEGER},
+      </if>
+      <if test="cbib02 != null">
+        #{cbib02,jdbcType=INTEGER},
+      </if>
+      <if test="cbib03 != null">
+        #{cbib03,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib04 != null">
+        #{cbib04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbib05 != null">
+        #{cbib05,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib06 != null">
+        #{cbib06,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib07 != null">
+        #{cbib07,jdbcType=INTEGER},
+      </if>
+      <if test="cbib08 != null">
+        #{cbib08,jdbcType=INTEGER},
+      </if>
+      <if test="cbib09 != null">
+        #{cbib09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib10 != null">
+        #{cbib10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib11 != null">
+        #{cbib11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib12 != null">
+        #{cbib12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib13 != null">
+        #{cbib13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib14 != null">
+        #{cbib14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib15 != null">
+        #{cbib15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib16 != null">
+        #{cbib16,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib17 != null">
+        #{cbib17,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib18 != null">
+        #{cbib18,jdbcType=INTEGER},
+      </if>
+      <if test="cbib19 != null">
+        #{cbib19,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbibCriteria" resultType="java.lang.Long">
+    select count(*) from `CBIB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBIB`
+    <set>
+      <if test="record.cbib01 != null">
+        CBIB01 = #{record.cbib01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbib02 != null">
+        CBIB02 = #{record.cbib02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbib03 != null">
+        CBIB03 = #{record.cbib03,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbib04 != null">
+        CBIB04 = #{record.cbib04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbib05 != null">
+        CBIB05 = #{record.cbib05,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbib06 != null">
+        CBIB06 = #{record.cbib06,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbib07 != null">
+        CBIB07 = #{record.cbib07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbib08 != null">
+        CBIB08 = #{record.cbib08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbib09 != null">
+        CBIB09 = #{record.cbib09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib10 != null">
+        CBIB10 = #{record.cbib10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib11 != null">
+        CBIB11 = #{record.cbib11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib12 != null">
+        CBIB12 = #{record.cbib12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib13 != null">
+        CBIB13 = #{record.cbib13,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib14 != null">
+        CBIB14 = #{record.cbib14,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib15 != null">
+        CBIB15 = #{record.cbib15,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib16 != null">
+        CBIB16 = #{record.cbib16,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbib17 != null">
+        CBIB17 = #{record.cbib17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbib18 != null">
+        CBIB18 = #{record.cbib18,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbib19 != null">
+        CBIB19 = #{record.cbib19,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBIB`
+    set CBIB01 = #{record.cbib01,jdbcType=INTEGER},
+      CBIB02 = #{record.cbib02,jdbcType=INTEGER},
+      CBIB03 = #{record.cbib03,jdbcType=VARCHAR},
+      CBIB04 = #{record.cbib04,jdbcType=TIMESTAMP},
+      CBIB05 = #{record.cbib05,jdbcType=VARCHAR},
+      CBIB06 = #{record.cbib06,jdbcType=VARCHAR},
+      CBIB07 = #{record.cbib07,jdbcType=INTEGER},
+      CBIB08 = #{record.cbib08,jdbcType=INTEGER},
+      CBIB09 = #{record.cbib09,jdbcType=DOUBLE},
+      CBIB10 = #{record.cbib10,jdbcType=DOUBLE},
+      CBIB11 = #{record.cbib11,jdbcType=DOUBLE},
+      CBIB12 = #{record.cbib12,jdbcType=DOUBLE},
+      CBIB13 = #{record.cbib13,jdbcType=DOUBLE},
+      CBIB14 = #{record.cbib14,jdbcType=DOUBLE},
+      CBIB15 = #{record.cbib15,jdbcType=DOUBLE},
+      CBIB16 = #{record.cbib16,jdbcType=DOUBLE},
+      CBIB17 = #{record.cbib17,jdbcType=VARCHAR},
+      CBIB18 = #{record.cbib18,jdbcType=INTEGER},
+      CBIB19 = #{record.cbib19,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
