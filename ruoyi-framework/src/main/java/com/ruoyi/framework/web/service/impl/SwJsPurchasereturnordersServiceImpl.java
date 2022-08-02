@@ -7,6 +7,8 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Dto.CbpgDto;
+import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.mapper.CbpgMapper;
 import com.ruoyi.system.mapper.CbphMapper;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
@@ -110,7 +112,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return   cbpgMapper.updateByExampleSelective(cbpg, example);
     }
-
+    /**
+     * 更新采购退货单
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
     @Override
     public int updateSwJsSkuBarcodes(CbpgDto cbpgDto) {
         //标记完成不可删除
@@ -139,5 +146,31 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         example2.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return    cbpgMapper.updateByExampleSelective(cbpg, example2);
+    }
+    /**
+     * 采购退货单详情
+     *
+     * @param cbpgVo 审核信息
+     * @return 结果
+     */
+    @Override
+    public List<CbpgVo> selectSwJsTaskGoodsRelLists(CbpgVo cbpgVo) {
+        return  cbpgMapper.getInfoss(cbpgVo);
+    }
+    /**
+     * 采购退货单列表
+     *
+     * @param cbpgVo 审核信息
+     * @return 结果
+     */
+    @Override
+    public List<CbpgVo> selectSwJsTaskGoodsRelList(CbpgVo cbpgVo) {
+        return  cbpgMapper.getInfos(cbpgVo);
+
+    }
+
+    @Override
+    public List<CbpgVo> selectSwJsTaskGoodsRelListss(CbpgVo cbpgVo) {
+        return  cbpgMapper.getInfosss(cbpgVo);
     }
 }

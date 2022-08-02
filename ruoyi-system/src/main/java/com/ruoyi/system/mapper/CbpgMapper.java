@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbpg;
 import com.ruoyi.system.domain.CbpgCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.CbpgVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbpgMapper {
@@ -27,4 +30,10 @@ public interface CbpgMapper {
     int updateByPrimaryKeySelective(Cbpg record);
 
     int updateByPrimaryKey(Cbpg record);
+
+    List<CbpgVo> getInfoss(CbpgVo cbpgVo);
+
+    List<CbpgVo> getInfos(CbpgVo cbpgVo);
+
+    List<CbpgVo> getInfosss(CbpgVo cbpgVo);
 }

@@ -80,7 +80,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPG01, CBPG02, CBPG03, CBPG04, CBPG05, CBPG06, CBPG07, CBPG08, CBPG09, CBPG10, CBPG11, 
+    CBPG01, CBPG02, CBPG03, CBPG04, CBPG05, CBPG06, CBPG07, CBPG08, CBPG09, CBPG10, CBPG11,
     CBPG12, CBPG13, CBPG14, CBPG15, CBPG16, CBPG17, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpgCriteria" resultMap="BaseResultMap">
@@ -98,7 +98,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPG`
     where CBPG01 = #{cbpg01,jdbcType=INTEGER}
@@ -114,18 +114,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpg">
-    insert into `CBPG` (CBPG01, CBPG02, CBPG03, 
-      CBPG04, CBPG05, CBPG06, 
-      CBPG07, CBPG08, CBPG09, 
-      CBPG10, CBPG11, CBPG12, 
-      CBPG13, CBPG14, CBPG15, 
+    insert into `CBPG` (CBPG01, CBPG02, CBPG03,
+      CBPG04, CBPG05, CBPG06,
+      CBPG07, CBPG08, CBPG09,
+      CBPG10, CBPG11, CBPG12,
+      CBPG13, CBPG14, CBPG15,
       CBPG16, CBPG17, user_id
       )
-    values (#{cbpg01,jdbcType=INTEGER}, #{cbpg02,jdbcType=TIMESTAMP}, #{cbpg03,jdbcType=INTEGER}, 
-      #{cbpg04,jdbcType=TIMESTAMP}, #{cbpg05,jdbcType=INTEGER}, #{cbpg06,jdbcType=INTEGER}, 
-      #{cbpg07,jdbcType=VARCHAR}, #{cbpg08,jdbcType=TIMESTAMP}, #{cbpg09,jdbcType=INTEGER}, 
-      #{cbpg10,jdbcType=INTEGER}, #{cbpg11,jdbcType=INTEGER}, #{cbpg12,jdbcType=INTEGER}, 
-      #{cbpg13,jdbcType=TIMESTAMP}, #{cbpg14,jdbcType=INTEGER}, #{cbpg15,jdbcType=TIMESTAMP}, 
+    values (#{cbpg01,jdbcType=INTEGER}, #{cbpg02,jdbcType=TIMESTAMP}, #{cbpg03,jdbcType=INTEGER},
+      #{cbpg04,jdbcType=TIMESTAMP}, #{cbpg05,jdbcType=INTEGER}, #{cbpg06,jdbcType=INTEGER},
+      #{cbpg07,jdbcType=VARCHAR}, #{cbpg08,jdbcType=TIMESTAMP}, #{cbpg09,jdbcType=INTEGER},
+      #{cbpg10,jdbcType=INTEGER}, #{cbpg11,jdbcType=INTEGER}, #{cbpg12,jdbcType=INTEGER},
+      #{cbpg13,jdbcType=TIMESTAMP}, #{cbpg14,jdbcType=INTEGER}, #{cbpg15,jdbcType=TIMESTAMP},
       #{cbpg16,jdbcType=INTEGER}, #{cbpg17,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
       )
   </insert>
@@ -250,7 +250,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBPG`
     <set>
       <if test="record.cbpg01 != null">
@@ -414,4 +414,81 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBPG01 = #{cbpg01,jdbcType=INTEGER}
   </update>
+
+  <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
+            h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,
+            f.CBPI09
+    from CBPG a
+           LEFT JOIN
+         CBPH b
+         on a.CBPG01=b.CBPG01
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+           left JOIN
+         CBPI f
+         on a.CBPG01=f.CBPG01
+           left join
+         CBBA g
+         on f.CBPI08=g.CBBA01
+           left join
+         CBPB h
+         on h.CBPB01=g.CBBA08
+    WHERE
+      a.CBPG06=0
+    <if test="cbpg01 != null "> and a.CBPG01 = #{cbpg01}</if>
+
+    order by a.CBPG08 desc
+
+  </select>
+  <select id="getInfos" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
+
+    from CBPG a
+
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+
+    WHERE
+      a.CBPG06=0
+    order by a.CBPG08 desc
+  </select>
+  <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
+
+    from CBPG a
+
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+
+    WHERE
+      a.CBPG06=0
+    <if test="cbpg07 != null "> and a.CBPG07 like concat('%', #{cbpg07}, '%')</if>
+    <if test="cbsa08 != null "> and c.CBSA08 like concat('%', #{cbsa08}, '%')</if>
+    <if test="cbwa09 != null "> and d.CBWA09 like concat('%', #{cbwa09}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and a.CBPG08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBPG08 <![CDATA[<=]]>#{endTime}</if>
+  </select>
+
 </mapper>
