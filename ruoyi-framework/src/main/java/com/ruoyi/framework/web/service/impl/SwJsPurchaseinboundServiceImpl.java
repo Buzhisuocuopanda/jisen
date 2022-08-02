@@ -87,6 +87,7 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         List<Integer> collect = cbpcs1.stream().map(Cbpc::getCbpc01).collect(Collectors.toList());
         int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
+
         Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
         cbpd.setCbpd02(cbpdDto.getCbpd02());
         cbpd.setCbpd03(date);
