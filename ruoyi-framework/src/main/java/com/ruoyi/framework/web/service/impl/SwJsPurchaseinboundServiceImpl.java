@@ -249,7 +249,7 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
             throw new SwException("非反审或默认不可修改");
         }
 
-
+        if(cbpdDto.getCbpc07()!=null){
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -257,7 +257,7 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         if(cbpcs.size() >0){
             throw new SwException("编号已存在");
 
-        }
+        }}
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
         Date date = new Date();
