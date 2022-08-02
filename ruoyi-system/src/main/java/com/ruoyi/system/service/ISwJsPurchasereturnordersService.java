@@ -19,4 +19,12 @@ public interface ISwJsPurchasereturnordersService {
     List<CbpgVo> selectSwJsTaskGoodsRelList(CbpgVo cbpgVo);
 
     List<CbpgVo> selectSwJsTaskGoodsRelListss(CbpgVo cbpgVo);
+
+    int SwJsSkuBarcodeshs(CbpgDto cbpgDto);
+
+    int SwJsSkuBarcodesh(CbpgDto cbpgDto);
+
+    int SwJsSkuBarcodeshss(CbpgDto cbpgDto);
+
+    int SwJsSkuBarcodes(CbpgDto cbpgDto);
 }

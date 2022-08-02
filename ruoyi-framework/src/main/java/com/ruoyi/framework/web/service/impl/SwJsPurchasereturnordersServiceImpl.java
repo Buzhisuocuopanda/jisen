@@ -168,9 +168,105 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         return  cbpgMapper.getInfos(cbpgVo);
 
     }
-
+    /**
+     * 查询退货单列表
+     *
+     * @param cbpgVo 审核信息
+     * @return 结果
+     */
     @Override
     public List<CbpgVo> selectSwJsTaskGoodsRelListss(CbpgVo cbpgVo) {
         return  cbpgMapper.getInfosss(cbpgVo);
     }
+    /**
+     * 审核退货单列表
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date(TaskStatus.sh.getCode());
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg11(Math.toIntExact(userid));
+
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        cbpg.setCbpg13(date);
+        //cbpg.setCbpg15(date);
+        CbpgCriteria example = new CbpgCriteria();
+        example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return cbpgMapper.updateByExampleSelective(cbpg, example);
+
+    }
+    /**
+     * 反审退货单列表
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date(TaskStatus.fsh.getCode());
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg11(Math.toIntExact(userid));
+
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        cbpg.setCbpg13(date);
+        //cbpg.setCbpg15(date);
+        CbpgCriteria example = new CbpgCriteria();
+        example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return cbpgMapper.updateByExampleSelective(cbpg, example);    }
+    /**
+     * 取消完成退货单列表
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date(TaskStatus.qxwc.getCode());
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg11(Math.toIntExact(userid));
+
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        cbpg.setCbpg13(date);
+        //cbpg.setCbpg15(date);
+        CbpgCriteria example = new CbpgCriteria();
+        example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return cbpgMapper.updateByExampleSelective(cbpg, example);    }
+    /**
+     * 标记完成退货单列表
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date(TaskStatus.bjwc.getCode());
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg11(Math.toIntExact(userid));
+
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        cbpg.setCbpg13(date);
+        //cbpg.setCbpg15(date);
+        CbpgCriteria example = new CbpgCriteria();
+        example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return cbpgMapper.updateByExampleSelective(cbpg, example);      }
+
 }
