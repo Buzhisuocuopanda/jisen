@@ -3,7 +3,7 @@ package com.ruoyi.system.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-public class GsUnDistributionGoods implements Serializable {
+public class GsAllocationBalance implements Serializable {
     private Integer id;
 
     private Date createTime;
@@ -14,11 +14,9 @@ public class GsUnDistributionGoods implements Serializable {
 
     private Long updateBy;
 
-    private Byte deleteFlag;
-
     private Integer goodsId;
 
-    private Integer num;
+    private Double qty;
 
     private static final long serialVersionUID = 1L;
 
@@ -62,14 +60,6 @@ public class GsUnDistributionGoods implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public Byte getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Byte deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
     public Integer getGoodsId() {
         return goodsId;
     }
@@ -78,12 +68,12 @@ public class GsUnDistributionGoods implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public Integer getNum() {
-        return num;
+    public Double getQty() {
+        return qty;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setQty(Double qty) {
+        this.qty = qty;
     }
 
     @Override
@@ -97,15 +87,14 @@ public class GsUnDistributionGoods implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        GsUnDistributionGoods other = (GsUnDistributionGoods) that;
+        GsAllocationBalance other = (GsAllocationBalance) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
-            && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()))
             && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
-            && (this.getNum() == null ? other.getNum() == null : this.getNum().equals(other.getNum()));
+            && (this.getQty() == null ? other.getQty() == null : this.getQty().equals(other.getQty()));
     }
 
     @Override
@@ -117,9 +106,8 @@ public class GsUnDistributionGoods implements Serializable {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
-        result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
         result = prime * result + ((getGoodsId() == null) ? 0 : getGoodsId().hashCode());
-        result = prime * result + ((getNum() == null) ? 0 : getNum().hashCode());
+        result = prime * result + ((getQty() == null) ? 0 : getQty().hashCode());
         return result;
     }
 
@@ -134,9 +122,8 @@ public class GsUnDistributionGoods implements Serializable {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createBy=").append(createBy);
         sb.append(", updateBy=").append(updateBy);
-        sb.append(", deleteFlag=").append(deleteFlag);
         sb.append(", goodsId=").append(goodsId);
-        sb.append(", num=").append(num);
+        sb.append(", qty=").append(qty);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

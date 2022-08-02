@@ -414,4 +414,16 @@ ORDER BY
 	cb.CBBA15 DESC
   </select>
 
+  <select id="selectByGoodsId" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	CBBA c
+WHERE
+	c.CBBA08 = #{goodsId}
+	AND c.CBBA06 =0
+	AND c.CBBA12= 0
+	order by c.CBBA15
+  </select>
+
 </mapper>

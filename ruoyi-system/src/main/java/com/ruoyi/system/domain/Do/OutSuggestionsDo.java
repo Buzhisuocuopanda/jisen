@@ -21,6 +21,10 @@ public class OutSuggestionsDo {
 
 
     //所需数量
-    private BigDecimal qty;
+    private Double qty;
+
+    private String goodsName;
+
+    private Integer goodsId;
 
 }

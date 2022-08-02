@@ -3,6 +3,7 @@ package com.ruoyi.system.service.gson.impl;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -24,18 +25,18 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     @Override
     public Cbpb checkGoodsForUpdate(Integer goodsId, String goodsName) {
         if(goodsId==null){
-            throw new ServiceException("请选择要下单的商品");
+            throw new SwException("请选择要下单的商品");
         }
 
 
         Cbpb cbpb = cbpbMapper.selectByPrimaryKeyForUpdate(goodsId);
         if(cbpb==null || DeleteFlagEnum.DELETE.equals(cbpb.getCbpb06())){
 
-            throw new ServiceException("未找到商品："+goodsName==null?"":goodsName);
+            throw new SwException("未找到商品："+goodsName==null?"":goodsName);
         }
 
         if(UseFlagEnum.JINYONG.equals(cbpb.getCbpb07())){
-            throw new ServiceException("该商品已禁用:"+goodsName==null?"":goodsName);
+            throw new SwException("该商品已禁用:"+goodsName==null?"":goodsName);
         }
         return cbpb;
     }
@@ -43,18 +44,18 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     @Override
     public Cbpb checkGoods(Integer goodsId, String goodsName) {
         if(goodsId==null){
-            throw new ServiceException("请选择要下单的商品");
+            throw new SwException("请选择要下单的商品");
         }
 
 
         Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsId);
         if(cbpb==null || DeleteFlagEnum.DELETE.equals(cbpb.getCbpb06())){
 
-            throw new ServiceException("未找到商品："+goodsName==null?"":goodsName);
+            throw new SwException("未找到商品："+goodsName==null?"":goodsName);
         }
 
         if(UseFlagEnum.JINYONG.equals(cbpb.getCbpb07())){
-            throw new ServiceException("该商品已禁用:"+goodsName==null?"":goodsName);
+            throw new SwException("该商品已禁用:"+goodsName==null?"":goodsName);
         }
         return cbpb;
     }

@@ -411,4 +411,17 @@
     <include refid="selectCBWAVo"/>
     where CBWA06=0
   </select>
+
+  <select id="selectCalculationOrderPriority" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	`CBWA` c
+WHERE
+	c.CBWA06 = 0
+	AND c.CBWA08 = '启用'
+	AND c.allocation_flag =1
+	order by c.CBWA07
+  </select>
+
 </mapper>
