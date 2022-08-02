@@ -99,9 +99,12 @@ public class CbpcVo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
-    private Double sum;
 
-    private Double money;
+
+    private String cbsa08;
+    private String cbwa09;
+    private String cala08;
+
 
 
 }

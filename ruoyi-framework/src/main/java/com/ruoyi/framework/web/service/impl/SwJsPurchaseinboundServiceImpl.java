@@ -197,6 +197,11 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         return cbpcMapper.updateByExampleSelective(cbpc, example);
     }
 
+    @Override
+    public List<CbpcVo> selectSwJsTaskGoodsRelListss(CbpcVo cbpcVo) {
+        return  cbpdMapper.getInfosss(cbpcVo);
+    }
+
     /**
      * 删除采购入库单
      *

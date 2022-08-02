@@ -233,7 +233,28 @@ public class SwJsPurchaseinboundController extends BaseController {
         }
     }
 
+    /**
+     * 采购入库单列表
+     */
+    @ApiOperation(
+            value ="采购入库单列表",
+            notes = "采购入库单列表"
+    )
+    @GetMapping("/SwJsSkuBarcodelists")
+    public AjaxResult<TableDataInfo> swJsGoodslists(CbpcVo cbpcVo) {
+        try {
+            startPage();
+            List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListss(cbpcVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【采购入库单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpcVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 导出采购入库单
      */
