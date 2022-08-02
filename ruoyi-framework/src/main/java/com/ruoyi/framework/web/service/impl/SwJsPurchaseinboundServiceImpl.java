@@ -52,7 +52,10 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
-        Assert.isNull(cbpcs, "编号已存在.");
+        if(cbpcs.size() >0){
+            throw new SwException("编号已存在");
+
+        }
 
 
 
@@ -78,8 +81,11 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         cbpc.setUserId(Math.toIntExact(userid));
         cbpcMapper.insertSelective(cbpc);
 
-
-        List<Integer> collect = cbpcs.stream().map(Cbpc::getCbpc01).collect(Collectors.toList());
+        CbpcCriteria example1 = new CbpcCriteria();
+        example1.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
+        List<Integer> collect = cbpcs1.stream().map(Cbpc::getCbpc01).collect(Collectors.toList());
         int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
         Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
         cbpd.setCbpd02(cbpdDto.getCbpd02());
@@ -183,8 +189,8 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         cbpc.setCbpc04(date);
         cbpc.setCbpc05(Math.toIntExact(userid));
         cbpc.setCbpc11(TaskStatus.qxwc.getCode());
-        cbpc.setCbpc12(cbpdDto.getCbpc12());
-        cbpc.setCbpc13(cbpdDto.getCbpc13());
+        cbpc.setCbpc12(Math.toIntExact(userid));
+        cbpc.setCbpc13(date);
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -218,8 +224,8 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbpcMapper.updateByExampleSelective(cbpc, example);
-        return 0;
+        return   cbpcMapper.updateByExampleSelective(cbpc, example);
+
     }
     /**
      * 修改采购入库单
@@ -242,8 +248,10 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
-        Assert.isNull(cbpcs, "编号已存在.");
+        if(cbpcs.size() >0){
+            throw new SwException("编号已存在");
 
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
         Date date = new Date();

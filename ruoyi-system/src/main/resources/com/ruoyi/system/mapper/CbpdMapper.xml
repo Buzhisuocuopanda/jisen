@@ -384,7 +384,7 @@
     LEFT JOIN
     CBPB d
     on b.CBPD08=d.CBPB01
-    order by a.CBPC08 desc
+
     <where>
       a.CBPC06=0
       <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
@@ -397,6 +397,7 @@
       <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
       <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
     </where>
+    order by a.CBPC08 desc
   </select>
   <resultMap type="CBPC" id="CBPCResult">
     <result property="cbpc01"    column="CBPC01"    />
