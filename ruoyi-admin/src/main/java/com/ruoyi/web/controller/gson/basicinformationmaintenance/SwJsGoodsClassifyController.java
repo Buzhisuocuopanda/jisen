@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.gson.Basicinformationmaintenance;
+package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;

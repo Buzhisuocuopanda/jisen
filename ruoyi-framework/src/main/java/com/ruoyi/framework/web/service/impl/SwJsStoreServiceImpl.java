@@ -32,8 +32,7 @@ import java.util.List;
 @Service
 public class SwJsStoreServiceImpl implements ISwJsStoreService {
 
-    @Resource
-    private GsSystemUseMapper gsSystemUseMapper;
+
     @Resource
     private CblaMapper cblaMapper;
     @Resource

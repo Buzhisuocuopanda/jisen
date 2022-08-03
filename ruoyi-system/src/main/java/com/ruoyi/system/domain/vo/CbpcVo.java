@@ -1,10 +1,12 @@
-package com.ruoyi.system.domain.Dto;
+package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class CbpdDto {
+public class CbpcVo {
     private Integer cbpc01;
 
     private Date cbpc02;
@@ -66,5 +68,43 @@ public class CbpdDto {
     private Double cbpd12;
 
     private String cbpd13;
+    private Integer cbpe01;
+
+    private Integer cbpe02;
+
+    private Date cbpe03;
+
+    private Integer cbpe04;
+
+    private Date cbpe05;
+
+    private Integer cbpe06;
+
+    private Integer cbpe07;
+
+    private Integer cbpe08;
+
+    private String cbpe09;
+
+    private Integer cbpe10;
+
+    private Integer cbpe11;
+
+    private String cbpe12;
+
+    @ApiParam(value = "开始时间", required = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String startTime;
+    @ApiParam(value = "结束时间", required = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String endTime;
+
+
+
+    private String cbsa08;
+    private String cbwa09;
+    private String cala08;
+
+
 
 }

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbpgMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpg">
+    <id column="CBPG01" jdbcType="INTEGER" property="cbpg01" />
+    <result column="CBPG02" jdbcType="TIMESTAMP" property="cbpg02" />
+    <result column="CBPG03" jdbcType="INTEGER" property="cbpg03" />
+    <result column="CBPG04" jdbcType="TIMESTAMP" property="cbpg04" />
+    <result column="CBPG05" jdbcType="INTEGER" property="cbpg05" />
+    <result column="CBPG06" jdbcType="INTEGER" property="cbpg06" />
+    <result column="CBPG07" jdbcType="VARCHAR" property="cbpg07" />
+    <result column="CBPG08" jdbcType="TIMESTAMP" property="cbpg08" />
+    <result column="CBPG09" jdbcType="INTEGER" property="cbpg09" />
+    <result column="CBPG10" jdbcType="INTEGER" property="cbpg10" />
+    <result column="CBPG11" jdbcType="INTEGER" property="cbpg11" />
+    <result column="CBPG12" jdbcType="INTEGER" property="cbpg12" />
+    <result column="CBPG13" jdbcType="TIMESTAMP" property="cbpg13" />
+    <result column="CBPG14" jdbcType="INTEGER" property="cbpg14" />
+    <result column="CBPG15" jdbcType="TIMESTAMP" property="cbpg15" />
+    <result column="CBPG16" jdbcType="INTEGER" property="cbpg16" />
+    <result column="CBPG17" jdbcType="VARCHAR" property="cbpg17" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPG01, CBPG02, CBPG03, CBPG04, CBPG05, CBPG06, CBPG07, CBPG08, CBPG09, CBPG10, CBPG11,
+    CBPG12, CBPG13, CBPG14, CBPG15, CBPG16, CBPG17, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpgCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBPG`
+    where CBPG01 = #{cbpg01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPG`
+    where CBPG01 = #{cbpg01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpgCriteria">
+    delete from `CBPG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpg">
+    insert into `CBPG` (CBPG01, CBPG02, CBPG03,
+      CBPG04, CBPG05, CBPG06,
+      CBPG07, CBPG08, CBPG09,
+      CBPG10, CBPG11, CBPG12,
+      CBPG13, CBPG14, CBPG15,
+      CBPG16, CBPG17, user_id
+      )
+    values (#{cbpg01,jdbcType=INTEGER}, #{cbpg02,jdbcType=TIMESTAMP}, #{cbpg03,jdbcType=INTEGER},
+      #{cbpg04,jdbcType=TIMESTAMP}, #{cbpg05,jdbcType=INTEGER}, #{cbpg06,jdbcType=INTEGER},
+      #{cbpg07,jdbcType=VARCHAR}, #{cbpg08,jdbcType=TIMESTAMP}, #{cbpg09,jdbcType=INTEGER},
+      #{cbpg10,jdbcType=INTEGER}, #{cbpg11,jdbcType=INTEGER}, #{cbpg12,jdbcType=INTEGER},
+      #{cbpg13,jdbcType=TIMESTAMP}, #{cbpg14,jdbcType=INTEGER}, #{cbpg15,jdbcType=TIMESTAMP},
+      #{cbpg16,jdbcType=INTEGER}, #{cbpg17,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpg">
+    insert into `CBPG`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpg01 != null">
+        CBPG01,
+      </if>
+      <if test="cbpg02 != null">
+        CBPG02,
+      </if>
+      <if test="cbpg03 != null">
+        CBPG03,
+      </if>
+      <if test="cbpg04 != null">
+        CBPG04,
+      </if>
+      <if test="cbpg05 != null">
+        CBPG05,
+      </if>
+      <if test="cbpg06 != null">
+        CBPG06,
+      </if>
+      <if test="cbpg07 != null">
+        CBPG07,
+      </if>
+      <if test="cbpg08 != null">
+        CBPG08,
+      </if>
+      <if test="cbpg09 != null">
+        CBPG09,
+      </if>
+      <if test="cbpg10 != null">
+        CBPG10,
+      </if>
+      <if test="cbpg11 != null">
+        CBPG11,
+      </if>
+      <if test="cbpg12 != null">
+        CBPG12,
+      </if>
+      <if test="cbpg13 != null">
+        CBPG13,
+      </if>
+      <if test="cbpg14 != null">
+        CBPG14,
+      </if>
+      <if test="cbpg15 != null">
+        CBPG15,
+      </if>
+      <if test="cbpg16 != null">
+        CBPG16,
+      </if>
+      <if test="cbpg17 != null">
+        CBPG17,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpg01 != null">
+        #{cbpg01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg02 != null">
+        #{cbpg02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg03 != null">
+        #{cbpg03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg04 != null">
+        #{cbpg04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg05 != null">
+        #{cbpg05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg06 != null">
+        #{cbpg06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg07 != null">
+        #{cbpg07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpg08 != null">
+        #{cbpg08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg09 != null">
+        #{cbpg09,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg10 != null">
+        #{cbpg10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg11 != null">
+        #{cbpg11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg12 != null">
+        #{cbpg12,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg13 != null">
+        #{cbpg13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg14 != null">
+        #{cbpg14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg15 != null">
+        #{cbpg15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg16 != null">
+        #{cbpg16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg17 != null">
+        #{cbpg17,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpgCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBPG`
+    <set>
+      <if test="record.cbpg01 != null">
+        CBPG01 = #{record.cbpg01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg02 != null">
+        CBPG02 = #{record.cbpg02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpg03 != null">
+        CBPG03 = #{record.cbpg03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg04 != null">
+        CBPG04 = #{record.cbpg04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpg05 != null">
+        CBPG05 = #{record.cbpg05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg06 != null">
+        CBPG06 = #{record.cbpg06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg07 != null">
+        CBPG07 = #{record.cbpg07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpg08 != null">
+        CBPG08 = #{record.cbpg08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpg09 != null">
+        CBPG09 = #{record.cbpg09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg10 != null">
+        CBPG10 = #{record.cbpg10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg11 != null">
+        CBPG11 = #{record.cbpg11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg12 != null">
+        CBPG12 = #{record.cbpg12,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg13 != null">
+        CBPG13 = #{record.cbpg13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpg14 != null">
+        CBPG14 = #{record.cbpg14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg15 != null">
+        CBPG15 = #{record.cbpg15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpg16 != null">
+        CBPG16 = #{record.cbpg16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpg17 != null">
+        CBPG17 = #{record.cbpg17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPG`
+    set CBPG01 = #{record.cbpg01,jdbcType=INTEGER},
+      CBPG02 = #{record.cbpg02,jdbcType=TIMESTAMP},
+      CBPG03 = #{record.cbpg03,jdbcType=INTEGER},
+      CBPG04 = #{record.cbpg04,jdbcType=TIMESTAMP},
+      CBPG05 = #{record.cbpg05,jdbcType=INTEGER},
+      CBPG06 = #{record.cbpg06,jdbcType=INTEGER},
+      CBPG07 = #{record.cbpg07,jdbcType=VARCHAR},
+      CBPG08 = #{record.cbpg08,jdbcType=TIMESTAMP},
+      CBPG09 = #{record.cbpg09,jdbcType=INTEGER},
+      CBPG10 = #{record.cbpg10,jdbcType=INTEGER},
+      CBPG11 = #{record.cbpg11,jdbcType=INTEGER},
+      CBPG12 = #{record.cbpg12,jdbcType=INTEGER},
+      CBPG13 = #{record.cbpg13,jdbcType=TIMESTAMP},
+      CBPG14 = #{record.cbpg14,jdbcType=INTEGER},
+      CBPG15 = #{record.cbpg15,jdbcType=TIMESTAMP},
+      CBPG16 = #{record.cbpg16,jdbcType=INTEGER},
+      CBPG17 = #{record.cbpg17,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpg">
+    update `CBPG`
+    <set>
+      <if test="cbpg02 != null">
+        CBPG02 = #{cbpg02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg03 != null">
+        CBPG03 = #{cbpg03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg04 != null">
+        CBPG04 = #{cbpg04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg05 != null">
+        CBPG05 = #{cbpg05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg06 != null">
+        CBPG06 = #{cbpg06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg07 != null">
+        CBPG07 = #{cbpg07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpg08 != null">
+        CBPG08 = #{cbpg08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg09 != null">
+        CBPG09 = #{cbpg09,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg10 != null">
+        CBPG10 = #{cbpg10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg11 != null">
+        CBPG11 = #{cbpg11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg12 != null">
+        CBPG12 = #{cbpg12,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg13 != null">
+        CBPG13 = #{cbpg13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg14 != null">
+        CBPG14 = #{cbpg14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg15 != null">
+        CBPG15 = #{cbpg15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpg16 != null">
+        CBPG16 = #{cbpg16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpg17 != null">
+        CBPG17 = #{cbpg17,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBPG01 = #{cbpg01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpg">
+    update `CBPG`
+    set CBPG02 = #{cbpg02,jdbcType=TIMESTAMP},
+      CBPG03 = #{cbpg03,jdbcType=INTEGER},
+      CBPG04 = #{cbpg04,jdbcType=TIMESTAMP},
+      CBPG05 = #{cbpg05,jdbcType=INTEGER},
+      CBPG06 = #{cbpg06,jdbcType=INTEGER},
+      CBPG07 = #{cbpg07,jdbcType=VARCHAR},
+      CBPG08 = #{cbpg08,jdbcType=TIMESTAMP},
+      CBPG09 = #{cbpg09,jdbcType=INTEGER},
+      CBPG10 = #{cbpg10,jdbcType=INTEGER},
+      CBPG11 = #{cbpg11,jdbcType=INTEGER},
+      CBPG12 = #{cbpg12,jdbcType=INTEGER},
+      CBPG13 = #{cbpg13,jdbcType=TIMESTAMP},
+      CBPG14 = #{cbpg14,jdbcType=INTEGER},
+      CBPG15 = #{cbpg15,jdbcType=TIMESTAMP},
+      CBPG16 = #{cbpg16,jdbcType=INTEGER},
+      CBPG17 = #{cbpg17,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBPG01 = #{cbpg01,jdbcType=INTEGER}
+  </update>
+
+  <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
+            h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,
+            f.CBPI09
+    from CBPG a
+           LEFT JOIN
+         CBPH b
+         on a.CBPG01=b.CBPG01
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+           left JOIN
+         CBPI f
+         on a.CBPG01=f.CBPG01
+           left join
+         CBBA g
+         on f.CBPI08=g.CBBA01
+           left join
+         CBPB h
+         on h.CBPB01=g.CBBA08
+    WHERE
+      a.CBPG06=0
+    <if test="cbpg01 != null "> and a.CBPG01 = #{cbpg01}</if>
+
+    order by a.CBPG08 desc
+
+  </select>
+  <select id="getInfos" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
+
+    from CBPG a
+
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+
+    WHERE
+      a.CBPG06=0
+    order by a.CBPG08 desc
+  </select>
+  <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
+
+    from CBPG a
+
+           LEFT JOIN
+         CBSA c
+         ON a.CBPG09=c.CBSA01
+           LEFT JOIN
+         CBWA d
+         on a.CBPG10=d.CBWA01
+           LEFT JOIN
+         CALA e
+         on a.CBPG16=e.CALA01
+
+    WHERE
+      a.CBPG06=0
+    <if test="cbpg07 != null "> and a.CBPG07 like concat('%', #{cbpg07}, '%')</if>
+    <if test="cbsa08 != null "> and c.CBSA08 like concat('%', #{cbsa08}, '%')</if>
+    <if test="cbwa09 != null "> and d.CBWA09 like concat('%', #{cbwa09}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and a.CBPG08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBPG08 <![CDATA[<=]]>#{endTime}</if>
+  </select>
+
+</mapper>

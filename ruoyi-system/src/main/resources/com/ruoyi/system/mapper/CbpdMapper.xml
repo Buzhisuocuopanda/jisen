@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPD01, CBPD02, CBPD03, CBPD04, CBPD05, CBPD06, CBPD07, CBPD08, CBPD09, CBPD10, CBPD11, 
+    CBPD01, CBPD02, CBPD03, CBPD04, CBPD05, CBPD06, CBPD07, CBPD08, CBPD09, CBPD10, CBPD11,
     CBPD12, CBPD13, CBPC01, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpdCriteria" resultMap="BaseResultMap">
@@ -95,7 +95,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPD`
     where CBPD01 = #{cbpd01,jdbcType=INTEGER}
@@ -111,16 +111,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpd">
-    insert into `CBPD` (CBPD01, CBPD02, CBPD03, 
-      CBPD04, CBPD05, CBPD06, 
-      CBPD07, CBPD08, CBPD09, 
-      CBPD10, CBPD11, CBPD12, 
+    insert into `CBPD` (CBPD01, CBPD02, CBPD03,
+      CBPD04, CBPD05, CBPD06,
+      CBPD07, CBPD08, CBPD09,
+      CBPD10, CBPD11, CBPD12,
       CBPD13, CBPC01, user_id
       )
-    values (#{cbpd01,jdbcType=INTEGER}, #{cbpd02,jdbcType=INTEGER}, #{cbpd03,jdbcType=TIMESTAMP}, 
-      #{cbpd04,jdbcType=INTEGER}, #{cbpd05,jdbcType=TIMESTAMP}, #{cbpd06,jdbcType=INTEGER}, 
-      #{cbpd07,jdbcType=INTEGER}, #{cbpd08,jdbcType=INTEGER}, #{cbpd09,jdbcType=DOUBLE}, 
-      #{cbpd10,jdbcType=DOUBLE}, #{cbpd11,jdbcType=DOUBLE}, #{cbpd12,jdbcType=DOUBLE}, 
+    values (#{cbpd01,jdbcType=INTEGER}, #{cbpd02,jdbcType=INTEGER}, #{cbpd03,jdbcType=TIMESTAMP},
+      #{cbpd04,jdbcType=INTEGER}, #{cbpd05,jdbcType=TIMESTAMP}, #{cbpd06,jdbcType=INTEGER},
+      #{cbpd07,jdbcType=INTEGER}, #{cbpd08,jdbcType=INTEGER}, #{cbpd09,jdbcType=DOUBLE},
+      #{cbpd10,jdbcType=DOUBLE}, #{cbpd11,jdbcType=DOUBLE}, #{cbpd12,jdbcType=DOUBLE},
       #{cbpd13,jdbcType=VARCHAR}, #{cbpc01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
       )
   </insert>
@@ -367,353 +367,171 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBPD01 = #{cbpd01,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpd">
-    <id column="CBPD01" jdbcType="INTEGER" property="cbpd01" />
-    <result column="CBPD02" jdbcType="INTEGER" property="cbpd02" />
-    <result column="CBPD03" jdbcType="TIMESTAMP" property="cbpd03" />
-    <result column="CBPD04" jdbcType="INTEGER" property="cbpd04" />
-    <result column="CBPD05" jdbcType="TIMESTAMP" property="cbpd05" />
-    <result column="CBPD06" jdbcType="INTEGER" property="cbpd06" />
-    <result column="CBPD07" jdbcType="INTEGER" property="cbpd07" />
-    <result column="CBPD08" jdbcType="INTEGER" property="cbpd08" />
-    <result column="CBPD09" jdbcType="DOUBLE" property="cbpd09" />
-    <result column="CBPD10" jdbcType="DOUBLE" property="cbpd10" />
-    <result column="CBPD11" jdbcType="DOUBLE" property="cbpd11" />
-    <result column="CBPD12" jdbcType="DOUBLE" property="cbpd12" />
-    <result column="CBPD13" jdbcType="VARCHAR" property="cbpd13" />
-    <result column="CBPC01" jdbcType="INTEGER" property="cbpc01" />
+
+  <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
+
+    SELECT a.CBPC01,a.CBPC06,a.CBPC07,a.CBPC08,a.CBPC09,a.CBPC10,a.CBPC16,
+    b.CBPD09,b.CBPD11,b.CBPD12,
+    c.CBPE09,c.CBPE10,
+    d.CBPB08,CBPD12
+    from CBPC a
+    LEFT JOIN
+    CBPD b
+    on a.CBPC01=b.CBPC01
+    LEFT JOIN
+    CBPE c
+    ON a.CBPC01=c.CBPC01
+    LEFT JOIN
+    CBPB d
+    on b.CBPD08=d.CBPB01
+
+    <where>
+      a.CBPC06=0
+      <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
+      <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
+    <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
+    <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
+
+
+
+      <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
+      <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
+    </where>
+    order by a.CBPC08 desc
+  </select>
+  <resultMap type="CBPC" id="CBPCResult">
+    <result property="cbpc01"    column="CBPC01"    />
+    <result property="cbpc02"    column="CBPC02"    />
+    <result property="cbpc03"    column="CBPC03"    />
+    <result property="cbpc04"    column="CBPC04"    />
+    <result property="cbpc05"    column="CBPC05"    />
+    <result property="cbpc06"    column="CBPC06"    />
+    <result property="cbpc07"    column="CBPC07"    />
+    <result property="cbpc08"    column="CBPC08"    />
+    <result property="cbpc09"    column="CBPC09"    />
+    <result property="cbpc10"    column="CBPC10"    />
+    <result property="cbpc11"    column="CBPC11"    />
+    <result property="cbpc12"    column="CBPC12"    />
+    <result property="cbpc13"    column="CBPC13"    />
+    <result property="cbpc14"    column="CBPC14"    />
+    <result property="cbpc15"    column="CBPC15"    />
+    <result property="cbpc16"    column="CBPC16"    />
+    <result property="cbpc17"    column="CBPC17"    />
+    <result property="userId"    column="user_id"    />
   </resultMap>
-  <sql id="Example_Where_Clause">
+
+  <sql id="selectCBPCVo">
+    select CBPC01, CBPC02, CBPC03, CBPC04, CBPC05, CBPC06, CBPC07, CBPC08, CBPC09, CBPC10, CBPC11, CBPC12, CBPC13, CBPC14, CBPC15, CBPC16, CBPC17, user_id from CBPC
+  </sql>
+  <select id="selectCBPCList" parameterType="CBPC" resultMap="CBPCResult">
+    <include refid="selectCBPCVo"/>
     <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
+    <if test="cbpc02 != null "> and CBPC02 = #{cbpc02}</if>
+    <if test="cbpc03 != null "> and CBPC03 = #{cbpc03}</if>
+    <if test="cbpc04 != null "> and CBPC04 = #{cbpc04}</if>
+    <if test="cbpc05 != null "> and CBPC05 = #{cbpc05}</if>
+    <if test="cbpc06 != null "> and CBPC06 = #{cbpc06}</if>
+    <if test="cbpc07 != null  and cbpc07 != ''"> and CBPC07 = #{cbpc07}</if>
+    <if test="cbpc08 != null "> and CBPC08 = #{cbpc08}</if>
+    <if test="cbpc09 != null "> and CBPC09 = #{cbpc09}</if>
+    <if test="cbpc10 != null "> and CBPC10 = #{cbpc10}</if>
+    <if test="cbpc11 != null "> and CBPC11 = #{cbpc11}</if>
+    <if test="cbpc12 != null "> and CBPC12 = #{cbpc12}</if>
+    <if test="cbpc13 != null "> and CBPC13 = #{cbpc13}</if>
+    <if test="cbpc14 != null "> and CBPC14 = #{cbpc14}</if>
+    <if test="cbpc15 != null "> and CBPC15 = #{cbpc15}</if>
+    <if test="cbpc16 != null "> and CBPC16 = #{cbpc16}</if>
+    <if test="cbpc17 != null  and cbpc17 != ''"> and CBPC17 = #{cbpc17}</if>
+    <if test="userId != null "> and user_id = #{userId}</if>
     </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    CBPD01, CBPD02, CBPD03, CBPD04, CBPD05, CBPD06, CBPD07, CBPD08, CBPD09, CBPD10, CBPD11, 
-    CBPD12, CBPD13, CBPC01
-  </sql>
-  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpdCriteria" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from `CBPD`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from `CBPD`
-    where CBPD01 = #{cbpd01,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from `CBPD`
-    where CBPD01 = #{cbpd01,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpdCriteria">
-    delete from `CBPD`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpd">
-    insert into `CBPD` (CBPD01, CBPD02, CBPD03, 
-      CBPD04, CBPD05, CBPD06, 
-      CBPD07, CBPD08, CBPD09, 
-      CBPD10, CBPD11, CBPD12, 
-      CBPD13, CBPC01)
-    values (#{cbpd01,jdbcType=INTEGER}, #{cbpd02,jdbcType=INTEGER}, #{cbpd03,jdbcType=TIMESTAMP}, 
-      #{cbpd04,jdbcType=INTEGER}, #{cbpd05,jdbcType=TIMESTAMP}, #{cbpd06,jdbcType=INTEGER}, 
-      #{cbpd07,jdbcType=INTEGER}, #{cbpd08,jdbcType=INTEGER}, #{cbpd09,jdbcType=DOUBLE}, 
-      #{cbpd10,jdbcType=DOUBLE}, #{cbpd11,jdbcType=DOUBLE}, #{cbpd12,jdbcType=DOUBLE}, 
-      #{cbpd13,jdbcType=VARCHAR}, #{cbpc01,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpd">
-    insert into `CBPD`
+
+  <insert id="insertCBPC" parameterType="CBPC" useGeneratedKeys="true" keyProperty="cbpc01">
+    insert into CBPC
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cbpd01 != null">
-        CBPD01,
-      </if>
-      <if test="cbpd02 != null">
-        CBPD02,
-      </if>
-      <if test="cbpd03 != null">
-        CBPD03,
-      </if>
-      <if test="cbpd04 != null">
-        CBPD04,
-      </if>
-      <if test="cbpd05 != null">
-        CBPD05,
-      </if>
-      <if test="cbpd06 != null">
-        CBPD06,
-      </if>
-      <if test="cbpd07 != null">
-        CBPD07,
-      </if>
-      <if test="cbpd08 != null">
-        CBPD08,
-      </if>
-      <if test="cbpd09 != null">
-        CBPD09,
-      </if>
-      <if test="cbpd10 != null">
-        CBPD10,
-      </if>
-      <if test="cbpd11 != null">
-        CBPD11,
-      </if>
-      <if test="cbpd12 != null">
-        CBPD12,
-      </if>
-      <if test="cbpd13 != null">
-        CBPD13,
-      </if>
-      <if test="cbpc01 != null">
-        CBPC01,
-      </if>
+      <if test="cbpc02 != null">CBPC02,</if>
+      <if test="cbpc03 != null">CBPC03,</if>
+      <if test="cbpc04 != null">CBPC04,</if>
+      <if test="cbpc05 != null">CBPC05,</if>
+      <if test="cbpc06 != null">CBPC06,</if>
+      <if test="cbpc07 != null">CBPC07,</if>
+      <if test="cbpc08 != null">CBPC08,</if>
+      <if test="cbpc09 != null">CBPC09,</if>
+      <if test="cbpc10 != null">CBPC10,</if>
+      <if test="cbpc11 != null">CBPC11,</if>
+      <if test="cbpc12 != null">CBPC12,</if>
+      <if test="cbpc13 != null">CBPC13,</if>
+      <if test="cbpc14 != null">CBPC14,</if>
+      <if test="cbpc15 != null">CBPC15,</if>
+      <if test="cbpc16 != null">CBPC16,</if>
+      <if test="cbpc17 != null">CBPC17,</if>
+      <if test="userId != null">user_id,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cbpd01 != null">
-        #{cbpd01,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd02 != null">
-        #{cbpd02,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd03 != null">
-        #{cbpd03,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cbpd04 != null">
-        #{cbpd04,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd05 != null">
-        #{cbpd05,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cbpd06 != null">
-        #{cbpd06,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd07 != null">
-        #{cbpd07,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd08 != null">
-        #{cbpd08,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd09 != null">
-        #{cbpd09,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd10 != null">
-        #{cbpd10,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd11 != null">
-        #{cbpd11,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd12 != null">
-        #{cbpd12,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd13 != null">
-        #{cbpd13,jdbcType=VARCHAR},
-      </if>
-      <if test="cbpc01 != null">
-        #{cbpc01,jdbcType=INTEGER},
-      </if>
+      <if test="cbpc02 != null">#{cbpc02},</if>
+      <if test="cbpc03 != null">#{cbpc03},</if>
+      <if test="cbpc04 != null">#{cbpc04},</if>
+      <if test="cbpc05 != null">#{cbpc05},</if>
+      <if test="cbpc06 != null">#{cbpc06},</if>
+      <if test="cbpc07 != null">#{cbpc07},</if>
+      <if test="cbpc08 != null">#{cbpc08},</if>
+      <if test="cbpc09 != null">#{cbpc09},</if>
+      <if test="cbpc10 != null">#{cbpc10},</if>
+      <if test="cbpc11 != null">#{cbpc11},</if>
+      <if test="cbpc12 != null">#{cbpc12},</if>
+      <if test="cbpc13 != null">#{cbpc13},</if>
+      <if test="cbpc14 != null">#{cbpc14},</if>
+      <if test="cbpc15 != null">#{cbpc15},</if>
+      <if test="cbpc16 != null">#{cbpc16},</if>
+      <if test="cbpc17 != null">#{cbpc17},</if>
+      <if test="userId != null">#{userId},</if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpdCriteria" resultType="java.lang.Long">
-    select count(*) from `CBPD`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+
+
+  <update id="updateCBPC" parameterType="CBPC">
+    update CBPC
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbpc02 != null">CBPC02 = #{cbpc02},</if>
+      <if test="cbpc03 != null">CBPC03 = #{cbpc03},</if>
+      <if test="cbpc04 != null">CBPC04 = #{cbpc04},</if>
+      <if test="cbpc05 != null">CBPC05 = #{cbpc05},</if>
+      <if test="cbpc06 != null">CBPC06 = #{cbpc06},</if>
+      <if test="cbpc07 != null">CBPC07 = #{cbpc07},</if>
+      <if test="cbpc08 != null">CBPC08 = #{cbpc08},</if>
+      <if test="cbpc09 != null">CBPC09 = #{cbpc09},</if>
+      <if test="cbpc10 != null">CBPC10 = #{cbpc10},</if>
+      <if test="cbpc11 != null">CBPC11 = #{cbpc11},</if>
+      <if test="cbpc12 != null">CBPC12 = #{cbpc12},</if>
+      <if test="cbpc13 != null">CBPC13 = #{cbpc13},</if>
+      <if test="cbpc14 != null">CBPC14 = #{cbpc14},</if>
+      <if test="cbpc15 != null">CBPC15 = #{cbpc15},</if>
+      <if test="cbpc16 != null">CBPC16 = #{cbpc16},</if>
+      <if test="cbpc17 != null">CBPC17 = #{cbpc17},</if>
+      <if test="userId != null">user_id = #{userId},</if>
+    </trim>
+    where CBPC01 = #{cbpc01}
+
+  </update>
+
+  <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
+    SELECT  a.CBPC01,a.CBPC07,a.CBPC08,a.CBPC11,
+            b.CBSA08,
+            c.CBWA09,
+            d.CALA08
+    from CBPC a
+           LEFT JOIN
+         CBSA b
+         on a.CBPC09=b.CBSA01
+           LEFT JOIN
+         CBWA c
+         ON a.CBPC10=c.CBWA01
+           LEFT JOIN
+         CALA d
+         on a.CBPC16=d.CALA01
+    WHERE
+      a.CBPC06=0
+    order by a.CBPC08 desc
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update `CBPD`
-    <set>
-      <if test="record.cbpd01 != null">
-        CBPD01 = #{record.cbpd01,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd02 != null">
-        CBPD02 = #{record.cbpd02,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd03 != null">
-        CBPD03 = #{record.cbpd03,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cbpd04 != null">
-        CBPD04 = #{record.cbpd04,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd05 != null">
-        CBPD05 = #{record.cbpd05,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cbpd06 != null">
-        CBPD06 = #{record.cbpd06,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd07 != null">
-        CBPD07 = #{record.cbpd07,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd08 != null">
-        CBPD08 = #{record.cbpd08,jdbcType=INTEGER},
-      </if>
-      <if test="record.cbpd09 != null">
-        CBPD09 = #{record.cbpd09,jdbcType=DOUBLE},
-      </if>
-      <if test="record.cbpd10 != null">
-        CBPD10 = #{record.cbpd10,jdbcType=DOUBLE},
-      </if>
-      <if test="record.cbpd11 != null">
-        CBPD11 = #{record.cbpd11,jdbcType=DOUBLE},
-      </if>
-      <if test="record.cbpd12 != null">
-        CBPD12 = #{record.cbpd12,jdbcType=DOUBLE},
-      </if>
-      <if test="record.cbpd13 != null">
-        CBPD13 = #{record.cbpd13,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cbpc01 != null">
-        CBPC01 = #{record.cbpc01,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update `CBPD`
-    set CBPD01 = #{record.cbpd01,jdbcType=INTEGER},
-      CBPD02 = #{record.cbpd02,jdbcType=INTEGER},
-      CBPD03 = #{record.cbpd03,jdbcType=TIMESTAMP},
-      CBPD04 = #{record.cbpd04,jdbcType=INTEGER},
-      CBPD05 = #{record.cbpd05,jdbcType=TIMESTAMP},
-      CBPD06 = #{record.cbpd06,jdbcType=INTEGER},
-      CBPD07 = #{record.cbpd07,jdbcType=INTEGER},
-      CBPD08 = #{record.cbpd08,jdbcType=INTEGER},
-      CBPD09 = #{record.cbpd09,jdbcType=DOUBLE},
-      CBPD10 = #{record.cbpd10,jdbcType=DOUBLE},
-      CBPD11 = #{record.cbpd11,jdbcType=DOUBLE},
-      CBPD12 = #{record.cbpd12,jdbcType=DOUBLE},
-      CBPD13 = #{record.cbpd13,jdbcType=VARCHAR},
-      CBPC01 = #{record.cbpc01,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpd">
-    update `CBPD`
-    <set>
-      <if test="cbpd02 != null">
-        CBPD02 = #{cbpd02,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd03 != null">
-        CBPD03 = #{cbpd03,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cbpd04 != null">
-        CBPD04 = #{cbpd04,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd05 != null">
-        CBPD05 = #{cbpd05,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cbpd06 != null">
-        CBPD06 = #{cbpd06,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd07 != null">
-        CBPD07 = #{cbpd07,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd08 != null">
-        CBPD08 = #{cbpd08,jdbcType=INTEGER},
-      </if>
-      <if test="cbpd09 != null">
-        CBPD09 = #{cbpd09,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd10 != null">
-        CBPD10 = #{cbpd10,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd11 != null">
-        CBPD11 = #{cbpd11,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd12 != null">
-        CBPD12 = #{cbpd12,jdbcType=DOUBLE},
-      </if>
-      <if test="cbpd13 != null">
-        CBPD13 = #{cbpd13,jdbcType=VARCHAR},
-      </if>
-      <if test="cbpc01 != null">
-        CBPC01 = #{cbpc01,jdbcType=INTEGER},
-      </if>
-    </set>
-    where CBPD01 = #{cbpd01,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpd">
-    update `CBPD`
-    set CBPD02 = #{cbpd02,jdbcType=INTEGER},
-      CBPD03 = #{cbpd03,jdbcType=TIMESTAMP},
-      CBPD04 = #{cbpd04,jdbcType=INTEGER},
-      CBPD05 = #{cbpd05,jdbcType=TIMESTAMP},
-      CBPD06 = #{cbpd06,jdbcType=INTEGER},
-      CBPD07 = #{cbpd07,jdbcType=INTEGER},
-      CBPD08 = #{cbpd08,jdbcType=INTEGER},
-      CBPD09 = #{cbpd09,jdbcType=DOUBLE},
-      CBPD10 = #{cbpd10,jdbcType=DOUBLE},
-      CBPD11 = #{cbpd11,jdbcType=DOUBLE},
-      CBPD12 = #{cbpd12,jdbcType=DOUBLE},
-      CBPD13 = #{cbpd13,jdbcType=VARCHAR},
-      CBPC01 = #{cbpc01,jdbcType=INTEGER}
-    where CBPD01 = #{cbpd01,jdbcType=INTEGER}
-  </update>
+
 </mapper>

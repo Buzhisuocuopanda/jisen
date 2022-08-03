@@ -1,9 +1,8 @@
-package com.ruoyi.web.controller.gson.Basicinformationmaintenance;
+package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
@@ -12,7 +11,6 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpb;
-import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;

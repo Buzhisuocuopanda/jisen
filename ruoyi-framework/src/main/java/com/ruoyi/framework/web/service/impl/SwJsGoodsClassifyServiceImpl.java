@@ -2,7 +2,6 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -136,18 +135,18 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         example3.createCriteria().
                 andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbpa01EqualTo(cbpaDo.getCbpa01());
-        List<Cbpa> cbpas = cbpaMapper.selectByExample(example3);
-        List<String> collect = cbpas.stream().map(Cbpa::getCbpa11).collect(Collectors.toList());
-        String[] strs = collect.toArray(new String[]{});
-        GsSystemUseCriteria use=new GsSystemUseCriteria();
-        use.createCriteria()
-                .andTypeEqualTo(GSSystemUseEnum.SPFLXX.getCode())
-                .andTypeIdEqualTo(Integer.valueOf(strs[0]))
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        List<GsSystemUse> gsSystemUses = gsSystemUseMapper.selectByExample(use);
-        if(gsSystemUses.size()==0){
-            cbpa.setCbpa11(cbpaDo.getCbpa11());
+
+        CbpbCriteria example4=new CbpbCriteria();
+        //判断是否在用
+        example4.createCriteria().
+                andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpb14EqualTo(cbpaDo.getCbpa01());
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example4);
+        if(cbpbs.size()>0){
+            throw new SwException("商品编号已在用不可删除");
         }
+
+
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
     }
     /**

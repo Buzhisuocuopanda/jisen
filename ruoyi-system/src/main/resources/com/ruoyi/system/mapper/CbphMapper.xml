@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbphMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbph">
+    <id column="CBPH01" jdbcType="INTEGER" property="cbph01" />
+    <result column="CBPH02" jdbcType="INTEGER" property="cbph02" />
+    <result column="CBPH03" jdbcType="TIMESTAMP" property="cbph03" />
+    <result column="CBPH04" jdbcType="INTEGER" property="cbph04" />
+    <result column="CBPH05" jdbcType="TIMESTAMP" property="cbph05" />
+    <result column="CBPH06" jdbcType="INTEGER" property="cbph06" />
+    <result column="CBPH07" jdbcType="INTEGER" property="cbph07" />
+    <result column="CBPH08" jdbcType="INTEGER" property="cbph08" />
+    <result column="CBPH09" jdbcType="DOUBLE" property="cbph09" />
+    <result column="CBPH10" jdbcType="DOUBLE" property="cbph10" />
+    <result column="CBPH11" jdbcType="DOUBLE" property="cbph11" />
+    <result column="CBPH12" jdbcType="DOUBLE" property="cbph12" />
+    <result column="CBPH13" jdbcType="VARCHAR" property="cbph13" />
+    <result column="CBPG01" jdbcType="INTEGER" property="cbpg01" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPH01, CBPH02, CBPH03, CBPH04, CBPH05, CBPH06, CBPH07, CBPH08, CBPH09, CBPH10, CBPH11, 
+    CBPH12, CBPH13, CBPG01, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbphCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBPH`
+    where CBPH01 = #{cbph01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPH`
+    where CBPH01 = #{cbph01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbphCriteria">
+    delete from `CBPH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbph">
+    insert into `CBPH` (CBPH01, CBPH02, CBPH03, 
+      CBPH04, CBPH05, CBPH06, 
+      CBPH07, CBPH08, CBPH09, 
+      CBPH10, CBPH11, CBPH12, 
+      CBPH13, CBPG01, user_id
+      )
+    values (#{cbph01,jdbcType=INTEGER}, #{cbph02,jdbcType=INTEGER}, #{cbph03,jdbcType=TIMESTAMP}, 
+      #{cbph04,jdbcType=INTEGER}, #{cbph05,jdbcType=TIMESTAMP}, #{cbph06,jdbcType=INTEGER}, 
+      #{cbph07,jdbcType=INTEGER}, #{cbph08,jdbcType=INTEGER}, #{cbph09,jdbcType=DOUBLE}, 
+      #{cbph10,jdbcType=DOUBLE}, #{cbph11,jdbcType=DOUBLE}, #{cbph12,jdbcType=DOUBLE}, 
+      #{cbph13,jdbcType=VARCHAR}, #{cbpg01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbph">
+    insert into `CBPH`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbph01 != null">
+        CBPH01,
+      </if>
+      <if test="cbph02 != null">
+        CBPH02,
+      </if>
+      <if test="cbph03 != null">
+        CBPH03,
+      </if>
+      <if test="cbph04 != null">
+        CBPH04,
+      </if>
+      <if test="cbph05 != null">
+        CBPH05,
+      </if>
+      <if test="cbph06 != null">
+        CBPH06,
+      </if>
+      <if test="cbph07 != null">
+        CBPH07,
+      </if>
+      <if test="cbph08 != null">
+        CBPH08,
+      </if>
+      <if test="cbph09 != null">
+        CBPH09,
+      </if>
+      <if test="cbph10 != null">
+        CBPH10,
+      </if>
+      <if test="cbph11 != null">
+        CBPH11,
+      </if>
+      <if test="cbph12 != null">
+        CBPH12,
+      </if>
+      <if test="cbph13 != null">
+        CBPH13,
+      </if>
+      <if test="cbpg01 != null">
+        CBPG01,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbph01 != null">
+        #{cbph01,jdbcType=INTEGER},
+      </if>
+      <if test="cbph02 != null">
+        #{cbph02,jdbcType=INTEGER},
+      </if>
+      <if test="cbph03 != null">
+        #{cbph03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbph04 != null">
+        #{cbph04,jdbcType=INTEGER},
+      </if>
+      <if test="cbph05 != null">
+        #{cbph05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbph06 != null">
+        #{cbph06,jdbcType=INTEGER},
+      </if>
+      <if test="cbph07 != null">
+        #{cbph07,jdbcType=INTEGER},
+      </if>
+      <if test="cbph08 != null">
+        #{cbph08,jdbcType=INTEGER},
+      </if>
+      <if test="cbph09 != null">
+        #{cbph09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph10 != null">
+        #{cbph10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph11 != null">
+        #{cbph11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph12 != null">
+        #{cbph12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph13 != null">
+        #{cbph13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpg01 != null">
+        #{cbpg01,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbphCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBPH`
+    <set>
+      <if test="record.cbph01 != null">
+        CBPH01 = #{record.cbph01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph02 != null">
+        CBPH02 = #{record.cbph02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph03 != null">
+        CBPH03 = #{record.cbph03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbph04 != null">
+        CBPH04 = #{record.cbph04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph05 != null">
+        CBPH05 = #{record.cbph05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbph06 != null">
+        CBPH06 = #{record.cbph06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph07 != null">
+        CBPH07 = #{record.cbph07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph08 != null">
+        CBPH08 = #{record.cbph08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbph09 != null">
+        CBPH09 = #{record.cbph09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbph10 != null">
+        CBPH10 = #{record.cbph10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbph11 != null">
+        CBPH11 = #{record.cbph11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbph12 != null">
+        CBPH12 = #{record.cbph12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbph13 != null">
+        CBPH13 = #{record.cbph13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpg01 != null">
+        CBPG01 = #{record.cbpg01,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPH`
+    set CBPH01 = #{record.cbph01,jdbcType=INTEGER},
+      CBPH02 = #{record.cbph02,jdbcType=INTEGER},
+      CBPH03 = #{record.cbph03,jdbcType=TIMESTAMP},
+      CBPH04 = #{record.cbph04,jdbcType=INTEGER},
+      CBPH05 = #{record.cbph05,jdbcType=TIMESTAMP},
+      CBPH06 = #{record.cbph06,jdbcType=INTEGER},
+      CBPH07 = #{record.cbph07,jdbcType=INTEGER},
+      CBPH08 = #{record.cbph08,jdbcType=INTEGER},
+      CBPH09 = #{record.cbph09,jdbcType=DOUBLE},
+      CBPH10 = #{record.cbph10,jdbcType=DOUBLE},
+      CBPH11 = #{record.cbph11,jdbcType=DOUBLE},
+      CBPH12 = #{record.cbph12,jdbcType=DOUBLE},
+      CBPH13 = #{record.cbph13,jdbcType=VARCHAR},
+      CBPG01 = #{record.cbpg01,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbph">
+    update `CBPH`
+    <set>
+      <if test="cbph02 != null">
+        CBPH02 = #{cbph02,jdbcType=INTEGER},
+      </if>
+      <if test="cbph03 != null">
+        CBPH03 = #{cbph03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbph04 != null">
+        CBPH04 = #{cbph04,jdbcType=INTEGER},
+      </if>
+      <if test="cbph05 != null">
+        CBPH05 = #{cbph05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbph06 != null">
+        CBPH06 = #{cbph06,jdbcType=INTEGER},
+      </if>
+      <if test="cbph07 != null">
+        CBPH07 = #{cbph07,jdbcType=INTEGER},
+      </if>
+      <if test="cbph08 != null">
+        CBPH08 = #{cbph08,jdbcType=INTEGER},
+      </if>
+      <if test="cbph09 != null">
+        CBPH09 = #{cbph09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph10 != null">
+        CBPH10 = #{cbph10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph11 != null">
+        CBPH11 = #{cbph11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph12 != null">
+        CBPH12 = #{cbph12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbph13 != null">
+        CBPH13 = #{cbph13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpg01 != null">
+        CBPG01 = #{cbpg01,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBPH01 = #{cbph01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbph">
+    update `CBPH`
+    set CBPH02 = #{cbph02,jdbcType=INTEGER},
+      CBPH03 = #{cbph03,jdbcType=TIMESTAMP},
+      CBPH04 = #{cbph04,jdbcType=INTEGER},
+      CBPH05 = #{cbph05,jdbcType=TIMESTAMP},
+      CBPH06 = #{cbph06,jdbcType=INTEGER},
+      CBPH07 = #{cbph07,jdbcType=INTEGER},
+      CBPH08 = #{cbph08,jdbcType=INTEGER},
+      CBPH09 = #{cbph09,jdbcType=DOUBLE},
+      CBPH10 = #{cbph10,jdbcType=DOUBLE},
+      CBPH11 = #{cbph11,jdbcType=DOUBLE},
+      CBPH12 = #{cbph12,jdbcType=DOUBLE},
+      CBPH13 = #{cbph13,jdbcType=VARCHAR},
+      CBPG01 = #{cbpg01,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBPH01 = #{cbph01,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,7 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.annotation.DataScope;
-import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 
 import com.ruoyi.common.enums.GSSystemUseEnum;
@@ -10,8 +9,10 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbpaDo;
+import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.CbpbCriteria;
+import com.ruoyi.system.domain.Cbpd;
+import com.ruoyi.system.domain.CbpdCriteria;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.mapper.CbpdMapper;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 商品分类Service业务层处理
@@ -57,7 +57,6 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0){
             throw new SwException("upc已存在");
-
         }
 
         Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);
