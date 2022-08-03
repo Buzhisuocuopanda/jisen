@@ -298,4 +298,16 @@
     for update
   </select>
 
+
+  <select id="selectByGoodsIdAndWhIdForUpdate" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM
+      `gs_goods_sku` sku
+    WHERE
+      sku.delete_flag = 0
+      AND sku.goods_id = #{goodsId}
+      AND sku.wh_id = #{whId} FOR UPDATE
+  </select>
+
 </mapper>
