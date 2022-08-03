@@ -1,7 +1,9 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.WarehouseSelect;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -10,10 +12,9 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
-import com.ruoyi.system.mapper.CbpcMapper;
-import com.ruoyi.system.mapper.CbpdMapper;
-import com.ruoyi.system.mapper.CbpeMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -24,13 +25,17 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
 public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundService {
-
-
-
+@Resource
+private GsGoodsSnMapper gsGoodsSnMapper;
+@Resource
+private BaseCheckService baseCheckService;
+@Resource
+private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private CbpcMapper cbpcMapper;
 
@@ -119,7 +124,6 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
         if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
             throw new SwException("不是未审核状态");
-
         }
 
         Long userid = SecurityUtils.getUserId();
@@ -168,6 +172,11 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
      */
     @Override
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
+
+        Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
+        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
         Date date = new Date();
@@ -177,6 +186,70 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         cbpc.setCbpc11(TaskStatus.bjwc.getCode());
         cbpc.setCbpc12(cbpdDto.getCbpc12());
         cbpc.setCbpc13(cbpdDto.getCbpc13());
+
+        //判断是哪个仓库  数量仓库
+        if(cbpc1.getCbpc10().equals(WarehouseSelect.CBW.getCode()) ||
+                cbpc1.getCbpc10().equals(WarehouseSelect.GLW.getCode())){
+            //数量管理查找商品id和货物id，没有就加入
+            CbpdCriteria example1=new CbpdCriteria();
+            example1.createCriteria()
+                    .andCbpc01EqualTo(cbpdDto.getCbpc01());
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
+            //得到数量
+            List<Double> collect2 = cbpds.stream().map(Cbpd::getCbpd09).collect(Collectors.toList());
+            double[] doubles = collect2.stream().mapToDouble(Double::doubleValue).toArray();
+            double num=doubles[0];
+            //得到商品id
+            List<Integer> collect = cbpds.stream().map(Cbpd::getCbpd08).collect(Collectors.toList());
+            int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
+            if (ints.length == 0) {
+                throw new SwException("采购入库明细没有商品id");
+            }
+            int goodsid=ints[0];
+
+            GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(goodsid)
+                    .andWhIdEqualTo(cbpc1.getCbpc10());
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+            //对库存表的操作
+            if(gsGoodsSkus.size()==0){
+                //新增数据
+                GsGoodsSku gsGoodsSku=new GsGoodsSku();
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(goodsid);
+                gsGoodsSku.setWhId(cbpc1.getCbpc10());
+                gsGoodsSku.setQty(Double.valueOf(cbpc1.getCbpc09()));
+                gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+            }else {
+                //更新数据
+                List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getGoodsId).collect(Collectors.toList());
+                int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
+                int id=ints1[0];
+                GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                gsGoodsSku.setQty(gsGoodsSku.getQty()+num);
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }
+            //对货物sn表操作
+
+
+        }
+
+        //数量管理查找商品id和货物id，没有就加入
+
+        //扫码仓库判断商品id和库位id，没有就加入
+
+        //有了就更新库存，加锁
+
+        //调用台账方法，最后加
+
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

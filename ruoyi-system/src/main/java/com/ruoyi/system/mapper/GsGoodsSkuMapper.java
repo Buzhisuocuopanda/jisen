@@ -27,4 +27,6 @@ public interface GsGoodsSkuMapper {
     int updateByPrimaryKeySelective(GsGoodsSku record);
 
     int updateByPrimaryKey(GsGoodsSku record);
+
+    GsGoodsSku selectByPrimaryKeyForUpdate(Integer id);
 }
