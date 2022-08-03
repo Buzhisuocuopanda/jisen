@@ -10,15 +10,14 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
-import com.ruoyi.system.domain.vo.ChangeSkuUseVo;
-import com.ruoyi.system.domain.vo.DirectWarehousingVo;
-import com.ruoyi.system.domain.vo.QtyMsgVo;
-import com.ruoyi.system.domain.vo.SaleOrderExitVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +54,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     private CbibMapper cbibMapper;
     @Resource
     private CbwaMapper cbwaMapper;
+
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
 
 
     /**
@@ -191,7 +194,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     @Override
     @Transactional
     public Cbba reassign(OrderDistributionDo orderDistributionDo) {
-
+        Cbba cbba =null;
         try {
             //总订单重新分配 需要先判断其他订单有没有进行分配
             lockTotalOrder();
@@ -201,7 +204,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             //是修改生产订单还是创建生产订单
             //查未分配订单的数量
             GsAllocationBalance ungoods = gsAllocationBalanceMapper.selectByGoodsIdForUpdate(orderDistributionDo.getGoodsId());
-            Cbba cbba = orderDistributionDo.getCbba();
+            cbba = orderDistributionDo.getCbba();
             if (orderDistributionDo.getType() == 1) {
                 //创建
                 //先查找未分配订单的数量创建把
@@ -609,6 +612,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      */
     @Override
     public SaleOrderExitVo saleOrderExit(SaleOrderExitDo saleOrderExitDo) {
+        SaleOrderExitVo saleOrderExitVo=new SaleOrderExitVo();
         try {
             lockTotalOrder();
             List<Cbba> cbbas = null;
@@ -644,18 +648,135 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         } finally {
             unLockOtherOrder();
         }
-        return null;
+        return saleOrderExitVo;
     }
 
     /**
      * 调拨单入库 另一个库的占用删掉，增加CDC仓库的占用
      *
-     * @param orderDistributionDo
+     * @param transferOrderDo
      * @return
      */
-
+    @Transactional
     @Override
-    public Cbba transferOrder(OrderDistributionDo orderDistributionDo) {
+    public TransferOrderVo transferOrder(TransferOrderDo transferOrderDo) {
+        //分两种情况 基于销售订单的调拨 和不基于销售订单的调拨
+        List<GsGoodsSku> list= gsGoodsSkuMapper.selectByGoodsIdAndWhIdForUpdate(transferOrderDo.getGoodsId(),transferOrderDo.getOutWhId());
+        for (GsGoodsSku gsGoodsSku : list) {
+            gsGoodsSku.setUpdateTime(new Date());
+            gsGoodsSku.setUpdateBy(transferOrderDo.getUserId());
+            Double qty = transferOrderDo.getQty()-transferOrderDo.getQty();
+            gsGoodsSku.setQty(qty<0?0:qty);
+            gsGoodsSkuMapper.updateByPrimaryKey(gsGoodsSku);
+
+        }
+        List<GsGoodsSku> outs= gsGoodsSkuMapper.selectByGoodsIdAndWhIdForUpdate(transferOrderDo.getGoodsId(),transferOrderDo.getInWhId());
+        for (GsGoodsSku gsGoodsSku : outs) {
+            gsGoodsSku.setUpdateTime(new Date());
+            gsGoodsSku.setUpdateBy(transferOrderDo.getUserId());
+            Double qty = transferOrderDo.getQty()+transferOrderDo.getQty();
+            gsGoodsSku.setQty(qty<0?0:qty);
+            gsGoodsSkuMapper.updateByPrimaryKey(gsGoodsSku);
+
+        }
+        if(StringUtils.isBlank(transferOrderDo.getOrderNo())){
+            //不基于销售订单的调拨，只需要去掉转出仓库的库存占用
+            GsGoodsUseCriteria example=new GsGoodsUseCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(transferOrderDo.getGoodsId())
+                    .andTransNoEqualTo(transferOrderDo.getTransNo())
+                    .andWhIdEqualTo(transferOrderDo.getOutWhId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+            for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                Double lockQty = gsGoodsUs.getLockQty()-transferOrderDo.getQty();
+                if(lockQty>0){
+                    gsGoodsUs.setLockQty(lockQty);
+                    gsGoodsUs.setUpdateTime(new Date());
+                    gsGoodsUs.setUpdateBy(transferOrderDo.getUserId());
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }else {
+                    gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+                }
+
+            }
+
+
+        }else {
+            //基于销售订单的调拨 ，需要去掉转出仓库的库存占用 增加转入仓库的库存占用
+            GsGoodsUseCriteria example=new GsGoodsUseCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(transferOrderDo.getGoodsId())
+                    .andOrderNoEqualTo(transferOrderDo.getOrderNo())
+                    .andWhIdEqualTo(transferOrderDo.getOutWhId());
+
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+            for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                Double lockQty = gsGoodsUs.getLockQty()-transferOrderDo.getQty();
+                if(lockQty>0){
+                    gsGoodsUs.setLockQty(lockQty);
+                    gsGoodsUs.setUpdateTime(new Date());
+                    gsGoodsUs.setUpdateBy(transferOrderDo.getUserId());
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }else {
+                    gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+                }
+
+            }
+
+            //增加转入仓的库存占用
+
+            GsGoodsUseCriteria outExample=new GsGoodsUseCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(transferOrderDo.getGoodsId())
+                    .andOrderNoEqualTo(transferOrderDo.getOrderNo())
+                    .andWhIdEqualTo(transferOrderDo.getInWhId());
+
+            List<GsGoodsUse> outUses = gsGoodsUseMapper.selectByExample(outExample);
+
+            if(outUses.size()==0){
+                //新建
+                GsGoodsUse use=new GsGoodsUse();
+                use.setUpdateBy(transferOrderDo.getUserId());
+                use.setUpdateTime(new Date());
+                use.setLockQty(transferOrderDo.getQty());
+                use.setWhId(transferOrderDo.getInWhId());
+                if(transferOrderDo.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)){
+                    use.setOrderType(OrderTypeEnum.GUONEIDINGDAN.getCode().byteValue());
+                }else {
+                    use.setOrderType(OrderTypeEnum.GUOJIDINGDAN.getCode().byteValue());
+                }
+
+                use.setOrderNo(transferOrderDo.getOrderNo());
+                use.setOrderQty(transferOrderDo.getOrderQty());
+                use.setGoodsId(transferOrderDo.getGoodsId());
+                use.setCreateTime(new Date());
+                use.setCreateBy(transferOrderDo.getUserId());
+                use.setTransNo(transferOrderDo.getTransNo());
+                gsGoodsUseMapper.insert(use);
+
+            }else {
+                //更新
+                for (GsGoodsUse gsGoodsUs : outUses) {
+                    Double lockQty = gsGoodsUs.getLockQty()+transferOrderDo.getQty();
+                    if(lockQty>0){
+                        gsGoodsUs.setLockQty(lockQty);
+                        gsGoodsUs.setUpdateTime(new Date());
+                        gsGoodsUs.setUpdateBy(transferOrderDo.getUserId());
+                        gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                    }
+
+                }
+            }
+
+
+
+        }
+
+
+
+
+
+
         return null;
     }
 
@@ -812,8 +933,14 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      * @return
      */
     @Override
-    public Cbba cancelOccupy(GoodsOperationDo goodsOperationDo) {
-        return null;
+    public Integer cancelOccupy(GoodsOperationDo goodsOperationDo) {
+        GsGoodsUseCriteria example=new GsGoodsUseCriteria();
+        example.createCriteria()
+                .andOrderNoEqualTo(goodsOperationDo.getOrderNo());
+        return gsGoodsUseMapper.deleteByExample(example);
+
+
+
 
     }
 

@@ -774,6 +774,76 @@ public class GsGoodsUseCriteria {
             addCriterion("wh_id not between", value1, value2, "whId");
             return (Criteria) this;
         }
+
+        public Criteria andTransNoIsNull() {
+            addCriterion("trans_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoIsNotNull() {
+            addCriterion("trans_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoEqualTo(String value) {
+            addCriterion("trans_no =", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotEqualTo(String value) {
+            addCriterion("trans_no <>", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoGreaterThan(String value) {
+            addCriterion("trans_no >", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoGreaterThanOrEqualTo(String value) {
+            addCriterion("trans_no >=", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLessThan(String value) {
+            addCriterion("trans_no <", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLessThanOrEqualTo(String value) {
+            addCriterion("trans_no <=", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLike(String value) {
+            addCriterion("trans_no like", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotLike(String value) {
+            addCriterion("trans_no not like", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoIn(List<String> values) {
+            addCriterion("trans_no in", values, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotIn(List<String> values) {
+            addCriterion("trans_no not in", values, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoBetween(String value1, String value2) {
+            addCriterion("trans_no between", value1, value2, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotBetween(String value1, String value2) {
+            addCriterion("trans_no not between", value1, value2, "transNo");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

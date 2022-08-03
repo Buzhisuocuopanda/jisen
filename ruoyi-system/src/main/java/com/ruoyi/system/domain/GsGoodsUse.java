@@ -26,6 +26,8 @@ public class GsGoodsUse implements Serializable {
 
     private Integer whId;
 
+    private String transNo;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -116,6 +118,14 @@ public class GsGoodsUse implements Serializable {
         this.whId = whId;
     }
 
+    public String getTransNo() {
+        return transNo;
+    }
+
+    public void setTransNo(String transNo) {
+        this.transNo = transNo == null ? null : transNo.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -138,7 +148,8 @@ public class GsGoodsUse implements Serializable {
             && (this.getOrderQty() == null ? other.getOrderQty() == null : this.getOrderQty().equals(other.getOrderQty()))
             && (this.getOrderType() == null ? other.getOrderType() == null : this.getOrderType().equals(other.getOrderType()))
             && (this.getLockQty() == null ? other.getLockQty() == null : this.getLockQty().equals(other.getLockQty()))
-            && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()));
+            && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
+            && (this.getTransNo() == null ? other.getTransNo() == null : this.getTransNo().equals(other.getTransNo()));
     }
 
     @Override
@@ -156,6 +167,7 @@ public class GsGoodsUse implements Serializable {
         result = prime * result + ((getOrderType() == null) ? 0 : getOrderType().hashCode());
         result = prime * result + ((getLockQty() == null) ? 0 : getLockQty().hashCode());
         result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
+        result = prime * result + ((getTransNo() == null) ? 0 : getTransNo().hashCode());
         return result;
     }
 
@@ -176,6 +188,7 @@ public class GsGoodsUse implements Serializable {
         sb.append(", orderType=").append(orderType);
         sb.append(", lockQty=").append(lockQty);
         sb.append(", whId=").append(whId);
+        sb.append(", transNo=").append(transNo);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

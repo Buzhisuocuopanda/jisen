@@ -3,10 +3,7 @@ package com.ruoyi.system.service.gson;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
-import com.ruoyi.system.domain.vo.ChangeSkuUseVo;
-import com.ruoyi.system.domain.vo.DirectWarehousingVo;
-import com.ruoyi.system.domain.vo.QtyMsgVo;
-import com.ruoyi.system.domain.vo.SaleOrderExitVo;
+import com.ruoyi.system.domain.vo.*;
 
 /**
  * ClassName OrderDistributionService
@@ -71,7 +68,7 @@ public interface OrderDistributionService {
      * 调拨单入库良品仓
      */
 
-    Cbba transferOrder(OrderDistributionDo orderDistributionDo);
+    TransferOrderVo transferOrder(TransferOrderDo transferOrderDo);
 
 
     /**
@@ -85,7 +82,7 @@ public interface OrderDistributionService {
      * @param goodsOperationDo
      * @return
      */
-    Cbba cancelOccupy(GoodsOperationDo goodsOperationDo);
+    Integer cancelOccupy(GoodsOperationDo goodsOperationDo);
 
 
     /**
