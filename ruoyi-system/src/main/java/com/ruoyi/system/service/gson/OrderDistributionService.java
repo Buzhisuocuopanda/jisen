@@ -1,8 +1,9 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbba;
-import com.ruoyi.system.domain.Do.GoodsOperationDo;
-import com.ruoyi.system.domain.Do.OrderDistributionDo;
+import com.ruoyi.system.domain.Do.*;
+import com.ruoyi.system.domain.dto.DirectWarehousingDto;
+import com.ruoyi.system.domain.vo.*;
 
 /**
  * ClassName OrderDistributionService
@@ -46,9 +47,9 @@ public interface OrderDistributionService {
 
     /**
      * 直接入库逻辑
-     * @param orderDistributionDo
+     * @param directWarehousingDto
      */
-    Cbba directWarehousing(OrderDistributionDo orderDistributionDo);
+    DirectWarehousingVo directWarehousing(DirectWarehousingDto directWarehousingDto);
 
 
     /**
@@ -60,14 +61,14 @@ public interface OrderDistributionService {
      * 销售订单出库
      */
 
-    Cbba saleOrderExit(OrderDistributionDo orderDistributionDo);
+    SaleOrderExitVo saleOrderExit(SaleOrderExitDo saleOrderExitDo);
 
 
     /**
      * 调拨单入库良品仓
      */
 
-    Cbba transferOrder(OrderDistributionDo orderDistributionDo);
+    TransferOrderVo transferOrder(TransferOrderDo transferOrderDo);
 
 
     /**
@@ -75,13 +76,32 @@ public interface OrderDistributionService {
      * @param goodsOperationDo
      * @return
      */
-    Cbba saleOrderMake(GoodsOperationDo goodsOperationDo);
+    SaleOrderMakeDo saleOrderMake(GoodsOperationDo goodsOperationDo);
     /**
      * 释放占用
      * @param goodsOperationDo
      * @return
      */
-    Cbba cancelOccupy(GoodsOperationDo goodsOperationDo);
+    Integer cancelOccupy(GoodsOperationDo goodsOperationDo);
+
+
+    /**
+     * 检查商品可用库存
+     * @param checkSkuDo
+     * @return
+     */
+
+    QtyMsgVo checkSku(CheckSkuDo checkSkuDo);
+
+
+    /**
+     * 修改库存占用（国际订单）
+     * @param changeSkuUseDo
+     * @return
+     */
+    ChangeSkuUseVo changeSkuUse(ChangeSkuUseDo changeSkuUseDo);
+
+
 
 
 }

@@ -81,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBIB01, CBIB02, CBIB03, CBIB04, CBIB05, CBIB06, CBIB07, CBIB08, CBIB09, CBIB10, CBIB11, 
+    CBIB01, CBIB02, CBIB03, CBIB04, CBIB05, CBIB06, CBIB07, CBIB08, CBIB09, CBIB10, CBIB11,
     CBIB12, CBIB13, CBIB14, CBIB15, CBIB16, CBIB17, CBIB18, CBIB19
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbibCriteria" resultMap="BaseResultMap">
@@ -105,19 +105,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbib">
-    insert into `CBIB` (CBIB01, CBIB02, CBIB03, 
-      CBIB04, CBIB05, CBIB06, 
-      CBIB07, CBIB08, CBIB09, 
-      CBIB10, CBIB11, CBIB12, 
-      CBIB13, CBIB14, CBIB15, 
-      CBIB16, CBIB17, CBIB18, 
+    insert into `CBIB` (CBIB01, CBIB02, CBIB03,
+      CBIB04, CBIB05, CBIB06,
+      CBIB07, CBIB08, CBIB09,
+      CBIB10, CBIB11, CBIB12,
+      CBIB13, CBIB14, CBIB15,
+      CBIB16, CBIB17, CBIB18,
       CBIB19)
-    values (#{cbib01,jdbcType=INTEGER}, #{cbib02,jdbcType=INTEGER}, #{cbib03,jdbcType=VARCHAR}, 
-      #{cbib04,jdbcType=TIMESTAMP}, #{cbib05,jdbcType=VARCHAR}, #{cbib06,jdbcType=VARCHAR}, 
-      #{cbib07,jdbcType=INTEGER}, #{cbib08,jdbcType=INTEGER}, #{cbib09,jdbcType=DOUBLE}, 
-      #{cbib10,jdbcType=DOUBLE}, #{cbib11,jdbcType=DOUBLE}, #{cbib12,jdbcType=DOUBLE}, 
-      #{cbib13,jdbcType=DOUBLE}, #{cbib14,jdbcType=DOUBLE}, #{cbib15,jdbcType=DOUBLE}, 
-      #{cbib16,jdbcType=DOUBLE}, #{cbib17,jdbcType=VARCHAR}, #{cbib18,jdbcType=INTEGER}, 
+    values (#{cbib01,jdbcType=INTEGER}, #{cbib02,jdbcType=INTEGER}, #{cbib03,jdbcType=VARCHAR},
+      #{cbib04,jdbcType=TIMESTAMP}, #{cbib05,jdbcType=VARCHAR}, #{cbib06,jdbcType=VARCHAR},
+      #{cbib07,jdbcType=INTEGER}, #{cbib08,jdbcType=INTEGER}, #{cbib09,jdbcType=DOUBLE},
+      #{cbib10,jdbcType=DOUBLE}, #{cbib11,jdbcType=DOUBLE}, #{cbib12,jdbcType=DOUBLE},
+      #{cbib13,jdbcType=DOUBLE}, #{cbib14,jdbcType=DOUBLE}, #{cbib15,jdbcType=DOUBLE},
+      #{cbib16,jdbcType=DOUBLE}, #{cbib17,jdbcType=VARCHAR}, #{cbib18,jdbcType=INTEGER},
       #{cbib19,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbib">
@@ -337,4 +337,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+<!--  根据货物id和仓库id获取最新的台账数据-->
+  <select id="selectLastByGoodsIdAndStoreId" resultMap="BaseResultMap">
+    SELECT
+	*
+FROM
+	`CBIB` c
+WHERE
+	c.CBIB02 = #{storeId}
+	AND c.CBIB08 = #{goodsId}
+ORDER BY
+	c.CBIB04 DESC limit 1
+  </select>
 </mapper>

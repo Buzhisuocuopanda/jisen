@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GsUnDistributionGoodsCriteria {
+public class GsAllocationBalanceCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GsUnDistributionGoodsCriteria() {
+    public GsAllocationBalanceCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -405,66 +405,6 @@ public class GsUnDistributionGoodsCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagIsNull() {
-            addCriterion("delete_flag is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagIsNotNull() {
-            addCriterion("delete_flag is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagEqualTo(Byte value) {
-            addCriterion("delete_flag =", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotEqualTo(Byte value) {
-            addCriterion("delete_flag <>", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagGreaterThan(Byte value) {
-            addCriterion("delete_flag >", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagGreaterThanOrEqualTo(Byte value) {
-            addCriterion("delete_flag >=", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagLessThan(Byte value) {
-            addCriterion("delete_flag <", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagLessThanOrEqualTo(Byte value) {
-            addCriterion("delete_flag <=", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagIn(List<Byte> values) {
-            addCriterion("delete_flag in", values, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotIn(List<Byte> values) {
-            addCriterion("delete_flag not in", values, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagBetween(Byte value1, Byte value2) {
-            addCriterion("delete_flag between", value1, value2, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotBetween(Byte value1, Byte value2) {
-            addCriterion("delete_flag not between", value1, value2, "deleteFlag");
-            return (Criteria) this;
-        }
-
         public Criteria andGoodsIdIsNull() {
             addCriterion("goods_id is null");
             return (Criteria) this;
@@ -525,63 +465,63 @@ public class GsUnDistributionGoodsCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andNumIsNull() {
-            addCriterion("num is null");
+        public Criteria andQtyIsNull() {
+            addCriterion("qty is null");
             return (Criteria) this;
         }
 
-        public Criteria andNumIsNotNull() {
-            addCriterion("num is not null");
+        public Criteria andQtyIsNotNull() {
+            addCriterion("qty is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNumEqualTo(Integer value) {
-            addCriterion("num =", value, "num");
+        public Criteria andQtyEqualTo(Double value) {
+            addCriterion("qty =", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotEqualTo(Integer value) {
-            addCriterion("num <>", value, "num");
+        public Criteria andQtyNotEqualTo(Double value) {
+            addCriterion("qty <>", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThan(Integer value) {
-            addCriterion("num >", value, "num");
+        public Criteria andQtyGreaterThan(Double value) {
+            addCriterion("qty >", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThanOrEqualTo(Integer value) {
-            addCriterion("num >=", value, "num");
+        public Criteria andQtyGreaterThanOrEqualTo(Double value) {
+            addCriterion("qty >=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThan(Integer value) {
-            addCriterion("num <", value, "num");
+        public Criteria andQtyLessThan(Double value) {
+            addCriterion("qty <", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThanOrEqualTo(Integer value) {
-            addCriterion("num <=", value, "num");
+        public Criteria andQtyLessThanOrEqualTo(Double value) {
+            addCriterion("qty <=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumIn(List<Integer> values) {
-            addCriterion("num in", values, "num");
+        public Criteria andQtyIn(List<Double> values) {
+            addCriterion("qty in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotIn(List<Integer> values) {
-            addCriterion("num not in", values, "num");
+        public Criteria andQtyNotIn(List<Double> values) {
+            addCriterion("qty not in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumBetween(Integer value1, Integer value2) {
-            addCriterion("num between", value1, value2, "num");
+        public Criteria andQtyBetween(Double value1, Double value2) {
+            addCriterion("qty between", value1, value2, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotBetween(Integer value1, Integer value2) {
-            addCriterion("num not between", value1, value2, "num");
+        public Criteria andQtyNotBetween(Double value1, Double value2) {
+            addCriterion("qty not between", value1, value2, "qty");
             return (Criteria) this;
         }
     }

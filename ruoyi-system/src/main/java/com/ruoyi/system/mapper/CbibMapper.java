@@ -19,4 +19,7 @@ public interface CbibMapper {
     int updateByExampleSelective(@Param("record") Cbib record, @Param("example") CbibCriteria example);
 
     int updateByExample(@Param("record") Cbib record, @Param("example") CbibCriteria example);
+
+    Cbib selectLastByGoodsIdAndStoreId(@Param("goodsId") Integer goodsId, @Param("storeId") Integer storeId);
+
 }

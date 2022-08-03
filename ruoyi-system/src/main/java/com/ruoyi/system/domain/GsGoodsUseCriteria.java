@@ -1,6 +1,5 @@
 package com.ruoyi.system.domain;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -406,66 +405,6 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagIsNull() {
-            addCriterion("delete_flag is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagIsNotNull() {
-            addCriterion("delete_flag is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagEqualTo(Byte value) {
-            addCriterion("delete_flag =", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotEqualTo(Byte value) {
-            addCriterion("delete_flag <>", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagGreaterThan(Byte value) {
-            addCriterion("delete_flag >", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagGreaterThanOrEqualTo(Byte value) {
-            addCriterion("delete_flag >=", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagLessThan(Byte value) {
-            addCriterion("delete_flag <", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagLessThanOrEqualTo(Byte value) {
-            addCriterion("delete_flag <=", value, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagIn(List<Byte> values) {
-            addCriterion("delete_flag in", values, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotIn(List<Byte> values) {
-            addCriterion("delete_flag not in", values, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagBetween(Byte value1, Byte value2) {
-            addCriterion("delete_flag between", value1, value2, "deleteFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeleteFlagNotBetween(Byte value1, Byte value2) {
-            addCriterion("delete_flag not between", value1, value2, "deleteFlag");
-            return (Criteria) this;
-        }
-
         public Criteria andGoodsIdIsNull() {
             addCriterion("goods_id is null");
             return (Criteria) this;
@@ -606,52 +545,52 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyEqualTo(BigDecimal value) {
+        public Criteria andOrderQtyEqualTo(Double value) {
             addCriterion("order_qty =", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotEqualTo(BigDecimal value) {
+        public Criteria andOrderQtyNotEqualTo(Double value) {
             addCriterion("order_qty <>", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyGreaterThan(BigDecimal value) {
+        public Criteria andOrderQtyGreaterThan(Double value) {
             addCriterion("order_qty >", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andOrderQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("order_qty >=", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyLessThan(BigDecimal value) {
+        public Criteria andOrderQtyLessThan(Double value) {
             addCriterion("order_qty <", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andOrderQtyLessThanOrEqualTo(Double value) {
             addCriterion("order_qty <=", value, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyIn(List<BigDecimal> values) {
+        public Criteria andOrderQtyIn(List<Double> values) {
             addCriterion("order_qty in", values, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotIn(List<BigDecimal> values) {
+        public Criteria andOrderQtyNotIn(List<Double> values) {
             addCriterion("order_qty not in", values, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andOrderQtyBetween(Double value1, Double value2) {
             addCriterion("order_qty between", value1, value2, "orderQty");
             return (Criteria) this;
         }
 
-        public Criteria andOrderQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andOrderQtyNotBetween(Double value1, Double value2) {
             addCriterion("order_qty not between", value1, value2, "orderQty");
             return (Criteria) this;
         }
@@ -726,53 +665,183 @@ public class GsGoodsUseCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyEqualTo(BigDecimal value) {
+        public Criteria andLockQtyEqualTo(Double value) {
             addCriterion("lock_qty =", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotEqualTo(BigDecimal value) {
+        public Criteria andLockQtyNotEqualTo(Double value) {
             addCriterion("lock_qty <>", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyGreaterThan(BigDecimal value) {
+        public Criteria andLockQtyGreaterThan(Double value) {
             addCriterion("lock_qty >", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andLockQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("lock_qty >=", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyLessThan(BigDecimal value) {
+        public Criteria andLockQtyLessThan(Double value) {
             addCriterion("lock_qty <", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andLockQtyLessThanOrEqualTo(Double value) {
             addCriterion("lock_qty <=", value, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyIn(List<BigDecimal> values) {
+        public Criteria andLockQtyIn(List<Double> values) {
             addCriterion("lock_qty in", values, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotIn(List<BigDecimal> values) {
+        public Criteria andLockQtyNotIn(List<Double> values) {
             addCriterion("lock_qty not in", values, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andLockQtyBetween(Double value1, Double value2) {
             addCriterion("lock_qty between", value1, value2, "lockQty");
             return (Criteria) this;
         }
 
-        public Criteria andLockQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andLockQtyNotBetween(Double value1, Double value2) {
             addCriterion("lock_qty not between", value1, value2, "lockQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdIsNull() {
+            addCriterion("wh_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdIsNotNull() {
+            addCriterion("wh_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdEqualTo(Integer value) {
+            addCriterion("wh_id =", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdNotEqualTo(Integer value) {
+            addCriterion("wh_id <>", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdGreaterThan(Integer value) {
+            addCriterion("wh_id >", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("wh_id >=", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdLessThan(Integer value) {
+            addCriterion("wh_id <", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdLessThanOrEqualTo(Integer value) {
+            addCriterion("wh_id <=", value, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdIn(List<Integer> values) {
+            addCriterion("wh_id in", values, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdNotIn(List<Integer> values) {
+            addCriterion("wh_id not in", values, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdBetween(Integer value1, Integer value2) {
+            addCriterion("wh_id between", value1, value2, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWhIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("wh_id not between", value1, value2, "whId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoIsNull() {
+            addCriterion("trans_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoIsNotNull() {
+            addCriterion("trans_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoEqualTo(String value) {
+            addCriterion("trans_no =", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotEqualTo(String value) {
+            addCriterion("trans_no <>", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoGreaterThan(String value) {
+            addCriterion("trans_no >", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoGreaterThanOrEqualTo(String value) {
+            addCriterion("trans_no >=", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLessThan(String value) {
+            addCriterion("trans_no <", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLessThanOrEqualTo(String value) {
+            addCriterion("trans_no <=", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoLike(String value) {
+            addCriterion("trans_no like", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotLike(String value) {
+            addCriterion("trans_no not like", value, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoIn(List<String> values) {
+            addCriterion("trans_no in", values, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotIn(List<String> values) {
+            addCriterion("trans_no not in", values, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoBetween(String value1, String value2) {
+            addCriterion("trans_no between", value1, value2, "transNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransNoNotBetween(String value1, String value2) {
+            addCriterion("trans_no not between", value1, value2, "transNo");
             return (Criteria) this;
         }
     }

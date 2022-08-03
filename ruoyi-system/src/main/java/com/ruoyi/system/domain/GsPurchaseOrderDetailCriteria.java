@@ -536,52 +536,52 @@ public class GsPurchaseOrderDetailCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andQtyEqualTo(BigDecimal value) {
+        public Criteria andQtyEqualTo(Double value) {
             addCriterion("qty =", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyNotEqualTo(BigDecimal value) {
+        public Criteria andQtyNotEqualTo(Double value) {
             addCriterion("qty <>", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyGreaterThan(BigDecimal value) {
+        public Criteria andQtyGreaterThan(Double value) {
             addCriterion("qty >", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("qty >=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyLessThan(BigDecimal value) {
+        public Criteria andQtyLessThan(Double value) {
             addCriterion("qty <", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andQtyLessThanOrEqualTo(Double value) {
             addCriterion("qty <=", value, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyIn(List<BigDecimal> values) {
+        public Criteria andQtyIn(List<Double> values) {
             addCriterion("qty in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyNotIn(List<BigDecimal> values) {
+        public Criteria andQtyNotIn(List<Double> values) {
             addCriterion("qty not in", values, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andQtyBetween(Double value1, Double value2) {
             addCriterion("qty between", value1, value2, "qty");
             return (Criteria) this;
         }
 
-        public Criteria andQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andQtyNotBetween(Double value1, Double value2) {
             addCriterion("qty not between", value1, value2, "qty");
             return (Criteria) this;
         }
@@ -726,52 +726,52 @@ public class GsPurchaseOrderDetailCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInQtyEqualTo(Integer value) {
+        public Criteria andInQtyEqualTo(Double value) {
             addCriterion("in_qty =", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyNotEqualTo(Integer value) {
+        public Criteria andInQtyNotEqualTo(Double value) {
             addCriterion("in_qty <>", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyGreaterThan(Integer value) {
+        public Criteria andInQtyGreaterThan(Double value) {
             addCriterion("in_qty >", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("in_qty >=", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyLessThan(Integer value) {
+        public Criteria andInQtyLessThan(Double value) {
             addCriterion("in_qty <", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyLessThanOrEqualTo(Integer value) {
+        public Criteria andInQtyLessThanOrEqualTo(Double value) {
             addCriterion("in_qty <=", value, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyIn(List<Integer> values) {
+        public Criteria andInQtyIn(List<Double> values) {
             addCriterion("in_qty in", values, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyNotIn(List<Integer> values) {
+        public Criteria andInQtyNotIn(List<Double> values) {
             addCriterion("in_qty not in", values, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyBetween(Integer value1, Integer value2) {
+        public Criteria andInQtyBetween(Double value1, Double value2) {
             addCriterion("in_qty between", value1, value2, "inQty");
             return (Criteria) this;
         }
 
-        public Criteria andInQtyNotBetween(Integer value1, Integer value2) {
+        public Criteria andInQtyNotBetween(Double value1, Double value2) {
             addCriterion("in_qty not between", value1, value2, "inQty");
             return (Criteria) this;
         }
@@ -786,52 +786,52 @@ public class GsPurchaseOrderDetailCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyEqualTo(BigDecimal value) {
+        public Criteria andChangeQtyEqualTo(Double value) {
             addCriterion("change_qty =", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyNotEqualTo(BigDecimal value) {
+        public Criteria andChangeQtyNotEqualTo(Double value) {
             addCriterion("change_qty <>", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyGreaterThan(BigDecimal value) {
+        public Criteria andChangeQtyGreaterThan(Double value) {
             addCriterion("change_qty >", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andChangeQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("change_qty >=", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyLessThan(BigDecimal value) {
+        public Criteria andChangeQtyLessThan(Double value) {
             addCriterion("change_qty <", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andChangeQtyLessThanOrEqualTo(Double value) {
             addCriterion("change_qty <=", value, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyIn(List<BigDecimal> values) {
+        public Criteria andChangeQtyIn(List<Double> values) {
             addCriterion("change_qty in", values, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyNotIn(List<BigDecimal> values) {
+        public Criteria andChangeQtyNotIn(List<Double> values) {
             addCriterion("change_qty not in", values, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andChangeQtyBetween(Double value1, Double value2) {
             addCriterion("change_qty between", value1, value2, "changeQty");
             return (Criteria) this;
         }
 
-        public Criteria andChangeQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andChangeQtyNotBetween(Double value1, Double value2) {
             addCriterion("change_qty not between", value1, value2, "changeQty");
             return (Criteria) this;
         }
@@ -846,52 +846,52 @@ public class GsPurchaseOrderDetailCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyEqualTo(BigDecimal value) {
+        public Criteria andSurplusQtyEqualTo(Double value) {
             addCriterion("surplus_qty =", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyNotEqualTo(BigDecimal value) {
+        public Criteria andSurplusQtyNotEqualTo(Double value) {
             addCriterion("surplus_qty <>", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyGreaterThan(BigDecimal value) {
+        public Criteria andSurplusQtyGreaterThan(Double value) {
             addCriterion("surplus_qty >", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andSurplusQtyGreaterThanOrEqualTo(Double value) {
             addCriterion("surplus_qty >=", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyLessThan(BigDecimal value) {
+        public Criteria andSurplusQtyLessThan(Double value) {
             addCriterion("surplus_qty <", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andSurplusQtyLessThanOrEqualTo(Double value) {
             addCriterion("surplus_qty <=", value, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyIn(List<BigDecimal> values) {
+        public Criteria andSurplusQtyIn(List<Double> values) {
             addCriterion("surplus_qty in", values, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyNotIn(List<BigDecimal> values) {
+        public Criteria andSurplusQtyNotIn(List<Double> values) {
             addCriterion("surplus_qty not in", values, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andSurplusQtyBetween(Double value1, Double value2) {
             addCriterion("surplus_qty between", value1, value2, "surplusQty");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusQtyNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andSurplusQtyNotBetween(Double value1, Double value2) {
             addCriterion("surplus_qty not between", value1, value2, "surplusQty");
             return (Criteria) this;
         }

@@ -27,4 +27,6 @@ public interface GsGoodsUseMapper {
     int updateByPrimaryKeySelective(GsGoodsUse record);
 
     int updateByPrimaryKey(GsGoodsUse record);
+
+    List<GsGoodsUse> selectByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId);
 }

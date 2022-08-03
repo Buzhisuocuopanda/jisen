@@ -1,7 +1,6 @@
 package com.ruoyi.system.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class GsGoodsUse implements Serializable {
@@ -15,17 +14,19 @@ public class GsGoodsUse implements Serializable {
 
     private Integer updateBy;
 
-    private Byte deleteFlag;
-
     private Integer goodsId;
 
     private String orderNo;
 
-    private BigDecimal orderQty;
+    private Double orderQty;
 
     private Byte orderType;
 
-    private BigDecimal lockQty;
+    private Double lockQty;
+
+    private Integer whId;
+
+    private String transNo;
 
     private static final long serialVersionUID = 1L;
 
@@ -69,14 +70,6 @@ public class GsGoodsUse implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public Byte getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Byte deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
     public Integer getGoodsId() {
         return goodsId;
     }
@@ -93,11 +86,11 @@ public class GsGoodsUse implements Serializable {
         this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
-    public BigDecimal getOrderQty() {
+    public Double getOrderQty() {
         return orderQty;
     }
 
-    public void setOrderQty(BigDecimal orderQty) {
+    public void setOrderQty(Double orderQty) {
         this.orderQty = orderQty;
     }
 
@@ -109,12 +102,28 @@ public class GsGoodsUse implements Serializable {
         this.orderType = orderType;
     }
 
-    public BigDecimal getLockQty() {
+    public Double getLockQty() {
         return lockQty;
     }
 
-    public void setLockQty(BigDecimal lockQty) {
+    public void setLockQty(Double lockQty) {
         this.lockQty = lockQty;
+    }
+
+    public Integer getWhId() {
+        return whId;
+    }
+
+    public void setWhId(Integer whId) {
+        this.whId = whId;
+    }
+
+    public String getTransNo() {
+        return transNo;
+    }
+
+    public void setTransNo(String transNo) {
+        this.transNo = transNo == null ? null : transNo.trim();
     }
 
     @Override
@@ -134,12 +143,13 @@ public class GsGoodsUse implements Serializable {
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
-            && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()))
             && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
             && (this.getOrderNo() == null ? other.getOrderNo() == null : this.getOrderNo().equals(other.getOrderNo()))
             && (this.getOrderQty() == null ? other.getOrderQty() == null : this.getOrderQty().equals(other.getOrderQty()))
             && (this.getOrderType() == null ? other.getOrderType() == null : this.getOrderType().equals(other.getOrderType()))
-            && (this.getLockQty() == null ? other.getLockQty() == null : this.getLockQty().equals(other.getLockQty()));
+            && (this.getLockQty() == null ? other.getLockQty() == null : this.getLockQty().equals(other.getLockQty()))
+            && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
+            && (this.getTransNo() == null ? other.getTransNo() == null : this.getTransNo().equals(other.getTransNo()));
     }
 
     @Override
@@ -151,12 +161,13 @@ public class GsGoodsUse implements Serializable {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
-        result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
         result = prime * result + ((getGoodsId() == null) ? 0 : getGoodsId().hashCode());
         result = prime * result + ((getOrderNo() == null) ? 0 : getOrderNo().hashCode());
         result = prime * result + ((getOrderQty() == null) ? 0 : getOrderQty().hashCode());
         result = prime * result + ((getOrderType() == null) ? 0 : getOrderType().hashCode());
         result = prime * result + ((getLockQty() == null) ? 0 : getLockQty().hashCode());
+        result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
+        result = prime * result + ((getTransNo() == null) ? 0 : getTransNo().hashCode());
         return result;
     }
 
@@ -171,12 +182,13 @@ public class GsGoodsUse implements Serializable {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createBy=").append(createBy);
         sb.append(", updateBy=").append(updateBy);
-        sb.append(", deleteFlag=").append(deleteFlag);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", orderNo=").append(orderNo);
         sb.append(", orderQty=").append(orderQty);
         sb.append(", orderType=").append(orderType);
         sb.append(", lockQty=").append(lockQty);
+        sb.append(", whId=").append(whId);
+        sb.append(", transNo=").append(transNo);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

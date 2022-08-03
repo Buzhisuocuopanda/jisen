@@ -19,17 +19,17 @@ public class GsPurchaseOrderDetail implements Serializable {
 
     private Integer goodsId;
 
-    private BigDecimal qty;
+    private Double qty;
 
     private BigDecimal price;
 
     private String remark;
 
-    private Integer inQty;
+    private Double inQty;
 
-    private BigDecimal changeQty;
+    private Double changeQty;
 
-    private BigDecimal surplusQty;
+    private Double surplusQty;
 
     private Integer purchaseOrderId;
 
@@ -91,11 +91,11 @@ public class GsPurchaseOrderDetail implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public BigDecimal getQty() {
+    public Double getQty() {
         return qty;
     }
 
-    public void setQty(BigDecimal qty) {
+    public void setQty(Double qty) {
         this.qty = qty;
     }
 
@@ -115,27 +115,27 @@ public class GsPurchaseOrderDetail implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Integer getInQty() {
+    public Double getInQty() {
         return inQty;
     }
 
-    public void setInQty(Integer inQty) {
+    public void setInQty(Double inQty) {
         this.inQty = inQty;
     }
 
-    public BigDecimal getChangeQty() {
+    public Double getChangeQty() {
         return changeQty;
     }
 
-    public void setChangeQty(BigDecimal changeQty) {
+    public void setChangeQty(Double changeQty) {
         this.changeQty = changeQty;
     }
 
-    public BigDecimal getSurplusQty() {
+    public Double getSurplusQty() {
         return surplusQty;
     }
 
-    public void setSurplusQty(BigDecimal surplusQty) {
+    public void setSurplusQty(Double surplusQty) {
         this.surplusQty = surplusQty;
     }
 
