@@ -116,6 +116,11 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
      */
     @Override
     public int SwJsSkuBarcodeshs(CbpdDto cbpdDto) {
+        Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("不是未审核状态");
+
+        }
 
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -126,6 +131,8 @@ public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundServi
         cbpc.setCbpc11(TaskStatus.sh.getCode());
         cbpc.setCbpc12(cbpdDto.getCbpc12());
         cbpc.setCbpc13(cbpdDto.getCbpc13());
+
+
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

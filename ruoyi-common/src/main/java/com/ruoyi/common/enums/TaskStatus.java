@@ -1,7 +1,7 @@
 package com.ruoyi.common.enums;
 
 public enum TaskStatus {
-    mr(new Integer("0"), "默认"),
+    mr(new Integer("0"), "未审核"),
 
     sh(new Integer("1"), "审核"),
     fsh(new Integer("2"), "反审"),
