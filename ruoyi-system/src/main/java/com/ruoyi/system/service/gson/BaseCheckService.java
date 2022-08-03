@@ -14,4 +14,7 @@ public interface BaseCheckService {
 
 
     Cbpb checkGoods(Integer goodsId,String goodsName);
+
+
+
 }
