@@ -1,8 +1,7 @@
 package com.ruoyi.system.service.gson;
 
-import com.ruoyi.system.domain.Cbib;
-import com.ruoyi.system.domain.Cbpb;
-import com.ruoyi.system.domain.GsGoodsSku;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.*;
 
 /**
  * ClassName BaseCheckService
@@ -19,6 +18,14 @@ public interface BaseCheckService {
 
     GsGoodsSku checkGoodsSkuForUpdate(Integer Id);
 
-    //Cbib InsertCBIB(Integer storeId, String)
+    Cbsa checksupplier(Integer supplierid);
+
+    Cbwa checkStore(Integer Storeid);
+
+    Cbpb checkGoods(Integer goodsId);
+
+
+    SysUser checkUserTask(Long userId,Byte auditPerm);
+
 
 }
