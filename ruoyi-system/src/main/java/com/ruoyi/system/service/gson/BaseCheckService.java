@@ -3,6 +3,8 @@ package com.ruoyi.system.service.gson;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.*;
 
 /**
  * ClassName BaseCheckService
@@ -24,6 +26,16 @@ public interface BaseCheckService {
 
 
 
+    GsGoodsSku checkGoodsSkuForUpdate(Integer Id);
+
+    Cbsa checksupplier(Integer supplierid);
+
+    Cbwa checkStore(Integer Storeid);
+
+    Cbpb checkGoods(Integer goodsId);
 
 
+    SysUser checkUserTask(Long userId,Byte auditPerm);
+
+    GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
 }

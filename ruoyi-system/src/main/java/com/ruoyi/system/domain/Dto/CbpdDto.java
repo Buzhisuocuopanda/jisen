@@ -1,7 +1,11 @@
 package com.ruoyi.system.domain.Dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 @Data
 public class CbpdDto {
@@ -20,9 +24,9 @@ public class CbpdDto {
     private String cbpc07;
 
     private Date cbpc08;
-
+    @NotNull(message = "供应商不能为空")
     private Integer cbpc09;
-
+    @NotNull(message = "仓库不能为空")
     private Integer cbpc10;
 
     private Integer cbpc11;
@@ -34,7 +38,7 @@ public class CbpdDto {
     private Integer cbpc14;
 
     private Date cbpc15;
-
+    @NotNull(message = "结算货币类型不能为空")
     private Integer cbpc16;
 
     private String cbpc17;
@@ -54,15 +58,22 @@ public class CbpdDto {
     private Integer cbpd06;
 
     private Integer cbpd07;
-
+    @NotNull(message = "商品id不能为空")
     private Integer cbpd08;
+    @NotNull(message = "数量不能为空")
+    @Min(value = 0, message = "必须大于等于0")
 
     private Double cbpd09;
 
     private Double cbpd10;
 
+    @NotNull(message = "单价不能为空")
+    @Min(value = 0, message = "必须大于等于0")
+
     private Double cbpd11;
 
+    @NotNull(message = "金额不能为空")
+    @Min(value = 0, message = "必须大于等于0")
     private Double cbpd12;
 
     private String cbpd13;

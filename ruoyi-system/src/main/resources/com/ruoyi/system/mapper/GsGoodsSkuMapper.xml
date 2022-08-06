@@ -188,7 +188,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `gs_goods_sku`
     <set>
       <if test="record.id != null">
@@ -289,15 +289,25 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+
+  <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `gs_goods_sku`
+    where id = #{id,jdbcType=INTEGER}
+    for update
+  </select>
+
+
   <select id="selectByGoodsIdAndWhIdForUpdate" resultMap="BaseResultMap">
     SELECT
-	*
-FROM
-	`gs_goods_sku` sku
-WHERE
-	sku.delete_flag = 0
-	AND sku.goods_id = #{goodsId}
-	AND sku.wh_id = #{whId} FOR UPDATE
+      *
+    FROM
+      `gs_goods_sku` sku
+    WHERE
+      sku.delete_flag = 0
+      AND sku.goods_id = #{goodsId}
+      AND sku.wh_id = #{whId} FOR UPDATE
   </select>
 
 </mapper>

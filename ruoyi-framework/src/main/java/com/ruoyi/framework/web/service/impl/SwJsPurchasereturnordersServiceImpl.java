@@ -1,17 +1,20 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbibDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
 import com.ruoyi.system.domain.Dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpgVo;
-import com.ruoyi.system.mapper.CbpgMapper;
-import com.ruoyi.system.mapper.CbphMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
+import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +33,35 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     private CbpgMapper cbpgMapper;
 
     @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
+    @Resource
     private CbphMapper cbphMapper;
 
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+    @Resource
+    private BaseCheckService baseCheckService;
+    @Resource
+    private CbpcMapper cbpcMapper;
 
+    @Resource
+    private CbpdMapper cbpdMapper;
+
+    @Resource
+    private CbbaMapper cbbaMapper;
+    @Resource
+    private CbsaMapper cbasMapper;
+
+    @Resource
+    private CbpeMapper cbpeMapper;
+    @Resource
+    private CbpiMapper cbpiMapper;
+
+    @Resource
+    private TaskService taskService;
     /**
-     * 新增采购退货单
+     * 新增采购退货主单
      *
      * @param cbpgDto 审核信息
      * @return 结果
@@ -59,8 +86,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg08(date);
         cbpg.setUserId(Math.toIntExact(userid));
         cbpgMapper.insertSelective(cbpg);
-
         CbpgCriteria example1 = new CbpgCriteria();
+        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
+        Integer id = cbpgs1.get(0).getCbpg01();
+     /*   CbpgCriteria example1 = new CbpgCriteria();
         example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example);
@@ -68,6 +99,42 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
 
         Cbph cbph = BeanCopyUtils.coypToClass(cbpgDto, Cbph.class, null);
+        cbph.setCbph03(date);
+        cbph.setCbph04(Math.toIntExact(userid));
+        cbph.setCbph05(date);
+        cbph.setCbph06(Math.toIntExact(userid));
+        cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbph.setCbpg01(ints[0]);
+        cbph.setUserId(Math.toIntExact(userid));
+        cbph.setCbph09(cbpgDto.getCbph09());
+        cbph.setCbph10(cbpgDto.getCbph10());
+        BigDecimal num = BigDecimal.valueOf(cbpgDto.getCbph09());
+        BigDecimal price = BigDecimal.valueOf(cbpgDto.getCbph10());
+        BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+        cbph.setCbph11(cbpgDto.getCbph11());
+        cbph.setCbph12(cbpgDto.getCbph12());*/
+        return id;
+    }
+    /**
+     * 新增采购退货单明细
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int insertSwJsSkuBarcodess(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+
+        CbpgCriteria example1 = new CbpgCriteria();
+        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
+                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
+        List<Integer> collect = cbpgs1.stream().map(Cbpg::getCbpg01).collect(Collectors.toList());
+        int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
+
+        Cbph cbph = BeanCopyUtils.coypToClass(cbpgDto, Cbph.class, null);
+        Date date = new Date();
+
         cbph.setCbph03(date);
         cbph.setCbph04(Math.toIntExact(userid));
         cbph.setCbph05(date);
@@ -99,6 +166,17 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())  ){
             throw new SwException("非反审或默认不可删除");
         }
+        Integer storeid = cbpg1.getCbpg10();
+        CbphCriteria example1=new CbphCriteria();
+        example1.createCriteria().andUserIdEqualTo(cbpgDto.getCbpg01())
+                .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbph> cbphs = cbphMapper.selectByExample(example1);
+
+
+        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbphs.get(0).getCbph08());
+        Integer goodsid = cbba.getCbba08();
+        //检查是否有库存
+        baseCheckService.checkGoodsSku(goodsid,storeid);
 
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
@@ -254,6 +332,11 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
+
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date(TaskStatus.bjwc.getCode());
@@ -264,9 +347,163 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
         //cbpg.setCbpg15(date);
+        Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpg1.getCbpg09());
+
+
+
+        //数量管理查找商品id和仓库id，没有就加入
+        CbphCriteria example1=new CbphCriteria();
+        example1.createCriteria()
+                .andCbph06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbph01EqualTo(cbpgDto.getCbph01());
+        List<Cbph> cbphs = cbphMapper.selectByExample(example1);
+
+        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbphs.get(0).getCbph08());
+        //供应商id
+        Integer vendorid = cbpg1.getCbpg09();
+        //商品id
+        Integer goodsid = cbba.getCbba08();
+        //仓库id
+        Integer storeid = cbpg1.getCbpg10();
+        //数量
+        Double num = cbphs.get(0).getCbph09();
+        //编号
+        String number = cbpg1.getCbpg07();
+        //金额
+        Double money = cbphs.get(0).getCbph11();
+
+        //判断是哪个仓库  数量仓库
+        if(cbpg1.getCbpg10().equals(WarehouseSelect.CBW.getCode()) ||
+                cbpg1.getCbpg10().equals(WarehouseSelect.GLW.getCode())){
+            //检查是否有数据存在
+            GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(goodsid)
+                    .andWhIdEqualTo(storeid);
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+            //库存表id
+            Integer id = gsGoodsSkus.get(0).getId();
+            //对库存表的操作
+            if(gsGoodsSkus.size()==0) {
+                //新增数据
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(goodsid);
+                gsGoodsSku.setWhId(storeid);
+                gsGoodsSku.setQty(num);
+                gsGoodsSkuMapper.insertSelective(gsGoodsSku);}
+            else {
+                GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                gsGoodsSku.setQty(gsGoodsSku.getQty()-num);
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }
+            //台账操作
+            CbibDo cbibDo=new CbibDo();
+            cbibDo.setCbib02(storeid);
+            cbibDo.setCbib03(number);
+            cbibDo.setCbib05(String.valueOf(TaskType.cgtkd.getCode()));
+            cbibDo.setCbib06(cbsa.getCbsa07());
+            cbibDo.setCbib07(cbpgDto.getCbpg01());
+            cbibDo.setCbib08(goodsid);
+            cbibDo.setCbib13(num);
+            cbibDo.setCbib14(money);
+            cbibDo.setCbib15(num);
+            cbibDo.setCbib16(money);
+            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+            cbibDo.setCbib19(vendorid);
+            taskService.InsertCBIB(cbibDo);
+
+        }
+        //扫码仓库
+        else {
+            CbpiCriteria example2 = new CbpiCriteria();
+            example2.createCriteria().andCbpi01EqualTo(cbpgDto.getCbpg01())
+                    .andCbpi07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpi> cbpis = cbpiMapper.selectByExample(example2);
+            //sn
+            String sn = cbpis.get(0).getCbpi09();
+            //以扫数量
+            Integer snum = cbpis.get(0).getCbpi11();
+
+            //检查是否有数据存在
+            GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(goodsid)
+                    .andWhIdEqualTo(storeid);
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+            //库存表id
+            Integer id = gsGoodsSkus.get(0).getId();
+
+
+            //对库存表的操作
+            if(gsGoodsSkus.size()==0) {
+                //新增数据
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(goodsid);
+                gsGoodsSku.setWhId(storeid);
+                gsGoodsSku.setQty(Double.valueOf(snum));
+                gsGoodsSkuMapper.insertSelective(gsGoodsSku);}
+            else {
+                //对库存进行更新操作
+                GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                gsGoodsSku.setQty(gsGoodsSku.getQty()+snum);
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }
+            //对货物sn表操作
+            GsGoodsSnDo goodsSnDo = new GsGoodsSnDo();
+            goodsSnDo.setSn(sn);
+            goodsSnDo.setGoodsId(goodsid);
+            goodsSnDo.setStatus(GoodsType.yrk.getCode());
+            goodsSnDo.setInTime(date);
+            taskService.InsertGsGoodsn(goodsSnDo);
+
+
+            //商品sn扫码交易表
+            GsGoodsSnTransDo goodsSnTransDo=new GsGoodsSnTransDo();
+            goodsSnTransDo.setSn(sn);
+            goodsSnTransDo.setTransType(TaskType.cgrkd.getCode());
+            goodsSnTransDo.setTransId(cbpgDto.getCbpg01());
+            goodsSnTransDo.setTransLineId(cbpg1.getCbpg07());
+            goodsSnTransDo.setGoodsId(goodsid);
+            taskService.InsertGsGoodsntrans(goodsSnTransDo);
+
+
+            //台账操作
+            CbibDo cbibDo=new CbibDo();
+            cbibDo.setCbib02(storeid);
+            cbibDo.setCbib03(number);
+            cbibDo.setCbib05(String.valueOf(TaskType.cgtkd.getCode()));
+            cbibDo.setCbib06(cbsa.getCbsa07());
+            cbibDo.setCbib07(cbpgDto.getCbpg01());
+            cbibDo.setCbib08(goodsid);
+            cbibDo.setCbib13(num);
+            cbibDo.setCbib14(money);
+            cbibDo.setCbib15(num);
+            cbibDo.setCbib16(money);
+            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+            cbibDo.setCbib19(vendorid);
+            taskService.InsertCBIB(cbibDo);
+        }
+
         CbpgCriteria example = new CbpgCriteria();
         example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
         return cbpgMapper.updateByExampleSelective(cbpg, example);      }
+
+
 
 }

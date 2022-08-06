@@ -41,4 +41,6 @@ public interface CbpdMapper {
     int updateCBPC(Cbpc cbpc);
 
     List<CbpcVo> getInfosss(CbpcVo cbpcVo);
+
+    List<CbpcVo> getInfossss(CbpcVo cbpcVo);
 }

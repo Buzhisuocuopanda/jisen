@@ -28,6 +28,8 @@ public interface GsGoodsSkuMapper {
 
     int updateByPrimaryKey(GsGoodsSku record);
 
+    GsGoodsSku selectByPrimaryKeyForUpdate(Integer id);
+
     List<GsGoodsSku> selectByGoodsIdAndWhIdForUpdate(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
 
 }

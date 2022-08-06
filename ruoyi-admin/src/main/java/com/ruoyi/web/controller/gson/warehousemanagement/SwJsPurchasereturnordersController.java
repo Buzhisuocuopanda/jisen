@@ -40,29 +40,49 @@ public class SwJsPurchasereturnordersController extends BaseController {
     @Resource
     private ISwJsPurchasereturnordersService swJsPurchasereturnordersService;
     /**
-     * 新增采购退货单
+     * 新增采购退货单主单
      */
     @ApiOperation(
-            value ="新增采购退货单",
-            notes = "新增采购退货单"
+            value ="新增采购退货单主单",
+            notes = "新增采购退货单主单"
     )
     @PostMapping("/SwJsPurchasereturnordersadd")
     public AjaxResult swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodes(cbpgDto));
-
-
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购退货单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpgDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购退货单主单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpgDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+
+    /**
+     * 新增采购退货单明细单
+     */
+    @ApiOperation(
+            value ="新增采购退货单明细单",
+            notes = "新增采购退货单明细单"
+    )
+    @PostMapping("/SwJsPurchasereturnordersadds")
+    public AjaxResult swJsPurchasereturnordersadds(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodess(cbpgDto));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增采购退货单明细单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpgDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 删除采购退货单
