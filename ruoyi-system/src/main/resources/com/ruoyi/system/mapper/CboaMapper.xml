@@ -1,120 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CboaMapper">
-  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cboa">
-    <result column="CBOA01" jdbcType="INTEGER" property="cboa01" />
-    <result column="CBOA02" jdbcType="TIMESTAMP" property="cboa02" />
-    <result column="CBOA03" jdbcType="INTEGER" property="cboa03" />
-    <result column="CBOA04" jdbcType="TIMESTAMP" property="cboa04" />
-    <result column="CBOA05" jdbcType="INTEGER" property="cboa05" />
-    <result column="CBOA06" jdbcType="INTEGER" property="cboa06" />
-    <result column="CBOA07" jdbcType="VARCHAR" property="cboa07" />
-    <result column="CBOA08" jdbcType="TIMESTAMP" property="cboa08" />
-    <result column="CBOA09" jdbcType="INTEGER" property="cboa09" />
-    <result column="CBOA10" jdbcType="INTEGER" property="cboa10" />
-    <result column="CBOA11" jdbcType="INTEGER" property="cboa11" />
-    <result column="CBOA12" jdbcType="INTEGER" property="cboa12" />
-    <result column="CBOA13" jdbcType="TIMESTAMP" property="cboa13" />
-    <result column="CBOA14" jdbcType="INTEGER" property="cboa14" />
-    <result column="CBOA15" jdbcType="TIMESTAMP" property="cboa15" />
-    <result column="CBOA16" jdbcType="INTEGER" property="cboa16" />
-    <result column="CBOA17" jdbcType="VARCHAR" property="cboa17" />
-    <result column="CBOA18" jdbcType="VARCHAR" property="cboa18" />
-    <result column="CBOA19" jdbcType="VARCHAR" property="cboa19" />
-    <result column="CBOA20" jdbcType="VARCHAR" property="cboa20" />
-    <result column="CBOA21" jdbcType="VARCHAR" property="cboa21" />
-    <result column="CBOA22" jdbcType="VARCHAR" property="cboa22" />
-    <result column="CBOA23" jdbcType="INTEGER" property="cboa23" />
-    <result column="CBOA24" jdbcType="INTEGER" property="cboa24" />
-    <result column="CBOA25" jdbcType="VARCHAR" property="cboa25" />
-    <result column="CBOA26" jdbcType="VARCHAR" property="cboa26" />
-    <result column="CBOA27" jdbcType="INTEGER" property="cboa27" />
-    <result column="CBOA28" jdbcType="INTEGER" property="cboa28" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cboa">
+        <result column="CBOA01" jdbcType="INTEGER" property="cboa01"/>
+        <result column="CBOA02" jdbcType="TIMESTAMP" property="cboa02"/>
+        <result column="CBOA03" jdbcType="INTEGER" property="cboa03"/>
+        <result column="CBOA04" jdbcType="TIMESTAMP" property="cboa04"/>
+        <result column="CBOA05" jdbcType="INTEGER" property="cboa05"/>
+        <result column="CBOA06" jdbcType="INTEGER" property="cboa06"/>
+        <result column="CBOA07" jdbcType="VARCHAR" property="cboa07"/>
+        <result column="CBOA08" jdbcType="TIMESTAMP" property="cboa08"/>
+        <result column="CBOA09" jdbcType="INTEGER" property="cboa09"/>
+        <result column="CBOA10" jdbcType="INTEGER" property="cboa10"/>
+        <result column="CBOA11" jdbcType="INTEGER" property="cboa11"/>
+        <result column="CBOA12" jdbcType="INTEGER" property="cboa12"/>
+        <result column="CBOA13" jdbcType="TIMESTAMP" property="cboa13"/>
+        <result column="CBOA14" jdbcType="INTEGER" property="cboa14"/>
+        <result column="CBOA15" jdbcType="TIMESTAMP" property="cboa15"/>
+        <result column="CBOA16" jdbcType="INTEGER" property="cboa16"/>
+        <result column="CBOA17" jdbcType="VARCHAR" property="cboa17"/>
+        <result column="CBOA18" jdbcType="VARCHAR" property="cboa18"/>
+        <result column="CBOA19" jdbcType="VARCHAR" property="cboa19"/>
+        <result column="CBOA20" jdbcType="VARCHAR" property="cboa20"/>
+        <result column="CBOA21" jdbcType="VARCHAR" property="cboa21"/>
+        <result column="CBOA22" jdbcType="VARCHAR" property="cboa22"/>
+        <result column="CBOA23" jdbcType="INTEGER" property="cboa23"/>
+        <result column="CBOA24" jdbcType="INTEGER" property="cboa24"/>
+        <result column="CBOA25" jdbcType="VARCHAR" property="cboa25"/>
+        <result column="CBOA26" jdbcType="VARCHAR" property="cboa26"/>
+        <result column="CBOA27" jdbcType="INTEGER" property="cboa27"/>
+        <result column="CBOA28" jdbcType="INTEGER" property="cboa28"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     CBOA01, CBOA02, CBOA03, CBOA04, CBOA05, CBOA06, CBOA07, CBOA08, CBOA09, CBOA10, CBOA11,
     CBOA12, CBOA13, CBOA14, CBOA15, CBOA16, CBOA17, CBOA18, CBOA19, CBOA20, CBOA21, CBOA22,
     CBOA23, CBOA24, CBOA25, CBOA26, CBOA27, CBOA28
   </sql>
-  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CboaCriteria" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from `CBOA`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CboaCriteria">
-    delete from `CBOA`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cboa">
+    <select id="selectByExample" parameterType="com.ruoyi.system.domain.CboaCriteria" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from `CBOA`
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CboaCriteria">
+        delete from `CBOA`
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ruoyi.system.domain.Cboa">
     insert into `CBOA` (CBOA01, CBOA02, CBOA03,
       CBOA04, CBOA05, CBOA06,
       CBOA07, CBOA08, CBOA09,
@@ -136,315 +138,315 @@
       #{cboa25,jdbcType=VARCHAR}, #{cboa26,jdbcType=VARCHAR}, #{cboa27,jdbcType=INTEGER},
       #{cboa28,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cboa">
-    insert into `CBOA`
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cboa01 != null">
-        CBOA01,
-      </if>
-      <if test="cboa02 != null">
-        CBOA02,
-      </if>
-      <if test="cboa03 != null">
-        CBOA03,
-      </if>
-      <if test="cboa04 != null">
-        CBOA04,
-      </if>
-      <if test="cboa05 != null">
-        CBOA05,
-      </if>
-      <if test="cboa06 != null">
-        CBOA06,
-      </if>
-      <if test="cboa07 != null">
-        CBOA07,
-      </if>
-      <if test="cboa08 != null">
-        CBOA08,
-      </if>
-      <if test="cboa09 != null">
-        CBOA09,
-      </if>
-      <if test="cboa10 != null">
-        CBOA10,
-      </if>
-      <if test="cboa11 != null">
-        CBOA11,
-      </if>
-      <if test="cboa12 != null">
-        CBOA12,
-      </if>
-      <if test="cboa13 != null">
-        CBOA13,
-      </if>
-      <if test="cboa14 != null">
-        CBOA14,
-      </if>
-      <if test="cboa15 != null">
-        CBOA15,
-      </if>
-      <if test="cboa16 != null">
-        CBOA16,
-      </if>
-      <if test="cboa17 != null">
-        CBOA17,
-      </if>
-      <if test="cboa18 != null">
-        CBOA18,
-      </if>
-      <if test="cboa19 != null">
-        CBOA19,
-      </if>
-      <if test="cboa20 != null">
-        CBOA20,
-      </if>
-      <if test="cboa21 != null">
-        CBOA21,
-      </if>
-      <if test="cboa22 != null">
-        CBOA22,
-      </if>
-      <if test="cboa23 != null">
-        CBOA23,
-      </if>
-      <if test="cboa24 != null">
-        CBOA24,
-      </if>
-      <if test="cboa25 != null">
-        CBOA25,
-      </if>
-      <if test="cboa26 != null">
-        CBOA26,
-      </if>
-      <if test="cboa27 != null">
-        CBOA27,
-      </if>
-      <if test="cboa28 != null">
-        CBOA28,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cboa01 != null">
-        #{cboa01,jdbcType=INTEGER},
-      </if>
-      <if test="cboa02 != null">
-        #{cboa02,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cboa03 != null">
-        #{cboa03,jdbcType=INTEGER},
-      </if>
-      <if test="cboa04 != null">
-        #{cboa04,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cboa05 != null">
-        #{cboa05,jdbcType=INTEGER},
-      </if>
-      <if test="cboa06 != null">
-        #{cboa06,jdbcType=INTEGER},
-      </if>
-      <if test="cboa07 != null">
-        #{cboa07,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa08 != null">
-        #{cboa08,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cboa09 != null">
-        #{cboa09,jdbcType=INTEGER},
-      </if>
-      <if test="cboa10 != null">
-        #{cboa10,jdbcType=INTEGER},
-      </if>
-      <if test="cboa11 != null">
-        #{cboa11,jdbcType=INTEGER},
-      </if>
-      <if test="cboa12 != null">
-        #{cboa12,jdbcType=INTEGER},
-      </if>
-      <if test="cboa13 != null">
-        #{cboa13,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cboa14 != null">
-        #{cboa14,jdbcType=INTEGER},
-      </if>
-      <if test="cboa15 != null">
-        #{cboa15,jdbcType=TIMESTAMP},
-      </if>
-      <if test="cboa16 != null">
-        #{cboa16,jdbcType=INTEGER},
-      </if>
-      <if test="cboa17 != null">
-        #{cboa17,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa18 != null">
-        #{cboa18,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa19 != null">
-        #{cboa19,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa20 != null">
-        #{cboa20,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa21 != null">
-        #{cboa21,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa22 != null">
-        #{cboa22,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa23 != null">
-        #{cboa23,jdbcType=INTEGER},
-      </if>
-      <if test="cboa24 != null">
-        #{cboa24,jdbcType=INTEGER},
-      </if>
-      <if test="cboa25 != null">
-        #{cboa25,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa26 != null">
-        #{cboa26,jdbcType=VARCHAR},
-      </if>
-      <if test="cboa27 != null">
-        #{cboa27,jdbcType=INTEGER},
-      </if>
-      <if test="cboa28 != null">
-        #{cboa28,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.CboaCriteria" resultType="java.lang.Long">
-    select count(*) from `CBOA`
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update `CBOA`
-    <set>
-      <if test="record.cboa01 != null">
-        CBOA01 = #{record.cboa01,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa02 != null">
+    <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cboa">
+        insert into `CBOA`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cboa01 != null">
+                CBOA01,
+            </if>
+            <if test="cboa02 != null">
+                CBOA02,
+            </if>
+            <if test="cboa03 != null">
+                CBOA03,
+            </if>
+            <if test="cboa04 != null">
+                CBOA04,
+            </if>
+            <if test="cboa05 != null">
+                CBOA05,
+            </if>
+            <if test="cboa06 != null">
+                CBOA06,
+            </if>
+            <if test="cboa07 != null">
+                CBOA07,
+            </if>
+            <if test="cboa08 != null">
+                CBOA08,
+            </if>
+            <if test="cboa09 != null">
+                CBOA09,
+            </if>
+            <if test="cboa10 != null">
+                CBOA10,
+            </if>
+            <if test="cboa11 != null">
+                CBOA11,
+            </if>
+            <if test="cboa12 != null">
+                CBOA12,
+            </if>
+            <if test="cboa13 != null">
+                CBOA13,
+            </if>
+            <if test="cboa14 != null">
+                CBOA14,
+            </if>
+            <if test="cboa15 != null">
+                CBOA15,
+            </if>
+            <if test="cboa16 != null">
+                CBOA16,
+            </if>
+            <if test="cboa17 != null">
+                CBOA17,
+            </if>
+            <if test="cboa18 != null">
+                CBOA18,
+            </if>
+            <if test="cboa19 != null">
+                CBOA19,
+            </if>
+            <if test="cboa20 != null">
+                CBOA20,
+            </if>
+            <if test="cboa21 != null">
+                CBOA21,
+            </if>
+            <if test="cboa22 != null">
+                CBOA22,
+            </if>
+            <if test="cboa23 != null">
+                CBOA23,
+            </if>
+            <if test="cboa24 != null">
+                CBOA24,
+            </if>
+            <if test="cboa25 != null">
+                CBOA25,
+            </if>
+            <if test="cboa26 != null">
+                CBOA26,
+            </if>
+            <if test="cboa27 != null">
+                CBOA27,
+            </if>
+            <if test="cboa28 != null">
+                CBOA28,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cboa01 != null">
+                #{cboa01,jdbcType=INTEGER},
+            </if>
+            <if test="cboa02 != null">
+                #{cboa02,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cboa03 != null">
+                #{cboa03,jdbcType=INTEGER},
+            </if>
+            <if test="cboa04 != null">
+                #{cboa04,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cboa05 != null">
+                #{cboa05,jdbcType=INTEGER},
+            </if>
+            <if test="cboa06 != null">
+                #{cboa06,jdbcType=INTEGER},
+            </if>
+            <if test="cboa07 != null">
+                #{cboa07,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa08 != null">
+                #{cboa08,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cboa09 != null">
+                #{cboa09,jdbcType=INTEGER},
+            </if>
+            <if test="cboa10 != null">
+                #{cboa10,jdbcType=INTEGER},
+            </if>
+            <if test="cboa11 != null">
+                #{cboa11,jdbcType=INTEGER},
+            </if>
+            <if test="cboa12 != null">
+                #{cboa12,jdbcType=INTEGER},
+            </if>
+            <if test="cboa13 != null">
+                #{cboa13,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cboa14 != null">
+                #{cboa14,jdbcType=INTEGER},
+            </if>
+            <if test="cboa15 != null">
+                #{cboa15,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cboa16 != null">
+                #{cboa16,jdbcType=INTEGER},
+            </if>
+            <if test="cboa17 != null">
+                #{cboa17,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa18 != null">
+                #{cboa18,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa19 != null">
+                #{cboa19,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa20 != null">
+                #{cboa20,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa21 != null">
+                #{cboa21,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa22 != null">
+                #{cboa22,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa23 != null">
+                #{cboa23,jdbcType=INTEGER},
+            </if>
+            <if test="cboa24 != null">
+                #{cboa24,jdbcType=INTEGER},
+            </if>
+            <if test="cboa25 != null">
+                #{cboa25,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa26 != null">
+                #{cboa26,jdbcType=VARCHAR},
+            </if>
+            <if test="cboa27 != null">
+                #{cboa27,jdbcType=INTEGER},
+            </if>
+            <if test="cboa28 != null">
+                #{cboa28,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.CboaCriteria" resultType="java.lang.Long">
+        select count(*) from `CBOA`
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update `CBOA`
+        <set>
+            <if test="record.cboa01 != null">
+                CBOA01 = #{record.cboa01,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa02 != null">
+                CBOA02 = #{record.cboa02,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.cboa03 != null">
+                CBOA03 = #{record.cboa03,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa04 != null">
+                CBOA04 = #{record.cboa04,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.cboa05 != null">
+                CBOA05 = #{record.cboa05,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa06 != null">
+                CBOA06 = #{record.cboa06,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa07 != null">
+                CBOA07 = #{record.cboa07,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa08 != null">
+                CBOA08 = #{record.cboa08,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.cboa09 != null">
+                CBOA09 = #{record.cboa09,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa10 != null">
+                CBOA10 = #{record.cboa10,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa11 != null">
+                CBOA11 = #{record.cboa11,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa12 != null">
+                CBOA12 = #{record.cboa12,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa13 != null">
+                CBOA13 = #{record.cboa13,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.cboa14 != null">
+                CBOA14 = #{record.cboa14,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa15 != null">
+                CBOA15 = #{record.cboa15,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.cboa16 != null">
+                CBOA16 = #{record.cboa16,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa17 != null">
+                CBOA17 = #{record.cboa17,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa18 != null">
+                CBOA18 = #{record.cboa18,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa19 != null">
+                CBOA19 = #{record.cboa19,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa20 != null">
+                CBOA20 = #{record.cboa20,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa21 != null">
+                CBOA21 = #{record.cboa21,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa22 != null">
+                CBOA22 = #{record.cboa22,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa23 != null">
+                CBOA23 = #{record.cboa23,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa24 != null">
+                CBOA24 = #{record.cboa24,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa25 != null">
+                CBOA25 = #{record.cboa25,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa26 != null">
+                CBOA26 = #{record.cboa26,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cboa27 != null">
+                CBOA27 = #{record.cboa27,jdbcType=INTEGER},
+            </if>
+            <if test="record.cboa28 != null">
+                CBOA28 = #{record.cboa28,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update `CBOA`
+        set CBOA01 = #{record.cboa01,jdbcType=INTEGER},
         CBOA02 = #{record.cboa02,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cboa03 != null">
         CBOA03 = #{record.cboa03,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa04 != null">
         CBOA04 = #{record.cboa04,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cboa05 != null">
         CBOA05 = #{record.cboa05,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa06 != null">
         CBOA06 = #{record.cboa06,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa07 != null">
         CBOA07 = #{record.cboa07,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa08 != null">
         CBOA08 = #{record.cboa08,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cboa09 != null">
         CBOA09 = #{record.cboa09,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa10 != null">
         CBOA10 = #{record.cboa10,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa11 != null">
         CBOA11 = #{record.cboa11,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa12 != null">
         CBOA12 = #{record.cboa12,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa13 != null">
         CBOA13 = #{record.cboa13,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cboa14 != null">
         CBOA14 = #{record.cboa14,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa15 != null">
         CBOA15 = #{record.cboa15,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.cboa16 != null">
         CBOA16 = #{record.cboa16,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa17 != null">
         CBOA17 = #{record.cboa17,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa18 != null">
         CBOA18 = #{record.cboa18,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa19 != null">
         CBOA19 = #{record.cboa19,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa20 != null">
         CBOA20 = #{record.cboa20,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa21 != null">
         CBOA21 = #{record.cboa21,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa22 != null">
         CBOA22 = #{record.cboa22,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa23 != null">
         CBOA23 = #{record.cboa23,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa24 != null">
         CBOA24 = #{record.cboa24,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa25 != null">
         CBOA25 = #{record.cboa25,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa26 != null">
         CBOA26 = #{record.cboa26,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cboa27 != null">
         CBOA27 = #{record.cboa27,jdbcType=INTEGER},
-      </if>
-      <if test="record.cboa28 != null">
-        CBOA28 = #{record.cboa28,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update `CBOA`
-    set CBOA01 = #{record.cboa01,jdbcType=INTEGER},
-      CBOA02 = #{record.cboa02,jdbcType=TIMESTAMP},
-      CBOA03 = #{record.cboa03,jdbcType=INTEGER},
-      CBOA04 = #{record.cboa04,jdbcType=TIMESTAMP},
-      CBOA05 = #{record.cboa05,jdbcType=INTEGER},
-      CBOA06 = #{record.cboa06,jdbcType=INTEGER},
-      CBOA07 = #{record.cboa07,jdbcType=VARCHAR},
-      CBOA08 = #{record.cboa08,jdbcType=TIMESTAMP},
-      CBOA09 = #{record.cboa09,jdbcType=INTEGER},
-      CBOA10 = #{record.cboa10,jdbcType=INTEGER},
-      CBOA11 = #{record.cboa11,jdbcType=INTEGER},
-      CBOA12 = #{record.cboa12,jdbcType=INTEGER},
-      CBOA13 = #{record.cboa13,jdbcType=TIMESTAMP},
-      CBOA14 = #{record.cboa14,jdbcType=INTEGER},
-      CBOA15 = #{record.cboa15,jdbcType=TIMESTAMP},
-      CBOA16 = #{record.cboa16,jdbcType=INTEGER},
-      CBOA17 = #{record.cboa17,jdbcType=VARCHAR},
-      CBOA18 = #{record.cboa18,jdbcType=VARCHAR},
-      CBOA19 = #{record.cboa19,jdbcType=VARCHAR},
-      CBOA20 = #{record.cboa20,jdbcType=VARCHAR},
-      CBOA21 = #{record.cboa21,jdbcType=VARCHAR},
-      CBOA22 = #{record.cboa22,jdbcType=VARCHAR},
-      CBOA23 = #{record.cboa23,jdbcType=INTEGER},
-      CBOA24 = #{record.cboa24,jdbcType=INTEGER},
-      CBOA25 = #{record.cboa25,jdbcType=VARCHAR},
-      CBOA26 = #{record.cboa26,jdbcType=VARCHAR},
-      CBOA27 = #{record.cboa27,jdbcType=INTEGER},
-      CBOA28 = #{record.cboa28,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+        CBOA28 = #{record.cboa28,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
 
-  <select id="saleOrderSkuList" resultType="com.ruoyi.system.domain.vo.SaleOrderSkuVo">
+    <select id="saleOrderSkuList" resultType="com.ruoyi.system.domain.vo.SaleOrderSkuVo">
 SELECT
 	ob.CBOB08 AS orderNo,
 	ob.CBOB09 AS goodsNum,
@@ -464,5 +466,51 @@ FROM
 where ob.CBOB08=#{orderNo}
 and gs.order_no=#{orderNo}
   </select>
+
+    <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+        SELECT
+        oa.CBOA01 as id,
+        oa.CBOA07 as orderNo,
+        oa.CBOA25 as customerNo,
+        oa.CBOA02 as createTime,
+        ca.CBCA08 as customerName,
+        u.nick_name as saleUser,
+        oa.CBOA16 AS settleCurrent,
+        oa.CBOA17 as receiver,
+        oa.CBOA18 as address,
+        oa.CBOA19 as phone,
+        oa.CBOA27 as orderClass,
+        oa.CBOA24 as orderType,
+        oa.CBOA08 as orderDate,
+        oa.CBOA11 as status
+
+
+        FROM
+        `CBOA` oa
+        LEFT JOIN CBCA ca on oa.CBOA09 =ca.CBCA01
+        LEFT JOIN sys_user u ON u.user_id =oa.CBOA10
+        where oa.CBOA06=0
+        <if test="startTime != null">
+            and oa.CBOA08 &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and oa.CBOA08 &lt;=#{endTime}
+        </if>
+        <if test="status != null">
+            and oa.CBOA11 =#{status]}
+        </if>
+        <if test="orderNo != null and orderNo != ''">
+            and oa.CBOA07 like concat('%', #{orderNo}, '%')
+        </if>
+
+        <if test="type != null ">
+            and oa.CBOA27 =#{type}
+        </if>
+        <if test="customer != null and customer !=''">
+
+
+            and ca.CBCA08 like concat('%', #{customer}, '%')
+        </if>
+    </select>
 
 </mapper>

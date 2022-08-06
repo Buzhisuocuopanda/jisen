@@ -13,20 +13,20 @@ import lombok.Data;
 @Data
 public class OrderDistributionDo {
 
-    private Integer orderId;
 
-    private Integer num;
+
+    private Double num;
 
 
     private Integer goodsId;
 
-    private Integer oldNum;
+    private Double oldNum;
 
     private Cbba cbba;
 
-    private Integer priority;
+    private String priority;
 
-    private Integer oldPriority;
+    private String oldPriority;
 
     //1、创建 2、修改优先级 3、修改数量
     private Integer type;

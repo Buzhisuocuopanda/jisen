@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 
 /**
  * ClassName BaseCheckService
@@ -14,6 +16,13 @@ public interface BaseCheckService {
 
 
     Cbpb checkGoods(Integer goodsId,String goodsName);
+
+    Cbba checkTotalExist(Integer goodsId, String orderNO);
+
+
+    Boolean saleOrderStatusChekc (SaleOrderCheckDo saleOrderCheckDo);
+
+
 
 
 

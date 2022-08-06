@@ -4,6 +4,7 @@ import com.ruoyi.common.constant.TotalOrderConstants;
 import com.ruoyi.common.constant.WareHouseType;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.OrderTypeEnum;
+import com.ruoyi.common.enums.TotalOrderOperateEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -205,7 +206,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             //查未分配订单的数量
             GsAllocationBalance ungoods = gsAllocationBalanceMapper.selectByGoodsIdForUpdate(orderDistributionDo.getGoodsId());
             cbba = orderDistributionDo.getCbba();
-            if (orderDistributionDo.getType() == 1) {
+            if (TotalOrderOperateEnum.MAKEORDER.getCode().equals(orderDistributionDo.getType()) ) {
                 //创建
                 //先查找未分配订单的数量创建把
                 getUnDistributionGoods(cbba, ungoods);
@@ -220,9 +221,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //此处修改分两种情况
                 //1、修改优先级
                 //2、修改数量
-                if (orderDistributionDo.getType() == 2) {
+                if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
-                    if (orderDistributionDo.getPriority() > orderDistributionDo.getOldPriority()) {
+                    if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
                         giveOrderPriority(cbba, orderDistributionDo.getOldPriority());
                     } else {
                         //优先级由低到高
@@ -268,7 +269,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      * @return
      */
 
-    private Cbba giveOtherOrder(Cbba cbba, Integer oldNum, GsAllocationBalance ungoods) {
+    private Cbba giveOtherOrder(Cbba cbba, Double oldNum, GsAllocationBalance ungoods) {
         Double orderNum = cbba.getCbba09();
         //已分配的数量
         Double makeNum = cbba.getCbba13();
@@ -352,7 +353,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     }
 
     //优先级由低到高
-    private Cbba getOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba getOrderPriority(Cbba cbba, String oldPriority) {
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
             GsGoodsUseCriteria example = new GsGoodsUseCriteria();
@@ -402,7 +403,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      *
      * @param cbba
      */
-    private Cbba giveOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba giveOrderPriority(Cbba cbba, String oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -631,6 +632,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
             Double num = saleOrderExitDo.getQty();
+            Double subNum=0.0;
             for (Cbba cbba : cbbas) {
                 //减去分配数量 增加发货数量
                 Double makNum = cbba.getCbba13();
@@ -640,8 +642,28 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     num=0.0;
                 }else {
 
+                    cbba.setCbba13(0.0);
+                    cbba.setCbba11(cbba.getCbba11()+makNum);
+                    num=num-makNum;
                 }
 
+                //扣除占用数量
+
+                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+                usex.createCriteria()
+                        .andGoodsIdEqualTo(cbba.getCbba08())
+                        .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                    gsGoodsUs.setLockQty(subNum);
+                    gsGoodsUs.setUpdateTime(new Date());
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }
+
+                cbbaMapper.updateByPrimaryKey(cbba);
+                if(num==0.0){
+                    break;
+                }
 
             }
 
