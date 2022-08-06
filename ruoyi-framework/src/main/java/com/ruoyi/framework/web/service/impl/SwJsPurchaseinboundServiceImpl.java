@@ -233,7 +233,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         //判断是哪个仓库  数量仓库
         if(cbpc1.getCbpc10().equals(WarehouseSelect.CBW.getCode()) ||
                 cbpc1.getCbpc10().equals(WarehouseSelect.GLW.getCode())){
-            //数量管理查找商品id和货物id，没有就加入
+            //数量管理查找商品id和仓库id，没有就加入
             CbpdCriteria example1=new CbpdCriteria();
             example1.createCriteria()
                     .andCbpd06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
@@ -406,6 +406,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         return  cbpdMapper.getInfosss(cbpcVo);
     }
 
+
+
     /**
      * 删除采购入库单
      *
@@ -422,6 +424,14 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
                 cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())  ){
             throw new SwException("非反审或默认不可删除");
         }
+        Integer storeid = cbpc1.getCbpc10();
+        CbpdCriteria example1=new CbpdCriteria();
+        example1.createCriteria().andCbpd08EqualTo(cbpdDto.getCbpc01())
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
+        Integer goodsid = cbpds.get(0).getCbpd08();
+        //检查是否有库存
+        baseCheckService.checkGoodsSku(goodsid,storeid);
 
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -433,6 +443,17 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
+        cbpd.setCbpd05(date);
+        cbpd.setCbpd06(Math.toIntExact(userid));
+        cbpd.setCbpd07(DeleteFlagEnum.DELETE.getCode());
+        CbpdCriteria example2 = new CbpdCriteria();
+        example2.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpdMapper.updateByExampleSelective(cbpd,example2);
+
+
         return   cbpcMapper.updateByExampleSelective(cbpc, example);
 
     }
@@ -497,13 +518,22 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         return  cbpdMapper.updateByExampleSelective(cbpd, example1);
     }
     /**
-     * 采购入库单详情/查询
+     * 采购入库单查询
      * @param cbpcVo 审核信息
      * @return 结果
      */
     @Override
     public List<CbpcVo> selectSwJsTaskGoodsRelLists(CbpcVo cbpcVo) {
         return  cbpdMapper.getInfoss(cbpcVo);
+    }
+    /**
+     * 采购入库单详情
+     * @param cbpcVo 审核信息
+     * @return 结果
+     */
+    @Override
+    public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
+        return cbpdMapper.getInfossss(cbpcVo);
     }
 
     @Override

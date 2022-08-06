@@ -27,5 +27,5 @@ public interface BaseCheckService {
 
     SysUser checkUserTask(Long userId,Byte auditPerm);
 
-
+    GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
 }

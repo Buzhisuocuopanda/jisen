@@ -211,17 +211,39 @@ public class SwJsPurchaseinboundController extends BaseController {
 
 
     /**
-     * 采购入库单详情/查询
+     * 采购入库单查询
      */
     @ApiOperation(
-            value ="采购入库单详情",
-            notes = "采购入库单详情"
+            value ="采购入库单查询",
+            notes = "采购入库单查询"
     )
     @GetMapping("/SwJsSkuBarcodelist")
     public AjaxResult<TableDataInfo> swJsGoodslist(CbpcVo cbpcVo) {
         try {
             startPage();
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelLists(cbpcVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【采购入库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpcVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+    /**
+     * 采购入库单详情
+     */
+    @ApiOperation(
+            value ="采购入库单详情",
+            notes = "采购入库单详情"
+    )
+    @GetMapping("/SwJsSkuBarcodelistss")
+    public AjaxResult<TableDataInfo> swJsGoodslistss(CbpcVo cbpcVo) {
+        try {
+            startPage();
+            List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListsss(cbpcVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

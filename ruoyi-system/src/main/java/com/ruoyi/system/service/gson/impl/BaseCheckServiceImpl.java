@@ -155,6 +155,24 @@ public class BaseCheckServiceImpl implements BaseCheckService {
         }
         return sysUser;
     }
+
+
+    @Override
+    public GsGoodsSku checkGoodsSku(Integer goodsId, Integer storeId) {
+        if(goodsId==null ||storeId==null){
+            throw new SwException("商品id不能为空");
+        }
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria().andGoodsIdEqualTo(goodsId)
+                                .andWhIdEqualTo(storeId);
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        if(gsGoodsSkus.size()>0){
+            throw new SwException("已有库存不能为删除");
+
+        }
+        return null;
+    }
+
 }
 
 

@@ -36,4 +36,6 @@ public interface ISwJsPurchaseinboundService {
     int SwJsSkuBarcodesh(CbpdDto cbpdDto);
 
     List<CbpcVo> selectSwJsTaskGoodsRelListss(CbpcVo cbpcVo);
+
+    List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo);
 }

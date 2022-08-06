@@ -370,33 +370,31 @@
 
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
 
-    SELECT a.CBPC01,a.CBPC06,a.CBPC07,a.CBPC08,a.CBPC09,a.CBPC10,a.CBPC16,
-    b.CBPD09,b.CBPD11,b.CBPD12,
-    c.CBPE09,c.CBPE10,
-    d.CBPB08,CBPD12
+    SELECT  a.CBPC01,a.CBPC07,a.CBPC08,a.CBPC11,
+    b.CBSA08,
+    c.CBWA09,
+    d.CALA08
     from CBPC a
     LEFT JOIN
-    CBPD b
-    on a.CBPC01=b.CBPC01
+    CBSA b
+    on a.CBPC09=b.CBSA01
     LEFT JOIN
-    CBPE c
-    ON a.CBPC01=c.CBPC01
+    CBWA c
+    ON a.CBPC10=c.CBWA01
     LEFT JOIN
-    CBPB d
-    on b.CBPD08=d.CBPB01
-
-    <where>
-      a.CBPC06=0
-      <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
-      <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
+    CALA d
+    on a.CBPC16=d.CALA01
+    WHERE
+    a.CBPC06=0
+    <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
+    <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
     <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
     <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
 
 
 
-      <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
-      <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
-    </where>
+    <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
     order by a.CBPC08 desc
   </select>
   <resultMap type="CBPC" id="CBPCResult">
@@ -532,6 +530,48 @@
     WHERE
       a.CBPC06=0
     order by a.CBPC08 desc
+  </select>
+  <select id="getInfossss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
+    SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08,
+           d.CBPB12,d.CBPB08,
+
+           b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
+           p.CBPA07,
+           c.CBPE09,c.CBPE10
+
+
+    from CBPC a
+           LEFT JOIN
+         CBPD b
+         on a.CBPC01=b.CBPC01
+           LEFT JOIN
+         CBPE c
+         ON a.CBPC01=c.CBPC01
+           LEFT JOIN
+         CBPB d
+         on d.CBPB01=b.CBPD08
+           LEFT JOIN
+         CBSA e
+         on e.CBSA01=a.CBPC09
+           LEFT JOIN
+         CALA f
+         on f.CALA01=a.CBPC16
+
+           LEFT JOIN
+         CALA h
+         on h.CALA01=d.CBPB10
+
+           LEFT JOIN
+         CBWA g
+         on g.CBWA01=a.CBPC10
+
+           LEFT JOIN
+         CBPA p
+         on p.CBPA01=d.CBPB14
+
+    WHERE
+      a.CBPC06=0
+    <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
   </select>
 
 </mapper>
