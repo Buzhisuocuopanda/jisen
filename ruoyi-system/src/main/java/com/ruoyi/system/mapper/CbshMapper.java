@@ -31,4 +31,8 @@ public interface CbshMapper {
     int updateByPrimaryKey(Cbsh record);
 
     List<CbshVo> selectstorelist(CbshVo cbshVo);
+
+    List<CbshVo> SwJsStorelists(CbshVo cbshVo);
+
+    List<CbshVo> SwJsStorelistss(CbshVo cbshVo);
 }

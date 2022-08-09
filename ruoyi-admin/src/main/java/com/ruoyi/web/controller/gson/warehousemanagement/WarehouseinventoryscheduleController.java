@@ -101,4 +101,115 @@ public class WarehouseinventoryscheduleController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+
+    /**
+     * 删除仓库盘点明细
+     */
+    @ApiOperation(
+            value ="删除仓库盘点明细",
+            notes = "删除仓库盘点明细"
+    )
+    @PostMapping("/SwJsStoreremove")
+    public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
+        try {
+            return toAjax(warehouseinventoryscheduleService.deleteSwJsStoreById(cbshDo));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【删除仓库盘点明细】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库盘点明细盘点完成
+     */
+    @ApiOperation(
+            value ="仓库盘点明细盘点完成",
+            notes = "仓库盘点明细盘点完成"
+    )
+    @PostMapping("/swJsStoreend")
+    public AjaxResult swJsStoreend(@RequestBody  CbshDo cbshDo) {
+        try {
+            return toAjax(warehouseinventoryscheduleService.swJsStoreend(cbshDo));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细盘点完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库盘点明细取消完成
+     */
+    @ApiOperation(
+            value ="仓库盘点明细取消完成",
+            notes = "仓库盘点明细取消完成"
+    )
+    @PostMapping("/swJsStoreendd")
+    public AjaxResult swJsStoreendd(@RequestBody  CbshDo cbshDo) {
+        try {
+            return toAjax(warehouseinventoryscheduleService.swJsStoreendd(cbshDo));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细取消完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库盘点明细新列表
+     */
+    @ApiOperation(
+            value ="仓库盘点明细新列表",
+            notes = "仓库盘点明细新列表"
+    )
+    @GetMapping("/SwJsStorelists")
+    public AjaxResult<TableDataInfo> SwJsStorelists(CbshVo cbshVo) {
+        try {
+            startPage();
+            List<CbshVo> list = warehouseinventoryscheduleService.SwJsStorelists(cbshVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细新列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbshVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库盘点明细新查询
+     */
+    @ApiOperation(
+            value ="仓库盘点明细新查询",
+            notes = "仓库盘点明细新查询"
+    )
+    @GetMapping("/SwJsStorelistss")
+    public AjaxResult<TableDataInfo> SwJsStorelistss(CbshVo cbshVo) {
+        try {
+            startPage();
+            List<CbshVo> list = warehouseinventoryscheduleService.SwJsStorelistss(cbshVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细新查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbshVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

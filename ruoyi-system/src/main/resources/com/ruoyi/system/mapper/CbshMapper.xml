@@ -395,5 +395,31 @@
 where
     a.CBSH09= #{cbsh09,jdbcType=INTEGER}
   </select>
+    <select id="SwJsStorelists" resultType="com.ruoyi.system.domain.vo.CbshVo">
+      SELECT
+        a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09
+      from
+        CBSH a
+          LEFT JOIN
+        CBWA b
+        on
+          a.CBSH10=b.CBWA01
+    </select>
+  <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbshVo">
+    SELECT
+      a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09
+    from
+      CBSH a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBSH10=b.CBWA01
+where
+a.CBSH06=0
+    <if test='cbsh07 != null and cbsh07 != ""'> and a.CBSH07  like concat('%', #{cbsh07}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and  a.cbsh08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.cbsh08 <![CDATA[<=]]>#{endTime}</if>
+
+  </select>
 
 </mapper>

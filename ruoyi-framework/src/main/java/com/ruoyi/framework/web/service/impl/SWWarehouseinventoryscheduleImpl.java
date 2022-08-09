@@ -1,6 +1,9 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.WarehouseSelect;
+import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Cbla;
@@ -32,6 +35,10 @@ private CbsjMapper cbbsjMapper;
 
     @Override
     public int insertSwJsStore(CbshDo cbshDo) {
+        if(cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
+                cbshDo.getCbsh09().equals(WarehouseSelect.GLW.getCode())){
+            throw new SwException("请选择扫码仓库");
+        }
         Long userId = SecurityUtils.getUserId();
 
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
@@ -65,6 +72,61 @@ private CbsjMapper cbbsjMapper;
         cbsj.setUserId(Math.toIntExact(userId));
         return  cbbsjMapper.insertSelective(cbsj);
     }
+
+    @Override
+    public int deleteSwJsStoreById(CbshDo cbshDo) {
+        Long userId = SecurityUtils.getUserId();
+
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
+        CbshCriteria example = new CbshCriteria();
+        example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return   cbshMapper.updateByExampleSelective(cbsh, example);
+    }
+
+    @Override
+    public int swJsStoreend(CbshDo cbshDo) {
+        Long userId = SecurityUtils.getUserId();
+
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh09(TaskStatus.bjwc.getCode());
+        CbshCriteria example = new CbshCriteria();
+        example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return   cbshMapper.updateByExampleSelective(cbsh, example);
+    }
+
+    @Override
+    public int swJsStoreendd(CbshDo cbshDo) {
+        Long userId = SecurityUtils.getUserId();
+
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh09(TaskStatus.qxwc.getCode());
+        CbshCriteria example = new CbshCriteria();
+        example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return   cbshMapper.updateByExampleSelective(cbsh, example);
+    }
+
+    @Override
+    public List<CbshVo> SwJsStorelists(CbshVo cbshVo) {
+        return   cbshMapper.SwJsStorelists(cbshVo);    }
+
+    @Override
+    public List<CbshVo> SwJsStorelistss(CbshVo cbshVo) {
+        return   cbshMapper.SwJsStorelistss(cbshVo);    }
 
 
 }
