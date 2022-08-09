@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbshMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbsh">
+    <id column="CBSH01" jdbcType="INTEGER" property="cbsh01" />
+    <result column="CBSH02" jdbcType="TIMESTAMP" property="cbsh02" />
+    <result column="CBSH03" jdbcType="TIMESTAMP" property="cbsh03" />
+    <result column="CBSH04" jdbcType="INTEGER" property="cbsh04" />
+    <result column="CBSH05" jdbcType="INTEGER" property="cbsh05" />
+    <result column="CBSH06" jdbcType="INTEGER" property="cbsh06" />
+    <result column="CBSH07" jdbcType="VARCHAR" property="cbsh07" />
+    <result column="CBSH08" jdbcType="TIMESTAMP" property="cbsh08" />
+    <result column="CBSH09" jdbcType="INTEGER" property="cbsh09" />
+    <result column="CBSH10" jdbcType="INTEGER" property="cbsh10" />
+    <result column="CBSH11" jdbcType="INTEGER" property="cbsh11" />
+    <result column="CBSH12" jdbcType="TIMESTAMP" property="cbsh12" />
+    <result column="CBSH13" jdbcType="INTEGER" property="cbsh13" />
+    <result column="CBSH14" jdbcType="TIMESTAMP" property="cbsh14" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBSH01, CBSH02, CBSH03, CBSH04, CBSH05, CBSH06, CBSH07, CBSH08, CBSH09, CBSH10, CBSH11,
+    CBSH12, CBSH13, CBSH14, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbshCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBSH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBSH`
+    where CBSH01 = #{cbsh01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBSH`
+    where CBSH01 = #{cbsh01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbshCriteria">
+    delete from `CBSH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsh">
+    insert into `CBSH` (CBSH01, CBSH02, CBSH03,
+      CBSH04, CBSH05, CBSH06,
+      CBSH07, CBSH08, CBSH09,
+      CBSH10, CBSH11, CBSH12,
+      CBSH13, CBSH14, user_id
+      )
+    values (#{cbsh01,jdbcType=INTEGER}, #{cbsh02,jdbcType=TIMESTAMP}, #{cbsh03,jdbcType=TIMESTAMP},
+      #{cbsh04,jdbcType=INTEGER}, #{cbsh05,jdbcType=INTEGER}, #{cbsh06,jdbcType=INTEGER},
+      #{cbsh07,jdbcType=VARCHAR}, #{cbsh08,jdbcType=TIMESTAMP}, #{cbsh09,jdbcType=INTEGER},
+      #{cbsh10,jdbcType=INTEGER}, #{cbsh11,jdbcType=INTEGER}, #{cbsh12,jdbcType=TIMESTAMP},
+      #{cbsh13,jdbcType=INTEGER}, #{cbsh14,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsh">
+    insert into `CBSH`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbsh01 != null">
+        CBSH01,
+      </if>
+      <if test="cbsh02 != null">
+        CBSH02,
+      </if>
+      <if test="cbsh03 != null">
+        CBSH03,
+      </if>
+      <if test="cbsh04 != null">
+        CBSH04,
+      </if>
+      <if test="cbsh05 != null">
+        CBSH05,
+      </if>
+      <if test="cbsh06 != null">
+        CBSH06,
+      </if>
+      <if test="cbsh07 != null">
+        CBSH07,
+      </if>
+      <if test="cbsh08 != null">
+        CBSH08,
+      </if>
+      <if test="cbsh09 != null">
+        CBSH09,
+      </if>
+      <if test="cbsh10 != null">
+        CBSH10,
+      </if>
+      <if test="cbsh11 != null">
+        CBSH11,
+      </if>
+      <if test="cbsh12 != null">
+        CBSH12,
+      </if>
+      <if test="cbsh13 != null">
+        CBSH13,
+      </if>
+      <if test="cbsh14 != null">
+        CBSH14,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbsh01 != null">
+        #{cbsh01,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh02 != null">
+        #{cbsh02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh03 != null">
+        #{cbsh03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh04 != null">
+        #{cbsh04,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh05 != null">
+        #{cbsh05,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh06 != null">
+        #{cbsh06,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh07 != null">
+        #{cbsh07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbsh08 != null">
+        #{cbsh08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh09 != null">
+        #{cbsh09,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh10 != null">
+        #{cbsh10,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh11 != null">
+        #{cbsh11,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh12 != null">
+        #{cbsh12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh13 != null">
+        #{cbsh13,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh14 != null">
+        #{cbsh14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbshCriteria" resultType="java.lang.Long">
+    select count(*) from `CBSH`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBSH`
+    <set>
+      <if test="record.cbsh01 != null">
+        CBSH01 = #{record.cbsh01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh02 != null">
+        CBSH02 = #{record.cbsh02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsh03 != null">
+        CBSH03 = #{record.cbsh03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsh04 != null">
+        CBSH04 = #{record.cbsh04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh05 != null">
+        CBSH05 = #{record.cbsh05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh06 != null">
+        CBSH06 = #{record.cbsh06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh07 != null">
+        CBSH07 = #{record.cbsh07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbsh08 != null">
+        CBSH08 = #{record.cbsh08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsh09 != null">
+        CBSH09 = #{record.cbsh09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh10 != null">
+        CBSH10 = #{record.cbsh10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh11 != null">
+        CBSH11 = #{record.cbsh11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh12 != null">
+        CBSH12 = #{record.cbsh12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbsh13 != null">
+        CBSH13 = #{record.cbsh13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbsh14 != null">
+        CBSH14 = #{record.cbsh14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBSH`
+    set CBSH01 = #{record.cbsh01,jdbcType=INTEGER},
+      CBSH02 = #{record.cbsh02,jdbcType=TIMESTAMP},
+      CBSH03 = #{record.cbsh03,jdbcType=TIMESTAMP},
+      CBSH04 = #{record.cbsh04,jdbcType=INTEGER},
+      CBSH05 = #{record.cbsh05,jdbcType=INTEGER},
+      CBSH06 = #{record.cbsh06,jdbcType=INTEGER},
+      CBSH07 = #{record.cbsh07,jdbcType=VARCHAR},
+      CBSH08 = #{record.cbsh08,jdbcType=TIMESTAMP},
+      CBSH09 = #{record.cbsh09,jdbcType=INTEGER},
+      CBSH10 = #{record.cbsh10,jdbcType=INTEGER},
+      CBSH11 = #{record.cbsh11,jdbcType=INTEGER},
+      CBSH12 = #{record.cbsh12,jdbcType=TIMESTAMP},
+      CBSH13 = #{record.cbsh13,jdbcType=INTEGER},
+      CBSH14 = #{record.cbsh14,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbsh">
+    update `CBSH`
+    <set>
+      <if test="cbsh02 != null">
+        CBSH02 = #{cbsh02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh03 != null">
+        CBSH03 = #{cbsh03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh04 != null">
+        CBSH04 = #{cbsh04,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh05 != null">
+        CBSH05 = #{cbsh05,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh06 != null">
+        CBSH06 = #{cbsh06,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh07 != null">
+        CBSH07 = #{cbsh07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbsh08 != null">
+        CBSH08 = #{cbsh08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh09 != null">
+        CBSH09 = #{cbsh09,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh10 != null">
+        CBSH10 = #{cbsh10,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh11 != null">
+        CBSH11 = #{cbsh11,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh12 != null">
+        CBSH12 = #{cbsh12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsh13 != null">
+        CBSH13 = #{cbsh13,jdbcType=INTEGER},
+      </if>
+      <if test="cbsh14 != null">
+        CBSH14 = #{cbsh14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBSH01 = #{cbsh01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbsh">
+    update `CBSH`
+    set CBSH02 = #{cbsh02,jdbcType=TIMESTAMP},
+      CBSH03 = #{cbsh03,jdbcType=TIMESTAMP},
+      CBSH04 = #{cbsh04,jdbcType=INTEGER},
+      CBSH05 = #{cbsh05,jdbcType=INTEGER},
+      CBSH06 = #{cbsh06,jdbcType=INTEGER},
+      CBSH07 = #{cbsh07,jdbcType=VARCHAR},
+      CBSH08 = #{cbsh08,jdbcType=TIMESTAMP},
+      CBSH09 = #{cbsh09,jdbcType=INTEGER},
+      CBSH10 = #{cbsh10,jdbcType=INTEGER},
+      CBSH11 = #{cbsh11,jdbcType=INTEGER},
+      CBSH12 = #{cbsh12,jdbcType=TIMESTAMP},
+      CBSH13 = #{cbsh13,jdbcType=INTEGER},
+      CBSH14 = #{cbsh14,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBSH01 = #{cbsh01,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectstorelist" resultType="com.ruoyi.system.domain.vo.CbshVo">
+    select
+      e.CALA08,d.CBPB15,d.CBPB12,d.CBPB08,b.CBSJ09,f.CBLA09,b.CBSJ11,b.CBSJ12
+    from
+      CBSH a
+        LEFT JOIN
+      CBSJ b
+      on a.CBSH01=b.CBSH01
+        LEFT JOIN
+      gs_goods_sn c
+      on
+        c.sn=b.CBSJ09
+        left join
+      CBPB d
+      on
+        c.goods_id=d.CBPB01
+        left join
+      CALA e
+      on
+        e.CALA08=d.CBPB10
+        LEFT JOIN
+      CBLA f
+      on
+        f.CBLA01=c.location_id
+where
+    a.CBSH09= #{cbsh09,jdbcType=INTEGER}
+  </select>
+
+</mapper>

@@ -12,10 +12,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
-import com.ruoyi.system.mapper.CbpbMapper;
-import com.ruoyi.system.mapper.CbpdMapper;
-import com.ruoyi.system.mapper.CbpfMapper;
-import com.ruoyi.system.mapper.GsSystemUseMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,8 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
     @Resource
     private GsSystemUseMapper gsSystemUseMapper;
+    @Resource
+    private CbcaMapper cbcaMapper;
     /**
      * 新增商品
      *
@@ -230,6 +229,73 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
         cbpf.setCbpf05(cbpfDo.getCbpf05());
         cbpf.setCbpf07(date);
         return cbpfMapper.insertSelective(cbpf);
+    }
+
+    @Override
+    public String importSwJsCustomer(List<Cbpf> swJsCustomersList, boolean updateSupport, String operName) {
+        Long userid = SecurityUtils.getUserId();
+
+        if (StringUtils.isNull(swJsCustomersList) || swJsCustomersList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        for (
+                Cbpf swJsCustomer : swJsCustomersList)
+        {
+            try
+            {
+                // 验证是否存在这个用户
+                Cbca u = cbcaMapper.selectByPrimaryKey(swJsCustomer.getCbpf01() );
+                log.info(swJsCustomer.getCbpf01()+"");
+                if (StringUtils.isNull(u))
+                {
+                    swJsCustomer.setCbpb01(swJsCustomer.getCbpb01());
+                    this.insertCBPF(swJsCustomer);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("客户信息列表").append(swJsCustomer.getCbpb01()).append(" 导入成功");
+                }
+                else if (updateSupport)
+                {
+                    this.updateCBPF(swJsCustomer);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("客户信息列表 ").append(swJsCustomer.getCbpb01()).append(" 更新成功");
+                }
+                else
+                {
+                    failureNum++;
+                    failureMsg.append("<br/>").append(failureNum).append("客户信息列表").append(swJsCustomer.getCbpb01()).append(" 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "客户信息列表" + swJsCustomer.getCbpf03() + " 导入失败：";
+                failureMsg.append(msg).append(e.getMessage());
+                log.error(msg, e);
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
+    }
+    public int insertCBPF(Cbpf cbpf)
+    {
+        return cbpfMapper.insertCBPF(cbpf);
+    }
+    public int updateCBPF(Cbpf cbpf)
+    {
+        return cbpfMapper.updateCBPF(cbpf);
     }
 
     public int insertSwJsGoods(Cbpb cbpb)

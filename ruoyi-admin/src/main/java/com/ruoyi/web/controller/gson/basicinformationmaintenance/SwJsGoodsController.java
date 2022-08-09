@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Cbpf;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.service.ISwJsCustomerService;
@@ -198,14 +199,14 @@ public class SwJsGoodsController extends BaseController {
             value ="结算货币导入",
             notes = "结算货币导入"
     )
-    @PostMapping("/importSwJsCustomer")
+    @PostMapping("/importcbpf")
     @ResponseBody
     public AjaxResult importSwJsCustomer(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbca> util = new ExcelUtil<>(Cbca.class);
-            List<Cbca> swJsCustomersList = util.importExcel(file.getInputStream());
+            ExcelUtil<Cbpf> util = new ExcelUtil<>(Cbpf.class);
+            List<Cbpf> swJsCustomersList = util.importExcel(file.getInputStream());
             String operName = getUsername();
-            String message = swJsCustomerService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
+            String message = swJsGoodsService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
             log.error("【导入客户信息列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(file),e.getMessage());
