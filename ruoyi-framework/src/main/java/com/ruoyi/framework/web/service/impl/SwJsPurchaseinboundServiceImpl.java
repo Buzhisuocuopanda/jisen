@@ -146,6 +146,116 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         return 0;
     }
     /**
+     * 新增采购入库单扫码
+     *
+     * @param cbpdDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int insertSwJsSkuBarcodesm(CbpdDto cbpdDto) {
+        // 检查供应商
+        baseCheckService.checksupplier(cbpdDto.getCbpc09());
+        //检查仓库
+        baseCheckService.checkStore(cbpdDto.getCbpc10());
+        //检查商品
+        baseCheckService.checkGoods(cbpdDto.getCbpd08());
+
+        CbpcCriteria example = new CbpcCriteria();
+        example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
+        //主表根据输入编号查不到数据，添加数据
+        if(cbpcs.size()==0){
+
+            Long userid = SecurityUtils.getUserId();
+            Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
+            Date date = new Date();
+            cbpc.setCbpc02(date);
+            cbpc.setCbpc03(Math.toIntExact(userid));
+            cbpc.setCbpc04(date);
+            cbpc.setCbpc05(Math.toIntExact(userid));
+            cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpc.setUserId(Math.toIntExact(userid));
+            cbpcMapper.insertSelective(cbpc);
+
+            CbpcCriteria example1 = new CbpcCriteria();
+            example1.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
+                    .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
+            Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
+
+            cbpd.setCbpd02(cbpdDto.getCbpd02());
+            cbpd.setCbpd03(date);
+            cbpd.setCbpd04(Math.toIntExact(userid));
+            cbpd.setCbpd05(date);
+            cbpd.setCbpd06(Math.toIntExact(userid));
+            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpd.setCbpd09(cbpdDto.getCbpd09());
+            cbpd.setCbpd11(cbpdDto.getCbpd11());
+
+            BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
+            BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
+            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+            cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
+            cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
+            cbpd.setUserId(Math.toIntExact(userid));
+            cbpdMapper.insertSelective(cbpd);
+            Cbpe cbpe = BeanCopyUtils.coypToClass(cbpdDto, Cbpe.class, null);
+            cbpe.setCbpe02(cbpdDto.getCbpd02());
+            cbpe.setCbpe03(date);
+            cbpe.setCbpe04(Math.toIntExact(userid));
+            cbpe.setCbpe05(date);
+            cbpe.setCbpe06(Math.toIntExact(userid));
+            cbpe.setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpe.setCbpc01(cbpcs1.get(0).getCbpc01());
+            cbpeMapper.insertSelective(cbpe);
+        }
+
+        //主表插入后通过编号获取主表id
+        CbpcCriteria example1 = new CbpcCriteria();
+        example1.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
+        //通过主表id去查明细表
+        CbpdCriteria example2 = new CbpdCriteria();
+        example2.createCriteria().andCbpc01EqualTo(cbpcs1.get(0).getCbpc01());
+        List<Cbpd> cbpds = cbpdMapper.selectByExample(example2);
+        //主表查出的编号存在，明细里商品id不同,增加明细表
+        if(!cbpds.get(0).getCbpd08().equals(cbpdDto.getCbpd08()) && cbpcs1.size()>0){
+
+
+            Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
+            Date date = new Date();
+            Long userid = SecurityUtils.getUserId();
+            cbpd.setCbpd02(cbpdDto.getCbpd02());
+            cbpd.setCbpd03(date);
+            cbpd.setCbpd04(Math.toIntExact(userid));
+            cbpd.setCbpd05(date);
+            cbpd.setCbpd06(Math.toIntExact(userid));
+            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpd.setCbpd09(cbpdDto.getCbpd09());
+            cbpd.setCbpd11(cbpdDto.getCbpd11());
+
+            BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
+            BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
+            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+            cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
+            cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
+            cbpd.setUserId(Math.toIntExact(userid));
+             cbpdMapper.insertSelective(cbpd);
+            Cbpe cbpe = BeanCopyUtils.coypToClass(cbpdDto, Cbpe.class, null);
+            cbpe.setCbpe02(cbpdDto.getCbpd02());
+            cbpe.setCbpe03(date);
+            cbpe.setCbpe04(Math.toIntExact(userid));
+            cbpe.setCbpe05(date);
+            cbpe.setCbpe06(Math.toIntExact(userid));
+            cbpe.setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpe.setCbpc01(cbpcs1.get(0).getCbpc01());
+            cbpeMapper.insertSelective(cbpe);}
+        return 0;
+    }
+
+    /**
      * 审核采购入库单
      *
      * @param cbpdDto 审核信息
@@ -535,6 +645,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
         return cbpdMapper.getInfossss(cbpcVo);
     }
+
+
 
     @Override
     public List<Cbpc> selectCBPCList(Cbpc cbpc) {

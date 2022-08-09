@@ -573,5 +573,22 @@
       a.CBPC06=0
     <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
   </select>
+  <select id="selectgoodsinfo" resultType="com.ruoyi.system.domain.vo.CbpdVo">
+    SELECT
+      CONCAT_WS ('-', b.CALA08, a.CBPB12,a.CBPB08)
+    from
+      CBPB a
+        LEFT JOIN
+      CALA  b
+      ON
+        a.CBPB10=b.CALA01
+    WHERE
+    a.CBPB06=0
+    <if test="cala08 != null  and cala08 != ''"> and b.CALA08 like concat('%', #{cala08}, '%')</if>
+    <if test="cbpb12 != null  and cbpb12 != ''"> or a.cbpb12 like concat('%', #{cbpb12}, '%')</if>
+    <if test="cbpb08 != null  and cbpb08 != ''"> or a.cbpb08 like concat('%', #{cbpb08}, '%')</if>
+
+
+  </select>
 
 </mapper>

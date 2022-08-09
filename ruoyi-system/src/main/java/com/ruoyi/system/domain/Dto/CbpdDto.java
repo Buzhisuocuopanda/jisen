@@ -78,4 +78,30 @@ public class CbpdDto {
 
     private String cbpd13;
 
+    private Integer cbpe01;
+
+    private Integer cbpe02;
+
+    private Date cbpe03;
+
+    private Integer cbpe04;
+
+    private Date cbpe05;
+
+    private Integer cbpe06;
+
+    private Integer cbpe07;
+
+    private Integer cbpe08;
+
+    private String cbpe09;
+
+    private Integer cbpe10;
+
+    private Integer cbpe11;
+
+    private String cbpe12;
+
+
+
 }

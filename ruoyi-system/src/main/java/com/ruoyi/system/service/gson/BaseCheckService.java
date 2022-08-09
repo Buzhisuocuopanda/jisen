@@ -2,6 +2,7 @@ package com.ruoyi.system.service.gson;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.CbpdVo;
 
 /**
  * ClassName BaseCheckService
@@ -28,4 +29,8 @@ public interface BaseCheckService {
     SysUser checkUserTask(Long userId,Byte auditPerm);
 
     GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
+
+
+    //模糊查询品牌型号描述
+    CbpdVo selectgoodsinfo(CbpdVo cbpdVo);
 }

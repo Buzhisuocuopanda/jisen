@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbqaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbqa">
+    <id column="CBQA01" jdbcType="INTEGER" property="cbqa01" />
+    <result column="CBQA02" jdbcType="TIMESTAMP" property="cbqa02" />
+    <result column="CBQA03" jdbcType="INTEGER" property="cbqa03" />
+    <result column="CBQA04" jdbcType="TIMESTAMP" property="cbqa04" />
+    <result column="CBQA05" jdbcType="INTEGER" property="cbqa05" />
+    <result column="CBQA06" jdbcType="INTEGER" property="cbqa06" />
+    <result column="CBQA07" jdbcType="VARCHAR" property="cbqa07" />
+    <result column="CBQA08" jdbcType="TIMESTAMP" property="cbqa08" />
+    <result column="CBQA09" jdbcType="INTEGER" property="cbqa09" />
+    <result column="CBQA10" jdbcType="INTEGER" property="cbqa10" />
+    <result column="CBQA11" jdbcType="TIMESTAMP" property="cbqa11" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBQA01, CBQA02, CBQA03, CBQA04, CBQA05, CBQA06, CBQA07, CBQA08, CBQA09, CBQA10, CBQA11,
+    user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbqaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBQA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBQA`
+    where CBQA01 = #{cbqa01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBQA`
+    where CBQA01 = #{cbqa01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbqaCriteria">
+    delete from `CBQA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbqa">
+    insert into `CBQA` (CBQA01, CBQA02, CBQA03,
+      CBQA04, CBQA05, CBQA06,
+      CBQA07, CBQA08, CBQA09,
+      CBQA10, CBQA11, user_id
+      )
+    values (#{cbqa01,jdbcType=INTEGER}, #{cbqa02,jdbcType=TIMESTAMP}, #{cbqa03,jdbcType=INTEGER},
+      #{cbqa04,jdbcType=TIMESTAMP}, #{cbqa05,jdbcType=INTEGER}, #{cbqa06,jdbcType=INTEGER},
+      #{cbqa07,jdbcType=VARCHAR}, #{cbqa08,jdbcType=TIMESTAMP}, #{cbqa09,jdbcType=INTEGER},
+      #{cbqa10,jdbcType=INTEGER}, #{cbqa11,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbqa">
+    insert into `CBQA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbqa01 != null">
+        CBQA01,
+      </if>
+      <if test="cbqa02 != null">
+        CBQA02,
+      </if>
+      <if test="cbqa03 != null">
+        CBQA03,
+      </if>
+      <if test="cbqa04 != null">
+        CBQA04,
+      </if>
+      <if test="cbqa05 != null">
+        CBQA05,
+      </if>
+      <if test="cbqa06 != null">
+        CBQA06,
+      </if>
+      <if test="cbqa07 != null">
+        CBQA07,
+      </if>
+      <if test="cbqa08 != null">
+        CBQA08,
+      </if>
+      <if test="cbqa09 != null">
+        CBQA09,
+      </if>
+      <if test="cbqa10 != null">
+        CBQA10,
+      </if>
+      <if test="cbqa11 != null">
+        CBQA11,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbqa01 != null">
+        #{cbqa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa02 != null">
+        #{cbqa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa03 != null">
+        #{cbqa03,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa04 != null">
+        #{cbqa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa05 != null">
+        #{cbqa05,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa06 != null">
+        #{cbqa06,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa07 != null">
+        #{cbqa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqa08 != null">
+        #{cbqa08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa09 != null">
+        #{cbqa09,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa10 != null">
+        #{cbqa10,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa11 != null">
+        #{cbqa11,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbqaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBQA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update `CBQA`
+    <set>
+      <if test="record.cbqa01 != null">
+        CBQA01 = #{record.cbqa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa02 != null">
+        CBQA02 = #{record.cbqa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbqa03 != null">
+        CBQA03 = #{record.cbqa03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa04 != null">
+        CBQA04 = #{record.cbqa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbqa05 != null">
+        CBQA05 = #{record.cbqa05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa06 != null">
+        CBQA06 = #{record.cbqa06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa07 != null">
+        CBQA07 = #{record.cbqa07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbqa08 != null">
+        CBQA08 = #{record.cbqa08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbqa09 != null">
+        CBQA09 = #{record.cbqa09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa10 != null">
+        CBQA10 = #{record.cbqa10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqa11 != null">
+        CBQA11 = #{record.cbqa11,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBQA`
+    set CBQA01 = #{record.cbqa01,jdbcType=INTEGER},
+      CBQA02 = #{record.cbqa02,jdbcType=TIMESTAMP},
+      CBQA03 = #{record.cbqa03,jdbcType=INTEGER},
+      CBQA04 = #{record.cbqa04,jdbcType=TIMESTAMP},
+      CBQA05 = #{record.cbqa05,jdbcType=INTEGER},
+      CBQA06 = #{record.cbqa06,jdbcType=INTEGER},
+      CBQA07 = #{record.cbqa07,jdbcType=VARCHAR},
+      CBQA08 = #{record.cbqa08,jdbcType=TIMESTAMP},
+      CBQA09 = #{record.cbqa09,jdbcType=INTEGER},
+      CBQA10 = #{record.cbqa10,jdbcType=INTEGER},
+      CBQA11 = #{record.cbqa11,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbqa">
+    update `CBQA`
+    <set>
+      <if test="cbqa02 != null">
+        CBQA02 = #{cbqa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa03 != null">
+        CBQA03 = #{cbqa03,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa04 != null">
+        CBQA04 = #{cbqa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa05 != null">
+        CBQA05 = #{cbqa05,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa06 != null">
+        CBQA06 = #{cbqa06,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa07 != null">
+        CBQA07 = #{cbqa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqa08 != null">
+        CBQA08 = #{cbqa08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqa09 != null">
+        CBQA09 = #{cbqa09,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa10 != null">
+        CBQA10 = #{cbqa10,jdbcType=INTEGER},
+      </if>
+      <if test="cbqa11 != null">
+        CBQA11 = #{cbqa11,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBQA01 = #{cbqa01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbqa">
+    update `CBQA`
+    set CBQA02 = #{cbqa02,jdbcType=TIMESTAMP},
+      CBQA03 = #{cbqa03,jdbcType=INTEGER},
+      CBQA04 = #{cbqa04,jdbcType=TIMESTAMP},
+      CBQA05 = #{cbqa05,jdbcType=INTEGER},
+      CBQA06 = #{cbqa06,jdbcType=INTEGER},
+      CBQA07 = #{cbqa07,jdbcType=VARCHAR},
+      CBQA08 = #{cbqa08,jdbcType=TIMESTAMP},
+      CBQA09 = #{cbqa09,jdbcType=INTEGER},
+      CBQA10 = #{cbqa10,jdbcType=INTEGER},
+      CBQA11 = #{cbqa11,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBQA01 = #{cbqa01,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB08,a.CBQA01
+    from
+      CBQB a
+        LEFT JOIN
+      CBPM b
+      on
+        b.CBPM01=a.CBQB08
+
+        LEFT JOIN
+      CBPB c
+      on
+        c.CBPB01=b.CBPM08
+
+        LEFT JOIN
+      CALA d
+      on
+        d.CALA01=c.CBPB10
+
+
+    WHERE
+   a.CBQA01= #{cbqa01}
+
+  </select>
+  <select id="selectSwJsTaskGoodsRelList" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      CBQA07,CBQA08,CBQA09
+    FROM
+      CBQA
+    ORDER BY CBQA08 DESC
+  </select>
+  <select id="SwJsSkuBarcodeselect" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      a.CBQA07,a.CBQA08,a.CBQA09
+    FROM
+      CBQA a
+     where
+a.CBQA06=0
+    <if test='cbqa07 != null and cbqa07 != ""'> and a.CBQA07  like concat('%', #{cbqa07}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and  a.CBQA08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBQA08 <![CDATA[<=]]>#{endTime}</if>
+
+  </select>
+  <select id="SwJsSkuBarcodeselects" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      CONCAT_WS ('-', b.CALA08, a.CBPB12,a.CBPB08,c.CBPM09) f
+    from
+      CBPB a
+        LEFT JOIN
+      CALA  b
+      ON
+        a.CBPB10=b.CALA01
+        LEFT JOIN
+      CBPM c
+      on
+        c.CBPM08=a.CBPB01
+where
+    a.CBPB06=0
+    <if test='cala08 != null and cala08 != ""'> and b.CALA08  like concat('%', #{cala08}, '%')</if>
+    <if test='cbpb08 != null and cbpb08 != ""'> or a.CBPB08  like concat('%', #{cbpb08}, '%')</if>
+    <if test='cbpb12 != null and cbpb12 != ""'> or a.CBPB12  like concat('%', #{cbpb12}, '%')</if>
+    <if test='cbpm09 != null and cbpm09 != ""'> or c.CBPM09  like concat('%', #{cbpm09}, '%')</if>
+    LIMIT 10
+  </select>
+
+</mapper>

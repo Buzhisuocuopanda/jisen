@@ -9,13 +9,12 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.domain.Cbpb;
-import com.ruoyi.system.domain.CbpbCriteria;
-import com.ruoyi.system.domain.Cbpd;
-import com.ruoyi.system.domain.CbpdCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
+import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.mapper.CbpdMapper;
+import com.ruoyi.system.mapper.CbpfMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +37,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     private CbpdMapper cbpdMapper;
     @Resource
     private CbpbMapper cbpbMapper;
+
+    @Resource
+    private CbpfMapper cbpfMapper;
 
     @Resource
     private GsSystemUseMapper gsSystemUseMapper;
@@ -75,7 +77,13 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb13(cbpbDo.getCbpb13());
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
-        return cbpbMapper.insertSelective(cbpb);
+         cbpbMapper.insertSelective(cbpb);
+
+        CbpbCriteria example1 = new CbpbCriteria();
+        example1.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
+                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpb> cbpbss = cbpbMapper.selectByExample(example1);
+         return cbpbss.get(0).getCbpb01();
     }
     /**
      * 修改商品
@@ -209,6 +217,20 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();    }
+
+
+    @Override
+    public int insertSwJsGoodsClassifys(CbpfDo cbpfDo) {
+        Long userid = SecurityUtils.getUserId();
+        Cbpf cbpf = BeanCopyUtils.coypToClass(cbpfDo, Cbpf.class, null);
+        Date date = new Date();
+        cbpf.setCbpf02(cbpfDo.getCbpf02());
+        cbpf.setCbpf03(cbpfDo.getCbpf03());
+        cbpf.setCbpf04(cbpfDo.getCbpf04());
+        cbpf.setCbpf05(cbpfDo.getCbpf05());
+        cbpf.setCbpf07(date);
+        return cbpfMapper.insertSelective(cbpf);
+    }
 
     public int insertSwJsGoods(Cbpb cbpb)
     {

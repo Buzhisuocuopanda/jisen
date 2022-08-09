@@ -29,4 +29,6 @@ public interface ISwJsPurchasereturnordersService {
     int SwJsSkuBarcodes(CbpgDto cbpgDto);
 
     int insertSwJsSkuBarcodess(CbpgDto cbpgDto);
+
+    int insertSwJsSkuBarcodesm(CbpgDto cbpgDto);
 }

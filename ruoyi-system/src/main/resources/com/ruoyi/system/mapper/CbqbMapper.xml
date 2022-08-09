@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbqbMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbqb">
+    <id column="CBQB01" jdbcType="INTEGER" property="cbqb01" />
+    <result column="CBQB02" jdbcType="INTEGER" property="cbqb02" />
+    <result column="CBQB03" jdbcType="TIMESTAMP" property="cbqb03" />
+    <result column="CBQB04" jdbcType="INTEGER" property="cbqb04" />
+    <result column="CBQB05" jdbcType="TIMESTAMP" property="cbqb05" />
+    <result column="CBQB06" jdbcType="INTEGER" property="cbqb06" />
+    <result column="CBQB07" jdbcType="INTEGER" property="cbqb07" />
+    <result column="CBQB08" jdbcType="INTEGER" property="cbqb08" />
+    <result column="CBQB09" jdbcType="VARCHAR" property="cbqb09" />
+    <result column="CBQB10" jdbcType="VARCHAR" property="cbqb10" />
+    <result column="CBQA01" jdbcType="INTEGER" property="cbqa01" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBQB01, CBQB02, CBQB03, CBQB04, CBQB05, CBQB06, CBQB07, CBQB08, CBQB09, CBQB10, CBQA01, 
+    user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbqbCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBQB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBQB`
+    where CBQB01 = #{cbqb01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBQB`
+    where CBQB01 = #{cbqb01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbqbCriteria">
+    delete from `CBQB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbqb">
+    insert into `CBQB` (CBQB01, CBQB02, CBQB03, 
+      CBQB04, CBQB05, CBQB06, 
+      CBQB07, CBQB08, CBQB09, 
+      CBQB10, CBQA01, user_id
+      )
+    values (#{cbqb01,jdbcType=INTEGER}, #{cbqb02,jdbcType=INTEGER}, #{cbqb03,jdbcType=TIMESTAMP}, 
+      #{cbqb04,jdbcType=INTEGER}, #{cbqb05,jdbcType=TIMESTAMP}, #{cbqb06,jdbcType=INTEGER}, 
+      #{cbqb07,jdbcType=INTEGER}, #{cbqb08,jdbcType=INTEGER}, #{cbqb09,jdbcType=VARCHAR}, 
+      #{cbqb10,jdbcType=VARCHAR}, #{cbqa01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbqb">
+    insert into `CBQB`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbqb01 != null">
+        CBQB01,
+      </if>
+      <if test="cbqb02 != null">
+        CBQB02,
+      </if>
+      <if test="cbqb03 != null">
+        CBQB03,
+      </if>
+      <if test="cbqb04 != null">
+        CBQB04,
+      </if>
+      <if test="cbqb05 != null">
+        CBQB05,
+      </if>
+      <if test="cbqb06 != null">
+        CBQB06,
+      </if>
+      <if test="cbqb07 != null">
+        CBQB07,
+      </if>
+      <if test="cbqb08 != null">
+        CBQB08,
+      </if>
+      <if test="cbqb09 != null">
+        CBQB09,
+      </if>
+      <if test="cbqb10 != null">
+        CBQB10,
+      </if>
+      <if test="cbqa01 != null">
+        CBQA01,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbqb01 != null">
+        #{cbqb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb02 != null">
+        #{cbqb02,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb03 != null">
+        #{cbqb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqb04 != null">
+        #{cbqb04,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb05 != null">
+        #{cbqb05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqb06 != null">
+        #{cbqb06,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb07 != null">
+        #{cbqb07,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb08 != null">
+        #{cbqb08,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb09 != null">
+        #{cbqb09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqb10 != null">
+        #{cbqb10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqa01 != null">
+        #{cbqa01,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbqbCriteria" resultType="java.lang.Long">
+    select count(*) from `CBQB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBQB`
+    <set>
+      <if test="record.cbqb01 != null">
+        CBQB01 = #{record.cbqb01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb02 != null">
+        CBQB02 = #{record.cbqb02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb03 != null">
+        CBQB03 = #{record.cbqb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbqb04 != null">
+        CBQB04 = #{record.cbqb04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb05 != null">
+        CBQB05 = #{record.cbqb05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbqb06 != null">
+        CBQB06 = #{record.cbqb06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb07 != null">
+        CBQB07 = #{record.cbqb07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb08 != null">
+        CBQB08 = #{record.cbqb08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbqb09 != null">
+        CBQB09 = #{record.cbqb09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbqb10 != null">
+        CBQB10 = #{record.cbqb10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbqa01 != null">
+        CBQA01 = #{record.cbqa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBQB`
+    set CBQB01 = #{record.cbqb01,jdbcType=INTEGER},
+      CBQB02 = #{record.cbqb02,jdbcType=INTEGER},
+      CBQB03 = #{record.cbqb03,jdbcType=TIMESTAMP},
+      CBQB04 = #{record.cbqb04,jdbcType=INTEGER},
+      CBQB05 = #{record.cbqb05,jdbcType=TIMESTAMP},
+      CBQB06 = #{record.cbqb06,jdbcType=INTEGER},
+      CBQB07 = #{record.cbqb07,jdbcType=INTEGER},
+      CBQB08 = #{record.cbqb08,jdbcType=INTEGER},
+      CBQB09 = #{record.cbqb09,jdbcType=VARCHAR},
+      CBQB10 = #{record.cbqb10,jdbcType=VARCHAR},
+      CBQA01 = #{record.cbqa01,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbqb">
+    update `CBQB`
+    <set>
+      <if test="cbqb02 != null">
+        CBQB02 = #{cbqb02,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb03 != null">
+        CBQB03 = #{cbqb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqb04 != null">
+        CBQB04 = #{cbqb04,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb05 != null">
+        CBQB05 = #{cbqb05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbqb06 != null">
+        CBQB06 = #{cbqb06,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb07 != null">
+        CBQB07 = #{cbqb07,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb08 != null">
+        CBQB08 = #{cbqb08,jdbcType=INTEGER},
+      </if>
+      <if test="cbqb09 != null">
+        CBQB09 = #{cbqb09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqb10 != null">
+        CBQB10 = #{cbqb10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbqa01 != null">
+        CBQA01 = #{cbqa01,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBQB01 = #{cbqb01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbqb">
+    update `CBQB`
+    set CBQB02 = #{cbqb02,jdbcType=INTEGER},
+      CBQB03 = #{cbqb03,jdbcType=TIMESTAMP},
+      CBQB04 = #{cbqb04,jdbcType=INTEGER},
+      CBQB05 = #{cbqb05,jdbcType=TIMESTAMP},
+      CBQB06 = #{cbqb06,jdbcType=INTEGER},
+      CBQB07 = #{cbqb07,jdbcType=INTEGER},
+      CBQB08 = #{cbqb08,jdbcType=INTEGER},
+      CBQB09 = #{cbqb09,jdbcType=VARCHAR},
+      CBQB10 = #{cbqb10,jdbcType=VARCHAR},
+      CBQA01 = #{cbqa01,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBQB01 = #{cbqb01,jdbcType=INTEGER}
+  </update>
+</mapper>

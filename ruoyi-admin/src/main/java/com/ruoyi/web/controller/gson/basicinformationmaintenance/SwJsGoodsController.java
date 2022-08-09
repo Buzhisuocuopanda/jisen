@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.CbpbDo;
+import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import io.swagger.annotations.Api;
@@ -69,6 +70,30 @@ public class SwJsGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 新增商品信息维护关联表
+     */
+    @ApiOperation(
+            value ="新增商品信息维护关联表",
+            notes = "新增商品信息维护关联表"
+    )
+    @PostMapping("/SwJsGoodsadds")
+    public AjaxResult swJsGoodsadds(@Valid @RequestBody CbpfDo cbpfDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsGoodsService.insertSwJsGoodsClassifys(cbpfDo));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSONUtils.toJSONString(cbpfDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
     /**
      * 修改商品

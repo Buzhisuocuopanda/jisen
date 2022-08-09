@@ -6,6 +6,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.CbpdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import org.apache.poi.ss.formula.functions.T;
@@ -171,6 +172,11 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
         }
         return null;
+    }
+    //模糊查询品牌型号描述
+    @Override
+    public CbpdVo selectgoodsinfo(CbpdVo cbpdVo) {
+        return cbpdMapper.selectgoodsinfo(cbpdVo);
     }
 
 }

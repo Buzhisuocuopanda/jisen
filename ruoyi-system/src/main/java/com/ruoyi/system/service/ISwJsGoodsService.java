@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
+import com.ruoyi.system.domain.Do.CbpfDo;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface ISwJsGoodsService {
     List<Cbpb> selectSwJsGoodsList(Cbpb cbpb);
 
     String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName);
+
+    int insertSwJsGoodsClassifys(CbpfDo cbpfDo);
 }

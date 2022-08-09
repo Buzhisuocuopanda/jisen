@@ -85,6 +85,28 @@ public class SwJsPurchasereturnordersController extends BaseController {
     }
 
     /**
+     * 新增采购退货单扫码
+     */
+    @ApiOperation(
+            value ="新增采购退货单扫码",
+            notes = "新增采购退货单扫码"
+    )
+    @PostMapping("/SwJsPurchasereturnordersaddsm")
+    public AjaxResult swJsPurchasereturnordersaddsm(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodesm(cbpgDto));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增采购退货单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpgDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 删除采购退货单
      */
     @ApiOperation(

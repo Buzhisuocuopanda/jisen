@@ -69,7 +69,29 @@ public class SwJsPurchaseinboundController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 新增采购入库单扫码
+     */
+    @ApiOperation(
+            value ="新增采购入库单扫码",
+            notes = "新增采购入库单扫码"
+    )
+    @PostMapping("/SwJsPurchaseinboundaddsm")
+    public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcodesm(cbpdDto));
 
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增采购入库单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 采购入库单审核
      */

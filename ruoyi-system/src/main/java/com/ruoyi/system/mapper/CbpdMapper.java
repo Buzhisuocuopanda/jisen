@@ -7,6 +7,7 @@ import com.ruoyi.system.domain.CbpdCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.CbpdVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbpdMapper {
@@ -43,4 +44,6 @@ public interface CbpdMapper {
     List<CbpcVo> getInfosss(CbpcVo cbpcVo);
 
     List<CbpcVo> getInfossss(CbpcVo cbpcVo);
+
+    CbpdVo selectgoodsinfo(CbpdVo cbpdVo);
 }

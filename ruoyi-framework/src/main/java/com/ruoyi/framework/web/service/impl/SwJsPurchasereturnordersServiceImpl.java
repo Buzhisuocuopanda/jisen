@@ -125,12 +125,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int insertSwJsSkuBarcodess(CbpgDto cbpgDto) {
         Long userid = SecurityUtils.getUserId();
 
-        CbpgCriteria example1 = new CbpgCriteria();
-        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
-                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
-        List<Integer> collect = cbpgs1.stream().map(Cbpg::getCbpg01).collect(Collectors.toList());
-        int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
+
 
         Cbph cbph = BeanCopyUtils.coypToClass(cbpgDto, Cbph.class, null);
         Date date = new Date();
@@ -140,7 +135,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbph.setCbph05(date);
         cbph.setCbph06(Math.toIntExact(userid));
         cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbph.setCbpg01(ints[0]);
+        cbph.setCbpg01(cbpgDto.getCbpg01());
         cbph.setUserId(Math.toIntExact(userid));
         cbph.setCbph09(cbpgDto.getCbph09());
         cbph.setCbph10(cbpgDto.getCbph10());
@@ -151,6 +146,27 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbph.setCbph12(cbpgDto.getCbph12());
         return cbphMapper.insertSelective(cbph);
     }
+    /**
+     * 新增采购退货单扫码
+     *
+     * @param cbpgDto 审核信息
+     * @return 结果
+     */
+    @Override
+    public int insertSwJsSkuBarcodesm(CbpgDto cbpgDto) {
+        Long userid = SecurityUtils.getUserId();
+
+        Cbpi cbpi = BeanCopyUtils.coypToClass(cbpgDto, Cbpi.class, null);
+        Date date = new Date();
+
+        cbpi.setCbpi03(date);
+        cbpi.setCbpi04(Math.toIntExact(userid));
+        cbpi.setCbpi05(date);
+        cbpi.setCbpi06(Math.toIntExact(userid));
+        cbpi.setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
+        return cbpiMapper.insertSelective(cbpi);
+    }
+
     /**
      * 删除采购退货单
      *
