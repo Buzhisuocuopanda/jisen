@@ -142,8 +142,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         BigDecimal num = BigDecimal.valueOf(cbpgDto.getCbph09());
         BigDecimal price = BigDecimal.valueOf(cbpgDto.getCbph10());
         BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+        double v = b.doubleValue();
         cbph.setCbph11(cbpgDto.getCbph11());
-        cbph.setCbph12(cbpgDto.getCbph12());
+        cbph.setCbph12(v);
         return cbphMapper.insertSelective(cbph);
     }
     /**
