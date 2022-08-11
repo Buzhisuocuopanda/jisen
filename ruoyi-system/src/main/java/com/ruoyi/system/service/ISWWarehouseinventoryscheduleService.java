@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface ISWWarehouseinventoryscheduleService {
     List<CbshVo> selectSwJsStoreList(CbshVo cbshVo);
 
-    int insertSwJsStore(CbshDo cbshDo);
+    IdVo insertSwJsStore(CbshDo cbshDo);
 
     int insertSwJsStores(CbsjDo cbsjDo);
 

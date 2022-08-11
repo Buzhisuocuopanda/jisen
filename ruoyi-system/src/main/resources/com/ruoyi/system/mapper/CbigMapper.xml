@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbigMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbig">
+    <id column="CBIG01" jdbcType="INTEGER" property="cbig01" />
+    <result column="CBIG02" jdbcType="INTEGER" property="cbig02" />
+    <result column="CBIG03" jdbcType="TIMESTAMP" property="cbig03" />
+    <result column="CBIG04" jdbcType="INTEGER" property="cbig04" />
+    <result column="CBIG05" jdbcType="TIMESTAMP" property="cbig05" />
+    <result column="CBIG06" jdbcType="INTEGER" property="cbig06" />
+    <result column="CBIG07" jdbcType="INTEGER" property="cbig07" />
+    <result column="CBIG08" jdbcType="INTEGER" property="cbig08" />
+    <result column="CBIG09" jdbcType="INTEGER" property="cbig09" />
+    <result column="CBIG10" jdbcType="VARCHAR" property="cbig10" />
+    <result column="CBIG11" jdbcType="INTEGER" property="cbig11" />
+    <result column="CBIG12" jdbcType="VARCHAR" property="cbig12" />
+    <result column="CBIG13" jdbcType="DOUBLE" property="cbig13" />
+    <result column="CBIE01" jdbcType="INTEGER" property="cbie01" />
+    <result column="CBIG14" jdbcType="INTEGER" property="cbig14" />
+    <result column="CBIG15" jdbcType="TIMESTAMP" property="cbig15" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBIG01, CBIG02, CBIG03, CBIG04, CBIG05, CBIG06, CBIG07, CBIG08, CBIG09, CBIG10, CBIG11, 
+    CBIG12, CBIG13, CBIE01, CBIG14, CBIG15, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbigCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBIG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBIG`
+    where CBIG01 = #{cbig01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBIG`
+    where CBIG01 = #{cbig01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbigCriteria">
+    delete from `CBIG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbig">
+    insert into `CBIG` (CBIG01, CBIG02, CBIG03, 
+      CBIG04, CBIG05, CBIG06, 
+      CBIG07, CBIG08, CBIG09, 
+      CBIG10, CBIG11, CBIG12, 
+      CBIG13, CBIE01, CBIG14, 
+      CBIG15, user_id)
+    values (#{cbig01,jdbcType=INTEGER}, #{cbig02,jdbcType=INTEGER}, #{cbig03,jdbcType=TIMESTAMP}, 
+      #{cbig04,jdbcType=INTEGER}, #{cbig05,jdbcType=TIMESTAMP}, #{cbig06,jdbcType=INTEGER}, 
+      #{cbig07,jdbcType=INTEGER}, #{cbig08,jdbcType=INTEGER}, #{cbig09,jdbcType=INTEGER}, 
+      #{cbig10,jdbcType=VARCHAR}, #{cbig11,jdbcType=INTEGER}, #{cbig12,jdbcType=VARCHAR}, 
+      #{cbig13,jdbcType=DOUBLE}, #{cbie01,jdbcType=INTEGER}, #{cbig14,jdbcType=INTEGER}, 
+      #{cbig15,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbig">
+    insert into `CBIG`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbig01 != null">
+        CBIG01,
+      </if>
+      <if test="cbig02 != null">
+        CBIG02,
+      </if>
+      <if test="cbig03 != null">
+        CBIG03,
+      </if>
+      <if test="cbig04 != null">
+        CBIG04,
+      </if>
+      <if test="cbig05 != null">
+        CBIG05,
+      </if>
+      <if test="cbig06 != null">
+        CBIG06,
+      </if>
+      <if test="cbig07 != null">
+        CBIG07,
+      </if>
+      <if test="cbig08 != null">
+        CBIG08,
+      </if>
+      <if test="cbig09 != null">
+        CBIG09,
+      </if>
+      <if test="cbig10 != null">
+        CBIG10,
+      </if>
+      <if test="cbig11 != null">
+        CBIG11,
+      </if>
+      <if test="cbig12 != null">
+        CBIG12,
+      </if>
+      <if test="cbig13 != null">
+        CBIG13,
+      </if>
+      <if test="cbie01 != null">
+        CBIE01,
+      </if>
+      <if test="cbig14 != null">
+        CBIG14,
+      </if>
+      <if test="cbig15 != null">
+        CBIG15,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbig01 != null">
+        #{cbig01,jdbcType=INTEGER},
+      </if>
+      <if test="cbig02 != null">
+        #{cbig02,jdbcType=INTEGER},
+      </if>
+      <if test="cbig03 != null">
+        #{cbig03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbig04 != null">
+        #{cbig04,jdbcType=INTEGER},
+      </if>
+      <if test="cbig05 != null">
+        #{cbig05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbig06 != null">
+        #{cbig06,jdbcType=INTEGER},
+      </if>
+      <if test="cbig07 != null">
+        #{cbig07,jdbcType=INTEGER},
+      </if>
+      <if test="cbig08 != null">
+        #{cbig08,jdbcType=INTEGER},
+      </if>
+      <if test="cbig09 != null">
+        #{cbig09,jdbcType=INTEGER},
+      </if>
+      <if test="cbig10 != null">
+        #{cbig10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbig11 != null">
+        #{cbig11,jdbcType=INTEGER},
+      </if>
+      <if test="cbig12 != null">
+        #{cbig12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbig13 != null">
+        #{cbig13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbie01 != null">
+        #{cbie01,jdbcType=INTEGER},
+      </if>
+      <if test="cbig14 != null">
+        #{cbig14,jdbcType=INTEGER},
+      </if>
+      <if test="cbig15 != null">
+        #{cbig15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbigCriteria" resultType="java.lang.Long">
+    select count(*) from `CBIG`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBIG`
+    <set>
+      <if test="record.cbig01 != null">
+        CBIG01 = #{record.cbig01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig02 != null">
+        CBIG02 = #{record.cbig02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig03 != null">
+        CBIG03 = #{record.cbig03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbig04 != null">
+        CBIG04 = #{record.cbig04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig05 != null">
+        CBIG05 = #{record.cbig05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbig06 != null">
+        CBIG06 = #{record.cbig06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig07 != null">
+        CBIG07 = #{record.cbig07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig08 != null">
+        CBIG08 = #{record.cbig08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig09 != null">
+        CBIG09 = #{record.cbig09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig10 != null">
+        CBIG10 = #{record.cbig10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbig11 != null">
+        CBIG11 = #{record.cbig11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig12 != null">
+        CBIG12 = #{record.cbig12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbig13 != null">
+        CBIG13 = #{record.cbig13,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbie01 != null">
+        CBIE01 = #{record.cbie01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig14 != null">
+        CBIG14 = #{record.cbig14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbig15 != null">
+        CBIG15 = #{record.cbig15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBIG`
+    set CBIG01 = #{record.cbig01,jdbcType=INTEGER},
+      CBIG02 = #{record.cbig02,jdbcType=INTEGER},
+      CBIG03 = #{record.cbig03,jdbcType=TIMESTAMP},
+      CBIG04 = #{record.cbig04,jdbcType=INTEGER},
+      CBIG05 = #{record.cbig05,jdbcType=TIMESTAMP},
+      CBIG06 = #{record.cbig06,jdbcType=INTEGER},
+      CBIG07 = #{record.cbig07,jdbcType=INTEGER},
+      CBIG08 = #{record.cbig08,jdbcType=INTEGER},
+      CBIG09 = #{record.cbig09,jdbcType=INTEGER},
+      CBIG10 = #{record.cbig10,jdbcType=VARCHAR},
+      CBIG11 = #{record.cbig11,jdbcType=INTEGER},
+      CBIG12 = #{record.cbig12,jdbcType=VARCHAR},
+      CBIG13 = #{record.cbig13,jdbcType=DOUBLE},
+      CBIE01 = #{record.cbie01,jdbcType=INTEGER},
+      CBIG14 = #{record.cbig14,jdbcType=INTEGER},
+      CBIG15 = #{record.cbig15,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbig">
+    update `CBIG`
+    <set>
+      <if test="cbig02 != null">
+        CBIG02 = #{cbig02,jdbcType=INTEGER},
+      </if>
+      <if test="cbig03 != null">
+        CBIG03 = #{cbig03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbig04 != null">
+        CBIG04 = #{cbig04,jdbcType=INTEGER},
+      </if>
+      <if test="cbig05 != null">
+        CBIG05 = #{cbig05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbig06 != null">
+        CBIG06 = #{cbig06,jdbcType=INTEGER},
+      </if>
+      <if test="cbig07 != null">
+        CBIG07 = #{cbig07,jdbcType=INTEGER},
+      </if>
+      <if test="cbig08 != null">
+        CBIG08 = #{cbig08,jdbcType=INTEGER},
+      </if>
+      <if test="cbig09 != null">
+        CBIG09 = #{cbig09,jdbcType=INTEGER},
+      </if>
+      <if test="cbig10 != null">
+        CBIG10 = #{cbig10,jdbcType=VARCHAR},
+      </if>
+      <if test="cbig11 != null">
+        CBIG11 = #{cbig11,jdbcType=INTEGER},
+      </if>
+      <if test="cbig12 != null">
+        CBIG12 = #{cbig12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbig13 != null">
+        CBIG13 = #{cbig13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbie01 != null">
+        CBIE01 = #{cbie01,jdbcType=INTEGER},
+      </if>
+      <if test="cbig14 != null">
+        CBIG14 = #{cbig14,jdbcType=INTEGER},
+      </if>
+      <if test="cbig15 != null">
+        CBIG15 = #{cbig15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBIG01 = #{cbig01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbig">
+    update `CBIG`
+    set CBIG02 = #{cbig02,jdbcType=INTEGER},
+      CBIG03 = #{cbig03,jdbcType=TIMESTAMP},
+      CBIG04 = #{cbig04,jdbcType=INTEGER},
+      CBIG05 = #{cbig05,jdbcType=TIMESTAMP},
+      CBIG06 = #{cbig06,jdbcType=INTEGER},
+      CBIG07 = #{cbig07,jdbcType=INTEGER},
+      CBIG08 = #{cbig08,jdbcType=INTEGER},
+      CBIG09 = #{cbig09,jdbcType=INTEGER},
+      CBIG10 = #{cbig10,jdbcType=VARCHAR},
+      CBIG11 = #{cbig11,jdbcType=INTEGER},
+      CBIG12 = #{cbig12,jdbcType=VARCHAR},
+      CBIG13 = #{cbig13,jdbcType=DOUBLE},
+      CBIE01 = #{cbie01,jdbcType=INTEGER},
+      CBIG14 = #{cbig14,jdbcType=INTEGER},
+      CBIG15 = #{cbig15,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBIG01 = #{cbig01,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsjMapper;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
@@ -34,7 +35,7 @@ private CbsjMapper cbbsjMapper;
     }
 
     @Override
-    public int insertSwJsStore(CbshDo cbshDo) {
+    public IdVo insertSwJsStore(CbshDo cbshDo) {
         if(cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
                 cbshDo.getCbsh09().equals(WarehouseSelect.GLW.getCode())){
             throw new SwException("请选择扫码仓库");
@@ -55,7 +56,9 @@ private CbsjMapper cbbsjMapper;
         example.createCriteria().andCbsh07EqualTo(cbshDo.getCbsh07())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
-        return  cbshes.get(0).getCbsh01();
+        IdVo idVo = new IdVo();
+        idVo.setId(cbshes.get(0).getCbsh01());
+        return idVo;
     }
 
     @Override

@@ -3,11 +3,12 @@ package com.ruoyi.system.service;
 import com.ruoyi.system.domain.Dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpgVo;
+import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
 
 public interface ISwJsPurchasereturnordersService {
-    int insertSwJsSkuBarcodes(CbpgDto cbpgDto);
+    IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto);
 
     int deleteSwJsSkuBarcodsById(CbpgDto cbpgDto);
 

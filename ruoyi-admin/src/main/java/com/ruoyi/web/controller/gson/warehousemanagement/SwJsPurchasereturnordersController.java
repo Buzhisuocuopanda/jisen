@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Dto.CbpdDto;
 import com.ruoyi.system.domain.Dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpgVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,10 +48,12 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "新增采购退货单主单"
     )
     @PostMapping("/SwJsPurchasereturnordersadd")
-    public AjaxResult swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult<IdVo> swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+        IdVo res=null;
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodes(cbpgDto));
+            res = swJsPurchasereturnordersService.insertSwJsSkuBarcodes(cbpgDto);
+            return AjaxResult.success(res);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 

@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.Cbqb;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbqaMapper;
 import com.ruoyi.system.mapper.CbqbMapper;
 import com.ruoyi.system.service.ISWQualityinspectionlistService;
@@ -34,7 +35,7 @@ public class SWQualityinspectionlistImpl implements ISWQualityinspectionlistServ
      * 新增质检单
      */
     @Override
-    public int insertSwJsSkuBarcodes(CbqaDo cbqaDo) {
+    public IdVo insertSwJsSkuBarcodes(CbqaDo cbqaDo) {
         CbqaCriteria example = new CbqaCriteria();
         example.createCriteria().andCbqa07EqualTo(cbqaDo.getCbqa07())
                 .andCbqa06EqualTo(cbqaDo.getCbqa06());
@@ -62,7 +63,10 @@ public class SWQualityinspectionlistImpl implements ISWQualityinspectionlistServ
         example1.createCriteria().andCbqa07EqualTo(cbqaDo.getCbqa07())
                 .andCbqa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbqa> cbqass = cbqaMapper.selectByExample(example1);
-        return cbqass.get(0).getCbqa01();
+        IdVo idVo = new IdVo();
+        idVo.setId(cbqass.get(0).getCbqa01());
+        return idVo;
+
     }
     /**
      * 新增质检单明细表

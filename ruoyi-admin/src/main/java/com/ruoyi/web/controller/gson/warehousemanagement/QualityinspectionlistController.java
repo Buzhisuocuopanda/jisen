@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.Dto.CbicDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.domain.vo.CbqaVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.domain.vo.QualityinspectionVo;
 import com.ruoyi.system.service.ISWQualityinspectionlistService;
 import io.swagger.annotations.Api;
@@ -49,10 +50,12 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "新增质检单"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
-    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+    public AjaxResult<IdVo> swJsPurchaseinboundadd(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+        IdVo res=null;
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodes(cbqaDo));
+            res = swQualityinspectionlistService.insertSwJsSkuBarcodes(cbqaDo);
+            return AjaxResult.success(res);
 
 
         }catch (SwException e) {

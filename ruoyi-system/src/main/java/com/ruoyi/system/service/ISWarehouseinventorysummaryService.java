@@ -4,9 +4,11 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
+import com.ruoyi.system.domain.vo.IdVo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface ISWarehouseinventorysummaryService {
     /**
      * 仓库盘点明细新建列表查询
@@ -21,7 +23,7 @@ public interface ISWarehouseinventorysummaryService {
      */
     List<CbsiVo> SwJsStorelistss(CbsiVo cbsiVo);
 
-    int insertSwJsStore(CbshDo cbshDo);
+    IdVo insertSwJsStore(CbshDo cbshDo);
 
     int insertSwJsStores(CbsiDo cbsiDo);
 

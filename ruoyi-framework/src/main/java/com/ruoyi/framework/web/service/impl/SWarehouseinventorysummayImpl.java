@@ -14,16 +14,18 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsiMapper;
 import com.ruoyi.system.service.ISWarehouseinventorysummaryService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummaryService {
 
     @Resource
@@ -54,7 +56,7 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
     }
 
     @Override
-    public int insertSwJsStore(CbshDo cbshDo) {
+    public IdVo insertSwJsStore(CbshDo cbshDo) {
         if(!cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
                 cbshDo.getCbsh09().equals(WarehouseSelect.GLW.getCode())){
             throw new SwException("请选择数量仓库");
@@ -75,7 +77,10 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         example.createCriteria().andCbsh07EqualTo(cbshDo.getCbsh07())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
-        return  cbshes.get(0).getCbsh01();
+        IdVo idVo = new IdVo();
+        idVo.setId(cbshes.get(0).getCbsh01());
+        return idVo;
+
     }
 
     @Override

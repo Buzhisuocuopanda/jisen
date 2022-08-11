@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISWarehouseinventorysummaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,10 +48,12 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘汇总新增主表"
     )
     @PostMapping("/SwJsStoreadd")
-    public AjaxResult swJsStoreadd(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
+    public AjaxResult<IdVo> swJsStoreadd(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
+        IdVo res=null;
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swarehouseinventorysummaryService.insertSwJsStore(cbshDo));
+            res = swarehouseinventorysummaryService.insertSwJsStore(cbshDo);
+            return AjaxResult.success(res);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 

@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ISWQualityinspectionlistService {
     /**
      * 新增质检单
      */
-    int insertSwJsSkuBarcodes(CbqaDo cbqaDo);
+    IdVo insertSwJsSkuBarcodes(CbqaDo cbqaDo);
     /**
      * 新增质检单明细表
      */
