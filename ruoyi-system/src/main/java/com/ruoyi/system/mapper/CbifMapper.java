@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.CbifCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbifVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbifMapper {
@@ -27,4 +29,6 @@ public interface CbifMapper {
     int updateByPrimaryKeySelective(Cbif record);
 
     int updateByPrimaryKey(Cbif record);
+
+    List<CbifVo> SwJsStoreslistss(CbifVo cbifVo);
 }

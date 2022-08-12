@@ -407,8 +407,10 @@
       CBWA b
       on
         a.CBIE09=b.CBWA01
-where
-    a.CBIE06=0
+    where
+      a.CBIE06=0
+      and
+      b.cbwa12='条码管理'
   </select>
   <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbieVo">
     SELECT
@@ -421,6 +423,8 @@ where
         a.CBIE09=b.CBWA01
     where
       a.CBIE06=0
+    and
+    b.cbwa12='条码管理'
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
@@ -466,6 +470,37 @@ where
 where
       a.CBIE01= #{cbie01,jdbcType=INTEGER}
 
+  </select>
+  <select id="SwJsStorelist" resultType="com.ruoyi.system.domain.vo.CbieVo">
+    SELECT
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+    FROM
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBIE09=b.CBWA01
+    where
+      a.CBIE06=0
+      and
+      b.cbwa12='数量管理'
+  </select>
+  <select id="SwJsStoreslistss" resultType="com.ruoyi.system.domain.vo.CbieVo">
+    SELECT
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+    FROM
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBIE09=b.CBWA01
+    where
+      a.CBIE06=0
+      and
+      b.cbwa12='数量管理'
+    <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
   </select>
 
 </mapper>

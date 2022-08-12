@@ -2,6 +2,10 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.Do.CbieDo;
+import com.ruoyi.system.domain.Do.CbifDo;
+import com.ruoyi.system.domain.vo.CbieVo;
+import com.ruoyi.system.domain.vo.CbifVo;
+import com.ruoyi.system.domain.vo.CbigVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +23,14 @@ public interface ISwarehouseInventoryrollupService {
     int swJsStoreendd(CbieDo cbieDo);
 
     int swJsStoreendds(CbieDo cbieDo);
+
+    int SwJsSkuBarcodeshsss(CbifDo cbifDo);
+
+    List<CbieVo> SwJsStorelists(CbieVo cbieVo);
+
+    List<CbieVo> SwJsStorelistss(CbieVo cbieVo);
+
+    List<CbifVo> selectSwJsStoreList(CbifVo cbifVo);
+
+    String importWarehousedetailsinitialize(List<CbieDo> swJsGoodsList, boolean updateSupport, String operName);
 }

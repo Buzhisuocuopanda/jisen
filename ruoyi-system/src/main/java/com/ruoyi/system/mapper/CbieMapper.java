@@ -36,4 +36,8 @@ public interface CbieMapper {
     List<CbieVo> SwJsStorelistss(CbieVo cbieVo);
 
     List<CbigVo> selectSwJsStoreList(CbigVo cbigVo);
+
+    List<CbieVo> SwJsStorelist(CbieVo cbieVo);
+
+    List<CbieVo> SwJsStoreslistss(CbieVo cbieVo);
 }

@@ -180,7 +180,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             cbibDo.setCbib19(vendorid);
             taskService.InsertCBIB(cbibDo);
         }
-        return 0;
+        return 1;
     }
 
     @Override
