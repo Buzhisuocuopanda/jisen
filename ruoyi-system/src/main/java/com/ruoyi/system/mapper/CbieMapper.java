@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbie;
 import com.ruoyi.system.domain.CbieCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbieVo;
+import com.ruoyi.system.domain.vo.CbigVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbieMapper {
@@ -27,4 +30,10 @@ public interface CbieMapper {
     int updateByPrimaryKeySelective(Cbie record);
 
     int updateByPrimaryKey(Cbie record);
+
+    List<CbieVo> SwJsStorelists(CbieVo cbieVo);
+
+    List<CbieVo> SwJsStorelistss(CbieVo cbieVo);
+
+    List<CbigVo> selectSwJsStoreList(CbigVo cbigVo);
 }

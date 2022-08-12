@@ -79,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBIG01, CBIG02, CBIG03, CBIG04, CBIG05, CBIG06, CBIG07, CBIG08, CBIG09, CBIG10, CBIG11, 
+    CBIG01, CBIG02, CBIG03, CBIG04, CBIG05, CBIG06, CBIG07, CBIG08, CBIG09, CBIG10, CBIG11,
     CBIG12, CBIG13, CBIE01, CBIG14, CBIG15, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbigCriteria" resultMap="BaseResultMap">
@@ -97,7 +97,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBIG`
     where CBIG01 = #{cbig01,jdbcType=INTEGER}
@@ -113,17 +113,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbig">
-    insert into `CBIG` (CBIG01, CBIG02, CBIG03, 
-      CBIG04, CBIG05, CBIG06, 
-      CBIG07, CBIG08, CBIG09, 
-      CBIG10, CBIG11, CBIG12, 
-      CBIG13, CBIE01, CBIG14, 
+    insert into `CBIG` (CBIG01, CBIG02, CBIG03,
+      CBIG04, CBIG05, CBIG06,
+      CBIG07, CBIG08, CBIG09,
+      CBIG10, CBIG11, CBIG12,
+      CBIG13, CBIE01, CBIG14,
       CBIG15, user_id)
-    values (#{cbig01,jdbcType=INTEGER}, #{cbig02,jdbcType=INTEGER}, #{cbig03,jdbcType=TIMESTAMP}, 
-      #{cbig04,jdbcType=INTEGER}, #{cbig05,jdbcType=TIMESTAMP}, #{cbig06,jdbcType=INTEGER}, 
-      #{cbig07,jdbcType=INTEGER}, #{cbig08,jdbcType=INTEGER}, #{cbig09,jdbcType=INTEGER}, 
-      #{cbig10,jdbcType=VARCHAR}, #{cbig11,jdbcType=INTEGER}, #{cbig12,jdbcType=VARCHAR}, 
-      #{cbig13,jdbcType=DOUBLE}, #{cbie01,jdbcType=INTEGER}, #{cbig14,jdbcType=INTEGER}, 
+    values (#{cbig01,jdbcType=INTEGER}, #{cbig02,jdbcType=INTEGER}, #{cbig03,jdbcType=TIMESTAMP},
+      #{cbig04,jdbcType=INTEGER}, #{cbig05,jdbcType=TIMESTAMP}, #{cbig06,jdbcType=INTEGER},
+      #{cbig07,jdbcType=INTEGER}, #{cbig08,jdbcType=INTEGER}, #{cbig09,jdbcType=INTEGER},
+      #{cbig10,jdbcType=VARCHAR}, #{cbig11,jdbcType=INTEGER}, #{cbig12,jdbcType=VARCHAR},
+      #{cbig13,jdbcType=DOUBLE}, #{cbie01,jdbcType=INTEGER}, #{cbig14,jdbcType=INTEGER},
       #{cbig15,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbig">
@@ -235,7 +235,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbigCriteria" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.CbigCriteria" resultType="java.lang.Long">
     select count(*) from `CBIG`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -397,4 +397,15 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBIG01 = #{cbig01,jdbcType=INTEGER}
   </update>
+
+  <insert id="insertByBatch" parameterType="java.util.List">
+    insert into CBIG values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.CBIG01},#{item.CBIG02},#{item.CBIG03},#{item.CBIG04},#{item.CBIG05},#{item.CBIG06},#{item.CBIG07},
+      #{item.CBIG08},#{item.CBIG09},#{item.CBIG10},#{item.CBIG11},#{item.CBIG12},#{item.CBIG13},#{item.CBIG14},
+       #{item.CBIG15},#{item.user_id})
+
+    </foreach>
+  </insert>
+
 </mapper>

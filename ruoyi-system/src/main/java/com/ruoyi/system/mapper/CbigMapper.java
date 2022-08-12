@@ -27,4 +27,6 @@ public interface CbigMapper {
     int updateByPrimaryKeySelective(Cbig record);
 
     int updateByPrimaryKey(Cbig record);
+
+    int insertByBatch(List<Cbig> itemList);
 }

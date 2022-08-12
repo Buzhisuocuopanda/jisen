@@ -19,6 +19,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/Directly")
 public class DirectlyIntothEvaultController extends BaseController {
-
+    @Resource
     private ISwDirectlyintothevaultService swDirectlyintothevaultService;
     /**
      * 新增直接入库单

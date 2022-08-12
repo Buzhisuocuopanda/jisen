@@ -12,11 +12,12 @@ import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.mapper.CbicMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultService {
     @Resource
     private CbicMapper cbicMapper;

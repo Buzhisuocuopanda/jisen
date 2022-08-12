@@ -284,10 +284,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.sh.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.sh.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -308,10 +308,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.fsh.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.fsh.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -330,10 +330,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.qxwc.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.qxwc.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -357,10 +357,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.bjwc.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.bjwc.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);

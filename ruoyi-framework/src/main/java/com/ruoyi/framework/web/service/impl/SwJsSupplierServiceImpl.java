@@ -41,7 +41,7 @@ private CbsaMapper cbsaMapper;
     public int insertSwJsSupplier(CbsaDto cbsaDto) {
         Long userid = SecurityUtils.getUserId();
         CbsaCriteria example = new CbsaCriteria();
-        example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa07())
+        example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa08())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(example);
         if(cbsas.size()>0){
@@ -73,7 +73,7 @@ private CbsaMapper cbsaMapper;
     public int updateSwJsSupplier(CbsaDto cbsaDto) {
         Long userid = SecurityUtils.getUserId();
         CbsaCriteria example = new CbsaCriteria();
-        example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa07())
+        example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa08())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(example);
         if(cbsas.size()>0){

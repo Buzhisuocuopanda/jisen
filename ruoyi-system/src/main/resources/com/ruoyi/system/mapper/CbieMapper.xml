@@ -79,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBIE01, CBIE02, CBIE03, CBIE04, CBIE05, CBIE06, CBIE07, CBIE08, CBIE09, CBIE10, CBIE11, 
+    CBIE01, CBIE02, CBIE03, CBIE04, CBIE05, CBIE06, CBIE07, CBIE08, CBIE09, CBIE10, CBIE11,
     CBIE12, CBIE13, CBIE14, CBIE15, CBIE16, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbieCriteria" resultMap="BaseResultMap">
@@ -97,7 +97,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBIE`
     where CBIE01 = #{cbie01,jdbcType=INTEGER}
@@ -113,17 +113,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbie">
-    insert into `CBIE` (CBIE01, CBIE02, CBIE03, 
-      CBIE04, CBIE05, CBIE06, 
-      CBIE07, CBIE08, CBIE09, 
-      CBIE10, CBIE11, CBIE12, 
-      CBIE13, CBIE14, CBIE15, 
+    insert into `CBIE` (CBIE01, CBIE02, CBIE03,
+      CBIE04, CBIE05, CBIE06,
+      CBIE07, CBIE08, CBIE09,
+      CBIE10, CBIE11, CBIE12,
+      CBIE13, CBIE14, CBIE15,
       CBIE16, user_id)
-    values (#{cbie01,jdbcType=INTEGER}, #{cbie02,jdbcType=TIMESTAMP}, #{cbie03,jdbcType=INTEGER}, 
-      #{cbie04,jdbcType=TIMESTAMP}, #{cbie05,jdbcType=INTEGER}, #{cbie06,jdbcType=INTEGER}, 
-      #{cbie07,jdbcType=VARCHAR}, #{cbie08,jdbcType=TIMESTAMP}, #{cbie09,jdbcType=INTEGER}, 
-      #{cbie10,jdbcType=INTEGER}, #{cbie11,jdbcType=INTEGER}, #{cbie12,jdbcType=TIMESTAMP}, 
-      #{cbie13,jdbcType=INTEGER}, #{cbie14,jdbcType=TIMESTAMP}, #{cbie15,jdbcType=VARCHAR}, 
+    values (#{cbie01,jdbcType=INTEGER}, #{cbie02,jdbcType=TIMESTAMP}, #{cbie03,jdbcType=INTEGER},
+      #{cbie04,jdbcType=TIMESTAMP}, #{cbie05,jdbcType=INTEGER}, #{cbie06,jdbcType=INTEGER},
+      #{cbie07,jdbcType=VARCHAR}, #{cbie08,jdbcType=TIMESTAMP}, #{cbie09,jdbcType=INTEGER},
+      #{cbie10,jdbcType=INTEGER}, #{cbie11,jdbcType=INTEGER}, #{cbie12,jdbcType=TIMESTAMP},
+      #{cbie13,jdbcType=INTEGER}, #{cbie14,jdbcType=TIMESTAMP}, #{cbie15,jdbcType=VARCHAR},
       #{cbie16,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbie">
@@ -241,7 +241,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBIE`
     <set>
       <if test="record.cbie01 != null">
@@ -397,4 +397,75 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBIE01 = #{cbie01,jdbcType=INTEGER}
   </update>
+
+  <select id="SwJsStorelists" resultType="com.ruoyi.system.domain.vo.CbieVo">
+    SELECT
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+    FROM
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBIE09=b.CBWA01
+where
+    a.CBIE06=0
+  </select>
+  <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbieVo">
+    SELECT
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+    FROM
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBIE09=b.CBWA01
+    where
+      a.CBIE06=0
+    <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
+    <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
+  </select>
+  <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CbigVo">
+    SELECT
+      a.CBIE07,CBIE02,b.CBWA09,c.CALA08,e.CBSA08,f.CBLA09,h.CBPA07,i.CALA08,g.CBPB12,
+      g.CBPB15,g.cbpb08,d.CBIG10,d.CBIG13,d.CBIG15,d.CBIG15
+    from
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        b.CBWA01=a.CBIE09
+        LEFT JOIN
+      CALA c
+      on
+        c.CALA01=a.CBIE16
+        LEFT JOIN
+      CBIG d
+      on
+        d.CBIE01=a.CBIE01
+        LEFT JOIN
+      CBSA e
+      on
+        e.CBSA01=d.CBIG14
+        LEFT JOIN
+      CBLA f
+      on
+        f.CBLA01=d.CBIG08
+        LEFT JOIN
+      CBPB g
+      on
+        g.CBPB01=d.CBIG09
+        LEFT JOIN
+      CBPA h
+      on
+        h.CBPA01=g.CBPB14
+        LEFT JOIN
+      CALA i
+      on
+        i.CALA01=g.CBPB10
+where
+      a.CBIE01= #{cbie01,jdbcType=INTEGER}
+
+  </select>
+
 </mapper>

@@ -1,7 +1,7 @@
 package com.ruoyi.common.enums;
 
 public enum TaskType {
-
+    cqrk(new Byte("0"), "初期入库"),
     cgrkd(new Byte("1"), "采购入库单"),
     cgtkd(new Byte("2"), "采购退库单"),
     xsckd(new Byte("3"), "销售发货单"),
