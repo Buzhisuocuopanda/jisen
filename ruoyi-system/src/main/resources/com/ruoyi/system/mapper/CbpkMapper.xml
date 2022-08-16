@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbpkMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpk">
+    <id column="CBPK01" jdbcType="INTEGER" property="cbpk01" />
+    <result column="CBPK02" jdbcType="TIMESTAMP" property="cbpk02" />
+    <result column="CBPK03" jdbcType="INTEGER" property="cbpk03" />
+    <result column="CBPK04" jdbcType="TIMESTAMP" property="cbpk04" />
+    <result column="CBPK05" jdbcType="INTEGER" property="cbpk05" />
+    <result column="CBPK06" jdbcType="INTEGER" property="cbpk06" />
+    <result column="CBPK07" jdbcType="VARCHAR" property="cbpk07" />
+    <result column="CBPK08" jdbcType="TIMESTAMP" property="cbpk08" />
+    <result column="CBPK09" jdbcType="INTEGER" property="cbpk09" />
+    <result column="CBPK10" jdbcType="INTEGER" property="cbpk10" />
+    <result column="CBPK11" jdbcType="INTEGER" property="cbpk11" />
+    <result column="CBPK12" jdbcType="INTEGER" property="cbpk12" />
+    <result column="CBPK13" jdbcType="TIMESTAMP" property="cbpk13" />
+    <result column="CBPK14" jdbcType="INTEGER" property="cbpk14" />
+    <result column="CBPK15" jdbcType="TIMESTAMP" property="cbpk15" />
+    <result column="CBPK16" jdbcType="INTEGER" property="cbpk16" />
+    <result column="CBPK17" jdbcType="INTEGER" property="cbpk17" />
+    <result column="CBPK18" jdbcType="VARCHAR" property="cbpk18" />
+    <result column="CBPK19" jdbcType="VARCHAR" property="cbpk19" />
+    <result column="CBPK20" jdbcType="INTEGER" property="cbpk20" />
+    <result column="CBPK21" jdbcType="VARCHAR" property="cbpk21" />
+    <result column="CBPK22" jdbcType="VARCHAR" property="cbpk22" />
+    <result column="CBPK23" jdbcType="VARCHAR" property="cbpk23" />
+    <result column="CBPK24" jdbcType="VARCHAR" property="cbpk24" />
+    <result column="CBPK25" jdbcType="VARCHAR" property="cbpk25" />
+    <result column="CBPK26" jdbcType="VARCHAR" property="cbpk26" />
+    <result column="CBPK27" jdbcType="VARCHAR" property="cbpk27" />
+    <result column="CBPK28" jdbcType="VARCHAR" property="cbpk28" />
+    <result column="CBPK29" jdbcType="VARCHAR" property="cbpk29" />
+    <result column="CBPK30" jdbcType="VARCHAR" property="cbpk30" />
+    <result column="CBPK31" jdbcType="INTEGER" property="cbpk31" />
+    <result column="check_status" jdbcType="TINYINT" property="checkStatus" />
+    <result column="sale_order_no" jdbcType="VARCHAR" property="saleOrderNo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPK01, CBPK02, CBPK03, CBPK04, CBPK05, CBPK06, CBPK07, CBPK08, CBPK09, CBPK10, CBPK11, 
+    CBPK12, CBPK13, CBPK14, CBPK15, CBPK16, CBPK17, CBPK18, CBPK19, CBPK20, CBPK21, CBPK22, 
+    CBPK23, CBPK24, CBPK25, CBPK26, CBPK27, CBPK28, CBPK29, CBPK30, CBPK31, check_status, 
+    sale_order_no
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpkCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPK`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBPK`
+    where CBPK01 = #{cbpk01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPK`
+    where CBPK01 = #{cbpk01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpkCriteria">
+    delete from `CBPK`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpk">
+    insert into `CBPK` (CBPK01, CBPK02, CBPK03, 
+      CBPK04, CBPK05, CBPK06, 
+      CBPK07, CBPK08, CBPK09, 
+      CBPK10, CBPK11, CBPK12, 
+      CBPK13, CBPK14, CBPK15, 
+      CBPK16, CBPK17, CBPK18, 
+      CBPK19, CBPK20, CBPK21, 
+      CBPK22, CBPK23, CBPK24, 
+      CBPK25, CBPK26, CBPK27, 
+      CBPK28, CBPK29, CBPK30, 
+      CBPK31, check_status, sale_order_no
+      )
+    values (#{cbpk01,jdbcType=INTEGER}, #{cbpk02,jdbcType=TIMESTAMP}, #{cbpk03,jdbcType=INTEGER}, 
+      #{cbpk04,jdbcType=TIMESTAMP}, #{cbpk05,jdbcType=INTEGER}, #{cbpk06,jdbcType=INTEGER}, 
+      #{cbpk07,jdbcType=VARCHAR}, #{cbpk08,jdbcType=TIMESTAMP}, #{cbpk09,jdbcType=INTEGER}, 
+      #{cbpk10,jdbcType=INTEGER}, #{cbpk11,jdbcType=INTEGER}, #{cbpk12,jdbcType=INTEGER}, 
+      #{cbpk13,jdbcType=TIMESTAMP}, #{cbpk14,jdbcType=INTEGER}, #{cbpk15,jdbcType=TIMESTAMP}, 
+      #{cbpk16,jdbcType=INTEGER}, #{cbpk17,jdbcType=INTEGER}, #{cbpk18,jdbcType=VARCHAR}, 
+      #{cbpk19,jdbcType=VARCHAR}, #{cbpk20,jdbcType=INTEGER}, #{cbpk21,jdbcType=VARCHAR}, 
+      #{cbpk22,jdbcType=VARCHAR}, #{cbpk23,jdbcType=VARCHAR}, #{cbpk24,jdbcType=VARCHAR}, 
+      #{cbpk25,jdbcType=VARCHAR}, #{cbpk26,jdbcType=VARCHAR}, #{cbpk27,jdbcType=VARCHAR}, 
+      #{cbpk28,jdbcType=VARCHAR}, #{cbpk29,jdbcType=VARCHAR}, #{cbpk30,jdbcType=VARCHAR}, 
+      #{cbpk31,jdbcType=INTEGER}, #{checkStatus,jdbcType=TINYINT}, #{saleOrderNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpk">
+    insert into `CBPK`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpk01 != null">
+        CBPK01,
+      </if>
+      <if test="cbpk02 != null">
+        CBPK02,
+      </if>
+      <if test="cbpk03 != null">
+        CBPK03,
+      </if>
+      <if test="cbpk04 != null">
+        CBPK04,
+      </if>
+      <if test="cbpk05 != null">
+        CBPK05,
+      </if>
+      <if test="cbpk06 != null">
+        CBPK06,
+      </if>
+      <if test="cbpk07 != null">
+        CBPK07,
+      </if>
+      <if test="cbpk08 != null">
+        CBPK08,
+      </if>
+      <if test="cbpk09 != null">
+        CBPK09,
+      </if>
+      <if test="cbpk10 != null">
+        CBPK10,
+      </if>
+      <if test="cbpk11 != null">
+        CBPK11,
+      </if>
+      <if test="cbpk12 != null">
+        CBPK12,
+      </if>
+      <if test="cbpk13 != null">
+        CBPK13,
+      </if>
+      <if test="cbpk14 != null">
+        CBPK14,
+      </if>
+      <if test="cbpk15 != null">
+        CBPK15,
+      </if>
+      <if test="cbpk16 != null">
+        CBPK16,
+      </if>
+      <if test="cbpk17 != null">
+        CBPK17,
+      </if>
+      <if test="cbpk18 != null">
+        CBPK18,
+      </if>
+      <if test="cbpk19 != null">
+        CBPK19,
+      </if>
+      <if test="cbpk20 != null">
+        CBPK20,
+      </if>
+      <if test="cbpk21 != null">
+        CBPK21,
+      </if>
+      <if test="cbpk22 != null">
+        CBPK22,
+      </if>
+      <if test="cbpk23 != null">
+        CBPK23,
+      </if>
+      <if test="cbpk24 != null">
+        CBPK24,
+      </if>
+      <if test="cbpk25 != null">
+        CBPK25,
+      </if>
+      <if test="cbpk26 != null">
+        CBPK26,
+      </if>
+      <if test="cbpk27 != null">
+        CBPK27,
+      </if>
+      <if test="cbpk28 != null">
+        CBPK28,
+      </if>
+      <if test="cbpk29 != null">
+        CBPK29,
+      </if>
+      <if test="cbpk30 != null">
+        CBPK30,
+      </if>
+      <if test="cbpk31 != null">
+        CBPK31,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="saleOrderNo != null">
+        sale_order_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpk01 != null">
+        #{cbpk01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk02 != null">
+        #{cbpk02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk03 != null">
+        #{cbpk03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk04 != null">
+        #{cbpk04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk05 != null">
+        #{cbpk05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk06 != null">
+        #{cbpk06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk07 != null">
+        #{cbpk07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk08 != null">
+        #{cbpk08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk09 != null">
+        #{cbpk09,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk10 != null">
+        #{cbpk10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk11 != null">
+        #{cbpk11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk12 != null">
+        #{cbpk12,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk13 != null">
+        #{cbpk13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk14 != null">
+        #{cbpk14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk15 != null">
+        #{cbpk15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk16 != null">
+        #{cbpk16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk17 != null">
+        #{cbpk17,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk18 != null">
+        #{cbpk18,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk19 != null">
+        #{cbpk19,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk20 != null">
+        #{cbpk20,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk21 != null">
+        #{cbpk21,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk22 != null">
+        #{cbpk22,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk23 != null">
+        #{cbpk23,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk24 != null">
+        #{cbpk24,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk25 != null">
+        #{cbpk25,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk26 != null">
+        #{cbpk26,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk27 != null">
+        #{cbpk27,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk28 != null">
+        #{cbpk28,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk29 != null">
+        #{cbpk29,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk30 != null">
+        #{cbpk30,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk31 != null">
+        #{cbpk31,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="saleOrderNo != null">
+        #{saleOrderNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpkCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPK`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBPK`
+    <set>
+      <if test="record.cbpk01 != null">
+        CBPK01 = #{record.cbpk01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk02 != null">
+        CBPK02 = #{record.cbpk02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpk03 != null">
+        CBPK03 = #{record.cbpk03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk04 != null">
+        CBPK04 = #{record.cbpk04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpk05 != null">
+        CBPK05 = #{record.cbpk05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk06 != null">
+        CBPK06 = #{record.cbpk06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk07 != null">
+        CBPK07 = #{record.cbpk07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk08 != null">
+        CBPK08 = #{record.cbpk08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpk09 != null">
+        CBPK09 = #{record.cbpk09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk10 != null">
+        CBPK10 = #{record.cbpk10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk11 != null">
+        CBPK11 = #{record.cbpk11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk12 != null">
+        CBPK12 = #{record.cbpk12,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk13 != null">
+        CBPK13 = #{record.cbpk13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpk14 != null">
+        CBPK14 = #{record.cbpk14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk15 != null">
+        CBPK15 = #{record.cbpk15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpk16 != null">
+        CBPK16 = #{record.cbpk16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk17 != null">
+        CBPK17 = #{record.cbpk17,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk18 != null">
+        CBPK18 = #{record.cbpk18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk19 != null">
+        CBPK19 = #{record.cbpk19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk20 != null">
+        CBPK20 = #{record.cbpk20,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk21 != null">
+        CBPK21 = #{record.cbpk21,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk22 != null">
+        CBPK22 = #{record.cbpk22,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk23 != null">
+        CBPK23 = #{record.cbpk23,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk24 != null">
+        CBPK24 = #{record.cbpk24,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk25 != null">
+        CBPK25 = #{record.cbpk25,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk26 != null">
+        CBPK26 = #{record.cbpk26,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk27 != null">
+        CBPK27 = #{record.cbpk27,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk28 != null">
+        CBPK28 = #{record.cbpk28,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk29 != null">
+        CBPK29 = #{record.cbpk29,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk30 != null">
+        CBPK30 = #{record.cbpk30,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpk31 != null">
+        CBPK31 = #{record.cbpk31,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkStatus != null">
+        check_status = #{record.checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.saleOrderNo != null">
+        sale_order_no = #{record.saleOrderNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPK`
+    set CBPK01 = #{record.cbpk01,jdbcType=INTEGER},
+      CBPK02 = #{record.cbpk02,jdbcType=TIMESTAMP},
+      CBPK03 = #{record.cbpk03,jdbcType=INTEGER},
+      CBPK04 = #{record.cbpk04,jdbcType=TIMESTAMP},
+      CBPK05 = #{record.cbpk05,jdbcType=INTEGER},
+      CBPK06 = #{record.cbpk06,jdbcType=INTEGER},
+      CBPK07 = #{record.cbpk07,jdbcType=VARCHAR},
+      CBPK08 = #{record.cbpk08,jdbcType=TIMESTAMP},
+      CBPK09 = #{record.cbpk09,jdbcType=INTEGER},
+      CBPK10 = #{record.cbpk10,jdbcType=INTEGER},
+      CBPK11 = #{record.cbpk11,jdbcType=INTEGER},
+      CBPK12 = #{record.cbpk12,jdbcType=INTEGER},
+      CBPK13 = #{record.cbpk13,jdbcType=TIMESTAMP},
+      CBPK14 = #{record.cbpk14,jdbcType=INTEGER},
+      CBPK15 = #{record.cbpk15,jdbcType=TIMESTAMP},
+      CBPK16 = #{record.cbpk16,jdbcType=INTEGER},
+      CBPK17 = #{record.cbpk17,jdbcType=INTEGER},
+      CBPK18 = #{record.cbpk18,jdbcType=VARCHAR},
+      CBPK19 = #{record.cbpk19,jdbcType=VARCHAR},
+      CBPK20 = #{record.cbpk20,jdbcType=INTEGER},
+      CBPK21 = #{record.cbpk21,jdbcType=VARCHAR},
+      CBPK22 = #{record.cbpk22,jdbcType=VARCHAR},
+      CBPK23 = #{record.cbpk23,jdbcType=VARCHAR},
+      CBPK24 = #{record.cbpk24,jdbcType=VARCHAR},
+      CBPK25 = #{record.cbpk25,jdbcType=VARCHAR},
+      CBPK26 = #{record.cbpk26,jdbcType=VARCHAR},
+      CBPK27 = #{record.cbpk27,jdbcType=VARCHAR},
+      CBPK28 = #{record.cbpk28,jdbcType=VARCHAR},
+      CBPK29 = #{record.cbpk29,jdbcType=VARCHAR},
+      CBPK30 = #{record.cbpk30,jdbcType=VARCHAR},
+      CBPK31 = #{record.cbpk31,jdbcType=INTEGER},
+      check_status = #{record.checkStatus,jdbcType=TINYINT},
+      sale_order_no = #{record.saleOrderNo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpk">
+    update `CBPK`
+    <set>
+      <if test="cbpk02 != null">
+        CBPK02 = #{cbpk02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk03 != null">
+        CBPK03 = #{cbpk03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk04 != null">
+        CBPK04 = #{cbpk04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk05 != null">
+        CBPK05 = #{cbpk05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk06 != null">
+        CBPK06 = #{cbpk06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk07 != null">
+        CBPK07 = #{cbpk07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk08 != null">
+        CBPK08 = #{cbpk08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk09 != null">
+        CBPK09 = #{cbpk09,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk10 != null">
+        CBPK10 = #{cbpk10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk11 != null">
+        CBPK11 = #{cbpk11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk12 != null">
+        CBPK12 = #{cbpk12,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk13 != null">
+        CBPK13 = #{cbpk13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk14 != null">
+        CBPK14 = #{cbpk14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk15 != null">
+        CBPK15 = #{cbpk15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpk16 != null">
+        CBPK16 = #{cbpk16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk17 != null">
+        CBPK17 = #{cbpk17,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk18 != null">
+        CBPK18 = #{cbpk18,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk19 != null">
+        CBPK19 = #{cbpk19,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk20 != null">
+        CBPK20 = #{cbpk20,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk21 != null">
+        CBPK21 = #{cbpk21,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk22 != null">
+        CBPK22 = #{cbpk22,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk23 != null">
+        CBPK23 = #{cbpk23,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk24 != null">
+        CBPK24 = #{cbpk24,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk25 != null">
+        CBPK25 = #{cbpk25,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk26 != null">
+        CBPK26 = #{cbpk26,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk27 != null">
+        CBPK27 = #{cbpk27,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk28 != null">
+        CBPK28 = #{cbpk28,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk29 != null">
+        CBPK29 = #{cbpk29,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk30 != null">
+        CBPK30 = #{cbpk30,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk31 != null">
+        CBPK31 = #{cbpk31,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="saleOrderNo != null">
+        sale_order_no = #{saleOrderNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CBPK01 = #{cbpk01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpk">
+    update `CBPK`
+    set CBPK02 = #{cbpk02,jdbcType=TIMESTAMP},
+      CBPK03 = #{cbpk03,jdbcType=INTEGER},
+      CBPK04 = #{cbpk04,jdbcType=TIMESTAMP},
+      CBPK05 = #{cbpk05,jdbcType=INTEGER},
+      CBPK06 = #{cbpk06,jdbcType=INTEGER},
+      CBPK07 = #{cbpk07,jdbcType=VARCHAR},
+      CBPK08 = #{cbpk08,jdbcType=TIMESTAMP},
+      CBPK09 = #{cbpk09,jdbcType=INTEGER},
+      CBPK10 = #{cbpk10,jdbcType=INTEGER},
+      CBPK11 = #{cbpk11,jdbcType=INTEGER},
+      CBPK12 = #{cbpk12,jdbcType=INTEGER},
+      CBPK13 = #{cbpk13,jdbcType=TIMESTAMP},
+      CBPK14 = #{cbpk14,jdbcType=INTEGER},
+      CBPK15 = #{cbpk15,jdbcType=TIMESTAMP},
+      CBPK16 = #{cbpk16,jdbcType=INTEGER},
+      CBPK17 = #{cbpk17,jdbcType=INTEGER},
+      CBPK18 = #{cbpk18,jdbcType=VARCHAR},
+      CBPK19 = #{cbpk19,jdbcType=VARCHAR},
+      CBPK20 = #{cbpk20,jdbcType=INTEGER},
+      CBPK21 = #{cbpk21,jdbcType=VARCHAR},
+      CBPK22 = #{cbpk22,jdbcType=VARCHAR},
+      CBPK23 = #{cbpk23,jdbcType=VARCHAR},
+      CBPK24 = #{cbpk24,jdbcType=VARCHAR},
+      CBPK25 = #{cbpk25,jdbcType=VARCHAR},
+      CBPK26 = #{cbpk26,jdbcType=VARCHAR},
+      CBPK27 = #{cbpk27,jdbcType=VARCHAR},
+      CBPK28 = #{cbpk28,jdbcType=VARCHAR},
+      CBPK29 = #{cbpk29,jdbcType=VARCHAR},
+      CBPK30 = #{cbpk30,jdbcType=VARCHAR},
+      CBPK31 = #{cbpk31,jdbcType=INTEGER},
+      check_status = #{checkStatus,jdbcType=TINYINT},
+      sale_order_no = #{saleOrderNo,jdbcType=VARCHAR}
+    where CBPK01 = #{cbpk01,jdbcType=INTEGER}
+  </update>
+</mapper>

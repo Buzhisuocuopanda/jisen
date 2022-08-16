@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPM01, CBPM02, CBPM03, CBPM04, CBPM05, CBPM06, CBPM07, CBPM08, CBPM09, CBPM10, CBPM11, 
+    CBPM01, CBPM02, CBPM03, CBPM04, CBPM05, CBPM06, CBPM07, CBPM08, CBPM09, CBPM10, CBPM11,
     CBPM12, CBPK01
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpmCriteria" resultMap="BaseResultMap">
@@ -99,15 +99,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpm">
-    insert into `CBPM` (CBPM01, CBPM02, CBPM03, 
-      CBPM04, CBPM05, CBPM06, 
-      CBPM07, CBPM08, CBPM09, 
-      CBPM10, CBPM11, CBPM12, 
+    insert into `CBPM` (CBPM01, CBPM02, CBPM03,
+      CBPM04, CBPM05, CBPM06,
+      CBPM07, CBPM08, CBPM09,
+      CBPM10, CBPM11, CBPM12,
       CBPK01)
-    values (#{cbpm01,jdbcType=INTEGER}, #{cbpm02,jdbcType=INTEGER}, #{cbpm03,jdbcType=TIMESTAMP}, 
-      #{cbpm04,jdbcType=INTEGER}, #{cbpm05,jdbcType=TIMESTAMP}, #{cbpm06,jdbcType=INTEGER}, 
-      #{cbpm07,jdbcType=INTEGER}, #{cbpm08,jdbcType=INTEGER}, #{cbpm09,jdbcType=VARCHAR}, 
-      #{cbpm10,jdbcType=INTEGER}, #{cbpm11,jdbcType=INTEGER}, #{cbpm12,jdbcType=VARCHAR}, 
+    values (#{cbpm01,jdbcType=INTEGER}, #{cbpm02,jdbcType=INTEGER}, #{cbpm03,jdbcType=TIMESTAMP},
+      #{cbpm04,jdbcType=INTEGER}, #{cbpm05,jdbcType=TIMESTAMP}, #{cbpm06,jdbcType=INTEGER},
+      #{cbpm07,jdbcType=INTEGER}, #{cbpm08,jdbcType=INTEGER}, #{cbpm09,jdbcType=VARCHAR},
+      #{cbpm10,jdbcType=INTEGER}, #{cbpm11,jdbcType=INTEGER}, #{cbpm12,jdbcType=VARCHAR},
       #{cbpk01,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpm">
@@ -201,7 +201,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from CBPM
+    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
+  </select>    <update id="updateByExampleSelective" parameterType="map">
     update `CBPM`
     <set>
       <if test="record.cbpm01 != null">

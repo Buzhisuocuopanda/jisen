@@ -385,6 +385,7 @@
 
   <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbicVo">
     SELECT
+    a.CBIC01,
       d.CBPA07,
       c.CALA08,
       b.CBPB12,b.CBPB08,

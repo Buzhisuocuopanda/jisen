@@ -484,6 +484,7 @@
 
     WHERE
       a.CBPG06=0
+    <if test="cbpg01 != null "> and a.CBPG07 like concat('%', #{cbpg01}, '%')</if>
     <if test="cbpg07 != null "> and a.CBPG07 like concat('%', #{cbpg07}, '%')</if>
     <if test="cbsa08 != null "> and c.CBSA08 like concat('%', #{cbsa08}, '%')</if>
     <if test="cbwa09 != null "> and d.CBWA09 like concat('%', #{cbwa09}, '%')</if>

@@ -13,6 +13,8 @@ public interface CbpmMapper {
     int insert(Cbpm record);
 
     int insertSelective(Cbpm record);
+    Cbpm selectByPrimaryKey(Integer cbpm01);
+
 
     List<Cbpm> selectByExample(CbpmCriteria example);
 

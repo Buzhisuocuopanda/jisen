@@ -32,6 +32,8 @@ public class GsGoodsSn implements Serializable {
 
     private Date prdDate;
 
+    private Byte groudStatus;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -146,6 +148,14 @@ public class GsGoodsSn implements Serializable {
         this.prdDate = prdDate;
     }
 
+    public Byte getGroudStatus() {
+        return groudStatus;
+    }
+
+    public void setGroudStatus(Byte groudStatus) {
+        this.groudStatus = groudStatus;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -171,7 +181,8 @@ public class GsGoodsSn implements Serializable {
             && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
             && (this.getInTime() == null ? other.getInTime() == null : this.getInTime().equals(other.getInTime()))
             && (this.getOutTime() == null ? other.getOutTime() == null : this.getOutTime().equals(other.getOutTime()))
-            && (this.getPrdDate() == null ? other.getPrdDate() == null : this.getPrdDate().equals(other.getPrdDate()));
+            && (this.getPrdDate() == null ? other.getPrdDate() == null : this.getPrdDate().equals(other.getPrdDate()))
+            && (this.getGroudStatus() == null ? other.getGroudStatus() == null : this.getGroudStatus().equals(other.getGroudStatus()));
     }
 
     @Override
@@ -192,6 +203,7 @@ public class GsGoodsSn implements Serializable {
         result = prime * result + ((getInTime() == null) ? 0 : getInTime().hashCode());
         result = prime * result + ((getOutTime() == null) ? 0 : getOutTime().hashCode());
         result = prime * result + ((getPrdDate() == null) ? 0 : getPrdDate().hashCode());
+        result = prime * result + ((getGroudStatus() == null) ? 0 : getGroudStatus().hashCode());
         return result;
     }
 
@@ -215,6 +227,7 @@ public class GsGoodsSn implements Serializable {
         sb.append(", inTime=").append(inTime);
         sb.append(", outTime=").append(outTime);
         sb.append(", prdDate=").append(prdDate);
+        sb.append(", groudStatus=").append(groudStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

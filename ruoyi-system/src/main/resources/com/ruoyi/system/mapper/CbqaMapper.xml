@@ -323,7 +323,7 @@
 
   <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB08,a.CBQA01
+      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB08,a.CBQA01,e.CBPK07
     from
       CBQB a
         LEFT JOIN
@@ -340,6 +340,10 @@
       CALA d
       on
         d.CALA01=c.CBPB10
+        LEFT JOIN
+      CBPK e
+      on
+        e.CBPK01=b.CBPK01
 
 
     WHERE

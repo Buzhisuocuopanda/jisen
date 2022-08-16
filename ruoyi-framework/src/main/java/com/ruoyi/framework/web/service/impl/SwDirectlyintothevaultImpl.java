@@ -63,11 +63,11 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Override
     public List<CbicVo> selectSwJsTaskGoodsRelListss(CbicVo cbicVo) {
-        return cbicMapper.selectSwJsTaskGoodsRelListss();
+        return cbicMapper.selectSwJsTaskGoodsRelListss(cbicVo);
     }
 
     @Override
     public List<CbicVo> selectSwJsTaskGoodsRelLists(CbicVo cbicVo) {
-        return cbicMapper.selectSwJsTaskGoodsRelLists();
+        return cbicMapper.selectSwJsTaskGoodsRelLists(cbicVo);
     }
 }

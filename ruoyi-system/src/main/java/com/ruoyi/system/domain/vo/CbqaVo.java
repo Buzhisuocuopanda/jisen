@@ -37,6 +37,8 @@ public class CbqaVo {
 
     private String cbpm09;
 
+    private String cbpk07;
+
 
     private String f;
 

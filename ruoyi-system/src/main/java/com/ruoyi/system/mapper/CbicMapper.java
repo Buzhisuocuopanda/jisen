@@ -30,7 +30,7 @@ public interface CbicMapper {
 
     int updateByPrimaryKey(Cbic record);
 
-    List<CbicVo> selectSwJsTaskGoodsRelListss();
+    List<CbicVo> selectSwJsTaskGoodsRelListss(CbicVo cbicVo);
 
-    List<CbicVo> selectSwJsTaskGoodsRelLists();
+    List<CbicVo> selectSwJsTaskGoodsRelLists(CbicVo cbicVo);
 }
