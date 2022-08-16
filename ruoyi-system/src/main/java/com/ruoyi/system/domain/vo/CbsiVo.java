@@ -4,8 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class CbsiVo {
+    private String cbsh07;
+
+    private Date cbsh08;
+
+    private Integer cbsh09;
 
     private Integer cbsh10;
 

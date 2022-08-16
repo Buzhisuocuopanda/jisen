@@ -323,7 +323,7 @@
 
   <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB08,a.CBQA01,e.CBPK07
+      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB08,a.CBQA01,e.CBPK07, a.CBQA01
     from
       CBQB a
         LEFT JOIN
@@ -352,14 +352,14 @@
   </select>
   <select id="selectSwJsTaskGoodsRelList" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      CBQA07,CBQA08,CBQA09
+      CBQA07,CBQA08,CBQA09,CBQA01
     FROM
       CBQA
     ORDER BY CBQA08 DESC
   </select>
   <select id="SwJsSkuBarcodeselect" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      a.CBQA07,a.CBQA08,a.CBQA09
+      a.CBQA07,a.CBQA08,a.CBQA09,a.CBQA01
     FROM
       CBQA a
      where
