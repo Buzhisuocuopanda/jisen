@@ -1,13 +1,14 @@
 package com.ruoyi.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class CbqaVo {
+public class CbqaVo extends BaseEntity {
     private Integer cbqa01;
 
     private String cala08;

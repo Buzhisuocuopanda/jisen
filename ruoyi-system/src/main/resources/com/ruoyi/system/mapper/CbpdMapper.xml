@@ -391,7 +391,12 @@
     <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
     <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
 
-
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBPC08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBPC08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
 
     <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
@@ -513,7 +518,7 @@
   </update>
 
   <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
-    SELECT  a.CBPC01,a.CBPC07,a.CBPC08,a.CBPC11,
+    SELECT  a.CBPC01,a.CBPC07,a.CBPC08,a.CBPC11,a.CBPC16,
             b.CBSA08,
             c.CBWA09,
             d.CALA08

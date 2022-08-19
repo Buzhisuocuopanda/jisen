@@ -95,9 +95,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPK01, CBPK02, CBPK03, CBPK04, CBPK05, CBPK06, CBPK07, CBPK08, CBPK09, CBPK10, CBPK11, 
-    CBPK12, CBPK13, CBPK14, CBPK15, CBPK16, CBPK17, CBPK18, CBPK19, CBPK20, CBPK21, CBPK22, 
-    CBPK23, CBPK24, CBPK25, CBPK26, CBPK27, CBPK28, CBPK29, CBPK30, CBPK31, check_status, 
+    CBPK01, CBPK02, CBPK03, CBPK04, CBPK05, CBPK06, CBPK07, CBPK08, CBPK09, CBPK10, CBPK11,
+    CBPK12, CBPK13, CBPK14, CBPK15, CBPK16, CBPK17, CBPK18, CBPK19, CBPK20, CBPK21, CBPK22,
+    CBPK23, CBPK24, CBPK25, CBPK26, CBPK27, CBPK28, CBPK29, CBPK30, CBPK31, check_status,
     sale_order_no
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpkCriteria" resultMap="BaseResultMap">
@@ -115,7 +115,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPK`
     where CBPK01 = #{cbpk01,jdbcType=INTEGER}
@@ -131,28 +131,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpk">
-    insert into `CBPK` (CBPK01, CBPK02, CBPK03, 
-      CBPK04, CBPK05, CBPK06, 
-      CBPK07, CBPK08, CBPK09, 
-      CBPK10, CBPK11, CBPK12, 
-      CBPK13, CBPK14, CBPK15, 
-      CBPK16, CBPK17, CBPK18, 
-      CBPK19, CBPK20, CBPK21, 
-      CBPK22, CBPK23, CBPK24, 
-      CBPK25, CBPK26, CBPK27, 
-      CBPK28, CBPK29, CBPK30, 
+    insert into `CBPK` (CBPK01, CBPK02, CBPK03,
+      CBPK04, CBPK05, CBPK06,
+      CBPK07, CBPK08, CBPK09,
+      CBPK10, CBPK11, CBPK12,
+      CBPK13, CBPK14, CBPK15,
+      CBPK16, CBPK17, CBPK18,
+      CBPK19, CBPK20, CBPK21,
+      CBPK22, CBPK23, CBPK24,
+      CBPK25, CBPK26, CBPK27,
+      CBPK28, CBPK29, CBPK30,
       CBPK31, check_status, sale_order_no
       )
-    values (#{cbpk01,jdbcType=INTEGER}, #{cbpk02,jdbcType=TIMESTAMP}, #{cbpk03,jdbcType=INTEGER}, 
-      #{cbpk04,jdbcType=TIMESTAMP}, #{cbpk05,jdbcType=INTEGER}, #{cbpk06,jdbcType=INTEGER}, 
-      #{cbpk07,jdbcType=VARCHAR}, #{cbpk08,jdbcType=TIMESTAMP}, #{cbpk09,jdbcType=INTEGER}, 
-      #{cbpk10,jdbcType=INTEGER}, #{cbpk11,jdbcType=INTEGER}, #{cbpk12,jdbcType=INTEGER}, 
-      #{cbpk13,jdbcType=TIMESTAMP}, #{cbpk14,jdbcType=INTEGER}, #{cbpk15,jdbcType=TIMESTAMP}, 
-      #{cbpk16,jdbcType=INTEGER}, #{cbpk17,jdbcType=INTEGER}, #{cbpk18,jdbcType=VARCHAR}, 
-      #{cbpk19,jdbcType=VARCHAR}, #{cbpk20,jdbcType=INTEGER}, #{cbpk21,jdbcType=VARCHAR}, 
-      #{cbpk22,jdbcType=VARCHAR}, #{cbpk23,jdbcType=VARCHAR}, #{cbpk24,jdbcType=VARCHAR}, 
-      #{cbpk25,jdbcType=VARCHAR}, #{cbpk26,jdbcType=VARCHAR}, #{cbpk27,jdbcType=VARCHAR}, 
-      #{cbpk28,jdbcType=VARCHAR}, #{cbpk29,jdbcType=VARCHAR}, #{cbpk30,jdbcType=VARCHAR}, 
+    values (#{cbpk01,jdbcType=INTEGER}, #{cbpk02,jdbcType=TIMESTAMP}, #{cbpk03,jdbcType=INTEGER},
+      #{cbpk04,jdbcType=TIMESTAMP}, #{cbpk05,jdbcType=INTEGER}, #{cbpk06,jdbcType=INTEGER},
+      #{cbpk07,jdbcType=VARCHAR}, #{cbpk08,jdbcType=TIMESTAMP}, #{cbpk09,jdbcType=INTEGER},
+      #{cbpk10,jdbcType=INTEGER}, #{cbpk11,jdbcType=INTEGER}, #{cbpk12,jdbcType=INTEGER},
+      #{cbpk13,jdbcType=TIMESTAMP}, #{cbpk14,jdbcType=INTEGER}, #{cbpk15,jdbcType=TIMESTAMP},
+      #{cbpk16,jdbcType=INTEGER}, #{cbpk17,jdbcType=INTEGER}, #{cbpk18,jdbcType=VARCHAR},
+      #{cbpk19,jdbcType=VARCHAR}, #{cbpk20,jdbcType=INTEGER}, #{cbpk21,jdbcType=VARCHAR},
+      #{cbpk22,jdbcType=VARCHAR}, #{cbpk23,jdbcType=VARCHAR}, #{cbpk24,jdbcType=VARCHAR},
+      #{cbpk25,jdbcType=VARCHAR}, #{cbpk26,jdbcType=VARCHAR}, #{cbpk27,jdbcType=VARCHAR},
+      #{cbpk28,jdbcType=VARCHAR}, #{cbpk29,jdbcType=VARCHAR}, #{cbpk30,jdbcType=VARCHAR},
       #{cbpk31,jdbcType=INTEGER}, #{checkStatus,jdbcType=TINYINT}, #{saleOrderNo,jdbcType=VARCHAR}
       )
   </insert>
@@ -367,7 +367,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBPK`
     <set>
       <if test="record.cbpk01 != null">
@@ -651,4 +651,29 @@
       sale_order_no = #{saleOrderNo,jdbcType=VARCHAR}
     where CBPK01 = #{cbpk01,jdbcType=INTEGER}
   </update>
+
+  <select id="selectswJsSkuBaxsthelist" resultType="com.ruoyi.system.domain.vo.CbpkVo">
+    SELECT
+      *
+    from
+      CBPK a
+        LEFT JOIN
+      CBPM b
+      on
+        a.CBPK01=b.CBPK01
+        LEFT JOIN
+      CBPL c
+      ON
+        c.CBPK01=a.CBPK01
+    WHERE
+      a.check_status=1
+      AND
+      a.CBPK11=4
+      and
+      b.CBPM11=1
+
+      and
+      c.good_product_qty>0
+  </select>
+
 </mapper>

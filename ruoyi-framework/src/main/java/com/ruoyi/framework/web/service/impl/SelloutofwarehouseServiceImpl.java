@@ -7,12 +7,10 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbsbDo;
+import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.mapper.CbifMapper;
-import com.ruoyi.system.mapper.CbsbMapper;
-import com.ruoyi.system.mapper.CbscMapper;
-import com.ruoyi.system.mapper.CbsdMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
@@ -37,6 +35,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private CbsdMapper cbsdMapper;
+
+    @Resource
+    private CbpkMapper cbpkMapper;
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -99,7 +100,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             itemList.get(i).setCbsc07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
             mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次防止内存溢出
+            if (i % 10 == 9) {//每10条提交一次
                 session.commit();
                 session.clearCache();
             }
@@ -109,10 +110,17 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         return 1;
     }
     /**
-     * 新增销售出库单审核
+     * 销售出库单审核
      */
     @Override
     public int insertSwJsSkuBarcodesh(CbsbDo cbsbDo) {
+        CbsbCriteria example = new CbsbCriteria();
+        example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsb> cbsbs = cbsbMapper.selectByExample(example);
+        if(!cbsbs.get(0).getCbsb11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能审核");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
         Date date = new Date();
@@ -203,6 +211,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return cbsbMapper.updateByExampleSelective(cbsb,example1);    }
+
+    @Override
+    public List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo) {
+        return cbpkMapper.selectswJsSkuBaxsthelist(cbpkVo);
+    }
 
 
 }

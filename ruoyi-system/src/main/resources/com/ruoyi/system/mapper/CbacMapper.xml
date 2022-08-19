@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbacMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbac">
+    <id column="CBAC01" jdbcType="INTEGER" property="cbac01" />
+    <result column="CBAC02" jdbcType="INTEGER" property="cbac02" />
+    <result column="CBAC03" jdbcType="TIMESTAMP" property="cbac03" />
+    <result column="CBAC04" jdbcType="INTEGER" property="cbac04" />
+    <result column="CBAC05" jdbcType="TIMESTAMP" property="cbac05" />
+    <result column="CBAC06" jdbcType="INTEGER" property="cbac06" />
+    <result column="CBAC07" jdbcType="INTEGER" property="cbac07" />
+    <result column="CBAC08" jdbcType="INTEGER" property="cbac08" />
+    <result column="CBAC09" jdbcType="VARCHAR" property="cbac09" />
+    <result column="CBAC10" jdbcType="INTEGER" property="cbac10" />
+    <result column="CBAC11" jdbcType="INTEGER" property="cbac11" />
+    <result column="CBAC12" jdbcType="VARCHAR" property="cbac12" />
+    <result column="CBAA01" jdbcType="INTEGER" property="cbaa01" />
+    <result column="CBAC13" jdbcType="INTEGER" property="cbac13" />
+    <result column="CBAC14" jdbcType="INTEGER" property="cbac14" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBAC01, CBAC02, CBAC03, CBAC04, CBAC05, CBAC06, CBAC07, CBAC08, CBAC09, CBAC10, CBAC11, 
+    CBAC12, CBAA01, CBAC13, CBAC14, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbacCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBAC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBAC`
+    where CBAC01 = #{cbac01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBAC`
+    where CBAC01 = #{cbac01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbacCriteria">
+    delete from `CBAC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbac">
+    insert into `CBAC` (CBAC01, CBAC02, CBAC03, 
+      CBAC04, CBAC05, CBAC06, 
+      CBAC07, CBAC08, CBAC09, 
+      CBAC10, CBAC11, CBAC12, 
+      CBAA01, CBAC13, CBAC14, 
+      user_id)
+    values (#{cbac01,jdbcType=INTEGER}, #{cbac02,jdbcType=INTEGER}, #{cbac03,jdbcType=TIMESTAMP}, 
+      #{cbac04,jdbcType=INTEGER}, #{cbac05,jdbcType=TIMESTAMP}, #{cbac06,jdbcType=INTEGER}, 
+      #{cbac07,jdbcType=INTEGER}, #{cbac08,jdbcType=INTEGER}, #{cbac09,jdbcType=VARCHAR}, 
+      #{cbac10,jdbcType=INTEGER}, #{cbac11,jdbcType=INTEGER}, #{cbac12,jdbcType=VARCHAR}, 
+      #{cbaa01,jdbcType=INTEGER}, #{cbac13,jdbcType=INTEGER}, #{cbac14,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbac">
+    insert into `CBAC`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbac01 != null">
+        CBAC01,
+      </if>
+      <if test="cbac02 != null">
+        CBAC02,
+      </if>
+      <if test="cbac03 != null">
+        CBAC03,
+      </if>
+      <if test="cbac04 != null">
+        CBAC04,
+      </if>
+      <if test="cbac05 != null">
+        CBAC05,
+      </if>
+      <if test="cbac06 != null">
+        CBAC06,
+      </if>
+      <if test="cbac07 != null">
+        CBAC07,
+      </if>
+      <if test="cbac08 != null">
+        CBAC08,
+      </if>
+      <if test="cbac09 != null">
+        CBAC09,
+      </if>
+      <if test="cbac10 != null">
+        CBAC10,
+      </if>
+      <if test="cbac11 != null">
+        CBAC11,
+      </if>
+      <if test="cbac12 != null">
+        CBAC12,
+      </if>
+      <if test="cbaa01 != null">
+        CBAA01,
+      </if>
+      <if test="cbac13 != null">
+        CBAC13,
+      </if>
+      <if test="cbac14 != null">
+        CBAC14,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbac01 != null">
+        #{cbac01,jdbcType=INTEGER},
+      </if>
+      <if test="cbac02 != null">
+        #{cbac02,jdbcType=INTEGER},
+      </if>
+      <if test="cbac03 != null">
+        #{cbac03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbac04 != null">
+        #{cbac04,jdbcType=INTEGER},
+      </if>
+      <if test="cbac05 != null">
+        #{cbac05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbac06 != null">
+        #{cbac06,jdbcType=INTEGER},
+      </if>
+      <if test="cbac07 != null">
+        #{cbac07,jdbcType=INTEGER},
+      </if>
+      <if test="cbac08 != null">
+        #{cbac08,jdbcType=INTEGER},
+      </if>
+      <if test="cbac09 != null">
+        #{cbac09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbac10 != null">
+        #{cbac10,jdbcType=INTEGER},
+      </if>
+      <if test="cbac11 != null">
+        #{cbac11,jdbcType=INTEGER},
+      </if>
+      <if test="cbac12 != null">
+        #{cbac12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbaa01 != null">
+        #{cbaa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbac13 != null">
+        #{cbac13,jdbcType=INTEGER},
+      </if>
+      <if test="cbac14 != null">
+        #{cbac14,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbacCriteria" resultType="java.lang.Long">
+    select count(*) from `CBAC`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBAC`
+    <set>
+      <if test="record.cbac01 != null">
+        CBAC01 = #{record.cbac01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac02 != null">
+        CBAC02 = #{record.cbac02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac03 != null">
+        CBAC03 = #{record.cbac03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbac04 != null">
+        CBAC04 = #{record.cbac04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac05 != null">
+        CBAC05 = #{record.cbac05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbac06 != null">
+        CBAC06 = #{record.cbac06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac07 != null">
+        CBAC07 = #{record.cbac07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac08 != null">
+        CBAC08 = #{record.cbac08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac09 != null">
+        CBAC09 = #{record.cbac09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbac10 != null">
+        CBAC10 = #{record.cbac10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac11 != null">
+        CBAC11 = #{record.cbac11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac12 != null">
+        CBAC12 = #{record.cbac12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbaa01 != null">
+        CBAA01 = #{record.cbaa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac13 != null">
+        CBAC13 = #{record.cbac13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbac14 != null">
+        CBAC14 = #{record.cbac14,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBAC`
+    set CBAC01 = #{record.cbac01,jdbcType=INTEGER},
+      CBAC02 = #{record.cbac02,jdbcType=INTEGER},
+      CBAC03 = #{record.cbac03,jdbcType=TIMESTAMP},
+      CBAC04 = #{record.cbac04,jdbcType=INTEGER},
+      CBAC05 = #{record.cbac05,jdbcType=TIMESTAMP},
+      CBAC06 = #{record.cbac06,jdbcType=INTEGER},
+      CBAC07 = #{record.cbac07,jdbcType=INTEGER},
+      CBAC08 = #{record.cbac08,jdbcType=INTEGER},
+      CBAC09 = #{record.cbac09,jdbcType=VARCHAR},
+      CBAC10 = #{record.cbac10,jdbcType=INTEGER},
+      CBAC11 = #{record.cbac11,jdbcType=INTEGER},
+      CBAC12 = #{record.cbac12,jdbcType=VARCHAR},
+      CBAA01 = #{record.cbaa01,jdbcType=INTEGER},
+      CBAC13 = #{record.cbac13,jdbcType=INTEGER},
+      CBAC14 = #{record.cbac14,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbac">
+    update `CBAC`
+    <set>
+      <if test="cbac02 != null">
+        CBAC02 = #{cbac02,jdbcType=INTEGER},
+      </if>
+      <if test="cbac03 != null">
+        CBAC03 = #{cbac03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbac04 != null">
+        CBAC04 = #{cbac04,jdbcType=INTEGER},
+      </if>
+      <if test="cbac05 != null">
+        CBAC05 = #{cbac05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbac06 != null">
+        CBAC06 = #{cbac06,jdbcType=INTEGER},
+      </if>
+      <if test="cbac07 != null">
+        CBAC07 = #{cbac07,jdbcType=INTEGER},
+      </if>
+      <if test="cbac08 != null">
+        CBAC08 = #{cbac08,jdbcType=INTEGER},
+      </if>
+      <if test="cbac09 != null">
+        CBAC09 = #{cbac09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbac10 != null">
+        CBAC10 = #{cbac10,jdbcType=INTEGER},
+      </if>
+      <if test="cbac11 != null">
+        CBAC11 = #{cbac11,jdbcType=INTEGER},
+      </if>
+      <if test="cbac12 != null">
+        CBAC12 = #{cbac12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbaa01 != null">
+        CBAA01 = #{cbaa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbac13 != null">
+        CBAC13 = #{cbac13,jdbcType=INTEGER},
+      </if>
+      <if test="cbac14 != null">
+        CBAC14 = #{cbac14,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBAC01 = #{cbac01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbac">
+    update `CBAC`
+    set CBAC02 = #{cbac02,jdbcType=INTEGER},
+      CBAC03 = #{cbac03,jdbcType=TIMESTAMP},
+      CBAC04 = #{cbac04,jdbcType=INTEGER},
+      CBAC05 = #{cbac05,jdbcType=TIMESTAMP},
+      CBAC06 = #{cbac06,jdbcType=INTEGER},
+      CBAC07 = #{cbac07,jdbcType=INTEGER},
+      CBAC08 = #{cbac08,jdbcType=INTEGER},
+      CBAC09 = #{cbac09,jdbcType=VARCHAR},
+      CBAC10 = #{cbac10,jdbcType=INTEGER},
+      CBAC11 = #{cbac11,jdbcType=INTEGER},
+      CBAC12 = #{cbac12,jdbcType=VARCHAR},
+      CBAA01 = #{cbaa01,jdbcType=INTEGER},
+      CBAC13 = #{cbac13,jdbcType=INTEGER},
+      CBAC14 = #{cbac14,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBAC01 = #{cbac01,jdbcType=INTEGER}
+  </update>
+</mapper>

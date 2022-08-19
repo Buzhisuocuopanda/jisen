@@ -2,12 +2,14 @@ package com.ruoyi.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class CbpgVo {
+public class CbpgVo  extends BaseEntity
+{
     private Integer cbpg01;
 
     private String cbpg07;

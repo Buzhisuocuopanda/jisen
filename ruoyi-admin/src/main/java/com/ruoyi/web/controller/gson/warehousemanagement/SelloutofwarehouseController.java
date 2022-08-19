@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Dto.CbpdDto;
+import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.CbqaVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -87,6 +88,8 @@ public class SelloutofwarehouseController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
 
     /**
      * 销售出库单审核
@@ -203,7 +206,28 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+    /**
+     * 销售提货单列表
+     */
+    @ApiOperation(
+            value ="销售提货单列表",
+            notes = "销售提货单列表"
+    )
+    @GetMapping("/SwJsSkuBaxsthelist")
+    public AjaxResult<TableDataInfo> swJsSkuBaxsthelist(CbpkVo cbpkVo) {
+        try {
+            startPage();
+            List<CbpkVo> list = sellerofwarehouseService.selectswJsSkuBaxsthelist(cbpkVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【销售提货单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpkVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 新增销售出库单查询

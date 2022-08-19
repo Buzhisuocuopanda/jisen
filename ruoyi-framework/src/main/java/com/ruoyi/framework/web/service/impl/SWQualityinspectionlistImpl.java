@@ -168,7 +168,7 @@ if(cbpm ==null){
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
         Date date = new Date();
         cbqa.setCbqa05(Math.toIntExact(userid));
-        cbqa.setCbqa09(Task1Status.ysh.getCode());
+        cbqa.setCbqa09(TaskStatus.sh.getCode());
         CbqaCriteria example1 = new CbqaCriteria();
         example1.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01())
                 .andCbqa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

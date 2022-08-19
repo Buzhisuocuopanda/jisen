@@ -428,6 +428,12 @@
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBIE02,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBIE02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
   </select>
   <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CbigVo">
     SELECT
@@ -500,7 +506,14 @@ where
       b.cbwa12='数量管理'
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
+
     <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBIE02,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBIE02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
   </select>
 
 </mapper>

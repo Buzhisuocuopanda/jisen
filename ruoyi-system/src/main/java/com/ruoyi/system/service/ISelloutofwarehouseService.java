@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbsbDo;
+import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.IdVo;
 
@@ -25,4 +26,6 @@ public interface ISelloutofwarehouseService {
     List<CbsbVo> selectSwJsTaskGoodsRelLists(CbsbVo cbsbVo);
 
     int insertSwJsSkuBarcodel(CbsbDo cbsbDo);
+
+    List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 }

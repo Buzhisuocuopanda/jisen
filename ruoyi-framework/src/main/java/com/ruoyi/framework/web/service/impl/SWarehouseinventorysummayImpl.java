@@ -122,6 +122,7 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
 
     @Override
     public int swJsStoreend(CbshDo cbshDo) {
+
         Long userId = SecurityUtils.getUserId();
 
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
