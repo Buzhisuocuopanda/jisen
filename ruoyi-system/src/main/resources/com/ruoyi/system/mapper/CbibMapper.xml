@@ -350,4 +350,16 @@ WHERE
 ORDER BY
 	c.CBIB04 DESC limit 1
   </select>
+  <select id="selectLastByGoodsId" resultMap="BaseResultMap">
+        SELECT
+	*
+FROM
+	`CBIB` c
+WHERE
+
+	 c.CBIB08 = #{goodsId}
+ORDER BY
+	c.CBIB04 DESC limit 1
+  </select>
+
 </mapper>

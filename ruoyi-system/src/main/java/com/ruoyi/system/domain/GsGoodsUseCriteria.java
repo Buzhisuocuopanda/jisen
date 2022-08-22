@@ -844,6 +844,66 @@ public class GsGoodsUseCriteria {
             addCriterion("trans_no not between", value1, value2, "transNo");
             return (Criteria) this;
         }
+
+        public Criteria andNoOutQtyIsNull() {
+            addCriterion("no_out_qty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyIsNotNull() {
+            addCriterion("no_out_qty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyEqualTo(Double value) {
+            addCriterion("no_out_qty =", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyNotEqualTo(Double value) {
+            addCriterion("no_out_qty <>", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyGreaterThan(Double value) {
+            addCriterion("no_out_qty >", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyGreaterThanOrEqualTo(Double value) {
+            addCriterion("no_out_qty >=", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyLessThan(Double value) {
+            addCriterion("no_out_qty <", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyLessThanOrEqualTo(Double value) {
+            addCriterion("no_out_qty <=", value, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyIn(List<Double> values) {
+            addCriterion("no_out_qty in", values, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyNotIn(List<Double> values) {
+            addCriterion("no_out_qty not in", values, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyBetween(Double value1, Double value2) {
+            addCriterion("no_out_qty between", value1, value2, "noOutQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoOutQtyNotBetween(Double value1, Double value2) {
+            addCriterion("no_out_qty not between", value1, value2, "noOutQty");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

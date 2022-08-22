@@ -426,4 +426,42 @@ WHERE
 	order by c.CBBA15
   </select>
 
+<!--  获取生产总订单列表-->
+  <select id="totalOrderList" resultType="com.ruoyi.system.domain.vo.TotalOrderListVo">
+    SELECT
+	ba.CBBA15 as priority,
+	ba.CBBA01 as id,
+	ba.CBBA07 as orderNo,
+	pb.CBPB12 as model,
+	pb.CBPB08 as description,
+	ba.CBBA09 as orderQty,
+	ba.CBBA11 as makeQty,
+	ba.CBBA12 as status,
+	ba.CBBA10 as orderType,
+    ba.CBBA11 as ShippedQty
+FROM
+	`CBBA` ba
+	LEFT JOIN CBPB pb ON pb.CBPB01 = ba.CBBA08
+WHERE
+	pb.CBPB06 = 0
+	AND pb.CBPB06 = 0
+    <if test="orderNo != null and orderNo != ''">
+      AND  ba.CBBA07 like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="model != null and model != ''">
+      AND  pb.CBPB12 like concat('%', #{model}, '%')
+    </if>
+    <if test="model != null and model != ''">
+      AND  ba.CBBA12 = #{status}
+
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBBA`
+    where CBBA01 = #{id,jdbcType=INTEGER} for update
+  </select>
+
 </mapper>

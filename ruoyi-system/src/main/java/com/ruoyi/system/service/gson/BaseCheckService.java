@@ -1,7 +1,11 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.GoodsCheckStockVo;
 import com.ruoyi.system.domain.vo.CbpdVo;
 
 /**
@@ -17,6 +21,13 @@ public interface BaseCheckService {
 
     Cbpb checkGoods(Integer goodsId,String goodsName);
 
+    Cbba checkTotalExist(Integer goodsId, String orderNO);
+
+
+    Boolean saleOrderStatusChekc (SaleOrderCheckDo saleOrderCheckDo);
+
+
+
     GsGoodsSku checkGoodsSkuForUpdate(Integer Id);
 
     Cbsa checksupplier(Integer supplierid);
@@ -29,6 +40,15 @@ public interface BaseCheckService {
     SysUser checkUserTask(Long userId,Byte auditPerm);
 
     GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
+
+    Cbca checkCustomer(Integer customerId);
+
+    Cboa checkSaleOrder(Integer orderId);
+
+
+
+//    GoodsCheckStockVo checkGoodsStock(Integer goodsId, Integer orderClass);
+
 
 
     //模糊查询品牌型号描述

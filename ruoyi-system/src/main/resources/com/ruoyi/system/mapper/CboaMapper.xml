@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CboaMapper">
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cboa">
-    <result column="CBOA01" jdbcType="INTEGER" property="cboa01" />
+    <id column="CBOA01" jdbcType="INTEGER" property="cboa01" />
     <result column="CBOA02" jdbcType="TIMESTAMP" property="cboa02" />
     <result column="CBOA03" jdbcType="INTEGER" property="cboa03" />
     <result column="CBOA04" jdbcType="TIMESTAMP" property="cboa04" />
@@ -108,6 +108,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBOA`
+    where CBOA01 = #{cboa01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBOA`
+    where CBOA01 = #{cboa01,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CboaCriteria">
     delete from `CBOA`
     <if test="_parameter != null">
@@ -443,26 +453,236 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cboa">
+    update `CBOA`
+    <set>
+      <if test="cboa02 != null">
+        CBOA02 = #{cboa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cboa03 != null">
+        CBOA03 = #{cboa03,jdbcType=INTEGER},
+      </if>
+      <if test="cboa04 != null">
+        CBOA04 = #{cboa04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cboa05 != null">
+        CBOA05 = #{cboa05,jdbcType=INTEGER},
+      </if>
+      <if test="cboa06 != null">
+        CBOA06 = #{cboa06,jdbcType=INTEGER},
+      </if>
+      <if test="cboa07 != null">
+        CBOA07 = #{cboa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa08 != null">
+        CBOA08 = #{cboa08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cboa09 != null">
+        CBOA09 = #{cboa09,jdbcType=INTEGER},
+      </if>
+      <if test="cboa10 != null">
+        CBOA10 = #{cboa10,jdbcType=INTEGER},
+      </if>
+      <if test="cboa11 != null">
+        CBOA11 = #{cboa11,jdbcType=INTEGER},
+      </if>
+      <if test="cboa12 != null">
+        CBOA12 = #{cboa12,jdbcType=INTEGER},
+      </if>
+      <if test="cboa13 != null">
+        CBOA13 = #{cboa13,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cboa14 != null">
+        CBOA14 = #{cboa14,jdbcType=INTEGER},
+      </if>
+      <if test="cboa15 != null">
+        CBOA15 = #{cboa15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cboa16 != null">
+        CBOA16 = #{cboa16,jdbcType=INTEGER},
+      </if>
+      <if test="cboa17 != null">
+        CBOA17 = #{cboa17,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa18 != null">
+        CBOA18 = #{cboa18,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa19 != null">
+        CBOA19 = #{cboa19,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa20 != null">
+        CBOA20 = #{cboa20,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa21 != null">
+        CBOA21 = #{cboa21,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa22 != null">
+        CBOA22 = #{cboa22,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa23 != null">
+        CBOA23 = #{cboa23,jdbcType=INTEGER},
+      </if>
+      <if test="cboa24 != null">
+        CBOA24 = #{cboa24,jdbcType=INTEGER},
+      </if>
+      <if test="cboa25 != null">
+        CBOA25 = #{cboa25,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa26 != null">
+        CBOA26 = #{cboa26,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa27 != null">
+        CBOA27 = #{cboa27,jdbcType=INTEGER},
+      </if>
+      <if test="cboa28 != null">
+        CBOA28 = #{cboa28,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBOA01 = #{cboa01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cboa">
+    update `CBOA`
+    set CBOA02 = #{cboa02,jdbcType=TIMESTAMP},
+      CBOA03 = #{cboa03,jdbcType=INTEGER},
+      CBOA04 = #{cboa04,jdbcType=TIMESTAMP},
+      CBOA05 = #{cboa05,jdbcType=INTEGER},
+      CBOA06 = #{cboa06,jdbcType=INTEGER},
+      CBOA07 = #{cboa07,jdbcType=VARCHAR},
+      CBOA08 = #{cboa08,jdbcType=TIMESTAMP},
+      CBOA09 = #{cboa09,jdbcType=INTEGER},
+      CBOA10 = #{cboa10,jdbcType=INTEGER},
+      CBOA11 = #{cboa11,jdbcType=INTEGER},
+      CBOA12 = #{cboa12,jdbcType=INTEGER},
+      CBOA13 = #{cboa13,jdbcType=TIMESTAMP},
+      CBOA14 = #{cboa14,jdbcType=INTEGER},
+      CBOA15 = #{cboa15,jdbcType=TIMESTAMP},
+      CBOA16 = #{cboa16,jdbcType=INTEGER},
+      CBOA17 = #{cboa17,jdbcType=VARCHAR},
+      CBOA18 = #{cboa18,jdbcType=VARCHAR},
+      CBOA19 = #{cboa19,jdbcType=VARCHAR},
+      CBOA20 = #{cboa20,jdbcType=VARCHAR},
+      CBOA21 = #{cboa21,jdbcType=VARCHAR},
+      CBOA22 = #{cboa22,jdbcType=VARCHAR},
+      CBOA23 = #{cboa23,jdbcType=INTEGER},
+      CBOA24 = #{cboa24,jdbcType=INTEGER},
+      CBOA25 = #{cboa25,jdbcType=VARCHAR},
+      CBOA26 = #{cboa26,jdbcType=VARCHAR},
+      CBOA27 = #{cboa27,jdbcType=INTEGER},
+      CBOA28 = #{cboa28,jdbcType=INTEGER}
+    where CBOA01 = #{cboa01,jdbcType=INTEGER}
+  </update>
   <select id="saleOrderSkuList" resultType="com.ruoyi.system.domain.vo.SaleOrderSkuVo">
 SELECT
-	ob.CBOB08 AS orderNo,
-	ob.CBOB09 AS goodsNum,
-	pb.CBPB08 AS description,
-	pb.CBPB12 AS model,
-	pa.CBPA07 as goodsClass,
-	gs.lock_qty as lockQty,
-	ob.CBOB10 as shipmentQty
+    ob.CBOB08 AS orderNo,
+    ob.CBOB09 AS goodsNum,
+    pb.CBPB08 AS description,
+    pb.CBPB12 AS model,
+    pa.CBPA07 as goodsClass,
+    gs.lock_qty as lockQty,
+    ob.CBOB10 as shipmentQty
 
 
 FROM
-	`CBOB` AS ob
-	INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
-	INNER JOIN gs_goods_use gs ON gs.goods_id =pb.CBPB01
-	INNER JOIN CBPA pa on pa.CBPA01 = pb.CBPB14
+    `CBOB` AS ob
+    INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+    INNER JOIN gs_goods_use gs ON gs.goods_id =pb.CBPB01
+    INNER JOIN CBPA pa on pa.CBPA01 = pb.CBPB14
 
 where ob.CBOB08=#{orderNo}
 and gs.order_no=#{orderNo}
   </select>
 
+  <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+    SELECT
+    oa.CBOA01 as id,
+    oa.CBOA07 as orderNo,
+    oa.CBOA25 as customerNo,
+    oa.CBOA02 as createTime,
+    ca.CBCA08 as customerName,
+    u.nick_name as saleUser,
+    oa.CBOA16 AS settleCurrent,
+    oa.CBOA17 as receiver,
+    oa.CBOA18 as address,
+    oa.CBOA19 as phone,
+    oa.CBOA27 as orderClass,
+    oa.CBOA24 as orderType,
+    oa.CBOA08 as orderDate,
+    oa.CBOA11 as status
+
+
+    FROM
+    `CBOA` oa
+    LEFT JOIN CBCA ca on oa.CBOA09 =ca.CBCA01
+    LEFT JOIN sys_user u ON u.user_id =oa.CBOA10
+    where oa.CBOA06=0
+    <if test="startTime != null">
+      and oa.CBOA08 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and oa.CBOA08 &lt;=#{endTime}
+    </if>
+    <if test="status != null">
+      and oa.CBOA11 =#{status]}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      and oa.CBOA07 like concat('%', #{orderNo}, '%')
+    </if>
+
+    <if test="type != null ">
+      and oa.CBOA27 =#{type}
+    </if>
+    <if test="customer != null and customer !=''">
+
+
+      and ca.CBCA08 like concat('%', #{customer}, '%')
+    </if>
+    order by oa.CBOA02
+
+  </select>
+
+  <select id="finsaleOrderList" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+    SELECT
+    oa.CBOA01 as id,
+    oa.CBOA07 as orderNo,
+    oa.CBOA25 as customerNo,
+    oa.CBOA02 as createTime,
+    ca.CBCA08 as customerName,
+    u.nick_name as saleUser,
+    oa.CBOA16 AS settleCurrent,
+    oa.CBOA17 as receiver,
+    oa.CBOA18 as address,
+    oa.CBOA19 as phone,
+    oa.CBOA27 as orderClass,
+    oa.CBOA24 as orderType,
+    oa.CBOA08 as orderDate,
+    oa.CBOA11 as status
+
+
+    FROM
+    `CBOA` oa
+    LEFT JOIN CBCA ca on oa.CBOA09 =ca.CBCA01
+    LEFT JOIN sys_user u ON u.user_id =oa.CBOA10
+    where oa.CBOA06=0
+    and oa.CBOA27=2
+    and (oa.CBOA11=2 || oa.CBOA11=5)
+    <if test="startTime != null">
+      and oa.CBOA08 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and oa.CBOA08 &lt;=#{endTime}
+    </if>
+
+    <if test="orderNo != null and orderNo != ''">
+      and oa.CBOA07 like concat('%', #{orderNo}, '%')
+    </if>
+
+
+    <if test="customer != null and customer !=''">
+
+
+      and ca.CBCA08 like concat('%', #{customer}, '%')
+    </if>
+    order by oa.CBOA02
+
+  </select>
 </mapper>

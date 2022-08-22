@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CbpmMapper">
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpm">
-    <result column="CBPM01" jdbcType="INTEGER" property="cbpm01" />
+    <id column="CBPM01" jdbcType="INTEGER" property="cbpm01" />
     <result column="CBPM02" jdbcType="INTEGER" property="cbpm02" />
     <result column="CBPM03" jdbcType="TIMESTAMP" property="cbpm03" />
     <result column="CBPM04" jdbcType="INTEGER" property="cbpm04" />
@@ -92,6 +92,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBPM`
+    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPM`
+    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpmCriteria">
     delete from `CBPM`
     <if test="_parameter != null">
@@ -201,12 +211,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from CBPM
-    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
-  </select>    <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map">
     update `CBPM`
     <set>
       <if test="record.cbpm01 != null">
@@ -272,4 +277,93 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpm">
+    update `CBPM`
+    <set>
+      <if test="cbpm02 != null">
+        CBPM02 = #{cbpm02,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm03 != null">
+        CBPM03 = #{cbpm03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpm04 != null">
+        CBPM04 = #{cbpm04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm05 != null">
+        CBPM05 = #{cbpm05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpm06 != null">
+        CBPM06 = #{cbpm06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm07 != null">
+        CBPM07 = #{cbpm07,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm08 != null">
+        CBPM08 = #{cbpm08,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm09 != null">
+        CBPM09 = #{cbpm09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpm10 != null">
+        CBPM10 = #{cbpm10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm11 != null">
+        CBPM11 = #{cbpm11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpm12 != null">
+        CBPM12 = #{cbpm12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpk01 != null">
+        CBPK01 = #{cbpk01,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpm">
+    update `CBPM`
+    set CBPM02 = #{cbpm02,jdbcType=INTEGER},
+      CBPM03 = #{cbpm03,jdbcType=TIMESTAMP},
+      CBPM04 = #{cbpm04,jdbcType=INTEGER},
+      CBPM05 = #{cbpm05,jdbcType=TIMESTAMP},
+      CBPM06 = #{cbpm06,jdbcType=INTEGER},
+      CBPM07 = #{cbpm07,jdbcType=INTEGER},
+      CBPM08 = #{cbpm08,jdbcType=INTEGER},
+      CBPM09 = #{cbpm09,jdbcType=VARCHAR},
+      CBPM10 = #{cbpm10,jdbcType=INTEGER},
+      CBPM11 = #{cbpm11,jdbcType=INTEGER},
+      CBPM12 = #{cbpm12,jdbcType=VARCHAR},
+      CBPK01 = #{cbpk01,jdbcType=INTEGER}
+    where CBPM01 = #{cbpm01,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="TakeGoodScanMap" type="com.ruoyi.system.domain.Do.CbpmTakeOrderDo">
+    <id column="CBPM01" jdbcType="INTEGER" property="cbpm01" />
+    <result column="CBPM02" jdbcType="INTEGER" property="cbpm02" />
+    <result column="CBPM03" jdbcType="TIMESTAMP" property="cbpm03" />
+    <result column="CBPM04" jdbcType="INTEGER" property="cbpm04" />
+    <result column="CBPM05" jdbcType="TIMESTAMP" property="cbpm05" />
+    <result column="CBPM06" jdbcType="INTEGER" property="cbpm06" />
+    <result column="CBPM07" jdbcType="INTEGER" property="cbpm07" />
+    <result column="CBPM08" jdbcType="INTEGER" property="cbpm08" />
+    <result column="CBPM09" jdbcType="VARCHAR" property="cbpm09" />
+    <result column="CBPM10" jdbcType="INTEGER" property="cbpm10" />
+    <result column="CBPM11" jdbcType="INTEGER" property="cbpm11" />
+    <result column="CBPM12" jdbcType="VARCHAR" property="cbpm12" />
+    <result column="CBPK01" jdbcType="INTEGER" property="cbpk01" />
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+  </resultMap>
+
+  <select id="selectByTakeIdAndGoodId" resultMap="TakeGoodScanMap">
+    SELECT
+	pm.*,
+	la.CBLA09 as sku
+FROM
+	`CBPM` pm
+	LEFT JOIN CBLA la ON la.CBLA01 = pm.CBPM10
+	where pm.CBPM07=0
+	and pm.CBPM08 = #{goodId}
+	and pm.CBPK01 =#{takeId}
+	ORDER BY pm.CBPM11
+  </select>
+
 </mapper>

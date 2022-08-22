@@ -240,7 +240,8 @@
       qty = #{qty,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="gs_un_distribution_goods" resultMap="BaseResultMap">
+
+  <select id="selectByGoodsIdForUpdate" resultMap="BaseResultMap">
     SELECT
    *
 FROM

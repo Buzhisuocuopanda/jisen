@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.CbbaCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.TotalOrderListDto;
+import com.ruoyi.system.domain.vo.TotalOrderListVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbbaMapper {
@@ -30,10 +33,15 @@ public interface CbbaMapper {
 
     List<Cbba> selectLowPriority(Cbba cbba);
 
-    List<Cbba> selectByPriorityDureH2low(Integer goodsId, String newPriority, Integer oldPriority);
+    List<Cbba> selectByPriorityDureH2low(Integer goodsId, String newPriority, String oldPriority);
 
-    List<Cbba> selectByPriorityDurelow2H(Integer goodsId, String cbba15, Integer oldPriority);
+    List<Cbba> selectByPriorityDurelow2H(Integer goodsId, String cbba15, String oldPriority);
 
 
     List<Cbba> selectByGoodsId(@Param("goodsId") Integer goodsId);
+
+    List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto);
+
+    Cbba selectByPrimaryKeyForUpdate(@Param("id") Integer id);
+
 }

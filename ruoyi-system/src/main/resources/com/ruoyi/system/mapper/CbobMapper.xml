@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbobMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbob">
+    <id column="CBOB01" jdbcType="INTEGER" property="cbob01" />
+    <result column="CBOB02" jdbcType="INTEGER" property="cbob02" />
+    <result column="CBOB03" jdbcType="TIMESTAMP" property="cbob03" />
+    <result column="CBOB04" jdbcType="INTEGER" property="cbob04" />
+    <result column="CBOB05" jdbcType="TIMESTAMP" property="cbob05" />
+    <result column="CBOB06" jdbcType="INTEGER" property="cbob06" />
+    <result column="CBOB07" jdbcType="INTEGER" property="cbob07" />
+    <result column="CBOB08" jdbcType="INTEGER" property="cbob08" />
+    <result column="CBOB09" jdbcType="DOUBLE" property="cbob09" />
+    <result column="CBOB10" jdbcType="DOUBLE" property="cbob10" />
+    <result column="CBOB11" jdbcType="DOUBLE" property="cbob11" />
+    <result column="CBOB12" jdbcType="DOUBLE" property="cbob12" />
+    <result column="CBOB13" jdbcType="VARCHAR" property="cbob13" />
+    <result column="CBOA01" jdbcType="INTEGER" property="cboa01" />
+    <result column="CBOB14" jdbcType="DOUBLE" property="cbob14" />
+    <result column="CBOB15" jdbcType="DOUBLE" property="cbob15" />
+    <result column="CBOB16" jdbcType="INTEGER" property="cbob16" />
+    <result column="CBOB17" jdbcType="INTEGER" property="cbob17" />
+    <result column="CBOB18" jdbcType="VARCHAR" property="cbob18" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBOB01, CBOB02, CBOB03, CBOB04, CBOB05, CBOB06, CBOB07, CBOB08, CBOB09, CBOB10, CBOB11,
+    CBOB12, CBOB13, CBOA01, CBOB14, CBOB15, CBOB16, CBOB17, CBOB18
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbobCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBOB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBOB`
+    where CBOB01 = #{cbob01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBOB`
+    where CBOB01 = #{cbob01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbobCriteria">
+    delete from `CBOB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbob">
+    insert into `CBOB` (CBOB01, CBOB02, CBOB03,
+      CBOB04, CBOB05, CBOB06,
+      CBOB07, CBOB08, CBOB09,
+      CBOB10, CBOB11, CBOB12,
+      CBOB13, CBOA01, CBOB14,
+      CBOB15, CBOB16, CBOB17,
+      CBOB18)
+    values (#{cbob01,jdbcType=INTEGER}, #{cbob02,jdbcType=INTEGER}, #{cbob03,jdbcType=TIMESTAMP},
+      #{cbob04,jdbcType=INTEGER}, #{cbob05,jdbcType=TIMESTAMP}, #{cbob06,jdbcType=INTEGER},
+      #{cbob07,jdbcType=INTEGER}, #{cbob08,jdbcType=INTEGER}, #{cbob09,jdbcType=DOUBLE},
+      #{cbob10,jdbcType=DOUBLE}, #{cbob11,jdbcType=DOUBLE}, #{cbob12,jdbcType=DOUBLE},
+      #{cbob13,jdbcType=VARCHAR}, #{cboa01,jdbcType=INTEGER}, #{cbob14,jdbcType=DOUBLE},
+      #{cbob15,jdbcType=DOUBLE}, #{cbob16,jdbcType=INTEGER}, #{cbob17,jdbcType=INTEGER},
+      #{cbob18,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbob">
+    insert into `CBOB`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbob01 != null">
+        CBOB01,
+      </if>
+      <if test="cbob02 != null">
+        CBOB02,
+      </if>
+      <if test="cbob03 != null">
+        CBOB03,
+      </if>
+      <if test="cbob04 != null">
+        CBOB04,
+      </if>
+      <if test="cbob05 != null">
+        CBOB05,
+      </if>
+      <if test="cbob06 != null">
+        CBOB06,
+      </if>
+      <if test="cbob07 != null">
+        CBOB07,
+      </if>
+      <if test="cbob08 != null">
+        CBOB08,
+      </if>
+      <if test="cbob09 != null">
+        CBOB09,
+      </if>
+      <if test="cbob10 != null">
+        CBOB10,
+      </if>
+      <if test="cbob11 != null">
+        CBOB11,
+      </if>
+      <if test="cbob12 != null">
+        CBOB12,
+      </if>
+      <if test="cbob13 != null">
+        CBOB13,
+      </if>
+      <if test="cboa01 != null">
+        CBOA01,
+      </if>
+      <if test="cbob14 != null">
+        CBOB14,
+      </if>
+      <if test="cbob15 != null">
+        CBOB15,
+      </if>
+      <if test="cbob16 != null">
+        CBOB16,
+      </if>
+      <if test="cbob17 != null">
+        CBOB17,
+      </if>
+      <if test="cbob18 != null">
+        CBOB18,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbob01 != null">
+        #{cbob01,jdbcType=INTEGER},
+      </if>
+      <if test="cbob02 != null">
+        #{cbob02,jdbcType=INTEGER},
+      </if>
+      <if test="cbob03 != null">
+        #{cbob03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbob04 != null">
+        #{cbob04,jdbcType=INTEGER},
+      </if>
+      <if test="cbob05 != null">
+        #{cbob05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbob06 != null">
+        #{cbob06,jdbcType=INTEGER},
+      </if>
+      <if test="cbob07 != null">
+        #{cbob07,jdbcType=INTEGER},
+      </if>
+      <if test="cbob08 != null">
+        #{cbob08,jdbcType=INTEGER},
+      </if>
+      <if test="cbob09 != null">
+        #{cbob09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob10 != null">
+        #{cbob10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob11 != null">
+        #{cbob11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob12 != null">
+        #{cbob12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob13 != null">
+        #{cbob13,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa01 != null">
+        #{cboa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbob14 != null">
+        #{cbob14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob15 != null">
+        #{cbob15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob16 != null">
+        #{cbob16,jdbcType=INTEGER},
+      </if>
+      <if test="cbob17 != null">
+        #{cbob17,jdbcType=INTEGER},
+      </if>
+      <if test="cbob18 != null">
+        #{cbob18,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbobCriteria" resultType="java.lang.Long">
+    select count(*) from `CBOB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBOB`
+    <set>
+      <if test="record.cbob01 != null">
+        CBOB01 = #{record.cbob01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob02 != null">
+        CBOB02 = #{record.cbob02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob03 != null">
+        CBOB03 = #{record.cbob03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbob04 != null">
+        CBOB04 = #{record.cbob04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob05 != null">
+        CBOB05 = #{record.cbob05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbob06 != null">
+        CBOB06 = #{record.cbob06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob07 != null">
+        CBOB07 = #{record.cbob07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob08 != null">
+        CBOB08 = #{record.cbob08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob09 != null">
+        CBOB09 = #{record.cbob09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob10 != null">
+        CBOB10 = #{record.cbob10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob11 != null">
+        CBOB11 = #{record.cbob11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob12 != null">
+        CBOB12 = #{record.cbob12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob13 != null">
+        CBOB13 = #{record.cbob13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cboa01 != null">
+        CBOA01 = #{record.cboa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob14 != null">
+        CBOB14 = #{record.cbob14,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob15 != null">
+        CBOB15 = #{record.cbob15,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbob16 != null">
+        CBOB16 = #{record.cbob16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob17 != null">
+        CBOB17 = #{record.cbob17,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbob18 != null">
+        CBOB18 = #{record.cbob18,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBOB`
+    set CBOB01 = #{record.cbob01,jdbcType=INTEGER},
+      CBOB02 = #{record.cbob02,jdbcType=INTEGER},
+      CBOB03 = #{record.cbob03,jdbcType=TIMESTAMP},
+      CBOB04 = #{record.cbob04,jdbcType=INTEGER},
+      CBOB05 = #{record.cbob05,jdbcType=TIMESTAMP},
+      CBOB06 = #{record.cbob06,jdbcType=INTEGER},
+      CBOB07 = #{record.cbob07,jdbcType=INTEGER},
+      CBOB08 = #{record.cbob08,jdbcType=INTEGER},
+      CBOB09 = #{record.cbob09,jdbcType=DOUBLE},
+      CBOB10 = #{record.cbob10,jdbcType=DOUBLE},
+      CBOB11 = #{record.cbob11,jdbcType=DOUBLE},
+      CBOB12 = #{record.cbob12,jdbcType=DOUBLE},
+      CBOB13 = #{record.cbob13,jdbcType=VARCHAR},
+      CBOA01 = #{record.cboa01,jdbcType=INTEGER},
+      CBOB14 = #{record.cbob14,jdbcType=DOUBLE},
+      CBOB15 = #{record.cbob15,jdbcType=DOUBLE},
+      CBOB16 = #{record.cbob16,jdbcType=INTEGER},
+      CBOB17 = #{record.cbob17,jdbcType=INTEGER},
+      CBOB18 = #{record.cbob18,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbob">
+    update `CBOB`
+    <set>
+      <if test="cbob02 != null">
+        CBOB02 = #{cbob02,jdbcType=INTEGER},
+      </if>
+      <if test="cbob03 != null">
+        CBOB03 = #{cbob03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbob04 != null">
+        CBOB04 = #{cbob04,jdbcType=INTEGER},
+      </if>
+      <if test="cbob05 != null">
+        CBOB05 = #{cbob05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbob06 != null">
+        CBOB06 = #{cbob06,jdbcType=INTEGER},
+      </if>
+      <if test="cbob07 != null">
+        CBOB07 = #{cbob07,jdbcType=INTEGER},
+      </if>
+      <if test="cbob08 != null">
+        CBOB08 = #{cbob08,jdbcType=INTEGER},
+      </if>
+      <if test="cbob09 != null">
+        CBOB09 = #{cbob09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob10 != null">
+        CBOB10 = #{cbob10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob11 != null">
+        CBOB11 = #{cbob11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob12 != null">
+        CBOB12 = #{cbob12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob13 != null">
+        CBOB13 = #{cbob13,jdbcType=VARCHAR},
+      </if>
+      <if test="cboa01 != null">
+        CBOA01 = #{cboa01,jdbcType=INTEGER},
+      </if>
+      <if test="cbob14 != null">
+        CBOB14 = #{cbob14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob15 != null">
+        CBOB15 = #{cbob15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbob16 != null">
+        CBOB16 = #{cbob16,jdbcType=INTEGER},
+      </if>
+      <if test="cbob17 != null">
+        CBOB17 = #{cbob17,jdbcType=INTEGER},
+      </if>
+      <if test="cbob18 != null">
+        CBOB18 = #{cbob18,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CBOB01 = #{cbob01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbob">
+    update `CBOB`
+    set CBOB02 = #{cbob02,jdbcType=INTEGER},
+      CBOB03 = #{cbob03,jdbcType=TIMESTAMP},
+      CBOB04 = #{cbob04,jdbcType=INTEGER},
+      CBOB05 = #{cbob05,jdbcType=TIMESTAMP},
+      CBOB06 = #{cbob06,jdbcType=INTEGER},
+      CBOB07 = #{cbob07,jdbcType=INTEGER},
+      CBOB08 = #{cbob08,jdbcType=INTEGER},
+      CBOB09 = #{cbob09,jdbcType=DOUBLE},
+      CBOB10 = #{cbob10,jdbcType=DOUBLE},
+      CBOB11 = #{cbob11,jdbcType=DOUBLE},
+      CBOB12 = #{cbob12,jdbcType=DOUBLE},
+      CBOB13 = #{cbob13,jdbcType=VARCHAR},
+      CBOA01 = #{cboa01,jdbcType=INTEGER},
+      CBOB14 = #{cbob14,jdbcType=DOUBLE},
+      CBOB15 = #{cbob15,jdbcType=DOUBLE},
+      CBOB16 = #{cbob16,jdbcType=INTEGER},
+      CBOB17 = #{cbob17,jdbcType=INTEGER},
+      CBOB18 = #{cbob18,jdbcType=VARCHAR}
+    where CBOB01 = #{cbob01,jdbcType=INTEGER}
+  </update>
+
+  <select id="orderChangeGoodsMsg" resultType="com.ruoyi.system.domain.vo.OrderChangeGoodsMsgVo">
+
+
+SELECT
+   ob.CBOB08 as goodsId,
+   ob.CBOB14 as normalPrice,
+   ob.CBOB12 as totalPrice,
+   ob.CBOB10 as sendQty,
+   ob.CBOB13 as remark,
+   la.CALA08 as brand,
+   pb.CBPB08 as description,
+   pb.CBPB12 as model
+FROM
+   CBOB ob
+   INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+   LEFT JOIN CALA la on la.CALA02 = pb.CBPB10
+   and la.CALA10='商品品牌'
+   where ob.CBOB07=0
+   and ob.CBOA01 = #{orderId}
+   <if test="goodsText !=null and goodsText!=''">
+   (
+   or la.CALA08 like concat('%', #{goodsText}, '%')
+   or pb.CBPB12 like concat('%', #{goodsText}, '%')
+   or pb.CBPB08 like concat('%', #{goodsText}, '%')
+   )
+   </if>
+  </select>
+</mapper>

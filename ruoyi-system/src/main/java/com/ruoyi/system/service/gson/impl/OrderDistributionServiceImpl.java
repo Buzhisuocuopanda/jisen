@@ -4,6 +4,7 @@ import com.ruoyi.common.constant.TotalOrderConstants;
 import com.ruoyi.common.constant.WareHouseType;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.OrderTypeEnum;
+import com.ruoyi.common.enums.TotalOrderOperateEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -91,7 +92,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long aLong = lockMap.putIfAbsent(totalOrderkey, time);
             if (aLong != null) {
@@ -121,10 +122,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long aLong = lockMap.get(orderkey);
-            if (aLong != null || aLong != 0) {
+            if (aLong != null ) {
                 //说明有线程正在操作其他订单进行总订单的分配数量更改
                 continue;
 
@@ -153,7 +154,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long ttime = lockMap.get(totalOrderkey);
             if (ttime != null) {
@@ -205,7 +206,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             //查未分配订单的数量
             GsAllocationBalance ungoods = gsAllocationBalanceMapper.selectByGoodsIdForUpdate(orderDistributionDo.getGoodsId());
             cbba = orderDistributionDo.getCbba();
-            if (orderDistributionDo.getType() == 1) {
+            if (TotalOrderOperateEnum.MAKEORDER.getCode().equals(orderDistributionDo.getType()) ) {
                 //创建
                 //先查找未分配订单的数量创建把
                 getUnDistributionGoods(cbba, ungoods);
@@ -220,9 +221,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //此处修改分两种情况
                 //1、修改优先级
                 //2、修改数量
-                if (orderDistributionDo.getType() == 2) {
+                if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
-                    if (orderDistributionDo.getPriority() > orderDistributionDo.getOldPriority()) {
+                    if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
                         giveOrderPriority(cbba, orderDistributionDo.getOldPriority());
                     } else {
                         //优先级由低到高
@@ -253,10 +254,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //            Cbba cbba = cbbaMapper.select(orderDistributionDo.getOrderId());
 
         } finally {
-            lockMap.put(totalOrderkey, null);
+            lockMap.remove(totalOrderkey);
         }
 
-        return null;
+        return cbba;
     }
 
     /**
@@ -268,7 +269,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      * @return
      */
 
-    private Cbba giveOtherOrder(Cbba cbba, Integer oldNum, GsAllocationBalance ungoods) {
+    private Cbba giveOtherOrder(Cbba cbba, Double oldNum, GsAllocationBalance ungoods) {
         Double orderNum = cbba.getCbba09();
         //已分配的数量
         Double makeNum = cbba.getCbba13();
@@ -286,7 +287,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
         }
         if (orderNum < useNum) {
-            throw new ServiceException("修改订单数量不能小于该订单的占用数量");
+            throw new SwException("修改订单数量不能小于该订单的占用数量");
         }
 
 //        if(makeNum-useNum<=0){
@@ -352,7 +353,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     }
 
     //优先级由低到高
-    private Cbba getOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba getOrderPriority(Cbba cbba, String oldPriority) {
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
             GsGoodsUseCriteria example = new GsGoodsUseCriteria();
@@ -402,7 +403,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      *
      * @param cbba
      */
-    private Cbba giveOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba giveOrderPriority(Cbba cbba, String oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -631,6 +632,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
             Double num = saleOrderExitDo.getQty();
+            Double subNum=0.0;
             for (Cbba cbba : cbbas) {
                 //减去分配数量 增加发货数量
                 Double makNum = cbba.getCbba13();
@@ -640,8 +642,28 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     num=0.0;
                 }else {
 
+                    cbba.setCbba13(0.0);
+                    cbba.setCbba11(cbba.getCbba11()+makNum);
+                    num=num-makNum;
                 }
 
+                //扣除占用数量
+
+                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+                usex.createCriteria()
+                        .andGoodsIdEqualTo(cbba.getCbba08())
+                        .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                    gsGoodsUs.setLockQty(subNum);
+                    gsGoodsUs.setUpdateTime(new Date());
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }
+
+                cbbaMapper.updateByPrimaryKey(cbba);
+                if(num==0.0){
+                    break;
+                }
 
             }
 
@@ -794,7 +816,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //        //先判断库存是否够用
 //        //国内订单判断库存是否可用通过仓库台账来判断 先锁商品表
         Cbpb cbpb = baseCheckService.checkGoodsForUpdate(goodsOperationDo.getGoodsId(), goodsOperationDo.getGoodsName());
-
+        goodsOperationDo.setGoodsName(cbpb.getCbpb12());
         if (OrderTypeEnum.GUONEIDINGDAN.getCode().equals(goodsOperationDo.getOrderType())) {
 
 
@@ -860,7 +882,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
             if (num > 0.0) {
                 //说明库存不够
-                throw new ServiceException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
+                throw new SwException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
             }
 
             if (res.getList().size() > 1) {
@@ -887,7 +909,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             List<Cbwa> cbwas = cbwaMapper.selectByExample(whexample);
 
             if (cbwas.size() == 0) {
-                throw new ServiceException("没有可用的仓库");
+                throw new SwException("没有可用的仓库");
             }
 
             //查询占用用的
@@ -904,7 +926,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
 
             if (useNum + goodsOperationDo.getNum() > sum) {
-                throw new ServiceException("您选择的商品库存不足，请刷新重试,商品：" + goodsOperationDo.getGoodsName());
+                throw new SwException("您选择的商品库存不足，请刷新重试,商品：" + goodsOperationDo.getGoodsName());
             }
 
             //生成占用
@@ -939,10 +961,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 .andOrderNoEqualTo(goodsOperationDo.getOrderNo());
         return gsGoodsUseMapper.deleteByExample(example);
 
-
-
-
     }
+
+
+
 
     @Override
     public QtyMsgVo checkSku(CheckSkuDo checkSkuDo) {
@@ -952,7 +974,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         List<Cbwa> list = cbwaMapper.selectCalculationOrderPriority();
 
         if (list.size() == 0) {
-            throw new ServiceException("无可用分配库存的仓库");
+            throw new SwException("无可用分配库存的仓库");
         }
 
         Double canUseNum = 0.0;

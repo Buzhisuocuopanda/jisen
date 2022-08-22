@@ -165,6 +165,7 @@
       </if>
     </trim>
   </insert>
+
     <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria" resultType="java.lang.Long">
     select count(*) from `CBPF`
     <if test="_parameter != null">
@@ -293,3 +294,4 @@
   </update>
 
 </mapper>
+

@@ -28,6 +28,8 @@ public class GsGoodsUse implements Serializable {
 
     private String transNo;
 
+    private Double noOutQty;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -126,6 +128,14 @@ public class GsGoodsUse implements Serializable {
         this.transNo = transNo == null ? null : transNo.trim();
     }
 
+    public Double getNoOutQty() {
+        return noOutQty;
+    }
+
+    public void setNoOutQty(Double noOutQty) {
+        this.noOutQty = noOutQty;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -149,7 +159,8 @@ public class GsGoodsUse implements Serializable {
             && (this.getOrderType() == null ? other.getOrderType() == null : this.getOrderType().equals(other.getOrderType()))
             && (this.getLockQty() == null ? other.getLockQty() == null : this.getLockQty().equals(other.getLockQty()))
             && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
-            && (this.getTransNo() == null ? other.getTransNo() == null : this.getTransNo().equals(other.getTransNo()));
+            && (this.getTransNo() == null ? other.getTransNo() == null : this.getTransNo().equals(other.getTransNo()))
+            && (this.getNoOutQty() == null ? other.getNoOutQty() == null : this.getNoOutQty().equals(other.getNoOutQty()));
     }
 
     @Override
@@ -168,6 +179,7 @@ public class GsGoodsUse implements Serializable {
         result = prime * result + ((getLockQty() == null) ? 0 : getLockQty().hashCode());
         result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
         result = prime * result + ((getTransNo() == null) ? 0 : getTransNo().hashCode());
+        result = prime * result + ((getNoOutQty() == null) ? 0 : getNoOutQty().hashCode());
         return result;
     }
 
@@ -189,6 +201,7 @@ public class GsGoodsUse implements Serializable {
         sb.append(", lockQty=").append(lockQty);
         sb.append(", whId=").append(whId);
         sb.append(", transNo=").append(transNo);
+        sb.append(", noOutQty=").append(noOutQty);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
