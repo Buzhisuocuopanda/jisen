@@ -67,6 +67,30 @@ public class CbpgDto {
 
     private String cbph13;
 
+    private Integer cbpi01;
+
+    private Integer cbpi02;
+
+    private Date cbpi03;
+
+    private Integer cbpi04;
+
+    private Date cbpi05;
+
+    private Integer cbpi06;
+
+    private Integer cbpi07;
+
+    private Integer cbpi08;
+
+    private String cbpi09;
+
+    private Integer cbpi10;
+
+    private Integer cbpi11;
+
+    private String cbpi12;
+
 
 
 }

@@ -17,14 +17,15 @@ import com.ruoyi.system.mapper.CbbaMapper;
 import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.CbpdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -217,9 +218,13 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     public SysUser checkUserTask(Long userId,Byte auditPerm) {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         Byte auditPerm1 = sysUser.getAuditPerm();
-        String s = auditPerm1.toString();
         String s1 = auditPerm.toString();
-        if(!s.contains(s1)){
+
+        String s = auditPerm1.toString();
+        String[] split = s.split(",");
+        Set<String> set = new HashSet<String>(Arrays.asList(split));
+
+        if(!set.contains(s1)){
             throw new SwException("没有审核权限：");
         }
         return sysUser;
@@ -240,6 +245,11 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
         }
         return null;
+    }
+    //模糊查询品牌型号描述
+    @Override
+    public CbpdVo selectgoodsinfo(CbpdVo cbpdVo) {
+        return cbpdMapper.selectgoodsinfo(cbpdVo);
     }
 
     @Override

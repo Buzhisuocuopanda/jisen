@@ -87,7 +87,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPF`
     where CBPF01 = #{cbpf01,jdbcType=INTEGER}
@@ -103,11 +103,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpf">
-    insert into `CBPF` (CBPF01, CBPF02, CBPF03, 
-      CBPF04, CBPF05, CBPB01, 
+    insert into `CBPF` (CBPF01, CBPF02, CBPF03,
+      CBPF04, CBPF05, CBPB01,
       CBPF06, CBPF07)
-    values (#{cbpf01,jdbcType=INTEGER}, #{cbpf02,jdbcType=INTEGER}, #{cbpf03,jdbcType=INTEGER}, 
-      #{cbpf04,jdbcType=DOUBLE}, #{cbpf05,jdbcType=DOUBLE}, #{cbpb01,jdbcType=INTEGER}, 
+    values (#{cbpf01,jdbcType=INTEGER}, #{cbpf02,jdbcType=INTEGER}, #{cbpf03,jdbcType=INTEGER},
+      #{cbpf04,jdbcType=DOUBLE}, #{cbpf05,jdbcType=DOUBLE}, #{cbpb01,jdbcType=INTEGER},
       #{cbpf06,jdbcType=INTEGER}, #{cbpf07,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpf">
@@ -165,7 +165,8 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria" resultType="java.lang.Long">
+
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria" resultType="java.lang.Long">
     select count(*) from `CBPF`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -255,4 +256,42 @@
       CBPF07 = #{cbpf07,jdbcType=TIMESTAMP}
     where CBPF01 = #{cbpf01,jdbcType=INTEGER}
   </update>
+  <insert id="insertCBPF">
+    insert into CBPF
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpf01 != null">CBPF01,</if>
+      <if test="cbpf02 != null">CBPF02,</if>
+      <if test="cbpf03 != null">CBPF03,</if>
+      <if test="cbpf04 != null">CBPF04,</if>
+      <if test="cbpf05 != null">CBPF05,</if>
+      <if test="cbpb01 != null">CBPB01,</if>
+      <if test="cbpf06 != null">CBPF06,</if>
+      <if test="cbpf07 != null">CBPF07,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpf01 != null">#{cbpf01},</if>
+      <if test="cbpf02 != null">#{cbpf02},</if>
+      <if test="cbpf03 != null">#{cbpf03},</if>
+      <if test="cbpf04 != null">#{cbpf04},</if>
+      <if test="cbpf05 != null">#{cbpf05},</if>
+      <if test="cbpb01 != null">#{cbpb01},</if>
+      <if test="cbpf06 != null">#{cbpf06},</if>
+      <if test="cbpf07 != null">#{cbpf07},</if>
+    </trim>
+  </insert>
+  <update id="updateCBPF">
+    update CBPF
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="cbpf02 != null">CBPF02 = #{cbpf02},</if>
+      <if test="cbpf03 != null">CBPF03 = #{cbpf03},</if>
+      <if test="cbpf04 != null">CBPF04 = #{cbpf04},</if>
+      <if test="cbpf05 != null">CBPF05 = #{cbpf05},</if>
+      <if test="cbpb01 != null">CBPB01 = #{cbpb01},</if>
+      <if test="cbpf06 != null">CBPF06 = #{cbpf06},</if>
+      <if test="cbpf07 != null">CBPF07 = #{cbpf07},</if>
+    </trim>
+    where CBPF01 = #{cbpf01}
+  </update>
+
 </mapper>
+

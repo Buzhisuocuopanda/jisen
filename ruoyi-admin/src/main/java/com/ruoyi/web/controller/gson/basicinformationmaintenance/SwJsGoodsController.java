@@ -11,7 +11,9 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Cbpf;
 import com.ruoyi.system.domain.Do.CbpbDo;
+import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import io.swagger.annotations.Api;
@@ -69,6 +71,30 @@ public class SwJsGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 新增商品信息维护关联表
+     */
+    @ApiOperation(
+            value ="新增商品信息维护关联表",
+            notes = "新增商品信息维护关联表"
+    )
+    @PostMapping("/SwJsGoodsadds")
+    public AjaxResult swJsGoodsadds(@Valid @RequestBody CbpfDo cbpfDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsGoodsService.insertSwJsGoodsClassifys(cbpfDo));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSONUtils.toJSONString(cbpfDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
     /**
      * 修改商品
@@ -173,14 +199,14 @@ public class SwJsGoodsController extends BaseController {
             value ="结算货币导入",
             notes = "结算货币导入"
     )
-    @PostMapping("/importSwJsCustomer")
+    @PostMapping("/importcbpf")
     @ResponseBody
     public AjaxResult importSwJsCustomer(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbca> util = new ExcelUtil<>(Cbca.class);
-            List<Cbca> swJsCustomersList = util.importExcel(file.getInputStream());
+            ExcelUtil<Cbpf> util = new ExcelUtil<>(Cbpf.class);
+            List<Cbpf> swJsCustomersList = util.importExcel(file.getInputStream());
             String operName = getUsername();
-            String message = swJsCustomerService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
+            String message = swJsGoodsService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
             log.error("【导入客户信息列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(file),e.getMessage());

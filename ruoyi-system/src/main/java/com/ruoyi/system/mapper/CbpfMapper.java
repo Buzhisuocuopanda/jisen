@@ -28,3 +28,9 @@ public interface CbpfMapper {
 
     int updateByPrimaryKey(Cbpf record);
 }
+
+
+    int insertCBPF(Cbpf cbpf);
+
+    int updateCBPF(Cbpf cbpf);
+}

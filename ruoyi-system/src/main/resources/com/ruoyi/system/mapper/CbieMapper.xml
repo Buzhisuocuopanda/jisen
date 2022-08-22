@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbieMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbie">
+    <id column="CBIE01" jdbcType="INTEGER" property="cbie01" />
+    <result column="CBIE02" jdbcType="TIMESTAMP" property="cbie02" />
+    <result column="CBIE03" jdbcType="INTEGER" property="cbie03" />
+    <result column="CBIE04" jdbcType="TIMESTAMP" property="cbie04" />
+    <result column="CBIE05" jdbcType="INTEGER" property="cbie05" />
+    <result column="CBIE06" jdbcType="INTEGER" property="cbie06" />
+    <result column="CBIE07" jdbcType="VARCHAR" property="cbie07" />
+    <result column="CBIE08" jdbcType="TIMESTAMP" property="cbie08" />
+    <result column="CBIE09" jdbcType="INTEGER" property="cbie09" />
+    <result column="CBIE10" jdbcType="INTEGER" property="cbie10" />
+    <result column="CBIE11" jdbcType="INTEGER" property="cbie11" />
+    <result column="CBIE12" jdbcType="TIMESTAMP" property="cbie12" />
+    <result column="CBIE13" jdbcType="INTEGER" property="cbie13" />
+    <result column="CBIE14" jdbcType="TIMESTAMP" property="cbie14" />
+    <result column="CBIE15" jdbcType="VARCHAR" property="cbie15" />
+    <result column="CBIE16" jdbcType="INTEGER" property="cbie16" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBIE01, CBIE02, CBIE03, CBIE04, CBIE05, CBIE06, CBIE07, CBIE08, CBIE09, CBIE10, CBIE11, 
+    CBIE12, CBIE13, CBIE14, CBIE15, CBIE16, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbieCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBIE`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBIE`
+    where CBIE01 = #{cbie01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBIE`
+    where CBIE01 = #{cbie01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbieCriteria">
+    delete from `CBIE`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbie">
+    insert into `CBIE` (CBIE01, CBIE02, CBIE03, 
+      CBIE04, CBIE05, CBIE06, 
+      CBIE07, CBIE08, CBIE09, 
+      CBIE10, CBIE11, CBIE12, 
+      CBIE13, CBIE14, CBIE15, 
+      CBIE16, user_id)
+    values (#{cbie01,jdbcType=INTEGER}, #{cbie02,jdbcType=TIMESTAMP}, #{cbie03,jdbcType=INTEGER}, 
+      #{cbie04,jdbcType=TIMESTAMP}, #{cbie05,jdbcType=INTEGER}, #{cbie06,jdbcType=INTEGER}, 
+      #{cbie07,jdbcType=VARCHAR}, #{cbie08,jdbcType=TIMESTAMP}, #{cbie09,jdbcType=INTEGER}, 
+      #{cbie10,jdbcType=INTEGER}, #{cbie11,jdbcType=INTEGER}, #{cbie12,jdbcType=TIMESTAMP}, 
+      #{cbie13,jdbcType=INTEGER}, #{cbie14,jdbcType=TIMESTAMP}, #{cbie15,jdbcType=VARCHAR}, 
+      #{cbie16,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbie">
+    insert into `CBIE`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbie01 != null">
+        CBIE01,
+      </if>
+      <if test="cbie02 != null">
+        CBIE02,
+      </if>
+      <if test="cbie03 != null">
+        CBIE03,
+      </if>
+      <if test="cbie04 != null">
+        CBIE04,
+      </if>
+      <if test="cbie05 != null">
+        CBIE05,
+      </if>
+      <if test="cbie06 != null">
+        CBIE06,
+      </if>
+      <if test="cbie07 != null">
+        CBIE07,
+      </if>
+      <if test="cbie08 != null">
+        CBIE08,
+      </if>
+      <if test="cbie09 != null">
+        CBIE09,
+      </if>
+      <if test="cbie10 != null">
+        CBIE10,
+      </if>
+      <if test="cbie11 != null">
+        CBIE11,
+      </if>
+      <if test="cbie12 != null">
+        CBIE12,
+      </if>
+      <if test="cbie13 != null">
+        CBIE13,
+      </if>
+      <if test="cbie14 != null">
+        CBIE14,
+      </if>
+      <if test="cbie15 != null">
+        CBIE15,
+      </if>
+      <if test="cbie16 != null">
+        CBIE16,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbie01 != null">
+        #{cbie01,jdbcType=INTEGER},
+      </if>
+      <if test="cbie02 != null">
+        #{cbie02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie03 != null">
+        #{cbie03,jdbcType=INTEGER},
+      </if>
+      <if test="cbie04 != null">
+        #{cbie04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie05 != null">
+        #{cbie05,jdbcType=INTEGER},
+      </if>
+      <if test="cbie06 != null">
+        #{cbie06,jdbcType=INTEGER},
+      </if>
+      <if test="cbie07 != null">
+        #{cbie07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbie08 != null">
+        #{cbie08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie09 != null">
+        #{cbie09,jdbcType=INTEGER},
+      </if>
+      <if test="cbie10 != null">
+        #{cbie10,jdbcType=INTEGER},
+      </if>
+      <if test="cbie11 != null">
+        #{cbie11,jdbcType=INTEGER},
+      </if>
+      <if test="cbie12 != null">
+        #{cbie12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie13 != null">
+        #{cbie13,jdbcType=INTEGER},
+      </if>
+      <if test="cbie14 != null">
+        #{cbie14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie15 != null">
+        #{cbie15,jdbcType=VARCHAR},
+      </if>
+      <if test="cbie16 != null">
+        #{cbie16,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbieCriteria" resultType="java.lang.Long">
+    select count(*) from `CBIE`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBIE`
+    <set>
+      <if test="record.cbie01 != null">
+        CBIE01 = #{record.cbie01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie02 != null">
+        CBIE02 = #{record.cbie02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbie03 != null">
+        CBIE03 = #{record.cbie03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie04 != null">
+        CBIE04 = #{record.cbie04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbie05 != null">
+        CBIE05 = #{record.cbie05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie06 != null">
+        CBIE06 = #{record.cbie06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie07 != null">
+        CBIE07 = #{record.cbie07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbie08 != null">
+        CBIE08 = #{record.cbie08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbie09 != null">
+        CBIE09 = #{record.cbie09,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie10 != null">
+        CBIE10 = #{record.cbie10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie11 != null">
+        CBIE11 = #{record.cbie11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie12 != null">
+        CBIE12 = #{record.cbie12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbie13 != null">
+        CBIE13 = #{record.cbie13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbie14 != null">
+        CBIE14 = #{record.cbie14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbie15 != null">
+        CBIE15 = #{record.cbie15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbie16 != null">
+        CBIE16 = #{record.cbie16,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBIE`
+    set CBIE01 = #{record.cbie01,jdbcType=INTEGER},
+      CBIE02 = #{record.cbie02,jdbcType=TIMESTAMP},
+      CBIE03 = #{record.cbie03,jdbcType=INTEGER},
+      CBIE04 = #{record.cbie04,jdbcType=TIMESTAMP},
+      CBIE05 = #{record.cbie05,jdbcType=INTEGER},
+      CBIE06 = #{record.cbie06,jdbcType=INTEGER},
+      CBIE07 = #{record.cbie07,jdbcType=VARCHAR},
+      CBIE08 = #{record.cbie08,jdbcType=TIMESTAMP},
+      CBIE09 = #{record.cbie09,jdbcType=INTEGER},
+      CBIE10 = #{record.cbie10,jdbcType=INTEGER},
+      CBIE11 = #{record.cbie11,jdbcType=INTEGER},
+      CBIE12 = #{record.cbie12,jdbcType=TIMESTAMP},
+      CBIE13 = #{record.cbie13,jdbcType=INTEGER},
+      CBIE14 = #{record.cbie14,jdbcType=TIMESTAMP},
+      CBIE15 = #{record.cbie15,jdbcType=VARCHAR},
+      CBIE16 = #{record.cbie16,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbie">
+    update `CBIE`
+    <set>
+      <if test="cbie02 != null">
+        CBIE02 = #{cbie02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie03 != null">
+        CBIE03 = #{cbie03,jdbcType=INTEGER},
+      </if>
+      <if test="cbie04 != null">
+        CBIE04 = #{cbie04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie05 != null">
+        CBIE05 = #{cbie05,jdbcType=INTEGER},
+      </if>
+      <if test="cbie06 != null">
+        CBIE06 = #{cbie06,jdbcType=INTEGER},
+      </if>
+      <if test="cbie07 != null">
+        CBIE07 = #{cbie07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbie08 != null">
+        CBIE08 = #{cbie08,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie09 != null">
+        CBIE09 = #{cbie09,jdbcType=INTEGER},
+      </if>
+      <if test="cbie10 != null">
+        CBIE10 = #{cbie10,jdbcType=INTEGER},
+      </if>
+      <if test="cbie11 != null">
+        CBIE11 = #{cbie11,jdbcType=INTEGER},
+      </if>
+      <if test="cbie12 != null">
+        CBIE12 = #{cbie12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie13 != null">
+        CBIE13 = #{cbie13,jdbcType=INTEGER},
+      </if>
+      <if test="cbie14 != null">
+        CBIE14 = #{cbie14,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbie15 != null">
+        CBIE15 = #{cbie15,jdbcType=VARCHAR},
+      </if>
+      <if test="cbie16 != null">
+        CBIE16 = #{cbie16,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBIE01 = #{cbie01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbie">
+    update `CBIE`
+    set CBIE02 = #{cbie02,jdbcType=TIMESTAMP},
+      CBIE03 = #{cbie03,jdbcType=INTEGER},
+      CBIE04 = #{cbie04,jdbcType=TIMESTAMP},
+      CBIE05 = #{cbie05,jdbcType=INTEGER},
+      CBIE06 = #{cbie06,jdbcType=INTEGER},
+      CBIE07 = #{cbie07,jdbcType=VARCHAR},
+      CBIE08 = #{cbie08,jdbcType=TIMESTAMP},
+      CBIE09 = #{cbie09,jdbcType=INTEGER},
+      CBIE10 = #{cbie10,jdbcType=INTEGER},
+      CBIE11 = #{cbie11,jdbcType=INTEGER},
+      CBIE12 = #{cbie12,jdbcType=TIMESTAMP},
+      CBIE13 = #{cbie13,jdbcType=INTEGER},
+      CBIE14 = #{cbie14,jdbcType=TIMESTAMP},
+      CBIE15 = #{cbie15,jdbcType=VARCHAR},
+      CBIE16 = #{cbie16,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBIE01 = #{cbie01,jdbcType=INTEGER}
+  </update>
+</mapper>

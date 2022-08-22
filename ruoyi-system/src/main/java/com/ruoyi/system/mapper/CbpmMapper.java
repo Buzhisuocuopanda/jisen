@@ -31,4 +31,6 @@ public interface CbpmMapper {
     int updateByPrimaryKey(Cbpm record);
 
     List<CbpmTakeOrderDo> selectByTakeIdAndGoodId(@Param("takeId") Integer takeId, @Param("goodsId")Integer goodsId);
+
+
 }

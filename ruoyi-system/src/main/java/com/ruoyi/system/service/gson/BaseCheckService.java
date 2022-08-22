@@ -6,6 +6,7 @@ import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.vo.GoodsCheckStockVo;
+import com.ruoyi.system.domain.vo.CbpdVo;
 
 /**
  * ClassName BaseCheckService
@@ -48,4 +49,8 @@ public interface BaseCheckService {
 
 //    GoodsCheckStockVo checkGoodsStock(Integer goodsId, Integer orderClass);
 
+
+
+    //模糊查询品牌型号描述
+    CbpdVo selectgoodsinfo(CbpdVo cbpdVo);
 }

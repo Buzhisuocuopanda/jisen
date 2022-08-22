@@ -4,6 +4,7 @@ import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -11,7 +12,7 @@ import java.util.HashMap;
  *
  * @author ruoyi
  */
-public class AjaxResult<T> extends HashMap<String, Object>
+public class AjaxResult<T> extends HashMap<String, Object> implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -180,7 +181,7 @@ public class AjaxResult<T> extends HashMap<String, Object>
         private T data;
         private String traceId;
 
-        AjaxResultBuilder() {
+        protected AjaxResultBuilder() {
         }
 
         public AjaxResultBuilder<T> errcode(final Long errcode) {
@@ -206,7 +207,9 @@ public class AjaxResult<T> extends HashMap<String, Object>
         public AjaxResult<TableDataInfo> build() {
             return new AjaxResult(this.errcode, this.errmsg, this.data, this.traceId);
         }
-
+        public AjaxResult<T> builds() {
+            return new AjaxResult(this.errcode, this.errmsg, this.data, this.traceId);
+        }
         public String toString() {
             return "ResponseResult.AjaxResultBuilder(errcode=" + this.errcode + ", errmsg=" + this.errmsg + ", data=" + this.data + ", traceId=" + this.traceId + ")";
         }
