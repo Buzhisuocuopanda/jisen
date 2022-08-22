@@ -1,7 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -10,7 +9,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.CbsaCriteria;
-import com.ruoyi.system.domain.Dto.CbsaDto;
+import com.ruoyi.system.domain.dto.CbsaDto;
 import com.ruoyi.system.mapper.CbsaMapper;
 import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;

@@ -12,7 +12,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbpc;
-import com.ruoyi.system.domain.Dto.CbpdDto;
+import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import io.swagger.annotations.Api;

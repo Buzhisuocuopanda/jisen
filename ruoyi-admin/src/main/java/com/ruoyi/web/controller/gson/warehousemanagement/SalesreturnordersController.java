@@ -36,7 +36,7 @@ import java.util.List;
 )
 @Slf4j
 @RestController
-@RequestMapping("/system/Salesreturnorders")
+@RequestMapping("/system/Salesreturnorderss")
 public class SalesreturnordersController extends BaseController {
 
     @Resource
@@ -141,8 +141,8 @@ public class SalesreturnordersController extends BaseController {
             value ="销售退库单取消完成",
             notes = "销售退库单取消完成"
     )
-    @PostMapping("/Selloutofwarehouseqxwc")
-    public AjaxResult Selloutofwarehouseqxwc( @RequestBody CbseDo cbseDo) {
+    @PostMapping("/Selloutofwareehouseqxwc")
+    public AjaxResult Selloutofwarehousesqxwc( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodeqxwc(cbseDo));
 

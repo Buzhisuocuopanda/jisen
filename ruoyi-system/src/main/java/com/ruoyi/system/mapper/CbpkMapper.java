@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbpkCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
+import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +36,6 @@ public interface CbpkMapper {
     List<TakeGoodsOrderListVo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto);
 
     Cbpk selectLastBySaleOrderNo(@Param("saleOrderNo") String saleOrderNo);
+
+    List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 }

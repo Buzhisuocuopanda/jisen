@@ -9,7 +9,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbwa;
-import com.ruoyi.system.domain.Dto.CbwaDto;
+import com.ruoyi.system.domain.dto.CbwaDto;
 import com.ruoyi.system.service.ISwJsStoreSkuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

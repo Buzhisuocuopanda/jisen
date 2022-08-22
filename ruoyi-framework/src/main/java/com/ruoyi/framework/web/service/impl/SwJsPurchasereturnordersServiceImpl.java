@@ -8,7 +8,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
-import com.ruoyi.system.domain.Dto.CbpgDto;
+import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;

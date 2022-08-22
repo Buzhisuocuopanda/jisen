@@ -1,7 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cala;
-import com.ruoyi.system.domain.Dto.CalaDto;
+import com.ruoyi.system.domain.dto.CalaDto;
 
 import java.util.List;
 

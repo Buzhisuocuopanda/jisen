@@ -17,11 +17,12 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class OutofstockregistrationformServiceImpl implements OutofstockregistrationformService {
     @Resource
     private CboeMapper cboeMapper;

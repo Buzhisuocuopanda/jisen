@@ -10,7 +10,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
-import com.ruoyi.system.domain.Dto.CbpdDto;
+import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
