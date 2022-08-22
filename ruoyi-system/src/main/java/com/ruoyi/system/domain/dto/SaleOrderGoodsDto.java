@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain.dto;
 
 import lombok.Data;
+import org.springframework.security.web.PortResolverImpl;
 
 import java.math.BigDecimal;
 
@@ -13,16 +14,27 @@ import java.math.BigDecimal;
 @Data
 public class SaleOrderGoodsDto {
 
+    //行号
+    private Integer number;
+
+    //货物id
     private Integer goodsId;
 
+    //货物数量
     private Double qty;
 
-    private BigDecimal normalPrice;
+    //标准价格
+    private Double normalPrice;
 
-    private BigDecimal currentPrice;
-
-    private BigDecimal totalPrice;
-
+    //本次单价
+    private Double currentPrice;
+    //金额
+    private Double totalPrice;
+    //备注
     private String remark;
+
+    private String totalOrderNo;
+
+
 
 }

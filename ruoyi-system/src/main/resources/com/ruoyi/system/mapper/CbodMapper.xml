@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbodMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbod">
+    <id column="CBOD01" jdbcType="INTEGER" property="cbod01" />
+    <result column="CBOD02" jdbcType="INTEGER" property="cbod02" />
+    <result column="CBOD03" jdbcType="TIMESTAMP" property="cbod03" />
+    <result column="CBOD04" jdbcType="INTEGER" property="cbod04" />
+    <result column="CBOD05" jdbcType="TIMESTAMP" property="cbod05" />
+    <result column="CBOD06" jdbcType="INTEGER" property="cbod06" />
+    <result column="CBOD07" jdbcType="INTEGER" property="cbod07" />
+    <result column="CBOD08" jdbcType="INTEGER" property="cbod08" />
+    <result column="CBOD09" jdbcType="DOUBLE" property="cbod09" />
+    <result column="CBOD10" jdbcType="DOUBLE" property="cbod10" />
+    <result column="CBOD11" jdbcType="DOUBLE" property="cbod11" />
+    <result column="CBOD12" jdbcType="DOUBLE" property="cbod12" />
+    <result column="CBOD13" jdbcType="VARCHAR" property="cbod13" />
+    <result column="CBOD14" jdbcType="DOUBLE" property="cbod14" />
+    <result column="CBOD15" jdbcType="DOUBLE" property="cbod15" />
+    <result column="CBOD16" jdbcType="INTEGER" property="cbod16" />
+    <result column="CBOD17" jdbcType="DOUBLE" property="cbod17" />
+    <result column="CBOD18" jdbcType="DOUBLE" property="cbod18" />
+    <result column="CBOC01" jdbcType="INTEGER" property="cboc01" />
+    <result column="bef_price" jdbcType="DOUBLE" property="befPrice" />
+    <result column="bef_qty" jdbcType="DOUBLE" property="befQty" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBOD01, CBOD02, CBOD03, CBOD04, CBOD05, CBOD06, CBOD07, CBOD08, CBOD09, CBOD10, CBOD11, 
+    CBOD12, CBOD13, CBOD14, CBOD15, CBOD16, CBOD17, CBOD18, CBOC01, bef_price, bef_qty
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbodCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBOD`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBOD`
+    where CBOD01 = #{cbod01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBOD`
+    where CBOD01 = #{cbod01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbodCriteria">
+    delete from `CBOD`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbod">
+    insert into `CBOD` (CBOD01, CBOD02, CBOD03, 
+      CBOD04, CBOD05, CBOD06, 
+      CBOD07, CBOD08, CBOD09, 
+      CBOD10, CBOD11, CBOD12, 
+      CBOD13, CBOD14, CBOD15, 
+      CBOD16, CBOD17, CBOD18, 
+      CBOC01, bef_price, bef_qty
+      )
+    values (#{cbod01,jdbcType=INTEGER}, #{cbod02,jdbcType=INTEGER}, #{cbod03,jdbcType=TIMESTAMP}, 
+      #{cbod04,jdbcType=INTEGER}, #{cbod05,jdbcType=TIMESTAMP}, #{cbod06,jdbcType=INTEGER}, 
+      #{cbod07,jdbcType=INTEGER}, #{cbod08,jdbcType=INTEGER}, #{cbod09,jdbcType=DOUBLE}, 
+      #{cbod10,jdbcType=DOUBLE}, #{cbod11,jdbcType=DOUBLE}, #{cbod12,jdbcType=DOUBLE}, 
+      #{cbod13,jdbcType=VARCHAR}, #{cbod14,jdbcType=DOUBLE}, #{cbod15,jdbcType=DOUBLE}, 
+      #{cbod16,jdbcType=INTEGER}, #{cbod17,jdbcType=DOUBLE}, #{cbod18,jdbcType=DOUBLE}, 
+      #{cboc01,jdbcType=INTEGER}, #{befPrice,jdbcType=DOUBLE}, #{befQty,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbod">
+    insert into `CBOD`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbod01 != null">
+        CBOD01,
+      </if>
+      <if test="cbod02 != null">
+        CBOD02,
+      </if>
+      <if test="cbod03 != null">
+        CBOD03,
+      </if>
+      <if test="cbod04 != null">
+        CBOD04,
+      </if>
+      <if test="cbod05 != null">
+        CBOD05,
+      </if>
+      <if test="cbod06 != null">
+        CBOD06,
+      </if>
+      <if test="cbod07 != null">
+        CBOD07,
+      </if>
+      <if test="cbod08 != null">
+        CBOD08,
+      </if>
+      <if test="cbod09 != null">
+        CBOD09,
+      </if>
+      <if test="cbod10 != null">
+        CBOD10,
+      </if>
+      <if test="cbod11 != null">
+        CBOD11,
+      </if>
+      <if test="cbod12 != null">
+        CBOD12,
+      </if>
+      <if test="cbod13 != null">
+        CBOD13,
+      </if>
+      <if test="cbod14 != null">
+        CBOD14,
+      </if>
+      <if test="cbod15 != null">
+        CBOD15,
+      </if>
+      <if test="cbod16 != null">
+        CBOD16,
+      </if>
+      <if test="cbod17 != null">
+        CBOD17,
+      </if>
+      <if test="cbod18 != null">
+        CBOD18,
+      </if>
+      <if test="cboc01 != null">
+        CBOC01,
+      </if>
+      <if test="befPrice != null">
+        bef_price,
+      </if>
+      <if test="befQty != null">
+        bef_qty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbod01 != null">
+        #{cbod01,jdbcType=INTEGER},
+      </if>
+      <if test="cbod02 != null">
+        #{cbod02,jdbcType=INTEGER},
+      </if>
+      <if test="cbod03 != null">
+        #{cbod03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbod04 != null">
+        #{cbod04,jdbcType=INTEGER},
+      </if>
+      <if test="cbod05 != null">
+        #{cbod05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbod06 != null">
+        #{cbod06,jdbcType=INTEGER},
+      </if>
+      <if test="cbod07 != null">
+        #{cbod07,jdbcType=INTEGER},
+      </if>
+      <if test="cbod08 != null">
+        #{cbod08,jdbcType=INTEGER},
+      </if>
+      <if test="cbod09 != null">
+        #{cbod09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod10 != null">
+        #{cbod10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod11 != null">
+        #{cbod11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod12 != null">
+        #{cbod12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod13 != null">
+        #{cbod13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbod14 != null">
+        #{cbod14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod15 != null">
+        #{cbod15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod16 != null">
+        #{cbod16,jdbcType=INTEGER},
+      </if>
+      <if test="cbod17 != null">
+        #{cbod17,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod18 != null">
+        #{cbod18,jdbcType=DOUBLE},
+      </if>
+      <if test="cboc01 != null">
+        #{cboc01,jdbcType=INTEGER},
+      </if>
+      <if test="befPrice != null">
+        #{befPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="befQty != null">
+        #{befQty,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbodCriteria" resultType="java.lang.Long">
+    select count(*) from `CBOD`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBOD`
+    <set>
+      <if test="record.cbod01 != null">
+        CBOD01 = #{record.cbod01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod02 != null">
+        CBOD02 = #{record.cbod02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod03 != null">
+        CBOD03 = #{record.cbod03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbod04 != null">
+        CBOD04 = #{record.cbod04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod05 != null">
+        CBOD05 = #{record.cbod05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbod06 != null">
+        CBOD06 = #{record.cbod06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod07 != null">
+        CBOD07 = #{record.cbod07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod08 != null">
+        CBOD08 = #{record.cbod08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod09 != null">
+        CBOD09 = #{record.cbod09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod10 != null">
+        CBOD10 = #{record.cbod10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod11 != null">
+        CBOD11 = #{record.cbod11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod12 != null">
+        CBOD12 = #{record.cbod12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod13 != null">
+        CBOD13 = #{record.cbod13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbod14 != null">
+        CBOD14 = #{record.cbod14,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod15 != null">
+        CBOD15 = #{record.cbod15,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod16 != null">
+        CBOD16 = #{record.cbod16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbod17 != null">
+        CBOD17 = #{record.cbod17,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbod18 != null">
+        CBOD18 = #{record.cbod18,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cboc01 != null">
+        CBOC01 = #{record.cboc01,jdbcType=INTEGER},
+      </if>
+      <if test="record.befPrice != null">
+        bef_price = #{record.befPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.befQty != null">
+        bef_qty = #{record.befQty,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBOD`
+    set CBOD01 = #{record.cbod01,jdbcType=INTEGER},
+      CBOD02 = #{record.cbod02,jdbcType=INTEGER},
+      CBOD03 = #{record.cbod03,jdbcType=TIMESTAMP},
+      CBOD04 = #{record.cbod04,jdbcType=INTEGER},
+      CBOD05 = #{record.cbod05,jdbcType=TIMESTAMP},
+      CBOD06 = #{record.cbod06,jdbcType=INTEGER},
+      CBOD07 = #{record.cbod07,jdbcType=INTEGER},
+      CBOD08 = #{record.cbod08,jdbcType=INTEGER},
+      CBOD09 = #{record.cbod09,jdbcType=DOUBLE},
+      CBOD10 = #{record.cbod10,jdbcType=DOUBLE},
+      CBOD11 = #{record.cbod11,jdbcType=DOUBLE},
+      CBOD12 = #{record.cbod12,jdbcType=DOUBLE},
+      CBOD13 = #{record.cbod13,jdbcType=VARCHAR},
+      CBOD14 = #{record.cbod14,jdbcType=DOUBLE},
+      CBOD15 = #{record.cbod15,jdbcType=DOUBLE},
+      CBOD16 = #{record.cbod16,jdbcType=INTEGER},
+      CBOD17 = #{record.cbod17,jdbcType=DOUBLE},
+      CBOD18 = #{record.cbod18,jdbcType=DOUBLE},
+      CBOC01 = #{record.cboc01,jdbcType=INTEGER},
+      bef_price = #{record.befPrice,jdbcType=DOUBLE},
+      bef_qty = #{record.befQty,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbod">
+    update `CBOD`
+    <set>
+      <if test="cbod02 != null">
+        CBOD02 = #{cbod02,jdbcType=INTEGER},
+      </if>
+      <if test="cbod03 != null">
+        CBOD03 = #{cbod03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbod04 != null">
+        CBOD04 = #{cbod04,jdbcType=INTEGER},
+      </if>
+      <if test="cbod05 != null">
+        CBOD05 = #{cbod05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbod06 != null">
+        CBOD06 = #{cbod06,jdbcType=INTEGER},
+      </if>
+      <if test="cbod07 != null">
+        CBOD07 = #{cbod07,jdbcType=INTEGER},
+      </if>
+      <if test="cbod08 != null">
+        CBOD08 = #{cbod08,jdbcType=INTEGER},
+      </if>
+      <if test="cbod09 != null">
+        CBOD09 = #{cbod09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod10 != null">
+        CBOD10 = #{cbod10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod11 != null">
+        CBOD11 = #{cbod11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod12 != null">
+        CBOD12 = #{cbod12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod13 != null">
+        CBOD13 = #{cbod13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbod14 != null">
+        CBOD14 = #{cbod14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod15 != null">
+        CBOD15 = #{cbod15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod16 != null">
+        CBOD16 = #{cbod16,jdbcType=INTEGER},
+      </if>
+      <if test="cbod17 != null">
+        CBOD17 = #{cbod17,jdbcType=DOUBLE},
+      </if>
+      <if test="cbod18 != null">
+        CBOD18 = #{cbod18,jdbcType=DOUBLE},
+      </if>
+      <if test="cboc01 != null">
+        CBOC01 = #{cboc01,jdbcType=INTEGER},
+      </if>
+      <if test="befPrice != null">
+        bef_price = #{befPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="befQty != null">
+        bef_qty = #{befQty,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where CBOD01 = #{cbod01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbod">
+    update `CBOD`
+    set CBOD02 = #{cbod02,jdbcType=INTEGER},
+      CBOD03 = #{cbod03,jdbcType=TIMESTAMP},
+      CBOD04 = #{cbod04,jdbcType=INTEGER},
+      CBOD05 = #{cbod05,jdbcType=TIMESTAMP},
+      CBOD06 = #{cbod06,jdbcType=INTEGER},
+      CBOD07 = #{cbod07,jdbcType=INTEGER},
+      CBOD08 = #{cbod08,jdbcType=INTEGER},
+      CBOD09 = #{cbod09,jdbcType=DOUBLE},
+      CBOD10 = #{cbod10,jdbcType=DOUBLE},
+      CBOD11 = #{cbod11,jdbcType=DOUBLE},
+      CBOD12 = #{cbod12,jdbcType=DOUBLE},
+      CBOD13 = #{cbod13,jdbcType=VARCHAR},
+      CBOD14 = #{cbod14,jdbcType=DOUBLE},
+      CBOD15 = #{cbod15,jdbcType=DOUBLE},
+      CBOD16 = #{cbod16,jdbcType=INTEGER},
+      CBOD17 = #{cbod17,jdbcType=DOUBLE},
+      CBOD18 = #{cbod18,jdbcType=DOUBLE},
+      CBOC01 = #{cboc01,jdbcType=INTEGER},
+      bef_price = #{befPrice,jdbcType=DOUBLE},
+      bef_qty = #{befQty,jdbcType=DOUBLE}
+    where CBOD01 = #{cbod01,jdbcType=INTEGER}
+  </update>
+</mapper>

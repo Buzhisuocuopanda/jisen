@@ -22,4 +22,6 @@ public interface CbibMapper {
 
     Cbib selectLastByGoodsIdAndStoreId(@Param("goodsId") Integer goodsId, @Param("storeId") Integer storeId);
 
+    Cbib selectLastByGoodsId(@Param("goodsId") Integer goodsId);
+
 }

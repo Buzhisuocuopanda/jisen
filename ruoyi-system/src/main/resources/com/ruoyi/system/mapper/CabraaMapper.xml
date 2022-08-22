@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CabraaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cabraa">
+    <id column="CABRAA01" jdbcType="INTEGER" property="cabraa01" />
+    <result column="CABRAA02" jdbcType="TIMESTAMP" property="cabraa02" />
+    <result column="CABRAA03" jdbcType="TIMESTAMP" property="cabraa03" />
+    <result column="CABRAA04" jdbcType="INTEGER" property="cabraa04" />
+    <result column="CABRAA05" jdbcType="INTEGER" property="cabraa05" />
+    <result column="CABRAA06" jdbcType="INTEGER" property="cabraa06" />
+    <result column="CABRAA07" jdbcType="VARCHAR" property="cabraa07" />
+    <result column="CABRAA08" jdbcType="INTEGER" property="cabraa08" />
+    <result column="CABRAA09" jdbcType="VARCHAR" property="cabraa09" />
+    <result column="CABRAA10" jdbcType="VARCHAR" property="cabraa10" />
+    <result column="CABRAA11" jdbcType="INTEGER" property="cabraa11" />
+    <result column="CABRAA12" jdbcType="TIMESTAMP" property="cabraa12" />
+    <result column="CABRAA13" jdbcType="INTEGER" property="cabraa13" />
+    <result column="CABRAA14" jdbcType="VARCHAR" property="cabraa14" />
+    <result column="CABRAA15" jdbcType="TIMESTAMP" property="cabraa15" />
+    <result column="CABRAA16" jdbcType="INTEGER" property="cabraa16" />
+    <result column="CABRAA17" jdbcType="INTEGER" property="cabraa17" />
+    <result column="CABRAA18" jdbcType="VARCHAR" property="cabraa18" />
+    <result column="CABRAA19" jdbcType="VARCHAR" property="cabraa19" />
+    <result column="CABRAA20" jdbcType="INTEGER" property="cabraa20" />
+    <result column="CABRAA21" jdbcType="VARCHAR" property="cabraa21" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CABRAA01, CABRAA02, CABRAA03, CABRAA04, CABRAA05, CABRAA06, CABRAA07, CABRAA08, CABRAA09, 
+    CABRAA10, CABRAA11, CABRAA12, CABRAA13, CABRAA14, CABRAA15, CABRAA16, CABRAA17, CABRAA18, 
+    CABRAA19, CABRAA20, CABRAA21
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CabraaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CABRAA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CABRAA`
+    where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CABRAA`
+    where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CabraaCriteria">
+    delete from `CABRAA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cabraa">
+    insert into `CABRAA` (CABRAA01, CABRAA02, CABRAA03, 
+      CABRAA04, CABRAA05, CABRAA06, 
+      CABRAA07, CABRAA08, CABRAA09, 
+      CABRAA10, CABRAA11, CABRAA12, 
+      CABRAA13, CABRAA14, CABRAA15, 
+      CABRAA16, CABRAA17, CABRAA18, 
+      CABRAA19, CABRAA20, CABRAA21
+      )
+    values (#{cabraa01,jdbcType=INTEGER}, #{cabraa02,jdbcType=TIMESTAMP}, #{cabraa03,jdbcType=TIMESTAMP}, 
+      #{cabraa04,jdbcType=INTEGER}, #{cabraa05,jdbcType=INTEGER}, #{cabraa06,jdbcType=INTEGER}, 
+      #{cabraa07,jdbcType=VARCHAR}, #{cabraa08,jdbcType=INTEGER}, #{cabraa09,jdbcType=VARCHAR}, 
+      #{cabraa10,jdbcType=VARCHAR}, #{cabraa11,jdbcType=INTEGER}, #{cabraa12,jdbcType=TIMESTAMP}, 
+      #{cabraa13,jdbcType=INTEGER}, #{cabraa14,jdbcType=VARCHAR}, #{cabraa15,jdbcType=TIMESTAMP}, 
+      #{cabraa16,jdbcType=INTEGER}, #{cabraa17,jdbcType=INTEGER}, #{cabraa18,jdbcType=VARCHAR}, 
+      #{cabraa19,jdbcType=VARCHAR}, #{cabraa20,jdbcType=INTEGER}, #{cabraa21,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cabraa">
+    insert into `CABRAA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cabraa01 != null">
+        CABRAA01,
+      </if>
+      <if test="cabraa02 != null">
+        CABRAA02,
+      </if>
+      <if test="cabraa03 != null">
+        CABRAA03,
+      </if>
+      <if test="cabraa04 != null">
+        CABRAA04,
+      </if>
+      <if test="cabraa05 != null">
+        CABRAA05,
+      </if>
+      <if test="cabraa06 != null">
+        CABRAA06,
+      </if>
+      <if test="cabraa07 != null">
+        CABRAA07,
+      </if>
+      <if test="cabraa08 != null">
+        CABRAA08,
+      </if>
+      <if test="cabraa09 != null">
+        CABRAA09,
+      </if>
+      <if test="cabraa10 != null">
+        CABRAA10,
+      </if>
+      <if test="cabraa11 != null">
+        CABRAA11,
+      </if>
+      <if test="cabraa12 != null">
+        CABRAA12,
+      </if>
+      <if test="cabraa13 != null">
+        CABRAA13,
+      </if>
+      <if test="cabraa14 != null">
+        CABRAA14,
+      </if>
+      <if test="cabraa15 != null">
+        CABRAA15,
+      </if>
+      <if test="cabraa16 != null">
+        CABRAA16,
+      </if>
+      <if test="cabraa17 != null">
+        CABRAA17,
+      </if>
+      <if test="cabraa18 != null">
+        CABRAA18,
+      </if>
+      <if test="cabraa19 != null">
+        CABRAA19,
+      </if>
+      <if test="cabraa20 != null">
+        CABRAA20,
+      </if>
+      <if test="cabraa21 != null">
+        CABRAA21,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cabraa01 != null">
+        #{cabraa01,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa02 != null">
+        #{cabraa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa03 != null">
+        #{cabraa03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa04 != null">
+        #{cabraa04,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa05 != null">
+        #{cabraa05,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa06 != null">
+        #{cabraa06,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa07 != null">
+        #{cabraa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa08 != null">
+        #{cabraa08,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa09 != null">
+        #{cabraa09,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa10 != null">
+        #{cabraa10,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa11 != null">
+        #{cabraa11,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa12 != null">
+        #{cabraa12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa13 != null">
+        #{cabraa13,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa14 != null">
+        #{cabraa14,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa15 != null">
+        #{cabraa15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa16 != null">
+        #{cabraa16,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa17 != null">
+        #{cabraa17,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa18 != null">
+        #{cabraa18,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa19 != null">
+        #{cabraa19,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa20 != null">
+        #{cabraa20,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa21 != null">
+        #{cabraa21,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CabraaCriteria" resultType="java.lang.Long">
+    select count(*) from `CABRAA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CABRAA`
+    <set>
+      <if test="record.cabraa01 != null">
+        CABRAA01 = #{record.cabraa01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa02 != null">
+        CABRAA02 = #{record.cabraa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cabraa03 != null">
+        CABRAA03 = #{record.cabraa03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cabraa04 != null">
+        CABRAA04 = #{record.cabraa04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa05 != null">
+        CABRAA05 = #{record.cabraa05,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa06 != null">
+        CABRAA06 = #{record.cabraa06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa07 != null">
+        CABRAA07 = #{record.cabraa07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa08 != null">
+        CABRAA08 = #{record.cabraa08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa09 != null">
+        CABRAA09 = #{record.cabraa09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa10 != null">
+        CABRAA10 = #{record.cabraa10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa11 != null">
+        CABRAA11 = #{record.cabraa11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa12 != null">
+        CABRAA12 = #{record.cabraa12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cabraa13 != null">
+        CABRAA13 = #{record.cabraa13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa14 != null">
+        CABRAA14 = #{record.cabraa14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa15 != null">
+        CABRAA15 = #{record.cabraa15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cabraa16 != null">
+        CABRAA16 = #{record.cabraa16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa17 != null">
+        CABRAA17 = #{record.cabraa17,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa18 != null">
+        CABRAA18 = #{record.cabraa18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa19 != null">
+        CABRAA19 = #{record.cabraa19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cabraa20 != null">
+        CABRAA20 = #{record.cabraa20,jdbcType=INTEGER},
+      </if>
+      <if test="record.cabraa21 != null">
+        CABRAA21 = #{record.cabraa21,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CABRAA`
+    set CABRAA01 = #{record.cabraa01,jdbcType=INTEGER},
+      CABRAA02 = #{record.cabraa02,jdbcType=TIMESTAMP},
+      CABRAA03 = #{record.cabraa03,jdbcType=TIMESTAMP},
+      CABRAA04 = #{record.cabraa04,jdbcType=INTEGER},
+      CABRAA05 = #{record.cabraa05,jdbcType=INTEGER},
+      CABRAA06 = #{record.cabraa06,jdbcType=INTEGER},
+      CABRAA07 = #{record.cabraa07,jdbcType=VARCHAR},
+      CABRAA08 = #{record.cabraa08,jdbcType=INTEGER},
+      CABRAA09 = #{record.cabraa09,jdbcType=VARCHAR},
+      CABRAA10 = #{record.cabraa10,jdbcType=VARCHAR},
+      CABRAA11 = #{record.cabraa11,jdbcType=INTEGER},
+      CABRAA12 = #{record.cabraa12,jdbcType=TIMESTAMP},
+      CABRAA13 = #{record.cabraa13,jdbcType=INTEGER},
+      CABRAA14 = #{record.cabraa14,jdbcType=VARCHAR},
+      CABRAA15 = #{record.cabraa15,jdbcType=TIMESTAMP},
+      CABRAA16 = #{record.cabraa16,jdbcType=INTEGER},
+      CABRAA17 = #{record.cabraa17,jdbcType=INTEGER},
+      CABRAA18 = #{record.cabraa18,jdbcType=VARCHAR},
+      CABRAA19 = #{record.cabraa19,jdbcType=VARCHAR},
+      CABRAA20 = #{record.cabraa20,jdbcType=INTEGER},
+      CABRAA21 = #{record.cabraa21,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cabraa">
+    update `CABRAA`
+    <set>
+      <if test="cabraa02 != null">
+        CABRAA02 = #{cabraa02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa03 != null">
+        CABRAA03 = #{cabraa03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa04 != null">
+        CABRAA04 = #{cabraa04,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa05 != null">
+        CABRAA05 = #{cabraa05,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa06 != null">
+        CABRAA06 = #{cabraa06,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa07 != null">
+        CABRAA07 = #{cabraa07,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa08 != null">
+        CABRAA08 = #{cabraa08,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa09 != null">
+        CABRAA09 = #{cabraa09,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa10 != null">
+        CABRAA10 = #{cabraa10,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa11 != null">
+        CABRAA11 = #{cabraa11,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa12 != null">
+        CABRAA12 = #{cabraa12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa13 != null">
+        CABRAA13 = #{cabraa13,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa14 != null">
+        CABRAA14 = #{cabraa14,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa15 != null">
+        CABRAA15 = #{cabraa15,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cabraa16 != null">
+        CABRAA16 = #{cabraa16,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa17 != null">
+        CABRAA17 = #{cabraa17,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa18 != null">
+        CABRAA18 = #{cabraa18,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa19 != null">
+        CABRAA19 = #{cabraa19,jdbcType=VARCHAR},
+      </if>
+      <if test="cabraa20 != null">
+        CABRAA20 = #{cabraa20,jdbcType=INTEGER},
+      </if>
+      <if test="cabraa21 != null">
+        CABRAA21 = #{cabraa21,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cabraa">
+    update `CABRAA`
+    set CABRAA02 = #{cabraa02,jdbcType=TIMESTAMP},
+      CABRAA03 = #{cabraa03,jdbcType=TIMESTAMP},
+      CABRAA04 = #{cabraa04,jdbcType=INTEGER},
+      CABRAA05 = #{cabraa05,jdbcType=INTEGER},
+      CABRAA06 = #{cabraa06,jdbcType=INTEGER},
+      CABRAA07 = #{cabraa07,jdbcType=VARCHAR},
+      CABRAA08 = #{cabraa08,jdbcType=INTEGER},
+      CABRAA09 = #{cabraa09,jdbcType=VARCHAR},
+      CABRAA10 = #{cabraa10,jdbcType=VARCHAR},
+      CABRAA11 = #{cabraa11,jdbcType=INTEGER},
+      CABRAA12 = #{cabraa12,jdbcType=TIMESTAMP},
+      CABRAA13 = #{cabraa13,jdbcType=INTEGER},
+      CABRAA14 = #{cabraa14,jdbcType=VARCHAR},
+      CABRAA15 = #{cabraa15,jdbcType=TIMESTAMP},
+      CABRAA16 = #{cabraa16,jdbcType=INTEGER},
+      CABRAA17 = #{cabraa17,jdbcType=INTEGER},
+      CABRAA18 = #{cabraa18,jdbcType=VARCHAR},
+      CABRAA19 = #{cabraa19,jdbcType=VARCHAR},
+      CABRAA20 = #{cabraa20,jdbcType=INTEGER},
+      CABRAA21 = #{cabraa21,jdbcType=VARCHAR}
+    where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
+  </update>
+</mapper>

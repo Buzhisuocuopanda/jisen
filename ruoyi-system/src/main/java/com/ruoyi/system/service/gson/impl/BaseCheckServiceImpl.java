@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.CbbaCriteria;
 import com.ruoyi.system.domain.Cboa;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
+import com.ruoyi.system.domain.vo.GoodsCheckStockVo;
 import com.ruoyi.system.mapper.CbbaMapper;
 import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -58,6 +59,11 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     private CbwaMapper cbwaMapper;
     @Resource
     private SysUserMapper sysUserMapper;
+    @Resource
+    private CbcaMapper cbcaMapper;
+
+    @Resource
+    private CboaMapper cboaMapper;
 
     @Override
     public Cbpb checkGoodsForUpdate(Integer goodsId, String goodsName) {
@@ -144,7 +150,7 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     }
 
 
-}
+
 
     @Override
     public GsGoodsSku checkGoodsSkuForUpdate(Integer Id) {
@@ -235,6 +241,33 @@ public class BaseCheckServiceImpl implements BaseCheckService {
         }
         return null;
     }
+
+    @Override
+    public Cbca checkCustomer(Integer customerId) {
+        Cbca cbca = cbcaMapper.selectByPrimaryKey(customerId);
+        if(cbca==null || DeleteFlagEnum.DELETE.getCode().equals(cbca.getCbca06())){
+            throw new SwException("没有查到该客户");
+
+        }
+
+        if(!"启用".equals(cbca.getCbca07())){
+            throw new SwException("该客户已禁用");
+        }
+
+        return cbca;
+    }
+
+    @Override
+    public Cboa checkSaleOrder(Integer orderId) {
+
+        Cboa cboa = cboaMapper.selectByPrimaryKey(orderId);
+        if(cboa==null || !DeleteFlagEnum.NOT_DELETE.equals(cboa.getCboa06())){
+            throw new SwException("没有查到该销售订单订单");
+        }
+
+        return cboa;
+    }
+
 
 }
 

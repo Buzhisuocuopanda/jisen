@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.GoodsCheckStockVo;
 
 /**
  * ClassName BaseCheckService
@@ -38,4 +39,13 @@ public interface BaseCheckService {
     SysUser checkUserTask(Long userId,Byte auditPerm);
 
     GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
+
+    Cbca checkCustomer(Integer customerId);
+
+    Cboa checkSaleOrder(Integer orderId);
+
+
+
+//    GoodsCheckStockVo checkGoodsStock(Integer goodsId, Integer orderClass);
+
 }

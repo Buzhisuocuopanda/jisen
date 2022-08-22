@@ -2,10 +2,7 @@ package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.dto.*;
-import com.ruoyi.system.domain.vo.SaleOrderListVo;
-import com.ruoyi.system.domain.vo.SaleOrderSkuListVo;
-import com.ruoyi.system.domain.vo.SaleOrderSkuVo;
-import com.ruoyi.system.domain.vo.TotalOrderListVo;
+import com.ruoyi.system.domain.vo.*;
 
 import java.util.List;
 
@@ -30,4 +27,40 @@ public interface SaleOrderService {
     String importTotalOrder(List<TotalOrderExcelDto> list, Long userId);
 
     void addSaleOrder(SaleOrderAddDto saleOrderAddDto);
+
+    SaleOrderDetailVo saleOderDetail(Integer orderId);
+
+    void mdfSaleOrder(SaleOrderAddDto saleOrderAddDto);
+
+    void delSaleOrder(DelSaleOrderDto delSaleOrderDto);
+
+    void  revokeSaleOrder(Integer orderId,Integer userId);
+
+    String importySaleOrder(List<SaleOrderExcelDto> list, Long userId);
+
+    void reAddSaleOrder(Integer orderId, Long userId);
+
+    GoodsPriceAndSkuVo goodsPriceAndSku(GoodsPriceAndSkuDto goodsPriceAndSkuDto);
+
+    void auditSaleOrder(AuditSaleOrderDto auditSaleOrderDto);
+
+    List<SaleOrderListVo> finsaleOrderList(SaleOrderListDto saleOrderListDto);
+
+    void auditFinSaleOrder(AuditSaleOrderDto auditSaleOrderDto);
+
+    List<GoodsShopVo> goodsShopList(Integer userId);
+
+    List<SaleOrderListVo> saleChangeList(SaleOrderListDto saleOrderListDto);
+
+    void addSaleOrderChange(SaleOrderChangeDto saleOrderChangeDto);
+
+    List<OrderChangeGoodsMsgVo> orderChangeGoodsMsg(OrderChangeGoodsMsgDto orderChangeGoodsMsgDto);
+
+    OrderChangeDetailVo orderChangeDetail(Integer orderId);
+
+    void mdfSaleOrderChange(SaleOrderChangeDto saleOrderChangeDto);
+
+    void auditSaleChange(AuditSaleOrderDto auditSaleOrderDto);
+
+    void delSaleChange(DelSaleChangeDto delSaleChangeDto);
 }

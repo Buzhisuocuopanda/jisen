@@ -92,7 +92,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long aLong = lockMap.putIfAbsent(totalOrderkey, time);
             if (aLong != null) {
@@ -122,10 +122,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long aLong = lockMap.get(orderkey);
-            if (aLong != null || aLong != 0) {
+            if (aLong != null ) {
                 //说明有线程正在操作其他订单进行总订单的分配数量更改
                 continue;
 
@@ -154,7 +154,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         while (true) {
             Long now = System.currentTimeMillis();
             if (now - time > lockGetTime) {
-                throw new ServiceException("获得锁超时，请稍后重试");
+                throw new SwException("获得锁超时，请稍后重试");
             }
             Long ttime = lockMap.get(totalOrderkey);
             if (ttime != null) {
@@ -254,10 +254,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //            Cbba cbba = cbbaMapper.select(orderDistributionDo.getOrderId());
 
         } finally {
-            lockMap.put(totalOrderkey, null);
+            lockMap.remove(totalOrderkey);
         }
 
-        return null;
+        return cbba;
     }
 
     /**
@@ -287,7 +287,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
         }
         if (orderNum < useNum) {
-            throw new ServiceException("修改订单数量不能小于该订单的占用数量");
+            throw new SwException("修改订单数量不能小于该订单的占用数量");
         }
 
 //        if(makeNum-useNum<=0){
@@ -816,7 +816,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //        //先判断库存是否够用
 //        //国内订单判断库存是否可用通过仓库台账来判断 先锁商品表
         Cbpb cbpb = baseCheckService.checkGoodsForUpdate(goodsOperationDo.getGoodsId(), goodsOperationDo.getGoodsName());
-
+        goodsOperationDo.setGoodsName(cbpb.getCbpb12());
         if (OrderTypeEnum.GUONEIDINGDAN.getCode().equals(goodsOperationDo.getOrderType())) {
 
 
@@ -882,7 +882,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
             if (num > 0.0) {
                 //说明库存不够
-                throw new ServiceException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
+                throw new SwException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
             }
 
             if (res.getList().size() > 1) {
@@ -909,7 +909,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             List<Cbwa> cbwas = cbwaMapper.selectByExample(whexample);
 
             if (cbwas.size() == 0) {
-                throw new ServiceException("没有可用的仓库");
+                throw new SwException("没有可用的仓库");
             }
 
             //查询占用用的
@@ -926,7 +926,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
 
             if (useNum + goodsOperationDo.getNum() > sum) {
-                throw new ServiceException("您选择的商品库存不足，请刷新重试,商品：" + goodsOperationDo.getGoodsName());
+                throw new SwException("您选择的商品库存不足，请刷新重试,商品：" + goodsOperationDo.getGoodsName());
             }
 
             //生成占用
@@ -961,10 +961,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 .andOrderNoEqualTo(goodsOperationDo.getOrderNo());
         return gsGoodsUseMapper.deleteByExample(example);
 
-
-
-
     }
+
+
+
 
     @Override
     public QtyMsgVo checkSku(CheckSkuDo checkSkuDo) {
@@ -974,7 +974,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         List<Cbwa> list = cbwaMapper.selectCalculationOrderPriority();
 
         if (list.size() == 0) {
-            throw new ServiceException("无可用分配库存的仓库");
+            throw new SwException("无可用分配库存的仓库");
         }
 
         Double canUseNum = 0.0;

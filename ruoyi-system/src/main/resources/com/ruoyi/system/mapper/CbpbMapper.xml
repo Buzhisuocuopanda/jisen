@@ -473,7 +473,7 @@
     select
     <include refid="Base_Column_List" />
     from `CBPB`
-    where CBPB01 = #{cbpb01,jdbcType=INTEGER}
+    where CBPB01 = #{id,jdbcType=INTEGER}
     for update
   </select>
 

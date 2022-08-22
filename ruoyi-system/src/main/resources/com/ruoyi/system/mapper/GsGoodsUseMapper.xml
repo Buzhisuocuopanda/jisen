@@ -14,6 +14,7 @@
     <result column="lock_qty" jdbcType="DOUBLE" property="lockQty" />
     <result column="wh_id" jdbcType="INTEGER" property="whId" />
     <result column="trans_no" jdbcType="VARCHAR" property="transNo" />
+    <result column="no_out_qty" jdbcType="DOUBLE" property="noOutQty" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, goods_id, order_no, order_qty,
-    order_type, lock_qty, wh_id, trans_no
+    order_type, lock_qty, wh_id, trans_no, no_out_qty
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsGoodsUseCriteria" resultMap="BaseResultMap">
     select
@@ -111,13 +112,13 @@
     insert into `gs_goods_use` (id, create_time, update_time,
       create_by, update_by, goods_id,
       order_no, order_qty, order_type,
-      lock_qty, wh_id, trans_no
-      )
+      lock_qty, wh_id, trans_no,
+      no_out_qty)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},
       #{orderNo,jdbcType=VARCHAR}, #{orderQty,jdbcType=DOUBLE}, #{orderType,jdbcType=TINYINT},
-      #{lockQty,jdbcType=DOUBLE}, #{whId,jdbcType=INTEGER}, #{transNo,jdbcType=VARCHAR}
-      )
+      #{lockQty,jdbcType=DOUBLE}, #{whId,jdbcType=INTEGER}, #{transNo,jdbcType=VARCHAR},
+      #{noOutQty,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsGoodsUse">
     insert into `gs_goods_use`
@@ -158,6 +159,9 @@
       <if test="transNo != null">
         trans_no,
       </if>
+      <if test="noOutQty != null">
+        no_out_qty,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -195,6 +199,9 @@
       </if>
       <if test="transNo != null">
         #{transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="noOutQty != null">
+        #{noOutQty,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -243,6 +250,9 @@
       <if test="record.transNo != null">
         trans_no = #{record.transNo,jdbcType=VARCHAR},
       </if>
+      <if test="record.noOutQty != null">
+        no_out_qty = #{record.noOutQty,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,7 +271,8 @@
       order_type = #{record.orderType,jdbcType=TINYINT},
       lock_qty = #{record.lockQty,jdbcType=DOUBLE},
       wh_id = #{record.whId,jdbcType=INTEGER},
-      trans_no = #{record.transNo,jdbcType=VARCHAR}
+      trans_no = #{record.transNo,jdbcType=VARCHAR},
+      no_out_qty = #{record.noOutQty,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,6 +313,9 @@
       <if test="transNo != null">
         trans_no = #{transNo,jdbcType=VARCHAR},
       </if>
+      <if test="noOutQty != null">
+        no_out_qty = #{noOutQty,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -317,7 +331,8 @@
       order_type = #{orderType,jdbcType=TINYINT},
       lock_qty = #{lockQty,jdbcType=DOUBLE},
       wh_id = #{whId,jdbcType=INTEGER},
-      trans_no = #{transNo,jdbcType=VARCHAR}
+      trans_no = #{transNo,jdbcType=VARCHAR},
+      no_out_qty = #{noOutQty,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -329,5 +344,13 @@ FROM
 WHERE
    g.wh_id = #{whId}
    AND g.goods_id =#{goodsId}
+  </select>
+  <select id="selectByGoodsId" resultMap="BaseResultMap">
+        SELECT
+   *
+FROM
+   `gs_goods_use` g
+WHERE
+  g.goods_id =#{goodsId}
   </select>
 </mapper>

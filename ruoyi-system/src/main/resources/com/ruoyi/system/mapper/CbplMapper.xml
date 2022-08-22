@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbplMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpl">
+    <id column="CBPL01" jdbcType="INTEGER" property="cbpl01" />
+    <result column="CBPL02" jdbcType="INTEGER" property="cbpl02" />
+    <result column="CBPL03" jdbcType="TIMESTAMP" property="cbpl03" />
+    <result column="CBPL04" jdbcType="INTEGER" property="cbpl04" />
+    <result column="CBPL05" jdbcType="TIMESTAMP" property="cbpl05" />
+    <result column="CBPL06" jdbcType="INTEGER" property="cbpl06" />
+    <result column="CBPL07" jdbcType="INTEGER" property="cbpl07" />
+    <result column="CBPL08" jdbcType="INTEGER" property="cbpl08" />
+    <result column="CBPL09" jdbcType="DOUBLE" property="cbpl09" />
+    <result column="CBPL10" jdbcType="DOUBLE" property="cbpl10" />
+    <result column="CBPL11" jdbcType="DOUBLE" property="cbpl11" />
+    <result column="CBPL12" jdbcType="DOUBLE" property="cbpl12" />
+    <result column="CBPL13" jdbcType="VARCHAR" property="cbpl13" />
+    <result column="CBPL14" jdbcType="INTEGER" property="cbpl14" />
+    <result column="CBPL15" jdbcType="INTEGER" property="cbpl15" />
+    <result column="CBPL16" jdbcType="INTEGER" property="cbpl16" />
+    <result column="CBPK01" jdbcType="INTEGER" property="cbpk01" />
+    <result column="good_product_qty" jdbcType="DOUBLE" property="goodProductQty" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPL01, CBPL02, CBPL03, CBPL04, CBPL05, CBPL06, CBPL07, CBPL08, CBPL09, CBPL10, CBPL11, 
+    CBPL12, CBPL13, CBPL14, CBPL15, CBPL16, CBPK01, good_product_qty
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbplCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPL`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBPL`
+    where CBPL01 = #{cbpl01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPL`
+    where CBPL01 = #{cbpl01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbplCriteria">
+    delete from `CBPL`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpl">
+    insert into `CBPL` (CBPL01, CBPL02, CBPL03, 
+      CBPL04, CBPL05, CBPL06, 
+      CBPL07, CBPL08, CBPL09, 
+      CBPL10, CBPL11, CBPL12, 
+      CBPL13, CBPL14, CBPL15, 
+      CBPL16, CBPK01, good_product_qty
+      )
+    values (#{cbpl01,jdbcType=INTEGER}, #{cbpl02,jdbcType=INTEGER}, #{cbpl03,jdbcType=TIMESTAMP}, 
+      #{cbpl04,jdbcType=INTEGER}, #{cbpl05,jdbcType=TIMESTAMP}, #{cbpl06,jdbcType=INTEGER}, 
+      #{cbpl07,jdbcType=INTEGER}, #{cbpl08,jdbcType=INTEGER}, #{cbpl09,jdbcType=DOUBLE}, 
+      #{cbpl10,jdbcType=DOUBLE}, #{cbpl11,jdbcType=DOUBLE}, #{cbpl12,jdbcType=DOUBLE}, 
+      #{cbpl13,jdbcType=VARCHAR}, #{cbpl14,jdbcType=INTEGER}, #{cbpl15,jdbcType=INTEGER}, 
+      #{cbpl16,jdbcType=INTEGER}, #{cbpk01,jdbcType=INTEGER}, #{goodProductQty,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpl">
+    insert into `CBPL`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpl01 != null">
+        CBPL01,
+      </if>
+      <if test="cbpl02 != null">
+        CBPL02,
+      </if>
+      <if test="cbpl03 != null">
+        CBPL03,
+      </if>
+      <if test="cbpl04 != null">
+        CBPL04,
+      </if>
+      <if test="cbpl05 != null">
+        CBPL05,
+      </if>
+      <if test="cbpl06 != null">
+        CBPL06,
+      </if>
+      <if test="cbpl07 != null">
+        CBPL07,
+      </if>
+      <if test="cbpl08 != null">
+        CBPL08,
+      </if>
+      <if test="cbpl09 != null">
+        CBPL09,
+      </if>
+      <if test="cbpl10 != null">
+        CBPL10,
+      </if>
+      <if test="cbpl11 != null">
+        CBPL11,
+      </if>
+      <if test="cbpl12 != null">
+        CBPL12,
+      </if>
+      <if test="cbpl13 != null">
+        CBPL13,
+      </if>
+      <if test="cbpl14 != null">
+        CBPL14,
+      </if>
+      <if test="cbpl15 != null">
+        CBPL15,
+      </if>
+      <if test="cbpl16 != null">
+        CBPL16,
+      </if>
+      <if test="cbpk01 != null">
+        CBPK01,
+      </if>
+      <if test="goodProductQty != null">
+        good_product_qty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpl01 != null">
+        #{cbpl01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl02 != null">
+        #{cbpl02,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl03 != null">
+        #{cbpl03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpl04 != null">
+        #{cbpl04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl05 != null">
+        #{cbpl05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpl06 != null">
+        #{cbpl06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl07 != null">
+        #{cbpl07,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl08 != null">
+        #{cbpl08,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl09 != null">
+        #{cbpl09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl10 != null">
+        #{cbpl10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl11 != null">
+        #{cbpl11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl12 != null">
+        #{cbpl12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl13 != null">
+        #{cbpl13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpl14 != null">
+        #{cbpl14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl15 != null">
+        #{cbpl15,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl16 != null">
+        #{cbpl16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk01 != null">
+        #{cbpk01,jdbcType=INTEGER},
+      </if>
+      <if test="goodProductQty != null">
+        #{goodProductQty,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbplCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPL`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBPL`
+    <set>
+      <if test="record.cbpl01 != null">
+        CBPL01 = #{record.cbpl01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl02 != null">
+        CBPL02 = #{record.cbpl02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl03 != null">
+        CBPL03 = #{record.cbpl03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpl04 != null">
+        CBPL04 = #{record.cbpl04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl05 != null">
+        CBPL05 = #{record.cbpl05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpl06 != null">
+        CBPL06 = #{record.cbpl06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl07 != null">
+        CBPL07 = #{record.cbpl07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl08 != null">
+        CBPL08 = #{record.cbpl08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl09 != null">
+        CBPL09 = #{record.cbpl09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpl10 != null">
+        CBPL10 = #{record.cbpl10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpl11 != null">
+        CBPL11 = #{record.cbpl11,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpl12 != null">
+        CBPL12 = #{record.cbpl12,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpl13 != null">
+        CBPL13 = #{record.cbpl13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpl14 != null">
+        CBPL14 = #{record.cbpl14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl15 != null">
+        CBPL15 = #{record.cbpl15,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpl16 != null">
+        CBPL16 = #{record.cbpl16,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpk01 != null">
+        CBPK01 = #{record.cbpk01,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodProductQty != null">
+        good_product_qty = #{record.goodProductQty,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPL`
+    set CBPL01 = #{record.cbpl01,jdbcType=INTEGER},
+      CBPL02 = #{record.cbpl02,jdbcType=INTEGER},
+      CBPL03 = #{record.cbpl03,jdbcType=TIMESTAMP},
+      CBPL04 = #{record.cbpl04,jdbcType=INTEGER},
+      CBPL05 = #{record.cbpl05,jdbcType=TIMESTAMP},
+      CBPL06 = #{record.cbpl06,jdbcType=INTEGER},
+      CBPL07 = #{record.cbpl07,jdbcType=INTEGER},
+      CBPL08 = #{record.cbpl08,jdbcType=INTEGER},
+      CBPL09 = #{record.cbpl09,jdbcType=DOUBLE},
+      CBPL10 = #{record.cbpl10,jdbcType=DOUBLE},
+      CBPL11 = #{record.cbpl11,jdbcType=DOUBLE},
+      CBPL12 = #{record.cbpl12,jdbcType=DOUBLE},
+      CBPL13 = #{record.cbpl13,jdbcType=VARCHAR},
+      CBPL14 = #{record.cbpl14,jdbcType=INTEGER},
+      CBPL15 = #{record.cbpl15,jdbcType=INTEGER},
+      CBPL16 = #{record.cbpl16,jdbcType=INTEGER},
+      CBPK01 = #{record.cbpk01,jdbcType=INTEGER},
+      good_product_qty = #{record.goodProductQty,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpl">
+    update `CBPL`
+    <set>
+      <if test="cbpl02 != null">
+        CBPL02 = #{cbpl02,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl03 != null">
+        CBPL03 = #{cbpl03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpl04 != null">
+        CBPL04 = #{cbpl04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl05 != null">
+        CBPL05 = #{cbpl05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpl06 != null">
+        CBPL06 = #{cbpl06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl07 != null">
+        CBPL07 = #{cbpl07,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl08 != null">
+        CBPL08 = #{cbpl08,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl09 != null">
+        CBPL09 = #{cbpl09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl10 != null">
+        CBPL10 = #{cbpl10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl11 != null">
+        CBPL11 = #{cbpl11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl12 != null">
+        CBPL12 = #{cbpl12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpl13 != null">
+        CBPL13 = #{cbpl13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpl14 != null">
+        CBPL14 = #{cbpl14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl15 != null">
+        CBPL15 = #{cbpl15,jdbcType=INTEGER},
+      </if>
+      <if test="cbpl16 != null">
+        CBPL16 = #{cbpl16,jdbcType=INTEGER},
+      </if>
+      <if test="cbpk01 != null">
+        CBPK01 = #{cbpk01,jdbcType=INTEGER},
+      </if>
+      <if test="goodProductQty != null">
+        good_product_qty = #{goodProductQty,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where CBPL01 = #{cbpl01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpl">
+    update `CBPL`
+    set CBPL02 = #{cbpl02,jdbcType=INTEGER},
+      CBPL03 = #{cbpl03,jdbcType=TIMESTAMP},
+      CBPL04 = #{cbpl04,jdbcType=INTEGER},
+      CBPL05 = #{cbpl05,jdbcType=TIMESTAMP},
+      CBPL06 = #{cbpl06,jdbcType=INTEGER},
+      CBPL07 = #{cbpl07,jdbcType=INTEGER},
+      CBPL08 = #{cbpl08,jdbcType=INTEGER},
+      CBPL09 = #{cbpl09,jdbcType=DOUBLE},
+      CBPL10 = #{cbpl10,jdbcType=DOUBLE},
+      CBPL11 = #{cbpl11,jdbcType=DOUBLE},
+      CBPL12 = #{cbpl12,jdbcType=DOUBLE},
+      CBPL13 = #{cbpl13,jdbcType=VARCHAR},
+      CBPL14 = #{cbpl14,jdbcType=INTEGER},
+      CBPL15 = #{cbpl15,jdbcType=INTEGER},
+      CBPL16 = #{cbpl16,jdbcType=INTEGER},
+      CBPK01 = #{cbpk01,jdbcType=INTEGER},
+      good_product_qty = #{goodProductQty,jdbcType=DOUBLE}
+    where CBPL01 = #{cbpl01,jdbcType=INTEGER}
+  </update>
+</mapper>

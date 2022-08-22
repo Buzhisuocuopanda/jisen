@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbpfMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpf">
+    <id column="CBPF01" jdbcType="INTEGER" property="cbpf01" />
+    <result column="CBPF02" jdbcType="INTEGER" property="cbpf02" />
+    <result column="CBPF03" jdbcType="INTEGER" property="cbpf03" />
+    <result column="CBPF04" jdbcType="DOUBLE" property="cbpf04" />
+    <result column="CBPF05" jdbcType="DOUBLE" property="cbpf05" />
+    <result column="CBPB01" jdbcType="INTEGER" property="cbpb01" />
+    <result column="CBPF06" jdbcType="INTEGER" property="cbpf06" />
+    <result column="CBPF07" jdbcType="TIMESTAMP" property="cbpf07" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPF01, CBPF02, CBPF03, CBPF04, CBPF05, CBPB01, CBPF06, CBPF07
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBPF`
+    where CBPF01 = #{cbpf01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBPF`
+    where CBPF01 = #{cbpf01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria">
+    delete from `CBPF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpf">
+    insert into `CBPF` (CBPF01, CBPF02, CBPF03, 
+      CBPF04, CBPF05, CBPB01, 
+      CBPF06, CBPF07)
+    values (#{cbpf01,jdbcType=INTEGER}, #{cbpf02,jdbcType=INTEGER}, #{cbpf03,jdbcType=INTEGER}, 
+      #{cbpf04,jdbcType=DOUBLE}, #{cbpf05,jdbcType=DOUBLE}, #{cbpb01,jdbcType=INTEGER}, 
+      #{cbpf06,jdbcType=INTEGER}, #{cbpf07,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpf">
+    insert into `CBPF`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpf01 != null">
+        CBPF01,
+      </if>
+      <if test="cbpf02 != null">
+        CBPF02,
+      </if>
+      <if test="cbpf03 != null">
+        CBPF03,
+      </if>
+      <if test="cbpf04 != null">
+        CBPF04,
+      </if>
+      <if test="cbpf05 != null">
+        CBPF05,
+      </if>
+      <if test="cbpb01 != null">
+        CBPB01,
+      </if>
+      <if test="cbpf06 != null">
+        CBPF06,
+      </if>
+      <if test="cbpf07 != null">
+        CBPF07,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpf01 != null">
+        #{cbpf01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf02 != null">
+        #{cbpf02,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf03 != null">
+        #{cbpf03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf04 != null">
+        #{cbpf04,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpf05 != null">
+        #{cbpf05,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpb01 != null">
+        #{cbpb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf06 != null">
+        #{cbpf06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf07 != null">
+        #{cbpf07,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpfCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBPF`
+    <set>
+      <if test="record.cbpf01 != null">
+        CBPF01 = #{record.cbpf01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpf02 != null">
+        CBPF02 = #{record.cbpf02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpf03 != null">
+        CBPF03 = #{record.cbpf03,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpf04 != null">
+        CBPF04 = #{record.cbpf04,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpf05 != null">
+        CBPF05 = #{record.cbpf05,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpb01 != null">
+        CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpf06 != null">
+        CBPF06 = #{record.cbpf06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpf07 != null">
+        CBPF07 = #{record.cbpf07,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPF`
+    set CBPF01 = #{record.cbpf01,jdbcType=INTEGER},
+      CBPF02 = #{record.cbpf02,jdbcType=INTEGER},
+      CBPF03 = #{record.cbpf03,jdbcType=INTEGER},
+      CBPF04 = #{record.cbpf04,jdbcType=DOUBLE},
+      CBPF05 = #{record.cbpf05,jdbcType=DOUBLE},
+      CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
+      CBPF06 = #{record.cbpf06,jdbcType=INTEGER},
+      CBPF07 = #{record.cbpf07,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpf">
+    update `CBPF`
+    <set>
+      <if test="cbpf02 != null">
+        CBPF02 = #{cbpf02,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf03 != null">
+        CBPF03 = #{cbpf03,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf04 != null">
+        CBPF04 = #{cbpf04,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpf05 != null">
+        CBPF05 = #{cbpf05,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpb01 != null">
+        CBPB01 = #{cbpb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf06 != null">
+        CBPF06 = #{cbpf06,jdbcType=INTEGER},
+      </if>
+      <if test="cbpf07 != null">
+        CBPF07 = #{cbpf07,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CBPF01 = #{cbpf01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpf">
+    update `CBPF`
+    set CBPF02 = #{cbpf02,jdbcType=INTEGER},
+      CBPF03 = #{cbpf03,jdbcType=INTEGER},
+      CBPF04 = #{cbpf04,jdbcType=DOUBLE},
+      CBPF05 = #{cbpf05,jdbcType=DOUBLE},
+      CBPB01 = #{cbpb01,jdbcType=INTEGER},
+      CBPF06 = #{cbpf06,jdbcType=INTEGER},
+      CBPF07 = #{cbpf07,jdbcType=TIMESTAMP}
+    where CBPF01 = #{cbpf01,jdbcType=INTEGER}
+  </update>
+</mapper>
