@@ -400,7 +400,7 @@
 
   <select id="SwJsStorelists" resultType="com.ruoyi.system.domain.vo.CbieVo">
     SELECT
-      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN
@@ -414,7 +414,7 @@
   </select>
   <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbieVo">
     SELECT
-      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN
@@ -438,7 +438,7 @@
   <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CbigVo">
     SELECT
       a.CBIE07,CBIE02,b.CBWA09,c.CALA08,e.CBSA08,f.CBLA09,h.CBPA07,i.CALA08,g.CBPB12,
-      g.CBPB15,g.cbpb08,d.CBIG10,d.CBIG13,d.CBIG15,d.CBIG15
+      g.CBPB15,g.cbpb08,d.CBIG10,d.CBIG13,d.CBIG15,d.CBIG15,a.CBIE01
     from
       CBIE a
         LEFT JOIN
@@ -479,7 +479,7 @@ where
   </select>
   <select id="SwJsStorelist" resultType="com.ruoyi.system.domain.vo.CbieVo">
     SELECT
-      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN
@@ -493,7 +493,7 @@ where
   </select>
   <select id="SwJsStoreslistss" resultType="com.ruoyi.system.domain.vo.CbieVo">
     SELECT
-      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10
+      a.CBIE07,a.CBIE02,b.CBWA09,a.cbie10,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN

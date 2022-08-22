@@ -676,4 +676,5 @@
       c.good_product_qty>0
   </select>
 
+
 </mapper>

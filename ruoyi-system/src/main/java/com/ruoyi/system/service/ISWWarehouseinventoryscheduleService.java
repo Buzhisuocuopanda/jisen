@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.CbsjVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +26,6 @@ public interface ISWWarehouseinventoryscheduleService {
     List<CbshVo> SwJsStorelists(CbshVo cbshVo);
 
     List<CbshVo> SwJsStorelistss(CbshVo cbshVo);
+
+    List<CbsjVo> SwJsStorelistsss(CbsjVo cbsjVo);
 }

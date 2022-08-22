@@ -7,14 +7,11 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
-import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.Cbsc;
-import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.Dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpkVo;
-import com.ruoyi.system.domain.vo.CbqaVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
+import com.ruoyi.system.domain.vo.CbscVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import io.swagger.annotations.Api;
@@ -252,6 +249,7 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+
     /**
      * 新增销售出库单删除
      */
@@ -274,4 +272,6 @@ public class SelloutofwarehouseController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
 }

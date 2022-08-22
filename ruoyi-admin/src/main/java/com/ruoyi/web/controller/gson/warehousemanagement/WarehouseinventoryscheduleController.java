@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -12,6 +13,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.CbsjVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
 import io.swagger.annotations.Api;
@@ -59,7 +61,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细新建列表查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbshVo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点明细新建列表查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbshVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -188,6 +190,28 @@ public class WarehouseinventoryscheduleController extends BaseController {
 
         } catch (Exception e) {
             log.error("【仓库盘点明细新列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbshVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+    /**
+     * 仓库盘点明细详情
+     */
+    @ApiOperation(
+            value ="仓库盘点明细详情",
+            notes = "仓库盘点明细详情"
+    )
+    @GetMapping("/SwJsStorelistdetail")
+    public AjaxResult<TableDataInfo> SwJsStorelistsss(CbsjVo cbsjVo) {
+        try {
+            startPage();
+            List<CbsjVo> list = warehouseinventoryscheduleService.SwJsStorelistsss(cbsjVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsjVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

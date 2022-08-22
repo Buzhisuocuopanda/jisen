@@ -9,6 +9,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
+import com.ruoyi.system.domain.vo.CbscVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
@@ -215,6 +216,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     public List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo) {
         return cbpkMapper.selectswJsSkuBaxsthelist(cbpkVo);
     }
+
+
 
 
 }

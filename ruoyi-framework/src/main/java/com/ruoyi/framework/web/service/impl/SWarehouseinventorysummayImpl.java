@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
+import com.ruoyi.system.domain.vo.CbsisVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsiMapper;
@@ -164,6 +165,11 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return   cbshMapper.updateByExampleSelective(cbsh, example);
+    }
+
+    @Override
+    public List<CbsisVo> SwJsStorelistsss(CbsisVo cbsisVo) {
+        return   cbshMapper.SwJsStorlistsss(cbsisVo);
     }
 
 

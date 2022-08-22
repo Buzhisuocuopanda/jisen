@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Dto.CblaDto;
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.CbsjVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsjMapper;
@@ -144,6 +145,11 @@ private CbsjMapper cbbsjMapper;
     @Override
     public List<CbshVo> SwJsStorelistss(CbshVo cbshVo) {
         return   cbshMapper.SwJsStorelistss(cbshVo);    }
+
+    @Override
+    public List<CbsjVo> SwJsStorelistsss(CbsjVo cbsjVo) {
+        return   cbshMapper.SwJsStorelistsss(cbsjVo);
+    }
 
 
 }

@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
+import com.ruoyi.system.domain.vo.CbscVo;
 import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
@@ -28,4 +29,5 @@ public interface ISelloutofwarehouseService {
     int insertSwJsSkuBarcodel(CbsbDo cbsbDo);
 
     List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
+
 }

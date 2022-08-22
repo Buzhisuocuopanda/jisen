@@ -5,6 +5,8 @@ import com.ruoyi.system.domain.CbshCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbshVo;
+import com.ruoyi.system.domain.vo.CbsisVo;
+import com.ruoyi.system.domain.vo.CbsjVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbshMapper {
@@ -35,4 +37,8 @@ public interface CbshMapper {
     List<CbshVo> SwJsStorelists(CbshVo cbshVo);
 
     List<CbshVo> SwJsStorelistss(CbshVo cbshVo);
+
+    List<CbsjVo> SwJsStorelistsss(CbsjVo cbsjVo);
+
+    List<CbsisVo> SwJsStorlistsss(CbsisVo cbsisVo);
 }
