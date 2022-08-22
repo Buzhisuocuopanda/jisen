@@ -33,6 +33,8 @@ public class NumberGenerate {
     private CbpkMapper cbpkMapper;
 
 
+
+
     public NumberVo createOrderNo(NumberDo numberDo){
         NumberVo res=new NumberVo();
         if(NumberGenerateEnum.SALEORDER.getCode().equals(numberDo.getType())){
@@ -136,13 +138,13 @@ public class NumberGenerate {
     private Integer getNum(String orderNo,int index){
         String substring = orderNo.substring(index);
         if(substring.startsWith("000")){
-            return Integer.valueOf(substring.substring(3));
+            return Integer.valueOf(substring.substring(3))+1;
         }else if(substring.startsWith("00")){
-            return Integer.valueOf(substring.substring(2));
+            return Integer.valueOf(substring.substring(2))+1;
         }else if(substring.startsWith("0")) {
-            return Integer.valueOf(substring.substring(1));
+            return Integer.valueOf(substring.substring(1))+1;
         }else {
-            return Integer.valueOf(substring.substring(0));
+            return Integer.valueOf(substring.substring(0))+1;
         }
     }
 

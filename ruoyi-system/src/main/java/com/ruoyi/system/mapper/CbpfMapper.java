@@ -27,7 +27,7 @@ public interface CbpfMapper {
     int updateByPrimaryKeySelective(Cbpf record);
 
     int updateByPrimaryKey(Cbpf record);
-}
+
 
 
     int insertCBPF(Cbpf cbpf);
