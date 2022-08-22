@@ -93,6 +93,13 @@ private CbsjMapper cbbsjMapper;
 
     @Override
     public int swJsStoreend(CbshDo cbshDo) {
+        CbshCriteria example1 = new CbshCriteria();
+        example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
+        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())||!cbshes.get(0).getCbsh09().equals(TaskStatus.fsh.getCode())){
+            throw new SwException("非审核和反审不能完成");
+        }
         Long userId = SecurityUtils.getUserId();
 
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
@@ -109,6 +116,13 @@ private CbsjMapper cbbsjMapper;
 
     @Override
     public int swJsStoreendd(CbshDo cbshDo) {
+        CbshCriteria example1 = new CbshCriteria();
+        example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
+        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.bjwc.getCode())){
+            throw new SwException("非标记完成不能取消");
+        }
         Long userId = SecurityUtils.getUserId();
 
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
@@ -116,7 +130,7 @@ private CbsjMapper cbbsjMapper;
         cbsh.setCbsh03(date);
         cbsh.setCbsh05(Math.toIntExact(userId));
         cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbsh.setCbsh09(TaskStatus.qxwc.getCode());
+        cbsh.setCbsh09(TaskStatus.sh.getCode());
         CbshCriteria example = new CbshCriteria();
         example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

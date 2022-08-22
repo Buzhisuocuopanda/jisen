@@ -146,9 +146,10 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
     @Override
     public int swJsStoreendds(CbieDo cbieDo) {
         CbieCriteria example1 = new CbieCriteria();
-        example1.createCriteria().andCbie10EqualTo(TaskStatus.sh.getCode());
+        example1.createCriteria().andCbie01EqualTo(cbieDo.getCbie01())
+                .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example1);
-        if (cbies.size() > 0) {
+        if (!cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())) {
             throw new SwException("审核状态才能反审");
         }
 
@@ -168,6 +169,13 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Override
     public int SwJsSkuBarcodeshsss(CbifDo cbifDo) {
+        CbieCriteria example1 = new CbieCriteria();
+        example1.createCriteria().andCbie01EqualTo(cbifDo.getCbie01())
+                .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbie> cbies = cbieMapper.selectByExample(example1);
+        if (!cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||!cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {
+            throw new SwException("审核状态才能反审");
+        }
         Cbie cbie = cbieMapper.selectByPrimaryKey(cbifDo.getCbie01());
         //仓库id
         Integer storeid = cbie.getCbie09();

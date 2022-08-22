@@ -83,6 +83,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpg.setCbpg08(date);
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setUserId(Math.toIntExact(userid));
         cbpgMapper.insertSelective(cbpg);
         CbpgCriteria example1 = new CbpgCriteria();
@@ -306,6 +307,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -328,6 +333,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.bjwc.getCode())){
+            throw new SwException("不是标记完成状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -352,8 +361,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
 
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
-        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
-            throw new SwException("不是审核状态");
+        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())||!cbpg1.getCbpg11().equals(TaskStatus.fsh.getCode())){
+            throw new SwException("不是审核状态或反审状态");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);

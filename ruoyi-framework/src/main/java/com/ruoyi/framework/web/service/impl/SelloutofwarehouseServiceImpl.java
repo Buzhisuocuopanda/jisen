@@ -153,7 +153,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
-        if(!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())){
+        if(!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())||!cbsb1.getCbsb11().equals(TaskStatus.fsh.getCode())){
             throw new SwException(" 审核状态才能审核完成");
         }
         Long userid = SecurityUtils.getUserId();
@@ -178,7 +178,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         Date date = new Date();
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
-        cbsb.setCbsb11(TaskStatus.qxwc.getCode());
+        cbsb.setCbsb11(TaskStatus.sh.getCode());
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -206,7 +206,6 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
         cbsb.setCbsb06(DeleteFlagEnum.DELETE.getCode());
-        cbsb.setCbsb11(TaskStatus.fsh.getCode());
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

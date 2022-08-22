@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBSE01, CBSE02, CBSE03, CBSE04, CBSE05, CBSE06, CBSE07, CBSE08, CBSE09, CBSE10, CBSE11, 
+    CBSE01, CBSE02, CBSE03, CBSE04, CBSE05, CBSE06, CBSE07, CBSE08, CBSE09, CBSE10, CBSE11,
     CBSE12, CBSE13, CBSE14, CBSE15, CBSE16, CBSE17, CBSE18, user_id, change_type
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbseCriteria" resultMap="BaseResultMap">
@@ -100,7 +100,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBSE`
     where CBSE01 = #{cbse01,jdbcType=INTEGER}
@@ -116,19 +116,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbse">
-    insert into `CBSE` (CBSE01, CBSE02, CBSE03, 
-      CBSE04, CBSE05, CBSE06, 
-      CBSE07, CBSE08, CBSE09, 
-      CBSE10, CBSE11, CBSE12, 
-      CBSE13, CBSE14, CBSE15, 
-      CBSE16, CBSE17, CBSE18, 
+    insert into `CBSE` (CBSE01, CBSE02, CBSE03,
+      CBSE04, CBSE05, CBSE06,
+      CBSE07, CBSE08, CBSE09,
+      CBSE10, CBSE11, CBSE12,
+      CBSE13, CBSE14, CBSE15,
+      CBSE16, CBSE17, CBSE18,
       user_id, change_type)
-    values (#{cbse01,jdbcType=INTEGER}, #{cbse02,jdbcType=TIMESTAMP}, #{cbse03,jdbcType=INTEGER}, 
-      #{cbse04,jdbcType=TIMESTAMP}, #{cbse05,jdbcType=INTEGER}, #{cbse06,jdbcType=INTEGER}, 
-      #{cbse07,jdbcType=VARCHAR}, #{cbse08,jdbcType=TIMESTAMP}, #{cbse09,jdbcType=INTEGER}, 
-      #{cbse10,jdbcType=INTEGER}, #{cbse11,jdbcType=INTEGER}, #{cbse12,jdbcType=INTEGER}, 
-      #{cbse13,jdbcType=TIMESTAMP}, #{cbse14,jdbcType=INTEGER}, #{cbse15,jdbcType=TIMESTAMP}, 
-      #{cbse16,jdbcType=INTEGER}, #{cbse17,jdbcType=VARCHAR}, #{cbse18,jdbcType=INTEGER}, 
+    values (#{cbse01,jdbcType=INTEGER}, #{cbse02,jdbcType=TIMESTAMP}, #{cbse03,jdbcType=INTEGER},
+      #{cbse04,jdbcType=TIMESTAMP}, #{cbse05,jdbcType=INTEGER}, #{cbse06,jdbcType=INTEGER},
+      #{cbse07,jdbcType=VARCHAR}, #{cbse08,jdbcType=TIMESTAMP}, #{cbse09,jdbcType=INTEGER},
+      #{cbse10,jdbcType=INTEGER}, #{cbse11,jdbcType=INTEGER}, #{cbse12,jdbcType=INTEGER},
+      #{cbse13,jdbcType=TIMESTAMP}, #{cbse14,jdbcType=INTEGER}, #{cbse15,jdbcType=TIMESTAMP},
+      #{cbse16,jdbcType=INTEGER}, #{cbse17,jdbcType=VARCHAR}, #{cbse18,jdbcType=INTEGER},
       #{userId,jdbcType=INTEGER}, #{changeType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbse">
@@ -264,7 +264,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBSE`
     <set>
       <if test="record.cbse01 != null">
@@ -444,4 +444,35 @@
       change_type = #{changeType,jdbcType=INTEGER}
     where CBSE01 = #{cbse01,jdbcType=INTEGER}
   </update>
+
+  <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbseVo">
+    SELECT
+      a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,a.CBSE18,a.CBSE11,a.CBSE01
+    from
+      CBSE a
+        LEFT JOIN
+      CBCA b
+      on
+        a.CBSE09=b.CBCA01
+        LEFT JOIN
+      CBWA c
+      on
+        c.CBWA01=a.CBSE10
+        LEFT JOIN
+      CALA d
+      on
+        d.CALA01=a.CBSE16
+            where a.CBSE06=0
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBSE08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBSE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+    <if test="cbse07 != null "> and a.cbse07 = #{cbse07}</if>
+    <if test="cbca08 != null "> and b.cbca08 = #{cbca08}</if>
+
+
+  </select>
+
 </mapper>

@@ -322,8 +322,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())){
-            throw new SwException("不是审核状态");
+        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||!cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){
+            throw new SwException("不是审核状态或反审状态不能标记完成");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -505,7 +505,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
         cbpc.setCbpc04(date);
         cbpc.setCbpc05(Math.toIntExact(userid));
-        cbpc.setCbpc11(TaskStatus.qxwc.getCode());
+        cbpc.setCbpc11(TaskStatus.sh.getCode());
         cbpc.setCbpc12(Math.toIntExact(userid));
         cbpc.setCbpc13(date);
         CbpcCriteria example = new CbpcCriteria();

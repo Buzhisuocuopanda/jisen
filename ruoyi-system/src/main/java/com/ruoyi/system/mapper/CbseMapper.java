@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbse;
 import com.ruoyi.system.domain.CbseCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbseVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbseMapper {
@@ -27,4 +29,6 @@ public interface CbseMapper {
     int updateByPrimaryKeySelective(Cbse record);
 
     int updateByPrimaryKey(Cbse record);
+
+    List<CbseVo> selectSwJsTaskGoodsRelLists(CbseVo cbsbVo);
 }
