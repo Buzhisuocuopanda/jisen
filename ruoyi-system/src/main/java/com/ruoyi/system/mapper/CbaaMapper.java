@@ -34,7 +34,7 @@ public interface CbaaMapper {
 
     List<CbaaVo> selectSwJsTaskGoodsRelList(CbaaVo cbaaVo);
 
-    List<CbsbVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo);
+    List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo);
 
-    List<CbsbVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
+    List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
 }

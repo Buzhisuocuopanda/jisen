@@ -176,7 +176,8 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         example1.createCriteria().andCbie01EqualTo(cbifDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example1);
-        if (!cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||!cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {
+        if (cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {}
+        else{
             throw new SwException("审核状态才能反审");
         }
         Cbie cbie = cbieMapper.selectByPrimaryKey(cbifDo.getCbie01());

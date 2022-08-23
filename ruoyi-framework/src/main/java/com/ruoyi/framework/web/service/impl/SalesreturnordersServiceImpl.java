@@ -184,7 +184,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbse> cbses = cbseMapper.selectByExample(example);
-        if(!cbses.get(0).getCbse11().equals(TaskStatus.sh.getCode())||!cbses.get(0).getCbse11().equals(TaskStatus.fsh.getCode())){
+        if(cbses.get(0).getCbse11().equals(TaskStatus.sh.getCode())||cbses.get(0).getCbse11().equals(TaskStatus.fsh.getCode())){}
+        else{
             throw new SwException("审核状态或反审才能标记完成");
         }
         Long userid = SecurityUtils.getUserId();

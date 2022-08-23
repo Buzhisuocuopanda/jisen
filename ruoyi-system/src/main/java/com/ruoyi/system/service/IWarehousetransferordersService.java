@@ -21,7 +21,7 @@ public interface IWarehousetransferordersService {
 
     List<CbaaVo> selectSwJsTaskGoodsRelList(CbaaVo cbaaVo);
 
-    List<CbsbVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo);
+    List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo);
 
     int insertSwJsSkuBarcodesh(CbaaDo cbaaDo);
 
@@ -34,5 +34,5 @@ public interface IWarehousetransferordersService {
 
     int insertSwJsSkuBarcodeupdate(CbaaDo cbaaDo);
 
-    List<CbsbVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
+    List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
 }

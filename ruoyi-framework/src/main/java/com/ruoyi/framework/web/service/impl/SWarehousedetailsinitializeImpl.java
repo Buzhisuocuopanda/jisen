@@ -130,7 +130,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         example1.createCriteria().andCbie01EqualTo(cbigDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example1);
-        if(!cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||!cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {
+        if(cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {}
+        else{
             throw new SwException("审核状态或反审才能标记完成");
         }
 

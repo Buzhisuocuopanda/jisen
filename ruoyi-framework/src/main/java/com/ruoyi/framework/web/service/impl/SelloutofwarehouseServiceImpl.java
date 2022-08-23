@@ -157,7 +157,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
-        if(!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())||!cbsb1.getCbsb11().equals(TaskStatus.fsh.getCode())){
+        if(cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())||cbsb1.getCbsb11().equals(TaskStatus.fsh.getCode())){}
+        else{
             throw new SwException(" 审核状态才能审核完成");
         }
         Long userid = SecurityUtils.getUserId();

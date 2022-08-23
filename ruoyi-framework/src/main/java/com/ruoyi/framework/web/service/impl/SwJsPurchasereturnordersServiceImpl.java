@@ -365,7 +365,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
 
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
-        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())||!cbpg1.getCbpg11().equals(TaskStatus.fsh.getCode())){
+        if(cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())||cbpg1.getCbpg11().equals(TaskStatus.fsh.getCode())){}
+        else{
             throw new SwException("不是审核状态或反审状态");
         }
         Long userid = SecurityUtils.getUserId();

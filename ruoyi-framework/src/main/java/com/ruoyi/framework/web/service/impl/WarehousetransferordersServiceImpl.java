@@ -116,7 +116,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
      * 仓库调拨单查询
      */
     @Override
-    public List<CbsbVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo) {
+    public List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo) {
         return cbaaMapper.selectSwJsTaskGoodsRelLists(cbaaVo);
     }
 
@@ -185,7 +185,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbaa> cbaasw = cbaaMapper.selectByExample(example1);
-        if (!cbaasw.get(0).getCbaa11().equals(TaskStatus.sh.getCode())||!cbaasw.get(0).getCbaa11().equals(TaskStatus.fsh.getCode())) {
+        if (cbaasw.get(0).getCbaa11().equals(TaskStatus.sh.getCode())||cbaasw.get(0).getCbaa11().equals(TaskStatus.fsh.getCode())){}
+        else {
             throw new SwException("审核状态或反审才能标记完成");
 
         }
@@ -254,7 +255,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     }
 
     @Override
-    public List<CbsbVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo) {
+    public List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo) {
         return cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
     }
 

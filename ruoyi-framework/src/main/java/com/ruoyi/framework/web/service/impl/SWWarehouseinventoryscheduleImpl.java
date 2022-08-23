@@ -99,7 +99,8 @@ private CbsjMapper cbbsjMapper;
         example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
-        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())||!cbshes.get(0).getCbsh09().equals(TaskStatus.fsh.getCode())){
+        if(cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())||cbshes.get(0).getCbsh09().equals(TaskStatus.fsh.getCode())){}
+        else{
             throw new SwException("非审核和反审不能完成");
         }
         Long userId = SecurityUtils.getUserId();
