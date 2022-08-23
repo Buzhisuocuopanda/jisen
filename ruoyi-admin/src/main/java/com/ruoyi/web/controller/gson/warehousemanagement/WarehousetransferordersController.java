@@ -120,7 +120,7 @@ public class WarehousetransferordersController extends BaseController {
     public AjaxResult<TableDataInfo> swJsGoodslists(CbaaVo cbaaVo) {
         try {
             startPage();
-            List<CbsbVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelLists(cbaaVo);
+            List<CbaaVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelLists(cbaaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -143,7 +143,7 @@ public class WarehousetransferordersController extends BaseController {
     public AjaxResult<TableDataInfo> swJsGoodslistss(CbaasVo cbaasVo) {
         try {
             startPage();
-            List<CbsbVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListss(cbaasVo);
+            List<CbaasVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListss(cbaasVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

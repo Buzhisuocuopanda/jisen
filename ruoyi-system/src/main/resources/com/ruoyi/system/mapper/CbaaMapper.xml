@@ -466,7 +466,7 @@
 where
     a.CBAA06=0
   </select>
-  <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbsbVo">
+  <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbaaVo">
     SELECT
       a.CBAA01, a.CBAA07,a.CBAA08,b.CBWA09,b.CBWA10,d.CALA08,a.CBAA18,a.CBAA19,a.CBAA11
 
@@ -512,7 +512,7 @@ where
       and date_format(a.CBAA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
   </select>
-    <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbVo">
+    <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbaasVo">
       SELECT
         a.CBAA07,a.CBAA08,b.CBWA09,b.CBWA10,d.CALA08,e.CBSA08,f.CBAB15,
         g.CBPB10,g.CBPB12,g.CBPB08,f.CBAB09,f.CBAB09,f.CBAB11,f.CBAB13,

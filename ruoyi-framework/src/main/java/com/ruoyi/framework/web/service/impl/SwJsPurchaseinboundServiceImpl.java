@@ -325,7 +325,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||!cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){
+        if(cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){}
+        else {
             throw new SwException("不是审核状态或反审状态不能标记完成");
         }
         Long userid = SecurityUtils.getUserId();
