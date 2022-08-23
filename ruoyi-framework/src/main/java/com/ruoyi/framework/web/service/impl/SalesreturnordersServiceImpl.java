@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbseDo;
 import com.ruoyi.system.domain.vo.CbseVo;
+import com.ruoyi.system.domain.vo.CbsesVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.CbseMapper;
@@ -218,6 +219,11 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     public List<CbseVo> selectSwJsTaskGoodsRelLists(CbseVo cbsbVo) {
 
         return cbseMapper.selectSwJsTaskGoodsRelLists(cbsbVo); }
+
+    @Override
+    public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
+        return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+    }
 
 
 }

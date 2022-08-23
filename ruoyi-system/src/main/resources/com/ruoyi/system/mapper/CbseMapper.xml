@@ -474,5 +474,50 @@
 
 
   </select>
+    <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsesVo">
+      SELECT
+        a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,a.CBSE18,
+        i.CBSA08,e.CBSF16,g.CALA08,f.CBPB12,f.CBPB08,e.CBSF09,e.CBSF09,
+        e.CBSF11,e.CBSF12,e.CBSF13,h.CBSG09,l.CBLA09,a.CBSE01
+      from
+        CBSE a
+          LEFT JOIN
+        CBCA b
+        on
+          a.CBSE09=b.CBCA01
+          LEFT JOIN
+        CBWA c
+        on
+          c.CBWA01=a.CBSE10
+          LEFT JOIN
+        CALA d
+        on
+          d.CALA01=a.CBSE16
+          LEFT JOIN
+        CBSF e
+        on
+          a.CBSE01=e.CBSE01
+          LEFT JOIN
+        CBPB f
+        ON
+          f.CBPB01=e.CBSF08
+          LEFT JOIN
+        CALA g
+        ON
+          g.CALA01=f.CBPB10
+          LEFT JOIN
+        CBSG h
+        ON
+          h.CBSE01=a.CBSE01
+          LEFT JOIN
+        CBSA i
+        ON
+          i.CBSA01=e.CBSF15
+          LEFT JOIN
+        CBLA l
+        ON
+          l.CBLA01=h.CBSG10
+where
+        a.CBSE01 = #{cbse01,jdbcType=TIMESTAMP}    </select>
 
 </mapper>

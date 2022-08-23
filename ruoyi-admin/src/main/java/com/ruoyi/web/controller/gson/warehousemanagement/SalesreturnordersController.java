@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.CbseDo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.CbseVo;
+import com.ruoyi.system.domain.vo.CbsesVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISalesreturnordersService;
 import io.swagger.annotations.Api;
@@ -222,6 +223,29 @@ public class SalesreturnordersController extends BaseController {
 
         } catch (Exception e) {
             log.error("【销售退库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsbVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 销售退库单查询
+     */
+    @ApiOperation(
+            value ="销售退库单查询",
+            notes = "销售退库单查询"
+    )
+    @GetMapping("/SwJsSkuBarcodelists")
+    public AjaxResult<TableDataInfo> swJsGoodslists(CbsesVo cbsesVo) {
+        try {
+            startPage();
+            List<CbsesVo> list = salesreturnordersService.selectSwJsTaskGoodsRelListss(cbsesVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售退库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsesVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
