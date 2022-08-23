@@ -229,13 +229,13 @@ public class SalesreturnordersController extends BaseController {
     }
 
     /**
-     * 销售退库单查询
+     * 销售退库单详情
      */
     @ApiOperation(
-            value ="销售退库单查询",
-            notes = "销售退库单查询"
+            value ="销售退库单详情",
+            notes = "销售退库单详情"
     )
-    @GetMapping("/SwJsSkuBarcodelists")
+    @GetMapping("/SwJsSkuBarcodelistss")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbsesVo cbsesVo) {
         try {
             startPage();
@@ -245,7 +245,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsesVo),ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsesVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
