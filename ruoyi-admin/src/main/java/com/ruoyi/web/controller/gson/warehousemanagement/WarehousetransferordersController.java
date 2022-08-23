@@ -117,7 +117,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单查询"
     )
     @GetMapping("/SwJsSkuBarcodelists")
-    public AjaxResult<TableDataInfo> swJsGoodslists(CbaaVo cbaaVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists( CbaaVo cbaaVo) {
         try {
             startPage();
             List<CbaaVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelLists(cbaaVo);
@@ -140,7 +140,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslistss(CbaasVo cbaasVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslistss(@RequestBody CbaasVo cbaasVo) {
         try {
             startPage();
             List<CbaasVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListss(cbaasVo);

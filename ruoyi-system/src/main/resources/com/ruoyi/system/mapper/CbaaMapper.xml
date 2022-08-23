@@ -516,7 +516,7 @@ where
       SELECT
         a.CBAA07,a.CBAA08,b.CBWA09,b.CBWA10,d.CALA08,e.CBSA08,f.CBAB15,
         g.CBPB10,g.CBPB12,g.CBPB08,f.CBAB09,f.CBAB09,f.CBAB11,f.CBAB13,
-        h.CBPA08,l.CBAC09,m.CBLA09
+        h.CBPA08,l.CBAC09,m.CBLA09,a.CBAA01
       from
         CBAA a
           LEFT JOIN
@@ -555,8 +555,8 @@ where
         CBLA m
         ON
           m.CBLA01=l.CBAC10
-      WHERE
-        a.CBAA01= #{cbaa01,jdbcType=INTEGER}
+      where a.CBAA01 = #{cbaa01}
+
     </select>
 
 </mapper>
