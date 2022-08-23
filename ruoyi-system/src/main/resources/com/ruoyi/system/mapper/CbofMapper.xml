@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbofMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbof">
+    <id column="CBOF01" jdbcType="INTEGER" property="cbof01" />
+    <result column="CBOF02" jdbcType="INTEGER" property="cbof02" />
+    <result column="CBOF03" jdbcType="TIMESTAMP" property="cbof03" />
+    <result column="CBOF04" jdbcType="INTEGER" property="cbof04" />
+    <result column="CBOF05" jdbcType="TIMESTAMP" property="cbof05" />
+    <result column="CBOF06" jdbcType="INTEGER" property="cbof06" />
+    <result column="CBOF07" jdbcType="INTEGER" property="cbof07" />
+    <result column="CBOF08" jdbcType="INTEGER" property="cbof08" />
+    <result column="CBOF09" jdbcType="DOUBLE" property="cbof09" />
+    <result column="CBOF13" jdbcType="VARCHAR" property="cbof13" />
+    <result column="CBOE01" jdbcType="INTEGER" property="cboe01" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBOF01, CBOF02, CBOF03, CBOF04, CBOF05, CBOF06, CBOF07, CBOF08, CBOF09, CBOF13, CBOE01
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbofCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBOF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBOF`
+    where CBOF01 = #{cbof01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBOF`
+    where CBOF01 = #{cbof01,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbofCriteria">
+    delete from `CBOF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbof">
+    insert into `CBOF` (CBOF01, CBOF02, CBOF03, 
+      CBOF04, CBOF05, CBOF06, 
+      CBOF07, CBOF08, CBOF09, 
+      CBOF13, CBOE01)
+    values (#{cbof01,jdbcType=INTEGER}, #{cbof02,jdbcType=INTEGER}, #{cbof03,jdbcType=TIMESTAMP}, 
+      #{cbof04,jdbcType=INTEGER}, #{cbof05,jdbcType=TIMESTAMP}, #{cbof06,jdbcType=INTEGER}, 
+      #{cbof07,jdbcType=INTEGER}, #{cbof08,jdbcType=INTEGER}, #{cbof09,jdbcType=DOUBLE}, 
+      #{cbof13,jdbcType=VARCHAR}, #{cboe01,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbof">
+    insert into `CBOF`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbof01 != null">
+        CBOF01,
+      </if>
+      <if test="cbof02 != null">
+        CBOF02,
+      </if>
+      <if test="cbof03 != null">
+        CBOF03,
+      </if>
+      <if test="cbof04 != null">
+        CBOF04,
+      </if>
+      <if test="cbof05 != null">
+        CBOF05,
+      </if>
+      <if test="cbof06 != null">
+        CBOF06,
+      </if>
+      <if test="cbof07 != null">
+        CBOF07,
+      </if>
+      <if test="cbof08 != null">
+        CBOF08,
+      </if>
+      <if test="cbof09 != null">
+        CBOF09,
+      </if>
+      <if test="cbof13 != null">
+        CBOF13,
+      </if>
+      <if test="cboe01 != null">
+        CBOE01,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbof01 != null">
+        #{cbof01,jdbcType=INTEGER},
+      </if>
+      <if test="cbof02 != null">
+        #{cbof02,jdbcType=INTEGER},
+      </if>
+      <if test="cbof03 != null">
+        #{cbof03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbof04 != null">
+        #{cbof04,jdbcType=INTEGER},
+      </if>
+      <if test="cbof05 != null">
+        #{cbof05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbof06 != null">
+        #{cbof06,jdbcType=INTEGER},
+      </if>
+      <if test="cbof07 != null">
+        #{cbof07,jdbcType=INTEGER},
+      </if>
+      <if test="cbof08 != null">
+        #{cbof08,jdbcType=INTEGER},
+      </if>
+      <if test="cbof09 != null">
+        #{cbof09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbof13 != null">
+        #{cbof13,jdbcType=VARCHAR},
+      </if>
+      <if test="cboe01 != null">
+        #{cboe01,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbofCriteria" resultType="java.lang.Long">
+    select count(*) from `CBOF`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBOF`
+    <set>
+      <if test="record.cbof01 != null">
+        CBOF01 = #{record.cbof01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof02 != null">
+        CBOF02 = #{record.cbof02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof03 != null">
+        CBOF03 = #{record.cbof03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbof04 != null">
+        CBOF04 = #{record.cbof04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof05 != null">
+        CBOF05 = #{record.cbof05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbof06 != null">
+        CBOF06 = #{record.cbof06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof07 != null">
+        CBOF07 = #{record.cbof07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof08 != null">
+        CBOF08 = #{record.cbof08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbof09 != null">
+        CBOF09 = #{record.cbof09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbof13 != null">
+        CBOF13 = #{record.cbof13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cboe01 != null">
+        CBOE01 = #{record.cboe01,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBOF`
+    set CBOF01 = #{record.cbof01,jdbcType=INTEGER},
+      CBOF02 = #{record.cbof02,jdbcType=INTEGER},
+      CBOF03 = #{record.cbof03,jdbcType=TIMESTAMP},
+      CBOF04 = #{record.cbof04,jdbcType=INTEGER},
+      CBOF05 = #{record.cbof05,jdbcType=TIMESTAMP},
+      CBOF06 = #{record.cbof06,jdbcType=INTEGER},
+      CBOF07 = #{record.cbof07,jdbcType=INTEGER},
+      CBOF08 = #{record.cbof08,jdbcType=INTEGER},
+      CBOF09 = #{record.cbof09,jdbcType=DOUBLE},
+      CBOF13 = #{record.cbof13,jdbcType=VARCHAR},
+      CBOE01 = #{record.cboe01,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbof">
+    update `CBOF`
+    <set>
+      <if test="cbof02 != null">
+        CBOF02 = #{cbof02,jdbcType=INTEGER},
+      </if>
+      <if test="cbof03 != null">
+        CBOF03 = #{cbof03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbof04 != null">
+        CBOF04 = #{cbof04,jdbcType=INTEGER},
+      </if>
+      <if test="cbof05 != null">
+        CBOF05 = #{cbof05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbof06 != null">
+        CBOF06 = #{cbof06,jdbcType=INTEGER},
+      </if>
+      <if test="cbof07 != null">
+        CBOF07 = #{cbof07,jdbcType=INTEGER},
+      </if>
+      <if test="cbof08 != null">
+        CBOF08 = #{cbof08,jdbcType=INTEGER},
+      </if>
+      <if test="cbof09 != null">
+        CBOF09 = #{cbof09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbof13 != null">
+        CBOF13 = #{cbof13,jdbcType=VARCHAR},
+      </if>
+      <if test="cboe01 != null">
+        CBOE01 = #{cboe01,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBOF01 = #{cbof01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbof">
+    update `CBOF`
+    set CBOF02 = #{cbof02,jdbcType=INTEGER},
+      CBOF03 = #{cbof03,jdbcType=TIMESTAMP},
+      CBOF04 = #{cbof04,jdbcType=INTEGER},
+      CBOF05 = #{cbof05,jdbcType=TIMESTAMP},
+      CBOF06 = #{cbof06,jdbcType=INTEGER},
+      CBOF07 = #{cbof07,jdbcType=INTEGER},
+      CBOF08 = #{cbof08,jdbcType=INTEGER},
+      CBOF09 = #{cbof09,jdbcType=DOUBLE},
+      CBOF13 = #{cbof13,jdbcType=VARCHAR},
+      CBOE01 = #{cboe01,jdbcType=INTEGER}
+    where CBOF01 = #{cbof01,jdbcType=INTEGER}
+  </update>
+</mapper>

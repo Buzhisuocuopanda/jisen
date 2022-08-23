@@ -9,7 +9,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cala;
-import com.ruoyi.system.domain.Dto.CalaDto;
+import com.ruoyi.system.domain.dto.CalaDto;
 import com.ruoyi.system.service.ISwJsListService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

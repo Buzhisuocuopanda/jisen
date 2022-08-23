@@ -2,26 +2,20 @@ package com.ruoyi.web.controller.gson.salemanage;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
-import com.ruoyi.system.domain.Cbca;
-import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.SaleOrderService;
 import io.swagger.annotations.ApiOperation;
-import jdk.nashorn.api.scripting.AbstractJSObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -524,7 +518,7 @@ public class SaleOrderController extends BaseController {
     public AjaxResult addSaleOrderChange(@RequestBody SaleOrderChangeDto saleOrderChangeDto) {
         try {
             saleOrderChangeDto.setUserId(getUserId().intValue());
-         saleOrderService.addSaleOrderChange(saleOrderChangeDto);
+            saleOrderService.addSaleOrderChange(saleOrderChangeDto);
             return AjaxResult.success();
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

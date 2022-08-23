@@ -397,7 +397,7 @@ where
   </select>
     <select id="SwJsStorelists" resultType="com.ruoyi.system.domain.vo.CbshVo">
       SELECT
-        a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09
+        a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09,a.CBSH01
       from
         CBSH a
           LEFT JOIN
@@ -419,7 +419,72 @@ a.CBSH06=0
     <if test='cbsh07 != null and cbsh07 != ""'> and a.CBSH07  like concat('%', #{cbsh07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.cbsh08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.cbsh08 <![CDATA[<=]]>#{endTime}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.cbsh08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.cbsh08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
 
+  </select>
+  <select id="SwJsStorelistsss" resultType="com.ruoyi.system.domain.vo.CbsjVo">
+    SELECT
+      a.CBSH07,c.CBWA09,b.CBSJ03,
+      e.CALA08,
+      d.CBPB15,d.CBPB12,d.CBPB08,b.CBSJ09,f.CBLA09,
+      b.CBSJ11,b.CBSJ12,a.CBSH01
+    FROM
+      CBSJ b
+        LEFT JOIN
+      CBSH a
+      ON
+        a.CBSH01=b.CBSH01
+        LEFT JOIN
+      CBWA c
+      ON
+        c.CBWA01=a.CBSH10
+        LEFT JOIN
+      CBPB d
+      ON
+        d.CBPB01=b.CBSJ08
+        LEFT JOIN
+      CALA e
+      ON
+        e.CALA01=d.CBPB10
+        LEFT JOIN
+      CBLA f
+      on
+        f.CBLA01=b.CBSJ10
+        where
+      a.CBSH01= #{cbsh01,jdbcType=INTEGER}
+
+  </select>
+  <select id="SwJsStorlistsss" resultType="com.ruoyi.system.domain.vo.CbsisVo">
+    SELECT
+      a.CBSH07,c.CBWA09,b.CBSI03,
+      e.CALA08,
+      d.CBPB15,d.CBPB12,d.CBPB08,b.CBSI09,b.CBSI10,b.CBSI11,a.CBSH01
+
+    FROM
+      CBSI b
+        LEFT JOIN
+      CBSH a
+      ON
+        a.CBSH01=b.CBSH01
+        LEFT JOIN
+      CBWA c
+      ON
+        c.CBWA01=a.CBSH10
+        LEFT JOIN
+      CBPB d
+      ON
+        d.CBPB01=b.CBSI08
+        LEFT JOIN
+      CALA e
+      ON
+        e.CALA01=d.CBPB10
+    where
+      a.CBSH01= #{cbsh01,jdbcType=INTEGER}
   </select>
 
 </mapper>

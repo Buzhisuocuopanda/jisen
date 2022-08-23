@@ -31,7 +31,7 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -39,6 +39,10 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.6.2</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 

@@ -16,6 +16,7 @@
     <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
     <result column="out_time" jdbcType="TIMESTAMP" property="outTime" />
     <result column="prd_date" jdbcType="DATE" property="prdDate" />
+    <result column="groud_status" jdbcType="TINYINT" property="groudStatus" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, sn, goods_id, location_id, 
-    `status`, wh_id, in_time, out_time, prd_date
+    `status`, wh_id, in_time, out_time, prd_date, groud_status
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsGoodsSnCriteria" resultMap="BaseResultMap">
     select
@@ -114,12 +115,14 @@
       create_by, update_by, delete_flag, 
       sn, goods_id, location_id, 
       `status`, wh_id, in_time, 
-      out_time, prd_date)
+      out_time, prd_date, groud_status
+      )
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT}, 
       #{sn,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{locationId,jdbcType=INTEGER}, 
       #{status,jdbcType=TINYINT}, #{whId,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
-      #{outTime,jdbcType=TIMESTAMP}, #{prdDate,jdbcType=DATE})
+      #{outTime,jdbcType=TIMESTAMP}, #{prdDate,jdbcType=DATE}, #{groudStatus,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsGoodsSn">
     insert into `gs_goods_sn`
@@ -166,6 +169,9 @@
       <if test="prdDate != null">
         prd_date,
       </if>
+      <if test="groudStatus != null">
+        groud_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -209,6 +215,9 @@
       </if>
       <if test="prdDate != null">
         #{prdDate,jdbcType=DATE},
+      </if>
+      <if test="groudStatus != null">
+        #{groudStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -263,6 +272,9 @@
       <if test="record.prdDate != null">
         prd_date = #{record.prdDate,jdbcType=DATE},
       </if>
+      <if test="record.groudStatus != null">
+        groud_status = #{record.groudStatus,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -283,7 +295,8 @@
       wh_id = #{record.whId,jdbcType=INTEGER},
       in_time = #{record.inTime,jdbcType=TIMESTAMP},
       out_time = #{record.outTime,jdbcType=TIMESTAMP},
-      prd_date = #{record.prdDate,jdbcType=DATE}
+      prd_date = #{record.prdDate,jdbcType=DATE},
+      groud_status = #{record.groudStatus,jdbcType=TINYINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -330,6 +343,9 @@
       <if test="prdDate != null">
         prd_date = #{prdDate,jdbcType=DATE},
       </if>
+      <if test="groudStatus != null">
+        groud_status = #{groudStatus,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -347,7 +363,8 @@
       wh_id = #{whId,jdbcType=INTEGER},
       in_time = #{inTime,jdbcType=TIMESTAMP},
       out_time = #{outTime,jdbcType=TIMESTAMP},
-      prd_date = #{prdDate,jdbcType=DATE}
+      prd_date = #{prdDate,jdbcType=DATE},
+      groud_status = #{groudStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

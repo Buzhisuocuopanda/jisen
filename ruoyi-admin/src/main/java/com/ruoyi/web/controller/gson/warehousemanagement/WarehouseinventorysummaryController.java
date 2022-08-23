@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
+import com.ruoyi.system.domain.vo.CbsisVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISWarehouseinventorysummaryService;
 import io.swagger.annotations.Api;
@@ -85,11 +86,11 @@ public class WarehouseinventorysummaryController  extends BaseController {
     }
 
     /**
-     * 删除仓库盘点明细
+     * 删除仓库盘点汇总
      */
     @ApiOperation(
-            value ="删除仓库盘点明细",
-            notes = "删除仓库盘点明细"
+            value ="删除仓库盘点汇总",
+            notes = "删除仓库盘点汇总"
     )
     @PostMapping("/SwJsStoreremove")
     public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
@@ -99,7 +100,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除仓库盘点明细】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
+            log.error("【删除仓库盘点汇总】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -154,11 +155,34 @@ public class WarehouseinventorysummaryController  extends BaseController {
     }
 
     /**
+     * 仓库盘点汇总详情
+     */
+    @ApiOperation(
+            value ="仓库盘点汇总详情",
+            notes = "仓库盘点汇总详情"
+    )
+    @GetMapping("/SwJsStorelistsss")
+    public AjaxResult<TableDataInfo> SwJsStorelistsss(CbsisVo cbsisVo) {
+        try {
+            startPage();
+            List<CbsisVo> list = swarehouseinventorysummaryService.SwJsStorelistsss(cbsisVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点汇总详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsisVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 仓库盘点汇总新查询
      */
     @ApiOperation(
-            value ="仓库盘点明细新查询",
-            notes = "仓库盘点明细新查询"
+            value ="仓库盘点汇总新查询",
+            notes = "仓库盘点汇总新查询"
     )
     @GetMapping("/SwJsStorelistss")
     public AjaxResult<TableDataInfo> SwJsStorelistss(CbsiVo cbsiVo) {
@@ -170,18 +194,18 @@ public class WarehouseinventorysummaryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细新查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsiVo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点汇总新查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsiVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
     /**
-     * 仓库盘点明细盘点完成
+     * 仓库汇总盘点完成
      */
     @ApiOperation(
-            value ="仓库盘点明细盘点完成",
-            notes = "仓库盘点明细盘点完成"
+            value ="仓库汇总盘点完成",
+            notes = "仓库汇总盘点完成"
     )
     @PostMapping("/swJsStoreend")
     public AjaxResult swJsStoreend(@RequestBody  CbshDo cbshDo) {
@@ -191,7 +215,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细盘点完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库汇总盘点完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbshDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

@@ -8,13 +8,14 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
-import com.ruoyi.system.domain.Dto.CbpgDto;
+import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         if(cbpgs.size() >0){
             throw new SwException("编号已存在");
         }
+        NumberGenerate numberGenerate = new NumberGenerate();
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -82,7 +84,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        String purchasereturnNo = numberGenerate.getPurchasereturnNo(cbpgDto.getCbpg10());
+        cbpg.setCbpg07(purchasereturnNo);
         cbpg.setCbpg08(date);
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setUserId(Math.toIntExact(userid));
         cbpgMapper.insertSelective(cbpg);
         CbpgCriteria example1 = new CbpgCriteria();
@@ -284,10 +289,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.sh.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.sh.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -306,12 +311,16 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.fsh.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.fsh.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -328,12 +337,16 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.bjwc.getCode())){
+            throw new SwException("不是标记完成状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.qxwc.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.qxwc.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -352,15 +365,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
 
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
-        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
-            throw new SwException("不是审核状态");
+        if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())||!cbpg1.getCbpg11().equals(TaskStatus.fsh.getCode())){
+            throw new SwException("不是审核状态或反审状态");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
-        Date date = new Date(TaskStatus.bjwc.getCode());
+        Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.bjwc.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);

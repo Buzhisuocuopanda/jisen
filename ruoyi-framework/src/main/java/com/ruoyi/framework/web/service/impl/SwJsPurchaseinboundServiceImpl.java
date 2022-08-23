@@ -10,12 +10,13 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
-import com.ruoyi.system.domain.Dto.CbpdDto;
+import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +76,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
         //主表根据输入编号查不到数据，添加数据
         if(cbpcs.size()==0){
-
+            NumberGenerate numberGenerate = new NumberGenerate();
             Long userid = SecurityUtils.getUserId();
             Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
             Date date = new Date();
@@ -84,6 +85,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             cbpc.setCbpc04(date);
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+            String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
+            cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setUserId(Math.toIntExact(userid));
             cbpcMapper.insertSelective(cbpc);
 
@@ -165,7 +168,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
         //主表根据输入编号查不到数据，添加数据
-        if(cbpcs.size()==0){
+        if (cbpcs.size() == 0) {
 
             Long userid = SecurityUtils.getUserId();
             Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -195,7 +198,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
             BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
             BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
-            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal b = num.multiply(price).setScale(2, RoundingMode.HALF_UP);
             cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
             cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
             cbpd.setUserId(Math.toIntExact(userid));
@@ -221,7 +224,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         example2.createCriteria().andCbpc01EqualTo(cbpcs1.get(0).getCbpc01());
         List<Cbpd> cbpds = cbpdMapper.selectByExample(example2);
         //主表查出的编号存在，明细里商品id不同,增加明细表
-        if(!cbpds.get(0).getCbpd08().equals(cbpdDto.getCbpd08()) && cbpcs1.size()>0){
+        int i = 0;
+        if (!cbpds.get(0).getCbpd08().equals(cbpdDto.getCbpd08()) && cbpcs1.size() > 0) {
 
 
             Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
@@ -238,11 +242,11 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
             BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
             BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
-            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal b = num.multiply(price).setScale(2, RoundingMode.HALF_UP);
             cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
             cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
             cbpd.setUserId(Math.toIntExact(userid));
-             cbpdMapper.insertSelective(cbpd);
+            cbpdMapper.insertSelective(cbpd);
             Cbpe cbpe = BeanCopyUtils.coypToClass(cbpdDto, Cbpe.class, null);
             cbpe.setCbpe02(cbpdDto.getCbpd02());
             cbpe.setCbpe03(date);
@@ -251,8 +255,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             cbpe.setCbpe06(Math.toIntExact(userid));
             cbpe.setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
             cbpe.setCbpc01(cbpcs1.get(0).getCbpc01());
-            cbpeMapper.insertSelective(cbpe);}
-        return 0;
+            i = cbpeMapper.insertSelective(cbpe);
+        }
+        return i;
     }
 
     /**
@@ -264,11 +269,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Override
     public int SwJsSkuBarcodeshs(CbpdDto cbpdDto) {
 
-//        CbpcCriteria example1 = new CbpcCriteria();
-//        example1.createCriteria().andCbpc07EqualTo("PI09202205240001");
-//        List<Cbpc> cbpcs = cbpcMapper.selectByExample(example1);
-//        Date cbpc02 = cbpcs.get(0).getCbpc02();
-//        System.out.println(cbpcs.get(0).getCbpc02());
+
 
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
@@ -324,8 +325,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())){
-            throw new SwException("不是审核状态");
+        if(!cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||!cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){
+            throw new SwException("不是审核状态或反审状态不能标记完成");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -507,7 +508,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
         cbpc.setCbpc04(date);
         cbpc.setCbpc05(Math.toIntExact(userid));
-        cbpc.setCbpc11(TaskStatus.qxwc.getCode());
+        cbpc.setCbpc11(TaskStatus.sh.getCode());
         cbpc.setCbpc12(Math.toIntExact(userid));
         cbpc.setCbpc13(date);
         CbpcCriteria example = new CbpcCriteria();
@@ -544,10 +545,11 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         example1.createCriteria().andCbpd08EqualTo(cbpdDto.getCbpc01())
                 .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
-        Integer goodsid = cbpds.get(0).getCbpd08();
-        //检查是否有库存
-        baseCheckService.checkGoodsSku(goodsid,storeid);
-
+        if(cbpds.size()>0) {
+           Integer goodsid = cbpds.get(0).getCbpd08();
+            //检查是否有库存
+              baseCheckService.checkGoodsSku(goodsid,storeid);
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
         Date date = new Date();

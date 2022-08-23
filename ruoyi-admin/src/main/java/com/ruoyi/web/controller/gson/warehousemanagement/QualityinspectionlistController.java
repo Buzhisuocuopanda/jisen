@@ -9,11 +9,8 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
-import com.ruoyi.system.domain.Dto.CbicDto;
-import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.domain.vo.CbqaVo;
 import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.domain.vo.QualityinspectionVo;
 import com.ruoyi.system.service.ISWQualityinspectionlistService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -101,9 +98,8 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "删除质检单"
     )
     @PostMapping("/SwJsPurchaseinbounddelete")
-    public AjaxResult SwJsPurchaseinbounddelete(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+    public AjaxResult SwJsPurchaseinbounddelete( @RequestBody CbqaDo cbqaDo) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeselete(cbqaDo));
 
 
@@ -125,9 +121,8 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "审核质检单"
     )
     @PostMapping("/SwJsPurchaseinboundsh")
-    public AjaxResult SwJsPurchaseinboundsh(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+    public AjaxResult SwJsPurchaseinboundsh( @RequestBody CbqaDo cbqaDo) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodesh(cbqaDo));
 
 
@@ -150,9 +145,8 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "反审质检单"
     )
     @PostMapping("/SwJsPurchaseinboundshs")
-    public AjaxResult SwJsPurchaseinboundshs(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+    public AjaxResult SwJsPurchaseinboundshs( @RequestBody CbqaDo cbqaDo) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeshs(cbqaDo));
 
 

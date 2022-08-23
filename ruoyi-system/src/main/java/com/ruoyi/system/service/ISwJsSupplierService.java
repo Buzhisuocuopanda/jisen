@@ -1,7 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbsa;
-import com.ruoyi.system.domain.Dto.CbsaDto;
+import com.ruoyi.system.domain.dto.CbsaDto;
 
 import java.util.List;
 

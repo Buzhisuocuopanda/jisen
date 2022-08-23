@@ -8,9 +8,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
-import com.ruoyi.system.domain.Dto.CbpdDto;
-import com.ruoyi.system.domain.Dto.CbpgDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
@@ -138,9 +136,8 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "修改采购退货单"
     )
     @PostMapping("/SwJsPurchaseinboundedit")
-    public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpgDto cbpgDto) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.updateSwJsSkuBarcodes(cbpgDto));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -229,9 +226,8 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单审核"
     )
     @PostMapping("/SwJsPurchaseinboundsho")
-    public AjaxResult swJsPurchaseinboundsho(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundsho( @RequestBody CbpgDto cbpgDto) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodeshs(cbpgDto));
         }catch (ServiceException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -253,9 +249,8 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单反审"
     )
     @PostMapping("/SwJsPurchaseinboundsht")
-    public AjaxResult swJsPurchaseinboundsht(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundsht( @RequestBody CbpgDto cbpgDto) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodesh(cbpgDto));
         }catch (ServiceException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -277,9 +272,8 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单取消完成"
     )
     @PostMapping("/SwJsPurchaseinboundshtt")
-    public AjaxResult swJsPurchaseinboundshtt(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundshtt( @RequestBody CbpgDto cbpgDto) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodeshss(cbpgDto));
         }catch (ServiceException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -301,9 +295,8 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundshf")
-    public AjaxResult swJsPurchaseinboundshf(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundshf( @RequestBody CbpgDto cbpgDto) {
         try {
-            ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodes(cbpgDto));
         }catch (ServiceException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

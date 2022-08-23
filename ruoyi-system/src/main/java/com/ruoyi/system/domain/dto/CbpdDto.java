@@ -1,11 +1,9 @@
-package com.ruoyi.system.domain.Dto;
+package com.ruoyi.system.domain.dto;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 @Data
 public class CbpdDto {

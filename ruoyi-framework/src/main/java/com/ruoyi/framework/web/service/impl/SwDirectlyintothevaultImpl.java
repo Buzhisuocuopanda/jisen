@@ -5,18 +5,17 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Cbic;
 import com.ruoyi.system.domain.CbicCriteria;
-import com.ruoyi.system.domain.Cbpc;
-import com.ruoyi.system.domain.Dto.CbicDto;
+import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.vo.CbicVo;
-import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.mapper.CbicMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultService {
     @Resource
     private CbicMapper cbicMapper;
@@ -62,11 +61,11 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Override
     public List<CbicVo> selectSwJsTaskGoodsRelListss(CbicVo cbicVo) {
-        return cbicMapper.selectSwJsTaskGoodsRelListss();
+        return cbicMapper.selectSwJsTaskGoodsRelListss(cbicVo);
     }
 
     @Override
     public List<CbicVo> selectSwJsTaskGoodsRelLists(CbicVo cbicVo) {
-        return cbicMapper.selectSwJsTaskGoodsRelLists();
+        return cbicMapper.selectSwJsTaskGoodsRelLists(cbicVo);
     }
 }

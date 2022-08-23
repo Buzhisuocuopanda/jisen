@@ -5,7 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Dto.CbwaDto;
+import com.ruoyi.system.domain.dto.CbwaDto;
 import com.ruoyi.system.mapper.CbpcMapper;
 import com.ruoyi.system.mapper.CbwaMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;

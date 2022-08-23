@@ -981,6 +981,66 @@ public class GsGoodsSnCriteria {
             addCriterionForJDBCDate("prd_date not between", value1, value2, "prdDate");
             return (Criteria) this;
         }
+
+        public Criteria andGroudStatusIsNull() {
+            addCriterion("groud_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusIsNotNull() {
+            addCriterion("groud_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusEqualTo(Byte value) {
+            addCriterion("groud_status =", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusNotEqualTo(Byte value) {
+            addCriterion("groud_status <>", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusGreaterThan(Byte value) {
+            addCriterion("groud_status >", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("groud_status >=", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusLessThan(Byte value) {
+            addCriterion("groud_status <", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("groud_status <=", value, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusIn(List<Byte> values) {
+            addCriterion("groud_status in", values, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusNotIn(List<Byte> values) {
+            addCriterion("groud_status not in", values, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusBetween(Byte value1, Byte value2) {
+            addCriterion("groud_status between", value1, value2, "groudStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroudStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("groud_status not between", value1, value2, "groudStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

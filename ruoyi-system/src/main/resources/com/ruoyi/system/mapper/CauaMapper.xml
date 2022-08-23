@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CauaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Caua">
+    <result column="CAUA01" jdbcType="INTEGER" property="caua01" />
+    <result column="CAUA02" jdbcType="TIMESTAMP" property="caua02" />
+    <result column="CAUA03" jdbcType="TIMESTAMP" property="caua03" />
+    <result column="CAUA04" jdbcType="INTEGER" property="caua04" />
+    <result column="CAUA05" jdbcType="INTEGER" property="caua05" />
+    <result column="CAUA06" jdbcType="INTEGER" property="caua06" />
+    <result column="CAUA07" jdbcType="VARCHAR" property="caua07" />
+    <result column="CAUA08" jdbcType="VARCHAR" property="caua08" />
+    <result column="CAUA09" jdbcType="VARCHAR" property="caua09" />
+    <result column="CAUA10" jdbcType="VARCHAR" property="caua10" />
+    <result column="CAUA11" jdbcType="INTEGER" property="caua11" />
+    <result column="CAUA12" jdbcType="VARCHAR" property="caua12" />
+    <result column="CAUA13" jdbcType="VARCHAR" property="caua13" />
+    <result column="CAUA14" jdbcType="VARCHAR" property="caua14" />
+    <result column="CAUA15" jdbcType="VARCHAR" property="caua15" />
+    <result column="CAUA16" jdbcType="VARCHAR" property="caua16" />
+    <result column="CAUA17" jdbcType="VARCHAR" property="caua17" />
+    <result column="CAUA18" jdbcType="INTEGER" property="caua18" />
+    <result column="CAUA19" jdbcType="VARCHAR" property="caua19" />
+    <result column="CAUA20" jdbcType="INTEGER" property="caua20" />
+    <result column="CAUA21" jdbcType="VARCHAR" property="caua21" />
+    <result column="CAUA22" jdbcType="VARCHAR" property="caua22" />
+    <result column="CAUA23" jdbcType="VARCHAR" property="caua23" />
+    <result column="CAUA24" jdbcType="VARCHAR" property="caua24" />
+    <result column="CAUA25" jdbcType="VARCHAR" property="caua25" />
+    <result column="CAUA26" jdbcType="VARCHAR" property="caua26" />
+    <result column="CAUA27" jdbcType="VARCHAR" property="caua27" />
+    <result column="CAUA28" jdbcType="VARCHAR" property="caua28" />
+    <result column="CAUA29" jdbcType="VARCHAR" property="caua29" />
+    <result column="CAUA30" jdbcType="VARCHAR" property="caua30" />
+    <result column="CAUA31" jdbcType="VARCHAR" property="caua31" />
+    <result column="CAUA32" jdbcType="VARCHAR" property="caua32" />
+    <result column="CAUA33" jdbcType="VARCHAR" property="caua33" />
+    <result column="CAUA34" jdbcType="VARCHAR" property="caua34" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CAUA01, CAUA02, CAUA03, CAUA04, CAUA05, CAUA06, CAUA07, CAUA08, CAUA09, CAUA10, CAUA11, 
+    CAUA12, CAUA13, CAUA14, CAUA15, CAUA16, CAUA17, CAUA18, CAUA19, CAUA20, CAUA21, CAUA22, 
+    CAUA23, CAUA24, CAUA25, CAUA26, CAUA27, CAUA28, CAUA29, CAUA30, CAUA31, CAUA32, CAUA33, 
+    CAUA34
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CauaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CAUA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CauaCriteria">
+    delete from `CAUA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Caua">
+    insert into `CAUA` (CAUA01, CAUA02, CAUA03, 
+      CAUA04, CAUA05, CAUA06, 
+      CAUA07, CAUA08, CAUA09, 
+      CAUA10, CAUA11, CAUA12, 
+      CAUA13, CAUA14, CAUA15, 
+      CAUA16, CAUA17, CAUA18, 
+      CAUA19, CAUA20, CAUA21, 
+      CAUA22, CAUA23, CAUA24, 
+      CAUA25, CAUA26, CAUA27, 
+      CAUA28, CAUA29, CAUA30, 
+      CAUA31, CAUA32, CAUA33, 
+      CAUA34)
+    values (#{caua01,jdbcType=INTEGER}, #{caua02,jdbcType=TIMESTAMP}, #{caua03,jdbcType=TIMESTAMP}, 
+      #{caua04,jdbcType=INTEGER}, #{caua05,jdbcType=INTEGER}, #{caua06,jdbcType=INTEGER}, 
+      #{caua07,jdbcType=VARCHAR}, #{caua08,jdbcType=VARCHAR}, #{caua09,jdbcType=VARCHAR}, 
+      #{caua10,jdbcType=VARCHAR}, #{caua11,jdbcType=INTEGER}, #{caua12,jdbcType=VARCHAR}, 
+      #{caua13,jdbcType=VARCHAR}, #{caua14,jdbcType=VARCHAR}, #{caua15,jdbcType=VARCHAR}, 
+      #{caua16,jdbcType=VARCHAR}, #{caua17,jdbcType=VARCHAR}, #{caua18,jdbcType=INTEGER}, 
+      #{caua19,jdbcType=VARCHAR}, #{caua20,jdbcType=INTEGER}, #{caua21,jdbcType=VARCHAR}, 
+      #{caua22,jdbcType=VARCHAR}, #{caua23,jdbcType=VARCHAR}, #{caua24,jdbcType=VARCHAR}, 
+      #{caua25,jdbcType=VARCHAR}, #{caua26,jdbcType=VARCHAR}, #{caua27,jdbcType=VARCHAR}, 
+      #{caua28,jdbcType=VARCHAR}, #{caua29,jdbcType=VARCHAR}, #{caua30,jdbcType=VARCHAR}, 
+      #{caua31,jdbcType=VARCHAR}, #{caua32,jdbcType=VARCHAR}, #{caua33,jdbcType=VARCHAR}, 
+      #{caua34,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Caua">
+    insert into `CAUA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="caua01 != null">
+        CAUA01,
+      </if>
+      <if test="caua02 != null">
+        CAUA02,
+      </if>
+      <if test="caua03 != null">
+        CAUA03,
+      </if>
+      <if test="caua04 != null">
+        CAUA04,
+      </if>
+      <if test="caua05 != null">
+        CAUA05,
+      </if>
+      <if test="caua06 != null">
+        CAUA06,
+      </if>
+      <if test="caua07 != null">
+        CAUA07,
+      </if>
+      <if test="caua08 != null">
+        CAUA08,
+      </if>
+      <if test="caua09 != null">
+        CAUA09,
+      </if>
+      <if test="caua10 != null">
+        CAUA10,
+      </if>
+      <if test="caua11 != null">
+        CAUA11,
+      </if>
+      <if test="caua12 != null">
+        CAUA12,
+      </if>
+      <if test="caua13 != null">
+        CAUA13,
+      </if>
+      <if test="caua14 != null">
+        CAUA14,
+      </if>
+      <if test="caua15 != null">
+        CAUA15,
+      </if>
+      <if test="caua16 != null">
+        CAUA16,
+      </if>
+      <if test="caua17 != null">
+        CAUA17,
+      </if>
+      <if test="caua18 != null">
+        CAUA18,
+      </if>
+      <if test="caua19 != null">
+        CAUA19,
+      </if>
+      <if test="caua20 != null">
+        CAUA20,
+      </if>
+      <if test="caua21 != null">
+        CAUA21,
+      </if>
+      <if test="caua22 != null">
+        CAUA22,
+      </if>
+      <if test="caua23 != null">
+        CAUA23,
+      </if>
+      <if test="caua24 != null">
+        CAUA24,
+      </if>
+      <if test="caua25 != null">
+        CAUA25,
+      </if>
+      <if test="caua26 != null">
+        CAUA26,
+      </if>
+      <if test="caua27 != null">
+        CAUA27,
+      </if>
+      <if test="caua28 != null">
+        CAUA28,
+      </if>
+      <if test="caua29 != null">
+        CAUA29,
+      </if>
+      <if test="caua30 != null">
+        CAUA30,
+      </if>
+      <if test="caua31 != null">
+        CAUA31,
+      </if>
+      <if test="caua32 != null">
+        CAUA32,
+      </if>
+      <if test="caua33 != null">
+        CAUA33,
+      </if>
+      <if test="caua34 != null">
+        CAUA34,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="caua01 != null">
+        #{caua01,jdbcType=INTEGER},
+      </if>
+      <if test="caua02 != null">
+        #{caua02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caua03 != null">
+        #{caua03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caua04 != null">
+        #{caua04,jdbcType=INTEGER},
+      </if>
+      <if test="caua05 != null">
+        #{caua05,jdbcType=INTEGER},
+      </if>
+      <if test="caua06 != null">
+        #{caua06,jdbcType=INTEGER},
+      </if>
+      <if test="caua07 != null">
+        #{caua07,jdbcType=VARCHAR},
+      </if>
+      <if test="caua08 != null">
+        #{caua08,jdbcType=VARCHAR},
+      </if>
+      <if test="caua09 != null">
+        #{caua09,jdbcType=VARCHAR},
+      </if>
+      <if test="caua10 != null">
+        #{caua10,jdbcType=VARCHAR},
+      </if>
+      <if test="caua11 != null">
+        #{caua11,jdbcType=INTEGER},
+      </if>
+      <if test="caua12 != null">
+        #{caua12,jdbcType=VARCHAR},
+      </if>
+      <if test="caua13 != null">
+        #{caua13,jdbcType=VARCHAR},
+      </if>
+      <if test="caua14 != null">
+        #{caua14,jdbcType=VARCHAR},
+      </if>
+      <if test="caua15 != null">
+        #{caua15,jdbcType=VARCHAR},
+      </if>
+      <if test="caua16 != null">
+        #{caua16,jdbcType=VARCHAR},
+      </if>
+      <if test="caua17 != null">
+        #{caua17,jdbcType=VARCHAR},
+      </if>
+      <if test="caua18 != null">
+        #{caua18,jdbcType=INTEGER},
+      </if>
+      <if test="caua19 != null">
+        #{caua19,jdbcType=VARCHAR},
+      </if>
+      <if test="caua20 != null">
+        #{caua20,jdbcType=INTEGER},
+      </if>
+      <if test="caua21 != null">
+        #{caua21,jdbcType=VARCHAR},
+      </if>
+      <if test="caua22 != null">
+        #{caua22,jdbcType=VARCHAR},
+      </if>
+      <if test="caua23 != null">
+        #{caua23,jdbcType=VARCHAR},
+      </if>
+      <if test="caua24 != null">
+        #{caua24,jdbcType=VARCHAR},
+      </if>
+      <if test="caua25 != null">
+        #{caua25,jdbcType=VARCHAR},
+      </if>
+      <if test="caua26 != null">
+        #{caua26,jdbcType=VARCHAR},
+      </if>
+      <if test="caua27 != null">
+        #{caua27,jdbcType=VARCHAR},
+      </if>
+      <if test="caua28 != null">
+        #{caua28,jdbcType=VARCHAR},
+      </if>
+      <if test="caua29 != null">
+        #{caua29,jdbcType=VARCHAR},
+      </if>
+      <if test="caua30 != null">
+        #{caua30,jdbcType=VARCHAR},
+      </if>
+      <if test="caua31 != null">
+        #{caua31,jdbcType=VARCHAR},
+      </if>
+      <if test="caua32 != null">
+        #{caua32,jdbcType=VARCHAR},
+      </if>
+      <if test="caua33 != null">
+        #{caua33,jdbcType=VARCHAR},
+      </if>
+      <if test="caua34 != null">
+        #{caua34,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CauaCriteria" resultType="java.lang.Long">
+    select count(*) from `CAUA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CAUA`
+    <set>
+      <if test="record.caua01 != null">
+        CAUA01 = #{record.caua01,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua02 != null">
+        CAUA02 = #{record.caua02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.caua03 != null">
+        CAUA03 = #{record.caua03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.caua04 != null">
+        CAUA04 = #{record.caua04,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua05 != null">
+        CAUA05 = #{record.caua05,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua06 != null">
+        CAUA06 = #{record.caua06,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua07 != null">
+        CAUA07 = #{record.caua07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua08 != null">
+        CAUA08 = #{record.caua08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua09 != null">
+        CAUA09 = #{record.caua09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua10 != null">
+        CAUA10 = #{record.caua10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua11 != null">
+        CAUA11 = #{record.caua11,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua12 != null">
+        CAUA12 = #{record.caua12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua13 != null">
+        CAUA13 = #{record.caua13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua14 != null">
+        CAUA14 = #{record.caua14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua15 != null">
+        CAUA15 = #{record.caua15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua16 != null">
+        CAUA16 = #{record.caua16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua17 != null">
+        CAUA17 = #{record.caua17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua18 != null">
+        CAUA18 = #{record.caua18,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua19 != null">
+        CAUA19 = #{record.caua19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua20 != null">
+        CAUA20 = #{record.caua20,jdbcType=INTEGER},
+      </if>
+      <if test="record.caua21 != null">
+        CAUA21 = #{record.caua21,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua22 != null">
+        CAUA22 = #{record.caua22,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua23 != null">
+        CAUA23 = #{record.caua23,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua24 != null">
+        CAUA24 = #{record.caua24,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua25 != null">
+        CAUA25 = #{record.caua25,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua26 != null">
+        CAUA26 = #{record.caua26,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua27 != null">
+        CAUA27 = #{record.caua27,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua28 != null">
+        CAUA28 = #{record.caua28,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua29 != null">
+        CAUA29 = #{record.caua29,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua30 != null">
+        CAUA30 = #{record.caua30,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua31 != null">
+        CAUA31 = #{record.caua31,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua32 != null">
+        CAUA32 = #{record.caua32,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua33 != null">
+        CAUA33 = #{record.caua33,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caua34 != null">
+        CAUA34 = #{record.caua34,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CAUA`
+    set CAUA01 = #{record.caua01,jdbcType=INTEGER},
+      CAUA02 = #{record.caua02,jdbcType=TIMESTAMP},
+      CAUA03 = #{record.caua03,jdbcType=TIMESTAMP},
+      CAUA04 = #{record.caua04,jdbcType=INTEGER},
+      CAUA05 = #{record.caua05,jdbcType=INTEGER},
+      CAUA06 = #{record.caua06,jdbcType=INTEGER},
+      CAUA07 = #{record.caua07,jdbcType=VARCHAR},
+      CAUA08 = #{record.caua08,jdbcType=VARCHAR},
+      CAUA09 = #{record.caua09,jdbcType=VARCHAR},
+      CAUA10 = #{record.caua10,jdbcType=VARCHAR},
+      CAUA11 = #{record.caua11,jdbcType=INTEGER},
+      CAUA12 = #{record.caua12,jdbcType=VARCHAR},
+      CAUA13 = #{record.caua13,jdbcType=VARCHAR},
+      CAUA14 = #{record.caua14,jdbcType=VARCHAR},
+      CAUA15 = #{record.caua15,jdbcType=VARCHAR},
+      CAUA16 = #{record.caua16,jdbcType=VARCHAR},
+      CAUA17 = #{record.caua17,jdbcType=VARCHAR},
+      CAUA18 = #{record.caua18,jdbcType=INTEGER},
+      CAUA19 = #{record.caua19,jdbcType=VARCHAR},
+      CAUA20 = #{record.caua20,jdbcType=INTEGER},
+      CAUA21 = #{record.caua21,jdbcType=VARCHAR},
+      CAUA22 = #{record.caua22,jdbcType=VARCHAR},
+      CAUA23 = #{record.caua23,jdbcType=VARCHAR},
+      CAUA24 = #{record.caua24,jdbcType=VARCHAR},
+      CAUA25 = #{record.caua25,jdbcType=VARCHAR},
+      CAUA26 = #{record.caua26,jdbcType=VARCHAR},
+      CAUA27 = #{record.caua27,jdbcType=VARCHAR},
+      CAUA28 = #{record.caua28,jdbcType=VARCHAR},
+      CAUA29 = #{record.caua29,jdbcType=VARCHAR},
+      CAUA30 = #{record.caua30,jdbcType=VARCHAR},
+      CAUA31 = #{record.caua31,jdbcType=VARCHAR},
+      CAUA32 = #{record.caua32,jdbcType=VARCHAR},
+      CAUA33 = #{record.caua33,jdbcType=VARCHAR},
+      CAUA34 = #{record.caua34,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

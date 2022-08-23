@@ -484,11 +484,18 @@
 
     WHERE
       a.CBPG06=0
+    <if test="cbpg01 != null "> and a.CBPG07 like concat('%', #{cbpg01}, '%')</if>
     <if test="cbpg07 != null "> and a.CBPG07 like concat('%', #{cbpg07}, '%')</if>
     <if test="cbsa08 != null "> and c.CBSA08 like concat('%', #{cbsa08}, '%')</if>
     <if test="cbwa09 != null "> and d.CBWA09 like concat('%', #{cbwa09}, '%')</if>
     <if test='startTime != null and startTime != ""'>and a.CBPG08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBPG08 <![CDATA[<=]]>#{endTime}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBPG08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBPG08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
   </select>
 
 </mapper>

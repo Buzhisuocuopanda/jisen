@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain.Dto;
+package com.ruoyi.system.domain.dto;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

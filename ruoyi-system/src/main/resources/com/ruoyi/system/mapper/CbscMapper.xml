@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CbscMapper">
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbsc">
-    <result column="CBSC01" jdbcType="INTEGER" property="cbsc01" />
+    <id column="CBSC01" jdbcType="INTEGER" property="cbsc01" />
     <result column="CBSC02" jdbcType="INTEGER" property="cbsc02" />
     <result column="CBSC03" jdbcType="TIMESTAMP" property="cbsc03" />
     <result column="CBSC04" jdbcType="INTEGER" property="cbsc04" />
@@ -20,6 +20,7 @@
     <result column="CBSC15" jdbcType="INTEGER" property="cbsc15" />
     <result column="CBSC16" jdbcType="INTEGER" property="cbsc16" />
     <result column="CBSC17" jdbcType="INTEGER" property="cbsc17" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBSC01, CBSC02, CBSC03, CBSC04, CBSC05, CBSC06, CBSC07, CBSC08, CBSC09, CBSC10, CBSC11, 
-    CBSC12, CBSC13, CBSB01, CBSC14, CBSC15, CBSC16, CBSC17
+    CBSC12, CBSC13, CBSB01, CBSC14, CBSC15, CBSC16, CBSC17, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbscCriteria" resultMap="BaseResultMap">
     select
@@ -97,6 +98,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `CBSC`
+    where CBSC01 = #{cbsc01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CBSC`
+    where CBSC01 = #{cbsc01,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbscCriteria">
     delete from `CBSC`
     <if test="_parameter != null">
@@ -109,15 +120,15 @@
       CBSC07, CBSC08, CBSC09, 
       CBSC10, CBSC11, CBSC12, 
       CBSC13, CBSB01, CBSC14, 
-      CBSC15, CBSC16, CBSC17
-      )
+      CBSC15, CBSC16, CBSC17, 
+      user_id)
     values (#{cbsc01,jdbcType=INTEGER}, #{cbsc02,jdbcType=INTEGER}, #{cbsc03,jdbcType=TIMESTAMP}, 
       #{cbsc04,jdbcType=INTEGER}, #{cbsc05,jdbcType=TIMESTAMP}, #{cbsc06,jdbcType=INTEGER}, 
       #{cbsc07,jdbcType=INTEGER}, #{cbsc08,jdbcType=INTEGER}, #{cbsc09,jdbcType=DOUBLE}, 
       #{cbsc10,jdbcType=DOUBLE}, #{cbsc11,jdbcType=DOUBLE}, #{cbsc12,jdbcType=DOUBLE}, 
       #{cbsc13,jdbcType=VARCHAR}, #{cbsb01,jdbcType=INTEGER}, #{cbsc14,jdbcType=INTEGER}, 
-      #{cbsc15,jdbcType=INTEGER}, #{cbsc16,jdbcType=INTEGER}, #{cbsc17,jdbcType=INTEGER}
-      )
+      #{cbsc15,jdbcType=INTEGER}, #{cbsc16,jdbcType=INTEGER}, #{cbsc17,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsc">
     insert into `CBSC`
@@ -176,6 +187,9 @@
       <if test="cbsc17 != null">
         CBSC17,
       </if>
+      <if test="userId != null">
+        user_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbsc01 != null">
@@ -231,6 +245,9 @@
       </if>
       <if test="cbsc17 != null">
         #{cbsc17,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -297,6 +314,9 @@
       <if test="record.cbsc17 != null">
         CBSC17 = #{record.cbsc17,jdbcType=INTEGER},
       </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -321,9 +341,92 @@
       CBSC14 = #{record.cbsc14,jdbcType=INTEGER},
       CBSC15 = #{record.cbsc15,jdbcType=INTEGER},
       CBSC16 = #{record.cbsc16,jdbcType=INTEGER},
-      CBSC17 = #{record.cbsc17,jdbcType=INTEGER}
+      CBSC17 = #{record.cbsc17,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbsc">
+    update `CBSC`
+    <set>
+      <if test="cbsc02 != null">
+        CBSC02 = #{cbsc02,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc03 != null">
+        CBSC03 = #{cbsc03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsc04 != null">
+        CBSC04 = #{cbsc04,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc05 != null">
+        CBSC05 = #{cbsc05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbsc06 != null">
+        CBSC06 = #{cbsc06,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc07 != null">
+        CBSC07 = #{cbsc07,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc08 != null">
+        CBSC08 = #{cbsc08,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc09 != null">
+        CBSC09 = #{cbsc09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc10 != null">
+        CBSC10 = #{cbsc10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc11 != null">
+        CBSC11 = #{cbsc11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc12 != null">
+        CBSC12 = #{cbsc12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbsc13 != null">
+        CBSC13 = #{cbsc13,jdbcType=VARCHAR},
+      </if>
+      <if test="cbsb01 != null">
+        CBSB01 = #{cbsb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc14 != null">
+        CBSC14 = #{cbsc14,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc15 != null">
+        CBSC15 = #{cbsc15,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc16 != null">
+        CBSC16 = #{cbsc16,jdbcType=INTEGER},
+      </if>
+      <if test="cbsc17 != null">
+        CBSC17 = #{cbsc17,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBSC01 = #{cbsc01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbsc">
+    update `CBSC`
+    set CBSC02 = #{cbsc02,jdbcType=INTEGER},
+      CBSC03 = #{cbsc03,jdbcType=TIMESTAMP},
+      CBSC04 = #{cbsc04,jdbcType=INTEGER},
+      CBSC05 = #{cbsc05,jdbcType=TIMESTAMP},
+      CBSC06 = #{cbsc06,jdbcType=INTEGER},
+      CBSC07 = #{cbsc07,jdbcType=INTEGER},
+      CBSC08 = #{cbsc08,jdbcType=INTEGER},
+      CBSC09 = #{cbsc09,jdbcType=DOUBLE},
+      CBSC10 = #{cbsc10,jdbcType=DOUBLE},
+      CBSC11 = #{cbsc11,jdbcType=DOUBLE},
+      CBSC12 = #{cbsc12,jdbcType=DOUBLE},
+      CBSC13 = #{cbsc13,jdbcType=VARCHAR},
+      CBSB01 = #{cbsb01,jdbcType=INTEGER},
+      CBSC14 = #{cbsc14,jdbcType=INTEGER},
+      CBSC15 = #{cbsc15,jdbcType=INTEGER},
+      CBSC16 = #{cbsc16,jdbcType=INTEGER},
+      CBSC17 = #{cbsc17,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where CBSC01 = #{cbsc01,jdbcType=INTEGER}
   </update>
 </mapper>

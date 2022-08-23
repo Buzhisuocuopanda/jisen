@@ -5,7 +5,6 @@ import com.ruoyi.system.domain.CblaCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.Cbpb;
-import com.ruoyi.system.domain.Dto.CblaDto;
 import org.apache.ibatis.annotations.Param;
 
 public interface CblaMapper {

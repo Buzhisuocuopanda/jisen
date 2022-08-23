@@ -708,4 +708,5 @@ ORDER BY
    pk.CBPK02 DESC
    LIMIT 1
   </select>
+    <select id="selectswJsSkuBaxsthelist" resultType="com.ruoyi.system.domain.vo.CbpkVo"></select>
 </mapper>

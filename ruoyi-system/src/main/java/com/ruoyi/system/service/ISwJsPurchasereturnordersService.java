@@ -1,7 +1,6 @@
 package com.ruoyi.system.service;
 
-import com.ruoyi.system.domain.Dto.CbpgDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
 

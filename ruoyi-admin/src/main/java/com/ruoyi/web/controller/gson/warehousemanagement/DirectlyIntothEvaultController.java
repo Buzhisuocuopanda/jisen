@@ -7,10 +7,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
-import com.ruoyi.system.domain.Dto.CbicDto;
-import com.ruoyi.system.domain.Dto.CbpdDto;
+import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.vo.CbicVo;
-import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +17,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/Directly")
 public class DirectlyIntothEvaultController extends BaseController {
-
+    @Resource
     private ISwDirectlyintothevaultService swDirectlyintothevaultService;
     /**
      * 新增直接入库单

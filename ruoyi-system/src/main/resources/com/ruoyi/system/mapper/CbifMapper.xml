@@ -78,7 +78,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBIF01, CBIF02, CBIF03, CBIF04, CBIF05, CBIF06, CBIF07, CBIF08, CBIF09, CBIF10, CBIF11, 
+    CBIF01, CBIF02, CBIF03, CBIF04, CBIF05, CBIF06, CBIF07, CBIF08, CBIF09, CBIF10, CBIF11,
     CBIF12, CBIF13, CBIE01, CBIF14, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbifCriteria" resultMap="BaseResultMap">
@@ -96,7 +96,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBIF`
     where CBIF01 = #{cbif01,jdbcType=INTEGER}
@@ -112,17 +112,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbif">
-    insert into `CBIF` (CBIF01, CBIF02, CBIF03, 
-      CBIF04, CBIF05, CBIF06, 
-      CBIF07, CBIF08, CBIF09, 
-      CBIF10, CBIF11, CBIF12, 
-      CBIF13, CBIE01, CBIF14, 
+    insert into `CBIF` (CBIF01, CBIF02, CBIF03,
+      CBIF04, CBIF05, CBIF06,
+      CBIF07, CBIF08, CBIF09,
+      CBIF10, CBIF11, CBIF12,
+      CBIF13, CBIE01, CBIF14,
       user_id)
-    values (#{cbif01,jdbcType=INTEGER}, #{cbif02,jdbcType=INTEGER}, #{cbif03,jdbcType=TIMESTAMP}, 
-      #{cbif04,jdbcType=INTEGER}, #{cbif05,jdbcType=TIMESTAMP}, #{cbif06,jdbcType=INTEGER}, 
-      #{cbif07,jdbcType=INTEGER}, #{cbif08,jdbcType=INTEGER}, #{cbif09,jdbcType=DOUBLE}, 
-      #{cbif10,jdbcType=DOUBLE}, #{cbif11,jdbcType=DOUBLE}, #{cbif12,jdbcType=DOUBLE}, 
-      #{cbif13,jdbcType=VARCHAR}, #{cbie01,jdbcType=INTEGER}, #{cbif14,jdbcType=INTEGER}, 
+    values (#{cbif01,jdbcType=INTEGER}, #{cbif02,jdbcType=INTEGER}, #{cbif03,jdbcType=TIMESTAMP},
+      #{cbif04,jdbcType=INTEGER}, #{cbif05,jdbcType=TIMESTAMP}, #{cbif06,jdbcType=INTEGER},
+      #{cbif07,jdbcType=INTEGER}, #{cbif08,jdbcType=INTEGER}, #{cbif09,jdbcType=DOUBLE},
+      #{cbif10,jdbcType=DOUBLE}, #{cbif11,jdbcType=DOUBLE}, #{cbif12,jdbcType=DOUBLE},
+      #{cbif13,jdbcType=VARCHAR}, #{cbie01,jdbcType=INTEGER}, #{cbif14,jdbcType=INTEGER},
       #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbif">
@@ -234,7 +234,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBIF`
     <set>
       <if test="record.cbif01 != null">
@@ -382,4 +382,42 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBIF01 = #{cbif01,jdbcType=INTEGER}
   </update>
+  <select id="SwJsStoreslistss" resultType="com.ruoyi.system.domain.vo.CbifVo">
+    SELECT
+      a.CBIE07,a.CBIE02,b.CBWA09,c.CALA08,d.CBSA08,g.CBPA07,h.CALA08,f.CBPB12,
+      f.CBPB15,f.CBPB08,e.CBIF13
+    FROM
+      CBIE a
+        LEFT JOIN
+      CBWA b
+      on
+        b.CBWA01=a.CBIE09
+        LEFT JOIN
+      CALA c
+      on
+        c.CALA01=a.CBIE16
+        LEFT JOIN
+      CBIF e
+      on
+        e.CBIE01=a.CBIE01
+        LEFT JOIN
+      CBSA d
+      on
+        d.CBSA01=e.CBIF14
+        LEFT JOIN
+      CBPB f
+      ON
+        f.CBPB01=e.CBIF08
+        LEFT JOIN
+      CBPA g
+      on
+        g.CBPA01=f.CBPB14
+        LEFT JOIN
+      CALA h
+      on
+        h.CALA01=f.CBPB10
+    where
+      a.CBIE01= #{cbie01,jdbcType=INTEGER}
+  </select>
+
 </mapper>
