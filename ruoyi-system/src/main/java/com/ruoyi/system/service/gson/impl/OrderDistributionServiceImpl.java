@@ -873,6 +873,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 goodsUse.setUpdateBy(goodsOperationDo.getUserId());
                 goodsUse.setUpdateTime(new Date());
                 goodsUse.setWhId(cbwa.getCbwa01());
+                goodsUse.setNoOutQty(0.0);
                 gsGoodsUseMapper.insert(goodsUse);
 
                 if (num.equals(0.0)) {

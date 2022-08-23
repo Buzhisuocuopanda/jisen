@@ -484,6 +484,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (saleOrderMakeDo.getPrompt() == 1) {
                 GsOutStockAdivce advice = null;
                 for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
+                    advice=new GsOutStockAdivce();
                     advice.setCreateBy(saleOrderAddDto.getUserId());
                     advice.setCreateTime(date);
                     advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
