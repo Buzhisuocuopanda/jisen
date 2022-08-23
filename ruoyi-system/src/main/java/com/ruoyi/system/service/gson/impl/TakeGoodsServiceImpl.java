@@ -79,6 +79,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     private GsGoodsSnMapper gsGoodsSnMapper;
 
 
+
+
+
+
     @Override
     public List<TakeGoodsOrderListVo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto) {
 
@@ -715,6 +719,18 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             for (Cbpl cbpl : cbpls) {
                 //先入先出 并且未占用
 
+                //查找本仓库的占用数量
+                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+                usex.createCriteria()
+                        .andGoodsIdEqualTo(cbpl.getCbpl08())
+                        .andWhIdEqualTo(cbpk.getCbpk10())
+                        .andOrderNoEqualTo(cbpk.getSaleOrderNo())
+                        ;
+
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+//                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+//                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUs.getLockQty());
+//                }
 
             }
 

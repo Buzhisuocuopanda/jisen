@@ -11,9 +11,13 @@ import lombok.Data;
 @Data
 public class TotalOrderListDto {
 
+
+    //型号
     private String model;
 
+    //生产总订单号
     private String orderNo;
 
+    //状态 0：NO  4:OK
     private Integer status;
 }
