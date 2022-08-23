@@ -15,6 +15,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         if(cbpgs.size() >0){
             throw new SwException("编号已存在");
         }
+        NumberGenerate numberGenerate = new NumberGenerate();
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -82,6 +84,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        String purchasereturnNo = numberGenerate.getPurchasereturnNo(cbpgDto.getCbpg10());
+        cbpg.setCbpg07(purchasereturnNo);
         cbpg.setCbpg08(date);
         cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setUserId(Math.toIntExact(userid));

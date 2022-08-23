@@ -19,6 +19,7 @@ import com.ruoyi.system.mapper.CbigMapper;
 import com.ruoyi.system.mapper.CbsaMapper;
 import com.ruoyi.system.service.ISWarehousedetailsinitializeService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -52,7 +53,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             throw new SwException("请选择扫码仓库");
         }
         Long userId = SecurityUtils.getUserId();
-
+        NumberGenerate number = new NumberGenerate();
+        String warehouseinitializationNo = number.getWarehouseinitializationNo(cbieDo.getCbie09());
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
         Date date = new Date();
         cbie.setCbie02(date);
@@ -60,6 +62,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
         cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbie.setCbie07(warehouseinitializationNo);
         cbie.setUserId(Math.toIntExact(userId));
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();

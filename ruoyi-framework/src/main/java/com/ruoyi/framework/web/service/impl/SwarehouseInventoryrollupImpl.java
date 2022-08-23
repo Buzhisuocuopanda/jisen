@@ -20,6 +20,7 @@ import com.ruoyi.system.mapper.CbifMapper;
 import com.ruoyi.system.mapper.CbsaMapper;
 import com.ruoyi.system.service.ISwarehouseInventoryrollupService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -53,7 +54,8 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
             throw new SwException("请选择数量仓库");
         }
         Long userId = SecurityUtils.getUserId();
-
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String binitinitializationNo = numberGenerate.getBinitinitializationNo(cbieDo.getCbie09());
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
         Date date = new Date();
         cbie.setCbie02(date);
@@ -61,6 +63,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
         cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbie.setCbie07(binitinitializationNo);
         cbie.setUserId(Math.toIntExact(userId));
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();

@@ -18,6 +18,7 @@ import com.ruoyi.system.mapper.CbabMapper;
 import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.GsGoodsSkuMapper;
 import com.ruoyi.system.service.IWarehousetransferordersService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -52,7 +53,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
         }
         Long userId = SecurityUtils.getUserId();
-
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbaaDo.getCbaa10());
         Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
         Date date = new Date();
         cbaa.setCbaa02(date);
@@ -60,6 +62,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         cbaa.setCbaa04(date);
         cbaa.setCbaa05(Math.toIntExact(userId));
         cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbaa.setCbaa07(warehouseinitializationNo);
         cbaaMapper.insertSelective(cbaa);
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa07EqualTo(cbaaDo.getCbaa07())

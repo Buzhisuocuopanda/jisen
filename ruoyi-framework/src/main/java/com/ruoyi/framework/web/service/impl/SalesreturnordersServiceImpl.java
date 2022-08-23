@@ -17,6 +17,7 @@ import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.CbseMapper;
 import com.ruoyi.system.mapper.CbsfMapper;
 import com.ruoyi.system.service.ISalesreturnordersService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -55,7 +56,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             throw new SwException("编号已存在");
         }
         Long userid = SecurityUtils.getUserId();
-
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String salesreturnordersNo = numberGenerate.getSalesreturnordersNo(cbseDo.getCbse10());
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
         Date date = new Date();
         cbse.setCbse02(date);
@@ -63,6 +65,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
         cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbse.setCbse07(salesreturnordersNo);
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
         cbse.setUserId(Math.toIntExact(userid));

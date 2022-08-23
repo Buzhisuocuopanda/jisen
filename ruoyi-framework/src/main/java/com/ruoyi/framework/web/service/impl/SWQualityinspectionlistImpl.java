@@ -11,6 +11,7 @@ import com.ruoyi.system.domain.vo.CbqaVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWQualityinspectionlistService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +44,9 @@ private CbpmMapper cbpmMapper;
         if(cbqas.size()>0){
             throw new SwException("编号不可重复");
         }
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String qualityinspectionlistNo = numberGenerate.getQualityinspectionlistNo();
+
         Long userid = SecurityUtils.getUserId();
 
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
@@ -52,7 +56,7 @@ private CbpmMapper cbpmMapper;
         cbqa.setCbqa04(date);
         cbqa.setCbqa05(Math.toIntExact(userid));
         cbqa.setCbqa06(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbqa.setCbqa07(cbqaDo.getCbqa07());
+        cbqa.setCbqa07(qualityinspectionlistNo);
         cbqa.setCbqa08(date);
         cbqa.setCbqa09(Task1Status.wsh.getCode());
         cbqa.setCbqa10(Math.toIntExact(userid));

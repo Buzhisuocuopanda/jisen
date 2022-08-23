@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.vo.CbscVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -60,7 +61,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             throw new SwException("编号已存在");
         }
         Long userid = SecurityUtils.getUserId();
-
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String sellofwarehouseNo = numberGenerate.getSellofwarehouseNo(cbsbDo.getCbsb10());
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
         Date date = new Date();
         cbsb.setCbsb02(date);
@@ -68,6 +70,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
         cbsb.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsb.setCbsb07(sellofwarehouseNo);
         cbsb.setCbsb11(TaskStatus.mr.getCode());
         cbsb.setUserId(Math.toIntExact(userid));
         cbsbMapper.insertSelective(cbsb);

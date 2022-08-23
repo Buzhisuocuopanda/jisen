@@ -17,6 +17,7 @@ import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsjMapper;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,7 +41,8 @@ private CbsjMapper cbbsjMapper;
             throw new SwException("请选择扫码仓库");
         }
         Long userId = SecurityUtils.getUserId();
-
+        NumberGenerate numberGenerate = new NumberGenerate();
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbshDo.getCbsh10());
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
         Date date = new Date();
         cbsh.setCbsh02(date);
@@ -48,6 +50,7 @@ private CbsjMapper cbbsjMapper;
         cbsh.setCbsh04(Math.toIntExact(userId));
         cbsh.setCbsh05(Math.toIntExact(userId));
         cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh07(warehouseinitializationNo);
         cbsh.setCbsh08(cbshDo.getCbsh08());
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);

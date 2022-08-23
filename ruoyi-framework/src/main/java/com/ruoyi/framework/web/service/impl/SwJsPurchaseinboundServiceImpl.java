@@ -16,6 +16,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +76,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
         //主表根据输入编号查不到数据，添加数据
         if(cbpcs.size()==0){
-
+            NumberGenerate numberGenerate = new NumberGenerate();
             Long userid = SecurityUtils.getUserId();
             Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
             Date date = new Date();
@@ -84,6 +85,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             cbpc.setCbpc04(date);
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+            String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
+            cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setUserId(Math.toIntExact(userid));
             cbpcMapper.insertSelective(cbpc);
 
