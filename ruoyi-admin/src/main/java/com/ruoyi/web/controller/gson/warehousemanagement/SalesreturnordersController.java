@@ -236,7 +236,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslists(CbsesVo cbsesVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists(@RequestBody CbsesVo cbsesVo) {
         try {
             startPage();
             List<CbsesVo> list = salesreturnordersService.selectSwJsTaskGoodsRelListss(cbsesVo);

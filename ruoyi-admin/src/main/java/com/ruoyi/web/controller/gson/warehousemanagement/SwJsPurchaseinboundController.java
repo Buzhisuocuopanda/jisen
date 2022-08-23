@@ -258,7 +258,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslistss(CbpcVo cbpcVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslistss(@RequestBody CbpcVo cbpcVo) {
         try {
             startPage();
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListsss(cbpcVo);

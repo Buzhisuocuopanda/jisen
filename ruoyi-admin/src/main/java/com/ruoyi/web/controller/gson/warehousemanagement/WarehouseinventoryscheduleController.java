@@ -200,7 +200,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细详情"
     )
     @GetMapping("/SwJsStorelistdetail")
-    public AjaxResult<TableDataInfo> SwJsStorelistsss(CbsjVo cbsjVo) {
+    public AjaxResult<TableDataInfo> SwJsStorelistsss(@RequestBody CbsjVo cbsjVo) {
         try {
             startPage();
             List<CbsjVo> list = warehouseinventoryscheduleService.SwJsStorelistsss(cbsjVo);

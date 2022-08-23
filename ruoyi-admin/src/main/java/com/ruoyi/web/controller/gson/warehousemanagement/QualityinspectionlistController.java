@@ -168,7 +168,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单详情"
     )
     @GetMapping("/SwJsSkuBarcodelists")
-    public AjaxResult<TableDataInfo> swJsGoodslists(CbqaVo cbqaVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists(@RequestBody CbqaVo cbqaVo) {
         try {
             startPage();
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelListss(cbqaVo);

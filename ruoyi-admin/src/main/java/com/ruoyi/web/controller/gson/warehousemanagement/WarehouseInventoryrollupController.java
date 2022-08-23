@@ -231,7 +231,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化详情"
     )
     @GetMapping("/SwJsStorelist")
-    public AjaxResult<TableDataInfo> swJsStorelist(CbifVo cbifVo) {
+    public AjaxResult<TableDataInfo> swJsStorelist(@RequestBody CbifVo cbifVo) {
         try {
             startPage();
             List<CbifVo> list = swarehouseInventoryrollupService.selectSwJsStoreList(cbifVo);
