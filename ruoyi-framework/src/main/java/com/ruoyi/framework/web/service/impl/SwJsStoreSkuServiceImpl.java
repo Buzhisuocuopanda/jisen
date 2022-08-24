@@ -94,7 +94,7 @@ private CbpcMapper cbpcMapper;
         Date date = new Date();
         cbwa.setCbwa04(date);
         cbwa.setCbwa05(Math.toIntExact(userid));
-
+        cbwa.setCbwa06(DeleteFlagEnum.DELETE.getCode());
         CbwaCriteria example3=new CbwaCriteria();
 
         example3.createCriteria().
