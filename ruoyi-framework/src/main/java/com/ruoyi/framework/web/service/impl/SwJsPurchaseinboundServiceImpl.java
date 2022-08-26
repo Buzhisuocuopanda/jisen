@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
 import com.ruoyi.system.domain.dto.CbpdDto;
@@ -54,6 +55,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
    @Resource
    private TaskService taskService;
+
+
+
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -163,6 +167,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
 
 
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpeMapper mapper = session.getMapper(CbpeMapper.class);
         Date date = new Date();
@@ -174,6 +179,46 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             itemList.get(i).setCbpe06(Math.toIntExact(userid));
             itemList.get(i).setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+
+            //如果查不到添加信息到库存表
+            Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpe01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbpe08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+             if(gsGoodsSkus.size()==0){
+                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
+                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
+                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
+                 gsGoodsSkuDo1.setQty(1.0);
+                 taskService.addGsGoodsSku(gsGoodsSkuDo1);
+            }
+             //如果存在则更新库存数量
+             else {
+                 //加锁
+                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                 //查出
+                 Double qty = gsGoodsSkus.get(0).getQty();
+                 gsGoodsSkuDo1.setQty(qty+1.0);
+                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+             }
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+               gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
+                gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
+                gsGoodsSnDo.setWhId(cbpc.getCbpc10());
+            gsGoodsSnDo.setLocationId(itemList.get(i).getCbpe10());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+            gsGoodsSnDo.setInTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+            taskService.addGsGoodsSn(gsGoodsSnDo);
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();

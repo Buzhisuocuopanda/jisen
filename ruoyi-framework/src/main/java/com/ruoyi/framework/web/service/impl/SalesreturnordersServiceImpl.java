@@ -2,15 +2,15 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.ErrCode;
-import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbseDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbseVo;
 import com.ruoyi.system.domain.vo.CbsesVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -19,6 +19,8 @@ import com.ruoyi.system.mapper.CbseMapper;
 import com.ruoyi.system.mapper.CbsfMapper;
 import com.ruoyi.system.mapper.CbsgMapper;
 import com.ruoyi.system.service.ISalesreturnordersService;
+import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     private SqlSessionFactory sqlSessionFactory;
     @Resource
     private  NumberGenerate numberGenerate;
+
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private BaseCheckService baseCheckService;
     /**
      * 新增销售退库单主表
      */
@@ -235,6 +243,42 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             itemList.get(i).setCbsg06(Math.toIntExact(userid));
             itemList.get(i).setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+
+            //如果查不到添加信息到库存表
+            Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(i).getCbse01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbse.getCbse10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbsg08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if(qty==0){
+                    throw new SwException("库存数量不足");
+                }
+                gsGoodsSkuDo1.setQty(qty-1);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -243,7 +287,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         }
         session.commit();
         session.clearCache();
-        return 1;    }
+        return 1;
+    }
 
 
 }

@@ -5,10 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
-import com.ruoyi.system.domain.Do.NumberDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -19,6 +16,10 @@ import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -62,6 +63,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Resource
     private TaskService taskService;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
     /**
      * 新增采购退货主单
      *
@@ -159,18 +163,64 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @return 结果
      */
     @Override
-    public int insertSwJsSkuBarcodesm(CbpgDto cbpgDto) {
-        Long userid = SecurityUtils.getUserId();
-
-        Cbpi cbpi = BeanCopyUtils.coypToClass(cbpgDto, Cbpi.class, null);
+    public int insertSwJsSkuBarcodesm(List<Cbpi> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpiMapper mapper = session.getMapper(CbpiMapper.class);
         Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbpi03(date);
+            itemList.get(i).setCbpi04(Math.toIntExact(userid));
+            itemList.get(i).setCbpi05(date);
+            itemList.get(i).setCbpi06(Math.toIntExact(userid));
+            itemList.get(i).setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+         //   mapper.insertSelective(itemList.get(i));
 
-        cbpi.setCbpi03(date);
-        cbpi.setCbpi04(Math.toIntExact(userid));
-        cbpi.setCbpi05(date);
-        cbpi.setCbpi06(Math.toIntExact(userid));
-        cbpi.setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbpiMapper.insertSelective(cbpi);
+            //如果查不到添加信息到库存表
+            Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbpg.getCbpg10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbpi08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if(qty==0){
+                    throw new SwException("库存数量不足");
+                }
+                gsGoodsSkuDo1.setQty(qty-1);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
     /**

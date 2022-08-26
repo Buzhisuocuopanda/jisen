@@ -207,6 +207,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public GsGoodsSn updateGsGoodsSn(GsGoodsSnDo goodsSnDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSn gsGoodsSn = BeanCopyUtils.coypToClass(goodsSnDo, GsGoodsSn.class, null);
+        gsGoodsSn.setUpdateTime(date);
+        gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+
+        GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+        example1.createCriteria().andSnEqualTo(goodsSnDo.getSn())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+        return gsGoodsSn;
+    }
+
+    @Override
     public GsGoodsSku updateGsGoodsSku(GsGoodsSkuDo goodsSkuDo) {
         Date date=new Date();
         Long userid = SecurityUtils.getUserId();
@@ -220,6 +235,16 @@ public class TaskServiceImpl implements TaskService {
                 .andLocationIdEqualTo(goodsSkuDo.getLocationId());
         gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku,example);
         return gsGoodsSku;
+    }
+
+    @Override
+    public List<GsGoodsSku> checkGsGoodsSku(GsGoodsSkuDo goodsSkuDo) {
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria().andWhIdEqualTo(goodsSkuDo.getWhId())
+                .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        return gsGoodsSkus;
     }
 
 

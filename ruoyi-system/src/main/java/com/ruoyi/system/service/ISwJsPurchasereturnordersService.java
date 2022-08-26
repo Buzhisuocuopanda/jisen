@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Cbpi;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -30,5 +32,5 @@ public interface ISwJsPurchasereturnordersService {
 
     int insertSwJsSkuBarcodess(CbpgDto cbpgDto);
 
-    int insertSwJsSkuBarcodesm(CbpgDto cbpgDto);
+    int insertSwJsSkuBarcodesm(List<Cbpi> itemList);
 }

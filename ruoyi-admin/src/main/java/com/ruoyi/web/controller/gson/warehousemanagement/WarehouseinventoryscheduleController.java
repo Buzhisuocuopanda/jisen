@@ -89,8 +89,8 @@ public class WarehouseinventoryscheduleController extends BaseController {
     }
 
     @ApiOperation(
-            value ="仓库盘点明细新增明细表",
-            notes = "仓库盘点明细新增明细表"
+            value ="仓库盘点明细新增明细表扫码",
+            notes = "仓库盘点明细新增明细表扫码"
     )
     @PostMapping("/SwJsStoreadds")
     public AjaxResult swJsStoreadd(@Valid @RequestBody List<Cbsj> itemList, BindingResult bindingResult) {
@@ -101,7 +101,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点明细新增明细表扫码】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
