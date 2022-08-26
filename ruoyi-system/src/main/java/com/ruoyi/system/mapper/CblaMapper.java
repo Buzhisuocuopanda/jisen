@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CblaCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.vo.CblaVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CblaMapper {
@@ -22,7 +23,7 @@ public interface CblaMapper {
 
     int updateByExample(@Param("record") Cbla record, @Param("example") CblaCriteria example);
 
-    List<Cbla> selectSwJsStoreList(Cbla cbla);
+    List<CblaVo> selectSwJsStoreList(CblaVo cblaVo);
 
     int insertCBLA(Cbla cbla);
 

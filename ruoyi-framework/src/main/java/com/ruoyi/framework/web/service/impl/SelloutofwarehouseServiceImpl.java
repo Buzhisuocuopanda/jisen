@@ -281,6 +281,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 if(qty==0){
                     throw new SwException("库存数量不足");
                 }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbsb.getCbsb10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsd08());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsd10());
                 gsGoodsSkuDo1.setQty(qty-1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 

@@ -292,23 +292,20 @@
   <sql id="selectCBLAVo">
     select CBLA01, CBLA02, CBLA03, CBLA04, CBLA05, CBLA06, CBLA07, CBLA08, CBLA09, CBLA10, CBLA11, CBLA12, CBLA13 from CBLA
   </sql>
-  <select id="selectSwJsStoreList" parameterType="CBLA" resultMap="CBLAResult">
-    <include refid="selectCBLAVo"/>
-    <where>
-      <if test="cbla01 != null "> and CBLA01 = #{cbla01}</if>
-      <if test="cbla02 != null "> and CBLA02 = #{cbla02}</if>
-      <if test="cbla03 != null "> and CBLA03 = #{cbla03}</if>
-      <if test="cbla04 != null "> and CBLA04 = #{cbla04}</if>
-      <if test="cbla05 != null "> and CBLA05 = #{cbla05}</if>
-      <if test="cbla06 != null "> and CBLA06 = #{cbla06}</if>
-      <if test="cbla07 != null "> and CBLA07 = #{cbla07}</if>
-      <if test="cbla08 != null  and cbla08 != ''"> and CBLA08 = #{cbla08}</if>
-      <if test="cbla09 != null  and cbla09 != ''"> and CBLA09 = #{cbla09}</if>
-      <if test="cbla10 != null "> and CBLA10 = #{cbla10}</if>
-      <if test="cbla11 != null "> and CBLA11 = #{cbla11}</if>
-      <if test="cbla12 != null  and cbla12 != ''"> and CBLA12 = #{cbla12}</if>
-      <if test="cbla13 != null  and cbla13 != ''"> and CBLA13 = #{cbla13}</if>
-    </where>
+  <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CblaVo">
+    SELECT
+    b.CBWA09,a.CBLA09,a.CBLA07,a.CBLA11,a.CBLA07,a.CBLA12
+    FROM
+    CBLA a
+    LEFT JOIN
+    CBWA b
+    on
+    a.CBLA10=b.CBWA01
+where
+    a.CBLA06=0
+  <if test="cbla09 != null ">  and a.CBLA09 = #{cbla09}</if>
+      <if test="cbwa09 != null "> and  b.CBWA09 = #{cbwa09}</if>
+
   </select>
   <insert id="insertCBLA" parameterType="CBLA">
     insert into CBLA

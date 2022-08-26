@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.CblaDto;
+import com.ruoyi.system.domain.vo.CblaVo;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.mapper.CbpeMapper;
 import com.ruoyi.system.service.ISwJsStoreService;
@@ -130,8 +131,8 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     }
 
     @Override
-    public List<Cbla> selectSwJsStoreList(Cbla cbla) {
-        return cblaMapper.selectSwJsStoreList(cbla);
+    public List<CblaVo> selectSwJsStoreList(CblaVo cblaVo) {
+        return cblaMapper.selectSwJsStoreList(cblaVo);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
+import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -158,13 +159,13 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
     /**
      * 查询商品列表
      *
-     * @param cbpb 商品
+     * @param cbpbVo 商品
      * @return 商品
      */
     @Override
     @DataScope(userAlias = "recruit.CBPB04")
-    public List<Cbpb> selectSwJsGoodsList(Cbpb cbpb) {
-        return cbpbMapper.selectSwJsGoodsList(cbpb);
+    public List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo) {
+        return cbpbMapper.selectSwJsGoodsList(cbpbVo);
     }
 
     @Override

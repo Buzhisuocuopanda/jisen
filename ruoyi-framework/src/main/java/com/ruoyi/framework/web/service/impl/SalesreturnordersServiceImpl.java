@@ -267,6 +267,11 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 if(qty==0){
                     throw new SwException("库存数量不足");
                 }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbse.getCbse10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsg08());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsg10());
                 gsGoodsSkuDo1.setQty(qty-1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 

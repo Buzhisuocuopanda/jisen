@@ -203,6 +203,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
                  //加锁
                  baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                  GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
+                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
+                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
                  //查出
                  Double qty = gsGoodsSkus.get(0).getQty();
                  gsGoodsSkuDo1.setQty(qty+1.0);

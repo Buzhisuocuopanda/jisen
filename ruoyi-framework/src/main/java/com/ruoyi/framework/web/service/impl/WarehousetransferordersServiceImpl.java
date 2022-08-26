@@ -1,21 +1,21 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.Cbaa;
-import com.ruoyi.system.domain.CbaaCriteria;
-import com.ruoyi.system.domain.Cbab;
-import com.ruoyi.system.domain.Cbac;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbaaDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbaaVo;
 import com.ruoyi.system.domain.vo.CbaasVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
+import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -41,6 +41,12 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private NumberGenerate numberGenerate;
+
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private BaseCheckService baseCheckService;
 
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
@@ -267,6 +273,74 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
             itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
+            //如果查不到添加信息到库存表
+            Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取调出仓库id
+            gsGoodsSkuDo.setWhId(cbaa.getCbaa09());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbac08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在//调出仓库
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+             throw new SwException("调出仓库没有该货物");
+            }
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if(qty==0){
+                    throw new SwException("调出仓库该货物数量为0");
+                }
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbac08());
+                gsGoodsSkuDo1.setWhId(cbaa.getCbaa10());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbac10());
+
+                gsGoodsSkuDo1.setQty(qty-1.0);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+
+            //调入仓库加
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            //获取调入仓库id
+            gsGoodsSkuDo1.setWhId(cbaa.getCbaa10());
+            //获取商品id
+            gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbac08());
+            gsGoodsSkuDo1.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus1 = taskService.checkGsGoodsSku(gsGoodsSkuDo1);
+            if(gsGoodsSkus1.size()==0){
+                GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+                gsGoodsSkuDo2.setGoodsId(itemList.get(i).getCbac08());
+                gsGoodsSkuDo2.setWhId(cbaa.getCbaa10());
+                gsGoodsSkuDo2.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSkuDo2.setQty(1.0);
+                taskService.addGsGoodsSku(gsGoodsSkuDo2);
+            } else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+
+                gsGoodsSkuDo2.setGoodsId(itemList.get(i).getCbac08());
+                gsGoodsSkuDo2.setWhId(cbaa.getCbaa10());
+                gsGoodsSkuDo2.setLocationId(itemList.get(i).getCbac10());
+                //查出
+                Double qty = gsGoodsSkus1.get(0).getQty();
+                gsGoodsSkuDo2.setQty(qty+1.0);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo2);
+
+            }
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbac09());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
 
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次防止内存溢出

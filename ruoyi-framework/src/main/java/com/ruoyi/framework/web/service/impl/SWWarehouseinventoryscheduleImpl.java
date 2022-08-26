@@ -116,6 +116,9 @@ private CbsjMapper cbbsjMapper;
                 //加锁
                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsj08());
+                gsGoodsSkuDo1.setWhId(cbsh.getCbsh10());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsj10());
                 //查出
                 Double qty = gsGoodsSkus.get(0).getQty();
                 gsGoodsSkuDo1.setQty(qty+1.0);

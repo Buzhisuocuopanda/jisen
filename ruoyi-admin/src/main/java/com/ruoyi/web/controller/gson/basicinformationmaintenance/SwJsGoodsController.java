@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Cbpf;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
+import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import io.swagger.annotations.Api;
@@ -147,16 +148,16 @@ public class SwJsGoodsController extends BaseController {
             notes = "查询商品列表"
     )
     @GetMapping("/SwJsGoodslist")
-    public AjaxResult<TableDataInfo> swJsGoodslist(Cbpb cbpb) {
+    public AjaxResult<TableDataInfo> swJsGoodslist(CbpbVo cbpbVo) {
         try {
             startPage();
-            List<Cbpb> list = swJsGoodsService.selectSwJsGoodsList(cbpb);
+            List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsList(cbpbVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpb),ExceptionUtils.getStackTrace(e));
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpbVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -227,9 +228,9 @@ public class SwJsGoodsController extends BaseController {
             notes = "导出商品列表"
     )
     @PostMapping("/SwJsGoodsexport")
-    public void swJsGoodsexport(HttpServletResponse response, Cbpb cbpb) {
-        List<Cbpb> list = swJsGoodsService.selectSwJsGoodsList(cbpb);
-        ExcelUtil<Cbpb> util = new ExcelUtil<>(Cbpb.class);
+    public void swJsGoodsexport(HttpServletResponse response, CbpbVo cbpbVo) {
+        List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsList(cbpbVo);
+        ExcelUtil<CbpbVo> util = new ExcelUtil<>(CbpbVo.class);
         util.exportExcel(response, list, "商品数据");
     }
 }
