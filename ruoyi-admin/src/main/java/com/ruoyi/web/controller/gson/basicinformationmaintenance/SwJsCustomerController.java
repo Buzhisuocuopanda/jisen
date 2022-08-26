@@ -10,6 +10,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.dto.CbcaDto;
+import com.ruoyi.system.domain.dto.CbsaDto;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -174,7 +175,19 @@ public class SwJsCustomerController extends BaseController {
     }
 
 
-
+    /**
+     * 导入供应商信息下载模板
+     */
+    @ApiOperation(
+            value ="导入供应商信息下载模板",
+            notes = "导入供应商信息下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<Cbca> util = new ExcelUtil<Cbca>(Cbca.class);
+        util.importTemplateExcel(response,"导入供应商信息");
+    }
 
 
 
