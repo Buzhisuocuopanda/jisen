@@ -6,7 +6,9 @@ import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbseVo;
 import com.ruoyi.system.domain.vo.CbsesVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+@Mapper
 
 public interface CbseMapper {
     long countByExample(CbseCriteria example);

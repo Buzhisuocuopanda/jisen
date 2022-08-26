@@ -17,6 +17,7 @@ import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.CbseMapper;
 import com.ruoyi.system.mapper.CbsfMapper;
+import com.ruoyi.system.mapper.CbsgMapper;
 import com.ruoyi.system.service.ISalesreturnordersService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import io.swagger.annotations.ApiOperation;
@@ -44,20 +45,15 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     private CbseMapper cbseMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+    @Resource
+    private  NumberGenerate numberGenerate;
     /**
      * 新增销售退库单主表
      */
     @Override
     public IdVo insertSelloutofwarehouse(CbseDo cbseDo) {
-        CbseCriteria example = new CbseCriteria();
-        example.createCriteria().andCbse07EqualTo(cbseDo.getCbse07())
-                .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbse> cbses = cbseMapper.selectByExample(example);
-        if (cbses.size() > 0) {
-            throw new SwException("编号已存在");
-        }
+
         Long userid = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
         String salesreturnordersNo = numberGenerate.getSalesreturnordersNo(cbseDo.getCbse10());
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
         Date date = new Date();
@@ -72,9 +68,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setUserId(Math.toIntExact(userid));
         cbseMapper.insertSelective(cbse);
         CbseCriteria example1 = new CbseCriteria();
-        example1.createCriteria().andCbse07EqualTo(cbseDo.getCbse07())
+        example1.createCriteria().andCbse07EqualTo(salesreturnordersNo)
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbse> cbsess = cbseMapper.selectByExample(example);
+        List<Cbse> cbsess = cbseMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbsess.get(0).getCbse01());
         return idVo;
@@ -225,6 +221,29 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
         return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
     }
+
+    @Override
+    public int insertSwJsStoress(List<Cbsg> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbsgMapper mapper = session.getMapper(CbsgMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbsg03(date);
+            itemList.get(i).setCbsg04(Math.toIntExact(userid));
+            itemList.get(i).setCbsg05(date);
+            itemList.get(i).setCbsg06(Math.toIntExact(userid));
+            itemList.get(i).setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;    }
 
 
 }

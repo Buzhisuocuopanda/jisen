@@ -7,10 +7,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.vo.CbpkVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.CbscVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
@@ -18,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.tsv.TsvFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +42,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
+    @Resource
+    private NumberGenerate numberGenerate;
+
     /**
      * 新增销售出库主单
      *
@@ -53,16 +54,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
-        CbsbCriteria example = new CbsbCriteria();
-        example.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07())
-                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbsb> cbsbs = cbsbMapper.selectByExample(example);
-        if (cbsbs.size() > 0) {
-            throw new SwException("编号已存在");
-        }
+
         Long userid = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
-        String sellofwarehouseNo = numberGenerate.getSellofwarehouseNo(cbsbDo.getCbsb10());
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
         Date date = new Date();
         cbsb.setCbsb02(date);
@@ -70,13 +63,17 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
         cbsb.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsb.setCbsb10(cbsbDo.getCbsb10());
+        String sellofwarehouseNo = numberGenerate.getSellofwarehouseNo(cbsbDo.getCbsb10());
         cbsb.setCbsb07(sellofwarehouseNo);
+        cbsb.setCbsb08(date);
         cbsb.setCbsb11(TaskStatus.mr.getCode());
+        cbsb.setCbsb12(Math.toIntExact(userid));
         cbsb.setUserId(Math.toIntExact(userid));
         cbsbMapper.insertSelective(cbsb);
 
         CbsbCriteria example1 = new CbsbCriteria();
-        example1.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07())
+        example1.createCriteria().andCbsb07EqualTo(sellofwarehouseNo)
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsb> cbsbss = cbsbMapper.selectByExample(example1);
 
@@ -220,8 +217,37 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     public List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo) {
         return cbpkMapper.selectswJsSkuBaxsthelist(cbpkVo);
     }
+    /**
+     * 销售出库单详情
+     */
+    @Override
+    public List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo) {
+        return cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
+    }
 
-
+    @Override
+    public int insertSwJsStoress(List<Cbsd> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbsdMapper mapper = session.getMapper(CbsdMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbsd03(date);
+            itemList.get(i).setCbsd04(Math.toIntExact(userid));
+            itemList.get(i).setCbsd05(date);
+            itemList.get(i).setCbsd06(Math.toIntExact(userid));
+            itemList.get(i).setCbsd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
 
 
 }

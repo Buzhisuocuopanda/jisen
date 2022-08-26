@@ -709,4 +709,63 @@ ORDER BY
    LIMIT 1
   </select>
     <select id="selectswJsSkuBaxsthelist" resultType="com.ruoyi.system.domain.vo.CbpkVo"></select>
+    <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbsVo">
+      SELECT
+        a.CBSB07,c.CBCA09,a.CBSB08,c.CBCA08,d.CBWA09,i.CAUA15,
+        a.CBSB18,a.CBSB19,c.CBCA28,e.CALA08,a.CBSB18,a.CBSB31,
+        a.CBSB19,a.CBSB21,f.CBSA08,b.CBSC17,h.CALA08,g.CBPB12,g.CBPB08,
+        b.CBSC09,b.CBSC09,b.CBSC11,b.CBSC12,b.CBSC13,j.CBSD09,k.CBLA09,j.CBSD11,a.CBSB01
+
+      FROM
+        CBSB a
+          LEFT JOIN
+        CBSC b
+        on
+          a.CBSB01=b.CBSB01
+          LEFT JOIN
+        CBCA c
+        ON
+          c.CBCA01=a.CBSB09
+          LEFT JOIN
+        CBWA d
+        ON
+          d.CBWA01=a.CBSB10
+          LEFT JOIN
+        CALA e
+        on
+          e.CALA01=a.CBSB16
+          LEFT JOIN
+        CBSA f
+        ON
+          f.CBSA01=b.CBSC15
+          LEFT JOIN
+        CBPB g
+        on
+          g.CBPB01=b.CBSC08
+          LEFT JOIN
+        CALA h
+        ON
+          h.CALA01=g.CBPB10
+          LEFT JOIN
+        CAUA i
+        on
+          i.CAUA01=a.CBSB17
+          LEFT JOIN
+        CBSD j
+        on
+          j.CBSB01=a.CBSB01
+          LEFT JOIN
+        CBLA k
+        ON
+          k.CBLA01=j.CBSD10
+      WHERE
+      <if test="cbsb01 != null ">  a.CBSB01 = #{cbsb01}</if>
+      <if test="cbwa09 != null "> and d.cbwa09 = #{cbwa09}</if>
+      <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+        and date_format(a.cbsb08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+      </if>
+      <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+        and date_format(a.cbsb08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+      </if>
+    </select>
 </mapper>

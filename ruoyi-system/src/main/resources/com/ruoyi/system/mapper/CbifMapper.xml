@@ -419,5 +419,48 @@
     where
       a.CBIE01= #{cbie01,jdbcType=INTEGER}
   </select>
+    <select id="selectInventorysummaryquery" resultType="com.ruoyi.system.domain.vo.InwuquVo">
+      SELECT (@i:=@i+1) AS '序号' ,
+             d.CBPA07,e.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBIF09,f.CBWA09,g.qty
+      FROM
+        CBIE a
+          LEFT JOIN
+        CBIF b
+        on
+          a.CBIE01=b.CBIE01
+          LEFT JOIN
+        CBPB c
+        on
+          c.CBPB01=b.CBIF08
+          LEFT JOIN
+        CBPA d
+        on
+          d.CBPA01=c.CBPB14
+          LEFT JOIN
+        CALA e
+        on
+          e.CALA01=c.CBPB10
+          LEFT JOIN
+        CBWA f
+        on
+          f.CBWA01=a.CBIE09
+          LEFT JOIN
+        gs_goods_sku g
+        ON
+              b.CBIF08=g.goods_id
+            and
+              a.CBIE09=g.wh_id,
+--
+-- LEFT JOIN
+-- gs_goods_sku g
+-- ON
+-- a.CBIE09=g.wh_id,
+        (SELECT @i:=0) AS itable
+where
+    a.CBIE06=0
+      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09}</if>
+      <if test="cala08 != null "> and e.CALA08 = #{cala08}</if>
+      <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
+    </select>
 
 </mapper>

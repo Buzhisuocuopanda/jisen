@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbab;
+import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Do.CbaaDo;
 import com.ruoyi.system.domain.Do.CbabDo;
 import com.ruoyi.system.domain.vo.CbaaVo;
@@ -35,4 +36,6 @@ public interface IWarehousetransferordersService {
     int insertSwJsSkuBarcodeupdate(CbaaDo cbaaDo);
 
     List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
+
+    int insertSwJsStoress(List<Cbac> itemList);
 }

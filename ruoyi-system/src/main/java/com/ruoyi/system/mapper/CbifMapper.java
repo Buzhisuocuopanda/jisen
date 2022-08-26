@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbifCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbifVo;
+import com.ruoyi.system.domain.vo.InwuquVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbifMapper {
@@ -31,4 +32,6 @@ public interface CbifMapper {
     int updateByPrimaryKey(Cbif record);
 
     List<CbifVo> SwJsStoreslistss(CbifVo cbifVo);
+
+    List<InwuquVo> selectInventorysummaryquery(InwuquVo inwuquVo);
 }

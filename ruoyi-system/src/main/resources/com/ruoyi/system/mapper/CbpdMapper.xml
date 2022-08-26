@@ -538,45 +538,57 @@
   </select>
   <select id="getInfossss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
     SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08,
-           d.CBPB12,d.CBPB08,
+    d.CBPB12,d.CBPB08,
 
-           b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
-           p.CBPA07,
-           c.CBPE09,c.CBPE10
+    b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
+    p.CBPA07,
+    c.CBPE09,c.CBPE10,l.CBLA09
 
 
     from CBPC a
-           LEFT JOIN
-         CBPD b
-         on a.CBPC01=b.CBPC01
-           LEFT JOIN
-         CBPE c
-         ON a.CBPC01=c.CBPC01
-           LEFT JOIN
-         CBPB d
-         on d.CBPB01=b.CBPD08
-           LEFT JOIN
-         CBSA e
-         on e.CBSA01=a.CBPC09
-           LEFT JOIN
-         CALA f
-         on f.CALA01=a.CBPC16
+    LEFT JOIN
+    CBPD b
+    on a.CBPC01=b.CBPC01
+    LEFT JOIN
+    CBPE c
+    ON a.CBPC01=c.CBPC01
+    LEFT JOIN
+    CBPB d
+    on d.CBPB01=b.CBPD08
+    LEFT JOIN
+    CBSA e
+    on e.CBSA01=a.CBPC09
+    LEFT JOIN
+    CALA f
+    on f.CALA01=a.CBPC16
 
-           LEFT JOIN
-         CALA h
-         on h.CALA01=d.CBPB10
+    LEFT JOIN
+    CALA h
+    on h.CALA01=d.CBPB10
 
-           LEFT JOIN
-         CBWA g
-         on g.CBWA01=a.CBPC10
+    LEFT JOIN
+    CBWA g
+    on g.CBWA01=a.CBPC10
 
-           LEFT JOIN
-         CBPA p
-         on p.CBPA01=d.CBPB14
+    LEFT JOIN
+    CBPA p
+    on p.CBPA01=d.CBPB14
+    LEFT JOIN
+    CBLA l
+    ON
+    l.CBLA01=c.CBPE10
 
     WHERE
       a.CBPC06=0
     <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
+    <if test="cbwa09 != null "> and g.CBWA09 = #{cbwa09}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBPC08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBPC08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+
   </select>
   <select id="selectgoodsinfo" resultType="com.ruoyi.system.domain.vo.CbpdVo">
     SELECT

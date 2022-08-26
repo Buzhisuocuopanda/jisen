@@ -179,6 +179,10 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
             cbpc.setUserId(Math.toIntExact(userid));
+            cbpc.setCbpc11(TaskStatus.mr.getCode());
+            cbpc.setCbpc12(Math.toIntExact(userid));
+            cbpc.setCbpc13(date);
+            cbpc.setCbpc15(date);
             cbpcMapper.insertSelective(cbpc);
 
             CbpcCriteria example1 = new CbpcCriteria();
@@ -194,6 +198,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
             cbpd.setCbpd06(Math.toIntExact(userid));
             cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
             cbpd.setCbpd09(cbpdDto.getCbpd09());
+            cbpd.setCbpd10(Double.valueOf(TaskStatus.mr.getCode()));
             cbpd.setCbpd11(cbpdDto.getCbpd11());
 
             BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
@@ -224,7 +229,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         example2.createCriteria().andCbpc01EqualTo(cbpcs1.get(0).getCbpc01());
         List<Cbpd> cbpds = cbpdMapper.selectByExample(example2);
         //主表查出的编号存在，明细里商品id不同,增加明细表
-        int i = 0;
+        int i = 1;
         if (!cbpds.get(0).getCbpd08().equals(cbpdDto.getCbpd08()) && cbpcs1.size() > 0) {
 
 

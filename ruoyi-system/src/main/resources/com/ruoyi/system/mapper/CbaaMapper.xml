@@ -555,7 +555,16 @@ where
         CBLA m
         ON
           m.CBLA01=l.CBAC10
-      where a.CBAA01 = #{cbaa01}
+
+      where
+      <if test="cbaa01 != null ">  a.CBAA01 = #{cbaa01}</if>
+      <if test="cbwa09 != null "> and c.cbwa09 = #{cbwa09}</if>
+      <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+        and date_format(a.CBAA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+      </if>
+      <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+        and date_format(a.CBAA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+      </if>
 
     </select>
 

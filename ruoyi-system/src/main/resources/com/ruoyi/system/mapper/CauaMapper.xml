@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CauaMapper">
+
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Caua">
     <result column="CAUA01" jdbcType="INTEGER" property="caua01" />
     <result column="CAUA02" jdbcType="TIMESTAMP" property="caua02" />
@@ -96,9 +97,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CAUA01, CAUA02, CAUA03, CAUA04, CAUA05, CAUA06, CAUA07, CAUA08, CAUA09, CAUA10, CAUA11, 
-    CAUA12, CAUA13, CAUA14, CAUA15, CAUA16, CAUA17, CAUA18, CAUA19, CAUA20, CAUA21, CAUA22, 
-    CAUA23, CAUA24, CAUA25, CAUA26, CAUA27, CAUA28, CAUA29, CAUA30, CAUA31, CAUA32, CAUA33, 
+    CAUA01, CAUA02, CAUA03, CAUA04, CAUA05, CAUA06, CAUA07, CAUA08, CAUA09, CAUA10, CAUA11,
+    CAUA12, CAUA13, CAUA14, CAUA15, CAUA16, CAUA17, CAUA18, CAUA19, CAUA20, CAUA21, CAUA22,
+    CAUA23, CAUA24, CAUA25, CAUA26, CAUA27, CAUA28, CAUA29, CAUA30, CAUA31, CAUA32, CAUA33,
     CAUA34
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CauaCriteria" resultMap="BaseResultMap">
@@ -122,29 +123,29 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Caua">
-    insert into `CAUA` (CAUA01, CAUA02, CAUA03, 
-      CAUA04, CAUA05, CAUA06, 
-      CAUA07, CAUA08, CAUA09, 
-      CAUA10, CAUA11, CAUA12, 
-      CAUA13, CAUA14, CAUA15, 
-      CAUA16, CAUA17, CAUA18, 
-      CAUA19, CAUA20, CAUA21, 
-      CAUA22, CAUA23, CAUA24, 
-      CAUA25, CAUA26, CAUA27, 
-      CAUA28, CAUA29, CAUA30, 
-      CAUA31, CAUA32, CAUA33, 
+    insert into `CAUA` (CAUA01, CAUA02, CAUA03,
+      CAUA04, CAUA05, CAUA06,
+      CAUA07, CAUA08, CAUA09,
+      CAUA10, CAUA11, CAUA12,
+      CAUA13, CAUA14, CAUA15,
+      CAUA16, CAUA17, CAUA18,
+      CAUA19, CAUA20, CAUA21,
+      CAUA22, CAUA23, CAUA24,
+      CAUA25, CAUA26, CAUA27,
+      CAUA28, CAUA29, CAUA30,
+      CAUA31, CAUA32, CAUA33,
       CAUA34)
-    values (#{caua01,jdbcType=INTEGER}, #{caua02,jdbcType=TIMESTAMP}, #{caua03,jdbcType=TIMESTAMP}, 
-      #{caua04,jdbcType=INTEGER}, #{caua05,jdbcType=INTEGER}, #{caua06,jdbcType=INTEGER}, 
-      #{caua07,jdbcType=VARCHAR}, #{caua08,jdbcType=VARCHAR}, #{caua09,jdbcType=VARCHAR}, 
-      #{caua10,jdbcType=VARCHAR}, #{caua11,jdbcType=INTEGER}, #{caua12,jdbcType=VARCHAR}, 
-      #{caua13,jdbcType=VARCHAR}, #{caua14,jdbcType=VARCHAR}, #{caua15,jdbcType=VARCHAR}, 
-      #{caua16,jdbcType=VARCHAR}, #{caua17,jdbcType=VARCHAR}, #{caua18,jdbcType=INTEGER}, 
-      #{caua19,jdbcType=VARCHAR}, #{caua20,jdbcType=INTEGER}, #{caua21,jdbcType=VARCHAR}, 
-      #{caua22,jdbcType=VARCHAR}, #{caua23,jdbcType=VARCHAR}, #{caua24,jdbcType=VARCHAR}, 
-      #{caua25,jdbcType=VARCHAR}, #{caua26,jdbcType=VARCHAR}, #{caua27,jdbcType=VARCHAR}, 
-      #{caua28,jdbcType=VARCHAR}, #{caua29,jdbcType=VARCHAR}, #{caua30,jdbcType=VARCHAR}, 
-      #{caua31,jdbcType=VARCHAR}, #{caua32,jdbcType=VARCHAR}, #{caua33,jdbcType=VARCHAR}, 
+    values (#{caua01,jdbcType=INTEGER}, #{caua02,jdbcType=TIMESTAMP}, #{caua03,jdbcType=TIMESTAMP},
+      #{caua04,jdbcType=INTEGER}, #{caua05,jdbcType=INTEGER}, #{caua06,jdbcType=INTEGER},
+      #{caua07,jdbcType=VARCHAR}, #{caua08,jdbcType=VARCHAR}, #{caua09,jdbcType=VARCHAR},
+      #{caua10,jdbcType=VARCHAR}, #{caua11,jdbcType=INTEGER}, #{caua12,jdbcType=VARCHAR},
+      #{caua13,jdbcType=VARCHAR}, #{caua14,jdbcType=VARCHAR}, #{caua15,jdbcType=VARCHAR},
+      #{caua16,jdbcType=VARCHAR}, #{caua17,jdbcType=VARCHAR}, #{caua18,jdbcType=INTEGER},
+      #{caua19,jdbcType=VARCHAR}, #{caua20,jdbcType=INTEGER}, #{caua21,jdbcType=VARCHAR},
+      #{caua22,jdbcType=VARCHAR}, #{caua23,jdbcType=VARCHAR}, #{caua24,jdbcType=VARCHAR},
+      #{caua25,jdbcType=VARCHAR}, #{caua26,jdbcType=VARCHAR}, #{caua27,jdbcType=VARCHAR},
+      #{caua28,jdbcType=VARCHAR}, #{caua29,jdbcType=VARCHAR}, #{caua30,jdbcType=VARCHAR},
+      #{caua31,jdbcType=VARCHAR}, #{caua32,jdbcType=VARCHAR}, #{caua33,jdbcType=VARCHAR},
       #{caua34,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Caua">

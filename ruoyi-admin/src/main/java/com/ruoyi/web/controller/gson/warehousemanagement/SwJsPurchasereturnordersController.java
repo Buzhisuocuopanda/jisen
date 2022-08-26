@@ -158,7 +158,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelist")
-    public AjaxResult<TableDataInfo> swJsGoodslist(@RequestBody CbpgVo cbpgVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslist( CbpgVo cbpgVo) {
         try {
             startPage();
             List<CbpgVo> list = swJsPurchasereturnordersService.selectSwJsTaskGoodsRelLists(cbpgVo);

@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.CbpkVo;
+import com.ruoyi.system.domain.vo.CbsbsVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CbpkMapper {
     long countByExample(CbpkCriteria example);
 
@@ -38,4 +40,6 @@ public interface CbpkMapper {
     Cbpk selectLastBySaleOrderNo(@Param("saleOrderNo") String saleOrderNo);
 
     List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
+
+    List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
 }

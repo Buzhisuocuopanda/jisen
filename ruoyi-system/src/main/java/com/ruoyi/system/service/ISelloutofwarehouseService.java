@@ -1,11 +1,9 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbsc;
+import com.ruoyi.system.domain.Cbsd;
 import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.vo.CbpkVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.CbscVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 
 import java.util.List;
 
@@ -30,4 +28,7 @@ public interface ISelloutofwarehouseService {
 
     List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 
+    List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
+
+    int insertSwJsStoress(List<Cbsd> itemList);
 }

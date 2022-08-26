@@ -75,6 +75,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     @Override
     public int updateSwJsCustomer(CbcaDto cbcaDto) {
         Long userid = SecurityUtils.getUserId();
+        Cbca cbca1 = cbcaMapper.selectByPrimaryKey(cbcaDto.getCbca01());
 
         CbcaCriteria example = new CbcaCriteria();
         example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())

@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -181,11 +182,11 @@ public class SwJsSupplierController extends BaseController {
             value ="导入供应商信息下载模板",
             notes = "导入供应商信息下载模板"
     )
-    @GetMapping("/importTemplate")
-    public AjaxResult importTemplate()
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
     {
         ExcelUtil<CbsaDto> util = new ExcelUtil<CbsaDto>(CbsaDto.class);
-        return util.importTemplateExcel("导入供应商信息");
+         util.importTemplateExcel(response,"导入供应商信息");
     }
 
 }

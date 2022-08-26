@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbab;
+import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.vo.CbaaVo;
@@ -84,6 +85,24 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    @ApiOperation(
+            value ="仓库调拨单新增扫码",
+            notes = "仓库调拨单新增扫码"
+    )
+    @PostMapping("/Warehousetransferordersaddss")
+    public AjaxResult Warehousetransferordersaddss(@Valid @RequestBody List<Cbac> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(warehousetransferordersService.insertSwJsStoress(itemList));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库调拨单新增扫码】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 仓库调拨单列表
@@ -139,8 +158,8 @@ public class WarehousetransferordersController extends BaseController {
             value ="仓库调拨单详情",
             notes = "仓库调拨单详情"
     )
-    @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslistss(@RequestBody CbaasVo cbaasVo) {
+    @PostMapping("/SwJsSkuBarcodelistss")
+    public AjaxResult<TableDataInfo> swJsGoodslistss( CbaasVo cbaasVo) {
         try {
             startPage();
             List<CbaasVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListss(cbaasVo);

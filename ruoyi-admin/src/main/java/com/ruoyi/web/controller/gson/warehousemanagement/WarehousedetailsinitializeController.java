@@ -231,7 +231,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化详情"
     )
     @GetMapping("/SwJsStorelist")
-    public AjaxResult<TableDataInfo> swJsStorelist(@RequestBody CbigVo cbigVo) {
+    public AjaxResult<TableDataInfo> swJsStorelist( CbigVo cbigVo) {
         try {
             startPage();
             List<CbigVo> list = swarehousedetailsinitializeService.selectSwJsStoreList(cbigVo);

@@ -8,15 +8,13 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Cbaa;
 import com.ruoyi.system.domain.CbaaCriteria;
 import com.ruoyi.system.domain.Cbab;
+import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Do.CbaaDo;
 import com.ruoyi.system.domain.vo.CbaaVo;
 import com.ruoyi.system.domain.vo.CbaasVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
 import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.mapper.CbaaMapper;
-import com.ruoyi.system.mapper.CbabMapper;
-import com.ruoyi.system.mapper.CbscMapper;
-import com.ruoyi.system.mapper.GsGoodsSkuMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
@@ -41,20 +39,13 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
     @Resource
     private GsGoodsSkuMapper gsGoodsSkuMapper;
+    @Resource
+    private NumberGenerate numberGenerate;
 
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
-        CbaaCriteria example1 = new CbaaCriteria();
-        example1.createCriteria().andCbaa07EqualTo(cbaaDo.getCbaa07())
-                .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbaa> cbaasw = cbaaMapper.selectByExample(example1);
-        if (cbaasw.size() > 0) {
-            throw new SwException("编号不能重复");
 
-        }
         Long userId = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
-        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbaaDo.getCbaa10());
         Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
         Date date = new Date();
         cbaa.setCbaa02(date);
@@ -62,10 +53,13 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         cbaa.setCbaa04(date);
         cbaa.setCbaa05(Math.toIntExact(userId));
         cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbaaDo.getCbaa10());
+
         cbaa.setCbaa07(warehouseinitializationNo);
         cbaaMapper.insertSelective(cbaa);
         CbaaCriteria example = new CbaaCriteria();
-        example.createCriteria().andCbaa07EqualTo(cbaaDo.getCbaa07())
+        example.createCriteria().andCbaa07EqualTo(warehouseinitializationNo)
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbaa> cbaas = cbaaMapper.selectByExample(example);
         IdVo idVo = new IdVo();
@@ -258,6 +252,31 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     public List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo) {
         return cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
     }
+
+    @Override
+    public int insertSwJsStoress(List<Cbac> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbacMapper mapper = session.getMapper(CbacMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbac03(date);
+            itemList.get(i).setCbac04(Math.toIntExact(userid));
+            itemList.get(i).setCbac05(date);
+            itemList.get(i).setCbac06(Math.toIntExact(userid));
+            itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+
+
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次防止内存溢出
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;    }
 
 
 }

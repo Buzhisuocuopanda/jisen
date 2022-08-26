@@ -14,10 +14,15 @@ import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsjVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.mapper.CbsgMapper;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsjMapper;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +34,12 @@ public class SWWarehouseinventoryscheduleImpl implements ISWWarehouseinventorysc
 private CbshMapper cbshMapper;
 @Resource
 private CbsjMapper cbbsjMapper;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+
+    @Resource
+    private  NumberGenerate numberGenerate;
     @Override
     public List<CbshVo> selectSwJsStoreList(CbshVo cbshVo) {
         return cbshMapper.selectstorelist(cbshVo);
@@ -41,7 +52,6 @@ private CbsjMapper cbbsjMapper;
             throw new SwException("请选择扫码仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbshDo.getCbsh10());
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
         Date date = new Date();
@@ -52,10 +62,11 @@ private CbsjMapper cbbsjMapper;
         cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbsh.setCbsh07(warehouseinitializationNo);
         cbsh.setCbsh08(cbshDo.getCbsh08());
+        cbsh.setCbsh09(TaskStatus.mr.getCode());
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);
         CbshCriteria example = new CbshCriteria();
-        example.createCriteria().andCbsh07EqualTo(cbshDo.getCbsh07())
+        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo)
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
         IdVo idVo = new IdVo();
@@ -64,19 +75,27 @@ private CbsjMapper cbbsjMapper;
     }
 
     @Override
-    public int insertSwJsStores(CbsjDo cbsjDo) {
-        Long userId = SecurityUtils.getUserId();
-
-        Cbsj cbsj = BeanCopyUtils.coypToClass(cbsjDo, Cbsj.class, null);
+    public int insertSwJsStores(List<Cbsj> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbsjMapper mapper = session.getMapper(CbsjMapper.class);
         Date date = new Date();
-        cbsj.setCbsj03(date);
-        cbsj.setCbsj04(Math.toIntExact(userId));
-        cbsj.setCbsj05(date);
-        cbsj.setCbsj06(Math.toIntExact(userId));
-        cbsj.setCbsj07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbsj.setUserId(Math.toIntExact(userId));
-        return  cbbsjMapper.insertSelective(cbsj);
-    }
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbsj03(date);
+            itemList.get(i).setCbsj04(Math.toIntExact(userid));
+            itemList.get(i).setCbsj05(date);
+            itemList.get(i).setCbsj06(Math.toIntExact(userid));
+            itemList.get(i).setCbsj07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;    }
 
     @Override
     public int deleteSwJsStoreById(CbshDo cbshDo) {

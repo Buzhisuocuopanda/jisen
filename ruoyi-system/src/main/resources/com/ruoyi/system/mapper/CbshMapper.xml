@@ -456,8 +456,14 @@ a.CBSH06=0
       on
         f.CBLA01=b.CBSJ10
         where
-      a.CBSH01= #{cbsh01,jdbcType=INTEGER}
-
+    <if test="cbsh01 != null ">  a.CBSH01 = #{cbsh01}</if>
+    <if test="cbwa09 != null "> and c.cbwa09 = #{cbwa09}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(b.CBSJ03,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(b.CBSJ03,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
   </select>
   <select id="SwJsStorlistsss" resultType="com.ruoyi.system.domain.vo.CbsisVo">
     SELECT

@@ -1,16 +1,14 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.enums.NumberGenerateEnum;
-import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.vo.NumberVo;
 import com.ruoyi.system.mapper.*;
-import lombok.experimental.StandardException;
-import org.apache.poi.ss.formula.functions.T;
-import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +36,7 @@ public class NumberGenerate {
     private CbpcMapper cbpcMapper;
 
 
-    @Resource
+    @Autowired
     private CbpgMapper cbpgMapper;
 
     @Resource
@@ -55,6 +53,16 @@ public class NumberGenerate {
 @Resource
 private CbieMapper cbieMapper;
 
+
+//    public static NumberGenerate getDeptIdUtil;
+
+//    @PostConstruct
+//    public void init() {
+//        getDeptIdUtil  = this;
+//        getDeptIdUtil.cbpgMapper = this.cbpgMapper;
+//        getDeptIdUtil.cbsbMapper = this.cbsbMapper;
+//
+//    }
 
 
 
@@ -178,7 +186,7 @@ private CbieMapper cbieMapper;
         }
         CbpcCriteria example=new CbpcCriteria();
         example.createCriteria()
-                .andCbpc07Like("%"+format+"%");
+                .andCbpc07Like(format+"%");
         List<Cbpc> cbpks = cbpcMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";
@@ -203,19 +211,19 @@ private CbieMapper cbieMapper;
          //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增
          SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
          String format = sd.format(new Date());
-         String orderNo = "";
+         String orderNo = " ";
 
          if (storeId / 10 == 0) {
              String s = "PO0" + storeId + format;
-             s=orderNo;
+             orderNo=s;
          }
          else if(storeId/10>0&&storeId/10<10){
              String s = "PO" + storeId + format;
-             s=orderNo;
+             orderNo=s;
          }else {
              int i = storeId % 3;
              String s = "PO0" + i + format;
-             s=orderNo;
+             orderNo=s;
          }
          CbpgCriteria example=new CbpgCriteria();
          example.createCriteria()
@@ -223,7 +231,8 @@ private CbieMapper cbieMapper;
          List<Cbpg> cbpks = cbpgMapper.selectByExample(example);
          if(cbpks.size()==0){
              return orderNo+"0001";
-         }else {
+         }
+         else {
 
              Integer num=0;
              for (Cbpg res : cbpks) {
@@ -248,15 +257,15 @@ private CbieMapper cbieMapper;
 
         if (storeId / 10 == 0) {
             String s = "SO0" + storeId + format;
-            s=orderNo;
+            orderNo = s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "SO" + storeId + format;
-            s=orderNo;
+            orderNo = s;
         }else {
             int i = storeId % 3;
             String s = "SO0" + i + format;
-            s=orderNo;
+            orderNo = s;
         }
         CbsbCriteria example=new CbsbCriteria();
         example.createCriteria()
@@ -290,15 +299,15 @@ private CbieMapper cbieMapper;
 
         if (storeId / 10 == 0) {
             String s = "SI0" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "SI" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }else {
             int i = storeId % 3;
             String s = "SI0" + i + format;
-            s=orderNo;
+            orderNo=s;
         }
         CbseCriteria example=new CbseCriteria();
         example.createCriteria()
@@ -401,15 +410,15 @@ private CbieMapper cbieMapper;
 
         if (storeId / 10 == 0) {
             String s = "ST0" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "ST" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }else {
             int i = storeId % 3;
             String s = "ST0" + i + format;
-            s=orderNo;
+            orderNo=s;
         }
         CbshCriteria example=new CbshCriteria();
         example.createCriteria()
@@ -421,7 +430,7 @@ private CbieMapper cbieMapper;
 
             Integer num=0;
             for (Cbsh res : cbpks) {
-                Integer no = getNum(res.getCbsh07(),10);
+                Integer no = getNum(res.getCbsh07(),12);
                 if(num<no){
                     num=no;
                 }
@@ -462,7 +471,7 @@ private CbieMapper cbieMapper;
 
             Integer num=0;
             for (Cbie res : cbpks) {
-                Integer no = getNum(res.getCbie07(),10);
+                Integer no = getNum(res.getCbie07(),12);
                 if(num<no){
                     num=no;
                 }
@@ -478,13 +487,13 @@ private CbieMapper cbieMapper;
     private Integer getNum(String orderNo,int index){
         String substring = orderNo.substring(index);
         if(substring.startsWith("000")){
-            return Integer.valueOf(substring.substring(3))+1;
+            return Integer.parseInt(substring.substring(3))+1;
         }else if(substring.startsWith("00")){
-            return Integer.valueOf(substring.substring(2))+1;
+            return Integer.parseInt(substring.substring(2))+1;
         }else if(substring.startsWith("0")) {
-            return Integer.valueOf(substring.substring(1))+1;
+            return Integer.parseInt(substring.substring(1))+1;
         }else {
-            return Integer.valueOf(substring.substring(0))+1;
+            return Integer.parseInt(substring.substring(0))+1;
         }
     }
 

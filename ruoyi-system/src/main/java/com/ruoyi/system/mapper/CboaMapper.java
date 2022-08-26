@@ -8,8 +8,9 @@ import com.ruoyi.system.domain.dto.SaleOrderListDto;
 import com.ruoyi.system.domain.dto.SaleOrderSkuDto;
 import com.ruoyi.system.domain.vo.SaleOrderListVo;
 import com.ruoyi.system.domain.vo.SaleOrderSkuVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CboaMapper {
     long countByExample(CboaCriteria example);
 

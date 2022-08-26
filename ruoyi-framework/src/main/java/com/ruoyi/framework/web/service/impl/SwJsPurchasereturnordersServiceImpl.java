@@ -8,9 +8,11 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
+import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.NumberVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -68,13 +70,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto) {
-        CbpgCriteria example = new CbpgCriteria();
-        example.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
-                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
-        if(cbpgs.size() >0){
-            throw new SwException("编号已存在");
-        }
+
         NumberGenerate numberGenerate = new NumberGenerate();
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
@@ -84,6 +80,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpg.setCbpg10(cbpgDto.getCbpg10());
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
+        cbpg.setCbpg12(Math.toIntExact(userid));
         String purchasereturnNo = numberGenerate.getPurchasereturnNo(cbpgDto.getCbpg10());
         cbpg.setCbpg07(purchasereturnNo);
         cbpg.setCbpg08(date);
@@ -91,7 +90,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setUserId(Math.toIntExact(userid));
         cbpgMapper.insertSelective(cbpg);
         CbpgCriteria example1 = new CbpgCriteria();
-        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
+        example1.createCriteria().andCbpg07EqualTo(purchasereturnNo)
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
 
