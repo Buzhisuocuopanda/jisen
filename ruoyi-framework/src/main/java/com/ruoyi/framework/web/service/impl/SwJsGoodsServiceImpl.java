@@ -98,7 +98,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         example.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
                 .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
-        if(cbpbs.size()>0){
+        if(cbpbs.size()>0 && !cbpbs.get(0).getCbpb01().equals(cbpbDo.getCbpb01())){
             throw new SwException("upc已存在");
 
         }

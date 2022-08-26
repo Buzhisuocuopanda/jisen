@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbpc;
+import com.ruoyi.system.domain.Cbpe;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 
@@ -38,5 +39,5 @@ public interface ISwJsPurchaseinboundService {
 
     List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo);
 
-    int insertSwJsSkuBarcodesm(CbpdDto cbpdDto);
+    int insertSwJsSkuBarcodesm(List<Cbpe> itemList);
 }

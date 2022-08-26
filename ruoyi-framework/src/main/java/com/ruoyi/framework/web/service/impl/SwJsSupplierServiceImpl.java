@@ -75,7 +75,7 @@ private CbsaMapper cbsaMapper;
         example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa08())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(example);
-        if(cbsas.size()>0){
+        if(cbsas.size()>0 && !cbsas.get(0).getCbsa01().equals(cbsaDto.getCbsa01())){
             throw new SwException("供应商名称不能重复");
         }
 

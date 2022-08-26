@@ -81,7 +81,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())
                 .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbca> cbcas = cbcaMapper.selectByExample(example);
-        if(cbcas.size()>0){
+        if(cbcas.size()>0 && !cbca1.getCbca01().equals(cbcas.get(0).getCbca01())){
             throw new SwException("客户名称不能重复");
         }
         Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);

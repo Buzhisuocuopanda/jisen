@@ -74,7 +74,7 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         example.createCriteria().andCbla09EqualTo(cblaDto.getCbla09())
                 .andCbla06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbla> cblas = cblaMapper.selectByExample(example);
-        if(cblas.size()>0){
+        if(cblas.size()>0 && !cblas.get(0).getCbla01().equals(cblaDto.getCbla01())){
             throw new SwException("库位码已存在");
 
         }

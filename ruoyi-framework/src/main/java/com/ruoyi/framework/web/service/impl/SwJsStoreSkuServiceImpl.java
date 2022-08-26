@@ -65,6 +65,13 @@ private CbpcMapper cbpcMapper;
 
     @Override
     public int updateSwJsGoodsClassify(CbwaDto cbwaDto) {
+        CbwaCriteria example = new CbwaCriteria();
+        example.createCriteria().andCbwa09EqualTo(cbwaDto.getCbwa09())
+                .andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(example);
+        if(cbwas.size()>0 && !cbwas.get(0).getCbwa01().equals(cbwaDto.getCbwa01())){
+            throw new SwException("仓库名称已存在");
+        }
         Long userid = SecurityUtils.getUserId();
 
         Cbwa cbwa = BeanCopyUtils.coypToClass(cbwaDto, Cbwa.class, null);
