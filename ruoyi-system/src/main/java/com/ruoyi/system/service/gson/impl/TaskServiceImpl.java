@@ -63,10 +63,11 @@ public class TaskServiceImpl implements TaskService {
             }
 
 
-            CbpdCriteria example = new CbpdCriteria();
-            example.createCriteria().andCbpc01EqualTo(typeid)
-                    .andCbpd07EqualTo(DeleteFlagEnum.DELETE.getCode());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(example);
+            CbpdCriteria example1=new CbpdCriteria();
+            example1.createCriteria()
+                    .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbpc01EqualTo(typeid);
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
             //  Cbpd[] cbpds1 = cbpds.toArray(new Cbpd[]{});
             //金额
             List<Double> collect2 = cbpds.stream().map(Cbpd::getCbpd12).collect(Collectors.toList());
@@ -85,11 +86,11 @@ public class TaskServiceImpl implements TaskService {
             }
 
 
-            CbibCriteria example1 = new CbibCriteria();
-            example1.createCriteria()
+            CbibCriteria example2 = new CbibCriteria();
+            example2.createCriteria()
                     .andCbib02EqualTo(storeId)
                     .andCbib08EqualTo(ints[0]);
-            List<Cbib> cbibs = cbibMapper.selectByExample(example1);
+            List<Cbib> cbibs = cbibMapper.selectByExample(example2);
             Cbib cbib1 = selectLastOne(cbibs);
 
 

@@ -275,10 +275,16 @@ private NumberGenerate numberGenerate;
     public int SwJsSkuBarcodeshss(CbpdDto cbpdDto) {
 
         CbpeCriteria example1 = new CbpeCriteria();
-        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpd01());
+        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
         List<Cbpe> cbpes = cbpeMapper.selectByExample(example1);
-        if(cbpes.get(0).getCbpe11().equals(ScanStatusEnum.YISAOMA.getCode())){
-            throw new SwException("已扫码不能给反审");
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbpe11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
         }
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
@@ -334,7 +340,7 @@ private NumberGenerate numberGenerate;
             //数量管理查找商品id和仓库id，没有就加入
             CbpdCriteria example1=new CbpdCriteria();
             example1.createCriteria()
-                    .andCbpd06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbpc01EqualTo(cbpdDto.getCbpc01());
             List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
             //得到数量
@@ -350,7 +356,7 @@ private NumberGenerate numberGenerate;
             }
             for(int i=0;i<ints.length;i++) {
                 int goodsid = ints[i];
-
+               // cbpds.get(i).getCbpd08();
                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
                         .andGoodsIdEqualTo(goodsid)
@@ -376,6 +382,7 @@ private NumberGenerate numberGenerate;
                     List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getGoodsId).collect(Collectors.toList());
                     int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
                     int id = ints1[0];
+                  //  Integer id1 = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
@@ -491,18 +498,23 @@ private NumberGenerate numberGenerate;
     public int SwJsSkuBarcodesh(CbpdDto cbpdDto) {
 
         CbpeCriteria example1 = new CbpeCriteria();
-        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
-                .andCbpe11EqualTo(ScanStatusEnum.YISAOMA.getCode());
+        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
         List<Cbpe> cbpes = cbpeMapper.selectByExample(example1);
-        if(cbpes.size()>0){
-            throw new SwException("已扫码不能取消完成");
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbpe11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
         }
 
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
 
         if(!cbpc1.getCbpc11().equals(TaskStatus.bjwc.getCode())){
-            throw new SwException("不是 审核状态");
+            throw new SwException("不是标记完成状态");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
