@@ -49,7 +49,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         Date date = new Date();
         cbca.setCbca04(date);
         cbca.setCbca05(Math.toIntExact(userid));
-
+        cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
 
         CbcaCriteria example3=new CbcaCriteria();
 
@@ -161,7 +161,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     }
 
     @Override
-    public String importSwJsCustomer(List<Cbca> swJsCustomersList, boolean updateSupport, String operName) {
+    public String importSwJsCustomer(List<CbcaDto> swJsCustomersList, boolean updateSupport, String operName) {
         Long userid = SecurityUtils.getUserId();
 
         if (StringUtils.isNull(swJsCustomersList) || swJsCustomersList.size() == 0)
@@ -173,7 +173,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
         for (
-                Cbca swJsCustomer : swJsCustomersList)
+                CbcaDto swJsCustomer : swJsCustomersList)
         {
             try
             {
