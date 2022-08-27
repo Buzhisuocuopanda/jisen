@@ -390,7 +390,7 @@
   </sql>
   <select id="selectSwJsGoodsList"  resultType="com.ruoyi.system.domain.vo.CbpbVo">
     SELECT
-    b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13
+    b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01
     FROM
     CBPB a
     LEFT JOIN
