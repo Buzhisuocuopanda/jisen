@@ -104,7 +104,7 @@ private CalaMapper calaMapper;
         Date date = new Date();
         cala.setCala03(date);
         cala.setCala06(Math.toIntExact(userid));
-        cala.setCala07(DeleteFlagEnum.NOT_DELETE.getCode());
+        cala.setCala07(DeleteFlagEnum.DELETE.getCode());
 
         CalaCriteria example1= new CalaCriteria();
         example1.createCriteria().andCala01EqualTo(calaDto.getCala01());
