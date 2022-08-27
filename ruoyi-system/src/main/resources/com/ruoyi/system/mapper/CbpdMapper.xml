@@ -390,6 +390,9 @@
     <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
     <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
     <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
+    <if test="cbwa09 != null "> and c.CBWA09 = #{cbwa09}</if>
+    <if test="cbsa08 != null "> and b.CBSA08 = #{cbsa08}</if>
+
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(a.CBPC08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

@@ -164,6 +164,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpi> itemList) {
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpiMapper mapper = session.getMapper(CbpiMapper.class);
         Date date = new Date();

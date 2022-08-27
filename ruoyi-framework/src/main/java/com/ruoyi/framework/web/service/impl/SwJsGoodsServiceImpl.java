@@ -163,13 +163,13 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
      * @return 商品
      */
     @Override
-    @DataScope(userAlias = "recruit.CBPB04")
+  //  @DataScope(userAlias = "recruit.CBPB04")
     public List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo) {
         return cbpbMapper.selectSwJsGoodsList(cbpbVo);
     }
 
     @Override
-    public String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName) {
+    public String importSwJsGoods(List<CbpbDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -178,7 +178,7 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbpb swJsGoods : swJsGoodsList)
+        for (CbpbDo swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -186,12 +186,12 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
                 log.info(swJsGoods.getCbpb01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbpb08(swJsGoods.getCbpb08());
-                    this.insertSwJsGoods(swJsGoods);
+                    this.insertSwJsGoodsClassify(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbpb08()).append(" 导入成功");
                 } else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateSwJsGoods(swJsGoods);
+                    this.updateSwJsGoodsClassify(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbpb08()).append(" 更新成功");
                 } else {

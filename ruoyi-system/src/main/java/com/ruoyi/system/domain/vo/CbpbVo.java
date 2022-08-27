@@ -7,17 +7,17 @@ import java.util.Date;
 @Data
 public class CbpbVo {
 
-    @Excel(name = "主键id")
+    //@Excel(name = "主键id")
     private Integer cbpb01;
-    @Excel(name = "创建时间")
+   // @Excel(name = "创建时间")
     private Date cbpb02;
-    @Excel(name = "修改时间")
+  //  @Excel(name = "修改时间")
     private Date cbpb03;
-    @Excel(name = "创建人id")
+  //  @Excel(name = "创建人id")
     private Integer cbpb04;
-    @Excel(name = "修改人id")
+  //  @Excel(name = "修改人id")
     private Integer cbpb05;
-    @Excel(name = "是否删除")
+  //  @Excel(name = "是否删除")
     private Integer cbpb06;
     @Excel(name = "状态")
     private String cbpb07;

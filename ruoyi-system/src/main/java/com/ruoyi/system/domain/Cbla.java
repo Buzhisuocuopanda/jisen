@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.Excel;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,16 +17,20 @@ public class Cbla implements Serializable {
     private Integer cbla05;
 
     private Integer cbla06;
+    @Excel(name = "库位顺序")
 
     private Integer cbla07;
 
     private String cbla08;
+    @Excel(name = "库位码")
 
     private String cbla09;
 
     private Integer cbla10;
+    @Excel(name = "库位容量")
 
     private Double cbla11;
+    @Excel(name = "优先型号")
 
     private String cbla12;
 

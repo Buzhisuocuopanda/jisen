@@ -34,7 +34,7 @@ public interface ISwJsGoodsService {
 
     List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
 
-    String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName);
+    String importSwJsGoods(List<CbpbDo> swJsGoodsList, boolean updateSupport, String operName);
 
     int insertSwJsGoodsClassifys(CbpfDo cbpfDo);
 

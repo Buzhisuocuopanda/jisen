@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Do.CbpcDo;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 
@@ -21,7 +22,7 @@ public interface ISwJsPurchaseinboundService {
 
     int deleteSwJsSkuBarcodsById(CbpdDto cbpdDto);
 
-    int updateSwJsSkuBarcodes(CbpdDto cbpdDto);
+    int updateSwJsSkuBarcodes(CbpcDo cbpcDo);
 
     List<CbpcVo> selectSwJsTaskGoodsRelLists(CbpcVo cbpcVo);
 

@@ -14,6 +14,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Cbpe;
 import com.ruoyi.system.domain.Cbsg;
+import com.ruoyi.system.domain.Do.CbpcDo;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
@@ -216,14 +217,14 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "修改采购入库单"
     )
     @PostMapping("/SwJsPurchaseinboundedit")
-    public AjaxResult swJsPurchaseinboundedit( CbpdDto cbpdDto) {
+    public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpcDo cbpcDo) {
         try {
-            return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpdDto));
+            return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpcDo));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpdDto), ExceptionUtils.getStackTrace(e));
+            log.error("【修改采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpcDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

@@ -405,7 +405,9 @@
       CBPB06=0
       <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
       <if test="cbpb12 != null "> and a.CBPB12 = #{cbpb12}</if>
-      ${params.dataScope}
+    <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
+
+
   </select>
 
   <insert id="insertCBPB" parameterType="CBPB">

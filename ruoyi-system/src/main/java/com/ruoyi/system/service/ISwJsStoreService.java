@@ -15,5 +15,5 @@ public interface ISwJsStoreService {
 
     List<CblaVo> selectSwJsStoreList(CblaVo CblaVo);
 
-    String importSwJsGoods(List<Cbla> swJsGoodsList, boolean updateSupport, String operName);
+    String importSwJsGoods(List<CblaDto> swJsGoodsList, boolean updateSupport, String operName);
 }

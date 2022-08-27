@@ -9,6 +9,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbla;
 import com.ruoyi.system.domain.dto.CblaDto;
 import com.ruoyi.system.domain.vo.CblaVo;
@@ -154,8 +155,8 @@ public class SwJsStoreController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbla> util = new ExcelUtil<>(Cbla.class);
-            List<Cbla> swJsGoodsList = util.importExcel(file.getInputStream());
+            ExcelUtil<CblaDto> util = new ExcelUtil<>(CblaDto.class);
+            List<CblaDto> swJsGoodsList = util.importExcel(file.getInputStream());
             //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             String operName = SecurityUtils.getUsername();
 
@@ -170,6 +171,22 @@ public class SwJsStoreController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+
+
+    /**
+     * 导入客户下载模板
+     */
+    @ApiOperation(
+            value ="导入客户下载模板",
+            notes = "导入客户下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<Cbla> util = new ExcelUtil<Cbla>(Cbla.class);
+        util.importTemplateExcel(response,"导入客户下载模板");
     }
 
 }

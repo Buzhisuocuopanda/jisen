@@ -136,7 +136,7 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     }
 
     @Override
-    public String importSwJsGoods(List<Cbla> swJsGoodsList, boolean updateSupport, String operName) {
+    public String importSwJsGoods(List<CblaDto> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -145,7 +145,7 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbla swJsGoods : swJsGoodsList)
+        for (CblaDto swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -153,12 +153,12 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
                 log.info(swJsGoods.getCbla01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbla08(swJsGoods.getCbla08());
-                    this.insertSwJsGoods(swJsGoods);
+                    this.insertSwJsStore(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbla08()).append(" 导入成功");
                 } else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateCBLA(swJsGoods);
+                    this.updateSwJsStore(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbla08()).append(" 更新成功");
                 } else {

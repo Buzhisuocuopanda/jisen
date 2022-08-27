@@ -175,8 +175,8 @@ public class SwJsGoodsController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbpb> util = new ExcelUtil<>(Cbpb.class);
-            List<Cbpb> swJsGoodsList = util.importExcel(file.getInputStream());
+            ExcelUtil<CbpbDo> util = new ExcelUtil<>(CbpbDo.class);
+            List<CbpbDo> swJsGoodsList = util.importExcel(file.getInputStream());
             //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             String operName = SecurityUtils.getUsername();
 
@@ -233,4 +233,20 @@ public class SwJsGoodsController extends BaseController {
         ExcelUtil<CbpbVo> util = new ExcelUtil<>(CbpbVo.class);
         util.exportExcel(response, list, "商品数据");
     }
+
+    /**
+     * 导入商品下载模板
+     */
+    @ApiOperation(
+            value ="导入商品下载模板",
+            notes = "导入商品下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbpbDo> util = new ExcelUtil<CbpbDo>(CbpbDo.class);
+        util.importTemplateExcel(response,"导入商品下载模板");
+    }
+
+
 }
