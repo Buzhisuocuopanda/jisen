@@ -170,19 +170,20 @@ private CbieMapper cbieMapper;
         //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
         String format = sd.format(new Date());
-        String orderNo = "";
+      //  String orderNo = " ";
 
+        String orderNo = null;
         if (storeId / 10 == 0) {
             String s = "PI0" + storeId + format;
-           s=orderNo;
+           orderNo=s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "PI" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }else {
             int i = storeId % 3;
             String s = "PI0" + i + format;
-            s=orderNo;
+            orderNo=s;
         }
         CbpcCriteria example=new CbpcCriteria();
         example.createCriteria()

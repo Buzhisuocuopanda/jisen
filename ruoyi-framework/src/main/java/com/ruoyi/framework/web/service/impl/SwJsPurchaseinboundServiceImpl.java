@@ -72,11 +72,11 @@ private NumberGenerate numberGenerate;
     public int insertSwJsSkuBarcodes(CbpdDto cbpdDto) {
 
        // 检查供应商
-        baseCheckService.checksupplier(cbpdDto.getCbpc09());
+ /*       baseCheckService.checksupplier(cbpdDto.getCbpc09());
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-        baseCheckService.checkGoods(cbpdDto.getCbpd08());
+        baseCheckService.checkGoods(cbpdDto.getCbpd08());*/
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
@@ -243,6 +243,7 @@ private NumberGenerate numberGenerate;
         cbpc.setCbpc09(cbpc09);
         cbpc.setCbpc10(cbpc10);
         cbpc.setCbpc16(cbpc16);
+        cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpcMapper.insertSelective(cbpc);
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
