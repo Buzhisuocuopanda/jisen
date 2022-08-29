@@ -2,7 +2,9 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbpcDo;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 
@@ -28,7 +30,7 @@ public interface ISwJsPurchaseinboundService {
 
     public List<Cbpc> selectCBPCList(Cbpc cbpc);
 
-    String importSwJsGoods(List<Cbpc> swJsGoodsList, boolean updateSupport, String operName);
+    String importSwJsGoods(List<CbpcDto> swJsGoodsList, boolean updateSupport, String operName);
 
     int SwJsSkuBarcodeshss(CbpdDto cbpdDto);
 
@@ -41,4 +43,8 @@ public interface ISwJsPurchaseinboundService {
     List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo);
 
     int insertSwJsSkuBarcodesm(List<Cbpe> itemList);
+
+
+    int insertSwJsStores(List<CbpcDto> itemList);
+
 }

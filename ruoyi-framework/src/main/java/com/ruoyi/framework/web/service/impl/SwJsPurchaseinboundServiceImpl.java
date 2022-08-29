@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.mapper.*;
@@ -153,7 +154,7 @@ private NumberGenerate numberGenerate;
         cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
         cbpd.setUserId(Math.toIntExact(userid));
         return cbpdMapper.insertSelective(cbpd);}
-        return 0;
+        return 1;
     }
     /**
      * 新增采购入库单扫码
@@ -220,6 +221,41 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSn(gsGoodsSnDo);
 
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
+    //导入新增
+    @Override
+    public int insertSwJsStores(List<CbpcDto> itemList) {
+        Date cbpc08 = itemList.get(0).getCbpc08();
+        Integer cbpc09 = itemList.get(0).getCbpc09();
+        Integer cbpc10 = itemList.get(0).getCbpc10();
+        Integer cbpc16 = itemList.get(0).getCbpc16();
+        Cbpc cbpc = BeanCopyUtils.coypToClass(itemList, Cbpc.class, null);
+        cbpc.setCbpc08(cbpc08);
+        cbpc.setCbpc09(cbpc09);
+        cbpc.setCbpc10(cbpc10);
+        cbpc.setCbpc16(cbpc16);
+        cbpcMapper.insertSelective(cbpc);
+
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpdMapper mapper = session.getMapper(CbpdMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbpd03(date);
+            itemList.get(i).setCbpd04(Math.toIntExact(userid));
+            itemList.get(i).setCbpd05(date);
+            itemList.get(i).setCbpd06(Math.toIntExact(userid));
+            itemList.get(i).setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -679,7 +715,7 @@ private NumberGenerate numberGenerate;
      * @return 结果
      */
     @Override
-    public String importSwJsGoods(List<Cbpc> swJsGoodsList, boolean updateSupport, String operName) {
+    public String importSwJsGoods(List<CbpcDto> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -688,7 +724,7 @@ private NumberGenerate numberGenerate;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbpc swJsGoods : swJsGoodsList)
+        for (CbpcDto swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -696,15 +732,17 @@ private NumberGenerate numberGenerate;
                 log.info(swJsGoods.getCbpc01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbpc12(swJsGoods.getCbpc12());
-                    this.insertCBPC(swJsGoods);
+                    this.insertSwJsStores(swJsGoodsList);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 导入成功");
-                } else if (updateSupport) {
+                }
+               /* else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
                     this.updateCBPC(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("采购入库单 ").append(swJsGoods.getCbpc12()).append(" 更新成功");
-                } else {
+                } */
+                else {
                     failureNum++;
                     failureMsg.append("<br/>").append(failureNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 已存在");
                 }

@@ -11,10 +11,12 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Cbpe;
 import com.ruoyi.system.domain.Cbsg;
 import com.ruoyi.system.domain.Do.CbpcDo;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
@@ -323,8 +325,8 @@ public class SwJsPurchaseinboundController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbpc> util = new ExcelUtil<>(Cbpc.class);
-            List<Cbpc> swJsGoodsList = util.importExcel(file.getInputStream());
+            ExcelUtil<CbpcDto> util = new ExcelUtil<>(CbpcDto.class);
+            List<CbpcDto> swJsGoodsList = util.importExcel(file.getInputStream());
             //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             String operName = SecurityUtils.getUsername();
 
@@ -341,6 +343,19 @@ public class SwJsPurchaseinboundController extends BaseController {
         }
     }
 
+    /**
+     * 导入采购入库单下载模板
+     */
+    @ApiOperation(
+            value ="导入采购入库单下载模板",
+            notes = "导入采购入库单下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbpcDto> util = new ExcelUtil<CbpcDto>(CbpcDto.class);
+        util.importTemplateExcel(response,"导入客户下载模板");
+    }
 
 
 }
