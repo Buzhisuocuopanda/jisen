@@ -448,7 +448,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa24(saleOrderAddDto.getOrderType());
         cboa.setCboa25(saleOrderAddDto.getCustomerNo());
         cboa.setCboa27(saleOrderAddDto.getOrderClass());
-        int insert = cboaMapper.insert(cboa);
+        cboaMapper.insert(cboa);
         Cbob cbob = null;
         //创建销售订单明细表
         for (SaleOrderGoodsDto good : goods) {
@@ -467,7 +467,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbob.setCbob11(good.getCurrentPrice());
             cbob.setCbob12(good.getTotalPrice());
             cbob.setCbob13(good.getRemark());
-            cbob.setCboa01(insert);
+            cbob.setCboa01(cboa.getCboa01());
             cbob.setCbob14(good.getNormalPrice());
             cbobMapper.insert(cbob);
             //创建销售订单要锁住库存

@@ -770,4 +770,31 @@ ORDER BY
         and date_format(a.cbsb08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
     </select>
+
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cbpk" useGeneratedKeys="true" keyProperty="cbpk01">
+    insert into `CBPK` (CBPK01, CBPK02, CBPK03,
+      CBPK04, CBPK05, CBPK06,
+      CBPK07, CBPK08, CBPK09,
+      CBPK10, CBPK11, CBPK12,
+      CBPK13, CBPK14, CBPK15,
+      CBPK16, CBPK17, CBPK18,
+      CBPK19, CBPK20, CBPK21,
+      CBPK22, CBPK23, CBPK24,
+      CBPK25, CBPK26, CBPK27,
+      CBPK28, CBPK29, CBPK30,
+      CBPK31, check_status, sale_order_no
+      )
+    values (#{cbpk01,jdbcType=INTEGER}, #{cbpk02,jdbcType=TIMESTAMP}, #{cbpk03,jdbcType=INTEGER},
+      #{cbpk04,jdbcType=TIMESTAMP}, #{cbpk05,jdbcType=INTEGER}, #{cbpk06,jdbcType=INTEGER},
+      #{cbpk07,jdbcType=VARCHAR}, #{cbpk08,jdbcType=TIMESTAMP}, #{cbpk09,jdbcType=INTEGER},
+      #{cbpk10,jdbcType=INTEGER}, #{cbpk11,jdbcType=INTEGER}, #{cbpk12,jdbcType=INTEGER},
+      #{cbpk13,jdbcType=TIMESTAMP}, #{cbpk14,jdbcType=INTEGER}, #{cbpk15,jdbcType=TIMESTAMP},
+      #{cbpk16,jdbcType=INTEGER}, #{cbpk17,jdbcType=INTEGER}, #{cbpk18,jdbcType=VARCHAR},
+      #{cbpk19,jdbcType=VARCHAR}, #{cbpk20,jdbcType=INTEGER}, #{cbpk21,jdbcType=VARCHAR},
+      #{cbpk22,jdbcType=VARCHAR}, #{cbpk23,jdbcType=VARCHAR}, #{cbpk24,jdbcType=VARCHAR},
+      #{cbpk25,jdbcType=VARCHAR}, #{cbpk26,jdbcType=VARCHAR}, #{cbpk27,jdbcType=VARCHAR},
+      #{cbpk28,jdbcType=VARCHAR}, #{cbpk29,jdbcType=VARCHAR}, #{cbpk30,jdbcType=VARCHAR},
+      #{cbpk31,jdbcType=INTEGER}, #{checkStatus,jdbcType=TINYINT}, #{saleOrderNo,jdbcType=VARCHAR}
+      )
+  </insert>
 </mapper>

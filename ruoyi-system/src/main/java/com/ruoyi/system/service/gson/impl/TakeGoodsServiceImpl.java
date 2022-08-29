@@ -151,7 +151,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         cbpk.setCbpk31(TakeOrderConstants.WEIWANCHENG);
         cbpk.setCheckStatus(TakeOrderCheckStatus.NOCHECK.getCode().byteValue());
         cbpk.setSaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
-        int insert = cbpkMapper.insert(cbpk);
+        int insert = cbpkMapper.insertWithId(cbpk);
         Cbpl cbpl=null;
         for (TakeOrderGoodsDto good : takeGoodsOrderAddDto.getGoods()) {
             if(good.getGoodsId()==null){
@@ -183,7 +183,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             //生成明细表
             cbpl=new Cbpl();
-            cbpl.setCbpk01(insert);
+            cbpl.setCbpk01(cbpk.getCbpk01());
             cbpl.setCbpl02(good.getNumber());
             cbpl.setCbpl03(date);
             cbpl.setCbpl04(takeGoodsOrderAddDto.getUserId());
@@ -262,7 +262,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         if(!StringUtils.isBlank(cbpk.getSaleOrderNo())){
             CboaCriteria oaex=new CboaCriteria();
             oaex.createCriteria()
-                    .andCboa07EqualTo(cbpk.getCbpk07());
+                    .andCboa07EqualTo(cbpk.getSaleOrderNo());
             List<Cboa> cboas = cboaMapper.selectByExample(oaex);
             cboa= cboas.get(0);
             res.setSaleOrderId(cboas.get(0).getCboa01());
@@ -301,7 +301,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         CbplCriteria plex=new CbplCriteria();
         plex.createCriteria()
                 .andCbpk01EqualTo(cbpk.getCbpk01())
-                .andCbpl06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         plex.setOrderByClause("CBPL02 desc");
         List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
         List<TakeOrderGoodsVo> goods = res.getGoods();
@@ -322,7 +322,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good=new TakeOrderGoodsVo();
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
-                good.setBrand(brandMap.get(cbpb.getCbpb10()));
+                good.setBrand(brandMap.get(cbpb.getCbpb10().toString()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
                 Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
@@ -364,6 +364,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 if(cbobs.size()>0){
                     Cbob cbob=cbobs.get(0);
                     good.setNoSendQty(cbob.getCbob09()-cbob.getCbob10());
+                    good.setOrderQty(cbob.getCbob09());
                 }
 
 
@@ -373,6 +374,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good.setGoodsNum(cbpl.getGoodProductQty());
 
             good.setPrice(cbpl.getCbpl11());
+
+            CbpmCriteria pmex=new CbpmCriteria();
+            pmex.createCriteria()
+                    .andCbpm08EqualTo(good.getGoodsId())
+                    .andCbpm11EqualTo(1)
+                    .andCbpk01EqualTo(cbpk.getCbpk01());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+            good.setScanQty(cbpms.size());
             //todo
 //            good.setRemark();
             good.setQty(cbpl.getCbpl09());
@@ -515,6 +524,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 .andWhIdEqualTo(whId);
         List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
         for (GsGoodsUse goodsUse : gsGoodsUses) {
+            good=new TakeOrderGoodsVo();
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsUse.getGoodsId());
             if (cbpb != null) {
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));

@@ -42,4 +42,6 @@ public interface CbpkMapper {
     List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 
     List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
+
+    int insertWithId(Cbpk cbpk);
 }

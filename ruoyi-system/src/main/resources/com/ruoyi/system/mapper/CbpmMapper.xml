@@ -361,7 +361,7 @@ FROM
 	`CBPM` pm
 	LEFT JOIN CBLA la ON la.CBLA01 = pm.CBPM10
 	where pm.CBPM07=0
-	and pm.CBPM08 = #{goodId}
+	and pm.CBPM08 = #{goodsId}
 	and pm.CBPK01 =#{takeId}
 	ORDER BY pm.CBPM11
   </select>

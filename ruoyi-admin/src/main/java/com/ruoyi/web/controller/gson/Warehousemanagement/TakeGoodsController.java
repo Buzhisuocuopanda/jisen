@@ -66,7 +66,7 @@ public class TakeGoodsController extends BaseController {
     @PostMapping("/addTakeGoodsOrder")
     public AjaxResult addTakeGoodsOrder(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
         try {
-            takeGoodsOrderAddDto.setUserId(takeGoodsOrderAddDto.getUserId());
+            takeGoodsOrderAddDto.setUserId(getUserId().intValue());
             takeGoodsService.addTakeGoodsOrder(takeGoodsOrderAddDto);
             return AjaxResult.success();
         } catch (SwException e) {
