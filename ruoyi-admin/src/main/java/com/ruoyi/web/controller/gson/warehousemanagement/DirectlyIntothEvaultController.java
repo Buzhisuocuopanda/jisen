@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -54,7 +55,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbicDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -75,7 +76,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbicDto),ExceptionUtils.getStackTrace(e));
+            log.error("【删除采购入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -98,7 +99,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【采购入库单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbicVo),ExceptionUtils.getStackTrace(e));
+            log.error("【采购入库单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -122,7 +123,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【直接入库单条件查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbicVo),ExceptionUtils.getStackTrace(e));
+            log.error("【直接入库单条件查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
