@@ -27,4 +27,6 @@ public interface GsGoodsSnMapper {
     int updateByPrimaryKeySelective(GsGoodsSn record);
 
     int updateByPrimaryKey(GsGoodsSn record);
+
+    List<GsGoodsSn> selectOutByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId, @Param("lockQty") Double lockQty);
 }

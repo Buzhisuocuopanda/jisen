@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, sn, goods_id, location_id, 
+    id, create_time, update_time, create_by, update_by, delete_flag, sn, goods_id, location_id,
     `status`, wh_id, in_time, out_time, prd_date, groud_status
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsGoodsSnCriteria" resultMap="BaseResultMap">
@@ -95,7 +95,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_goods_sn`
     where id = #{id,jdbcType=INTEGER}
@@ -111,16 +111,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsGoodsSn">
-    insert into `gs_goods_sn` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      sn, goods_id, location_id, 
-      `status`, wh_id, in_time, 
+    insert into `gs_goods_sn` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      sn, goods_id, location_id,
+      `status`, wh_id, in_time,
       out_time, prd_date, groud_status
       )
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{sn,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{locationId,jdbcType=INTEGER}, 
-      #{status,jdbcType=TINYINT}, #{whId,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT},
+      #{sn,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{locationId,jdbcType=INTEGER},
+      #{status,jdbcType=TINYINT}, #{whId,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP},
       #{outTime,jdbcType=TIMESTAMP}, #{prdDate,jdbcType=DATE}, #{groudStatus,jdbcType=TINYINT}
       )
   </insert>
@@ -367,4 +367,21 @@
       groud_status = #{groudStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectOutByWhIdAndGoodsId" resultType="com.ruoyi.system.domain.GsGoodsSn">
+
+SELECT
+    <include refid="Base_Column_List" />
+    FROM
+	`gs_goods_sn` sn
+WHERE
+	sn.goods_id = #{goodsId}
+	AND sn.wh_id = #{whId}
+ORDER BY
+	sn.create_time
+	LIMIT #{lockQty}
+
+
+  </select>
+
 </mapper>

@@ -703,6 +703,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         if(cbpk==null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cbpk.getCbpk06())){
             throw new SwException("没有查到该提货单");
         }
+
+        Date date = new Date();
         if(auditTakeOrderDto.getOpType().equals(1)){
             if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cbpk.getCbpk11())){
                 throw new SwException("必须在已提交状态下才能审核");
@@ -716,6 +718,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbpk01EqualTo(cbpk.getCbpk01());
             List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+
+            Cbpm cbpm=null;
             for (Cbpl cbpl : cbpls) {
                 //先入先出 并且未占用
 
@@ -728,9 +732,36 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                         ;
 
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
-//                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-//                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUs.getLockQty());
-//                }
+
+                if(gsGoodsUses.size()>0){
+                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUses.get(0).getLockQty());
+
+                    for (int i=0;i< list.size() ;i++) {
+                        GsGoodsSn gsGoodsSn = list.get(i);
+
+                        cbpm=new Cbpm();
+                        cbpm.setCbpk01(cbpk.getCbpk01());
+                        cbpm.setCbpm02(i+1);
+                        cbpm.setCbpm03(date);
+                        cbpm.setCbpm04(auditTakeOrderDto.getUserId());
+                        cbpm.setCbpm05(date);
+                        cbpm.setCbpm06(auditTakeOrderDto.getUserId());
+                        cbpm.setCbpm07(DeleteFlagEnum.NOT_DELETE.getCode());
+                        cbpm.setCbpm08(cbpl.getCbpl08());
+                        cbpm.setCbpm09(gsGoodsSn.getSn());
+                        cbpm.setCbpm10(gsGoodsSn.getLocationId());
+                        cbpm.setCbpm11(0);
+                        cbpmMapper.insert(cbpm);
+
+
+                    }
+
+
+                }
+
+
+
+
 
             }
 
