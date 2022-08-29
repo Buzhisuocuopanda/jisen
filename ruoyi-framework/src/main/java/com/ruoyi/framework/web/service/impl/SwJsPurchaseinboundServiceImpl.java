@@ -312,7 +312,7 @@ private NumberGenerate numberGenerate;
 
         cbpc.setCbpc04(date);
         cbpc.setCbpc05(Math.toIntExact(userid));
-        cbpc.setCbpc11(TaskStatus.fsh.getCode());
+        cbpc.setCbpc11(TaskStatus.mr.getCode());
         cbpc.setCbpc12(cbpdDto.getCbpc12());
         cbpc.setCbpc13(cbpdDto.getCbpc13());
         CbpcCriteria example = new CbpcCriteria();
