@@ -100,28 +100,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
 
-     /*   CbpgCriteria example1 = new CbpgCriteria();
-        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
-                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example);
-        List<Integer> collect = cbpgs1.stream().map(Cbpg::getCbpg01).collect(Collectors.toList());
-        int[] ints = collect.stream().mapToInt(Integer::intValue).toArray();
 
-        Cbph cbph = BeanCopyUtils.coypToClass(cbpgDto, Cbph.class, null);
-        cbph.setCbph03(date);
-        cbph.setCbph04(Math.toIntExact(userid));
-        cbph.setCbph05(date);
-        cbph.setCbph06(Math.toIntExact(userid));
-        cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbph.setCbpg01(ints[0]);
-        cbph.setUserId(Math.toIntExact(userid));
-        cbph.setCbph09(cbpgDto.getCbph09());
-        cbph.setCbph10(cbpgDto.getCbph10());
-        BigDecimal num = BigDecimal.valueOf(cbpgDto.getCbph09());
-        BigDecimal price = BigDecimal.valueOf(cbpgDto.getCbph10());
-        BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-        cbph.setCbph11(cbpgDto.getCbph11());
-        cbph.setCbph12(cbpgDto.getCbph12());*/
         IdVo idVo = new IdVo();
         idVo.setId(cbpgs1.get(0).getCbpg01());
         return idVo;

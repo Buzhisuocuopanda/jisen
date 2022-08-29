@@ -11,6 +11,7 @@ import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -69,7 +70,7 @@ private NumberGenerate numberGenerate;
      * @return 结果
      */
     @Override
-    public int insertSwJsSkuBarcodes(CbpdDto cbpdDto) {
+    public IdVo insertSwJsSkuBarcodes(CbpdDto cbpdDto) {
 
        // 检查供应商
         baseCheckService.checksupplier(cbpdDto.getCbpc09());
@@ -83,7 +84,6 @@ private NumberGenerate numberGenerate;
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
         //主表根据输入编号查不到数据，添加数据
-        if(cbpcs.size()==0){
             Long userid = SecurityUtils.getUserId();
             Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
             Date date = new Date();
@@ -102,59 +102,11 @@ private NumberGenerate numberGenerate;
             example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
                     .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
-            Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
-
-            cbpd.setCbpd02(cbpdDto.getCbpd02());
-            cbpd.setCbpd03(date);
-            cbpd.setCbpd04(Math.toIntExact(userid));
-            cbpd.setCbpd05(date);
-            cbpd.setCbpd06(Math.toIntExact(userid));
-            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
-            cbpd.setCbpd09(cbpdDto.getCbpd09());
-            cbpd.setCbpd11(cbpdDto.getCbpd11());
-
-            BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
-            BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
-            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-            cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
-            cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
-            cbpd.setUserId(Math.toIntExact(userid));
-            return cbpdMapper.insertSelective(cbpd);
-        }
-
-        //主表插入后通过编号获取主表id
-        CbpcCriteria example1 = new CbpcCriteria();
-        example1.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
-                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
-        //通过主表id去查明细表
-        CbpdCriteria example2 = new CbpdCriteria();
-        example2.createCriteria().andCbpc01EqualTo(cbpcs1.get(0).getCbpc01());
-        List<Cbpd> cbpds = cbpdMapper.selectByExample(example2);
-        //主表查出的编号存在，明细里商品id不同,增加明细表
-        if(!cbpds.get(0).getCbpd08().equals(cbpdDto.getCbpd08()) && cbpcs1.size()>0){
+        IdVo idVo = new IdVo();
+        idVo.setId(cbpcs1.get(0).getCbpc01());
+        return idVo;
 
 
-        Cbpd cbpd = BeanCopyUtils.coypToClass(cbpdDto, Cbpd.class, null);
-        Date date = new Date();
-        Long userid = SecurityUtils.getUserId();
-        cbpd.setCbpd02(cbpdDto.getCbpd02());
-        cbpd.setCbpd03(date);
-        cbpd.setCbpd04(Math.toIntExact(userid));
-        cbpd.setCbpd05(date);
-        cbpd.setCbpd06(Math.toIntExact(userid));
-        cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbpd.setCbpd09(cbpdDto.getCbpd09());
-        cbpd.setCbpd11(cbpdDto.getCbpd11());
-
-        BigDecimal num = BigDecimal.valueOf(cbpdDto.getCbpd09());
-        BigDecimal price = BigDecimal.valueOf(cbpdDto.getCbpd11());
-        BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-        cbpd.setCbpd12(Double.valueOf(String.valueOf(b)));
-        cbpd.setCbpc01(cbpcs1.get(0).getCbpc01());
-        cbpd.setUserId(Math.toIntExact(userid));
-        return cbpdMapper.insertSelective(cbpd);}
-        return 1;
     }
     /**
      * 新增采购入库单扫码
@@ -246,6 +198,30 @@ private NumberGenerate numberGenerate;
         cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpcMapper.insertSelective(cbpc);
 
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpdMapper mapper = session.getMapper(CbpdMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbpd03(date);
+            itemList.get(i).setCbpd04(Math.toIntExact(userid));
+            itemList.get(i).setCbpd05(date);
+            itemList.get(i).setCbpd06(Math.toIntExact(userid));
+            itemList.get(i).setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
+
+    @Override
+    public int insertSwJsSkuBarcsodesm(List<Cbpd> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpdMapper mapper = session.getMapper(CbpdMapper.class);
         Date date = new Date();

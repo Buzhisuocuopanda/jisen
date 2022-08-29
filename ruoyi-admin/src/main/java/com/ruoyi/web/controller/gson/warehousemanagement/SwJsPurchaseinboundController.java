@@ -12,14 +12,12 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.system.domain.Cbca;
-import com.ruoyi.system.domain.Cbpc;
-import com.ruoyi.system.domain.Cbpe;
-import com.ruoyi.system.domain.Cbsg;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpcDo;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,17 +51,20 @@ public class SwJsPurchaseinboundController extends BaseController {
     private ISwJsPurchaseinboundService swJsPurchaseinboundService;
 
     /**
-     * 新增采购入库单
+     * 新增采购入库单主表
      */
     @ApiOperation(
-            value ="新增采购入库单",
-            notes = "新增采购入库单"
+            value ="新增采购入库单主表",
+            notes = "新增采购入库单主表"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
-    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+    public AjaxResult<IdVo> swJsPurchaseinboundadd(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+        IdVo res=null;
+
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcodes(cbpdDto));
+          res=swJsPurchaseinboundService.insertSwJsSkuBarcodes(cbpdDto);
+            return AjaxResult.success(res);
 
 
         }catch (SwException e) {
@@ -98,6 +99,31 @@ public class SwJsPurchaseinboundController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     * 新增采购入库单明细表
+     */
+    @ApiOperation(
+            value ="新增采购入库单明细表",
+            notes = "新增采购入库单明细表"
+    )
+    @PostMapping("/SwJsPurchseinboundadds")
+    public AjaxResult SwJsPurchseinboundadds(@Valid @RequestBody List<Cbpd> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcsodesm(itemList));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增采购入库单明细表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      * 采购入库单审核
      */
