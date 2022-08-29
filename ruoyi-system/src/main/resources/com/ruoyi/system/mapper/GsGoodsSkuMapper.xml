@@ -294,7 +294,7 @@
     select
     <include refid="Base_Column_List" />
     from `gs_goods_sku`
-    where id = #{id,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
     for update
   </select>
 

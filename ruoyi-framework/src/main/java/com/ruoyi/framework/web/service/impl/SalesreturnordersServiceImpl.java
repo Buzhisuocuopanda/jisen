@@ -2,22 +2,26 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.ErrCode;
-import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.CbseDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbseVo;
 import com.ruoyi.system.domain.vo.CbsesVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbscMapper;
 import com.ruoyi.system.mapper.CbseMapper;
 import com.ruoyi.system.mapper.CbsfMapper;
+import com.ruoyi.system.mapper.CbsgMapper;
 import com.ruoyi.system.service.ISalesreturnordersService;
+import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,20 +48,21 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     private CbseMapper cbseMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+    @Resource
+    private  NumberGenerate numberGenerate;
+
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private BaseCheckService baseCheckService;
     /**
      * 新增销售退库单主表
      */
     @Override
     public IdVo insertSelloutofwarehouse(CbseDo cbseDo) {
-        CbseCriteria example = new CbseCriteria();
-        example.createCriteria().andCbse07EqualTo(cbseDo.getCbse07())
-                .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbse> cbses = cbseMapper.selectByExample(example);
-        if (cbses.size() > 0) {
-            throw new SwException("编号已存在");
-        }
+
         Long userid = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
         String salesreturnordersNo = numberGenerate.getSalesreturnordersNo(cbseDo.getCbse10());
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
         Date date = new Date();
@@ -72,9 +77,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setUserId(Math.toIntExact(userid));
         cbseMapper.insertSelective(cbse);
         CbseCriteria example1 = new CbseCriteria();
-        example1.createCriteria().andCbse07EqualTo(cbseDo.getCbse07())
+        example1.createCriteria().andCbse07EqualTo(salesreturnordersNo)
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbse> cbsess = cbseMapper.selectByExample(example);
+        List<Cbse> cbsess = cbseMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbsess.get(0).getCbse01());
         return idVo;
@@ -224,6 +229,71 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     @Override
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
         return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+    }
+
+    @Override
+    public int insertSwJsStoress(List<Cbsg> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbsgMapper mapper = session.getMapper(CbsgMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbsg03(date);
+            itemList.get(i).setCbsg04(Math.toIntExact(userid));
+            itemList.get(i).setCbsg05(date);
+            itemList.get(i).setCbsg06(Math.toIntExact(userid));
+            itemList.get(i).setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+
+            //如果查不到添加信息到库存表
+            Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(i).getCbse01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbse.getCbse10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbsg08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if(qty==0){
+                    throw new SwException("库存数量不足");
+                }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbse.getCbse10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsg08());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsg10());
+                gsGoodsSkuDo1.setQty(qty-1);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
 

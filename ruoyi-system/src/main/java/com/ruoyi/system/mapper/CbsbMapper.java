@@ -5,8 +5,9 @@ import com.ruoyi.system.domain.CbsbCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbsbVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CbsbMapper {
     long countByExample(CbsbCriteria example);
 

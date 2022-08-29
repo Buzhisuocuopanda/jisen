@@ -32,4 +32,7 @@ public class GsGoodsSnDo {
     private Date outTime;
 
     private Date prdDate;
+
+    private Byte groudStatus;
+
 }

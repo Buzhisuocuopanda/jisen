@@ -1,11 +1,14 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.Excel;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Cbca implements Serializable {
+   // @Excel(name = "id")
     private Integer cbca01;
-
+   // @Excel(name = "创建时间")
     private Date cbca02;
 
     private Integer cbca03;
@@ -17,26 +20,36 @@ public class Cbca implements Serializable {
     private Integer cbca06;
 
     private String cbca07;
+    @Excel(name = "名称")
 
     private String cbca08;
+    @Excel(name = "订单号")
 
     private String cbca09;
+    @Excel(name = "名称首字母")
 
     private String cbca10;
+    @Excel(name = "开户行")
 
     private String cbca11;
+    @Excel(name = "银行账号")
 
     private String cbca12;
+    @Excel(name = "纳税人识别号")
 
     private String cbca13;
+    @Excel(name = "联系人")
 
     private String cbca14;
+    @Excel(name = "地址")
 
     private String cbca15;
-
+    @Excel(name = "电话")
     private String cbca16;
+    @Excel(name = "备注")
 
     private String cbca17;
+    @Excel(name = "联系人1")
 
     private String cbca18;
 
@@ -49,16 +62,23 @@ public class Cbca implements Serializable {
     private String cbca22;
 
     private String cbca23;
+    @Excel(name = "发票类型")
 
     private String cbca24;
+    @Excel(name = "发票邮递地址")
 
     private String cbca25;
+    @Excel(name = "地址1")
 
     private String cbca26;
 
     private String cbca27;
+    @Excel(name = "客户等级")
 
     private Integer cbca28;
+
+    private Integer cbca29;
+
 
     private static final long serialVersionUID = 1L;
 

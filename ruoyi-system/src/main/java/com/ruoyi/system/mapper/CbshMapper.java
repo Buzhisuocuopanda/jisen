@@ -7,7 +7,9 @@ import java.util.List;
 import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsisVo;
 import com.ruoyi.system.domain.vo.CbsjVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+@Mapper
 
 public interface CbshMapper {
     long countByExample(CbshCriteria example);

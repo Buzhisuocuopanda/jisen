@@ -417,34 +417,44 @@
 
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
-            h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,
-            f.CBPI09
+    h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,
+    f.CBPI09,i.CBLA09
     from CBPG a
-           LEFT JOIN
-         CBPH b
-         on a.CBPG01=b.CBPG01
-           LEFT JOIN
-         CBSA c
-         ON a.CBPG09=c.CBSA01
-           LEFT JOIN
-         CBWA d
-         on a.CBPG10=d.CBWA01
-           LEFT JOIN
-         CALA e
-         on a.CBPG16=e.CALA01
-           left JOIN
-         CBPI f
-         on a.CBPG01=f.CBPG01
-           left join
-         CBBA g
-         on f.CBPI08=g.CBBA01
-           left join
-         CBPB h
-         on h.CBPB01=g.CBBA08
+    LEFT JOIN
+    CBPH b
+    on a.CBPG01=b.CBPG01
+    LEFT JOIN
+    CBSA c
+    ON a.CBPG09=c.CBSA01
+    LEFT JOIN
+    CBWA d
+    on a.CBPG10=d.CBWA01
+    LEFT JOIN
+    CALA e
+    on a.CBPG16=e.CALA01
+    left JOIN
+    CBPI f
+    on a.CBPG01=f.CBPG01
+    left join
+    CBBA g
+    on f.CBPI08=g.CBBA01
+    left join
+    CBPB h
+    on h.CBPB01=g.CBBA08
+    LEFT JOIN
+    CBLA i
+    ON i.CBLA01=f.CBPI10
+
     WHERE
       a.CBPG06=0
     <if test="cbpg01 != null "> and a.CBPG01 = #{cbpg01}</if>
-
+    <if test="cbwa09 != null "> and d.cbwa09 = #{cbwa09}</if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBPG08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBPG08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
     order by a.CBPG08 desc
 
   </select>

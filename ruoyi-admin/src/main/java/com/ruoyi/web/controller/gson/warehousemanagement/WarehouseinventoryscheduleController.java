@@ -8,6 +8,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Cbsg;
+import com.ruoyi.system.domain.Cbsj;
 import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.vo.CbshVo;
@@ -87,19 +89,19 @@ public class WarehouseinventoryscheduleController extends BaseController {
     }
 
     @ApiOperation(
-            value ="仓库盘点明细新增明细表",
-            notes = "仓库盘点明细新增明细表"
+            value ="仓库盘点明细新增明细表扫码",
+            notes = "仓库盘点明细新增明细表扫码"
     )
     @PostMapping("/SwJsStoreadds")
-    public AjaxResult swJsStoreadd(@Valid @RequestBody CbsjDo cbsjDo, BindingResult bindingResult) {
+    public AjaxResult swJsStoreadd(@Valid @RequestBody List<Cbsj> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(warehouseinventoryscheduleService.insertSwJsStores(cbsjDo));
+            return toAjax(warehouseinventoryscheduleService.insertSwJsStores(itemList));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbsjDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点明细新增明细表扫码】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -200,7 +202,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细详情"
     )
     @GetMapping("/SwJsStorelistdetail")
-    public AjaxResult<TableDataInfo> SwJsStorelistsss(CbsjVo cbsjVo) {
+    public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsjVo cbsjVo) {
         try {
             startPage();
             List<CbsjVo> list = warehouseinventoryscheduleService.SwJsStorelistsss(cbsjVo);

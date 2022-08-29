@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.CbpbCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbpbVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbpbMapper {
@@ -28,7 +30,7 @@ public interface CbpbMapper {
 
     int updateByPrimaryKey(Cbpb record);
 
-    List<Cbpb> selectSwJsGoodsList(Cbpb cbpb);
+    List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
 
     int insertCBPB(Cbpb cbpb);
 

@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -22,30 +23,45 @@ public class CbcaDto {
     private String cbca07;
     @NotBlank(message = "客户名称不能为空")
     @Length(min =1 , max = 20)
+    @Excel(name = "名称")
     private String cbca08;
+    @Excel(name = "订单号")
 
     private String cbca09;
+    @Excel(name = "名称首字母")
 
     private String cbca10;
     @NotBlank(message = "开户行不能为空")
     @Length(min =1 , max = 20)
+    @Excel(name = "开户行")
     private String cbca11;
     @NotBlank(message = "账号不能为空")
     @Length(min =1 , max = 30)
+    @Excel(name = "银行账号")
+
     private String cbca12;
     @NotBlank(message = "纳税人识别号不能为空")
     @Length(min =1 , max = 30)
+    @Excel(name = "纳税人识别号")
+
     private String cbca13;
+    @Excel(name = "联系人")
 
     private String cbca14;
     @NotBlank(message = "地址不能为空")
     @Length(min =1 , max = 20)
+    @Excel(name = "地址")
+
     private String cbca15;
     @NotBlank(message = "电话不能为空")
     @Length(min =1 , max = 20)
+    @Excel(name = "电话")
+
     private String cbca16;
+    @Excel(name = "备注")
 
     private String cbca17;
+    @Excel(name = "联系人1")
 
     private String cbca18;
 
@@ -58,14 +74,18 @@ public class CbcaDto {
     private String cbca22;
 
     private String cbca23;
+    @Excel(name = "发票类型")
 
     private String cbca24;
+    @Excel(name = "发票邮递地址")
 
     private String cbca25;
+    @Excel(name = "地址1")
 
     private String cbca26;
 
     private String cbca27;
+    @Excel(name = "客户等级")
 
     private Integer cbca28;
 }

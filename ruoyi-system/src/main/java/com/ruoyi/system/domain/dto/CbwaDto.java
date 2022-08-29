@@ -21,7 +21,6 @@ public class CbwaDto {
 
     private Integer cbwa06;
     @NotNull(message = "仓库优先级不能为空")
-    @Length(min =1 , max = 10)
     private Integer cbwa07;
     @NotBlank(message = "状态不能为空")
     @Length(min =1 , max = 10)
@@ -38,10 +37,8 @@ public class CbwaDto {
     @Length(min =1 , max = 25)
     private String cbwa12;
     @NotNull(message = "是否启用总订单不能为空")
-    @Length(min =1 , max = 10)
     private Integer cbwa13;
     @NotNull(message = "是否启用提货单不能为空")
-    @Length(min =1 , max = 10)
     private Integer cbwa14;
 
     private Integer cbwa15;

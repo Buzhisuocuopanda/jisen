@@ -22,5 +22,5 @@ public interface ISwJsSupplierService {
 
     List<Cbsa> selectSwJsSupplierList(Cbsa cbsa);
 
-    String importSwJsGoodsClassify(List<Cbsa> swJsSupplierList, boolean updateSupport, String operName);
+    String importSwJsGoodsClassify(List<CbsaDto> swJsSupplierList, boolean updateSupport, String operName);
 }

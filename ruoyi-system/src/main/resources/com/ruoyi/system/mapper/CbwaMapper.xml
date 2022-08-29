@@ -390,12 +390,12 @@
   <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
     <include refid="selectCBWAVo"/>
     <where>
+      CBWA06=0
       <if test="cbwa01 != null "> and CBWA01 = #{cbwa01}</if>
       <if test="cbwa02 != null "> and CBWA02 = #{cbwa02}</if>
       <if test="cbwa03 != null "> and CBWA03 = #{cbwa03}</if>
       <if test="cbwa04 != null "> and CBWA04 = #{cbwa04}</if>
       <if test="cbwa05 != null "> and CBWA05 = #{cbwa05}</if>
-      <if test="cbwa06 != null "> and CBWA06 = #{cbwa06}</if>
       <if test="cbwa07 != null "> and CBWA07 = #{cbwa07}</if>
       <if test="cbwa08 != null  and cbwa08 != ''"> and CBWA08 = #{cbwa08}</if>
       <if test="cbwa09 != null  and cbwa09 != ''"> and CBWA09 = #{cbwa09}</if>

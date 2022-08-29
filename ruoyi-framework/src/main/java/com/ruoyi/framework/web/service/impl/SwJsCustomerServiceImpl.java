@@ -49,7 +49,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         Date date = new Date();
         cbca.setCbca04(date);
         cbca.setCbca05(Math.toIntExact(userid));
-
+        cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
 
         CbcaCriteria example3=new CbcaCriteria();
 
@@ -75,12 +75,13 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     @Override
     public int updateSwJsCustomer(CbcaDto cbcaDto) {
         Long userid = SecurityUtils.getUserId();
+        Cbca cbca1 = cbcaMapper.selectByPrimaryKey(cbcaDto.getCbca01());
 
         CbcaCriteria example = new CbcaCriteria();
         example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())
                 .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbca> cbcas = cbcaMapper.selectByExample(example);
-        if(cbcas.size()>0){
+        if(cbcas.size()>0 && !cbca1.getCbca01().equals(cbcas.get(0).getCbca01())){
             throw new SwException("客户名称不能重复");
         }
         Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
@@ -160,7 +161,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     }
 
     @Override
-    public String importSwJsCustomer(List<Cbca> swJsCustomersList, boolean updateSupport, String operName) {
+    public String importSwJsCustomer(List<CbcaDto> swJsCustomersList, boolean updateSupport, String operName) {
         Long userid = SecurityUtils.getUserId();
 
         if (StringUtils.isNull(swJsCustomersList) || swJsCustomersList.size() == 0)
@@ -172,7 +173,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
         for (
-                Cbca swJsCustomer : swJsCustomersList)
+                CbcaDto swJsCustomer : swJsCustomersList)
         {
             try
             {

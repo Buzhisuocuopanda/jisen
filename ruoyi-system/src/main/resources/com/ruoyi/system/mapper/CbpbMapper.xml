@@ -388,26 +388,26 @@
     select CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, CBPB12, CBPB13,
            CBPB14, CBPB15 from CBPB recruit
   </sql>
-  <select id="selectSwJsGoodsList"  parameterType="CBPB" resultMap="CBPBResult">
-    <include refid="selectCBPBVo"/>
-    <where>
+  <select id="selectSwJsGoodsList"  resultType="com.ruoyi.system.domain.vo.CbpbVo">
+    SELECT
+    b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01
+    FROM
+    CBPB a
+    LEFT JOIN
+    CBPA b
+    on
+    b.CBPA01=a.CBPB14
+    LEFT JOIN
+    CALA c
+    ON
+    c.CALA01=a.CBPB10
+    where
       CBPB06=0
-      <if test="cbpb01 != null "> and CBPB01 = #{cbpb01}</if>
-      <if test="cbpb02 != null "> and CBPB02 = #{cbpb02}</if>
-      <if test="cbpb03 != null "> and CBPB03 = #{cbpb03}</if>
-      <if test="cbpb04 != null "> and CBPB04 = #{cbpb04}</if>
-      <if test="cbpb05 != null "> and CBPB05 = #{cbpb05}</if>
-      <if test="cbpb07 != null  and cbpb07 != ''"> and CBPB07 = #{cbpb07}</if>
-      <if test="cbpb08 != null  and cbpb08 != ''"> and CBPB08 = #{cbpb08}</if>
-      <if test="cbpb09 != null  and cbpb09 != ''"> and CBPB09 = #{cbpb09}</if>
-      <if test="cbpb10 != null "> and CBPB10 = #{cbpb10}</if>
-      <if test="cbpb11 != null "> and CBPB11 = #{cbpb11}</if>
-      <if test="cbpb12 != null  and cbpb12 != ''"> and CBPB12 = #{cbpb12}</if>
-      <if test="cbpb13 != null "> and CBPB13 = #{cbpb13}</if>
-      <if test="cbpb14 != null "> and CBPB14 = #{cbpb14}</if>
-      <if test="cbpb15 != null  and cbpb15 != ''"> and CBPB15 like concat( '%', #{cbpb15}, '%')</if>
-      ${params.dataScope}
-    </where>
+      <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
+      <if test="cbpb12 != null "> and a.CBPB12 = #{cbpb12}</if>
+    <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
+
+
   </select>
 
   <insert id="insertCBPB" parameterType="CBPB">

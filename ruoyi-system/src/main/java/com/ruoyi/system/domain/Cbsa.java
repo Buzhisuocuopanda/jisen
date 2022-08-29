@@ -1,43 +1,53 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.Excel;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Cbsa implements Serializable {
+  //  @Excel(name = "id")
     private Integer cbsa01;
+ //   @Excel(name = "创建时间")
 
     private Date cbsa02;
+  //  @Excel(name = "创建人id")
 
     private Integer cbsa03;
+ //   @Excel(name = "修改时间")
 
     private Date cbsa04;
-
+  //  @Excel(name = "修改人id")
     private Integer cbsa05;
-
+  //  @Excel(name = "是否删除")
     private Integer cbsa06;
+  //  @Excel(name = "状态")
 
     private String cbsa07;
+    @Excel(name = "名称")
 
     private String cbsa08;
 
     private String cbsa09;
-
+    @Excel(name = "开户行")
     private String cbsa10;
+    @Excel(name = "账号")
 
     private String cbsa11;
-
+    @Excel(name = "纳税人识别号")
     private String cbsa12;
+    @Excel(name = "地址")
 
     private String cbsa13;
-
+    @Excel(name = "联系人")
     private String cbsa14;
-
+    @Excel(name = "联系电话")
     private String cbsa15;
 
     private String cbsa16;
 
     private String cbsa17;
-
+  //  @Excel(name = "出库顺序")
     private Integer cbsa18;
 
     private static final long serialVersionUID = 1L;

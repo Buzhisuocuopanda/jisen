@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbsf;
+import com.ruoyi.system.domain.Cbsg;
 import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.CbseDo;
 import com.ruoyi.system.domain.vo.CbsbVo;
@@ -83,6 +84,24 @@ public class SalesreturnordersController extends BaseController {
 
         } catch (Exception e) {
             log.error("【新增销售退库单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+    @ApiOperation(
+            value ="新增销售退库单扫码",
+            notes = "新增销售退库单扫码"
+    )
+    @PostMapping("/Selloutofwarehouseaddss")
+    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody List<Cbsg> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(salesreturnordersService.insertSwJsStoress(itemList));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增销售退库单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -236,7 +255,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslists(CbsesVo cbsesVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists( CbsesVo cbsesVo) {
         try {
             startPage();
             List<CbsesVo> list = salesreturnordersService.selectSwJsTaskGoodsRelListss(cbsesVo);

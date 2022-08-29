@@ -113,7 +113,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "查询仓库信息列表"
     )
     @GetMapping("/SwJsStorelist")
-    public AjaxResult<TableDataInfo> SwJsStorelist(Cbwa cbwa) {
+    public AjaxResult<TableDataInfo> SwJsStorelist( Cbwa cbwa) {
         try {
             startPage();
             List<Cbwa> list = swJsStoreSkuService.selectSwJsStoreSkuList(cbwa);

@@ -5,18 +5,21 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.NumberVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -60,6 +63,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Resource
     private TaskService taskService;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+
+    @Resource
+    private  NumberGenerate numberGenerate;
     /**
      * 新增采购退货主单
      *
@@ -68,14 +77,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto) {
-        CbpgCriteria example = new CbpgCriteria();
-        example.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
-                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
-        if(cbpgs.size() >0){
-            throw new SwException("编号已存在");
-        }
-        NumberGenerate numberGenerate = new NumberGenerate();
+
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -84,6 +86,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpg.setCbpg10(cbpgDto.getCbpg10());
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
+        cbpg.setCbpg12(Math.toIntExact(userid));
         String purchasereturnNo = numberGenerate.getPurchasereturnNo(cbpgDto.getCbpg10());
         cbpg.setCbpg07(purchasereturnNo);
         cbpg.setCbpg08(date);
@@ -91,7 +96,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setUserId(Math.toIntExact(userid));
         cbpgMapper.insertSelective(cbpg);
         CbpgCriteria example1 = new CbpgCriteria();
-        example1.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
+        example1.createCriteria().andCbpg07EqualTo(purchasereturnNo)
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
 
@@ -160,18 +165,70 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @return 结果
      */
     @Override
-    public int insertSwJsSkuBarcodesm(CbpgDto cbpgDto) {
-        Long userid = SecurityUtils.getUserId();
+    public int insertSwJsSkuBarcodesm(List<Cbpi> itemList) {
 
-        Cbpi cbpi = BeanCopyUtils.coypToClass(cbpgDto, Cbpi.class, null);
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpiMapper mapper = session.getMapper(CbpiMapper.class);
         Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbpi03(date);
+            itemList.get(i).setCbpi04(Math.toIntExact(userid));
+            itemList.get(i).setCbpi05(date);
+            itemList.get(i).setCbpi06(Math.toIntExact(userid));
+            itemList.get(i).setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+         //   mapper.insertSelective(itemList.get(i));
 
-        cbpi.setCbpi03(date);
-        cbpi.setCbpi04(Math.toIntExact(userid));
-        cbpi.setCbpi05(date);
-        cbpi.setCbpi06(Math.toIntExact(userid));
-        cbpi.setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbpiMapper.insertSelective(cbpi);
+            //如果查不到添加信息到库存表
+            Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbpg.getCbpg10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbpi08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if(qty==0){
+                    throw new SwException("库存数量不足");
+                }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbpg.getCbpg10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpi08());
+                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpi10());
+                gsGoodsSkuDo1.setQty(qty-1);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
     /**
@@ -191,12 +248,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         }
         Integer storeid = cbpg1.getCbpg10();
         CbphCriteria example1=new CbphCriteria();
-        example1.createCriteria().andUserIdEqualTo(cbpgDto.getCbpg01())
+        example1.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbph> cbphs = cbphMapper.selectByExample(example1);
+        Integer cbph08 = cbphs.get(0).getCbph08();
 
-
-        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbphs.get(0).getCbph08());
+        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph08);
         Integer goodsid = cbba.getCbba08();
         //检查是否有库存
         baseCheckService.checkGoodsSku(goodsid,storeid);
@@ -234,7 +291,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         example.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
-        if(cbpgs.size() >0){
+        if(cbpgs.size() >0 && !cbpgs.get(0).getCbpg01().equals(cbpgDto.getCbpg01())){
             throw new SwException("编号已存在");
         }}
         Long userid = SecurityUtils.getUserId();
@@ -287,6 +344,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -383,7 +444,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
 
 
-        //数量管理查找商品id和仓库id，没有就加入
+    /*    //数量管理查找商品id和仓库id，没有就加入
         CbphCriteria example1=new CbphCriteria();
         example1.createCriteria()
                 .andCbph06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
@@ -531,7 +592,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                     taskService.InsertCBIB(cbibDo);
                 }
             }
-        }
+        }*/
         CbpgCriteria example = new CbpgCriteria();
         example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

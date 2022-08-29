@@ -115,7 +115,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
                 .andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         exapmle.or(criteria2);
         List<Cbpa> listt = cbpaMapper.selectByExample(exapmle);
-        if(listt.size()>0){
+        if(listt.size()>0 && !listt.get(0).getCbpa01().equals(cbpaDo.getCbpa01())){
             throw new SwException("分类名称或编号已存在");
         }
 

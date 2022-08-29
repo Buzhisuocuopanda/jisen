@@ -6,8 +6,9 @@ import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpgVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CbpgMapper {
     long countByExample(CbpgCriteria example);
 

@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
 import com.ruoyi.system.mapper.*;
@@ -62,10 +63,11 @@ public class TaskServiceImpl implements TaskService {
             }
 
 
-            CbpdCriteria example = new CbpdCriteria();
-            example.createCriteria().andCbpc01EqualTo(typeid)
-                    .andCbpd07EqualTo(DeleteFlagEnum.DELETE.getCode());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(example);
+            CbpdCriteria example1=new CbpdCriteria();
+            example1.createCriteria()
+                    .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbpc01EqualTo(typeid);
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
             //  Cbpd[] cbpds1 = cbpds.toArray(new Cbpd[]{});
             //金额
             List<Double> collect2 = cbpds.stream().map(Cbpd::getCbpd12).collect(Collectors.toList());
@@ -84,11 +86,11 @@ public class TaskServiceImpl implements TaskService {
             }
 
 
-            CbibCriteria example1 = new CbibCriteria();
-            example1.createCriteria()
+            CbibCriteria example2 = new CbibCriteria();
+            example2.createCriteria()
                     .andCbib02EqualTo(storeId)
                     .andCbib08EqualTo(ints[0]);
-            List<Cbib> cbibs = cbibMapper.selectByExample(example1);
+            List<Cbib> cbibs = cbibMapper.selectByExample(example2);
             Cbib cbib1 = selectLastOne(cbibs);
 
 
@@ -163,6 +165,87 @@ public class TaskServiceImpl implements TaskService {
         cbib.setCbib18(cbib1.getCbib18()+1);
         cbibMapper.insertSelective(cbib);
         return cbib;
+    }
+
+    @Override
+    public GsGoodsSku addGsGoodsSku(GsGoodsSkuDo goodsSkuDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(goodsSkuDo, GsGoodsSku.class, null);
+        gsGoodsSku.setCreateTime(date);
+        gsGoodsSku.setUpdateTime(date);
+        gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+        gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+        gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSku.setGoodsId(goodsSkuDo.getGoodsId());
+        gsGoodsSku.setWhId(goodsSkuDo.getWhId());
+        gsGoodsSku.setQty(goodsSkuDo.getQty());
+        gsGoodsSku.setLocationId(goodsSkuDo.getLocationId());
+           gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+           return gsGoodsSku;
+
+    }
+
+    @Override
+    public GsGoodsSn addGsGoodsSn(GsGoodsSnDo goodsSnDo) {
+        GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+        example1.createCriteria()
+                .andSnEqualTo(goodsSnDo.getSn());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
+        if(gsGoodsSns.size()>0){
+            throw new SwException("sn码已存在才能审核");
+        }
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSn gsGoodsSn = BeanCopyUtils.coypToClass(goodsSnDo, GsGoodsSn.class, null);
+        gsGoodsSn.setCreateTime(date);
+        gsGoodsSn.setUpdateTime(date);
+        gsGoodsSn.setCreateBy(Math.toIntExact(userid));
+        gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+        gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSnMapper.insertSelective(gsGoodsSn);
+        return gsGoodsSn;
+    }
+
+    @Override
+    public GsGoodsSn updateGsGoodsSn(GsGoodsSnDo goodsSnDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSn gsGoodsSn = BeanCopyUtils.coypToClass(goodsSnDo, GsGoodsSn.class, null);
+        gsGoodsSn.setUpdateTime(date);
+        gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+
+        GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+        example1.createCriteria().andSnEqualTo(goodsSnDo.getSn())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+        return gsGoodsSn;
+    }
+
+    @Override
+    public GsGoodsSku updateGsGoodsSku(GsGoodsSkuDo goodsSkuDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(goodsSkuDo, GsGoodsSku.class, null);
+        gsGoodsSku.setUpdateTime(date);
+        gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+            example.createCriteria()
+                .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
+                .andWhIdEqualTo(goodsSkuDo.getWhId())
+                .andLocationIdEqualTo(goodsSkuDo.getLocationId());
+        gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku,example);
+        return gsGoodsSku;
+    }
+
+    @Override
+    public List<GsGoodsSku> checkGsGoodsSku(GsGoodsSkuDo goodsSkuDo) {
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria().andWhIdEqualTo(goodsSkuDo.getWhId())
+                .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        return gsGoodsSkus;
     }
 
 

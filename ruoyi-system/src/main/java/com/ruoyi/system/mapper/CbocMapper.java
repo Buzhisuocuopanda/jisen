@@ -6,8 +6,9 @@ import java.util.List;
 
 import com.ruoyi.system.domain.dto.SaleOrderListDto;
 import com.ruoyi.system.domain.vo.SaleOrderListVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CbocMapper {
     long countByExample(CbocCriteria example);
 

@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.CblaDto;
+import com.ruoyi.system.domain.vo.CblaVo;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.mapper.CbpeMapper;
 import com.ruoyi.system.service.ISwJsStoreService;
@@ -74,7 +75,7 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         example.createCriteria().andCbla09EqualTo(cblaDto.getCbla09())
                 .andCbla06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbla> cblas = cblaMapper.selectByExample(example);
-        if(cblas.size()>0){
+        if(cblas.size()>0 && !cblas.get(0).getCbla01().equals(cblaDto.getCbla01())){
             throw new SwException("库位码已存在");
 
         }
@@ -130,12 +131,12 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     }
 
     @Override
-    public List<Cbla> selectSwJsStoreList(Cbla cbla) {
-        return cblaMapper.selectSwJsStoreList(cbla);
+    public List<CblaVo> selectSwJsStoreList(CblaVo cblaVo) {
+        return cblaMapper.selectSwJsStoreList(cblaVo);
     }
 
     @Override
-    public String importSwJsGoods(List<Cbla> swJsGoodsList, boolean updateSupport, String operName) {
+    public String importSwJsGoods(List<CblaDto> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -144,20 +145,20 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbla swJsGoods : swJsGoodsList)
+        for (CblaDto swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
-                Cbpb u = cblaMapper.selectByPrimaryKey(swJsGoods.getCbla01());
+                Cbla u = cblaMapper.selectByPrimaryKey(swJsGoods.getCbla01());
                 log.info(swJsGoods.getCbla01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbla08(swJsGoods.getCbla08());
-                    this.insertSwJsGoods(swJsGoods);
+                    this.insertSwJsStore(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbla08()).append(" 导入成功");
                 } else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateCBLA(swJsGoods);
+                    this.updateSwJsStore(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbla08()).append(" 更新成功");
                 } else {

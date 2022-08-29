@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Cbsg;
+import com.ruoyi.system.domain.Cbsj;
 import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.vo.CbshVo;
@@ -14,7 +16,7 @@ public interface ISWWarehouseinventoryscheduleService {
 
     IdVo insertSwJsStore(CbshDo cbshDo);
 
-    int insertSwJsStores(CbsjDo cbsjDo);
+    int insertSwJsStores(List<Cbsj> itemList);
 
     int deleteSwJsStoreById(CbshDo cbshDo);
 

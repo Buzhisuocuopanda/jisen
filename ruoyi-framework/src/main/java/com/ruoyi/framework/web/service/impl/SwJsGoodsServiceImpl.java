@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
+import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -98,7 +99,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         example.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
                 .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
-        if(cbpbs.size()>0){
+        if(cbpbs.size()>0 && !cbpbs.get(0).getCbpb01().equals(cbpbDo.getCbpb01())){
             throw new SwException("upc已存在");
 
         }
@@ -158,17 +159,17 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
     /**
      * 查询商品列表
      *
-     * @param cbpb 商品
+     * @param cbpbVo 商品
      * @return 商品
      */
     @Override
-    @DataScope(userAlias = "recruit.CBPB04")
-    public List<Cbpb> selectSwJsGoodsList(Cbpb cbpb) {
-        return cbpbMapper.selectSwJsGoodsList(cbpb);
+  //  @DataScope(userAlias = "recruit.CBPB04")
+    public List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo) {
+        return cbpbMapper.selectSwJsGoodsList(cbpbVo);
     }
 
     @Override
-    public String importSwJsGoods(List<Cbpb> swJsGoodsList, boolean updateSupport, String operName) {
+    public String importSwJsGoods(List<CbpbDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -177,7 +178,7 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbpb swJsGoods : swJsGoodsList)
+        for (CbpbDo swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -185,12 +186,12 @@ return  cbpbMapper.updateByExampleSelective(cbpb,example1);
                 log.info(swJsGoods.getCbpb01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbpb08(swJsGoods.getCbpb08());
-                    this.insertSwJsGoods(swJsGoods);
+                    this.insertSwJsGoodsClassify(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbpb08()).append(" 导入成功");
                 } else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateSwJsGoods(swJsGoods);
+                    this.updateSwJsGoodsClassify(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbpb08()).append(" 更新成功");
                 } else {

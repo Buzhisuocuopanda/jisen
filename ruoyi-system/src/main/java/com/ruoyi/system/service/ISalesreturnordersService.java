@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbsf;
+import com.ruoyi.system.domain.Cbsg;
 import com.ruoyi.system.domain.Do.CbseDo;
 import com.ruoyi.system.domain.vo.CbseVo;
 import com.ruoyi.system.domain.vo.CbsesVo;
@@ -26,4 +27,6 @@ public interface ISalesreturnordersService {
     List<CbseVo> selectSwJsTaskGoodsRelLists(CbseVo cbsbVo);
 
     List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo);
+
+    int insertSwJsStoress(List<Cbsg> itemList);
 }

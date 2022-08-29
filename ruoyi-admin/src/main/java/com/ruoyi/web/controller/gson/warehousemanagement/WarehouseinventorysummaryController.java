@@ -162,7 +162,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘点汇总详情"
     )
     @GetMapping("/SwJsStorelistsss")
-    public AjaxResult<TableDataInfo> SwJsStorelistsss(CbsisVo cbsisVo) {
+    public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsisVo cbsisVo) {
         try {
             startPage();
             List<CbsisVo> list = swarehouseinventorysummaryService.SwJsStorelistsss(cbsisVo);

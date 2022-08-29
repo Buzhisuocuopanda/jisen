@@ -8,11 +8,9 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbsc;
+import com.ruoyi.system.domain.Cbsd;
 import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.vo.CbpkVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.CbscVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -86,6 +84,24 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+    @ApiOperation(
+            value ="新增销售出库扫码",
+            notes = "新增销售出库扫码"
+    )
+    @PostMapping("/Selloutofwarehouseaddss")
+    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody List<Cbsd> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(sellerofwarehouseService.insertSwJsStoress(itemList));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增销售出库扫码】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 
     /**
@@ -249,7 +265,28 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+    /**
+     * 新增销售出库单详情
+     */
+    @ApiOperation(
+            value ="新增销售出库单详情",
+            notes = "新增销售出库单详情"
+    )
+    @GetMapping("/SwJsSkuBarcodelistss")
+    public AjaxResult<TableDataInfo> swJsGoodslists(CbsbsVo cbsbsVo) {
+        try {
+            startPage();
+            List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbsVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【新增销售出库单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsbsVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 新增销售出库单删除
      */
@@ -272,6 +309,8 @@ public class SelloutofwarehouseController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
 
 
 }

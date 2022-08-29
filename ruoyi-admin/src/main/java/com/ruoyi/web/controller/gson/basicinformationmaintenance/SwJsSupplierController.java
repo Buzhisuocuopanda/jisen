@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -160,8 +161,8 @@ public class SwJsSupplierController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsSupplier(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbsa> util = new ExcelUtil<>(Cbsa.class);
-            List<Cbsa> swJsSupplierList = util.importExcel(file.getInputStream());
+            ExcelUtil<CbsaDto> util = new ExcelUtil<>(CbsaDto.class);
+            List<CbsaDto> swJsSupplierList = util.importExcel(file.getInputStream());
             String operName = getUsername();
             String message = swJsSupplierService.importSwJsGoodsClassify(swJsSupplierList, updateSupport, operName);
             return AjaxResult.success(message);
@@ -173,6 +174,19 @@ public class SwJsSupplierController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+    /**
+     * 导入供应商信息下载模板
+     */
+    @ApiOperation(
+            value ="导入供应商信息下载模板",
+            notes = "导入供应商信息下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbsaDto> util = new ExcelUtil<CbsaDto>(CbsaDto.class);
+         util.importTemplateExcel(response,"导入供应商信息");
     }
 
 }

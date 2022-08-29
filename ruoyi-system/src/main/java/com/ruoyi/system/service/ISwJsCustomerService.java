@@ -15,5 +15,5 @@ public interface ISwJsCustomerService {
 
     int insertSwJsCustomer(CbcaDto cbcaDto);
 
-    String importSwJsCustomer(List<Cbca> swJsCustomersList, boolean updateSupport, String operName);
+    String importSwJsCustomer(List<CbcaDto> swJsCustomersList, boolean updateSupport, String operName);
 }

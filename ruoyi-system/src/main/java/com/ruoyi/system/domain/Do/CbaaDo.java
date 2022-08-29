@@ -31,7 +31,6 @@ public class CbaaDo {
 
     private Date cbaa13;
 
-    private Integer cbaa14;
 
     private Date cbaa15;
 

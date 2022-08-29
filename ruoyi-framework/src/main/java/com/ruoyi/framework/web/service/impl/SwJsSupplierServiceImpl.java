@@ -75,7 +75,7 @@ private CbsaMapper cbsaMapper;
         example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa08())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(example);
-        if(cbsas.size()>0){
+        if(cbsas.size()>0 && !cbsas.get(0).getCbsa01().equals(cbsaDto.getCbsa01())){
             throw new SwException("供应商名称不能重复");
         }
 
@@ -134,7 +134,7 @@ private CbsaMapper cbsaMapper;
     }
 
     @Override
-    public String importSwJsGoodsClassify(List<Cbsa> swJsSupplierList, boolean updateSupport, String operName) {
+    public String importSwJsGoodsClassify(List<CbsaDto> swJsSupplierList, boolean updateSupport, String operName) {
         Long userid = SecurityUtils.getUserId();
 
         if (StringUtils.isNull(swJsSupplierList) || swJsSupplierList.size() == 0)
@@ -145,7 +145,7 @@ private CbsaMapper cbsaMapper;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbsa swJsSupplier : swJsSupplierList)
+        for (CbsaDto swJsSupplier : swJsSupplierList)
         {
             try
             {
@@ -155,14 +155,14 @@ private CbsaMapper cbsaMapper;
                 if (StringUtils.isNull(u))
                 {
                     swJsSupplier.setCbsa07(swJsSupplier.getCbsa07());
-                    this.insertCBSA(swJsSupplier);
+                    this.insertSwJsSupplier(swJsSupplier);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品分类信息").append(swJsSupplier.getCbsa07()).append(" 导入成功");
                 }
                 else if (updateSupport)
                 {
                     swJsSupplier.setCbsa03(Math.toIntExact(userid));
-                    this.updateCBSA(swJsSupplier);
+                    this.updateSwJsSupplier(swJsSupplier);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品分类信息 ").append(swJsSupplier.getCbsa07()).append(" 更新成功");
                 }

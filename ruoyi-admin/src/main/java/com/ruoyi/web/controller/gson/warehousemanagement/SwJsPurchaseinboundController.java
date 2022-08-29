@@ -11,7 +11,12 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbpc;
+import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Cbsg;
+import com.ruoyi.system.domain.Do.CbpcDo;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
@@ -77,17 +82,17 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "新增采购入库单扫码"
     )
     @PostMapping("/SwJsPurchaseinboundaddsm")
-    public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody List<Cbpe> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcodesm(cbpdDto));
+            return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcodesm(itemList));
 
 
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购入库单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpdDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购入库单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -214,14 +219,14 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "修改采购入库单"
     )
     @PostMapping("/SwJsPurchaseinboundedit")
-    public AjaxResult swJsPurchaseinboundedit( CbpdDto cbpdDto) {
+    public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpcDo cbpcDo) {
         try {
-            return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpdDto));
+            return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpcDo));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpdDto), ExceptionUtils.getStackTrace(e));
+            log.error("【修改采购入库单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpcDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -258,7 +263,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
-    public AjaxResult<TableDataInfo> swJsGoodslistss(CbpcVo cbpcVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslistss( CbpcVo cbpcVo) {
         try {
             startPage();
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListsss(cbpcVo);
@@ -320,8 +325,8 @@ public class SwJsPurchaseinboundController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbpc> util = new ExcelUtil<>(Cbpc.class);
-            List<Cbpc> swJsGoodsList = util.importExcel(file.getInputStream());
+            ExcelUtil<CbpcDto> util = new ExcelUtil<>(CbpcDto.class);
+            List<CbpcDto> swJsGoodsList = util.importExcel(file.getInputStream());
             //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             String operName = SecurityUtils.getUsername();
 
@@ -338,6 +343,19 @@ public class SwJsPurchaseinboundController extends BaseController {
         }
     }
 
+    /**
+     * 导入采购入库单下载模板
+     */
+    @ApiOperation(
+            value ="导入采购入库单下载模板",
+            notes = "导入采购入库单下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbpcDto> util = new ExcelUtil<CbpcDto>(CbpcDto.class);
+        util.importTemplateExcel(response,"导入客户下载模板");
+    }
 
 
 }
