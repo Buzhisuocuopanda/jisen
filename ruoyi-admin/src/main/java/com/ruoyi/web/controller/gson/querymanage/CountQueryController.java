@@ -1,5 +1,14 @@
 package com.ruoyi.web.controller.gson.querymanage;
 
+import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.SwException;
+import com.ruoyi.system.domain.dto.GoodsUseDto;
+import com.ruoyi.system.domain.vo.GoodsUseVo;
+import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.web.bind.annotation.*;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -61,9 +70,23 @@ public class CountQueryController  extends BaseController {
         }
     }
 
+
+//    @PostMapping("/goodsUseList")
+//    public GoodsUseVo goodsUseList(@RequestBody GoodsUseDto goodsUseDto){
+//        try {
+//            st
+//            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+//            return AjaxResult.success(res);
+//        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 //
-//    @GetMapping("/goodsUseList")
-//    public
+//        } catch (Exception e) {
+//            log.error("【销售订单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
+//
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+//        }
+//
+//    }
 
 
 }

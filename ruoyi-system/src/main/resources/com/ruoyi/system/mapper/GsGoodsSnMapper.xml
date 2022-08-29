@@ -227,7 +227,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map">
     update `gs_goods_sn`
     <set>
       <if test="record.id != null">
@@ -368,22 +368,19 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbpkVo">
-    SELECT b.*
+  <select id="selectOutByWhIdAndGoodsId" resultType="com.ruoyi.system.domain.GsGoodsSn">
 
+SELECT
+    <include refid="Base_Column_List" />
     FROM
-      CBPK b
-        LEFT JOIN
-      gs_goods_sn a
-      ON
-        a.wh_id=b.CBPK10
-        LEFT JOIN
-      CBPL c
-      ON
-        c.CBPL08=a.goods_id
-    WHERE
-      a.groud_status=0
-    <if test="sn != null "> and a.sn = #{sn}</if>
+	`gs_goods_sn` sn
+WHERE
+	sn.goods_id = #{goodsId}
+	AND sn.wh_id = #{whId}
+ORDER BY
+	sn.create_time
+	LIMIT #{lockQty}
+
 
   </select>
 

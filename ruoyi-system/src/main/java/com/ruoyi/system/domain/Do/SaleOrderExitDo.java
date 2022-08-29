@@ -17,5 +17,7 @@ public class SaleOrderExitDo {
 
     private Double qty;
 
+    private String totalOrderNo;
+
 
 }

@@ -139,7 +139,7 @@ private CbieMapper cbieMapper;
     }
 
     private synchronized String getTakeOrderNo() {
-        //拼接规则 PO202208040017 SP05 +年月日 +四位数数量自增
+        //拼接规则 OC202208040017 SP05 +年月日 +四位数数量自增
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
         String format = sd.format(new Date());
         String orderNo="OC"+format;

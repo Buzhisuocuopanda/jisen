@@ -11,9 +11,12 @@ import lombok.Data;
 @Data
 public class GoodsUseDto {
 
+    //商品分类id
     private Integer goodsClassId;
 
+    //商品品牌id
     private Integer goodsBrandId;
+
 
     private Integer goodsId;
 
