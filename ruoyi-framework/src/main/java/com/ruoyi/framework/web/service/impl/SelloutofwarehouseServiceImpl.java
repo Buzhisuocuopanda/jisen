@@ -59,6 +59,12 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private OrderDistributionService orderDistributionService;
 
+    @Resource
+    private CbobMapper cbobMapper;
+
+    @Resource
+    private   CbbaMapper  cbbaMapper;
+
     /**
      * 新增销售出库主单
      *
@@ -172,17 +178,25 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         else{
             throw new SwException(" 审核状态才能标记完成");
         }
+
         //回写生产总总订单
         CbscCriteria example = new CbscCriteria();
             example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
-                    .andCbsc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsc> cbscs = cbscMapper.selectByExample(example);
+
+
+//        List<Cbob> cbobs = cbobMapper.selectByExample(example2);
+//        String cbob18 = cbobs.get(0).getCbob18();
         if(cbscs.size()>0){
             for(int i=0;i<cbscs.size();i++){
                 SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
                 saleOrderExitDo.setOrderNo(cbsb1.getCbsb07());
                 saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
                 saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
+
+
+          //      saleOrderExitDo.setTotalOrderNo();
                 orderDistributionService.saleOrderExit(saleOrderExitDo);
              }
         }

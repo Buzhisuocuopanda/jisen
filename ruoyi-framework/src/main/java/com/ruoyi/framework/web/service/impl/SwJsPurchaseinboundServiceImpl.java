@@ -72,11 +72,11 @@ private NumberGenerate numberGenerate;
     public int insertSwJsSkuBarcodes(CbpdDto cbpdDto) {
 
        // 检查供应商
-    /*    baseCheckService.checksupplier(cbpdDto.getCbpc09());
+        baseCheckService.checksupplier(cbpdDto.getCbpc09());
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-        baseCheckService.checkGoods(cbpdDto.getCbpd08());*/
+        baseCheckService.checkGoods(cbpdDto.getCbpd08());
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())

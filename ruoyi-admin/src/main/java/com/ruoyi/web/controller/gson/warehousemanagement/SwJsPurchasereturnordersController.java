@@ -10,7 +10,9 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Cbph;
 import com.ruoyi.system.domain.Cbpi;
+import com.ruoyi.system.domain.Cbsf;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -74,15 +76,15 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "新增采购退货单明细单"
     )
     @PostMapping("/SwJsPurchasereturnordersadds")
-    public AjaxResult swJsPurchasereturnordersadds(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchasereturnordersadds(@Valid @RequestBody  List<Cbph> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodess(cbpgDto));
+            return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodess(itemList));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购退货单明细单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpgDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购退货单明细单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

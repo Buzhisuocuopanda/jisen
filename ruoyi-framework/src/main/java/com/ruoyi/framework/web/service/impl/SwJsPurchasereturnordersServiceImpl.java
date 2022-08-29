@@ -133,30 +133,27 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @return 结果
      */
     @Override
-    public int insertSwJsSkuBarcodess(CbpgDto cbpgDto) {
-        Long userid = SecurityUtils.getUserId();
-
-
-
-        Cbph cbph = BeanCopyUtils.coypToClass(cbpgDto, Cbph.class, null);
+    public int insertSwJsSkuBarcodess(List<Cbph> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbphMapper mapper = session.getMapper(CbphMapper.class);
         Date date = new Date();
-
-        cbph.setCbph03(date);
-        cbph.setCbph04(Math.toIntExact(userid));
-        cbph.setCbph05(date);
-        cbph.setCbph06(Math.toIntExact(userid));
-        cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbph.setCbpg01(cbpgDto.getCbpg01());
-        cbph.setUserId(Math.toIntExact(userid));
-        cbph.setCbph09(cbpgDto.getCbph09());
-        cbph.setCbph10(cbpgDto.getCbph10());
-        BigDecimal num = BigDecimal.valueOf(cbpgDto.getCbph09());
-        BigDecimal price = BigDecimal.valueOf(cbpgDto.getCbph10());
-        BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-        double v = b.doubleValue();
-        cbph.setCbph11(cbpgDto.getCbph11());
-        cbph.setCbph12(v);
-        return cbphMapper.insertSelective(cbph);
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbph03(date);
+            itemList.get(i).setCbph04(Math.toIntExact(userid));
+            itemList.get(i).setCbph05(date);
+            itemList.get(i).setCbph06(Math.toIntExact(userid));
+            itemList.get(i).setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
     /**
      * 新增采购退货单扫码
