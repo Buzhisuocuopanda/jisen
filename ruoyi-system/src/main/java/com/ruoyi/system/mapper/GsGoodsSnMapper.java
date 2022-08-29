@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsGoodsSn;
 import com.ruoyi.system.domain.GsGoodsSnCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.CbpkVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsGoodsSnMapper {
@@ -27,4 +30,6 @@ public interface GsGoodsSnMapper {
     int updateByPrimaryKeySelective(GsGoodsSn record);
 
     int updateByPrimaryKey(GsGoodsSn record);
+
+    List<CbpkVo> selectSwJsTaskGoodsRelLists(CbpkVo cbpcVo);
 }

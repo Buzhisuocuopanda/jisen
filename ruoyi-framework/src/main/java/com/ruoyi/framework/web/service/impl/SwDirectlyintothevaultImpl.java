@@ -3,13 +3,15 @@ package com.ruoyi.framework.web.service.impl;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.Cbic;
-import com.ruoyi.system.domain.CbicCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.CbicDto;
+import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.mapper.CbicMapper;
+import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.OrderDistributionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +24,10 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     @Resource
     private BaseCheckService baseCheckService;
 
+    @Resource
+    private OrderDistributionService orderDistributionService;
+@Resource
+   private CblaMapper cblaMapper;
 
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
@@ -29,8 +35,20 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
-        baseCheckService.checkGoods(cbicDto.getCbic09());
+        Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
+
         Long userid = SecurityUtils.getUserId();
+
+        //获取仓库id
+        Cbla cbla = cblaMapper.selectByPrimaryKey(cbicDto.getCbic08());
+        Integer storeid = cbla.getCbla10();
+        //回写生产总订单id
+        DirectWarehousingDto directWarehousingDto = new DirectWarehousingDto();
+        directWarehousingDto.setStoreId(storeid);
+        directWarehousingDto.setUserId(Math.toIntExact(userid));
+        directWarehousingDto.setGoodsId(cbicDto.getCbic09());
+        orderDistributionService.directWarehousing(directWarehousingDto);
+
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
         Date date = new Date();

@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.CbseDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;

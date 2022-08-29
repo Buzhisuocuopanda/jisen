@@ -29,5 +29,5 @@ public interface CblaMapper {
 
     int updateCBLA(Cbla cbla);
 
-    Cbpb selectByPrimaryKey(Integer cbla01);
+    Cbla selectByPrimaryKey(Integer cbla01);
 }

@@ -127,6 +127,7 @@ public class CbpkVo {
 
     private Integer cbpl16;
 
+    private String sn;
 
 
 }

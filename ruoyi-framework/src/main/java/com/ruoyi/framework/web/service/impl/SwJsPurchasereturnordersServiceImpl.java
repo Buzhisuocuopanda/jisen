@@ -66,6 +66,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+
+    @Resource
+    private  NumberGenerate numberGenerate;
     /**
      * 新增采购退货主单
      *
@@ -75,7 +78,6 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto) {
 
-        NumberGenerate numberGenerate = new NumberGenerate();
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -246,12 +248,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         }
         Integer storeid = cbpg1.getCbpg10();
         CbphCriteria example1=new CbphCriteria();
-        example1.createCriteria().andUserIdEqualTo(cbpgDto.getCbpg01())
+        example1.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbph> cbphs = cbphMapper.selectByExample(example1);
+        Integer cbph08 = cbphs.get(0).getCbph08();
 
-
-        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbphs.get(0).getCbph08());
+        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph08);
         Integer goodsid = cbba.getCbba08();
         //检查是否有库存
         baseCheckService.checkGoodsSku(goodsid,storeid);
@@ -289,7 +291,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         example.createCriteria().andCbpg07EqualTo(cbpgDto.getCbpg07())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
-        if(cbpgs.size() >0){
+        if(cbpgs.size() >0 && !cbpgs.get(0).getCbpg01().equals(cbpgDto.getCbpg01())){
             throw new SwException("编号已存在");
         }}
         Long userid = SecurityUtils.getUserId();
@@ -342,6 +344,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("不是审核状态");
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();
@@ -438,7 +444,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
 
 
-        //数量管理查找商品id和仓库id，没有就加入
+    /*    //数量管理查找商品id和仓库id，没有就加入
         CbphCriteria example1=new CbphCriteria();
         example1.createCriteria()
                 .andCbph06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
@@ -586,7 +592,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                     taskService.InsertCBIB(cbibDo);
                 }
             }
-        }
+        }*/
         CbpgCriteria example = new CbpgCriteria();
         example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

@@ -609,7 +609,7 @@ private NumberGenerate numberGenerate;
         example.createCriteria().andCbpc07EqualTo(cbpcDo.getCbpc07())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
-        if(cbpcs.size() >0 && !cbpcs.get(0).getCbpc07().equals(cbpcDo.getCbpc07())){
+        if(cbpcs.size() >0 && !cbpcs.get(0).getCbpc01().equals(cbpcDo.getCbpc01())){
             throw new SwException("编号已存在");
 
         }}

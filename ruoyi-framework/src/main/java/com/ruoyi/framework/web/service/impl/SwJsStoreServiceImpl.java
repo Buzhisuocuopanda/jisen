@@ -149,7 +149,7 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         {
             try {
                 // 验证是否存在这个用户
-                Cbpb u = cblaMapper.selectByPrimaryKey(swJsGoods.getCbla01());
+                Cbla u = cblaMapper.selectByPrimaryKey(swJsGoods.getCbla01());
                 log.info(swJsGoods.getCbla01() + "");
                 if (StringUtils.isNull(u)) {
                     swJsGoods.setCbla08(swJsGoods.getCbla08());

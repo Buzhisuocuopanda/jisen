@@ -8,10 +8,12 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
+import com.ruoyi.system.domain.Do.SaleOrderExitDo;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private BaseCheckService baseCheckService;
+
+    @Resource
+    private OrderDistributionService orderDistributionService;
 
     /**
      * 新增销售出库主单
@@ -165,8 +170,23 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
         if(cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())||cbsb1.getCbsb11().equals(TaskStatus.fsh.getCode())){}
         else{
-            throw new SwException(" 审核状态才能审核完成");
+            throw new SwException(" 审核状态才能标记完成");
         }
+        //回写生产总总订单
+        CbscCriteria example = new CbscCriteria();
+            example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                    .andCbsc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsc> cbscs = cbscMapper.selectByExample(example);
+        if(cbscs.size()>0){
+            for(int i=0;i<cbscs.size();i++){
+                SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
+                saleOrderExitDo.setOrderNo(cbsb1.getCbsb07());
+                saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
+                saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
+                orderDistributionService.saleOrderExit(saleOrderExitDo);
+             }
+        }
+
         Long userid = SecurityUtils.getUserId();
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
         Date date = new Date();
@@ -297,7 +317,10 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
-
+            //状态设为标记完成，回写总订单
+            CbsbDo cbsbDo = new CbsbDo();
+            cbsbDo.setCbsb01(itemList.get(i).getCbsb01());
+            insertSwJsSkuBarcodeshwc(cbsbDo);
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
