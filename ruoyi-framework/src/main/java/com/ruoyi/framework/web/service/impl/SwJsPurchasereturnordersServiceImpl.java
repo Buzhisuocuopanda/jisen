@@ -322,7 +322,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(!cbpg1.getCbpg11().equals(TaskStatus.mr.getCode())){
-            throw new SwException("不是审核状态");
+            throw new SwException("不是未审核状态不能审核");
         }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
@@ -348,6 +348,20 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
+
+
+        CbpiCriteria example1 = new CbpiCriteria();
+        example1.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        List<Cbpi> cbpes = cbpiMapper.selectByExample(example1);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbpi11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
+        }
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
             throw new SwException("不是审核状态");
@@ -357,7 +371,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(TaskStatus.fsh.getCode());
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -374,6 +388,21 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      */
     @Override
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
+
+
+        CbpiCriteria example1 = new CbpiCriteria();
+        example1.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        List<Cbpi> cbpes = cbpiMapper.selectByExample(example1);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbpi11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能取消完成");
+                }
+            }
+        }
+
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(!cbpg1.getCbpg11().equals(TaskStatus.bjwc.getCode())){
             throw new SwException("不是标记完成状态");
@@ -383,7 +412,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Date date = new Date();
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg11(TaskStatus.qxwc.getCode());
+        cbpg.setCbpg11(TaskStatus.sh.getCode());
 
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
@@ -402,7 +431,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
 
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
-        if(cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())||cbpg1.getCbpg11().equals(TaskStatus.fsh.getCode())){}
+        if(cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){}
         else{
             throw new SwException("不是审核状态或反审状态");
         }
