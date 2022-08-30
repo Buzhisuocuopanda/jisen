@@ -53,6 +53,9 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
     @Resource
     private NumberGenerate numberGenerate;
+
+    @Resource
+    private GsPurchaseOrderDetailMapper gsPurchaseOrderDetailMapper;
     @Override
     public IdVo insertSwJsSkuBarcodes(GsPurchaseOrderDo gsPurchaseOrderDo) {
         NumberDo numberDo=new NumberDo();
@@ -197,6 +200,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
         for(int i=0;i<gsPurchaseOrderDetails.size();i++) {
             int goodsid = gsPurchaseOrderDetails.get(i).getGoodsId();
+
             Double num = gsPurchaseOrderDetails.get(i).getQty();
             GsGoodsSkuCriteria example2 = new GsGoodsSkuCriteria();
             example2.createCriteria()
@@ -228,7 +232,19 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
             gsGoodsSku.setUpdateTime(date);
             gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
         }
+        //回写更新采购订单明细
+            GsPurchaseOrderDetail gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
+        //更新入库数量
+            gsPurchaseOrderDetail.setInQty(num);
+            gsPurchaseOrderDetail.setChangeQty(num);
+            GsPurchaseOrderDetailCriteria example3 = new GsPurchaseOrderDetailCriteria();
+            example3.createCriteria()
+                    .andGoodsIdEqualTo(goodsid)
+                    .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+
+            gsPurchaseOrderDetailMapper.updateByExampleSelective(gsPurchaseOrderDetails.get(i), example3);
     }
+
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
 
