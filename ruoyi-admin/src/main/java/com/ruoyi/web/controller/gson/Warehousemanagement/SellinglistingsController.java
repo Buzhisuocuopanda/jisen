@@ -10,8 +10,10 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.dto.CbpdDto;
+import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpkVo;
+import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.service.ISellinglistingsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,16 +75,16 @@ public class SellinglistingsController extends BaseController {
             notes = "销售上架单查询"
     )
     @GetMapping("/SwJsSkuBarcodelist")
-    public AjaxResult<TableDataInfo> swJsGoodslist(CbpkVo cbpcVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslist(TakeGoodsOrderListDto takeGoodsOrderListDto) {
         try {
             startPage();
-            List<CbpkVo> list = iSellinglistingsService.selectSwJsTaskGoodsRelLists(cbpcVo);
+            List<TakeGoodsOrderListVo> list = iSellinglistingsService.selectSwJsTaskGoodsRelLists(takeGoodsOrderListDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpcVo),ExceptionUtils.getStackTrace(e));
+            log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(takeGoodsOrderListDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
