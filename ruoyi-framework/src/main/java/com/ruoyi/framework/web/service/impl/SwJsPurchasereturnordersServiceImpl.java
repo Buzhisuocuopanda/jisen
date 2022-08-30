@@ -227,13 +227,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         example1.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbph> cbphs = cbphMapper.selectByExample(example1);
-        Integer cbph08 = cbphs.get(0).getCbph08();
+        if(cbphs.size()>0) {
 
-        Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph08);
-        Integer goodsid = cbba.getCbba08();
-        //检查是否有库存
-        baseCheckService.checkGoodsSku(goodsid,storeid);
+            Integer cbph08 = cbphs.get(0).getCbph08();
 
+            Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph08);
+            Integer goodsid = cbba.getCbba08();
+            //检查是否有库存
+            baseCheckService.checkGoodsSku(goodsid, storeid);
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();

@@ -9,11 +9,14 @@ import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.SaleOrderExitDo;
+import com.ruoyi.system.domain.dto.SaleOrderAddDto;
+import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
+import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +68,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private   CbbaMapper  cbbaMapper;
+
+    @Resource
+    private SaleOrderService saleOrderService;
 
     /**
      * 新增销售出库主单
@@ -142,6 +149,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(!cbsbs.get(0).getCbsb11().equals(TaskStatus.mr.getCode())){
             throw new SwException("未审核状态才能审核");
         }
+
         Long userid = SecurityUtils.getUserId();
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
         Date date = new Date();
@@ -156,6 +164,19 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Override
     public int insertSwJsSkuBarcodesf(CbsbDo cbsbDo) {
+
+        CbsdCriteria example2 = new CbsdCriteria();
+        example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbsd11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
+        }
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
         if(!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())){
             throw new SwException(" 审核状态才能反审");
@@ -165,7 +186,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         Date date = new Date();
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
-        cbsb.setCbsb11(TaskStatus.fsh.getCode());
+        cbsb.setCbsb11(TaskStatus.mr.getCode());
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -174,31 +195,31 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
-        if(cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())||cbsb1.getCbsb11().equals(TaskStatus.fsh.getCode())){}
-        else{
+        if (cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
+        } else {
             throw new SwException(" 审核状态才能标记完成");
         }
 
         //回写生产总总订单
         CbscCriteria example = new CbscCriteria();
-            example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
-                    .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsc> cbscs = cbscMapper.selectByExample(example);
-
 
 //        List<Cbob> cbobs = cbobMapper.selectByExample(example2);
 //        String cbob18 = cbobs.get(0).getCbob18();
-        if(cbscs.size()>0){
-            for(int i=0;i<cbscs.size();i++){
+        if (cbscs.size() > 0) {
+            for (int i = 0; i < cbscs.size(); i++) {
                 SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
                 saleOrderExitDo.setOrderNo(cbsb1.getCbsb07());
                 saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
                 saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
+                Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
 
 
-          //      saleOrderExitDo.setTotalOrderNo();
+                saleOrderExitDo.setTotalOrderNo(cbob.getCbob18());
                 orderDistributionService.saleOrderExit(saleOrderExitDo);
-             }
+            }
         }
 
         Long userid = SecurityUtils.getUserId();
@@ -210,10 +231,60 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbsbMapper.updateByExampleSelective(cbsb,example1);    }
+
+        CbscCriteria example2 = new CbscCriteria();
+        example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsc> cbscs1 = cbscMapper.selectByExample(example2);
+        int size = cbscs1.size();
+
+        List<SaleOrderGoodsDto> goods =   new ArrayList<>(size);
+        ;
+        for (int i = 0; i < cbscs1.size(); i++) {
+
+            goods.add(new SaleOrderGoodsDto());
+            goods.get(i).setNumber(cbscs1.get(i).getCbsc02());
+            goods.get(i).setGoodsId(cbscs1.get(i).getCbsc08());
+            goods.get(i).setQty(cbscs1.get(i).getCbsc09());
+            goods.get(i).setNormalPrice(cbscs1.get(i).getCbsc11());
+            goods.get(i).setCurrentPrice(cbscs1.get(i).getCbsc11());
+            goods.get(i).setTotalPrice(cbscs1.get(i).getCbsc12());
+            goods.get(i).setRemark(cbscs1.get(i).getCbsc13());
+            goods.get(i).setTotalOrderNo(cbsb1.getCbsb07());
+        }
+        int size1 = goods.size();
+        SaleOrderAddDto saleOrderAddDto = new SaleOrderAddDto();
+        saleOrderAddDto.setCustomerNo(cbsb1.getCbsb30());
+        saleOrderAddDto.setOrderDate(date);
+        saleOrderAddDto.setCustomerId(cbsb1.getCbsb09());
+        int i = cbsb1.getCbsb17() == null ? 0 : Integer.parseInt(cbsb1.getCbsb17());
+        saleOrderAddDto.setSaleUserId(i);
+        saleOrderAddDto.setCurrency(cbsb1.getCbsb16());
+        saleOrderAddDto.setInvoiceType(cbsb1.getCbsb24());
+        saleOrderAddDto.setOrderType(cbsb1.getCbsb32());
+        saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
+        saleOrderAddDto.setGoods(goods);
+    //    saleOrderService.addSaleOrder(saleOrderAddDto);
+        return         cbsbMapper.updateByExampleSelective(cbsb, example1);
+
+    }
 
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbsbDo cbsbDo) {
+
+        CbsdCriteria example2 = new CbsdCriteria();
+        example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbsd11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
+        }
+
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
         if(!cbsb1.getCbsb11().equals(TaskStatus.bjwc.getCode())){
             throw new SwException(" 标记完成才能取消完成");
@@ -256,10 +327,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return cbsbMapper.updateByExampleSelective(cbsb,example1);    }
 
-    @Override
-    public List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo) {
-        return cbpkMapper.selectswJsSkuBaxsthelist(cbpkVo);
-    }
+
     /**
      * 销售出库单详情
      */
@@ -341,6 +409,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 session.clearCache();
             }
         }
+        CbsbDo cbsbDo = new CbsbDo();
+        cbsbDo.setCbsb01(itemList.get(0).getCbsb01());
+       this.insertSwJsSkuBarcodeshwc(cbsbDo);
         session.commit();
         session.clearCache();
         return 1;

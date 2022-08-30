@@ -39,7 +39,6 @@ public interface CbpkMapper {
 
     Cbpk selectLastBySaleOrderNo(@Param("saleOrderNo") String saleOrderNo);
 
-    List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 
     List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
 }

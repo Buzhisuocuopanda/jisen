@@ -26,7 +26,6 @@ public interface ISelloutofwarehouseService {
 
     int insertSwJsSkuBarcodel(CbsbDo cbsbDo);
 
-    List<CbpkVo> selectswJsSkuBaxsthelist(CbpkVo cbpkVo);
 
     List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
 

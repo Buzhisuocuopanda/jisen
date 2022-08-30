@@ -710,7 +710,7 @@ ORDER BY
    pk.CBPK02 DESC
    LIMIT 1
   </select>
-    <select id="selectswJsSkuBaxsthelist" resultType="com.ruoyi.system.domain.vo.CbpkVo"></select>
+
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbsVo">
       SELECT
         a.CBSB07,c.CBCA09,a.CBSB08,c.CBCA08,d.CBWA09,i.CAUA15,

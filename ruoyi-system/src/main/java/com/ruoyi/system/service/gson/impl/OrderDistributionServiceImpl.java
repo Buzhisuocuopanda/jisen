@@ -98,9 +98,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             if (aLong != null) {
                 //说明没占到锁
                 //判断时间是否过期
-                if (aLong - now > overTime) {
+                if ( now - aLong > overTime) {
                     Long put = lockMap.put(totalOrderkey, now);
-                    if (put.equals(now)) {
+                    if (put.equals(aLong)) {
                         return true;
                     }
 
@@ -615,7 +615,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     public SaleOrderExitVo saleOrderExit(SaleOrderExitDo saleOrderExitDo) {
         SaleOrderExitVo saleOrderExitVo=new SaleOrderExitVo();
         try {
-            lockTotalOrder();
+         //   lockTotalOrder();
             List<Cbba> cbbas = null;
             if (saleOrderExitDo.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
                 //国内订单根据优先级来
@@ -668,7 +668,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
 
         } finally {
-            unLockOtherOrder();
+           // unLockOtherOrder();
         }
         return saleOrderExitVo;
     }
@@ -935,7 +935,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             goodsUse.setLockQty(goodsOperationDo.getNum());
             goodsUse.setOrderNo(goodsOperationDo.getOrderNo());
             goodsUse.setOrderQty(goodsOperationDo.getNum());
-            goodsUse.setOrderType(goodsOperationDo.getOrderType().byteValue());
+            byte b = goodsOperationDo.getOrderType().byteValue();
+            goodsUse.setOrderType(b);
             goodsUse.setUpdateBy(goodsOperationDo.getUserId());
             goodsUse.setUpdateTime(new Date());
             goodsUse.setWhId(cbwas.get(0).getCbwa01());
