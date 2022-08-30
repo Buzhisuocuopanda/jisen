@@ -417,5 +417,34 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         return 1;
     }
 
+    @Override
+    public int insertSwJsSkuBarcodedit(CbsbDo cbsbDo) {
+        CbsdCriteria example2 = new CbsdCriteria();
+        example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbsd11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能编辑");
+                }
+            }
+        }
+
+        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
+        if(!cbsb1.getCbsb11().equals(TaskStatus.mr.getCode())){
+            throw new SwException(" 未审核才能编辑");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
+        Date date = new Date();
+        cbsb.setCbsb04(date);
+        cbsb.setCbsb05(Math.toIntExact(userid));
+        CbsbCriteria example1 = new CbsbCriteria();
+        example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+         cbsbMapper.updateByExampleSelective(cbsb,example1);
+               return 1;}
 
 }

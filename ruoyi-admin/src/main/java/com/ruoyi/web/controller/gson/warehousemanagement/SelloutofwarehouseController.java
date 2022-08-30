@@ -291,6 +291,24 @@ public class SelloutofwarehouseController extends BaseController {
     }
 
 
+    @ApiOperation(
+            value ="新增销售出库单修改",
+            notes = "新增销售出库单修改"
+    )
+    @PostMapping("/Selloutofwarehousedeit")
+    public AjaxResult Selloutofwarehousedeit( @RequestBody CbsbDo cbsbDo) {
+        try {
+            return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodedit(cbsbDo));
 
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增销售出库单修改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 }
