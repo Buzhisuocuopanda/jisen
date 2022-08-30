@@ -456,7 +456,7 @@ a.CBSH06=0
       on
         f.CBLA01=b.CBSJ10
         where
-    <if test="cbsh01 != null ">  a.CBSH01 = #{cbsh01}</if>
+     a.CBSH01 = #{cbsh01}
     <if test="cbwa09 != null "> and c.cbwa09 = #{cbwa09}</if>
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(b.CBSJ03,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

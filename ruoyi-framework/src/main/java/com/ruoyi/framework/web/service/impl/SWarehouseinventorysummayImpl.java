@@ -16,10 +16,15 @@ import com.ruoyi.system.domain.vo.CbshVo;
 import com.ruoyi.system.domain.vo.CbsiVo;
 import com.ruoyi.system.domain.vo.CbsisVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.mapper.CbphMapper;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsiMapper;
 import com.ruoyi.system.service.ISWarehouseinventorysummaryService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +40,10 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
 
     @Resource
     private CbshMapper cbshMapper;
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+    @Resource
+    private NumberGenerate numberGenerate;
     /**
      * 仓库盘点明细新建列表查询
      */
@@ -64,7 +73,6 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
             throw new SwException("请选择数量仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbshDo.getCbsh10());
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
         Date date = new Date();
@@ -78,7 +86,7 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);
         CbshCriteria example = new CbshCriteria();
-        example.createCriteria().andCbsh07EqualTo(cbshDo.getCbsh07())
+        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo)
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
         IdVo idVo = new IdVo();
@@ -88,25 +96,33 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
     }
 
     @Override
-    public int insertSwJsStores(CbsiDo cbsiDo) {
-        Long userId = SecurityUtils.getUserId();
-
-        Cbsi cbsi = BeanCopyUtils.coypToClass(cbsiDo, Cbsi.class, null);
+    public int insertSwJsStores(List<Cbsi> itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbsiMapper mapper = session.getMapper(CbsiMapper.class);
         Date date = new Date();
-        cbsi.setCbsi03(date);
-        cbsi.setCbsi04(date);
-        cbsi.setCbsi05(Math.toIntExact(userId));
-        cbsi.setCbsi06(Math.toIntExact(userId));
-        cbsi.setCbsi07(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbsi.setCbsi09(cbsiDo.getCbsi09());
-        cbsi.setCbsi12(cbsiDo.getCbsi12());
-        BigDecimal num = BigDecimal.valueOf(cbsiDo.getCbsi09());
-        BigDecimal price = BigDecimal.valueOf(cbsiDo.getCbsi12());
-        BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-        double v = b.doubleValue();
-        cbsi.setCbsi13(cbsiDo.getCbsi13());
-        cbsi.setUserId(Math.toIntExact(userId));
-    return     cbsiMapper.insertSelective(cbsi);
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbsi03(date);
+            itemList.get(i).setCbsi04(date);
+            itemList.get(i).setCbsi05(Math.toIntExact(userid));
+            itemList.get(i).setCbsi06(Math.toIntExact(userid));
+            itemList.get(i).setCbsi07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            BigDecimal num = BigDecimal.valueOf( itemList.get(i).getCbsi09());
+            BigDecimal price = BigDecimal.valueOf(itemList.get(i).getCbsi12());
+            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+            double v = b.doubleValue();
+            itemList.get(i).setCbsi13(v);
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+
     }
 
     @Override

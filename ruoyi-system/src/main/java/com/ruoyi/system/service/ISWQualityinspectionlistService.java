@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Cbqb;
+import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
@@ -16,7 +18,7 @@ public interface ISWQualityinspectionlistService {
     /**
      * 新增质检单明细表
      */
-    int insertSwJsSkuBarcode(CbqbDo cbqbDo);
+    int insertSwJsSkuBarcode(List<Cbqb> itemList);
 
     /**
      * 删除质检单
@@ -38,4 +40,8 @@ public interface ISWQualityinspectionlistService {
     List<CbqaVo> SwJsSkuBarcodeselect(CbqaVo cbqaVo);
 
     List<CbqaVo> SwJsSkuBarcodeselects(CbqaVo cbqaVo);
+
+    int insertSwJsSkuBarcodebjwc(CbqaDo cbqaDo);
+
+    int insertSwJsSkuBarcodeqxwc(CbqaDo cbqaDo);
 }

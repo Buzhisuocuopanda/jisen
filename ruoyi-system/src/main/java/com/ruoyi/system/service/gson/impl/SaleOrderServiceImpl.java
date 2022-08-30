@@ -481,7 +481,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             SaleOrderMakeDo saleOrderMakeDo = orderDistributionService.saleOrderMake(goodsOperationDo);
             //插入缺货建议
-            if (saleOrderMakeDo.getPrompt() == 1) {
+            if (saleOrderMakeDo.getPrompt() == 1&&saleOrderMakeDo.getPrompt()!=null) {
                 GsOutStockAdivce advice = null;
                 for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
                     advice=new GsOutStockAdivce();

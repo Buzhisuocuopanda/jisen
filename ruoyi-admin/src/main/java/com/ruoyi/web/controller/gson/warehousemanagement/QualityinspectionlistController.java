@@ -7,6 +7,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Cbqb;
+import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
@@ -73,17 +75,17 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "新增质检单明细表"
     )
     @PostMapping("/SwJsPurchaseinboundadds")
-    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody CbqbDo cbqbDo, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody List<Cbqb> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcode(cbqbDo));
+            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcode(itemList));
 
 
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增质检单明细表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbqbDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增质检单明细表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -161,6 +163,52 @@ public class QualityinspectionlistController  extends BaseController {
     }
 
     /**
+     * 质检单标记完成
+     */
+    @ApiOperation(
+            value ="质检单标记完成",
+            notes = "质检单标记完成"
+    )
+    @PostMapping("/SwJsPurchaseinboundbjwc")
+    public AjaxResult SwJsPurchaseinboundbjwc( @RequestBody CbqaDo cbqaDo) {
+        try {
+            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodebjwc(cbqaDo));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【质检单标记完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 质检单标记取消完成
+     */
+    @ApiOperation(
+            value ="质检单标记取消完成",
+            notes = "质检单标记取消完成"
+    )
+    @PostMapping("/SwJsPurchaseinboundbqxwc")
+    public AjaxResult SwJsPurchaseinboundbqxwc( @RequestBody CbqaDo cbqaDo) {
+        try {
+            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeqxwc(cbqaDo));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【质检单标记完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 质检单详情
      */
     @ApiOperation(
@@ -168,7 +216,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单详情"
     )
     @GetMapping("/SwJsSkuBarcodelists")
-    public AjaxResult<TableDataInfo> swJsGoodslists(@RequestBody CbqaVo cbqaVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists( CbqaVo cbqaVo) {
         try {
             startPage();
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelListss(cbqaVo);
@@ -253,4 +301,6 @@ public class QualityinspectionlistController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
 }

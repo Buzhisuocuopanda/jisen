@@ -215,7 +215,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
                 saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
                 Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
-
+if(cbob==null){
+    throw new SwException("销售订单明细表未查到");
+}
 
                 saleOrderExitDo.setTotalOrderNo(cbob.getCbob18());
                 orderDistributionService.saleOrderExit(saleOrderExitDo);
@@ -264,7 +266,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         saleOrderAddDto.setOrderType(cbsb1.getCbsb32());
         saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
         saleOrderAddDto.setGoods(goods);
-    //    saleOrderService.addSaleOrder(saleOrderAddDto);
+      // saleOrderService.addSaleOrder(saleOrderAddDto);
         return         cbsbMapper.updateByExampleSelective(cbsb, example1);
 
     }

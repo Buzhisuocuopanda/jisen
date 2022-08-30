@@ -7,6 +7,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Cbph;
+import com.ruoyi.system.domain.Cbsi;
 import com.ruoyi.system.domain.Do.CbshDo;
 import com.ruoyi.system.domain.Do.CbsiDo;
 import com.ruoyi.system.domain.Do.CbsjDo;
@@ -71,15 +73,15 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘点汇总表新增明细表"
     )
     @PostMapping("/SwJsStoreadds")
-    public AjaxResult swJsStoreadd(@Valid @RequestBody CbsiDo cbsiDo, BindingResult bindingResult) {
+    public AjaxResult swJsStoreadd(@Valid @RequestBody List<Cbsi> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swarehouseinventorysummaryService.insertSwJsStores(cbsiDo));
+            return toAjax(swarehouseinventorysummaryService.insertSwJsStores(itemList));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点汇总表新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbsiDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点汇总表新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

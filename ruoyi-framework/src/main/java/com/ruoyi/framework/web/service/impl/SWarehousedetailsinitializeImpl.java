@@ -46,6 +46,9 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
     private TaskService taskService;
     @Resource
     private CbsaMapper cbsaMapper;
+
+    @Resource
+    private  NumberGenerate numberGenerate;
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
         if(cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
@@ -53,8 +56,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             throw new SwException("请选择扫码仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        NumberGenerate number = new NumberGenerate();
-        String warehouseinitializationNo = number.getWarehouseinitializationNo(cbieDo.getCbie09());
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbieDo.getCbie09());
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
         Date date = new Date();
         cbie.setCbie02(date);
@@ -66,7 +68,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         cbie.setUserId(Math.toIntExact(userId));
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();
-        example.createCriteria().andCbie07EqualTo(cbieDo.getCbie07())
+        example.createCriteria().andCbie07EqualTo(warehouseinitializationNo)
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example);
         IdVo idVo = new IdVo();
@@ -88,16 +90,16 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             itemList.get(i).setCbig05(date);
             itemList.get(i).setCbig06(Math.toIntExact(userid));
             itemList.get(i).setCbig07(DeleteFlagEnum.NOT_DELETE.getCode());
+            mapper.insertSelective(itemList.get(i));
 
             if(i%10==9){//每10条提交一次
                 session.commit();
                 session.clearCache();
             }
         }
-        mapper.insertByBatch(itemList);
         session.commit();
         session.clearCache();
-        return 0;
+        return 1;
     }
 
     @Override

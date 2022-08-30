@@ -666,17 +666,30 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbsbVo">
     SELECT
-      a.CBSB01,
-      a.CBSB07,a.CBSB30,a.CBSB08,b.CBCA08,b.CBCA28,a.CBSB18,a.CBSB19,a.CBSB17,
-      a.CBSB21,a.CBSB31,a.CBSB32,a.CBSB11
+    a.CBSB01,
+    a.CBSB07,a.CBSB30,a.CBSB08,b.CBCA08,b.CBCA28,a.CBSB18,a.CBSB19,c.CAUA15,d.CBWA09,e.CALA08,
+    a.CBSB21,a.CBSB31,a.CBSB32,a.CBSB11,a.CBSB22
     from
-      CBSB a
-        LEFT JOIN
-      CBCA b
-      on
-        a.CBSB09=b.CBCA01
+    CBSB a
+    LEFT JOIN
+    CBCA b
+    on
+    a.CBSB09=b.CBCA01
+    LEFT JOIN
+    CAUA c
+    on
+    c.CAUA01=a.CBSB17
+    LEFT JOIN
+    CBWA d
+    ON
+    d.CBWA01=a.CBSB10
+    LEFT JOIN
+    CALA e
+    ON
+    e.CALA01=a.CBSB16
+
     where
-      a.cbsb06=0
+    a.cbsb06=0
     <if test="cbca08 != null "> and b.CBCA08 like concat('%',  #{cbca08}, '%')</if>
     <if test="cbsb01 != null "> and a.CBSB01 like concat('%',  #{cbsb01}, '%')</if>
     <if test="cbsb02 != null "> and a.CBSB02 like concat('%',  #{cbsb02}, '%')</if>
