@@ -594,4 +594,25 @@
     order by oa.CBOA02
 
   </select>
+
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cboc" useGeneratedKeys="true" keyProperty="cboc01">
+    insert into `CBOC` (CBOC01, CBOC02, CBOC03,
+      CBOC04, CBOC05, CBOC06,
+      CBOC07, CBOC08, CBOC09,
+      CBOC10, CBOC11, CBOC12,
+      CBOC13, CBOC14, CBOC15,
+      CBOC16, CBOC17, CBOC18,
+      CBOC19, CBOC20, CBOC21,
+      CBOC22, CBOC23, CBOC24,
+      CBOC25, CBOC26)
+    values (#{cboc01,jdbcType=INTEGER}, #{cboc02,jdbcType=TIMESTAMP}, #{cboc03,jdbcType=INTEGER},
+      #{cboc04,jdbcType=TIMESTAMP}, #{cboc05,jdbcType=INTEGER}, #{cboc06,jdbcType=INTEGER},
+      #{cboc07,jdbcType=VARCHAR}, #{cboc08,jdbcType=TIMESTAMP}, #{cboc09,jdbcType=INTEGER},
+      #{cboc10,jdbcType=INTEGER}, #{cboc11,jdbcType=INTEGER}, #{cboc12,jdbcType=INTEGER},
+      #{cboc13,jdbcType=TIMESTAMP}, #{cboc14,jdbcType=INTEGER}, #{cboc15,jdbcType=TIMESTAMP},
+      #{cboc16,jdbcType=INTEGER}, #{cboc17,jdbcType=VARCHAR}, #{cboc18,jdbcType=VARCHAR},
+      #{cboc19,jdbcType=VARCHAR}, #{cboc20,jdbcType=VARCHAR}, #{cboc21,jdbcType=VARCHAR},
+      #{cboc22,jdbcType=VARCHAR}, #{cboc23,jdbcType=INTEGER}, #{cboc24,jdbcType=INTEGER},
+      #{cboc25,jdbcType=VARCHAR}, #{cboc26,jdbcType=INTEGER})
+  </insert>
 </mapper>

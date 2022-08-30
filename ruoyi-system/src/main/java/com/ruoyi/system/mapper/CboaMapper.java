@@ -39,4 +39,6 @@ public interface CboaMapper {
     List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto);
 
     List<SaleOrderListVo> finsaleOrderList(SaleOrderListDto saleOrderListDto);
+
+    void insertWithId(Cboa cboa);
 }

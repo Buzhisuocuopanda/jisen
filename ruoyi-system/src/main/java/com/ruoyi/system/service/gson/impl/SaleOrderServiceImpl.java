@@ -448,7 +448,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa24(saleOrderAddDto.getOrderType());
         cboa.setCboa25(saleOrderAddDto.getCustomerNo());
         cboa.setCboa27(saleOrderAddDto.getOrderClass());
-        int insert = cboaMapper.insert(cboa);
+        cboaMapper.insertWithId(cboa);
         Cbob cbob = null;
         //创建销售订单明细表
         for (SaleOrderGoodsDto good : goods) {
@@ -467,7 +467,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbob.setCbob11(good.getCurrentPrice());
             cbob.setCbob12(good.getTotalPrice());
             cbob.setCbob13(good.getRemark());
-            cbob.setCboa01(insert);
+            cbob.setCboa01(cboa.getCboa01());
             cbob.setCbob14(good.getNormalPrice());
             cbobMapper.insert(cbob);
             //创建销售订单要锁住库存
@@ -1299,7 +1299,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboc.setCboc22(cboa.getCboa22());
          cboc.setCboc24(cboa.getCboa24());
         cboc.setCboc26(cboa.getCboa01());
-        int insert = cbocMapper.insert(cboc);
+         cbocMapper.insertWithId(cboc);
         Cbod cbod=null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
 
@@ -1336,7 +1336,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod11(good.getCurrentPrice());
             cbod.setCbod12(good.getCurrentPrice()*good.getQty());
             cbod.setCbod13(good.getRemark());
-            cbod.setCbod01(insert);
+            cbod.setCbod01(cboc.getCboc01());
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
             cbod.setBefQty(cbob.getCbob09());

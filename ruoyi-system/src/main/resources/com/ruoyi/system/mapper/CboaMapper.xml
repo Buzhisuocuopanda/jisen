@@ -685,4 +685,27 @@ and gs.order_no=#{orderNo}
     order by oa.CBOA02
 
   </select>
+
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cboa" useGeneratedKeys="true" keyProperty="cboa01">
+    insert into `CBOA` (CBOA01, CBOA02, CBOA03,
+      CBOA04, CBOA05, CBOA06,
+      CBOA07, CBOA08, CBOA09,
+      CBOA10, CBOA11, CBOA12,
+      CBOA13, CBOA14, CBOA15,
+      CBOA16, CBOA17, CBOA18,
+      CBOA19, CBOA20, CBOA21,
+      CBOA22, CBOA23, CBOA24,
+      CBOA25, CBOA26, CBOA27,
+      CBOA28)
+    values (#{cboa01,jdbcType=INTEGER}, #{cboa02,jdbcType=TIMESTAMP}, #{cboa03,jdbcType=INTEGER},
+      #{cboa04,jdbcType=TIMESTAMP}, #{cboa05,jdbcType=INTEGER}, #{cboa06,jdbcType=INTEGER},
+      #{cboa07,jdbcType=VARCHAR}, #{cboa08,jdbcType=TIMESTAMP}, #{cboa09,jdbcType=INTEGER},
+      #{cboa10,jdbcType=INTEGER}, #{cboa11,jdbcType=INTEGER}, #{cboa12,jdbcType=INTEGER},
+      #{cboa13,jdbcType=TIMESTAMP}, #{cboa14,jdbcType=INTEGER}, #{cboa15,jdbcType=TIMESTAMP},
+      #{cboa16,jdbcType=INTEGER}, #{cboa17,jdbcType=VARCHAR}, #{cboa18,jdbcType=VARCHAR},
+      #{cboa19,jdbcType=VARCHAR}, #{cboa20,jdbcType=VARCHAR}, #{cboa21,jdbcType=VARCHAR},
+      #{cboa22,jdbcType=VARCHAR}, #{cboa23,jdbcType=INTEGER}, #{cboa24,jdbcType=INTEGER},
+      #{cboa25,jdbcType=VARCHAR}, #{cboa26,jdbcType=VARCHAR}, #{cboa27,jdbcType=INTEGER},
+      #{cboa28,jdbcType=INTEGER})
+  </insert>
 </mapper>

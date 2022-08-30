@@ -33,4 +33,6 @@ public interface CbocMapper {
     int updateByPrimaryKey(Cboc record);
 
     List<SaleOrderListVo> saleChangeList(SaleOrderListDto saleOrderListDto);
+
+    void insertWithId(Cboc cboc);
 }
