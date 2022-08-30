@@ -281,7 +281,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         CbpgCriteria example2 = new CbpgCriteria();
         example2.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                 .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return    cbpgMapper.updateByExampleSelective(cbpg, example2);
+            cbpgMapper.updateByExampleSelective(cbpg, example2);
+        return 1;
     }
     /**
      * 采购退货单详情
