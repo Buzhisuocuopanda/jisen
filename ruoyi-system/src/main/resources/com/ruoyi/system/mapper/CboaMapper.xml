@@ -686,7 +686,7 @@ and gs.order_no=#{orderNo}
 
   </select>
 
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cboa" useGeneratedKeys="true" keyProperty="cboa01">
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cboa" useGeneratedKeys="true" keyProperty="cboa01">
     insert into `CBOA` (CBOA01, CBOA02, CBOA03,
       CBOA04, CBOA05, CBOA06,
       CBOA07, CBOA08, CBOA09,
