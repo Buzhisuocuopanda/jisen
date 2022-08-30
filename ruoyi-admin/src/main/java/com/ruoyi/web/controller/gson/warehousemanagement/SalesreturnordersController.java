@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -64,7 +65,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增销售退库单主表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增销售退库单主表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -83,7 +84,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增销售退库单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【新增销售退库单明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -101,7 +102,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增销售退库单扫码】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【新增销售退库单扫码】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -125,7 +126,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单审核】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单审核】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -148,7 +149,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单反审】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单反审】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -171,7 +172,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单取消完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单取消完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -194,7 +195,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单标记完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -217,7 +218,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单删除】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbseDo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单删除】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -241,7 +242,7 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsbVo),ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -264,10 +265,34 @@ public class SalesreturnordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售退库单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsesVo),ExceptionUtils.getStackTrace(e));
+            log.error("【销售退库单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsesVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+
+
+    /**
+     * 人工确认完成更新库存
+     */
+    @ApiOperation(
+            value ="人工确认完成更新库存",
+            notes = "人工确认完成更新库存"
+    )
+    @PostMapping("/Selloutofwarehouseaddrgqr")
+    public AjaxResult Selloutofwarehouseaddrgqr( @RequestBody CbseDo cbseDo) {
+        try {
+            return toAjax(salesreturnordersService.insertSwJsSkuBarcodergqr(cbseDo));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【人工确认完成更新库存】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

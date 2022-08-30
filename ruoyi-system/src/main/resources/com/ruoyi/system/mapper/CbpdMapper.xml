@@ -386,12 +386,12 @@
     on a.CBPC16=d.CALA01
     WHERE
     a.CBPC06=0
-    <if test="cbpc01 != null "> and a.CBPC01 = #{cbpc01}</if>
-    <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 = #{cbpc07}</if>
-    <if test="cbpc09 != null "> and a.CBPC09 = #{cbpc09}</if>
-    <if test="cbpc10 != null "> and a.CBPC10 = #{cbpc10}</if>
-    <if test="cbwa09 != null "> and c.CBWA09 = #{cbwa09}</if>
-    <if test="cbsa08 != null "> and b.CBSA08 = #{cbsa08}</if>
+    <if test="cbpc01 != null "> and a.CBPC01 like concat('%',  #{cbpc01}, '%')</if>
+    <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 like concat('%',  #{cbpc07}, '%')</if>
+    <if test="cbpc09 != null "> and a.CBPC09 like concat('%',  #{cbpc09}, '%')</if>
+    <if test="cbpc10 != null "> and a.CBPC10 like concat('%',  #{cbpc10}, '%')</if>
+    <if test="cbwa09 != null "> and c.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
+    <if test="cbsa08 != null "> and b.CBSA08 like concat('%',  #{cbsa08}, '%')</if>
 
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->

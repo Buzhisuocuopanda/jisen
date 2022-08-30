@@ -410,7 +410,7 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbicVo">
     SELECT
-        a.CBIC01,
+        a.CBIC01,a.CBIC03,
       d.CBPA07,
       c.CALA08,
       b.CBPB12,b.CBPB08,
@@ -432,6 +432,8 @@ where
         d.CBPA01=b.CBPB14
     where
       a.CBIC06=0
+    <if test="cbic02 != null  and cbic02 != ''"> and a.CBIC02 like concat('%', #{cbic02}, '%')</if>
+
     <if test="cbpb12 != null  and cbpb12 != ''"> and b.CBPB12 like concat('%', #{cbpb12}, '%')</if>
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
@@ -440,6 +442,7 @@ where
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBIC02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+    order by  a.CBIC03 desc
   </select>
 
 </mapper>
