@@ -248,6 +248,19 @@ public class TaskServiceImpl implements TaskService {
         return gsGoodsSkus;
     }
 
+    @Override
+    public GsGoodsSn addGsGoodsSns(GsGoodsSnDo goodsSnDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsGoodsSn gsGoodsSn = BeanCopyUtils.coypToClass(goodsSnDo, GsGoodsSn.class, null);
+        gsGoodsSn.setCreateTime(date);
+        gsGoodsSn.setUpdateTime(date);
+        gsGoodsSn.setCreateBy(Math.toIntExact(userid));
+        gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+        gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSnMapper.insertSelective(gsGoodsSn);
+        return gsGoodsSn;    }
+
 
     public Cbib selectLastOne(List<Cbib> list) {
         Cbib card = new Cbib();

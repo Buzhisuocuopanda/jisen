@@ -47,6 +47,9 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Resource
     private TaskService taskService;
+
+    @Resource
+    private  NumberGenerate numberGenerate;
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
         if (!cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
@@ -54,7 +57,6 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
             throw new SwException("请选择数量仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        NumberGenerate numberGenerate = new NumberGenerate();
         String binitinitializationNo = numberGenerate.getBinitinitializationNo(cbieDo.getCbie09());
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
         Date date = new Date();
@@ -67,7 +69,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         cbie.setUserId(Math.toIntExact(userId));
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();
-        example.createCriteria().andCbie07EqualTo(cbieDo.getCbie07())
+        example.createCriteria().andCbie07EqualTo(binitinitializationNo)
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example);
         IdVo idVo = new IdVo();
@@ -102,10 +104,10 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Override
     public int deleteSwJsStoreById(CbieDo cbieDo) {
-        CbieCriteria example1 = new CbieCriteria();
-        example1.createCriteria().andCbie10EqualTo(TaskStatus.bjwc.getCode());
-        List<Cbie> cbies = cbieMapper.selectByExample(example1);
-        if (cbies.size() > 0) {
+
+
+        Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+        if (cbie1.getCbie10().equals(TaskStatus.bjwc.getCode()) && cbie1.getCbie06().equals(DeleteFlagEnum.NOT_DELETE.getCode())) {
             throw new SwException("审核完成不能删除");
         }
 
@@ -125,12 +127,11 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Override
     public int swJsStoreendd(CbieDo cbieDo) {
-        //        CbieCriteria example1 = new CbieCriteria();
-//        example1.createCriteria().andCbie10EqualTo(TaskStatus.mr.getCode());
-//        List<Cbie> cbies = cbieMapper.selectByExample(example1);
-//        if(cbies.size()>0) {
-//            throw new SwException("未审核状态才能审核");
-//        }
+
+        Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+        if (!cbie1.getCbie10().equals(TaskStatus.mr.getCode()) && cbie1.getCbie06().equals(DeleteFlagEnum.NOT_DELETE.getCode())) {
+            throw new SwException("未审核才能审核");
+        }
 
         Long userId = SecurityUtils.getUserId();
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
@@ -148,11 +149,8 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Override
     public int swJsStoreendds(CbieDo cbieDo) {
-        CbieCriteria example1 = new CbieCriteria();
-        example1.createCriteria().andCbie01EqualTo(cbieDo.getCbie01())
-                .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbie> cbies = cbieMapper.selectByExample(example1);
-        if (!cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())) {
+        Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+        if (!cbie1.getCbie10().equals(TaskStatus.sh.getCode()) && cbie1.getCbie06().equals(DeleteFlagEnum.NOT_DELETE.getCode())) {
             throw new SwException("审核状态才能反审");
         }
 
@@ -162,7 +160,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
-        cbie.setCbie10(TaskStatus.fsh.getCode());
+        cbie.setCbie10(TaskStatus.mr.getCode());
         CbieCriteria example = new CbieCriteria();
         example.createCriteria().andCbie01EqualTo(cbieDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -178,7 +176,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         List<Cbie> cbies = cbieMapper.selectByExample(example1);
         if (cbies.get(0).getCbie10().equals(TaskStatus.sh.getCode())||cbies.get(0).getCbie10().equals(TaskStatus.fsh.getCode())) {}
         else{
-            throw new SwException("审核状态才能反审");
+            throw new SwException("审核状态才能标价完成");
         }
         Cbie cbie = cbieMapper.selectByPrimaryKey(cbifDo.getCbie01());
         //仓库id

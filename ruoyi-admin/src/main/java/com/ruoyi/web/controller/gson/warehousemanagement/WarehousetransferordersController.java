@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -59,7 +60,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单新增主表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单新增主表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -80,7 +81,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单新增明细表】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -98,7 +99,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单新增扫码】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单新增扫码】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -121,7 +122,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【质检单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaVo),ExceptionUtils.getStackTrace(e));
+            log.error("【质检单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -145,7 +146,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增销售出库单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaVo),ExceptionUtils.getStackTrace(e));
+            log.error("【新增销售出库单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -158,7 +159,7 @@ public class WarehousetransferordersController extends BaseController {
             value ="仓库调拨单详情",
             notes = "仓库调拨单详情"
     )
-    @PostMapping("/SwJsSkuBarcodelistss")
+    @GetMapping("/SwJsSkuBarcodelistss")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbaasVo cbaasVo) {
         try {
             startPage();
@@ -168,7 +169,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaasVo),ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaasVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -191,7 +192,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单审核】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单审核】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -214,7 +215,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单反审】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单反审】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -237,7 +238,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单标记完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -261,7 +262,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单取消完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单取消完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -284,7 +285,7 @@ public class WarehousetransferordersController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库调拨单修改】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbaaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库调拨单修改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

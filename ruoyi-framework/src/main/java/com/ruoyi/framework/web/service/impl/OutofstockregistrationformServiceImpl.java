@@ -13,6 +13,7 @@ import com.ruoyi.system.mapper.CboeMapper;
 import com.ruoyi.system.mapper.CbofMapper;
 import com.ruoyi.system.mapper.CbsfMapper;
 import com.ruoyi.system.service.OutofstockregistrationformService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -27,17 +28,14 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
     @Resource
     private CboeMapper cboeMapper;
 
+    @Resource
+    private NumberGenerate numberGenerate;
+
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Override
     public IdVo insertOutofstockregistrationform(CboeDo cboeDo) {
-        CboeCriteria example = new CboeCriteria();
-        example.createCriteria().andCboe07EqualTo(cboeDo.getCboe07())
-                .andCboe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cboe> cboes = cboeMapper.selectByExample(example);
-        if (cboes.size() > 0) {
-            throw new SwException("编号已存在");
-        }
+
         Long userid = SecurityUtils.getUserId();
 
         Cboe cboe = BeanCopyUtils.coypToClass(cboeDo, Cboe.class, null);
@@ -47,10 +45,12 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         cboe.setCboe04(date);
         cboe.setCboe05(Math.toIntExact(userid));
         cboe.setCboe06(DeleteFlagEnum.NOT_DELETE.getCode());
+        String takeOrderNos = numberGenerate.getTakeOrderNos();
+        cboe.setCboe07(takeOrderNos);
         cboe.setUserId(Math.toIntExact(userid));
         cboeMapper.insertSelective(cboe);
         CboeCriteria example1 = new CboeCriteria();
-        example1.createCriteria().andCboe07EqualTo(cboeDo.getCboe07())
+        example1.createCriteria().andCboe07EqualTo(takeOrderNos)
                 .andCboe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cboe> cboess = cboeMapper.selectByExample(example1);
         IdVo idVo = new IdVo();

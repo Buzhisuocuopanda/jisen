@@ -1,10 +1,11 @@
 package com.ruoyi.system.domain.vo;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class CboeVo {
+public class CboeVo extends BaseEntity {
     private Integer cboe01;
 
     private Date cboe02;

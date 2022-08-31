@@ -385,7 +385,7 @@
   <select id="SwJsStoreslistss" resultType="com.ruoyi.system.domain.vo.CbifVo">
     SELECT
       a.CBIE07,a.CBIE02,b.CBWA09,c.CALA08,d.CBSA08,g.CBPA07,h.CALA08,f.CBPB12,
-      f.CBPB15,f.CBPB08,e.CBIF13
+      f.CBPB15,f.CBPB08,e.CBIF13,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN

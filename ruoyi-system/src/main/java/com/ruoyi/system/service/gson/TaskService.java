@@ -31,4 +31,7 @@ public interface TaskService {
     //查库存
     List<GsGoodsSku> checkGsGoodsSku(GsGoodsSkuDo goodsSkuDo);
 
+
+    GsGoodsSn addGsGoodsSns(GsGoodsSnDo goodsSnDo);
+
 }

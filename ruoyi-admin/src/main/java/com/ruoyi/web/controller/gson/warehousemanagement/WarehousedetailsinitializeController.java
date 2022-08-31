@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -62,7 +63,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化新增主表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbieDo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化新增主表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -82,7 +83,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点汇总表新增明细表】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点汇总表新增明细表】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -105,7 +106,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除仓库盘点明细】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbieDo), ExceptionUtils.getStackTrace(e));
+            log.error("【删除仓库盘点明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -126,7 +127,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化审核】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbieDo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化审核】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -147,7 +148,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化反审】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbieDo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化反审】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -169,7 +170,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化标记完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbigDo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化标记完成】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbigDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -192,7 +193,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【仓库盘点明细新列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbieVo), ExceptionUtils.getStackTrace(e));
+            log.error("【仓库盘点明细新列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -216,7 +217,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbieVo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -240,7 +241,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【库存明细初始化详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbigVo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细初始化详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbigVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -270,7 +271,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSONUtils.toJSONString(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

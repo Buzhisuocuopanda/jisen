@@ -154,6 +154,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             itemList.get(i).setCbpi06(Math.toIntExact(userid));
             itemList.get(i).setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setCbpi11(ScanStatusEnum.YISAOMA.getCode());
          //   mapper.insertSelective(itemList.get(i));
 
             //如果查不到添加信息到库存表

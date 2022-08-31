@@ -132,7 +132,7 @@ private NumberGenerate numberGenerate;
             itemList.get(i).setUserId(Math.toIntExact(userid));
             itemList.get(i).setCbpe11(ScanStatusEnum.YISAOMA.getCode());
             //如果查不到添加信息到库存表
-            Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpe01());
+            Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
@@ -171,7 +171,7 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-            taskService.addGsGoodsSn(gsGoodsSnDo);
+            taskService.addGsGoodsSns(gsGoodsSnDo);
 
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次

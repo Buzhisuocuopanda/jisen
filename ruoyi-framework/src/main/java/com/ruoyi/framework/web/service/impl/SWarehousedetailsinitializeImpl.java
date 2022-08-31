@@ -108,7 +108,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         example1.createCriteria().andCbie10EqualTo(TaskStatus.bjwc.getCode());
         List<Cbie> cbies = cbieMapper.selectByExample(example1);
         if(cbies.size()>0) {
-            throw new SwException("审核完成不能删除");
+            throw new SwException("标记完成不能删除");
         }
 
         Long userId = SecurityUtils.getUserId();
@@ -147,7 +147,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
         CbigCriteria example = new CbigCriteria();
         example.createCriteria().andCbie01EqualTo(cbigDo.getCbie01())
-                .andCbig07EqualTo(cbigDo.getCbig07());
+                .andCbig07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbig> cbigs = cbigMapper.selectByExample(example);
         for(int i=0;i<cbigs.size();i++){
             //单据行id
@@ -214,12 +214,13 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
      //审核
     @Override
     public int swJsStoreendd(CbieDo cbieDo) {
-//        CbieCriteria example1 = new CbieCriteria();
-//        example1.createCriteria().andCbie10EqualTo(TaskStatus.mr.getCode());
-//        List<Cbie> cbies = cbieMapper.selectByExample(example1);
-//        if(cbies.size()>0) {
-//            throw new SwException("未审核状态才能审核");
-//        }
+
+
+        Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+       if(!cbie1.getCbie10().equals(TaskStatus.mr.getCode())&& cbie1.getCbie06().equals(DeleteFlagEnum.DELETE.getCode())){
+           throw new SwException("审核状态才能反审");
+
+       }
 
         Long userId = SecurityUtils.getUserId();
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
@@ -232,7 +233,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         example.createCriteria().andCbie01EqualTo(cbieDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
-        return     cbieMapper.updateByExampleSelective(cbie, example);
+             cbieMapper.updateByExampleSelective(cbie, example);
+             return 1;
     }
 
     @Override
@@ -251,7 +253,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
-        cbie.setCbie10(TaskStatus.fsh.getCode());
+        cbie.setCbie10(TaskStatus.mr.getCode());
         CbieCriteria example = new CbieCriteria();
         example.createCriteria().andCbie01EqualTo(cbieDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

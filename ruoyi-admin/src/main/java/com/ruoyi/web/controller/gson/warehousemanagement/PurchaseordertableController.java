@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.ErrCode;
@@ -63,7 +64,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购订单表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -86,7 +87,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购订单表明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【新增采购订单表明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -108,7 +109,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除采购退货单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
+            log.error("【删除采购退货单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -129,7 +130,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【审核采购订单表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
+            log.error("【审核采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -151,7 +152,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【反审采购订单表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
+            log.error("【反审采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -172,7 +173,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【采购订单表标记完成】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
+            log.error("【采购订单表标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -196,7 +197,7 @@ public class PurchaseordertableController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【采购入库取消完成】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
+            log.error("【采购入库取消完成】接口出现异常,参数${}$,异常${}$",JSON.toJSON(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
