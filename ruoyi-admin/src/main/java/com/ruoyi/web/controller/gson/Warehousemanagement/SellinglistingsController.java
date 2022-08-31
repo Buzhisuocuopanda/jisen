@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -60,7 +61,7 @@ public class SellinglistingsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增销售上架单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(goodsSnDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增销售上架单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -84,7 +85,7 @@ public class SellinglistingsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(takeGoodsOrderListDto),ExceptionUtils.getStackTrace(e));
+            log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderListDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -107,7 +108,7 @@ public class SellinglistingsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除销售上架单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(goodsSnDo), ExceptionUtils.getStackTrace(e));
+            log.error("【删除销售上架单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

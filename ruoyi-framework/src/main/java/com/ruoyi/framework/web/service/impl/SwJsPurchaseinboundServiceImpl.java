@@ -77,7 +77,7 @@ private NumberGenerate numberGenerate;
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-        baseCheckService.checkGoods(cbpdDto.getCbpd08());
+    //    baseCheckService.checkGoods(cbpdDto.getCbpd08());
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
@@ -186,12 +186,22 @@ private NumberGenerate numberGenerate;
     //导入新增
     @Override
     public int insertSwJsStores(List<CbpcDto> itemList) {
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
         Date cbpc08 = itemList.get(0).getCbpc08();
         Integer cbpc09 = itemList.get(0).getCbpc09();
         Integer cbpc10 = itemList.get(0).getCbpc10();
         Integer cbpc16 = itemList.get(0).getCbpc16();
-        Cbpc cbpc = BeanCopyUtils.coypToClass(itemList, Cbpc.class, null);
-        cbpc.setCbpc08(cbpc08);
+        String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpc10);
+
+        Cbpc cbpc = new Cbpc();
+        cbpc.setCbpc02(date);
+        cbpc.setCbpc03(Math.toIntExact(userid));
+        cbpc.setCbpc04(date);
+        cbpc.setCbpc05(Math.toIntExact(userid));
+        cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpc.setCbpc07(purchaseinboundNo);
+        cbpc.setCbpc08(date);
         cbpc.setCbpc09(cbpc09);
         cbpc.setCbpc10(cbpc10);
         cbpc.setCbpc16(cbpc16);
@@ -200,8 +210,7 @@ private NumberGenerate numberGenerate;
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpdMapper mapper = session.getMapper(CbpdMapper.class);
-        Date date = new Date();
-        Long userid = SecurityUtils.getUserId();
+
         for (int i = 0; i < itemList.size(); i++) {
             itemList.get(i).setCbpd03(date);
             itemList.get(i).setCbpd04(Math.toIntExact(userid));
@@ -701,7 +710,9 @@ private NumberGenerate numberGenerate;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (CbpcDto swJsGoods : swJsGoodsList)
+        this.insertSwJsStores(swJsGoodsList);
+
+     /*   for (CbpcDto swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -713,12 +724,12 @@ private NumberGenerate numberGenerate;
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 导入成功");
                 }
-               /* else if (updateSupport) {
+               *//* else if (updateSupport) {
                     //  swJsGoods.setUpdateBy(Long.valueOf(operName));
                     this.updateCBPC(swJsGoods);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("采购入库单 ").append(swJsGoods.getCbpc12()).append(" 更新成功");
-                } */
+                } *//*
                 else {
                     failureNum++;
                     failureMsg.append("<br/>").append(failureNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 已存在");
@@ -731,7 +742,7 @@ private NumberGenerate numberGenerate;
                 failureMsg.append(msg).append(e.getMessage());
                 log.error(msg, e);
             }
-        }
+        }*/
         if (failureNum > 0)
         {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");

@@ -56,22 +56,22 @@ public class CbpdDto {
     private Integer cbpd06;
 
     private Integer cbpd07;
-    @NotNull(message = "商品id不能为空")
+   // @NotNull(message = "商品id不能为空")
     private Integer cbpd08;
-    @NotNull(message = "数量不能为空")
-    @Min(value = 0, message = "必须大于等于0")
+  //  @NotNull(message = "数量不能为空")
+  //  @Min(value = 0, message = "必须大于等于0")
 
     private Double cbpd09;
 
     private Double cbpd10;
 
-    @NotNull(message = "单价不能为空")
-    @Min(value = 0, message = "必须大于等于0")
+//    @NotNull(message = "单价不能为空")
+//    @Min(value = 0, message = "必须大于等于0")
 
     private Double cbpd11;
 
-    @NotNull(message = "金额不能为空")
-    @Min(value = 0, message = "必须大于等于0")
+//    @NotNull(message = "金额不能为空")
+//    @Min(value = 0, message = "必须大于等于0")
     private Double cbpd12;
 
     private String cbpd13;
