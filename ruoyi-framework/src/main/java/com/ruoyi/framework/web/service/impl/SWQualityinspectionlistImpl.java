@@ -17,6 +17,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -43,6 +44,7 @@ private CbpmMapper cbpmMapper;
     /**
      * 新增质检单
      */
+    @Transactional
     @Override
     public IdVo insertSwJsSkuBarcodes(CbqaDo cbqaDo) {
         CbqaCriteria example = new CbqaCriteria();
@@ -83,6 +85,7 @@ private CbpmMapper cbpmMapper;
      * 新增质检单明细表
      */
     @Override
+    @Transactional
     public int insertSwJsSkuBarcode(List<Cbqb> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbqbMapper mapper = session.getMapper(CbqbMapper.class);
@@ -169,6 +172,8 @@ private CbpmMapper cbpmMapper;
     /**
      * 删除质检单
      */
+    @Transactional
+
     @Override
     public int insertSwJsSkuBarcodeselete(CbqaDo cbqaDo) {
         Long userid = SecurityUtils.getUserId();
@@ -187,6 +192,7 @@ private CbpmMapper cbpmMapper;
     /**
      * 审核质检单
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesh(CbqaDo cbqaDo) {
 
@@ -209,6 +215,7 @@ private CbpmMapper cbpmMapper;
     /**
      * 反审质检单
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeshs(CbqaDo cbqaDo) {
 
@@ -247,7 +254,7 @@ private CbpmMapper cbpmMapper;
     @Override
     public List<CbqaVo> SwJsSkuBarcodeselects(CbqaVo cbqaVo) {
         return cbqaMapper.SwJsSkuBarcodeselects(cbqaVo);    }
-
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodebjwc(CbqaDo cbqaDo) {
         Cbqa cbqa1 = cbqaMapper.selectByPrimaryKey(cbqaDo.getCbqa01());
@@ -266,7 +273,7 @@ private CbpmMapper cbpmMapper;
 
         return cbqaMapper.updateByExampleSelective(cbqa,example1);
     }
-
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbqaDo cbqaDo) {
         Cbqa cbqa1 = cbqaMapper.selectByPrimaryKey(cbqaDo.getCbqa01());

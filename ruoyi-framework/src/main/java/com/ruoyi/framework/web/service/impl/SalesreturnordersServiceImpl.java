@@ -31,6 +31,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,6 +66,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     /**
      * 新增销售退库单主表
      */
+    @Transactional
     @Override
     public IdVo insertSelloutofwarehouse(CbseDo cbseDo) {
 
@@ -93,6 +95,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     /**
      * 新增销售退库单明细表
      */
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbsf> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -119,6 +122,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     /**
      * 销售退库单审核
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesh(CbseDo cbseDo) {
         //校验审核状态
@@ -143,6 +147,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     /**
      * 销售退库单反审
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesf(CbseDo cbseDo) {
 
@@ -182,6 +187,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     /**
      * 销售退库单取消完成
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbseDo cbseDo) {
 
@@ -264,7 +270,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
         return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
     }
-
+    @Transactional
     @Override
     public int insertSwJsStoress(List<Cbsg> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -329,7 +335,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         session.clearCache();
         return 1;
     }
-
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodergqr(CbseDo cbseDo) {
         //查主表

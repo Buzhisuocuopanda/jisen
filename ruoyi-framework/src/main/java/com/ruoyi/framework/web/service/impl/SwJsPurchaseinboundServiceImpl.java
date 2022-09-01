@@ -23,6 +23,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -69,6 +70,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpdDto cbpdDto) {
 
@@ -114,6 +116,7 @@ private NumberGenerate numberGenerate;
      * @param itemList 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
 
@@ -184,6 +187,7 @@ private NumberGenerate numberGenerate;
         return 1;
     }
     //导入新增
+    @Transactional
     @Override
     public int insertSwJsStores(List<CbpcDto> itemList) {
         Date date = new Date();
@@ -229,6 +233,7 @@ private NumberGenerate numberGenerate;
         return 1;
     }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcsodesm(List<Cbpd> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -259,6 +264,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshs(CbpdDto cbpdDto) {
 
@@ -293,6 +299,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshss(CbpdDto cbpdDto) {
 
@@ -335,6 +342,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
 
@@ -516,6 +524,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodesh(CbpdDto cbpdDto) {
 
@@ -566,6 +575,7 @@ private NumberGenerate numberGenerate;
      * @param cbpdDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(CbpdDto cbpdDto) {
 
@@ -616,6 +626,7 @@ private NumberGenerate numberGenerate;
      * @param cbpcDo 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int updateSwJsSkuBarcodes(CbpcDo cbpcDo) {
         //标记完成不可修改
@@ -700,6 +711,7 @@ private NumberGenerate numberGenerate;
      * @param swJsGoodsList
      * @return 结果
      */
+    @Transactional
     @Override
     public String importSwJsGoods(List<CbpcDto> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)

@@ -13,6 +13,7 @@ import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     private OrderDistributionService orderDistributionService;
 @Resource
    private CblaMapper cblaMapper;
-
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
         // 检查供应商
@@ -62,7 +63,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         return cbicMapper.insertSelective(cbic);
 
     }
-
+    @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(CbicDto cbicDto) {
         Long userid = SecurityUtils.getUserId();

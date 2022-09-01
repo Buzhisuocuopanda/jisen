@@ -26,6 +26,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -56,6 +57,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
     @Resource
     private GsPurchaseOrderDetailMapper gsPurchaseOrderDetailMapper;
+    @Transactional
     @Override
     public IdVo insertSwJsSkuBarcodes(GsPurchaseOrderDo gsPurchaseOrderDo) {
         NumberDo numberDo=new NumberDo();
@@ -82,7 +84,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         idVo.setId(Math.toIntExact(gsPurchaseOrders.get(0).getId()));
         return idVo;
     }
-
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<GsPurchaseOrderDetail> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -105,7 +107,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         session.clearCache();
         return 1;
     }
-
+    @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(GsPurchaseOrderDo gsPurchaseOrderDo) {
         //标记完成不可删除
@@ -128,7 +130,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
-
+    @Transactional
     @Override
     public int swJsPurchasereturnordersh(GsPurchaseOrderDo gsPurchaseOrderDo) {
         //标记完成不可删除
@@ -149,7 +151,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
-
+    @Transactional
     @Override
     public int swJsPurchasereturnorderfs(GsPurchaseOrderDo gsPurchaseOrderDo) {
         //标记完成不可删除
@@ -170,7 +172,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
-
+    @Transactional
     @Override
     public int swJsPurchasereturnorderbjwc(GsPurchaseOrderDo gsPurchaseOrderDo) {
         //标记完成不可删除
@@ -247,7 +249,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
-
+    @Transactional
     @Override
     public int swJsPurchasereturnorderqxwc(GsPurchaseOrderDo gsPurchaseOrderDo) {
         //标记完成不可删除

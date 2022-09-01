@@ -16,6 +16,7 @@ import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.mapper.GsGoodsSnMapper;
 import com.ruoyi.system.service.ISellinglistingsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,6 +26,7 @@ public class SellinglistingsServiceImpl implements ISellinglistingsService {
 
 @Resource
 private GsGoodsSnMapper goodsSnMapper;
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
 
@@ -46,7 +48,7 @@ private GsGoodsSnMapper goodsSnMapper;
     public List<TakeGoodsOrderListVo> selectSwJsTaskGoodsRelLists(TakeGoodsOrderListDto takeGoodsOrderListDto) {
         return      goodsSnMapper.selectSwJsTaskGoodsRelLists(takeGoodsOrderListDto);
     }
-
+    @Transactional
     @Override
     public int deleteSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
         Long userid = SecurityUtils.getUserId();

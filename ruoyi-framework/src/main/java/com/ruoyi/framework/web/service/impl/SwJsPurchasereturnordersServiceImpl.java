@@ -23,6 +23,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -77,6 +78,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto) {
 
@@ -113,6 +115,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodess(List<Cbph> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -142,6 +145,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpi> itemList) {
 
@@ -210,6 +214,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         return 1;
     }
     //导入新增
+    @Transactional
     @Override
     public int insertSwJsStores(List<CbpgDo> itemList) {
         Date date = new Date();
@@ -255,7 +260,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         return 1;
     }
 //导入
-    @Override
+@Transactional
+@Override
     public String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
@@ -285,6 +291,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(CbpgDto cbpgDto) {
         //标记完成不可删除
@@ -326,6 +333,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int updateSwJsSkuBarcodes(CbpgDto cbpgDto) {
         //标记完成不可删除
@@ -393,6 +401,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
@@ -421,6 +430,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
 
@@ -461,6 +471,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
 
@@ -502,6 +513,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
 

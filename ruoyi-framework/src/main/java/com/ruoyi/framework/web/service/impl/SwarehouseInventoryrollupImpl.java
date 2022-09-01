@@ -27,6 +27,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
 
     @Resource
     private  NumberGenerate numberGenerate;
+    @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
         if (!cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
@@ -77,6 +79,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return idVo;
     }
 
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbif> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -102,6 +105,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return 1;
     }
 
+    @Transactional
     @Override
     public int deleteSwJsStoreById(CbieDo cbieDo) {
 
@@ -125,6 +129,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return cbieMapper.updateByExampleSelective(cbie, example);
     }
 
+    @Transactional
     @Override
     public int swJsStoreendd(CbieDo cbieDo) {
 
@@ -147,6 +152,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return cbieMapper.updateByExampleSelective(cbie, example);
     }
 
+    @Transactional
     @Override
     public int swJsStoreendds(CbieDo cbieDo) {
         Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
@@ -168,6 +174,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return cbieMapper.updateByExampleSelective(cbie, example);
     }
 
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshsss(CbifDo cbifDo) {
         CbieCriteria example1 = new CbieCriteria();
@@ -249,6 +256,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         return  cbifMapper.SwJsStoreslistss(cbifVo);
     }
 
+    @Transactional
     @Override
     public String importWarehousedetailsinitialize(List<CbieDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
