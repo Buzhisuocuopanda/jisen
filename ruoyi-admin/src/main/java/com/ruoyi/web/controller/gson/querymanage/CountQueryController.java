@@ -174,7 +174,7 @@ public class CountQueryController  extends BaseController {
             value ="销售库存查询",
             notes = "销售库存查询"
     )
-    @GetMapping("/Invsentorsysummaryquery")
+    @GetMapping("/Innnvsentorsysummaryquery")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(InwuquVo inwuquVo) {
         try {
             startPage();
@@ -222,7 +222,7 @@ public class CountQueryController  extends BaseController {
             value ="生产总订单查询",
             notes = "生产总订单查询"
     )
-    @GetMapping("/Invsentorsysummaryquery")
+    @GetMapping("/Invsensstorsysummaryquery")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(SczddVo sczddVo) {
         try {
             startPage();
