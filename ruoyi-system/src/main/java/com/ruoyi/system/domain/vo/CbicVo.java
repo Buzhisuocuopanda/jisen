@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Data
 public class CbicVo extends BaseEntity {
+    private Date cbic03;
 
     private Integer cbic01;
     private String cbpa07;

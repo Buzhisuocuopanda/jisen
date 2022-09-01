@@ -29,4 +29,6 @@ public interface ISalesreturnordersService {
     List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo);
 
     int insertSwJsStoress(List<Cbsg> itemList);
+
+    int insertSwJsSkuBarcodergqr(CbseDo cbseDo);
 }

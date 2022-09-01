@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -57,7 +58,7 @@ public class SwJsStoreController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增库位信息维护】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cblaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增库位信息维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cblaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -80,7 +81,7 @@ public class SwJsStoreController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改库位信息维护】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cblaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【修改库位信息维护】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cblaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -102,7 +103,7 @@ public class SwJsStoreController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除库位信息维护】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cblaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【删除库位信息维护】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cblaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -126,7 +127,7 @@ public class SwJsStoreController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【条件查询查询库位信息维护】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(CblaVo),ExceptionUtils.getStackTrace(e));
+            log.error("【条件查询查询库位信息维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(CblaVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -167,7 +168,7 @@ public class SwJsStoreController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSONUtils.toJSONString(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

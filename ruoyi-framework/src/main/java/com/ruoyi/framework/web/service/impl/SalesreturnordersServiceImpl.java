@@ -46,6 +46,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Resource
     private CbseMapper cbseMapper;
+
+    @Resource
+    private CbsfMapper cbsfMapper;
+
+    @Resource
+    private CbsgMapper cbsgMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Resource
@@ -139,6 +145,19 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
      */
     @Override
     public int insertSwJsSkuBarcodesf(CbseDo cbseDo) {
+
+        CbsgCriteria example2 = new CbsgCriteria();
+        example2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsg> cbpes = cbsgMapper.selectByExample(example2);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbsg11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能反审");
+                }
+            }
+        }
         //校验审核状态
         CbseCriteria example = new CbseCriteria();
         example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
@@ -147,12 +166,14 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         if(!cbses.get(0).getCbse11().equals(TaskStatus.sh.getCode())){
             throw new SwException("审核状态才能反审");
         }
+
+
         Long userid = SecurityUtils.getUserId();
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
         Date date = new Date();
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
-        cbse.setCbse11(TaskStatus.fsh.getCode());
+        cbse.setCbse11(TaskStatus.mr.getCode());
         CbseCriteria example1 = new CbseCriteria();
         example1.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -163,6 +184,19 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
      */
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbseDo cbseDo) {
+
+        CbsgCriteria example2 = new CbsgCriteria();
+        example2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsg> cbpes = cbsgMapper.selectByExample(example2);
+        if(cbpes.size()>0 ){
+            int size = cbpes.size();
+            for(int i=0;i<size;i++){
+                if(cbpes.get(i).getCbsg11().equals(ScanStatusEnum.YISAOMA.getCode())) {
+
+                    throw new SwException("已扫码不能取消完成");
+                }
+            }
+        }
         //校验审核状态
         CbseCriteria example = new CbseCriteria();
         example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
@@ -191,7 +225,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         List<Cbse> cbses = cbseMapper.selectByExample(example);
         if(cbses.get(0).getCbse11().equals(TaskStatus.sh.getCode())||cbses.get(0).getCbse11().equals(TaskStatus.fsh.getCode())){}
         else{
-            throw new SwException("审核状态或反审才能标记完成");
+            throw new SwException("审核状态才能标记完成");
         }
         Long userid = SecurityUtils.getUserId();
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
@@ -293,6 +327,68 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         }
         session.commit();
         session.clearCache();
+        return 1;
+    }
+
+    @Override
+    public int insertSwJsSkuBarcodergqr(CbseDo cbseDo) {
+        //查主表
+        Cbse cbse = cbseMapper.selectByPrimaryKey(cbseDo.getCbse01());
+
+        CbsfCriteria example = new CbsfCriteria();
+        example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
+                .andCbsf07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsf> cbsfs = cbsfMapper.selectByExample(example);
+        if(cbsfs.size()==0){
+            throw new SwException("没有销售退货单明细表信息");
+        }
+        for(int i=0;i<cbsfs.size();i++) {
+            //获取数量
+            Double nums = cbsfs.get(i).getCbsf09();
+
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbse.getCbse10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(cbsfs.get(i).getCbsf08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if (gsGoodsSkus.size() == 0) {
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if (qty == 0) {
+                    throw new SwException("库存数量不足");
+                }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbse.getCbse10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(cbsfs.get(i).getCbsf08());
+              //  gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsg10());
+                if(nums>qty){
+                    throw new SwException("库存数量不足");
+                }
+                gsGoodsSkuDo1.setQty(qty - nums);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+        }
+        //更新sn表
+      /*  GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+        gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
+        gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+        gsGoodsSnDo.setOutTime(date);
+        gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+        taskService.updateGsGoodsSn(gsGoodsSnDo);*/
+
         return 1;
     }
 

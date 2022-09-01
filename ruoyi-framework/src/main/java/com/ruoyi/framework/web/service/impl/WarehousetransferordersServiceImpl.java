@@ -63,6 +63,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbaaDo.getCbaa10());
 
         cbaa.setCbaa07(warehouseinitializationNo);
+        cbaa.setCbaa11(TaskStatus.mr.getCode());
+        cbaa.setCbaa08(date);
+        cbaa.setUserId(Math.toIntExact(userId));
         cbaaMapper.insertSelective(cbaa);
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa07EqualTo(warehouseinitializationNo)
@@ -168,7 +171,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
         cbaa.setCbaa04(date);
         cbaa.setCbaa05(Math.toIntExact(userId));
-        cbaa.setCbaa11(TaskStatus.fsh.getCode());
+        cbaa.setCbaa11(TaskStatus.mr.getCode());
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -239,7 +242,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbaa> cbaasw = cbaaMapper.selectByExample(example1);
         if (!cbaasw.get(0).getCbaa11().equals(TaskStatus.mr.getCode())) {
-            throw new SwException("标记完成才能取消完成");
+            throw new SwException("默认才能修改");
 
         }
         Long userId = SecurityUtils.getUserId();

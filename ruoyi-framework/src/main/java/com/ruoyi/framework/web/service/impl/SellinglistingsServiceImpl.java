@@ -9,8 +9,10 @@ import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.GsGoodsSn;
 import com.ruoyi.system.domain.GsGoodsSnCriteria;
+import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpkVo;
+import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.mapper.GsGoodsSnMapper;
 import com.ruoyi.system.service.ISellinglistingsService;
 import org.springframework.stereotype.Service;
@@ -36,12 +38,13 @@ private GsGoodsSnMapper goodsSnMapper;
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andIdEqualTo(goodsSnDo.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-   return      goodsSnMapper.updateByExampleSelective(goodsSn, example);
+         goodsSnMapper.updateByExampleSelective(goodsSn, example);
+        return 1;
     }
 
     @Override
-    public List<CbpkVo> selectSwJsTaskGoodsRelLists(CbpkVo cbpcVo) {
-        return      goodsSnMapper.selectSwJsTaskGoodsRelLists(cbpcVo);
+    public List<TakeGoodsOrderListVo> selectSwJsTaskGoodsRelLists(TakeGoodsOrderListDto takeGoodsOrderListDto) {
+        return      goodsSnMapper.selectSwJsTaskGoodsRelLists(takeGoodsOrderListDto);
     }
 
     @Override

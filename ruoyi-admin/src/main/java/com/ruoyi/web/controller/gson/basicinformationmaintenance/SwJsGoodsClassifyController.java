@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.ErrCode;
@@ -56,7 +57,7 @@ public class SwJsGoodsClassifyController extends BaseController {
         }catch (ServiceException | SwException e){
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
-            log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpaDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -76,11 +77,11 @@ public class SwJsGoodsClassifyController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsGoodsClassifyService.updateSwJsGoodsClassify(cbpaDo));
         }catch (SwException e) {
-            log.error("【修改商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpaDo),e.getMessage());
+            log.error("【修改商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpaDo),ExceptionUtils.getStackTrace(e));
+            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -99,11 +100,11 @@ public class SwJsGoodsClassifyController extends BaseController {
         try {
             return toAjax(swJsGoodsClassifyService.deleteSwJsGoodsClassifyById(cbpaDo));
         }catch (SwException e) {
-            log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpaDo),e.getMessage());
+            log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpaDo),ExceptionUtils.getStackTrace(e));
+            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -122,11 +123,11 @@ public class SwJsGoodsClassifyController extends BaseController {
         List<Cbpa> depts = swJsGoodsClassifyService.selectDeptList(cbpa);
         return AjaxResult.success(swJsGoodsClassifyService.buildDeptTreeSelect(depts));
     }catch (SwException e) {
-        log.error("【获取部门下拉树列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(cbpa),e.getMessage());
+        log.error("【获取部门下拉树列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpa),e.getMessage());
         return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
     } catch (Exception e) {
-        log.error("【获取部门下拉树列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbpa),ExceptionUtils.getStackTrace(e));
+        log.error("【获取部门下拉树列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpa),ExceptionUtils.getStackTrace(e));
 
         return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
     }
@@ -144,17 +145,17 @@ public class SwJsGoodsClassifyController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsGoodsClassify(MultipartFile file, boolean updateSupport) {
         try {
-            ExcelUtil<Cbpa> util = new ExcelUtil<>(Cbpa.class);
-            List<Cbpa> swJsGoodsClassifyList = util.importExcel(file.getInputStream());
+            ExcelUtil<CbpaDo> util = new ExcelUtil<>(CbpaDo.class);
+            List<CbpaDo> swJsGoodsClassifyList = util.importExcel(file.getInputStream());
             String operName = getUsername();
             String message = swJsGoodsClassifyService.importSwJsGoodsClassify(swJsGoodsClassifyList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
-            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(file),e.getMessage());
+            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入商品分类】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

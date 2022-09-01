@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.enums.NumberGenerateEnum;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -9,13 +10,16 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.GsPurchaseOrderDetailDo;
 import com.ruoyi.system.domain.Do.GsPurchaseOrderDo;
+import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.NumberVo;
 import com.ruoyi.system.mapper.CbpiMapper;
 import com.ruoyi.system.mapper.GsGoodsSkuMapper;
 import com.ruoyi.system.mapper.GsPurchaseOrderDetailMapper;
 import com.ruoyi.system.mapper.GsPurchaseOrderMapper;
 import com.ruoyi.system.service.IPurchaseordertableService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -46,8 +50,17 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
     @Resource
     private BaseCheckService baseCheckService;
+
+    @Resource
+    private NumberGenerate numberGenerate;
+
+    @Resource
+    private GsPurchaseOrderDetailMapper gsPurchaseOrderDetailMapper;
     @Override
     public IdVo insertSwJsSkuBarcodes(GsPurchaseOrderDo gsPurchaseOrderDo) {
+        NumberDo numberDo=new NumberDo();
+        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
+        NumberVo orderNo = numberGenerate.createOrderNo(numberDo);
 
         Long userid = SecurityUtils.getUserId();
         GsPurchaseOrder gsPurchaseOrder = BeanCopyUtils.coypToClass(gsPurchaseOrderDo, GsPurchaseOrder.class, null);
@@ -58,9 +71,10 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         gsPurchaseOrder.setUpdateBy(userid);
         gsPurchaseOrder.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         gsPurchaseOrder.setStatus(TaskStatus.mr.getCode().byteValue());
+        gsPurchaseOrder.setOrderNo(orderNo.getOrderNo());
         purchaseOrderMapper.insertSelective(gsPurchaseOrder);
         GsPurchaseOrderCriteria example = new GsPurchaseOrderCriteria();
-            example.createCriteria().andOrderNoEqualTo(gsPurchaseOrderDo.getOrderNo())
+            example.createCriteria().andOrderNoEqualTo(orderNo.getOrderNo())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsPurchaseOrder> gsPurchaseOrders = purchaseOrderMapper.selectByExample(example);
 
@@ -186,6 +200,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
         for(int i=0;i<gsPurchaseOrderDetails.size();i++) {
             int goodsid = gsPurchaseOrderDetails.get(i).getGoodsId();
+
             Double num = gsPurchaseOrderDetails.get(i).getQty();
             GsGoodsSkuCriteria example2 = new GsGoodsSkuCriteria();
             example2.createCriteria()
@@ -217,7 +232,19 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
             gsGoodsSku.setUpdateTime(date);
             gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
         }
+        //回写更新采购订单明细
+            GsPurchaseOrderDetail gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
+        //更新入库数量
+            gsPurchaseOrderDetail.setInQty(num);
+            gsPurchaseOrderDetail.setChangeQty(num);
+            GsPurchaseOrderDetailCriteria example3 = new GsPurchaseOrderDetailCriteria();
+            example3.createCriteria()
+                    .andGoodsIdEqualTo(goodsid)
+                    .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+
+            gsPurchaseOrderDetailMapper.updateByExampleSelective(gsPurchaseOrderDetails.get(i), example3);
     }
+
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
 

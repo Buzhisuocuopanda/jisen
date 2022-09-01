@@ -4,8 +4,8 @@ import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.CbifCriteria;
 import java.util.List;
 
-import com.ruoyi.system.domain.vo.CbifVo;
-import com.ruoyi.system.domain.vo.InwuquVo;
+import com.ruoyi.system.domain.dto.InwuqusDto;
+import com.ruoyi.system.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbifMapper {
@@ -34,4 +34,16 @@ public interface CbifMapper {
     List<CbifVo> SwJsStoreslistss(CbifVo cbifVo);
 
     List<InwuquVo> selectInventorysummaryquery(InwuquVo inwuquVo);
+
+    List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
+
+    List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo);
+
+    List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo);
+
+    List<OccuspancyVo> selectInvntorysmsmaryquerys(OccuspancyVo occuspancyVo);
+
+    List<OutofstockregistrationVo> selectInntorysummaryquery(OutofstockregistrationVo outofstockregistrationVo);
+
+    List<SczddVo> selectInntoryummaryquery(SczddVo sczddVo);
 }

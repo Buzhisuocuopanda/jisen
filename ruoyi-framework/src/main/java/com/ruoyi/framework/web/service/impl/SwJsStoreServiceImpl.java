@@ -116,6 +116,8 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
 //        List<Cbla> cblas = cblaMapper.selectByExample(example3);
 //        List<String> collect = cblas.stream().map(Cbla::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
+
+        //采购入库扫码校验
         CbpeCriteria use=new CbpeCriteria();
         use.createCriteria()
                 .andCbpe10EqualTo(cblaDto.getCbla01())

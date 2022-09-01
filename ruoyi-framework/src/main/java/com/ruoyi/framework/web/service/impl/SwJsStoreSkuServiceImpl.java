@@ -107,7 +107,7 @@ private CbpcMapper cbpcMapper;
         example3.createCriteria().
                 andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbwa01EqualTo(cbwaDto.getCbwa01());
-
+        //采购入库仓库再用不能删除
         CbpcCriteria use=new CbpcCriteria();
         use.createCriteria()
                 .andCbpc10EqualTo(cbwaDto.getCbwa01())
@@ -116,6 +116,9 @@ private CbpcMapper cbpcMapper;
         if(cbpcs.size()>0){
             throw new SwException("在用仓库不可删除");
         }
+
+
+
         return  cbwaMapper.updateByExampleSelective(cbwa,example3);
     }
 

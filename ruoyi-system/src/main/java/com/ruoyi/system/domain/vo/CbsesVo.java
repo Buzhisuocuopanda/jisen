@@ -1,10 +1,11 @@
 package com.ruoyi.system.domain.vo;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class CbsesVo {
+public class CbsesVo extends BaseEntity {
 
     private String cbse07;
 
@@ -26,6 +27,7 @@ public class CbsesVo {
     private String cbla09;
     private Integer cbse01;
 
+    private String cbwa09;
 
 
 }

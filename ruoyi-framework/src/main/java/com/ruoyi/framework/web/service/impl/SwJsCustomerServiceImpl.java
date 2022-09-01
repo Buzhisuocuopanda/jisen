@@ -59,6 +59,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
+        //销售出库单校验
         CbsbCriteria use=new CbsbCriteria();
         use.createCriteria()
                 .andCbsb09EqualTo(cbcaDto.getCbca01())

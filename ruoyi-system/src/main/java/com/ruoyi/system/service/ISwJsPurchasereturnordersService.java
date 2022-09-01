@@ -1,7 +1,10 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbpe;
+import com.ruoyi.system.domain.Cbph;
 import com.ruoyi.system.domain.Cbpi;
+import com.ruoyi.system.domain.Do.CbpgDo;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -30,7 +33,13 @@ public interface ISwJsPurchasereturnordersService {
 
     int SwJsSkuBarcodes(CbpgDto cbpgDto);
 
-    int insertSwJsSkuBarcodess(CbpgDto cbpgDto);
+    int insertSwJsSkuBarcodess(List<Cbph> itemList);
 
     int insertSwJsSkuBarcodesm(List<Cbpi> itemList);
+
+
+    //导入新增方法
+    int insertSwJsStores(List<CbpgDo> itemList);
+
+    String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName);
 }

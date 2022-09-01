@@ -23,6 +23,13 @@ public class CbsbVo  extends BaseEntity
 
     private String cbsb07;
 
+    private String caua15;
+
+    private String cbwa09;
+
+    private String cala08;
+
+
     private Date cbsb08;
 
     private Integer cbsb09;

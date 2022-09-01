@@ -666,49 +666,63 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbsbVo">
     SELECT
-      a.CBSB01,
-      a.CBSB07,a.CBSB30,a.CBSB08,b.CBCA08,b.CBCA28,a.CBSB18,a.CBSB19,a.CBSB17,
-      a.CBSB21,a.CBSB31,a.CBSB32,a.CBSB11
+    a.CBSB01,
+    a.CBSB07,a.CBSB30,a.CBSB08,b.CBCA08,b.CBCA28,a.CBSB18,a.CBSB19,c.CAUA15,d.CBWA09,e.CALA08,
+    a.CBSB21,a.CBSB31,a.CBSB32,a.CBSB11,a.CBSB22
     from
-      CBSB a
-        LEFT JOIN
-      CBCA b
-      on
-        a.CBSB09=b.CBCA01
+    CBSB a
+    LEFT JOIN
+    CBCA b
+    on
+    a.CBSB09=b.CBCA01
+    LEFT JOIN
+    CAUA c
+    on
+    c.CAUA01=a.CBSB17
+    LEFT JOIN
+    CBWA d
+    ON
+    d.CBWA01=a.CBSB10
+    LEFT JOIN
+    CALA e
+    ON
+    e.CALA01=a.CBSB16
+
     where
-      a.cbsb06=0
-    <if test="cbsb01 != null "> and a.CBSB01 = #{cbsb01}</if>
-    <if test="cbsb02 != null "> and a.CBSB02 = #{cbsb02}</if>
-    <if test="cbsb03 != null "> and a.CBSB03 = #{cbsb03}</if>
-    <if test="cbsb04 != null "> and a.CBSB04 = #{cbsb04}</if>
-    <if test="cbsb05 != null "> and a.CBSB05 = #{cbsb05}</if>
-    <if test="cbsb06 != null "> and a.CBSB06 = #{cbsb06}</if>
-    <if test="cbsb07 != null  and cbsb07 != ''"> and a.CBSB07 = #{cbsb07}</if>
-    <if test="cbsb08 != null "> and a.CBSB08 = #{cbsb08}</if>
-    <if test="cbsb09 != null "> and a.CBSB09 = #{cbsb09}</if>
-    <if test="cbsb10 != null "> and a.CBSB10 = #{cbsb10}</if>
-    <if test="cbsb11 != null "> and a.CBSB11 = #{cbsb11}</if>
-    <if test="cbsb12 != null "> and a.CBSB12 = #{cbsb12}</if>
-    <if test="cbsb13 != null "> and a.CBSB13 = #{cbsb13}</if>
-    <if test="cbsb14 != null "> and a.CBSB14 = #{cbsb14}</if>
-    <if test="cbsb15 != null "> and a.CBSB15 = #{cbsb15}</if>
-    <if test="cbsb16 != null "> and a.CBSB16 = #{cbsb16}</if>
-    <if test="cbsb17 != null  and cbsb17 != ''"> and a.CBSB17 = #{cbsb17}</if>
-    <if test="cbsb18 != null  and cbsb18 != ''"> and a.CBSB18 = #{cbsb18}</if>
-    <if test="cbsb19 != null  and cbsb19 != ''"> and a.CBSB19 = #{cbsb19}</if>
-    <if test="cbsb20 != null "> and a.CBSB20 = #{cbsb20}</if>
-    <if test="cbsb21 != null  and cbsb21 != ''"> and a.CBSB21 = #{cbsb21}</if>
-    <if test="cbsb22 != null  and cbsb22 != ''"> and a.CBSB22 = #{cbsb22}</if>
-    <if test="cbsb23 != null  and cbsb23 != ''"> and a.CBSB23 = #{cbsb23}</if>
-    <if test="cbsb24 != null  and cbsb24 != ''"> and a.CBSB24 = #{cbsb24}</if>
-    <if test="cbsb25 != null  and cbsb25 != ''"> and a.CBSB25 = #{cbsb25}</if>
-    <if test="cbsb26 != null  and cbsb26 != ''"> and a.CBSB26 = #{cbsb26}</if>
-    <if test="cbsb27 != null  and cbsb27 != ''"> and a.CBSB27 = #{cbsb27}</if>
-    <if test="cbsb28 != null  and cbsb28 != ''"> and a.CBSB28 = #{cbsb28}</if>
-    <if test="cbsb29 != null  and cbsb29 != ''"> and a.CBSB29 = #{cbsb29}</if>
-    <if test="cbsb30 != null  and cbsb30 != ''"> and a.CBSB30 = #{cbsb30}</if>
-    <if test="cbsb31 != null "> and a.CBSB31 = #{cbsb31}</if>
-    <if test="cbsb32 != null "> and a.CBSB32 = #{cbsb32}</if>
+    a.cbsb06=0
+    <if test="cbca08 != null "> and b.CBCA08 like concat('%',  #{cbca08}, '%')</if>
+    <if test="cbsb01 != null "> and a.CBSB01 like concat('%',  #{cbsb01}, '%')</if>
+    <if test="cbsb02 != null "> and a.CBSB02 like concat('%',  #{cbsb02}, '%')</if>
+    <if test="cbsb03 != null "> and a.CBSB03 like concat('%',  #{cbsb03}, '%')</if>
+    <if test="cbsb04 != null "> and a.CBSB04 like concat('%',  #{cbsb04}, '%')</if>
+    <if test="cbsb05 != null "> and a.CBSB05 like concat('%',  #{cbsb05}, '%')</if>
+    <if test="cbsb06 != null "> and a.CBSB06 like concat('%',  #{cbsb06}, '%')</if>
+    <if test="cbsb07 != null  and cbsb07 != ''"> and a.CBSB07 like concat('%',  #{cbsb07}, '%')</if>
+    <if test="cbsb08 != null "> and a.CBSB08 like concat('%',  #{cbsb08}, '%')</if>
+    <if test="cbsb09 != null "> and a.CBSB09 like concat('%',  #{cbsb09}, '%')</if>
+    <if test="cbsb10 != null "> and a.CBSB10 like concat('%',  #{cbsb10}, '%')</if>
+    <if test="cbsb11 != null "> and a.CBSB11 like concat('%',  #{cbsb11}, '%')</if>
+    <if test="cbsb12 != null "> and a.CBSB12 like concat('%',  #{cbsb12}, '%')</if>
+    <if test="cbsb13 != null "> and a.CBSB13 like concat('%',  #{cbsb13}, '%')</if>
+    <if test="cbsb14 != null "> and a.CBSB14 like concat('%',  #{cbsb14}, '%')</if>
+    <if test="cbsb15 != null "> and a.CBSB15 like concat('%',  #{cbsb15}, '%')</if>
+    <if test="cbsb16 != null "> and a.CBSB16 like concat('%',  #{cbsb16}, '%')</if>
+    <if test="cbsb17 != null  and cbsb17 != ''"> and a.CBSB17 like concat('%',  #{cbsb17}, '%')</if>
+    <if test="cbsb18 != null  and cbsb18 != ''"> and a.CBSB18 like concat('%',  #{cbsb18}, '%')</if>
+    <if test="cbsb19 != null  and cbsb19 != ''"> and a.CBSB19 like concat('%',  #{cbsb19}, '%')</if>
+    <if test="cbsb20 != null "> and a.CBSB20 like concat('%',  #{cbsb20}, '%')</if>
+    <if test="cbsb21 != null  and cbsb21 != ''"> and a.CBSB21 like concat('%',  #{cbsb21}, '%')</if>
+    <if test="cbsb22 != null  and cbsb22 != ''"> and a.CBSB22 like concat('%',  #{cbsb22}, '%')</if>
+    <if test="cbsb23 != null  and cbsb23 != ''"> and a.CBSB23 like concat('%',  #{cbsb23}, '%')</if>
+    <if test="cbsb24 != null  and cbsb24 != ''"> and a.CBSB24 like concat('%',  #{cbsb24}, '%')</if>
+    <if test="cbsb25 != null  and cbsb25 != ''"> and a.CBSB25 like concat('%',  #{cbsb25}, '%')</if>
+    <if test="cbsb26 != null  and cbsb26 != ''"> and a.CBSB26 like concat('%',  #{cbsb26}, '%')</if>
+    <if test="cbsb27 != null  and cbsb27 != ''"> and a.CBSB27 like concat('%',  #{cbsb27}, '%')</if>
+    <if test="cbsb28 != null  and cbsb28 != ''"> and a.CBSB28 like concat('%',  #{cbsb28}, '%')</if>
+    <if test="cbsb29 != null  and cbsb29 != ''"> and a.CBSB29 like concat('%',  #{cbsb29}, '%')</if>
+    <if test="cbsb30 != null  and cbsb30 != ''"> and a.CBSB30 like concat('%',  #{cbsb30}, '%')</if>
+    <if test="cbsb31 != null "> and a.CBSB31 like concat('%',  #{cbsb31}, '%')</if>
+    <if test="cbsb32 != null "> and a.CBSB32 like concat('%',  #{cbsb32}, '%')</if>
     <if test='startTime != null and startTime != ""'>and a.cbsb08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.cbsb08 <![CDATA[<=]]>#{endTime}</if>
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->

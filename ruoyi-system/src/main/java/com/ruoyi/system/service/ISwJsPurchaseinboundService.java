@@ -1,12 +1,14 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Cbpc;
+import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.Cbpe;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.CbpcDo;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface ISwJsPurchaseinboundService {
      * @return 结果
      */
 
-    int insertSwJsSkuBarcodes(CbpdDto cbpdDto);
+    IdVo insertSwJsSkuBarcodes(CbpdDto cbpdDto);
 
     int SwJsSkuBarcodeshs(CbpdDto cbpdDto);
 
@@ -47,4 +49,5 @@ public interface ISwJsPurchaseinboundService {
 
     int insertSwJsStores(List<CbpcDto> itemList);
 
+    int insertSwJsSkuBarcsodesm(List<Cbpd> itemList);
 }

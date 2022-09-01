@@ -512,6 +512,32 @@ private CbieMapper cbieMapper;
         }
 
     }
+    public synchronized String getTakeOrderNos() {
+        //拼接规则 OC202208040017 SP05 +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo="OS"+format;
+        CbpkCriteria example=new CbpkCriteria();
+        example.createCriteria()
+                .andCbpk07Like(orderNo+"%");
+        List<Cbpk> cbpks = cbpkMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+            Integer num=0;
+            for (Cbpk res : cbpks) {
+                Integer no = getNum(res.getCbpk07(),12);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
 
 
 }

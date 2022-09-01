@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -52,7 +53,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -73,7 +74,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【添加提货单】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【添加提货单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -94,7 +95,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -115,7 +116,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【根据销售订单id查出提货单信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【根据销售订单id查出提货单信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -140,7 +141,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单编辑】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单编辑】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -163,7 +164,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单删除】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单删除】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -185,7 +186,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单状态更改】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单状态更改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
