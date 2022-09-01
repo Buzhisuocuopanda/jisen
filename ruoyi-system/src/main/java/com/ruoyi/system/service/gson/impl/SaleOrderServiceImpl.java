@@ -195,7 +195,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cbba cbba = cbbaMapper.selectByPrimaryKeyForUpdate(totalOrderAddDto.getId());
 
         if (cbba == null) {
-            throw new SwException("");
+            throw new SwException("没有查到该生产总订单");
         }
         OrderDistributionDo send = new OrderDistributionDo();
         send.setCbba(cbba);

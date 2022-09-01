@@ -100,6 +100,7 @@ public class SaleOrderController extends BaseController {
             Cbba cbba = saleOrderService.addTotalOrder(totalOrderAddDto);
             return AjaxResult.success();
         } catch (SwException e) {
+            log.error(e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.gson.Warehousemanagement;
+package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;

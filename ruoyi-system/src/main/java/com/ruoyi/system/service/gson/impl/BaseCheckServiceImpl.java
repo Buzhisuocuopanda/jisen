@@ -76,11 +76,11 @@ public class BaseCheckServiceImpl implements BaseCheckService {
         Cbpb cbpb = cbpbMapper.selectByPrimaryKeyForUpdate(goodsId);
         if(cbpb==null || DeleteFlagEnum.DELETE.equals(cbpb.getCbpb06())){
 
-            throw new SwException("未找到商品："+goodsName==null?"":goodsName);
+            throw new SwException("未找到商品");
         }
 
         if(UseFlagEnum.JINYONG.equals(cbpb.getCbpb07())){
-            throw new SwException("该商品已禁用:"+goodsName==null?"":goodsName);
+            throw new SwException("该商品已禁用");
         }
         return cbpb;
     }
@@ -94,8 +94,12 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
         Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsId);
         if(cbpb==null || DeleteFlagEnum.DELETE.equals(cbpb.getCbpb06())){
+            if(goodsName!=null){
+                throw new SwException("该货物不可用"+goodsName);
+            }else {
+                throw new SwException("该货物不可用");
+            }
 
-            throw new SwException("未找到商品"+goodsName==null?"":goodsName);
         }
 
         if(UseFlagEnum.JINYONG.equals(cbpb.getCbpb07())){
