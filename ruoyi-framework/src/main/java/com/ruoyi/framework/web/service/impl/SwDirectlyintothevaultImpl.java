@@ -1,17 +1,21 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.TaskType;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.mapper.CbicMapper;
 import com.ruoyi.system.mapper.CblaMapper;
+import com.ruoyi.system.mapper.CbsaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
+import com.ruoyi.system.service.gson.TaskService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +31,12 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private OrderDistributionService orderDistributionService;
+
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private CbsaMapper cbsaMapper;
 @Resource
    private CblaMapper cblaMapper;
     @Transactional
@@ -50,7 +60,6 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         directWarehousingDto.setGoodsId(cbicDto.getCbic09());
         orderDistributionService.directWarehousing(directWarehousingDto);
 
-
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
         Date date = new Date();
         cbic.setCbic02(date);
@@ -60,7 +69,27 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbic.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbic.setCbic12(date);
         cbic.setUserId(Math.toIntExact(userid));
-        return cbicMapper.insertSelective(cbic);
+       cbicMapper.insertSelective(cbic);
+
+        CbicCriteria cbicCriteria = new CbicCriteria();
+        cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
+        List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
+
+
+        CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
+        cbibDo.setCbib02(storeid);
+        cbibDo.setCbib04(date);
+        cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
+        cbibDo.setCbib06(cbsa.getCbsa08());
+
+        cbibDo.setCbib07(cbics.get(0).getCbic01());
+        cbibDo.setCbib08(cbicDto.getCbic09());
+        cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+        cbibDo.setCbib19(cbicDto.getCbic13());
+
+        taskService.InsertCBIB(cbibDo);
+        return 1;
 
     }
     @Transactional
