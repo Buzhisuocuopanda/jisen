@@ -462,5 +462,246 @@ where
       <if test="cala08 != null "> and e.CALA08 = #{cala08}</if>
       <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
     </select>
+    <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
+      SELECT
+        c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15
+      FROM
+        CBIG a
+          LEFT JOIN
+        CBIE b
+        ON
+          a.CBIE01=b.CBIE01
+          LEFT JOIN
+        CBWA c
+        ON
+          b.CBIE09=c.CBWA01
+          LEFT JOIN
+        CBLA d
+        ON
+          d.CBLA01=a.CBIG08
+          LEFT JOIN
+        CBPB e
+        ON
+          e.CBPB01=a.CBIG09
+          LEFT JOIN
+        CBPA f
+        ON
+          f.CBPA01=e.CBPB14
+          LEFT JOIN
+        CBPA g
+        ON
+          f.CBPA09=g.CBPA01
+          LEFT JOIN
+        CALA h
+        ON
+          h.CALA01=e.CBPB10
+
+      WHERE
+          a.CBIG09=0
+      <if test="cbwa09 != null and cbwa09 != ''">
+        and c.CBWA09 =#{cbwa09}
+      </if>
+      <if test="orderNo != null and orderNo != ''">
+        and d.CBLA09 like concat('%', #{cbla09}, '%')
+      </if>
+
+      <if test="cbig09 != null ">
+        and a.cbig09 =#{cbig09}
+      </if>
+      <if test="cbig10 != null and cbig10 !=''">
+        and a.cbig10 like concat('%', #{cbig10}, '%')
+      </if>
+
+
+    </select>
+  <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
+    SELECT
+      b.CBWA09,a.CBIB04,a.CBIB17,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
+      a.CBIB09,a.CBIB10,CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
+    FROM
+      CBIB a
+        LEFT JOIN
+      CBWA b
+      on
+        a.CBIB02=b.CBWA01
+        LEFT JOIN
+      CBPB c
+      ON
+        c.CBPB01=a.CBIB08
+    WHERE
+
+    <if test="cbib17 != null and cbib17 != ''">
+       a.CBIB17 =#{cbib17}
+    </if>
+    <if test="cbwa09 != null and cbwa09 != ''">
+      and b.CBWA09 like concat('%', #{cbwa09}, '%')
+    </if>
+
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.cbib04,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.cbib04,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+#     LIMIT 100
+
+  </select>
+  <select id="selectInventorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccupancyVo">
+    select
+      a.CBOA07,b.CBCA08,a.CBOA25,d.CBPA07,f.CALA08,c.CBPB12,g.lock_qty,
+      e.CBOB09,e.CBOB10,e.CBOB15
+    from
+      CBOA a
+        LEFT JOIN
+      CBCA b
+      ON
+        b.CBCA01=a.CBOA09
+        LEFT JOIN
+      CBOB e
+      ON
+        e.CBOA01=a.CBOA01
+        LEFT JOIN
+      CBPB c
+      ON
+        c.CBPB01=e.CBOB08
+        LEFT JOIN
+      CBPA d
+      ON
+        d.CBPA01=c.CBPB14
+        LEFT JOIN
+      CALA  f
+      ON
+        f.CALA01=c.CBPB10
+        LEFT JOIN
+      gs_goods_use g
+      ON
+        g.order_no=a.CBOA07
+where a.CBOA06=0
+    <if test="cbpa07 != null and cbpa07 != ''">
+    and  d.CBPA07 like concat('%', #{cbpa07}, '%')
+    </if>
+    <if test="cbwa09 != null and cbwa09 != ''">
+      and f.cala08 like concat('%', #{cala08}, '%')
+    </if>
+
+    <if test="cbpb01 != null ">
+   and   c.CBPB01=#{cbpb01}
+    </if>
+  </select>
+  <select id="selectInvntorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccuspancyVo">
+    SELECT
+      a.CBOA07,a.CBOA08,c.CBCA08,d.CAUA17,f.CALA08,g.CBPA08,e.CBPB12,b.CBOB10,
+      (b.CBOB09-b.CBOB10)as num,b.CBOB11,b.CBOB12
+    FROM
+      CBOA a
+        LEFT JOIN
+      CBOB b
+      ON
+        a.CBOA01=b.CBOA01
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=a.CBOA09
+        LEFT JOIN
+      CAUA d
+      ON
+        d.CAUA01=a.CBOA10
+        LEFT JOIN
+      CBPB e
+      ON
+        e.CBPB01=b.CBOB08
+        LEFT JOIN
+      CALA f
+      ON
+        f.CALA01=e.CBPB10
+        LEFT JOIN
+      CBPA g
+      ON
+        g.CBPA01=e.CBPB14
+where
+    a.CBOA01=0
+    <if test="cbca08 != null and cbca08 != ''">
+      and  c.CBCA08 like concat('%', #{cbca08}, '%')
+    </if>
+    <if test="caua17 != null and caua17 != ''">
+      and d.CAUA17 like concat('%', #{caua17}, '%')
+    </if>
+    <if test="cbpb01 != null ">
+      and   e.cbpb01=#{cbpb01}
+    </if>
+
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(a.CBOA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+  </select>
+  <select id="selectInntorysummaryquery" resultType="com.ruoyi.system.domain.vo.OutofstockregistrationVo">
+    SELECT
+      e.CBPA07,d.CBPA08,f.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBOF09,g.CBCA08,a.CBOE08
+    from
+      CBOE a
+        LEFT JOIN
+      CBOF b
+      ON
+        a.CBOE01=b.CBOE01
+        LEFT JOIN
+      CBPB c
+      ON
+        b.CBOF08=c.CBPB01
+        LEFT JOIN
+      CBPA d
+      ON
+        d.CBPA01=c.CBPB14
+        LEFT JOIN
+      CBPA e
+      ON
+        e.CBPA01=d.CBPA09
+        LEFT JOIN
+      CALA f
+      ON
+        f.CALA01=c.CBPB10
+        LEFT JOIN
+      CBCA g
+      ON
+        g.CBCA01=a.CBOE09
+where
+    a.CBOE06=0
+    <if test="cbpa08 != null and cbpa08 != ''">
+      and  d.CBPA08 like concat('%', #{cbpa08}, '%')
+    </if>
+    <if test="cala08 != null and cala08 != ''">
+      and f.CALA08 like concat('%', #{cala08}, '%')
+    </if>
+    <if test="cbpb01 != null ">
+      and   c.cbpb01=#{cbpb01}
+    </if>
+  </select>
+  <select id="selectInntoryummaryquery" resultType="com.ruoyi.system.domain.vo.SczddVo">
+    SELECT
+      a.CBBA07,c.CALA08,b.CBPB12,b.CBPB08,a.CBBA09,a.CBBA11,a.CBBA14,a.CBBA13,a.CBBA12
+    FROM
+      CBBA a
+        LEFT JOIN
+      CBPB b
+      ON
+        a.CBBA08=b.CBPB01
+        LEFT JOIN
+      CALA c
+      ON
+        c.CALA01=b.CBPB10
+where
+    a.CBBA06=0
+    <if test="cbba07 != null and cbba07 != ''">
+      and   a.CBBA07 like concat('%', #{cbba07}, '%')
+    </if>
+    <if test="cbba12 != null and cbba12 != ''">
+      and a.CBBA12 like concat('%', #{cbba12}, '%')
+    </if>
+    <if test="cbpb01 != null ">
+      and  b.cbpb01=#{cbpb01}
+    </if>
+  </select>
 
 </mapper>
