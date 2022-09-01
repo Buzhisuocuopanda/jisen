@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -60,7 +61,7 @@ public class SwJsCustomerController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增客户信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbcaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -83,7 +84,7 @@ public class SwJsCustomerController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改客户信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbcaDto),ExceptionUtils.getStackTrace(e));
+            log.error("【修改客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -104,7 +105,7 @@ public class SwJsCustomerController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除客户信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbcaDto),ExceptionUtils.getStackTrace(e));
+            log.error("【删除客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -127,7 +128,7 @@ public class SwJsCustomerController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询客户信息列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbca),ExceptionUtils.getStackTrace(e));
+            log.error("【查询客户信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbca),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -164,11 +165,11 @@ public class SwJsCustomerController extends BaseController {
             String message = swJsCustomerService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
-            log.error("【导入客户信息列表】接口参数校验出现异常，参数${}$,异常${}$", JSONUtils.toJSONString(file),e.getMessage());
+            log.error("【导入客户信息列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入客户信息列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入客户信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -185,7 +186,7 @@ public class SwJsCustomerController extends BaseController {
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<Cbca> util = new ExcelUtil<Cbca>(Cbca.class);
+        ExcelUtil<CbcaDto> util = new ExcelUtil<CbcaDto>(CbcaDto.class);
         util.importTemplateExcel(response,"导入客户下载模板");
     }
 

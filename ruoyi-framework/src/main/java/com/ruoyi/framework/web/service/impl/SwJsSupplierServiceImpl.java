@@ -116,6 +116,7 @@ private CbsaMapper cbsaMapper;
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
 //        String[] strs = collect.toArray(new String[]{});
+        //校验销售出库明细
         CbscCriteria use=new CbscCriteria();
         use.createCriteria()
                 .andCbsc15EqualTo(cbsaDto.getCbsa01())

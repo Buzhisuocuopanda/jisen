@@ -4,10 +4,11 @@ import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.system.domain.Cala;
-import com.ruoyi.system.domain.CalaCriteria;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.CalaDto;
 import com.ruoyi.system.mapper.CalaMapper;
+import com.ruoyi.system.mapper.CboaMapper;
+import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.service.ISwJsListService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,12 @@ import java.util.List;
 public class SwJsListServiceImpl implements ISwJsListService {
 @Resource
 private CalaMapper calaMapper;
+
+@Resource
+private CbpbMapper cbpbMapper;
+
+@Resource
+private CboaMapper cboaMapper ;
     /**
      * 新增列表维护
      *
@@ -99,6 +106,21 @@ private CalaMapper calaMapper;
      */
     @Override
     public int deleteSwJsListById(CalaDto calaDto) {
+       //校验商品品牌
+        CbpbCriteria example = new CbpbCriteria();
+        example.createCriteria().andCbpb10EqualTo(calaDto.getCala01());
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
+        if(cbpbs.size()>0){
+            throw new SwException("该列表已被使用，不能删除");
+        }
+        //校验货币
+        CboaCriteria example2 = new CboaCriteria();
+        example2.createCriteria().andCboa16EqualTo(calaDto.getCala01());
+        List<Cboa> cboas = cboaMapper.selectByExample(example2);
+        if (cboas.size()>0){
+            throw new SwException("该列表已被使用，不能删除");
+        }
+
         Long userid = SecurityUtils.getUserId();
         Cala cala = BeanCopyUtils.coypToClass(calaDto, Cala.class, null);
         Date date = new Date();

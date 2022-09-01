@@ -73,6 +73,11 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
             throw new SwException("分类编号已存在");
         }
 
+        Cbpa cbpa1 = cbpaMapper.selectByPrimaryKey(cbpaDo.getCbpa09());
+        if(cbpa1==null){
+            throw new SwException("上级分类不存在");
+        }
+
         Cbpa cbpa = BeanCopyUtils.coypToClass(cbpaDo, Cbpa.class, null);
         Date date = new Date();
         cbpa.setCbpa02(date);
@@ -262,7 +267,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
 
     @Override
-    public String importSwJsGoodsClassify(List<Cbpa> swJsGoodsClassifyList, boolean updateSupport, String operName) {
+    public String importSwJsGoodsClassify(List<CbpaDo> swJsGoodsClassifyList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsClassifyList) || swJsGoodsClassifyList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -271,27 +276,21 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (Cbpa swJsGoodsClassify : swJsGoodsClassifyList)
+        for (CbpaDo swJsGoodsClassify : swJsGoodsClassifyList)
         {
             try
             {
-                // 验证是否存在这个用户
+                // 验证是否存在这个id
                 Cbpa u = cbpaMapper.selectByPrimaryKey(swJsGoodsClassify.getId() );
                 log.info(swJsGoodsClassify.getCbpa07()+"");
                 if (StringUtils.isNull(u))
                 {
                     swJsGoodsClassify.setCbpa07(swJsGoodsClassify.getCbpa07());
-                    this.insertCBPA(swJsGoodsClassify);
+                    this.insertSwJsGoodsClassify(swJsGoodsClassify);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("商品分类信息").append(swJsGoodsClassify.getCbpa07()).append(" 导入成功");
                 }
-                else if (updateSupport)
-                {
-                    swJsGoodsClassify.setCbpa05(Integer.valueOf(operName));
-                    this.updateCBPB(swJsGoodsClassify);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("商品分类信息 ").append(swJsGoodsClassify.getCbpa07()).append(" 更新成功");
-                }
+
                 else
                 {
                     failureNum++;

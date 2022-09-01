@@ -1,9 +1,11 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.*;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpgDto;
@@ -207,6 +209,75 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         session.clearCache();
         return 1;
     }
+    //导入新增
+    @Override
+    public int insertSwJsStores(List<CbpgDo> itemList) {
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        Date cbpg08 = itemList.get(0).getCbpg08();
+        Integer cbpg09 = itemList.get(0).getCbpg09();
+        Integer cbpg10 = itemList.get(0).getCbpg10();
+        Integer cbpg16 = itemList.get(0).getCbpg16();
+        String purchaseinboundNo = numberGenerate.getPurchasereturnNo(cbpg10);
+
+        Cbpg cbpg = new Cbpg();
+        cbpg.setCbpg02(date);
+        cbpg.setCbpg03(Math.toIntExact(userid));
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpg.setCbpg07(purchaseinboundNo);
+        cbpg.setCbpg08(date);
+        cbpg.setCbpg09(cbpg09);
+        cbpg.setCbpg10(cbpg10);
+        cbpg.setCbpg16(cbpg16);
+        cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpgMapper.insertSelective(cbpg);
+
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbphMapper mapper = session.getMapper(CbphMapper.class);
+
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCbph03(date);
+            itemList.get(i).setCbph04(Math.toIntExact(userid));
+            itemList.get(i).setCbph05(date);
+            itemList.get(i).setCbph06(Math.toIntExact(userid));
+            itemList.get(i).setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
+//导入
+    @Override
+    public String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        this.insertSwJsStores(swJsGoodsList);
+
+
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();    }
 
     /**
      * 删除采购退货单

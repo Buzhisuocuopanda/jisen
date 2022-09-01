@@ -5,6 +5,8 @@ import com.ruoyi.system.domain.Cbpf;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
+import com.ruoyi.system.domain.dto.CbpbDto;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 
 import java.util.List;
@@ -34,9 +36,14 @@ public interface ISwJsGoodsService {
 
     List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
 
-    String importSwJsGoods(List<CbpbDo> swJsGoodsList, boolean updateSupport, String operName);
+    String importSwJsGoods(List<CbpbDto> swJsGoodsList, boolean updateSupport, String operName);
 
     int insertSwJsGoodsClassifys(CbpfDo cbpfDo);
 
     String importSwJsCustomer(List<Cbpf> swJsCustomersList, boolean updateSupport, String operName);
+
+
+
+    int insertSwJsStores(List<CbpbDto> itemList);
+
 }

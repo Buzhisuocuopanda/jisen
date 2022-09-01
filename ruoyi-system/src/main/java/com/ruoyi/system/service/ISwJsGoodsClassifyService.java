@@ -28,5 +28,5 @@ public interface ISwJsGoodsClassifyService {
      */
      List<TreeSelect> buildDeptTreeSelect(List<Cbpa> depts);
 
-    String importSwJsGoodsClassify(List<Cbpa> swJsGoodsClassifyList, boolean updateSupport, String operName);
+    String importSwJsGoodsClassify(List<CbpaDo> swJsGoodsClassifyList, boolean updateSupport, String operName);
 }

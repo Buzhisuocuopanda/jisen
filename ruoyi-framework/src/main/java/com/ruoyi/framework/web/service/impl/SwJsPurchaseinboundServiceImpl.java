@@ -712,37 +712,7 @@ private NumberGenerate numberGenerate;
         StringBuilder failureMsg = new StringBuilder();
         this.insertSwJsStores(swJsGoodsList);
 
-     /*   for (CbpcDto swJsGoods : swJsGoodsList)
-        {
-            try {
-                // 验证是否存在这个用户
-                Cbpc u = cbpcMapper.selectByPrimaryKey(swJsGoods.getCbpc01());
-                log.info(swJsGoods.getCbpc01() + "");
-                if (StringUtils.isNull(u)) {
-                    swJsGoods.setCbpc12(swJsGoods.getCbpc12());
-                    this.insertSwJsStores(swJsGoodsList);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 导入成功");
-                }
-               *//* else if (updateSupport) {
-                    //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateCBPC(swJsGoods);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("采购入库单 ").append(swJsGoods.getCbpc12()).append(" 更新成功");
-                } *//*
-                else {
-                    failureNum++;
-                    failureMsg.append("<br/>").append(failureNum).append("采购入库单").append(swJsGoods.getCbpc12()).append(" 已存在");
-                }
-            }
-            catch (Exception e)
-            {
-                failureNum++;
-                String msg = "<br/>" + failureNum + "采购入库单" + swJsGoods.getCbpc12() + " 导入失败：";
-                failureMsg.append(msg).append(e.getMessage());
-                log.error(msg, e);
-            }
-        }*/
+
         if (failureNum > 0)
         {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");

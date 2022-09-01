@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -61,7 +62,7 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增供应商信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -83,7 +84,7 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改供应商信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsaDto),ExceptionUtils.getStackTrace(e));
+            log.error("【修改供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsaDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -106,7 +107,7 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除供应商信息】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(cbsaDto), ExceptionUtils.getStackTrace(e));
+            log.error("【删除供应商信息】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbsaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -129,7 +130,7 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询客户信息列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbsa),ExceptionUtils.getStackTrace(e));
+            log.error("【查询客户信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsa),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -170,7 +171,7 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$",JSONUtils.toJSONString(file), ExceptionUtils.getStackTrace(e));
+            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
