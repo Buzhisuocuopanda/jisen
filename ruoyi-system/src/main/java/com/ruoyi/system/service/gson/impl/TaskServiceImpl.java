@@ -164,6 +164,8 @@ public class TaskServiceImpl implements TaskService {
         cbib.setCbib10(cbib1.getCbib10());
         if(cbib1.getCbib18()==null) {
             cbib.setCbib18(1);
+        }else{
+            cbib.setCbib18(cbib1.getCbib18()+1);
         }
         cbibMapper.insertSelective(cbib);
         return cbib;
