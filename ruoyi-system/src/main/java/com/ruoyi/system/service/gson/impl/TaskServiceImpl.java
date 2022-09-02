@@ -154,6 +154,11 @@ public class TaskServiceImpl implements TaskService {
         Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
 
         Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
+        if(cbib1==null){
+            cbib.setCbib09((double) 0);
+            cbib.setCbib10((double) 0);
+            cbib.setCbib18(1);
+        }
         Date date=new Date();
         cbib.setCbib04(date);
         cbib.setCbib09(cbib1.getCbib09());

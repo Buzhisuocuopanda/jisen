@@ -84,7 +84,6 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb10(cbpbDo.getCbpb10());
         cbpb.setCbpb11(cbpbDo.getCbpb11());
         cbpb.setCbpb12(cbpbDo.getCbpb12());
-        cbpb.setCbpb13(cbpbDo.getCbpb13());
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
          cbpbMapper.insertSelective(cbpb);
