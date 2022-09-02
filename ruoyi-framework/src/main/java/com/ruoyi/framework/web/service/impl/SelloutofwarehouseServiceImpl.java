@@ -272,7 +272,7 @@ if(cbob==null){
         saleOrderAddDto.setOrderType(cbsb1.getCbsb32());
         saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
         saleOrderAddDto.setGoods(goods);
-      // saleOrderService.addSaleOrder(saleOrderAddDto);
+       saleOrderService.addSaleOrder(saleOrderAddDto);
         return         cbsbMapper.updateByExampleSelective(cbsb, example1);
 
     }

@@ -55,7 +55,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增采购入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+            log.error("【新增直接入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

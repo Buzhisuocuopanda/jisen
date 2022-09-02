@@ -150,18 +150,19 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Cbib InsertCBIB(CbibDo cbibDo) {
 
-        CbibCriteria example1 = new CbibCriteria();
-        example1.createCriteria()
-                .andCbib02EqualTo(cbibDo.getCbib02())
-                .andCbib08EqualTo(cbibDo.getCbib08());
-        List<Cbib> cbibs = cbibMapper.selectByExample(example1);
-        Cbib cbib1 = selectLastOne(cbibs);
+
+        Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
 
         Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
         Date date=new Date();
         cbib.setCbib04(date);
         cbib.setCbib09(cbib1.getCbib09());
+
         cbib.setCbib10(cbib1.getCbib10());
+        if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
+            cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
+            cbib.setCbib16(cbibDo.getCbib10());
+        }
         if(cbib1.getCbib18()==null) {
             cbib.setCbib18(1);
         }else{

@@ -42,4 +42,6 @@ public class CbibDo {
     private Integer cbib18;
 
     private Integer cbib19;
+
+    private Integer num;
 }
