@@ -6,6 +6,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
@@ -68,7 +69,12 @@ public class SwJsGoodsController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【新增商品】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【新增商品】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpbDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -91,6 +97,11 @@ public class SwJsGoodsController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        }catch (ServiceException e) {
+            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpfDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
         } catch (Exception e) {
             log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpfDo), ExceptionUtils.getStackTrace(e));
 
@@ -103,15 +114,20 @@ public class SwJsGoodsController extends BaseController {
      * 修改商品
      */
     @ApiOperation(
-            value ="修改商品分类",
-            notes = "修改商品分类"
+            value ="修改商品",
+            notes = "修改商品"
     )
     @PostMapping("/SwJsGoodsedit")
-    public AjaxResult swJsGoodsedit(@RequestBody CbpbDo cbpbDo, BindingResult bindingResult) {
+    public AjaxResult swJsGoodsedit(@RequestBody CbpbDo cbpbDo) {
         try {
-            ValidUtils.bindvaild(bindingResult);
+
             return toAjax(swJsGoodsService.updateSwJsGoodsClassify(cbpbDo));
         }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【修改商品】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpbDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -135,7 +151,12 @@ public class SwJsGoodsController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【删除商品】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【删除商品分类】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpbDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");

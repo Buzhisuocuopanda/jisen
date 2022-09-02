@@ -71,14 +71,14 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     @Override
     public int updateSwJsStore(CblaDto cblaDto) {
         //库位码唯一
+        if(cblaDto.getCbla09()!=null){
         CblaCriteria example = new CblaCriteria();
         example.createCriteria().andCbla09EqualTo(cblaDto.getCbla09())
                 .andCbla06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbla> cblas = cblaMapper.selectByExample(example);
         if(cblas.size()>0 && !cblas.get(0).getCbla01().equals(cblaDto.getCbla01())){
             throw new SwException("库位码已存在");
-
-        }
+        }}
         Long userid = SecurityUtils.getUserId();
 
         Cbla cbla = BeanCopyUtils.coypToClass(cblaDto, Cbla.class, null);
@@ -96,7 +96,9 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         CblaCriteria example1= new CblaCriteria();
         example1.createCriteria().andCbla01EqualTo(cblaDto.getCbla01())
                 .andCbla06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return  cblaMapper.updateByExampleSelective(cbla,example1);    }
+          cblaMapper.updateByExampleSelective(cbla,example1);
+        return 1;
+    }
 
     @Override
     public int deleteSwJsStoreById(CblaDto cblaDto) {
@@ -128,8 +130,8 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         }
         cbla.setCbla06(DeleteFlagEnum.DELETE.getCode());
 
-        return cblaMapper.updateByExampleSelective(cbla,example3);
-
+         cblaMapper.updateByExampleSelective(cbla,example3);
+        return 1;
     }
 
     @Override

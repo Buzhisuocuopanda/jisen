@@ -7,6 +7,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cala;
@@ -53,9 +54,16 @@ public class SwJsListController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsListService.insertSwJsGoodsClassify(calaDto));
         }catch (SwException e) {
+            log.error("【新增列维护】接口出现异常,参数${},异常${}$", JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【新增列维护】接口出现异常,参数${},异常${}$", JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【新增列维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -78,7 +86,12 @@ public class SwJsListController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【修改列表维护】接口出现异常,参数${},异常${}$", JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【修改列表维护】接口出现异常,参数${}$,异常${}$",JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
 
 
@@ -98,6 +111,11 @@ public class SwJsListController extends BaseController {
         try {
             return toAjax(swJsListService.deleteSwJsListById(calaDto));
         }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【删除列表维护】接口出现异常,参数${},异常${}$", JSON.toJSON(calaDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -123,7 +141,12 @@ public class SwJsListController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【查询列维护列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cala), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【查询列维护列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cala),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -143,7 +166,12 @@ public class SwJsListController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【详情列维护列表】接口出现异常,参数${},异常${}$", JSON.toJSON(id), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【详情列维护列表】接口出现异常,参数${}$,异常${}$",JSON.toJSON(id), ExceptionUtils.getStackTrace(e));
 
 

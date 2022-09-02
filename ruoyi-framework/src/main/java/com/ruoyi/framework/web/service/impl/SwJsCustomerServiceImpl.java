@@ -70,21 +70,23 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         }
         cbca.setCbca06(DeleteFlagEnum.DELETE.getCode());
 
-        return cbcaMapper.updateByExampleSelective(cbca,example3);
+         cbcaMapper.updateByExampleSelective(cbca,example3);
+        return 1;
     }
 
     @Override
     public int updateSwJsCustomer(CbcaDto cbcaDto) {
         Long userid = SecurityUtils.getUserId();
         Cbca cbca1 = cbcaMapper.selectByPrimaryKey(cbcaDto.getCbca01());
-
+        if(cbcaDto.getCbca08()!=null){
         CbcaCriteria example = new CbcaCriteria();
         example.createCriteria().andCbca08EqualTo(cbcaDto.getCbca08())
                 .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbca> cbcas = cbcaMapper.selectByExample(example);
         if(cbcas.size()>0 && !cbca1.getCbca01().equals(cbcas.get(0).getCbca01())){
             throw new SwException("客户名称不能重复");
-        }
+        }}
+
         Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
         Date date = new Date();
         cbca.setCbca04(date);
@@ -114,7 +116,8 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         CbcaCriteria example1= new CbcaCriteria();
         example1.createCriteria().andCbca01EqualTo(cbcaDto.getCbca01())
                 .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return  cbcaMapper.updateByExampleSelective(cbca,example1);    }
+          cbcaMapper.updateByExampleSelective(cbca,example1);
+        return 1;}
 
     @Override
     public int insertSwJsCustomer(CbcaDto cbcaDto) {

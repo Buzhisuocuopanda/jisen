@@ -6,6 +6,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -59,7 +60,10 @@ public class SwJsCustomerController extends BaseController {
 
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (ServiceException e) {
+            log.error("【新增客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
 
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
             log.error("【新增客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
 
@@ -76,14 +80,18 @@ public class SwJsCustomerController extends BaseController {
             notes = "修改客户信息"
     )
     @PostMapping("/SwJsCustomeredit")
-    public AjaxResult SwJsCustomeredit(@RequestBody CbcaDto cbcaDto, BindingResult bindingResult) {
+    public AjaxResult SwJsCustomeredit(@RequestBody CbcaDto cbcaDto) {
         try {
-            // ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsCustomerService.updateSwJsCustomer(cbcaDto));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【修改客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【修改客户信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -102,6 +110,11 @@ public class SwJsCustomerController extends BaseController {
         try {
             return toAjax(swJsCustomerService.deleteSwJsCustomerById(cbcaDto));
         }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【删除客户信息】接口出现异常,参数${},异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -127,7 +140,12 @@ public class SwJsCustomerController extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【新增商品】接口出现异常,参数${},异常${}$", JSON.toJSON(cbca), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【查询客户信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbca),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");

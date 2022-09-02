@@ -65,13 +65,14 @@ private CbpcMapper cbpcMapper;
 
     @Override
     public int updateSwJsGoodsClassify(CbwaDto cbwaDto) {
+        if(cbwaDto.getCbwa09()!=null){
         CbwaCriteria example = new CbwaCriteria();
         example.createCriteria().andCbwa09EqualTo(cbwaDto.getCbwa09())
                 .andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbwa> cbwas = cbwaMapper.selectByExample(example);
         if(cbwas.size()>0 && !cbwas.get(0).getCbwa01().equals(cbwaDto.getCbwa01())){
             throw new SwException("仓库名称已存在");
-        }
+        }}
         Long userid = SecurityUtils.getUserId();
 
         Cbwa cbwa = BeanCopyUtils.coypToClass(cbwaDto, Cbwa.class, null);
@@ -90,7 +91,8 @@ private CbpcMapper cbpcMapper;
         CbwaCriteria example1= new CbwaCriteria();
         example1.createCriteria().andCbwa01EqualTo(cbwaDto.getCbwa01())
                 .andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return  cbwaMapper.updateByExampleSelective(cbwa,example1);
+          cbwaMapper.updateByExampleSelective(cbwa,example1);
+        return 1;
     }
 
     @Override
@@ -119,7 +121,8 @@ private CbpcMapper cbpcMapper;
 
 
 
-        return  cbwaMapper.updateByExampleSelective(cbwa,example3);
+          cbwaMapper.updateByExampleSelective(cbwa,example3);
+        return 1;
     }
 
     @Override

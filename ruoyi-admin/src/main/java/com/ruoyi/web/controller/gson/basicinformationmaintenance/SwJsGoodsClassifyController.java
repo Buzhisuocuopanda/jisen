@@ -56,7 +56,13 @@ public class SwJsGoodsClassifyController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsGoodsClassifyService.insertSwJsGoodsClassify(cbpaDo));
 
-        }catch (ServiceException | SwException e){
+        }catch (SwException e) {
+            log.error("【新增商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e){
+            log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
             log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
@@ -82,6 +88,10 @@ public class SwJsGoodsClassifyController extends BaseController {
             log.error("【修改商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        }catch (ServiceException e){
+            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
             log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
 
@@ -105,7 +115,11 @@ public class SwJsGoodsClassifyController extends BaseController {
             log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e){
+            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
             log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
