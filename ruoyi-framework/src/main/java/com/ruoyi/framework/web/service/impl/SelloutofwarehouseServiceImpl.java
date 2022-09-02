@@ -26,6 +26,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.tsv.TsvFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
      * @param cbsbDo 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
@@ -114,6 +116,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
      * @param itemList 审核信息
      * @return 结果
      */
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbsc> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -140,6 +143,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     /**
      * 销售出库单审核
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesh(CbsbDo cbsbDo) {
         CbsbCriteria example = new CbsbCriteria();
@@ -162,6 +166,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         return cbsbMapper.updateByExampleSelective(cbsb,example1);
     }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesf(CbsbDo cbsbDo) {
 
@@ -192,6 +197,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return cbsbMapper.updateByExampleSelective(cbsb,example1);    }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
@@ -271,6 +277,7 @@ if(cbob==null){
 
     }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbsbDo cbsbDo) {
 
@@ -312,6 +319,7 @@ if(cbob==null){
         return cbsbMapper.selectSwJsTaskGoodsRelLists(cbsbVo);
     }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodel(CbsbDo cbsbDo) {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
@@ -338,6 +346,7 @@ if(cbob==null){
         return cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
     }
 
+    @Transactional
     @Override
     public int insertSwJsStoress(List<Cbsd> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -419,6 +428,7 @@ if(cbob==null){
         return 1;
     }
 
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodedit(CbsbDo cbsbDo) {
         CbsdCriteria example2 = new CbsdCriteria();

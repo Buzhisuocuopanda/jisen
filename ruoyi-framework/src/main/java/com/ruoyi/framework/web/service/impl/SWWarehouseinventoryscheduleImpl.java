@@ -24,6 +24,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -51,6 +52,7 @@ private CbsjMapper cbbsjMapper;
         return cbshMapper.selectstorelist(cbshVo);
     }
 
+    @Transactional
     @Override
     public IdVo insertSwJsStore(CbshDo cbshDo) {
         if(cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
@@ -80,6 +82,7 @@ private CbsjMapper cbbsjMapper;
         return idVo;
     }
 
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbsj> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -146,6 +149,7 @@ private CbsjMapper cbbsjMapper;
         session.clearCache();
         return 1;    }
 
+    @Transactional
     @Override
     public int deleteSwJsStoreById(CbshDo cbshDo) {
         Long userId = SecurityUtils.getUserId();
@@ -161,6 +165,7 @@ private CbsjMapper cbbsjMapper;
         return   cbshMapper.updateByExampleSelective(cbsh, example);
     }
 
+    @Transactional
     @Override
     public int swJsStoreend(CbshDo cbshDo) {
         CbshCriteria example1 = new CbshCriteria();
@@ -185,6 +190,7 @@ private CbsjMapper cbbsjMapper;
         return   cbshMapper.updateByExampleSelective(cbsh, example);
     }
 
+    @Transactional
     @Override
     public int swJsStoreendd(CbshDo cbshDo) {
         CbshCriteria example1 = new CbshCriteria();
@@ -216,6 +222,7 @@ private CbsjMapper cbbsjMapper;
     public List<CbshVo> SwJsStorelistss(CbshVo cbshVo) {
         return   cbshMapper.SwJsStorelistss(cbshVo);    }
 
+    @Transactional
     @Override
     public List<CbsjVo> SwJsStorelistsss(CbsjVo cbsjVo) {
         return   cbshMapper.SwJsStorelistsss(cbsjVo);

@@ -26,6 +26,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -49,6 +50,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
     @Resource
     private  NumberGenerate numberGenerate;
+    @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
         if(cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
@@ -76,6 +78,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return idVo;
     }
 
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbig> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH,false);
@@ -102,6 +105,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return 1;
     }
 
+    @Transactional
     @Override
     public int deleteSwJsStoreById(CbieDo cbieDo) {
         CbieCriteria example1 = new CbieCriteria();
@@ -126,6 +130,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
     }
 
+    @Transactional
     @Override
     public int SwJsSkuBarcodeshsss(CbigDo cbigDo) {
         CbieCriteria example1 = new CbieCriteria();
@@ -212,7 +217,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return  cbieMapper.selectSwJsStoreList(cbigVo);
     }
      //审核
-    @Override
+     @Transactional
+     @Override
     public int swJsStoreendd(CbieDo cbieDo) {
 
 
@@ -237,6 +243,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
              return 1;
     }
 
+    @Transactional
     @Override
     public int swJsStoreendds(CbieDo cbieDo) {
                 CbieCriteria example1 = new CbieCriteria();
@@ -261,6 +268,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return     cbieMapper.updateByExampleSelective(cbie, example);
     }
 
+    @Transactional
     @Override
     public String importWarehousedetailsinitialize(List<CbieDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)

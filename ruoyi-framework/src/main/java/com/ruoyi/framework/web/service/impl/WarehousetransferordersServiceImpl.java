@@ -22,6 +22,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Resource
     private BaseCheckService baseCheckService;
 
+    @Transactional
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
 
@@ -76,6 +78,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         return idVo;
     }
 
+    @Transactional
     @Override
     public int insertSwJsStores(List<Cbab> itemList) {
 
@@ -126,6 +129,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     /**
      * 仓库调拨单审核
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodesh(CbaaDo cbaaDo) {
 
@@ -154,6 +158,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     /**
      * 仓库调拨单反审
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodefs(CbaaDo cbaaDo) {
         CbaaCriteria example1 = new CbaaCriteria();
@@ -182,6 +187,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     /**
      * 仓库调拨单标记完成
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodebjwc(CbaaDo cbaaDo) {
         CbaaCriteria example1 = new CbaaCriteria();
@@ -209,6 +215,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     /**
      * 仓库调拨单取消完成
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeqxwc(CbaaDo cbaaDo) {
         CbaaCriteria example1 = new CbaaCriteria();
@@ -235,6 +242,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     /**
      * 仓库调拨单修改
      */
+    @Transactional
     @Override
     public int insertSwJsSkuBarcodeupdate(CbaaDo cbaaDo) {
         CbaaCriteria example1 = new CbaaCriteria();
@@ -262,6 +270,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         return cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
     }
 
+    @Transactional
     @Override
     public int insertSwJsStoress(List<Cbac> itemList) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
