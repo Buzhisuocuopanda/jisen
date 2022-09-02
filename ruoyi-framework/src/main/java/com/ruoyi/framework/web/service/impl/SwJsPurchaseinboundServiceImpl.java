@@ -422,10 +422,32 @@ private NumberGenerate numberGenerate;
                     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
                 }
                 //台账操作
-                taskService.InsertCBIB(cbpc1.getCbpc01(), cbpc1.getCbpc10(), TaskType.cgrkd.getMsg());
+                //调用台账方法，最后加
+                CbpdCriteria example3 = new CbpdCriteria();
+                example3.createCriteria()
+                        .andCbpd06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                        .andCbpc01EqualTo(cbpdDto.getCbpc01());
+                List<Cbpd> cbpds1 = cbpdMapper.selectByExample(example3);
+
+                CbibDo cbibDo = new CbibDo();
+                cbibDo.setCbib02(cbpc1.getCbpc10());
+                cbibDo.setCbib03(cbpc1.getCbpc07());
+                cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
+                cbibDo.setCbib06(cbsa.getCbsa07());
+                cbibDo.setCbib07(cbpc1.getCbpc01());
+                cbibDo.setCbib08(goodsid);
+                //本次入库数量
+                cbibDo.setCbib11(cbpds1.get(i).getCbpd09());
+                cbibDo.setCbib12(cbpds1.get(i).getCbpd12());
+                cbibDo.setCbib15(cbpds1.get(i).getCbpd09());
+                cbibDo.setCbib16(cbpds1.get(i).getCbpd12());
+                cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+                cbibDo.setCbib19(cbpc1.getCbpc09());
+                taskService.InsertCBIB(cbibDo);
+            }
             }
 
-        }
+
     /*    //扫码仓库
         else {
             CbpeCriteria example = new CbpeCriteria();

@@ -25,7 +25,7 @@ public class CbpbDo {
     private Integer cbpb06;
 
     private String cbpb07;
-    @NotBlank(message = "商品品牌不能为空")
+    @NotBlank(message = "商品描述不能为空")
     @Length(min=1, max=50)
     @Excel(name = "商品描述不能为空")
     private String cbpb08;

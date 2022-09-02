@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -162,7 +163,22 @@ public class TaskServiceImpl implements TaskService {
             cbib.setCbib09(cbib1.getCbib09());
             cbib.setCbib10(cbib1.getCbib10());
             cbib.setCbib18(cbib1.getCbib18()+1);
+              //直接入库
+            if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
+                cbib.setCbib11((double) 1);
+                cbib.setCbib12((double) 0);
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbib1.getCbib09()+1);
+                cbib.setCbib16((double) 0);
+            }
 
+                //入库数量
+             if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
+
+                 cbib.setCbib13((double) 0);
+                 cbib.setCbib14((double) 0);
+             }
             if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
                 cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
                 cbib.setCbib16(cbibDo.getCbib10());
