@@ -700,7 +700,7 @@
 
   <select id="selectLastBySaleOrderNo" resultMap="BaseResultMap">
     SELECT
-   *
+    <include refid="Base_Column_List" />
 FROM
    CBPK pk
 WHERE
