@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
+import com.ruoyi.system.domain.dto.ChangeSuggestDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderDetailVo;
@@ -29,4 +30,6 @@ public interface TakeGoodsService {
     void delTakeGoodsOrder(Integer id, Long userId);
 
     void auditTakeOrder(AuditTakeOrderDto auditTakeOrderDto);
+
+    void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto);
 }

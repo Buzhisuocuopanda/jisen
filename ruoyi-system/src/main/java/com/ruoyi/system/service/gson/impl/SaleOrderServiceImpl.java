@@ -195,7 +195,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cbba cbba = cbbaMapper.selectByPrimaryKeyForUpdate(totalOrderAddDto.getId());
 
         if (cbba == null) {
-            throw new SwException("");
+            throw new SwException("没有查到该生产总订单");
         }
         OrderDistributionDo send = new OrderDistributionDo();
         send.setCbba(cbba);
@@ -500,11 +500,18 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
                 }
             }
+            //  如果通过清单生成的销售订单，要清空清单
+            if(saleOrderAddDto.getFromShopping()==2){
+                GsSaleShoppingCriteria shex=new GsSaleShoppingCriteria();
+                shex.createCriteria()
+                        .andUserIdEqualTo(saleOrderAddDto.getUserId())
+                        .andGoodsIdEqualTo(good.getGoodsId());
+                int i = gsSaleShoppingMapper.deleteByExample(shex);
+            }
 
         }
 
 
-        // todo 如果通过清单生成的销售订单，要清空清单
 
 
         return;

@@ -1,4 +1,5 @@
 
+package com.ruoyi.web.controller.gson.warehousemanagement;
 /**
  * ClassName WhSaleController
  * Description
