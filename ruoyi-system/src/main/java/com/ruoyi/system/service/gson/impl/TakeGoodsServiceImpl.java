@@ -9,10 +9,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpmTakeOrderDo;
 import com.ruoyi.system.domain.Do.NumberDo;
-import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
-import com.ruoyi.system.domain.dto.TakeOrderGoodsDto;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.TakeGoodsService;
@@ -770,30 +767,94 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 }
 
 
-
-
-
             }
 
 
+        }else if(auditTakeOrderDto.getOpType().equals(2)) {
+            //撤销 提交状态变成未提交状态
+            if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cbpk.getCbpk11())){
+                throw new SwException("必须在待审核状态下才能撤销");
+            }
+            CbpmCriteria plex=new CbpmCriteria();
+            plex.createCriteria()
+                    .andCbpk01EqualTo(auditTakeOrderDto.getTakeOrderId());
+
+            int i = cbpmMapper.deleteByExample(plex);
+            cbpk.setCbpk11(SaleOrderStatusEnums.WEITIJIAO.getCode());
+
+        }else if(auditTakeOrderDto.getOpType().equals(2)){
+            //反审 库建议的货品改为未出库
+
+            if(!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())){
+                throw new SwException("必须在已审核状态下才能撤销");
+            }
+            CbpmCriteria scex=new CbpmCriteria();
+            scex.createCriteria()
+                    .andCbpk01EqualTo(auditTakeOrderDto.getTakeOrderId())
+                    .andCbpm11EqualTo(1);
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(scex);
+            if(cbpms.size()>0){
+                throw new SwException("已有扫码的商品，不能反审");
+            }
+            cbpk.setCbpk11(SaleOrderStatusEnums.YITIJIAO.getCode());
+
+        }else if(auditTakeOrderDto.getOpType().equals(2)){
+            //标记完成
+
+            if(!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())){
+                throw new SwException("必须在已审核状态下才能标记完成");
+            }
 
 
+            cbpk.setCbpk11(SaleOrderStatusEnums.YIWANCHENG.getCode());
+        }else if(auditTakeOrderDto.getOpType().equals(2)){
+            //取消完成
+
+            if(!SaleOrderStatusEnums.YIWANCHENG.getCode().equals(cbpk.getCbpk11())){
+                throw new SwException("必须在已完成状态下才能取消完成");
+            }
+
+            cbpk.setCbpk11(SaleOrderStatusEnums.YISHENHE.getCode());
         }
 
 
 
 
 
-        //撤销 提交状态变成未提交状态
-
-        //反审 库建议的货品改为未出库
-
-        //标记完成
-
-        //取消完成
 
         cbpk.setCbpk05(auditTakeOrderDto.getUserId());
         cbpk.setCbpk04(new Date());
+        cbpkMapper.updateByPrimaryKey(cbpk);
+        return;
+    }
+
+    @Override
+    public void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto) {
+        Date date = new Date();
+        List<ChangeSuggestModel> list = changeSuggestDto.getList();
+        for (ChangeSuggestModel changeSuggestModel : list) {
+            //检查修改的商品是否在建议出库单中存在
+            CbpmCriteria example=new CbpmCriteria();
+            example.createCriteria()
+                    .andCbpm09EqualTo(changeSuggestModel.getCbpm09());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+            if(cbpms.size()>0 && !cbpms.get(0).getCbpm01().equals(changeSuggestModel.getCbpm01())){
+                throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + changeSuggestModel.getCbpm09());
+            }
+
+            Cbpm cbpm=new Cbpm();
+            cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+            cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+            cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+            cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+            cbpm.setCbpm10(changeSuggestModel.getCbpm10());
+            cbpm.setCbpm05(date);
+            cbpm.setCbpm06(changeSuggestDto.getUserId());
+            cbpmMapper.updateByPrimaryKey(cbpm);
+        }
+
+
+
     }
 
 

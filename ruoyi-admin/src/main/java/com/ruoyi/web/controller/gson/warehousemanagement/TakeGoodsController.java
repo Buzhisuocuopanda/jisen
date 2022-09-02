@@ -8,6 +8,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
+import com.ruoyi.system.domain.dto.ChangeSuggestDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.SaleOrderListVo;
@@ -197,5 +198,24 @@ public class TakeGoodsController extends BaseController {
     /**
      * 更改提货建议表
      */
+
+
+    @PostMapping("/mdfTakeSuggest")
+    public AjaxResult mdfTakeSuggest(@RequestBody ChangeSuggestDto changeSuggestDto){
+        try {
+
+            changeSuggestDto.setUserId(getUserId().intValue());
+            takeGoodsService.mdfTakeSuggest(changeSuggestDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【更改提货建议表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 }

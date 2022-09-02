@@ -64,6 +64,11 @@ public class SaleOrderAddDto {
     @Size(min = 1,message = "请至少添加一件货物")
     private List<SaleOrderGoodsDto> goods=new ArrayList<>();
 
+
+    //是否从购物车来 1 不是 2 是
+    private Integer fromShopping =1;
+
+
     private Integer userId;
 
 

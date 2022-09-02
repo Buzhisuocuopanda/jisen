@@ -589,6 +589,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     cbba.setCbba04(new Date());
                     cbba.setCbba05(directWarehousingDto.getUserId());
                     cbbaMapper.updateByPrimaryKey(cbba);
+                    break;
 
                 }
             }

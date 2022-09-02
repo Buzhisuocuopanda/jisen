@@ -93,7 +93,7 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
 
         Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsId);
-        if(cbpb==null || DeleteFlagEnum.DELETE.equals(cbpb.getCbpb06())){
+        if(cbpb==null || DeleteFlagEnum.DELETE.getCode().equals(cbpb.getCbpb06())){
             if(goodsName!=null){
                 throw new SwException("该货物不可用"+goodsName);
             }else {
