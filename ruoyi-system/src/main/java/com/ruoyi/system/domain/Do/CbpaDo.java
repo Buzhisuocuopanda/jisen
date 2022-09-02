@@ -26,7 +26,7 @@ public class CbpaDo extends Cbpa {
     private String cbpa07;
 
     private String cbpa08;
-    @NotNull(message = "父级id不能为空")
+    //@NotNull(message = "父级id不能为空")
     private Integer cbpa09;
     @NotBlank(message = "分类编号不能为空")
     @Length(min=1, max=15)
