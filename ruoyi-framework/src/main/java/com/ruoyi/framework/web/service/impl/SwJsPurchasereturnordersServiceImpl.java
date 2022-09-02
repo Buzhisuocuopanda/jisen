@@ -72,6 +72,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Resource
     private  NumberGenerate numberGenerate;
+
+    @Resource
+    private CbsaMapper cbsaMapper;
+
     /**
      * 新增采购退货主单
      *
@@ -154,6 +158,12 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+
+            Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
+            if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){
+                throw new SwException("审核状态才能扫码");
+            }
+
             itemList.get(i).setCbpi03(date);
             itemList.get(i).setCbpi04(Math.toIntExact(userid));
             itemList.get(i).setCbpi05(date);
@@ -162,6 +172,16 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             itemList.get(i).setUserId(Math.toIntExact(userid));
             itemList.get(i).setCbpi11(ScanStatusEnum.YISAOMA.getCode());
          //   mapper.insertSelective(itemList.get(i));
+
+            //查商品数量和单价
+             CbphCriteria example = new CbphCriteria();
+            example.createCriteria().andCbpg01EqualTo(itemList.get(i).getCbpg01())
+                    .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbph> cbphs = cbphMapper.selectByExample(example);
+            //数量
+            Double cbph09 = cbphs.get(i).getCbph09();
+            //单价
+            Double cbph10 = cbphs.get(i).getCbph10();
 
             //如果查不到添加信息到库存表
             Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
@@ -202,13 +222,33 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
-
+            //更新台账
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib01(itemList.get(i).getCbpg01());
+            cbibDo.setCbib02(cbpg.getCbpg10());
+            cbibDo.setCbib03(cbpg.getCbpg07());
+            cbibDo.setCbib05(String.valueOf(TaskType.cgtkd.getCode()));
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbpg.getCbpg09());
+            cbibDo.setCbib06(cbsa.getCbsa08());
+            cbibDo.setCbib07(cbpg.getCbpg01());
+            cbibDo.setCbib08(itemList.get(i).getCbpi08());
+            cbibDo.setCbib13(cbph09);
+            cbibDo.setCbib14(cbph10);
+            cbibDo.setCbib17(TaskType.cgtkd.getMsg());
+            cbibDo.setCbib19(cbpg.getCbpg09());
+           taskService.InsertCBIB(cbibDo);
             mapper.insertSelective(itemList.get(i));
+
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
                 session.clearCache();
             }
         }
+        CbpgDto cbpgDto = new CbpgDto();
+        cbpgDto.setCbpg01(itemList.get(0).getCbpg01());
+        //标记审核完成
+        this.SwJsSkuBarcodes(cbpgDto);
+
         session.commit();
         session.clearCache();
         return 1;

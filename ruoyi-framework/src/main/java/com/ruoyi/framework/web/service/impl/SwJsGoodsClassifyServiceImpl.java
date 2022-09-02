@@ -72,7 +72,10 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         if(listt.size()>0){
             throw new SwException("分类编号已存在");
         }
+        if(cbpaDo.getCbpa09()==null){
+            throw new SwException("上级分类没输入");
 
+        }
         Cbpa cbpa1 = cbpaMapper.selectByPrimaryKey(cbpaDo.getCbpa09());
         if(cbpa1==null){
             throw new SwException("上级分类不存在");
