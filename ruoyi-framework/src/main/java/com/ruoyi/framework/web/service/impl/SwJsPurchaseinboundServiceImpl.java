@@ -176,6 +176,8 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
 
+            taskService.InsertCBIB(itemList.get(i).getCbpc01(), cbpc.getCbpc10(), TaskType.cgrkd.getMsg());
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
