@@ -158,21 +158,21 @@ public class TaskServiceImpl implements TaskService {
             cbib.setCbib09((double) 0);
             cbib.setCbib10((double) 0);
             cbib.setCbib18(1);
+        }else {
+            cbib.setCbib09(cbib1.getCbib09());
+            cbib.setCbib10(cbib1.getCbib10());
+            cbib.setCbib18(cbib1.getCbib18()+1);
+
+            if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
+                cbib.setCbib16(cbibDo.getCbib10());
+            }
         }
         Date date=new Date();
         cbib.setCbib04(date);
-        cbib.setCbib09(cbib1.getCbib09());
 
-        cbib.setCbib10(cbib1.getCbib10());
-        if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
-            cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
-            cbib.setCbib16(cbibDo.getCbib10());
-        }
-        if(cbib1.getCbib18()==null) {
-            cbib.setCbib18(1);
-        }else{
-            cbib.setCbib18(cbib1.getCbib18()+1);
-        }
+
+
         cbibMapper.insertSelective(cbib);
         return cbib;
     }
