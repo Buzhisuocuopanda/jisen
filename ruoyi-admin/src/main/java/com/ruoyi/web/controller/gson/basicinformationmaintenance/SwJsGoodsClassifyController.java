@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Do.CbpaDo;
+import com.ruoyi.system.domain.Do.CbpgDo;
 import com.ruoyi.system.service.ISwJsGoodsClassifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -159,5 +161,21 @@ public class SwJsGoodsClassifyController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+
+
+    /**
+     * 导入商品分类下载模板
+     */
+    @ApiOperation(
+            value ="导入商品分类下载模板",
+            notes = "导入商品分类下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbpaDo> util = new ExcelUtil<CbpaDo>(CbpaDo.class);
+        util.importTemplateExcel(response,"导入采购退库单下载模板");
     }
 }
