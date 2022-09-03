@@ -9,35 +9,35 @@ import java.util.Date;
 import java.util.List;
 
 public class Cbpa implements Serializable {
-    @Excel(name = "id")
+   // @Excel(name = "id")
     private Integer cbpa01;
-    @Excel(name = "创建时间")
+  //  @Excel(name = "创建时间")
 
     private Date cbpa02;
-    @Excel(name = "修改时间")
+   // @Excel(name = "修改时间")
     private Date cbpa03;
-    @Excel(name = "创建人id")
+ //   @Excel(name = "创建人id")
 
     private Integer cbpa04;
-    @Excel(name = "修改人id")
+ //   @Excel(name = "修改人id")
 
     private Integer cbpa05;
-    @Excel(name = "是否删除")
+  //  @Excel(name = "是否删除")
 
     private Integer cbpa06;
-    @Excel(name = "名称")
+   // @Excel(name = "分类名称")
 
     private String cbpa07;
-    @Excel(name = "名称1")
+  //  @Excel(name = "名称1")
 
     private String cbpa08;
-    @Excel(name = "父节点id")
+  //  @Excel(name = "父节点id")
 
     private Integer cbpa09;
-    @Excel(name = "分类编号")
+  //  @Excel(name = "分类编号")
 
     private String cbpa11;
-    @Excel(name = "父节点编号")
+   // @Excel(name = "父节点编号")
 
     private String cbpa12;
 

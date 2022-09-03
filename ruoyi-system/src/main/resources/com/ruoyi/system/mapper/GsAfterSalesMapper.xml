@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.GsWorkInstanceMapper">
-  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.GsWorkInstance">
+<mapper namespace="com.ruoyi.system.mapper.GsAfterSalesMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.GsAfterSales">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_by" jdbcType="BIGINT" property="createBy" />
     <result column="update_by" jdbcType="BIGINT" property="updateBy" />
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
-    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-    <result column="order_type" jdbcType="TINYINT" property="orderType" />
-    <result column="order_close" jdbcType="TINYINT" property="orderClose" />
-    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
-    <result column="order_msg" jdbcType="VARCHAR" property="orderMsg" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="sale_order_no" jdbcType="VARCHAR" property="saleOrderNo" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="sn" jdbcType="VARCHAR" property="sn" />
+    <result column="suplier_id" jdbcType="INTEGER" property="suplierId" />
+    <result column="answer_msg" jdbcType="VARCHAR" property="answerMsg" />
+    <result column="process" jdbcType="VARCHAR" property="process" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,16 +76,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, order_no, order_type,
-    order_close, order_status, order_msg
+    id, create_time, update_time, create_by, update_by, delete_flag, customer_id, sale_order_no, 
+    goods_id, question, sn, suplier_id, answer_msg, `process`
   </sql>
-  <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsWorkInstanceCriteria" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from `gs_work_instance`
+    from `gs_after_sales`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,33 +94,35 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
-    from `gs_work_instance`
+    from `gs_after_sales`
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from `gs_work_instance`
+    delete from `gs_after_sales`
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.GsWorkInstanceCriteria">
-    delete from `gs_work_instance`
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria">
+    delete from `gs_after_sales`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.GsWorkInstance">
-    insert into `gs_work_instance` (id, create_time, update_time,
-      create_by, update_by, delete_flag,
-      order_no, order_type, order_close,
-      order_status, order_msg)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
-      #{orderNo,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT}, #{orderClose,jdbcType=TINYINT},
-      #{orderStatus,jdbcType=TINYINT}, #{orderMsg,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.ruoyi.system.domain.GsAfterSales">
+    insert into `gs_after_sales` (id, create_time, update_time, 
+      create_by, update_by, delete_flag, 
+      customer_id, sale_order_no, goods_id, 
+      question, sn, suplier_id, 
+      answer_msg, `process`)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT}, 
+      #{customerId,jdbcType=INTEGER}, #{saleOrderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
+      #{question,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{suplierId,jdbcType=INTEGER}, 
+      #{answerMsg,jdbcType=VARCHAR}, #{process,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsWorkInstance">
-    insert into `gs_work_instance`
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsAfterSales">
+    insert into `gs_after_sales`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -137,20 +142,29 @@
       <if test="deleteFlag != null">
         delete_flag,
       </if>
-      <if test="orderNo != null">
-        order_no,
+      <if test="customerId != null">
+        customer_id,
       </if>
-      <if test="orderType != null">
-        order_type,
+      <if test="saleOrderNo != null">
+        sale_order_no,
       </if>
-      <if test="orderClose != null">
-        order_close,
+      <if test="goodsId != null">
+        goods_id,
       </if>
-      <if test="orderStatus != null">
-        order_status,
+      <if test="question != null">
+        question,
       </if>
-      <if test="orderMsg != null">
-        order_msg,
+      <if test="sn != null">
+        sn,
+      </if>
+      <if test="suplierId != null">
+        suplier_id,
+      </if>
+      <if test="answerMsg != null">
+        answer_msg,
+      </if>
+      <if test="process != null">
+        `process`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -172,31 +186,40 @@
       <if test="deleteFlag != null">
         #{deleteFlag,jdbcType=TINYINT},
       </if>
-      <if test="orderNo != null">
-        #{orderNo,jdbcType=VARCHAR},
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
       </if>
-      <if test="orderType != null">
-        #{orderType,jdbcType=TINYINT},
+      <if test="saleOrderNo != null">
+        #{saleOrderNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderClose != null">
-        #{orderClose,jdbcType=TINYINT},
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
       </if>
-      <if test="orderStatus != null">
-        #{orderStatus,jdbcType=TINYINT},
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
       </if>
-      <if test="orderMsg != null">
-        #{orderMsg,jdbcType=VARCHAR},
+      <if test="sn != null">
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="suplierId != null">
+        #{suplierId,jdbcType=INTEGER},
+      </if>
+      <if test="answerMsg != null">
+        #{answerMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="process != null">
+        #{process,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.GsWorkInstanceCriteria" resultType="java.lang.Long">
-    select count(*) from `gs_work_instance`
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria" resultType="java.lang.Long">
+    select count(*) from `gs_after_sales`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <update id="updateByExampleSelective" parameterType="map">
-    update `gs_work_instance`
+  <update id="updateByExampleSelective" parameterType="map">
+    update `gs_after_sales`
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -216,20 +239,29 @@
       <if test="record.deleteFlag != null">
         delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
       </if>
-      <if test="record.orderNo != null">
-        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      <if test="record.customerId != null">
+        customer_id = #{record.customerId,jdbcType=INTEGER},
       </if>
-      <if test="record.orderType != null">
-        order_type = #{record.orderType,jdbcType=TINYINT},
+      <if test="record.saleOrderNo != null">
+        sale_order_no = #{record.saleOrderNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.orderClose != null">
-        order_close = #{record.orderClose,jdbcType=TINYINT},
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
       </if>
-      <if test="record.orderStatus != null">
-        order_status = #{record.orderStatus,jdbcType=TINYINT},
+      <if test="record.question != null">
+        question = #{record.question,jdbcType=VARCHAR},
       </if>
-      <if test="record.orderMsg != null">
-        order_msg = #{record.orderMsg,jdbcType=VARCHAR},
+      <if test="record.sn != null">
+        sn = #{record.sn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suplierId != null">
+        suplier_id = #{record.suplierId,jdbcType=INTEGER},
+      </if>
+      <if test="record.answerMsg != null">
+        answer_msg = #{record.answerMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.process != null">
+        `process` = #{record.process,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -237,24 +269,27 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update `gs_work_instance`
+    update `gs_after_sales`
     set id = #{record.id,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_by = #{record.createBy,jdbcType=BIGINT},
       update_by = #{record.updateBy,jdbcType=BIGINT},
       delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
-      order_no = #{record.orderNo,jdbcType=VARCHAR},
-      order_type = #{record.orderType,jdbcType=TINYINT},
-      order_close = #{record.orderClose,jdbcType=TINYINT},
-      order_status = #{record.orderStatus,jdbcType=TINYINT},
-      order_msg = #{record.orderMsg,jdbcType=VARCHAR}
+      customer_id = #{record.customerId,jdbcType=INTEGER},
+      sale_order_no = #{record.saleOrderNo,jdbcType=VARCHAR},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      question = #{record.question,jdbcType=VARCHAR},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      suplier_id = #{record.suplierId,jdbcType=INTEGER},
+      answer_msg = #{record.answerMsg,jdbcType=VARCHAR},
+      `process` = #{record.process,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsWorkInstance">
-    update `gs_work_instance`
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsAfterSales">
+    update `gs_after_sales`
     <set>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -271,96 +306,48 @@
       <if test="deleteFlag != null">
         delete_flag = #{deleteFlag,jdbcType=TINYINT},
       </if>
-      <if test="orderNo != null">
-        order_no = #{orderNo,jdbcType=VARCHAR},
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=INTEGER},
       </if>
-      <if test="orderType != null">
-        order_type = #{orderType,jdbcType=TINYINT},
+      <if test="saleOrderNo != null">
+        sale_order_no = #{saleOrderNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderClose != null">
-        order_close = #{orderClose,jdbcType=TINYINT},
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
       </if>
-      <if test="orderStatus != null">
-        order_status = #{orderStatus,jdbcType=TINYINT},
+      <if test="question != null">
+        question = #{question,jdbcType=VARCHAR},
       </if>
-      <if test="orderMsg != null">
-        order_msg = #{orderMsg,jdbcType=VARCHAR},
+      <if test="sn != null">
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="suplierId != null">
+        suplier_id = #{suplierId,jdbcType=INTEGER},
+      </if>
+      <if test="answerMsg != null">
+        answer_msg = #{answerMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="process != null">
+        `process` = #{process,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsWorkInstance">
-    update `gs_work_instance`
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsAfterSales">
+    update `gs_after_sales`
     set create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=BIGINT},
       update_by = #{updateBy,jdbcType=BIGINT},
       delete_flag = #{deleteFlag,jdbcType=TINYINT},
-      order_no = #{orderNo,jdbcType=VARCHAR},
-      order_type = #{orderType,jdbcType=TINYINT},
-      order_close = #{orderClose,jdbcType=TINYINT},
-      order_status = #{orderStatus,jdbcType=TINYINT},
-      order_msg = #{orderMsg,jdbcType=VARCHAR}
+      customer_id = #{customerId,jdbcType=INTEGER},
+      sale_order_no = #{saleOrderNo,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      question = #{question,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      suplier_id = #{suplierId,jdbcType=INTEGER},
+      answer_msg = #{answerMsg,jdbcType=VARCHAR},
+      `process` = #{process,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-  <select id="selectApprovalrecords" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
-    SELECT
-      b.order_type as orderType,
-      b.order_no as orderNo,
-      a.CBOA08 as cboa08,
-      a.CBOA13 as cboa13,
-      b.order_msg as orderMsg
-    FROM
-      CBOA a
-        LEFT JOIN
-      gs_work_instance b
-      ON
-        a.CBOA07=b.order_no
-    WHERE
-          b.order_type=1
-        and
-          b.order_close=2
-        AND
-          b.order_status=1 or
-      b.order_status=2
-    <if test="orderNo != null "> and b.order_no  = #{orderNo}</if>
-
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-      and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-    </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-      and date_format(a.CBOA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-    </if>
-  </select>
-  <select id="selectUnfinisheddocuments" resultType="com.ruoyi.system.domain.vo.UnfinishedentsVo">
-    SELECT
-      b.order_type as orderType,
-      b.order_no as orderNo,
-      a.CBOC08 as cboc08,
-      a.CBOC13 as cboc13,
-      b.order_msg as orderMsg
-    FROM
-      CBOC a
-        LEFT JOIN
-      gs_work_instance b
-      ON
-        a.CBOC07=b.order_no
-    WHERE
-      b.order_type=2
-      and
-      b.order_close=2
-      AND
-      b.order_status=1
-    <if test="orderNo != null "> and b.order_no  = #{orderNo}</if>
-
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-      and date_format(a.CBOC08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-    </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-      and date_format(a.CBOC08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-    </if>
-  </select>
-
 </mapper>

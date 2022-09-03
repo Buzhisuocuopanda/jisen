@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.AuditStatusConstants;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
 import com.ruoyi.common.enums.*;
@@ -214,7 +215,7 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
     @Override
     public SysUser checkUserTask(Long userId, Byte auditPerm) {
-        com.ruoyi.system.domain.SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         String auditPerm1 = sysUser.getAuditPerm();
         String s1 = auditPerm.toString();
 

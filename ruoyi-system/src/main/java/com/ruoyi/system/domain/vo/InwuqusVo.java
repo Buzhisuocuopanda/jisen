@@ -21,4 +21,5 @@ public class InwuqusVo {
 
     private Date cbig15;
 
+
 }

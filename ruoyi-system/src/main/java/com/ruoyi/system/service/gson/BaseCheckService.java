@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;

@@ -179,7 +179,10 @@ public class TaskServiceImpl implements TaskService {
                  cbib.setCbib13((double) 0);
                  cbib.setCbib14((double) 0);
              }
+           //采购退库单
             if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
+                cbib.setCbib11((double) 0);
+                cbib.setCbib12((double) 0);
                 cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
                 cbib.setCbib16(cbibDo.getCbib10());
             }

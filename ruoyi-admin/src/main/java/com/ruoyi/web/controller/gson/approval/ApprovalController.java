@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.gson.Approval;
+package com.ruoyi.web.controller.gson.approval;
 
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
@@ -7,7 +7,6 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
-import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.vo.ApprovalVo;
 import com.ruoyi.system.domain.vo.UnfinishedentsVo;
 import com.ruoyi.system.service.gson.ApprovalService;

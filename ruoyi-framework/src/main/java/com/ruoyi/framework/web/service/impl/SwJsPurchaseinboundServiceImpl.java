@@ -179,8 +179,7 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
             mapper.insertSelective(itemList.get(i));
-            CbpdDto cbpdDto = new CbpdDto();
-           this.SwJsSkuBarcodeshsss(cbpdDto);
+
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
                 session.clearCache();
@@ -709,7 +708,8 @@ private NumberGenerate numberGenerate;
         if(cbpcs.size() >0 && !cbpcs.get(0).getCbpc01().equals(cbpcDo.getCbpc01())){
             throw new SwException("编号已存在");
 
-        }}
+        }
+        }
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpcDo, Cbpc.class, null);
         Date date = new Date();

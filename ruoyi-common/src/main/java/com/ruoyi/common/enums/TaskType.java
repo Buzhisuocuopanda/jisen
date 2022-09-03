@@ -6,6 +6,7 @@ public enum TaskType {
     cgtkd(new Byte("2"), "采购退库单"),
     xsckd(new Byte("3"), "销售发货单"),
     xstkd(new Byte("4"), "销售退库单"),
+    xcckd(new Byte("5"), "销售出库单"),
 
     xsthd(new Byte("6"), "调拨单调入"),
     zjd(new Byte("7"), "调拨单调出"),
@@ -13,7 +14,7 @@ public enum TaskType {
     zjrk(new Byte("8"), "直接入库"),
 
     xsdd(new Byte("10"), "销售订单"),
-    xsddcwfs(new Byte("10"), "销售订单财务复审"),
+    xsddcwfs(new Byte("11"), "销售订单财务复审"),
 
 
 

@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -24,6 +25,7 @@ public class CbpaDo extends Cbpa {
     private Integer cbpa06;
     @NotBlank(message = "分类名称不能为空")
     @Length(min=1, max=11)
+    @Excel(name = "分类名称")
     private String cbpa07;
 
     private String cbpa08;
@@ -32,6 +34,7 @@ public class CbpaDo extends Cbpa {
     @NotBlank(message = "分类编号不能为空")
     @Pattern(regexp = "^[0-9]*$", message = "分类编号必须为数字")
     @Length(min=1, max=10, message = "分类编号长度必须1位到10位之间")
+    @Excel(name = "分类编号")
     private String cbpa11;
 
     private String cbpa12;

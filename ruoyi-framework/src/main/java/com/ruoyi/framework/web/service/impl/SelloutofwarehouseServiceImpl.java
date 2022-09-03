@@ -5,10 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.Do.SaleOrderExitDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.SaleOrderAddDto;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.*;
@@ -273,6 +270,9 @@ if(cbob==null){
         saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
         saleOrderAddDto.setGoods(goods);
        saleOrderService.addSaleOrder(saleOrderAddDto);
+
+
+
         return         cbsbMapper.updateByExampleSelective(cbsb, example1);
 
     }
@@ -410,16 +410,47 @@ if(cbob==null){
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
-            //状态设为标记完成，回写总订单
-            CbsbDo cbsbDo = new CbsbDo();
-            cbsbDo.setCbsb01(itemList.get(i).getCbsb01());
-            insertSwJsSkuBarcodeshwc(cbsbDo);
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
                 session.clearCache();
             }
         }
+
+        //写台账
+        Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
+        if(cbsb==null){
+            throw new SwException("没有该销售出库单");
+        }
+        CbscCriteria example = new CbscCriteria();
+        example.createCriteria().andCbsb01EqualTo(cbsb.getCbsb01())
+                .andCbsc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsc> cbscs = cbscMapper.selectByExample(example);
+        if(cbscs.size()==0){
+            throw new SwException("没有该销售出库单明细表为空");
+        }
+     /*   Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpc1.getCbpc09());
+
+        for(int i=0;i<cbscs.size();i++){
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(cbsb.getCbsb10());
+            cbibDo.setCbib03(cbsb.getCbsb07());
+            cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+            cbibDo.setCbib06(cbscs.get(i).getCbsc15());
+            cbibDo.setCbib07(cbpc1.getCbpc01());
+            cbibDo.setCbib08(cbpds.get(i).getCbpd08());
+            //本次入库数量
+            cbibDo.setCbib11(cbpds1.get(i).getCbpd09());
+            cbibDo.setCbib12(cbpds1.get(i).getCbpd12());
+            cbibDo.setCbib15(cbpds1.get(i).getCbpd09());
+            cbibDo.setCbib16(cbpds1.get(i).getCbpd12());
+            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+            cbibDo.setCbib19(cbpc1.getCbpc09());
+            taskService.InsertCBIB(cbibDo);
+        }*/
+        //状态设为标记完成，回写总订单
+
         CbsbDo cbsbDo = new CbsbDo();
         cbsbDo.setCbsb01(itemList.get(0).getCbsb01());
        this.insertSwJsSkuBarcodeshwc(cbsbDo);
