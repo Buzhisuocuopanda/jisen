@@ -70,16 +70,16 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         exapmle.or(criteria2);
         List<Cbpa> listt = cbpaMapper.selectByExample(exapmle);
         if(listt.size()>0){
-            throw new SwException("分类编号已存在");
+            throw new SwException("分类编号或分类名已存在");
         }
         if(cbpaDo.getCbpa09()==null){
             throw new SwException("上级分类没输入");
 
         }
-        Cbpa cbpa1 = cbpaMapper.selectByPrimaryKey(cbpaDo.getCbpa09());
+  /*      Cbpa cbpa1 = cbpaMapper.selectByPrimaryKey(cbpaDo.getCbpa09());
         if(cbpa1==null){
             throw new SwException("上级分类不存在");
-        }
+        }*/
 
         Cbpa cbpa = BeanCopyUtils.coypToClass(cbpaDo, Cbpa.class, null);
         Date date = new Date();
@@ -151,7 +151,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
                 .andCbpb14EqualTo(cbpaDo.getCbpa01());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example4);
         if(cbpbs.size()>0){
-            throw new SwException("商品编号已在用不可删除");
+            throw new SwException("商品编号已在用不可修改");
         }
 
 

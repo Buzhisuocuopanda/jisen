@@ -1,12 +1,10 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbib;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.GsGoodsSku;
 import com.ruoyi.system.domain.GsGoodsSn;
+import com.ruoyi.system.domain.GsWorkInstance;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,4 +32,6 @@ public interface TaskService {
 
     GsGoodsSn addGsGoodsSns(GsGoodsSnDo goodsSnDo);
 
+     //流程审批表
+    GsWorkInstance addGsWorkInstance(GsWorkInstanceDo goodsWorkInstanceDo);
 }

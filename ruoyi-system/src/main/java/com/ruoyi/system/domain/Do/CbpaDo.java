@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 @Data
 public class CbpaDo extends Cbpa {
@@ -29,7 +30,8 @@ public class CbpaDo extends Cbpa {
     //@NotNull(message = "父级id不能为空")
     private Integer cbpa09;
     @NotBlank(message = "分类编号不能为空")
-    @Length(min=1, max=15)
+    @Pattern(regexp = "^[0-9]*$", message = "分类编号必须为数字")
+    @Length(min=1, max=10, message = "分类编号长度必须1位到10位之间")
     private String cbpa11;
 
     private String cbpa12;

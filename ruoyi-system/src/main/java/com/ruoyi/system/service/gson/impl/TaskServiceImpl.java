@@ -1,16 +1,11 @@
 package com.ruoyi.system.service.gson.impl;
 
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.DeleteFlagEnum1;
-import com.ruoyi.common.enums.TaskType;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnTransDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.TaskService;
 import org.springframework.stereotype.Service;
@@ -43,6 +38,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private GsGoodsSnTransMapper gsGoodsSnTransMapper;
+
+    @Resource
+    private GsWorkInstanceMapper gsWorkInstanceMapper;
     @Override
     public Cbib InsertCBIB(Integer typeid, Integer storeId, String type) {
 
@@ -110,6 +108,8 @@ public class TaskServiceImpl implements TaskService {
             cbib.setCbib10(cbib1.getCbib10());
             cbib.setCbib11(doubles[0]);
             cbib.setCbib12(doubles1[0]);
+            cbib.setCbib13((double) 0);
+            cbib.setCbib14((double) 0);
 
             cbib.setCbib15(doubles[0]);
             cbib.setCbib16(doubles1[0]);
@@ -173,7 +173,7 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib16((double) 0);
             }
 
-                //入库数量
+                //采购入库
              if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
 
                  cbib.setCbib13((double) 0);
@@ -288,6 +288,8 @@ public class TaskServiceImpl implements TaskService {
         return gsGoodsSn;    }
 
 
+
+
     public Cbib selectLastOne(List<Cbib> list) {
         Cbib card = new Cbib();
 
@@ -308,5 +310,22 @@ public class TaskServiceImpl implements TaskService {
         return card;
     }
 
+    @Override
+    public GsWorkInstance addGsWorkInstance(GsWorkInstanceDo goodsWorkInstanceDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsWorkInstance gsWorkInstance = BeanCopyUtils.coypToClass(goodsWorkInstanceDo, GsWorkInstance.class, null);
+        gsWorkInstance.setCreateTime(date);
+        gsWorkInstance.setUpdateTime(date);
+        gsWorkInstance.setCreateBy(userid);
+        gsWorkInstance.setUpdateBy(userid);
+        gsWorkInstance.setOrderNo(goodsWorkInstanceDo.getOrderNo());
+        gsWorkInstance.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsWorkInstance.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
+        gsWorkInstance.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+        gsWorkInstance.setOrderMsg(goodsWorkInstanceDo.getOrderMsg());
+        gsWorkInstanceMapper.insertSelective(gsWorkInstance);
+        return gsWorkInstance;
+    }
 
 }
