@@ -91,6 +91,13 @@ public class QualityinspectionlistController  extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【新增质检单明细表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【新增质检单明细表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -115,9 +122,16 @@ public class QualityinspectionlistController  extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【删除质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【删除质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【删除质检单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -135,9 +149,14 @@ public class QualityinspectionlistController  extends BaseController {
     public AjaxResult SwJsPurchaseinboundsh( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodesh(cbqaDo));
-
-
         }catch (SwException e) {
+            log.error("【审核质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【审核质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -162,9 +181,16 @@ public class QualityinspectionlistController  extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【反审质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        }catch (ServiceException e) {
+            log.error("【反审质检单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【反审质检单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -185,6 +211,13 @@ public class QualityinspectionlistController  extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【质检单标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【质检单标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -208,10 +241,17 @@ public class QualityinspectionlistController  extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【质检单标记取消完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
-            log.error("【质检单标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+        } catch (ServiceException e) {
+            log.error("【质检单标记取消完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【质检单标记取消完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -231,6 +271,13 @@ public class QualityinspectionlistController  extends BaseController {
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelListss(cbqaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【质检单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【质检单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -254,9 +301,16 @@ public class QualityinspectionlistController  extends BaseController {
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelList(cbqaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【质检单列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【质检单列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【质检单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -277,6 +331,13 @@ public class QualityinspectionlistController  extends BaseController {
             List<CbqaVo> list = swQualityinspectionlistService.SwJsSkuBarcodeselect(cbqaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【质检单查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【质检单查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -302,9 +363,16 @@ public class QualityinspectionlistController  extends BaseController {
             List<CbqaVo> list = swQualityinspectionlistService.SwJsSkuBarcodeselects(cbqaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【质检单新增使用的查询列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【质检单新增使用的查询列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【质检单新增使用的查询列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");

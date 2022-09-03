@@ -28,7 +28,7 @@ public class CbsaDto {
     @NotBlank(message = "供应商名称不能为空")
     private String cbsa08;
 
-    @NotBlank(message = "供应商名称大写字母不能为空")
+ //   @NotBlank(message = "供应商名称大写字母不能为空")
     private String cbsa09;
 
     @NotBlank(message = "开户行不能为空")
@@ -54,11 +54,10 @@ public class CbsaDto {
     @NotBlank(message = "联系电话不能为空")
     @Excel(name = "联系电话")
     private String cbsa15;
-
-    @NotBlank
+    @NotBlank(message = "发票地址不能为空")
     private String cbsa16;
 
-    @NotBlank
+    @NotBlank(message = "发票电话不能为空")
     private String cbsa17;
 
     @NotNull(message = "出库顺序不能为空")

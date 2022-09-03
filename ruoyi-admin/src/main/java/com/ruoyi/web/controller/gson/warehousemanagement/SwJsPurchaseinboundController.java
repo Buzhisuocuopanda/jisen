@@ -68,6 +68,13 @@ public class SwJsPurchaseinboundController extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【直接入库单条件查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【直接入库单条件查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -91,6 +98,13 @@ public class SwJsPurchaseinboundController extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【新增采购入库单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【新增采购入库单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -115,9 +129,16 @@ public class SwJsPurchaseinboundController extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【新增采购入库单明细表】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【新增采购入库单明细表】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【新增采购入库单明细表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -136,8 +157,12 @@ public class SwJsPurchaseinboundController extends BaseController {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodeshs(cbpdDto));
         }catch (ServiceException e) {
+            log.error("【采购入库单审核】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (SwException e) {
+            log.error("【采购入库单审核】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -160,12 +185,16 @@ public class SwJsPurchaseinboundController extends BaseController {
 
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodeshsss(cbpdDto));
         }catch (ServiceException e) {
+            log.error("【采购入库标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (SwException e) {
+            log.error("【采购入库标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【采购入库单反审】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+            log.error("【采购入库标记完成】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -183,8 +212,12 @@ public class SwJsPurchaseinboundController extends BaseController {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodesh(cbpdDto));
         }catch (ServiceException e) {
+            log.error("【采购入库取消完成】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (SwException e) {
+            log.error("【采购入库取消完成】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -206,8 +239,12 @@ public class SwJsPurchaseinboundController extends BaseController {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodeshss(cbpdDto));
         }catch (ServiceException e) {
+            log.error("【采购入库单反审】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (SwException e) {
+            log.error("【采购入库单反审】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -229,6 +266,13 @@ public class SwJsPurchaseinboundController extends BaseController {
         try {
             return toAjax(swJsPurchaseinboundService.deleteSwJsSkuBarcodsById(cbpdDto));
         }catch (SwException e) {
+            log.error("【删除采购入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【删除采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -250,6 +294,13 @@ public class SwJsPurchaseinboundController extends BaseController {
         try {
             return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpcDo));
         }catch (SwException e) {
+            log.error("【修改采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【修改采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -274,9 +325,16 @@ public class SwJsPurchaseinboundController extends BaseController {
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelLists(cbpcVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【采购入库单查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【采购入库单查询】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【采购入库单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpcVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -296,9 +354,16 @@ public class SwJsPurchaseinboundController extends BaseController {
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListsss(cbpcVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【采购入库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【采购入库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【采购入库单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpcVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -319,6 +384,13 @@ public class SwJsPurchaseinboundController extends BaseController {
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListss(cbpcVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【采购入库单列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【采购入库单列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpcVo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -361,9 +433,16 @@ public class SwJsPurchaseinboundController extends BaseController {
             String message = swJsPurchaseinboundService.importSwJsGoods(swJsGoodsList, updateSupport,operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
+            log.error("【导入采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【导入采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【导入采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");

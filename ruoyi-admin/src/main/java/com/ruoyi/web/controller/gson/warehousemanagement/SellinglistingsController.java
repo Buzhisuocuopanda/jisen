@@ -58,9 +58,16 @@ public class SellinglistingsController extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【新增销售上架单】接口出现异常,参数${},异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("【新增销售上架单】接口出现异常,参数${},异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【新增销售上架单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -82,9 +89,16 @@ public class SellinglistingsController extends BaseController {
             List<TakeGoodsOrderListVo> list = iSellinglistingsService.selectSwJsTaskGoodsRelLists(takeGoodsOrderListDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderListDto),ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        }  catch (ServiceException e) {
+            log.error("【销售上架单查询】接口出现异常,参数${},异常${}$", JSON.toJSON(takeGoodsOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【销售上架单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderListDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
@@ -105,9 +119,16 @@ public class SellinglistingsController extends BaseController {
 
 
         }catch (SwException e) {
+            log.error("【删除销售上架单】接口出现异常,参数${},异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
+        }  catch (ServiceException e) {
+            log.error("【删除销售上架单】接口出现异常,参数${},异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
             log.error("【删除销售上架单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSnDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
