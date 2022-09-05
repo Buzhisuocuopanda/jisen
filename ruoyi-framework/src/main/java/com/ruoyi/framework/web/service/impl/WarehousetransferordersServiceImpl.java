@@ -6,6 +6,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbaaDo;
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbaaVo;
@@ -45,6 +46,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
     @Resource
     private TaskService taskService;
+
+    @Resource
+    private CbsaMapper cbsaMapper;
 
     @Resource
     private BaseCheckService baseCheckService;
@@ -214,8 +218,62 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
 
+        //调入仓库
+        Integer storeid = cbaa1.getCbaa10();
+        //调出仓库
+        Integer storeid1 = cbaa1.getCbaa09();
+        //编号
+        String number = cbaa1.getCbaa07();
+        //单据id
+        Integer id = cbaa1.getCbaa01();
 
+        //查仓库调拨单明细表
+        CbabCriteria example1 = new CbabCriteria();
+        example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
+                .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbab> cbabs = cbabMapper.selectByExample(example1);
+        for(int i=0;i<cbabs.size();i++) {
+            //供应商名称
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbabs.get(i).getCbab14());
+            String vendername = cbsa.getCbsa08();
+            //商品id
+            Integer goodsid = cbabs.get(i).getCbab08();
 
+            //台账新增数据调入仓库
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(storeid);
+            cbibDo.setCbib03(number);
+            cbibDo.setCbib05(String.valueOf(TaskType.xsthd.getCode()));
+            cbibDo.setCbib06(vendername);
+            cbibDo.setCbib07(id);
+            cbibDo.setCbib08(goodsid);
+            cbibDo.setCbib11(cbabs.get(i).getCbab09());
+            cbibDo.setCbib12(cbabs.get(i).getCbab12());
+            cbibDo.setCbib13((double) 0);
+            cbibDo.setCbib14((double) 0);
+
+            cbibDo.setCbib17(TaskType.cqrk.getMsg());
+            cbibDo.setCbib19(cbabs.get(i).getCbab14());
+            taskService.InsertCBIB(cbibDo);
+
+             //台账新增数据调出仓库
+            CbibDo cbibDo1 = new CbibDo();
+            cbibDo1.setCbib02(storeid1);
+            cbibDo1.setCbib03(number);
+            cbibDo1.setCbib05(String.valueOf(TaskType.zjd.getCode()));
+            cbibDo1.setCbib06(vendername);
+            cbibDo1.setCbib07(id);
+            cbibDo1.setCbib08(goodsid);
+            cbibDo1.setCbib11((double) 0);
+            cbibDo1.setCbib12((double) 0);
+            cbibDo1.setCbib13(cbabs.get(i).getCbab09());
+            cbibDo1.setCbib14(cbabs.get(i).getCbab12());
+
+            cbibDo1.setCbib17(TaskType.cqrk.getMsg());
+            cbibDo1.setCbib19(cbabs.get(i).getCbab14());
+            taskService.InsertCBIB(cbibDo1);
+
+        }
 
 
         return cbaaMapper.updateByExampleSelective(cbaa, example);

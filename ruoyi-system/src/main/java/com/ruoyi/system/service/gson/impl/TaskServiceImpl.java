@@ -208,6 +208,16 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
                 cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
             }
+            //仓库调拨单入
+            if(cbibDo.getCbib17().equals(TaskType.xsthd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+            }
+            //仓库调拨单出
+            if(cbibDo.getCbib17().equals(TaskType.zjd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
+                cbib.setCbib16(cbib1.getCbib10()-cbibDo.getCbib14());
+            }
         }
         Date date=new Date();
         cbib.setCbib04(date);

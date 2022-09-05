@@ -71,6 +71,10 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             throw new SwException("upc已存在");
         }
 
+        List<CbpfDo> goods = cbpbDo.getGoods();
+//        if(goods.size()==0){
+//            throw new SwException("结算货币不能为空");
+//        }
         Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);
         Date date = new Date();
         cbpb.setCbpb02(date);
@@ -87,17 +91,18 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
          cbpbMapper.insertSelective(cbpb);
-        List<CbpfDo> goods = cbpbDo.getGoods();
-
+        Cbpf cbpf=null;
         for (CbpfDo good : goods) {
-            Cbpf cbpf = BeanCopyUtils.coypToClass(good, Cbpf.class, null);
+           // Cbpf cbpf = BeanCopyUtils.coypToClass(good, Cbpf.class, null);
             cbpf.setCbpf02(good.getCbpf02());
             cbpf.setCbpf03(good.getCbpf03());
             cbpf.setCbpf04(good.getCbpf04());
             cbpf.setCbpf05(good.getCbpf05());
+            cbpf.setCbpf06(good.getCbpf06());
             cbpf.setCbpf07(date);
             cbpfMapper.insertSelective(cbpf);
         }
+
         CbpbCriteria example1 = new CbpbCriteria();
         example1.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
                 .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
