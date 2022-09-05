@@ -64,9 +64,13 @@ public class CbcaDto {
 
     private String cbca18;
   @Excel(name = "联系人1办公室电话不能为空")
-    private String cbca19;
+  @NotBlank(message = "联系人1办公室电话不能为空")
+
+  private String cbca19;
   @Excel(name = "联系人2办公室电话不能为空")
-    private String cbca20;
+  @NotBlank(message = "联系人2办公室电话不能为空")
+
+  private String cbca20;
 
     private String cbca21;
 
