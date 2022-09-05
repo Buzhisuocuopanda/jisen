@@ -190,7 +190,23 @@ public class SwJsGoodsClassifyController extends BaseController {
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
+        try{
         ExcelUtil<CbpaDo> util = new ExcelUtil<CbpaDo>(CbpaDo.class);
         util.importTemplateExcel(response,"导入商品分类下载模板");
+           // return AjaxResult.success();
+        } catch (SwException e) {
+        log.error("【导入商品分类下载模板】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(response), e.getMessage());
+       // return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+    } catch (ServiceException e) {
+        log.error("【导入商品分类下载模板】接口出现异常,参数${}$,异常${}$", JSON.toJSON(response), ExceptionUtils.getStackTrace(e));
+
+        //return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+    } catch (Exception e) {
+        log.error("【导入商品分类下载模板】接口出现异常,参数${}$,异常${}$", JSON.toJSON(response), ExceptionUtils.getStackTrace(e));
+
+       // return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+    }
+        //return AjaxResult.success();
     }
 }

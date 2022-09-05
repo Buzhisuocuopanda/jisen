@@ -110,6 +110,8 @@ public class SwJsCustomerController extends BaseController {
         try {
             return toAjax(swJsCustomerService.deleteSwJsCustomerById(cbcaDto));
         }catch (SwException e) {
+            log.error("【删除客户信息】接口出现异常,参数${},异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
@@ -202,12 +204,22 @@ public class SwJsCustomerController extends BaseController {
             notes = "导入客户下载模板"
     )
     @PostMapping("/importTemplate")
-    public void importTemplate(HttpServletResponse response)
-    {
-        ExcelUtil<CbcaDto> util = new ExcelUtil<CbcaDto>(CbcaDto.class);
-        util.importTemplateExcel(response,"导入客户下载模板");
+    public void importTemplate(HttpServletResponse response) {
+        try {
+            ExcelUtil<CbcaDto> util = new ExcelUtil<CbcaDto>(CbcaDto.class);
+            util.importTemplateExcel(response, "导入客户下载模板");
+        } catch (SwException e) {
+            log.error("【导入客户下载模板】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(response), e.getMessage());
+            // return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【导入客户下载模板】接口出现异常,参数${}$,异常${}$", JSON.toJSON(response), ExceptionUtils.getStackTrace(e));
+
+            //return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【导入客户下载模板】接口出现异常,参数${}$,异常${}$", JSON.toJSON(response), ExceptionUtils.getStackTrace(e));
+        }
+
+
     }
-
-
-
 }
