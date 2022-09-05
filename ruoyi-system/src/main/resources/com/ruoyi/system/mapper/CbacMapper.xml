@@ -78,7 +78,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBAC01, CBAC02, CBAC03, CBAC04, CBAC05, CBAC06, CBAC07, CBAC08, CBAC09, CBAC10, CBAC11, 
+    CBAC01, CBAC02, CBAC03, CBAC04, CBAC05, CBAC06, CBAC07, CBAC08, CBAC09, CBAC10, CBAC11,
     CBAC12, CBAA01, CBAC13, CBAC14, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbacCriteria" resultMap="BaseResultMap">
@@ -96,7 +96,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBAC`
     where CBAC01 = #{cbac01,jdbcType=INTEGER}
@@ -112,17 +112,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbac">
-    insert into `CBAC` (CBAC01, CBAC02, CBAC03, 
-      CBAC04, CBAC05, CBAC06, 
-      CBAC07, CBAC08, CBAC09, 
-      CBAC10, CBAC11, CBAC12, 
-      CBAA01, CBAC13, CBAC14, 
+    insert into `CBAC` (CBAC01, CBAC02, CBAC03,
+      CBAC04, CBAC05, CBAC06,
+      CBAC07, CBAC08, CBAC09,
+      CBAC10, CBAC11, CBAC12,
+      CBAA01, CBAC13, CBAC14,
       user_id)
-    values (#{cbac01,jdbcType=INTEGER}, #{cbac02,jdbcType=INTEGER}, #{cbac03,jdbcType=TIMESTAMP}, 
-      #{cbac04,jdbcType=INTEGER}, #{cbac05,jdbcType=TIMESTAMP}, #{cbac06,jdbcType=INTEGER}, 
-      #{cbac07,jdbcType=INTEGER}, #{cbac08,jdbcType=INTEGER}, #{cbac09,jdbcType=VARCHAR}, 
-      #{cbac10,jdbcType=INTEGER}, #{cbac11,jdbcType=INTEGER}, #{cbac12,jdbcType=VARCHAR}, 
-      #{cbaa01,jdbcType=INTEGER}, #{cbac13,jdbcType=INTEGER}, #{cbac14,jdbcType=INTEGER}, 
+    values (#{cbac01,jdbcType=INTEGER}, #{cbac02,jdbcType=INTEGER}, #{cbac03,jdbcType=TIMESTAMP},
+      #{cbac04,jdbcType=INTEGER}, #{cbac05,jdbcType=TIMESTAMP}, #{cbac06,jdbcType=INTEGER},
+      #{cbac07,jdbcType=INTEGER}, #{cbac08,jdbcType=INTEGER}, #{cbac09,jdbcType=VARCHAR},
+      #{cbac10,jdbcType=INTEGER}, #{cbac11,jdbcType=INTEGER}, #{cbac12,jdbcType=VARCHAR},
+      #{cbaa01,jdbcType=INTEGER}, #{cbac13,jdbcType=INTEGER}, #{cbac14,jdbcType=INTEGER},
       #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbac">
@@ -382,4 +382,54 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBAC01 = #{cbac01,jdbcType=INTEGER}
   </update>
+
+  <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
+
+SELECT
+	pe.CBPE03 AS inWhTime,
+	sc.CBSC03 AS outWhTime,
+	oa.CBOA07 AS orderNo,
+	sd.CBSD08 AS goodsId,
+	sd.CBSD09 AS sn,
+	oa.CBOA16 AS currency,
+	ob.CBOB11 AS salePrice,
+	ca.CBCA09 AS suplierName,
+	sa.CBSA08 AS gc,
+	pd.CBPD11 AS cgPrice
+FROM
+	CBSD sd
+	LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01
+	LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
+	LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
+	LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
+	LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
+	LEFT JOIN CBPC pc ON pc.CBPC01 = pe.CBPC01
+	LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
+	LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
+	LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
+	LEFT JOIN CBWA wa on wa.CBWA01 = sb.CBSB10
+	where sd.CBSD07 = 0
+    <if test="saleOrderNo != null and saleOrderNo != ''">
+      AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')
+    </if>
+
+    <if test="whName != null and whName != ''">
+      AND wa.CBWA09 like concat('%', #{whName}, '%')
+    </if>
+
+    <if test="customerName != null and customerName != ''">
+      AND ca.CBCA08 like concat('%', #{customerName}, '%')
+    </if>
+
+    <if test="startTime != null">
+      and sd.CBSD03  &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and sd.CBSD03  &lt;=#{endTime}
+    </if>
+	ORDER BY sd.CBSD03 DESC
+
+
+  </select>
+
 </mapper>

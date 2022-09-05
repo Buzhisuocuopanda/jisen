@@ -37,8 +37,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private CbsaMapper cbsaMapper;
-@Resource
-   private CblaMapper cblaMapper;
+    @Resource
+    private CblaMapper cblaMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
