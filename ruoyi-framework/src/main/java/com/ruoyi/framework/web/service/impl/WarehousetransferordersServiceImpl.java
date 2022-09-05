@@ -190,13 +190,18 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Transactional
     @Override
     public int insertSwJsSkuBarcodebjwc(CbaaDo cbaaDo) {
-        CbaaCriteria example1 = new CbaaCriteria();
+
+        Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaaDo.getCbaa01());
+       /* CbaaCriteria example1 = new CbaaCriteria();
         example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbaa> cbaasw = cbaaMapper.selectByExample(example1);
-        if (cbaasw.get(0).getCbaa11().equals(TaskStatus.sh.getCode())||cbaasw.get(0).getCbaa11().equals(TaskStatus.fsh.getCode())){}
+        List<Cbaa> cbaasw = cbaaMapper.selectByExample(example1);*/
+        if(cbaa1==null){
+            throw new SwException("该仓库调拨单不存在");
+        }
+        if (cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())){}
         else {
-            throw new SwException("审核状态或反审才能标记完成");
+            throw new SwException("审核状态才能标记完成");
 
         }
         Long userId = SecurityUtils.getUserId();
@@ -210,6 +215,12 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+
+
+
+
+
         return cbaaMapper.updateByExampleSelective(cbaa, example);
     }
     /**

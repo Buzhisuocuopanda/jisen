@@ -56,6 +56,8 @@ public class SwJsStoreController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsStoreService.insertSwJsStore(cblaDto));
         }catch (SwException e) {
+            log.error("【新增库位信息维护】接口出现异常,参数${},异常${}$", JSON.toJSON(cblaDto), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
