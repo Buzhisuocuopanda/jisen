@@ -1,9 +1,9 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.AuditStatusConstants;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -12,21 +12,16 @@ import com.ruoyi.system.domain.CbbaCriteria;
 import com.ruoyi.system.domain.Cboa;
 import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
-import com.ruoyi.system.domain.vo.GoodsCheckStockVo;
 import com.ruoyi.system.mapper.CbbaMapper;
 import com.ruoyi.system.mapper.CbpbMapper;
-import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.vo.CbpdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.List;
 
 /**
@@ -219,9 +214,9 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     }
 
     @Override
-    public SysUser checkUserTask(Long userId,Byte auditPerm) {
+    public SysUser checkUserTask(Long userId, Byte auditPerm) {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        Byte auditPerm1 = sysUser.getAuditPerm();
+        String auditPerm1 = sysUser.getAuditPerm();
         String s1 = auditPerm.toString();
 
         String s = auditPerm1.toString();

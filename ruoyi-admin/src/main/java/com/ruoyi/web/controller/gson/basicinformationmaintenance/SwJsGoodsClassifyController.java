@@ -11,6 +11,8 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Do.CbpaDo;
+import com.ruoyi.system.domain.Do.CbpgDo;
+import com.ruoyi.system.domain.dto.CbpbDto;
 import com.ruoyi.system.service.ISwJsGoodsClassifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -45,7 +48,7 @@ public class SwJsGoodsClassifyController extends BaseController {
      * 新增商品分类
      */
     @ApiOperation(
-            value ="新增商品分类",
+            value = "新增商品分类",
             notes = "新增商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyadd")
@@ -54,7 +57,13 @@ public class SwJsGoodsClassifyController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsGoodsClassifyService.insertSwJsGoodsClassify(cbpaDo));
 
-        }catch (ServiceException | SwException e){
+        } catch (SwException e) {
+            log.error("【新增商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo), e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
             log.error("【新增商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
@@ -68,20 +77,24 @@ public class SwJsGoodsClassifyController extends BaseController {
      * 修改商品分类
      */
     @ApiOperation(
-            value ="修改商品分类",
+            value = "修改商品分类",
             notes = "修改商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyedit")
-    public AjaxResult swJsGoodsClassifyedit(@RequestBody(required=false) CbpaDo cbpaDo, BindingResult bindingResult) {
+    public AjaxResult swJsGoodsClassifyedit(@RequestBody(required = false) CbpaDo cbpaDo, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsGoodsClassifyService.updateSwJsGoodsClassify(cbpaDo));
-        }catch (SwException e) {
-            log.error("【修改商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
+        } catch (SwException e) {
+            log.error("【修改商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo), e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (ServiceException e) {
+            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
-            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
+            log.error("【修改商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -92,19 +105,23 @@ public class SwJsGoodsClassifyController extends BaseController {
      * 删除商品分类
      */
     @ApiOperation(
-            value ="删除商品分类",
+            value = "删除商品分类",
             notes = "删除商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyremove")
     public AjaxResult swJsGoodsClassifyremove(@RequestBody CbpaDo cbpaDo) {
         try {
             return toAjax(swJsGoodsClassifyService.deleteSwJsGoodsClassifyById(cbpaDo));
-        }catch (SwException e) {
-            log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo),e.getMessage());
+        } catch (SwException e) {
+            log.error("【删除商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpaDo), e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (ServiceException e) {
+            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
-            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo),ExceptionUtils.getStackTrace(e));
+            log.error("【删除商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpaDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -114,30 +131,30 @@ public class SwJsGoodsClassifyController extends BaseController {
      * 获取商品分类下拉树列表
      */
     @ApiOperation(
-            value ="获取商品分类下拉树列表",
+            value = "获取商品分类下拉树列表",
             notes = "获取商品分类下拉树列表"
     )
     @GetMapping("/SwJsGoodsClassifytreeselect")
     public AjaxResult swJsGoodsClassifytreeselect(Cbpa cbpa) {
-        try{
-        List<Cbpa> depts = swJsGoodsClassifyService.selectDeptList(cbpa);
-        return AjaxResult.success(swJsGoodsClassifyService.buildDeptTreeSelect(depts));
-    }catch (SwException e) {
-        log.error("【获取部门下拉树列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpa),e.getMessage());
-        return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        try {
+            List<Cbpa> depts = swJsGoodsClassifyService.selectDeptList(cbpa);
+            return AjaxResult.success(swJsGoodsClassifyService.buildDeptTreeSelect(depts));
+        } catch (SwException e) {
+            log.error("【获取部门下拉树列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpa), e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-    } catch (Exception e) {
-        log.error("【获取部门下拉树列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpa),ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            log.error("【获取部门下拉树列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpa), ExceptionUtils.getStackTrace(e));
 
-        return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-    }
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
     }
 
     /**
      * 导入商品分类
      */
     @ApiOperation(
-            value ="导入商品分类",
+            value = "导入商品分类",
             notes = "导入商品分类"
     )
     @PostMapping("/importSwJsGoodsClassify")
@@ -150,14 +167,30 @@ public class SwJsGoodsClassifyController extends BaseController {
             String operName = getUsername();
             String message = swJsGoodsClassifyService.importSwJsGoodsClassify(swJsGoodsClassifyList, updateSupport, operName);
             return AjaxResult.success(message);
-        }catch (SwException e) {
-            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file),e.getMessage());
+        } catch (SwException e) {
+            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file), e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file), e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入商品分类】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+
+    @ApiOperation(
+            value ="导入商品分类下载模板",
+            notes = "导入商品分类下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbpaDo> util = new ExcelUtil<CbpaDo>(CbpaDo.class);
+        util.importTemplateExcel(response,"导入商品分类下载模板");
     }
 }

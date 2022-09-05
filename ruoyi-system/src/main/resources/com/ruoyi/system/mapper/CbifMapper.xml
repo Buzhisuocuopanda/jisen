@@ -421,46 +421,54 @@
   </select>
     <select id="selectInventorysummaryquery" resultType="com.ruoyi.system.domain.vo.InwuquVo">
       SELECT (@i:=@i+1) AS '序号' ,
-             d.CBPA07,e.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBIF09,f.CBWA09,g.qty
+      e.CBPA07 as totalclassify,
+      d.CBPA07,h.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBIF09,f.CBWA09,g.lock_qty,c.CBPB01
       FROM
-        CBIE a
-          LEFT JOIN
-        CBIF b
-        on
-          a.CBIE01=b.CBIE01
-          LEFT JOIN
-        CBPB c
-        on
-          c.CBPB01=b.CBIF08
-          LEFT JOIN
-        CBPA d
-        on
-          d.CBPA01=c.CBPB14
-          LEFT JOIN
-        CALA e
-        on
-          e.CALA01=c.CBPB10
-          LEFT JOIN
-        CBWA f
-        on
-          f.CBWA01=a.CBIE09
-          LEFT JOIN
-        gs_goods_sku g
-        ON
-              b.CBIF08=g.goods_id
-            and
-              a.CBIE09=g.wh_id,
---
--- LEFT JOIN
--- gs_goods_sku g
--- ON
--- a.CBIE09=g.wh_id,
-        (SELECT @i:=0) AS itable
+      CBIE a
+      LEFT JOIN
+      CBIF b
+      on
+      a.CBIE01=b.CBIE01
+      LEFT JOIN
+      CBPB c
+      on
+      c.CBPB01=b.CBIF08
+      LEFT JOIN
+      CBPA d
+      on
+      d.CBPA01=c.CBPB14
+      LEFT JOIN
+      CBPA  e
+      ON
+      e.CBPA01=d.CBPA09
+
+      LEFT JOIN
+      CBWA f
+      on
+      f.CBWA01=a.CBIE09
+      LEFT JOIN
+      gs_goods_use g
+      ON
+      b.CBIF08=g.goods_id
+      and
+      a.CBIE09=g.lock_qty
+      LEFT JOIN
+      CALA h
+      ON
+      c.CBPB10=h.CALA01,
+      --
+      -- LEFT JOIN
+      -- gs_goods_sku g
+      -- ON
+      -- a.CBIE09=g.wh_id,
+      (SELECT @i:=0) AS itable
 where
     a.CBIE06=0
       <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09}</if>
-      <if test="cala08 != null "> and e.CALA08 = #{cala08}</if>
+      <if test="cala08 != null "> and h.CALA08 = #{cala08}</if>
       <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
+      <if test="cbpb01 != null "> and c.CBPB01 = #{cbpb01}</if>
+
     </select>
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
@@ -497,11 +505,11 @@ where
           h.CALA01=e.CBPB10
 
       WHERE
-          a.CBIG09=0
+          a.CBIG07=0
       <if test="cbwa09 != null and cbwa09 != ''">
         and c.CBWA09 =#{cbwa09}
       </if>
-      <if test="orderNo != null and orderNo != ''">
+      <if test="cbla09 != null and cbla09 != ''">
         and d.CBLA09 like concat('%', #{cbla09}, '%')
       </if>
 
@@ -516,8 +524,8 @@ where
     </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
     SELECT
-      b.CBWA09,a.CBIB04,a.CBIB17,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
-      a.CBIB09,a.CBIB10,CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
+      b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
+      a.CBIB09,a.CBIB10,b.CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
     FROM
       CBIB a
         LEFT JOIN
@@ -529,12 +537,12 @@ where
       ON
         c.CBPB01=a.CBIB08
     WHERE
-
+    b.CBWA06=0
     <if test="cbib17 != null and cbib17 != ''">
-       a.CBIB17 =#{cbib17}
+      AND a.CBIB17 =#{cbib17}
     </if>
     <if test="cbwa09 != null and cbwa09 != ''">
-      and b.CBWA09 like concat('%', #{cbwa09}, '%')
+      and b.CBWA09 =#{cbwa09}
     </if>
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
@@ -580,7 +588,7 @@ where a.CBOA06=0
     <if test="cbpa07 != null and cbpa07 != ''">
     and  d.CBPA07 like concat('%', #{cbpa07}, '%')
     </if>
-    <if test="cbwa09 != null and cbwa09 != ''">
+    <if test="cala08 != null and cala08 != ''">
       and f.cala08 like concat('%', #{cala08}, '%')
     </if>
 
@@ -619,7 +627,7 @@ where a.CBOA06=0
       ON
         g.CBPA01=e.CBPB14
 where
-    a.CBOA01=0
+    a.CBOA06=0
     <if test="cbca08 != null and cbca08 != ''">
       and  c.CBCA08 like concat('%', #{cbca08}, '%')
     </if>

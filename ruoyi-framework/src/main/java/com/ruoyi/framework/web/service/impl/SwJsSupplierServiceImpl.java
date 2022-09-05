@@ -71,13 +71,15 @@ private CbsaMapper cbsaMapper;
     @Override
     public int updateSwJsSupplier(CbsaDto cbsaDto) {
         Long userid = SecurityUtils.getUserId();
+
+        if(cbsaDto.getCbsa08()!=null){
         CbsaCriteria example = new CbsaCriteria();
         example.createCriteria().andCbsa07EqualTo(cbsaDto.getCbsa08())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(example);
         if(cbsas.size()>0 && !cbsas.get(0).getCbsa01().equals(cbsaDto.getCbsa01())){
             throw new SwException("供应商名称不能重复");
-        }
+        }}
 
         Cbsa cbsa = BeanCopyUtils.coypToClass(cbsaDto, Cbsa.class, null);
         Date date = new Date();
@@ -98,7 +100,9 @@ private CbsaMapper cbsaMapper;
         CbsaCriteria example1= new CbsaCriteria();
         example1.createCriteria().andCbsa01EqualTo(cbsaDto.getCbsa01())
                 .andCbsa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return  cbsaMapper.updateByExampleSelective(cbsa,example1);     }
+          cbsaMapper.updateByExampleSelective(cbsa,example1);
+        return 1;
+    }
 
     @Override
     public int deleteSwJsSupplierById(CbsaDto cbsaDto) {
@@ -127,7 +131,8 @@ private CbsaMapper cbsaMapper;
         }
         cbsa.setCbsa06(DeleteFlagEnum.DELETE.getCode());
 
-        return cbsaMapper.updateByExampleSelective(cbsa,example3);    }
+         cbsaMapper.updateByExampleSelective(cbsa,example3);
+        return 1;}
 
     @Override
     public List<Cbsa> selectSwJsSupplierList(Cbsa cbsa) {

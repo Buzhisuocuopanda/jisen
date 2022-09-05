@@ -74,14 +74,14 @@ private CboaMapper cboaMapper ;
     @Override
     public int updateSwJsGoodsClassify(CalaDto calaDto) {
         Long userid = SecurityUtils.getUserId();
-
+if(calaDto.getCala08()!=null){
         CalaCriteria example = new CalaCriteria();
         example.createCriteria().andCala08EqualTo(calaDto.getCala08())
                 .andCala07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cala> calas = calaMapper.selectByExample(example);
         if(calas.size()>0 && !calas.get(0).getCala01().equals(calaDto.getCala01())){
             throw new SwException("名称已存在");
-        }
+        }}
         Cala cala = BeanCopyUtils.coypToClass(calaDto, Cala.class, null);
         Date date = new Date();
         cala.setCala02(calaDto.getCala02());

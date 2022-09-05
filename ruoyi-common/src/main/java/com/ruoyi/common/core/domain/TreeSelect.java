@@ -35,7 +35,7 @@ public class TreeSelect implements Serializable
     public TreeSelect(Cbpa dept)
     {
         this.id = Long.valueOf(dept.getParentId());
-        this.label = dept.getCbpa07()+"~"+dept.getCbpa11()+"~"+dept.getId();
+        this.label = dept.getCbpa07()+"~"+dept.getCbpa11()+"~"+dept.getId()+"~"+dept.getCbpa09();
         // this.label = dept.getClassifyNum();
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }

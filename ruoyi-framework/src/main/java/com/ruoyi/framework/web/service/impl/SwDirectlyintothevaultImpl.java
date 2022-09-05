@@ -85,7 +85,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
         cbibDo.setCbib07(cbics.get(0).getCbic01());
         cbibDo.setCbib08(cbicDto.getCbic09());
-        cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+
+        cbibDo.setCbib17(TaskType.zjrk.getMsg());
         cbibDo.setCbib19(cbicDto.getCbic13());
 
         taskService.InsertCBIB(cbibDo);

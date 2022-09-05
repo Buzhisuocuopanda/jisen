@@ -113,6 +113,8 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     @Override
     public int updateSwJsGoodsClassify(CbpbDo cbpbDo) {
         Long userid = SecurityUtils.getUserId();
+
+        if(cbpbDo.getCbpb15()!=null){
         //upc唯一
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
@@ -121,7 +123,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         if(cbpbs.size()>0 && !cbpbs.get(0).getCbpb01().equals(cbpbDo.getCbpb01())){
             throw new SwException("upc已存在");
 
-        }
+        }}
 
         Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);
         Date date = new Date();

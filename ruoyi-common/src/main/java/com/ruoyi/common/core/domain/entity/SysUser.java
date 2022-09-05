@@ -95,13 +95,13 @@ public class SysUser extends BaseEntity
     /** 角色ID */
     private Long roleId;
 
-    private Byte auditPerm;
+    private String auditPerm;
 
-    public Byte getAuditPerm() {
+    public String getAuditPerm() {
         return auditPerm;
     }
 
-    public void setAuditPerm(Byte auditPerm) {
+    public void setAuditPerm(String auditPerm) {
         this.auditPerm = auditPerm;
     }
     public SysUser()

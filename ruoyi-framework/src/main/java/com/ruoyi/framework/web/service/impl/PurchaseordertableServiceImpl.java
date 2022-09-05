@@ -1,24 +1,20 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.DeleteFlagEnum1;
-import com.ruoyi.common.enums.NumberGenerateEnum;
-import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsPurchaseOrderDetailDo;
 import com.ruoyi.system.domain.Do.GsPurchaseOrderDo;
 import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.domain.vo.NumberVo;
-import com.ruoyi.system.mapper.CbpiMapper;
-import com.ruoyi.system.mapper.GsGoodsSkuMapper;
-import com.ruoyi.system.mapper.GsPurchaseOrderDetailMapper;
-import com.ruoyi.system.mapper.GsPurchaseOrderMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IPurchaseordertableService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
@@ -29,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +52,11 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     @Resource
     private NumberGenerate numberGenerate;
 
+    @Resource
+    private CbsaMapper cbsaMapper;
+
+    @Resource
+    private TaskService taskService;
     @Resource
     private GsPurchaseOrderDetailMapper gsPurchaseOrderDetailMapper;
     @Transactional
@@ -194,13 +196,13 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
 
 
-        GsPurchaseOrderDetailCriteria example1=new GsPurchaseOrderDetailCriteria();
+        GsPurchaseOrderDetailCriteria example1 = new GsPurchaseOrderDetailCriteria();
         example1.createCriteria()
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode())
                 .andPurchaseOrderIdEqualTo(Math.toIntExact(gsPurchaseOrderDo.getId()));
         List<GsPurchaseOrderDetail> gsPurchaseOrderDetails = purchaseOrderDetailMapper.selectByExample(example1);
 
-        for(int i=0;i<gsPurchaseOrderDetails.size();i++) {
+        for (int i = 0; i < gsPurchaseOrderDetails.size(); i++) {
             int goodsid = gsPurchaseOrderDetails.get(i).getGoodsId();
 
             Double num = gsPurchaseOrderDetails.get(i).getQty();
@@ -209,34 +211,34 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                     .andGoodsIdEqualTo(goodsid)
                     .andWhIdEqualTo(whId);
             List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example2);
-        if (gsGoodsSkus.size() == 0) {
-            //新增数据
-            GsGoodsSku gsGoodsSku = new GsGoodsSku();
-            gsGoodsSku.setCreateTime(date);
-            gsGoodsSku.setUpdateTime(date);
-            gsGoodsSku.setCreateBy(Math.toIntExact(userid));
-            gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
-            gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            gsGoodsSku.setGoodsId(goodsid);
-            gsGoodsSku.setWhId(whId);
-            gsGoodsSku.setQty(num);
-            gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+            if (gsGoodsSkus.size() == 0) {
+                //新增数据
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(goodsid);
+                gsGoodsSku.setWhId(whId);
+                gsGoodsSku.setQty(num);
+                gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
-        } else {
-            //更新数据
-            List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getGoodsId).collect(Collectors.toList());
-            int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
-            int id = ints1[0];
-            //  Integer id1 = gsGoodsSkus.get(0).getId();
-            GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
-            gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
-            gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
-            gsGoodsSku.setUpdateTime(date);
-            gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
-        }
-        //回写更新采购订单明细
+            } else {
+                //更新数据
+                List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getGoodsId).collect(Collectors.toList());
+                int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
+                int id = ints1[0];
+                //  Integer id1 = gsGoodsSkus.get(0).getId();
+                GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }
+            //回写更新采购订单明细
             GsPurchaseOrderDetail gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
-        //更新入库数量
+            //更新入库数量
             gsPurchaseOrderDetail.setInQty(num);
             gsPurchaseOrderDetail.setChangeQty(num);
             GsPurchaseOrderDetailCriteria example3 = new GsPurchaseOrderDetailCriteria();
@@ -245,7 +247,31 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
                     .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
 
             gsPurchaseOrderDetailMapper.updateByExampleSelective(gsPurchaseOrderDetails.get(i), example3);
-    }
+
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(gsPurchaseOrder1.getWhId());
+            cbibDo.setCbib03(gsPurchaseOrder1.getOrderNo());
+            cbibDo.setCbib05(String.valueOf(TaskType.cgdd.getCode()));
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsPurchaseOrder1.getSupplierId());
+
+            cbibDo.setCbib06(cbsa.getCbsa08());
+            cbibDo.setCbib07(Math.toIntExact(gsPurchaseOrderDetails.get(i).getId()));
+            cbibDo.setCbib08(gsPurchaseOrderDetails.get(i).getGoodsId());
+            //本次入库数量
+            cbibDo.setCbib11(gsPurchaseOrderDetails.get(i).getQty());
+
+            double v = gsPurchaseOrderDetails.get(i).getPrice().doubleValue();
+            cbibDo.setCbib12(v);
+            cbibDo.setCbib13((double) 0);
+            cbibDo.setCbib14((double) 0);
+
+            cbibDo.setCbib17(TaskType.xstkd.getMsg());
+            cbibDo.setCbib19(gsPurchaseOrder1.getSupplierId());
+            taskService.InsertCBIB(cbibDo);
+        }
+        //写台账
+
+
 
         return   purchaseOrderMapper.updateByExampleSelective(gsPurchaseOrder, example);
     }
