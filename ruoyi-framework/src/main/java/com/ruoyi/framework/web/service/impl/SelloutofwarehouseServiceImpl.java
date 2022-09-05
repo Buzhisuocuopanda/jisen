@@ -70,6 +70,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private SaleOrderService saleOrderService;
 
+    @Resource
+    private CbsaMapper cbsaMapper;
+
     /**
      * 新增销售出库主单
      *
@@ -430,25 +433,26 @@ if(cbob==null){
         if(cbscs.size()==0){
             throw new SwException("没有该销售出库单明细表为空");
         }
-     /*   Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpc1.getCbpc09());
 
         for(int i=0;i<cbscs.size();i++){
             CbibDo cbibDo = new CbibDo();
             cbibDo.setCbib02(cbsb.getCbsb10());
             cbibDo.setCbib03(cbsb.getCbsb07());
             cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
-            cbibDo.setCbib06(cbscs.get(i).getCbsc15());
-            cbibDo.setCbib07(cbpc1.getCbpc01());
-            cbibDo.setCbib08(cbpds.get(i).getCbpd08());
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbscs.get(i).getCbsc15());
+
+            cbibDo.setCbib06(cbsa.getCbsa08());
+            cbibDo.setCbib07(cbscs.get(i).getCbsc01());
+            cbibDo.setCbib08(cbscs.get(i).getCbsc08());
             //本次入库数量
-            cbibDo.setCbib11(cbpds1.get(i).getCbpd09());
-            cbibDo.setCbib12(cbpds1.get(i).getCbpd12());
-            cbibDo.setCbib15(cbpds1.get(i).getCbpd09());
-            cbibDo.setCbib16(cbpds1.get(i).getCbpd12());
-            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
-            cbibDo.setCbib19(cbpc1.getCbpc09());
+            cbibDo.setCbib11((double) 0);
+            cbibDo.setCbib12((double) 0);
+            cbibDo.setCbib13(cbscs.get(i).getCbsc09());
+            cbibDo.setCbib14(cbscs.get(i).getCbsc11());
+            cbibDo.setCbib17(TaskType.xcckd.getMsg());
+            cbibDo.setCbib19(cbscs.get(i).getCbsc15());
             taskService.InsertCBIB(cbibDo);
-        }*/
+        }
         //状态设为标记完成，回写总订单
 
         CbsbDo cbsbDo = new CbsbDo();

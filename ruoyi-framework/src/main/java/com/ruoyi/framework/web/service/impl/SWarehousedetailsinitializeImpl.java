@@ -192,6 +192,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             cbibDo.setCbib08(goodid);
             cbibDo.setCbib11(Double.valueOf(SnnumberEnum.sndnumber.getCode()));
             cbibDo.setCbib12(price);
+            cbibDo.setCbib13((double) 0);
+            cbibDo.setCbib14((double) 0);
             cbibDo.setCbib15(Double.valueOf(SnnumberEnum.sndnumber.getCode()));
             cbibDo.setCbib16(price);
             cbibDo.setCbib17(TaskType.cqrk.getMsg());

@@ -22,7 +22,7 @@ public class CbsaDto {
 
     private Integer cbsa06;
     @NotBlank(message = "供应商状态不能为空")
-    @Length(min =1 , max = 10)
+    @Length(min =1 , max = 10, message = "供应商状态长度必须小于10")
     private String cbsa07;
     @Excel(name = "名称")
     @NotBlank(message = "供应商名称不能为空")

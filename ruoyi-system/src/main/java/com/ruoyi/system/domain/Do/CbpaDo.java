@@ -24,7 +24,7 @@ public class CbpaDo extends Cbpa {
 
     private Integer cbpa06;
     @NotBlank(message = "分类名称不能为空")
-    @Length(min=1, max=11)
+    @Length(min=1, max=11, message="分类名称长度必须1位到10位之间")
     @Excel(name = "分类名称")
     private String cbpa07;
 

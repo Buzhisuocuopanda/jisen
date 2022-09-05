@@ -27,7 +27,7 @@ public class CbwaDto {
     private Integer cbwa07;
 
     @NotBlank(message = "状态不能为空")
-    @Length(min =1 , max = 10)
+    @Length(min =1 , max = 10, message = "状态长度必须小于10")
     private String cbwa08;
 
     @NotBlank(message = "仓库名称不能为空")
@@ -38,11 +38,11 @@ public class CbwaDto {
     private String cbwa10;
 
     @NotBlank(message = "仓库类型不能为空")
-    @Length(min =1 , max = 10)
+    @Length(min =1 , max = 10, message = "仓库类型长度必须1位到10位之间")
     private String cbwa11;
 
     @NotBlank(message = "仓库管理模式不能为空")
-    @Length(min =1 , max = 10)
+    @Length(min =1 , max = 10, message = "仓库管理模式长度必须1位到10位之间")
     private String cbwa12;
 
     @NotNull(message = "是否启用总订单不能为空")

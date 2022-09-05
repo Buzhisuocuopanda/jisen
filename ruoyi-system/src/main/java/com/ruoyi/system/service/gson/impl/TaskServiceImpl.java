@@ -186,6 +186,28 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
                 cbib.setCbib16(cbibDo.getCbib10());
             }
+            //销售出库
+            if(cbibDo.getCbib17().equals(TaskType.xcckd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
+                cbib.setCbib16(cbib1.getCbib10()-cbibDo.getCbib14());
+            }
+
+            //销售退库
+            if(cbibDo.getCbib17().equals(TaskType.xstkd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
+                cbib.setCbib16(cbib1.getCbib10()-cbibDo.getCbib14());
+            }
+            //采购订单
+            if(cbibDo.getCbib17().equals(TaskType.cgdd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+
+            }
+            //初期入库
+            if(cbibDo.getCbib17().equals(TaskType.cqrk.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+            }
         }
         Date date=new Date();
         cbib.setCbib04(date);

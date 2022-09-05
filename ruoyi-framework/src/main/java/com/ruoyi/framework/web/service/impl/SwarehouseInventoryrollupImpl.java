@@ -227,10 +227,9 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
             cbibDo.setCbib06(vendername);
             cbibDo.setCbib07(id);
             cbibDo.setCbib08(goodid);
-            cbibDo.setCbib11(Double.valueOf(SnnumberEnum.sndnumber.getCode()));
+            cbibDo.setCbib11(cbifs.get(i).getCbif09());
             cbibDo.setCbib12(price);
-            cbibDo.setCbib15(Double.valueOf(SnnumberEnum.sndnumber.getCode()));
-            cbibDo.setCbib16(price);
+
             cbibDo.setCbib17(TaskType.cqrk.getMsg());
             cbibDo.setCbib18(ids);
             cbibDo.setCbib19(vendorid);

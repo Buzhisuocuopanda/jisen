@@ -12,6 +12,7 @@ public enum TaskType {
     zjd(new Byte("7"), "调拨单调出"),
 
     zjrk(new Byte("8"), "直接入库"),
+    cgdd(new Byte("8"), "采购订单"),
 
     xsdd(new Byte("10"), "销售订单"),
     xsddcwfs(new Byte("11"), "销售订单财务复审"),

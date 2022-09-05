@@ -8,17 +8,11 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbsbDo;
-import com.ruoyi.system.domain.Do.CbseDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.vo.CbseVo;
 import com.ruoyi.system.domain.vo.CbsesVo;
 import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.mapper.CbscMapper;
-import com.ruoyi.system.mapper.CbseMapper;
-import com.ruoyi.system.mapper.CbsfMapper;
-import com.ruoyi.system.mapper.CbsgMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISalesreturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
@@ -60,6 +54,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Resource
     private TaskService taskService;
+
+    @Resource
+    private CbsaMapper cbsaMapper;
 
     @Resource
     private BaseCheckService baseCheckService;
@@ -330,6 +327,38 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 session.commit();
                 session.clearCache();
             }
+        }
+        //写台账
+        Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(0).getCbse01());
+        if(cbse==null){
+            throw new SwException("没有该销售退库单");
+        }
+        CbsfCriteria example = new CbsfCriteria();
+        example.createCriteria().andCbse01EqualTo(cbse.getCbse01())
+                .andCbsf07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsf> cbscs = cbsfMapper.selectByExample(example);
+        if(cbscs.size()==0){
+            throw new SwException("没有该销售出库单明细表为空");
+        }
+
+        for(int i=0;i<cbscs.size();i++){
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(cbse.getCbse10());
+            cbibDo.setCbib03(cbse.getCbse07());
+            cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbscs.get(i).getCbsf15());
+
+            cbibDo.setCbib06(cbsa.getCbsa08());
+            cbibDo.setCbib07(cbscs.get(i).getCbsf01());
+            cbibDo.setCbib08(cbscs.get(i).getCbsf08());
+            //本次入库数量
+            cbibDo.setCbib11((double) 0);
+            cbibDo.setCbib12((double) 0);
+            cbibDo.setCbib13(cbscs.get(i).getCbsf09());
+            cbibDo.setCbib14(cbscs.get(i).getCbsf11());
+            cbibDo.setCbib17(TaskType.xstkd.getMsg());
+            cbibDo.setCbib19(cbscs.get(i).getCbsf15());
+            taskService.InsertCBIB(cbibDo);
         }
         session.commit();
         session.clearCache();
