@@ -651,7 +651,7 @@ public class SaleOrderController extends BaseController {
     public static void main(String[] args) throws IOException, InvalidFormatException {
         InputStream in = null;
         XSSFWorkbook wb = null;
-        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
         File is = new File("D:\\data\\模板.xlsx");
         wb = new XSSFWorkbook(is);
         genarateReport(wb);
@@ -661,10 +661,10 @@ public class SaleOrderController extends BaseController {
 
     private static void genarateReport(XSSFWorkbook wb) {
         XSSFSheet sheet1 = wb.getSheetAt(0);
-        XSSFSheet sheet2 = wb.getSheetAt(1);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
         // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
         sheet1.setForceFormulaRecalculation(true);
-        sheet2.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
 
         /***设置单个单元格内容*********************************/
 //        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
