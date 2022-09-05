@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
+import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ public class SaleOrderSkuVo {
     private String orderNo;
 
     private Double goodsNum;
+
 
     private String goodsName;
 

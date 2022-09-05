@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
@@ -16,6 +17,9 @@ import com.ruoyi.system.service.gson.SaleOrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -641,6 +647,101 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    public static void main(String[] args) throws IOException, InvalidFormatException {
+        InputStream in = null;
+        XSSFWorkbook wb = null;
+        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+        File is = new File("D:\\data\\模板.xlsx");
+        wb = new XSSFWorkbook(is);
+        genarateReport(wb);
+        saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+
+    }
+
+    private static void genarateReport(XSSFWorkbook wb) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,"测试",4,2);
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<10;i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+            rlist.add("res");
+            rlist.add("res1");
+            rlist.add("res2");
+            rlist.add("res3");
+            rlist.add("res4");
+            rlist.add("res5");
+            data1.add(rlist);
+        }
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 10, data1.size(), 4, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+
+    }
+    private static void saveExcelToDisk(XSSFWorkbook wb, String filePath){
+        File file = new File(filePath);
+        OutputStream os=null;
+        try {
+            os = new FileOutputStream(file);
+            wb.write(os);
+            os.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {if(os!=null)os.close();} catch (IOException e) { log.error("error", e);}
+        }
+    }
+
+
+    @PostMapping("/exportSaleOrderDetail2")
+    public AjaxResult exportSaleOrderDetail2(@Valid @RequestBody DelSaleChangeDto delSaleChangeDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            delSaleChangeDto.setUserId(getUserId().intValue());
+            saleOrderService.delSaleChange(delSaleChangeDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【删除销售变更】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(delSaleChangeDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
     /**
      * todo 销售订单完成后也会标记销售订单变更单标记完成
      */
