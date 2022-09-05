@@ -294,7 +294,7 @@
   </sql>
   <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CblaVo">
     SELECT
-    b.CBWA09,a.CBLA09,a.CBLA07,a.CBLA11,a.CBLA07,a.CBLA12,a.CBLA01,a.CBLA12,a.CBLA08
+    b.CBWA09,a.CBLA09,a.CBLA07,a.CBLA11,a.CBLA07,a.CBLA12,a.CBLA01,a.CBLA12,a.CBLA08,a.CBLA13
     FROM
     CBLA a
     LEFT JOIN
