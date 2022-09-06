@@ -13,7 +13,7 @@ public class CbpfDo {
     @NotNull(message = "客户等级不能为空")
     private Integer cbpf02;
     @Excel(name = "完成状态")
-    @NotNull(message = "完成状态不能为空")
+  //  @NotNull(message = "完成状态不能为空")
     private Integer cbpf03;
 
     @Excel(name = "标准进价")
@@ -30,6 +30,6 @@ public class CbpfDo {
     private Integer cbpf06;
 
     @Excel(name = "生效时间")
-    @NotNull(message = "生效时间不能为空")
+   // @NotNull(message = "生效时间不能为空")
     private Date cbpf07;
 }

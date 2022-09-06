@@ -34,4 +34,7 @@ public class GsSalesOrdersChangeDto  {
     private Integer gsSalesOrders;
 
     private Byte status;
+
+    private Integer goodsId;
+
 }

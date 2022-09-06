@@ -398,11 +398,11 @@ WHERE so.delete_flag=0
     <if test="orderNo != null and orderNo !=''">
       and  so.order_no like concat('%', #{orderNo}, '%')
     </if>
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-      and date_format(so.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    <if test="startTime != null">
+      and so.order_date &gt;= #{startTime}
     </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-      and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    <if test="endTime != null">
+      and so.order_date &lt;=#{endTime}
     </if>
   </select>
   <select id="saleOrderListdetail" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
@@ -445,5 +445,72 @@ WHERE so.delete_flag=0
 where
       so.id= #{id}
   </select>
+    <select id="seleteSalesbookingsummary" resultType="com.ruoyi.system.domain.vo.GsSalesOrderssVo">
+      SELECT
+        so.id AS id,
+        so.order_no AS orderNo,
+        so.order_date AS orderDate,
+        a.CBSA08 as cbsa08,
+        b.CAUA17 as caua17,
+        c.CBCA08 as cbca08,
+        d.cbwa09 as cbwa09,
+        ss.goods_id AS goodsId,
+        ss.price AS price,
+        ss.qty AS qty,
+        ss.remark AS remark,
+        e.in_qty AS in_qty,
+        f.qty AS qtys,
+        g.CBPB08 AS cbpb08,
+        h.CALA08 AS cala08,
+        g.CBPB12 AS cbpb12
+      FROM
+        `gs_ Sales_orders` AS so
+
+          LEFT JOIN
+        gs_Sales_orders_details ss
+        ON
+          so.id=ss.gs_Sales_orders
+
+          LEFT JOIN
+        CBSA a
+        on
+          a.CBSA01=so.supplier_id
+          LEFT JOIN
+        CAUA b
+        on
+          b.CAUA01=so.saler_id
+          LEFT JOIN
+        CBCA c
+        ON
+          c.CBCA01=so.customer_id
+          LEFT JOIN
+        CBWA d
+        ON
+          d.CBWA01=so.wh_id
+          LEFT JOIN
+        `gs_ Sales_orders_in` e
+        ON
+          e.gs_sales_orders=so.id
+          LEFT JOIN
+        `gs_ Sales_orders_change` f
+        ON
+          f.gs_Sales_orders=so.id
+          LEFT JOIN
+        CBPB g
+        ON
+          g.CBPB01=ss.goods_id
+          LEFT JOIN
+        CALA h
+        ON
+          g.CBPB10=h.CALA01
+where
+    so.delete_flag=0
+      <if test="startTime != null">
+        and so.order_date &gt;= #{startTime}
+      </if>
+      <if test="endTime != null">
+        and so.order_date &lt;=#{endTime}
+      </if>
+    </select>
 
 </mapper>

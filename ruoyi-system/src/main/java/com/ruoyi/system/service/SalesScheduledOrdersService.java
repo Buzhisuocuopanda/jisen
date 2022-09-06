@@ -5,10 +5,7 @@ import com.ruoyi.system.domain.dto.DeleteSaleOrderDto;
 import com.ruoyi.system.domain.dto.GsSalesOrdersChangeDto;
 import com.ruoyi.system.domain.dto.GsSalesOrdersDto;
 import com.ruoyi.system.domain.dto.GsSalesOrdersInDto;
-import com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo;
-import com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo;
-import com.ruoyi.system.domain.vo.GsSalesOrdersInVo;
-import com.ruoyi.system.domain.vo.GsSalesOrdersVo;
+import com.ruoyi.system.domain.vo.*;
 
 import java.util.List;
 
@@ -60,4 +57,8 @@ public interface SalesScheduledOrdersService {
     void GsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
     void GsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+
+    void GsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+
+    List<GsSalesOrderssVo> seleteSalesbookingsummary(GsSalesOrderssVo gsSalesOrderssVo);
 }

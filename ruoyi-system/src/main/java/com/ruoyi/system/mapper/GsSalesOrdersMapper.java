@@ -8,6 +8,7 @@ import java.util.List;
 import com.ruoyi.system.domain.dto.GsSalesOrdersDto;
 import com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo;
 import com.ruoyi.system.domain.vo.GsSalesOrdersVo;
+import com.ruoyi.system.domain.vo.GsSalesOrderssVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsSalesOrdersMapper {
@@ -38,4 +39,6 @@ public interface GsSalesOrdersMapper {
     List<GsSalesOrdersVo> saleOrderList(GsSalesOrdersDo gsSalesOrdersDo);
 
     List<GsSalesOrdersDetailsVo> saleOrderListdetail(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
+
+    List<GsSalesOrderssVo> seleteSalesbookingsummary(GsSalesOrderssVo gsSalesOrderssVo);
 }

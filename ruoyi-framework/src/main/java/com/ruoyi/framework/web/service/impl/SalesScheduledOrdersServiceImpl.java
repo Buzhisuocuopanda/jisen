@@ -16,13 +16,14 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.SalesScheduledOrdersService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Resource
+@Service
 public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersService {
 
     @Resource
@@ -277,7 +278,7 @@ return;
         Date date = new Date();
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
-        gsSalesOrders.setStatus(TaskStatus.qxwc.getCode().byteValue());
+        gsSalesOrders.setStatus(TaskStatus.sh.getCode().byteValue());
         int i = gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
     }
 
@@ -455,7 +456,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         Date date = new Date();
         gsSalesOrdersIn.setUpdateTime(date);
         gsSalesOrdersIn.setUpdateBy(userid);
-        gsSalesOrdersIn.setStatus(TaskStatus.qxwc.getCode().byteValue());
+        gsSalesOrdersIn.setStatus(TaskStatus.sh.getCode().byteValue());
         gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
     }
 
@@ -612,6 +613,29 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
 
         gsSalesOrdersChangeMapper.updateByPrimaryKeySelective(gsSalesOrdersChange);
+    }
+
+    @Override
+    public void GsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+        GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
+        if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
+            throw new SwException("没有查到该订单");
+        }
+
+        if(!TaskStatus.bjwc.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
+            throw new SwException("审核状态才能反审");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        gsSalesOrdersChange.setUpdateTime(date);
+        gsSalesOrdersChange.setUpdateBy(userid);
+        gsSalesOrdersChange.setStatus(TaskStatus.sh.getCode().byteValue());
+        gsSalesOrdersChangeMapper.updateByPrimaryKeySelective(gsSalesOrdersChange);
+    }
+
+    @Override
+    public List<GsSalesOrderssVo> seleteSalesbookingsummary(GsSalesOrderssVo gsSalesOrderssVo) {
+        return gsSalesOrdersMapper.seleteSalesbookingsummary(gsSalesOrderssVo);
     }
 
 

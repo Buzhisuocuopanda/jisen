@@ -740,4 +740,59 @@ public class SalesScheduledOrdersController extends BaseController {
         }
 
     }
+
+    /**
+     * 预订单变更单取消完成
+     *
+     * @param gsSalesOrdersChangeDto
+     * @return
+     */
+    @PostMapping("/GsSalesOrdersChangeqxwc")
+    public AjaxResult GsSalesOrdersChangeqxwc( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+        try {
+            salesScheduledOrdersService.GsSalesOrdersChangeqxwc(gsSalesOrdersChangeDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            log.error("【预订单变更单取消完成】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【预订单变更单取消完成】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【预订单变更单取消完成】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+
+    /**
+     * 查询预订单变更单
+     *
+     * @param gsSalesOrderssVo
+     * @return
+     */
+    @GetMapping("/seleteSalesbookingsummary")
+    public AjaxResult<List<TableDataInfo>> seleteSalesbookingsummary( GsSalesOrderssVo gsSalesOrderssVo) {
+        try {
+            startPage();
+            List<GsSalesOrderssVo> list = salesScheduledOrdersService.seleteSalesbookingsummary(gsSalesOrderssVo);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            log.error("【查询预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrderssVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrderssVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
 }

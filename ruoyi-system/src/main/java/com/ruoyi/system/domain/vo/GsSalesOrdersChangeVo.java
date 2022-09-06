@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class GsSalesOrdersChangeVo extends BaseEntity {
+public class GsSalesOrdersChangeVo  {
     private Integer id;
 
     private Date createTime;
@@ -36,7 +36,11 @@ public class GsSalesOrdersChangeVo extends BaseEntity {
     private Byte status;
 
     private String caua17;
+    //单据开始时间
+    private Date startTime;
 
+    //单据结束时间
+    private Date endTime;
 
     private String cbsa08;
 }

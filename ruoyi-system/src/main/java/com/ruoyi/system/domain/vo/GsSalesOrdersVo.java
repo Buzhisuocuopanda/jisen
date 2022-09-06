@@ -33,4 +33,10 @@ public class GsSalesOrdersVo {
     private String wh;
 
     private Integer userId;
+
+    //单据开始时间
+    private Date startTime;
+
+    //单据结束时间
+    private Date endTime;
 }

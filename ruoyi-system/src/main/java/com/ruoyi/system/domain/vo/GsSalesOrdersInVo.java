@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 @Data
-public class GsSalesOrdersInVo  extends BaseEntity {
+public class GsSalesOrdersInVo   {
 
     private Integer id;
 
@@ -30,5 +30,9 @@ public class GsSalesOrdersInVo  extends BaseEntity {
     private Byte status;
 
     private String CBPB08;
+    //单据开始时间
+    private Date startTime;
 
+    //单据结束时间
+    private Date endTime;
 }
