@@ -561,14 +561,20 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //        res.setOther();
         res.setReceiveName(cboa.getCboa17());
         res.setReceivePhone(cboa.getCboa19());
-        SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
-        if (saleUser != null) {
-            res.setSaleUser(saleUser.getNickName());
+        if(cboa.getCboa10()!=null){
+            SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
+            if (saleUser != null) {
+                res.setSaleUser(saleUser.getNickName());
+            }
         }
+
 
 
         //货物明细
         CbobCriteria example = new CbobCriteria();
+        example.createCriteria()
+                .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCboa01EqualTo(cboa.getCboa01());
         List<Cbob> cbobs = cbobMapper.selectByExample(example);
 
         Double sunPrice = 0.0;

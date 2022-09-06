@@ -7,7 +7,9 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
+import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
 import com.ruoyi.system.domain.vo.InwuquVo;
 import com.ruoyi.system.service.gson.FinanceQueryService;
@@ -65,23 +67,23 @@ public class FinanceQueryController extends BaseController {
 
     /**
      * 库存情况报表
-     * @param fnQueryAynthesisDto
+     * @param fnGoodsSkuDto
      * @return
      */
     @GetMapping("/fnSkuList")
-    public AjaxResult<TableDataInfo> fnSkuList(FnQueryAynthesisDto fnQueryAynthesisDto) {
+    public AjaxResult<TableDataInfo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
 
         try {
             startPage();
 
-            List<FnQueryAyntgesisVo> list=financeQueryService.fnSynthesis(fnQueryAynthesisDto);
+            List<FnGoodsSkuVo> list=financeQueryService.fnSkuList(fnGoodsSkuDto);
             return AjaxResult.success(getDataTable(list));
 
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【财务综合报表查询】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(fnQueryAynthesisDto), ExceptionUtils.getStackTrace(e));
+            log.error("【库存情况报表】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(fnGoodsSkuDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

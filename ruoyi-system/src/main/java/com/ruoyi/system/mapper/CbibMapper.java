@@ -24,4 +24,14 @@ public interface CbibMapper {
 
     Cbib selectLastByGoodsId(@Param("goodsId") Integer goodsId);
 
+
+    List<Cbib> selectLastZjrk(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
+
+    List<Cbib> selectLast(Integer goodsId, Integer whId);
+
+
+
+    Integer selectCountZjrk(Integer goodsId, Integer whId);
+
+    Double selectSumSaleOut(Integer goodsId, Integer whId);
 }

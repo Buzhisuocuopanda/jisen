@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBQB01, CBQB02, CBQB03, CBQB04, CBQB05, CBQB06, CBQB07, CBQB08, CBQB09, CBQB10, CBQA01, 
+    CBQB01, CBQB02, CBQB03, CBQB04, CBQB05, CBQB06, CBQB07, CBQB08, CBQB09, CBQB10, CBQA01,
     user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbqbCriteria" resultMap="BaseResultMap">
@@ -92,7 +92,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBQB`
     where CBQB01 = #{cbqb01,jdbcType=INTEGER}
@@ -108,14 +108,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbqb">
-    insert into `CBQB` (CBQB01, CBQB02, CBQB03, 
-      CBQB04, CBQB05, CBQB06, 
-      CBQB07, CBQB08, CBQB09, 
+    insert into `CBQB` (CBQB01, CBQB02, CBQB03,
+      CBQB04, CBQB05, CBQB06,
+      CBQB07, CBQB08, CBQB09,
       CBQB10, CBQA01, user_id
       )
-    values (#{cbqb01,jdbcType=INTEGER}, #{cbqb02,jdbcType=INTEGER}, #{cbqb03,jdbcType=TIMESTAMP}, 
-      #{cbqb04,jdbcType=INTEGER}, #{cbqb05,jdbcType=TIMESTAMP}, #{cbqb06,jdbcType=INTEGER}, 
-      #{cbqb07,jdbcType=INTEGER}, #{cbqb08,jdbcType=INTEGER}, #{cbqb09,jdbcType=VARCHAR}, 
+    values (#{cbqb01,jdbcType=INTEGER}, #{cbqb02,jdbcType=INTEGER}, #{cbqb03,jdbcType=TIMESTAMP},
+      #{cbqb04,jdbcType=INTEGER}, #{cbqb05,jdbcType=TIMESTAMP}, #{cbqb06,jdbcType=INTEGER},
+      #{cbqb07,jdbcType=INTEGER}, #{cbqb08,jdbcType=INTEGER}, #{cbqb09,jdbcType=VARCHAR},
       #{cbqb10,jdbcType=VARCHAR}, #{cbqa01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
       )
   </insert>
@@ -320,4 +320,19 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBQB01 = #{cbqb01,jdbcType=INTEGER}
   </update>
+
+  <select id="selectGoodsBad" resultMap="BaseResultMap">
+SELECT
+  *
+    FROM
+CBQB qb
+LEFT JOIN
+gs_goods_sn sn on sn.sn =qb.CBQB10
+where sn.goods_id =#{gooodsId}
+and sn.wh_id =#{whId}
+
+
+
+  </select>
+
 </mapper>

@@ -310,4 +310,36 @@
       AND sku.wh_id = #{whId} FOR UPDATE
   </select>
 
+
+  <select id="fnSkuList" resultType="com.ruoyi.system.domain.vo.FnGoodsSkuVo">
+    SELECT
+    pb.CBPB10 as brand,
+    pa.CBPA07 as sClass,
+    pb.CBPB12 as model,
+    pb.CBPB09 as description,
+    sku.goods_id as goodsId,
+    sku.wh_id as whId,
+    sku.qty as skuQty
+    FROM
+    `gs_goods_sku` sku
+    LEFT JOIN CBPB pb ON pb.CBPB01 = sku.goods_id
+    LEFT JOIN CBPA pa ON pa.CBPA01 = pb.CBPB14
+    WHERE
+    sku.delete_flag = 0
+    <if test="whId !=null">
+      AND sku.wh_id = #{whId}
+
+    </if>
+
+    <if test="goodsId !=null">
+
+    AND sku.goods_id = #{goodsId}
+    </if>
+	<if test="brandId !=null">
+      AND pb.CBPB10 = #{brandId}
+
+    </if>
+
+  </select>
+
 </mapper>

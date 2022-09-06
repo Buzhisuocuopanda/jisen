@@ -27,4 +27,6 @@ public interface CbqbMapper {
     int updateByPrimaryKeySelective(Cbqb record);
 
     int updateByPrimaryKey(Cbqb record);
+
+    List<Cbqb> selectGoodsBad(Integer goodsId, Integer whId);
 }

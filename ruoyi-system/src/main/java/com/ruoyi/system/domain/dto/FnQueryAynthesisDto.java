@@ -19,7 +19,7 @@ public class FnQueryAynthesisDto {
 
 
     //仓库名字
-    private String whName;
+    private Integer whId;
 
     //客户名称
     private String customerName;

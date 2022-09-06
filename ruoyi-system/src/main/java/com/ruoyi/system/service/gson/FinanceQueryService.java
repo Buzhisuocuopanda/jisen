@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
+import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
 
 import java.util.List;
@@ -14,5 +16,7 @@ import java.util.List;
 public interface FinanceQueryService {
 
     List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);
+
+    List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto);
 
 }

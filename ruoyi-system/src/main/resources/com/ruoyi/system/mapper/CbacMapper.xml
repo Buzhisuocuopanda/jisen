@@ -395,7 +395,10 @@ SELECT
 	ob.CBOB11 AS salePrice,
 	ca.CBCA09 AS suplierName,
 	sa.CBSA08 AS gc,
-	pd.CBPD11 AS cgPrice
+	pd.CBPD11 AS cgPrice,
+	pb.CBPB08 AS description,
+	pb.CBPB10 AS brand,
+	pb.CBPB12 AS model
 FROM
 	CBSD sd
 	LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01
@@ -407,14 +410,15 @@ FROM
 	LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
 	LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
 	LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
-	LEFT JOIN CBWA wa on wa.CBWA01 = sb.CBSB10
-	where sd.CBSD07 = 0
+    LEFT JOIN CBPB pb on sd.CBSD08 =p.CBSB01
+
+    where sd.CBSD07 = 0
     <if test="saleOrderNo != null and saleOrderNo != ''">
       AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')
     </if>
 
-    <if test="whName != null and whName != ''">
-      AND wa.CBWA09 like concat('%', #{whName}, '%')
+    <if test="whId != null ">
+      AND sb.CBSB10 = #{whId}
     </if>
 
     <if test="customerName != null and customerName != ''">
