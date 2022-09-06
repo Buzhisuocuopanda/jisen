@@ -352,7 +352,7 @@ ORDER BY
   </select>
   <select id="selectLastByGoodsId" resultMap="BaseResultMap">
         SELECT
-	*
+    <include refid="Base_Column_List" />
 FROM
 	`CBIB` c
 WHERE
@@ -360,6 +360,62 @@ WHERE
 	 c.CBIB08 = #{goodsId}
 ORDER BY
 	c.CBIB04 DESC limit 1
+  </select>
+
+  <select id="selectLastZjrk" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+	`CBIB` c
+WHERE
+
+	 c.CBIB08 = #{goodsId}
+	 and
+	 c.CBIB02 = #{whId}
+	 and c.CBIB17 = "直接入库"
+ORDER BY
+	c.CBIB04 DESC limit 1
+  </select>
+
+  <select id="selectCountZjrk" resultMap="BaseResultMap">
+    SELECT
+    count(*)
+    FROM
+    `CBIB` c
+    WHERE
+
+    c.CBIB08 = #{goodsId}
+    and
+    c.CBIB02 = #{whId}
+    and c.CBIB17 = "直接入库"
+    ORDER BY
+    c.CBIB04 DESC limit 1
+  </select>
+  <select id="selectSumSaleOut" resultMap="BaseResultMap">
+    SELECT
+    sum(c.CBIB13)
+    FROM
+    `CBIB` c
+    WHERE
+
+    c.CBIB08 = #{goodsId}
+    and
+    c.CBIB02 = #{whId}
+    and c.CBIB17 = "销售出库"
+
+  </select>
+
+  <select id="selectLast" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    `CBIB` c
+    WHERE
+    c.CBIB08 = #{goodsId}
+    and
+    c.CBIB02 = #{whId}
+    ORDER BY
+    c.CBIB04 DESC limit 1
   </select>
 
 </mapper>

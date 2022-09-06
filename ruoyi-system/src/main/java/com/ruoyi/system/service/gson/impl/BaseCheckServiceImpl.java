@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.AuditStatusConstants;
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.UseFlagEnum;
@@ -60,6 +61,12 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
     @Resource
     private CboaMapper cboaMapper;
+
+    @Resource
+    private CalaMapper calaMapper;
+
+    @Resource
+    private CbpaMapper cbpaMapper;
 
     @Override
     public Cbpb checkGoodsForUpdate(Integer goodsId, String goodsName) {
@@ -249,6 +256,37 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     @Override
     public CbpdVo selectgoodsinfo(CbpdVo cbpdVo) {
         return cbpdMapper.selectgoodsinfo(cbpdVo);
+    }
+
+    @Override
+    public Map<Integer, String> brandMap() {
+
+        CalaCriteria laex=new CalaCriteria();
+        laex.createCriteria()
+                .andCala10EqualTo("商品品牌");
+        List<Cala> calas = calaMapper.selectByExample(laex);
+        Map<Integer,String> map=new HashMap<>();
+        for (Cala cala : calas) {
+            map.put(cala.getCala01(),cala.getCala08());
+        }
+        return map;
+
+
+
+    }
+
+    @Override
+    public Map<Integer, Cbpa> classMap() {
+        Map<Integer, Cbpa> map=new HashMap<>();
+
+        CbpaCriteria paex=new CbpaCriteria();
+        paex.createCriteria()
+                .andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpa> cbpas = cbpaMapper.selectByExample(paex);
+        for (Cbpa cbpa : cbpas) {
+            map.put(cbpa.getCbpa01(),cbpa);
+        }
+        return map;
     }
 
     @Override

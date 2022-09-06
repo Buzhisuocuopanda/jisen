@@ -18,20 +18,21 @@ public class FnGoodsSkuVo {
     @Excel(name = "供应商")
     private String supplieName;
 
-    @Excel(name = "品牌")
-    private String brand;
 
     @Excel(name = "大类")
     private String bClass;
 
     @Excel(name = "小类")
     private String sClass;
-
-    @Excel(name = "SKU")
-    private String sku;
+    @Excel(name = "品牌")
+    private String brand;
 
     @Excel(name = "型号")
     private String model;
+    @Excel(name = "描述")
+    private String description;
+
+
 
     @Excel(name = "期初入库")
 
@@ -45,7 +46,7 @@ public class FnGoodsSkuVo {
     @Excel(name = "累计")
 
     private Double totalQty;
-    @Excel(name = "销售出库")
+    @Excel(name = "销售出库数量")
 
     private Double outSaleQty;
     @Excel(name = "库存")
@@ -53,6 +54,11 @@ public class FnGoodsSkuVo {
     private Double skuQty;
 
 
+
+
+    private Integer goodsId;
+
+    private Integer whId;
 
 
 
