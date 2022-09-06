@@ -269,7 +269,7 @@ if(cbob==null){
         saleOrderAddDto.setSaleUserId(i);
         saleOrderAddDto.setCurrency(cbsb1.getCbsb16());
         saleOrderAddDto.setInvoiceType(cbsb1.getCbsb24());
-        saleOrderAddDto.setOrderType(cbsb1.getCbsb32());
+        saleOrderAddDto.setOrderType(TaskType.xsdd.getCode().intValue());
         saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
         saleOrderAddDto.setGoods(goods);
        saleOrderService.addSaleOrder(saleOrderAddDto);
@@ -352,6 +352,11 @@ if(cbob==null){
     @Transactional
     @Override
     public int insertSwJsStoress(List<Cbsd> itemList) {
+
+        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
+        if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
+            throw new SwException(" 审核状态才能扫码");
+        }
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbsdMapper mapper = session.getMapper(CbsdMapper.class);
         Date date = new Date();
@@ -362,6 +367,7 @@ if(cbob==null){
             itemList.get(i).setCbsd05(date);
             itemList.get(i).setCbsd06(Math.toIntExact(userid));
             itemList.get(i).setCbsd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setCbsd11(ScanStatusEnum.YISAOMA.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
             //如果查不到添加信息到库存表
@@ -427,11 +433,12 @@ if(cbob==null){
             throw new SwException("没有该销售出库单");
         }
         CbscCriteria example = new CbscCriteria();
-        example.createCriteria().andCbsb01EqualTo(cbsb.getCbsb01())
-                .andCbsc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        example.createCriteria()
+                .andCbsb01EqualTo(cbsb.getCbsb01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsc> cbscs = cbscMapper.selectByExample(example);
         if(cbscs.size()==0){
-            throw new SwException("没有该销售出库单明细表为空");
+            throw new SwException("销售出库单明细表为空");
         }
 
         for(int i=0;i<cbscs.size();i++){

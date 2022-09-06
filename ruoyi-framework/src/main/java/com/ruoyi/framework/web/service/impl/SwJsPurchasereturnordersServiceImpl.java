@@ -579,15 +579,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         //数量管理查找商品id和仓库id，没有就加入
         CbphCriteria example1=new CbphCriteria();
         example1.createCriteria()
-                .andCbph06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
-                .andCbph01EqualTo(cbpgDto.getCbph01());
+                .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpg01EqualTo(cbpgDto.getCbpg01());
         List<Cbph> cbphs = cbphMapper.selectByExample(example1);
         for (Cbph cbph : cbphs) {
             Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph.getCbph08());
             //供应商id
             Integer vendorid = cbpg1.getCbpg09();
             //商品id
-            Integer goodsid = cbba.getCbba08();
+            Integer goodsid = cbph.getCbph08();
             //仓库id
             Integer storeid = cbpg1.getCbpg10();
             //数量
@@ -602,23 +602,23 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             //扫码仓库
 
                 CbpiCriteria example2 = new CbpiCriteria();
-                example2.createCriteria().andCbpi01EqualTo(cbpgDto.getCbpg01())
+                example2.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                         .andCbpi07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
                 List<Cbpi> cbpis = cbpiMapper.selectByExample(example2);
                 for (Cbpi cbpi : cbpis) {
                     //sn
-                    String sn = cbpi.getCbpi09();
-                    //以扫数量
-                    Integer snum = cbpi.getCbpi11();
+//                    String sn = cbpi.getCbpi09();
+//                    //以扫数量
+//                    Integer snum = cbpi.getCbpi11();
 
                     //检查是否有数据存在
-                    GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
-                    example.createCriteria()
-                            .andGoodsIdEqualTo(goodsid)
-                            .andWhIdEqualTo(storeid);
-                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
-                    //库存表id
-                    Integer id = gsGoodsSkus.get(0).getId();
+//                    GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+//                    example.createCriteria()
+//                            .andGoodsIdEqualTo(goodsid)
+//                            .andWhIdEqualTo(storeid);
+//                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+//                    //库存表id
+//                    Integer id = gsGoodsSkus.get(0).getId();
 
 
                     //台账操作
