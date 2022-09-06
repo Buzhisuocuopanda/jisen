@@ -83,6 +83,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
     /**
      * 新增采购入库单扫码
      */

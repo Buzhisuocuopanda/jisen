@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
 import com.ruoyi.system.domain.GsSalesOrdersInCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.GsSalesOrdersInVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsSalesOrdersInMapper {
@@ -27,4 +29,6 @@ public interface GsSalesOrdersInMapper {
     int updateByPrimaryKeySelective(GsSalesOrdersIn record);
 
     int updateByPrimaryKey(GsSalesOrdersIn record);
+
+    List<GsSalesOrdersInVo> seleteSubscribetotheinventoryslip(GsSalesOrdersInVo gsSalesOrdersInVo);
 }

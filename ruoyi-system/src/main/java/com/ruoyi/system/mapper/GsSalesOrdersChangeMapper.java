@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersChangeCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsSalesOrdersChangeMapper {
@@ -27,4 +29,6 @@ public interface GsSalesOrdersChangeMapper {
     int updateByPrimaryKeySelective(GsSalesOrdersChange record);
 
     int updateByPrimaryKey(GsSalesOrdersChange record);
+
+    List<GsSalesOrdersChangeVo> seleteGsSalesOrdersChange(GsSalesOrdersChangeVo gsSalesOrdersChangeVo);
 }

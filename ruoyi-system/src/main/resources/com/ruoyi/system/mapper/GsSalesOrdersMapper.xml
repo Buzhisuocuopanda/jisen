@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id, 
+    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id,
     saler_id, customer_id, order_date, `status`, wh_id, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultMap="BaseResultMap">
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_ Sales_orders`
     where id = #{id,jdbcType=INTEGER}
@@ -110,15 +110,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsSalesOrders">
-    insert into `gs_ Sales_orders` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      order_no, supplier_id, saler_id, 
-      customer_id, order_date, `status`, 
+    insert into `gs_ Sales_orders` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      order_no, supplier_id, saler_id,
+      customer_id, order_date, `status`,
       wh_id, user_id)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER}, 
-      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
       #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrders">
@@ -212,7 +212,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultType="java.lang.Long">
     select count(*) from `gs_ Sales_orders`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -350,4 +350,100 @@
       user_id = #{userId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.GsSalesOrders" useGeneratedKeys="true" keyProperty="id">
+    insert into `gs_ Sales_orders` (id, create_time, update_time,
+                                    create_by, update_by, delete_flag,
+                                    order_no, supplier_id, saler_id,
+                                    customer_id, order_date, `status`,
+                                    wh_id, user_id)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+            #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+            #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+            #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+
+
+  </insert>
+  <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
+    SELECT
+      so.id AS id,
+      so.order_no AS orderNo,
+      so.order_date AS orderDate,
+      a.CBSA08 AS supplier,
+      b.CAUA17 AS saler,
+      c.CBCA08 AS customer,
+      d.cbwa09 AS wh
+    FROM
+      `gs_ Sales_orders` AS so
+
+        LEFT JOIN
+      CBSA a
+      on
+        a.CBSA01=so.supplier_id
+        LEFT JOIN
+      CAUA b
+      on
+        b.CAUA01=so.saler_id
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=so.customer_id
+        LEFT JOIN
+      CBWA d
+      ON
+        d.CBWA01=so.wh_id
+WHERE so.delete_flag=0
+    <if test="orderNo != null and orderNo !=''">
+      and  so.order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(so.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+  </select>
+  <select id="saleOrderListdetail" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
+    SELECT
+      so.id AS id,
+      so.order_no AS orderNo,
+      so.order_date AS orderDate,
+      a.CBSA08 AS supplier,
+      b.CAUA17 AS saler,
+      c.CBCA08 AS customer,
+      d.cbwa09 AS wh,
+      ss.goods_id AS goodsId,
+      ss.price AS price,
+      ss.qty AS qty,
+      ss.remark AS remark
+    FROM
+      `gs_ Sales_orders` AS so
+
+        LEFT JOIN
+      gs_Sales_orders_details ss
+      ON
+        so.id=ss.gs_Sales_orders
+
+        LEFT JOIN
+      CBSA a
+      on
+        a.CBSA01=so.supplier_id
+        LEFT JOIN
+      CAUA b
+      on
+        b.CAUA01=so.saler_id
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=so.customer_id
+        LEFT JOIN
+      CBWA d
+      ON
+        d.CBWA01=so.wh_id
+where
+      so.id= #{id}
+  </select>
+
 </mapper>

@@ -218,6 +218,18 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib15(cbib1.getCbib09()-cbibDo.getCbib13());
                 cbib.setCbib16(cbib1.getCbib10()-cbibDo.getCbib14());
             }
+            //销售预订单
+            if(cbibDo.getCbib17().equals(TaskType.xsydd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+            }
+            //预订单入库单
+            if(cbibDo.getCbib17().equals(TaskType.yydrkd.getMsg())){
+                cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+            }
+
+
         }
         Date date=new Date();
         cbib.setCbib04(date);
