@@ -7,14 +7,14 @@ import com.ruoyi.system.domain.Cbqb;
 import com.ruoyi.system.domain.GsGoodsSku;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
+import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
 import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
-import com.ruoyi.system.mapper.CbibMapper;
-import com.ruoyi.system.mapper.CbqbMapper;
-import com.ruoyi.system.mapper.CbscMapper;
-import com.ruoyi.system.mapper.GsGoodsSkuMapper;
+import com.ruoyi.system.domain.vo.SaleAnalysisVo;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +43,8 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     private CbibMapper cbibMapper;
     @Resource
     private CbqbMapper cbqbMapper;
+    @Resource
+    private CbobMapper cbobMapper;
 
     @Override
     public List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
@@ -118,6 +120,20 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
         }
         return list;
+
+    }
+
+    @Override
+    public List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbobMapper.salesAnalysis(fnsalesAnalysisDto);
+        for (SaleAnalysisVo saleAnalysisVo : list) {
+            saleAnalysisVo.setBrand(brandMap.get(saleAnalysisVo.getBrand()));
+        }
+        return list;
+
 
     }
 }

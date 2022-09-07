@@ -9,9 +9,11 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
+import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
 import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
 import com.ruoyi.system.domain.vo.InwuquVo;
+import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import com.ruoyi.system.service.gson.FinanceQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -90,5 +92,33 @@ public class FinanceQueryController extends BaseController {
 
 
     }
+
+    /**
+     * 销售分析
+     * @param fnsalesAnalysisDto
+     * @return
+     */
+    @GetMapping("/salesAnalysis")
+    public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
+
+        try {
+            startPage();
+
+            List<SaleAnalysisVo> list=financeQueryService.salesAnalysis(fnsalesAnalysisDto);
+            return AjaxResult.success(getDataTable(list));
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售分析】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(fnsalesAnalysisDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+
+    }
+
+
 
 }
