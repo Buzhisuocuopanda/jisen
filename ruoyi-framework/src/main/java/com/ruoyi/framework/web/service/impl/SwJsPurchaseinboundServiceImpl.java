@@ -139,6 +139,9 @@ private NumberGenerate numberGenerate;
             itemList.get(i).setCbpe11(ScanStatusEnum.YISAOMA.getCode());
             //如果查不到添加信息到库存表
             Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
+            if(cbpc==null){
+                throw new SwException("采购入库单不存在");
+            }
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
@@ -369,7 +372,9 @@ private NumberGenerate numberGenerate;
         cbpc.setCbpc13(cbpdDto.getCbpc13());
 
         Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpc1.getCbpc09());
-
+        if(cbsa==null){
+            throw new SwException("供应商不存在");
+        }
 
         //判断是哪个仓库  数量仓库
         if(cbpc1.getCbpc10().equals(WarehouseSelect.CBW.getCode()) ||
@@ -453,7 +458,7 @@ private NumberGenerate numberGenerate;
             }
             }
         else {
-            //数量管理查找商品id和仓库id，没有就加入
+            //判断是哪个仓库  扫码仓库
             CbpdCriteria example1=new CbpdCriteria();
             example1.createCriteria()
                     .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())

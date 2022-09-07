@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.GsSalesOrdersMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.GsSalesOrders">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="BIGINT" property="createBy" />
+    <result column="update_by" jdbcType="BIGINT" property="updateBy" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="saler_id" jdbcType="INTEGER" property="salerId" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="order_date" jdbcType="DATE" property="orderDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="wh_id" jdbcType="INTEGER" property="whId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id,
+    saler_id, customer_id, order_date, `status`, wh_id, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `gs_ Sales_orders`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `gs_ Sales_orders`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `gs_ Sales_orders`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria">
+    delete from `gs_ Sales_orders`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.GsSalesOrders">
+    insert into `gs_ Sales_orders` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      order_no, supplier_id, saler_id,
+      customer_id, order_date, `status`,
+      wh_id, user_id)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+      #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrders">
+    insert into `gs_ Sales_orders`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="salerId != null">
+        saler_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="orderDate != null">
+        order_date,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="whId != null">
+        wh_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="salerId != null">
+        #{salerId,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null">
+        #{orderDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="whId != null">
+        #{whId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <select id="countByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultType="java.lang.Long">
+    select count(*) from `gs_ Sales_orders`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `gs_ Sales_orders`
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.deleteFlag != null">
+        delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderNo != null">
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierId != null">
+        supplier_id = #{record.supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="record.salerId != null">
+        saler_id = #{record.salerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerId != null">
+        customer_id = #{record.customerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderDate != null">
+        order_date = #{record.orderDate,jdbcType=DATE},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.whId != null">
+        wh_id = #{record.whId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `gs_ Sales_orders`
+    set id = #{record.id,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=BIGINT},
+      update_by = #{record.updateBy,jdbcType=BIGINT},
+      delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      supplier_id = #{record.supplierId,jdbcType=INTEGER},
+      saler_id = #{record.salerId,jdbcType=INTEGER},
+      customer_id = #{record.customerId,jdbcType=INTEGER},
+      order_date = #{record.orderDate,jdbcType=DATE},
+      `status` = #{record.status,jdbcType=TINYINT},
+      wh_id = #{record.whId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsSalesOrders">
+    update `gs_ Sales_orders`
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="salerId != null">
+        saler_id = #{salerId,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null">
+        order_date = #{orderDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="whId != null">
+        wh_id = #{whId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsSalesOrders">
+    update `gs_ Sales_orders`
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=BIGINT},
+      delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      saler_id = #{salerId,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      order_date = #{orderDate,jdbcType=DATE},
+      `status` = #{status,jdbcType=TINYINT},
+      wh_id = #{whId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <insert id="insertWithId" parameterType="com.ruoyi.system.domain.GsSalesOrders" useGeneratedKeys="true" keyProperty="id">
+    insert into `gs_ Sales_orders` (id, create_time, update_time,
+                                    create_by, update_by, delete_flag,
+                                    order_no, supplier_id, saler_id,
+                                    customer_id, order_date, `status`,
+                                    wh_id, user_id)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+            #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+            #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+            #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+
+
+  </insert>
+  <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
+    SELECT
+      so.id AS id,
+      so.order_no AS orderNo,
+      so.order_date AS orderDate,
+      a.CBSA08 AS supplier,
+      b.CAUA17 AS saler,
+      c.CBCA08 AS customer,
+      d.cbwa09 AS wh
+    FROM
+      `gs_ Sales_orders` AS so
+
+        LEFT JOIN
+      CBSA a
+      on
+        a.CBSA01=so.supplier_id
+        LEFT JOIN
+      CAUA b
+      on
+        b.CAUA01=so.saler_id
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=so.customer_id
+        LEFT JOIN
+      CBWA d
+      ON
+        d.CBWA01=so.wh_id
+WHERE so.delete_flag=0
+    <if test="orderNo != null and orderNo !=''">
+      and  so.order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="startTime != null">
+      and so.order_date &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and so.order_date &lt;=#{endTime}
+    </if>
+  </select>
+  <select id="saleOrderListdetail" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
+    SELECT
+      so.id AS id,
+      so.order_no AS orderNo,
+      so.order_date AS orderDate,
+      a.CBSA08 AS supplier,
+      b.CAUA17 AS saler,
+      c.CBCA08 AS customer,
+      d.cbwa09 AS wh,
+      ss.goods_id AS goodsId,
+      ss.price AS price,
+      ss.qty AS qty,
+      ss.remark AS remark
+    FROM
+      `gs_ Sales_orders` AS so
+
+        LEFT JOIN
+      gs_Sales_orders_details ss
+      ON
+        so.id=ss.gs_Sales_orders
+
+        LEFT JOIN
+      CBSA a
+      on
+        a.CBSA01=so.supplier_id
+        LEFT JOIN
+      CAUA b
+      on
+        b.CAUA01=so.saler_id
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=so.customer_id
+        LEFT JOIN
+      CBWA d
+      ON
+        d.CBWA01=so.wh_id
+where
+      so.id= #{id}
+  </select>
+    <select id="seleteSalesbookingsummary" resultType="com.ruoyi.system.domain.vo.GsSalesOrderssVo">
+      SELECT
+        so.id AS id,
+        so.order_no AS orderNo,
+        so.order_date AS orderDate,
+        a.CBSA08 as cbsa08,
+        b.CAUA17 as caua17,
+        c.CBCA08 as cbca08,
+        d.cbwa09 as cbwa09,
+        ss.goods_id AS goodsId,
+        ss.price AS price,
+        ss.qty AS qty,
+        ss.remark AS remark,
+        e.in_qty AS in_qty,
+        f.qty AS qtys,
+        g.CBPB08 AS cbpb08,
+        h.CALA08 AS cala08,
+        g.CBPB12 AS cbpb12
+      FROM
+        `gs_ Sales_orders` AS so
+
+          LEFT JOIN
+        gs_Sales_orders_details ss
+        ON
+          so.id=ss.gs_Sales_orders
+
+          LEFT JOIN
+        CBSA a
+        on
+          a.CBSA01=so.supplier_id
+          LEFT JOIN
+        CAUA b
+        on
+          b.CAUA01=so.saler_id
+          LEFT JOIN
+        CBCA c
+        ON
+          c.CBCA01=so.customer_id
+          LEFT JOIN
+        CBWA d
+        ON
+          d.CBWA01=so.wh_id
+          LEFT JOIN
+        `gs_ Sales_orders_in` e
+        ON
+          e.gs_sales_orders=so.id
+          LEFT JOIN
+        `gs_ Sales_orders_change` f
+        ON
+          f.gs_Sales_orders=so.id
+          LEFT JOIN
+        CBPB g
+        ON
+          g.CBPB01=ss.goods_id
+          LEFT JOIN
+        CALA h
+        ON
+          g.CBPB10=h.CALA01
+where
+    so.delete_flag=0
+      <if test="startTime != null">
+        and so.order_date &gt;= #{startTime}
+      </if>
+      <if test="endTime != null">
+        and so.order_date &lt;=#{endTime}
+      </if>
+    </select>
+
+</mapper>
