@@ -1,10 +1,15 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.*;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
@@ -16,9 +21,15 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.SalesScheduledOrdersService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +59,17 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
 
     @Resource
     private GsSalesOrdersChangeMapper gsSalesOrdersChangeMapper;
+
+    @Resource
+    private CauaMapper cauamaMapper;
+
+    @Resource
+    private CbcaMapper cbcaMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
 
     /**
@@ -168,7 +190,7 @@ return;
     }
 
     @Override
-    public void SalesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto) {
+    public void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -187,7 +209,7 @@ return;
     }
 
     @Override
-    public void SalesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto) {
+    public void salesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -205,7 +227,7 @@ return;
     }
 
     @Override
-    public void SalesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto) {
+    public void salesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -265,7 +287,7 @@ return;
     }
 
     @Override
-    public void SalesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto) {
+    public void salesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -351,7 +373,7 @@ return;
     }
 
     @Override
-    public void Subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
+    public void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -369,7 +391,7 @@ return;
     }
 
     @Override
-    public void Subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto) {
+    public void subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -387,7 +409,7 @@ return;
     }
 
     @Override
-    public void Subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
+    public void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
 GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -443,7 +465,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
-    public void Subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
+    public void subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -524,7 +546,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
-    public void GsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public void gsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -542,7 +564,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
-    public void GsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public void gsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -560,7 +582,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
-    public void GsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -616,7 +638,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
-    public void GsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public void gsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -637,6 +659,149 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     public List<GsSalesOrderssVo> seleteSalesbookingsummary(GsSalesOrderssVo gsSalesOrderssVo) {
         return gsSalesOrdersMapper.seleteSalesbookingsummary(gsSalesOrderssVo);
     }
+
+    @Override
+    public int insertSwJsStores(List<GsSalesOrdersdrDto> itemList) {
+        if(itemList.size() == 0){
+            throw new SwException("没有数据");
+        }
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        if("".equals(itemList.get(0).getSupperilername())){
+            throw new SwException("供料单位不能为空");
+        }
+        String supperilername = itemList.get(0).getSupperilername();
+        CbsaCriteria cbsaCriteria = new CbsaCriteria();
+        cbsaCriteria.createCriteria().andCbsa08EqualTo(supperilername);
+        List<Cbsa> cbsas = cbsaMapper.selectByExample(cbsaCriteria);
+        if(cbsas.size() == 0){
+            throw new SwException("供料单位不存在");
+        }
+        //供料单位id
+        Integer supplierId = cbsas.get(0).getCbsa01();
+
+
+        if ("".equals(itemList.get(0).getSalaername())) {
+            throw new SwException("销售人员不能为空");
+        }
+        String salaername = itemList.get(0).getSalaername();
+         CauaCriteria cauaCriteria = new CauaCriteria();
+        cauaCriteria.createCriteria().andCaua17EqualTo(salaername);
+        List<Caua> cauas = cauamaMapper.selectByExample(cauaCriteria);
+        if(cauas.size() == 0){
+            throw new SwException("销售人员不存在");
+        }
+        //销售人员id
+        Integer caua01 = cauas.get(0).getCaua01();
+
+
+        if(itemList.get(0).getClientname().equals("")){
+            throw new SwException("客户名称不能为空");
+        }
+        String clientname = itemList.get(0).getClientname();
+        CbcaCriteria cbcaCriteria = new CbcaCriteria();
+        cbcaCriteria.createCriteria().andCbca08EqualTo(clientname);
+        List<Cbca> cbcas = cbcaMapper.selectByExample(cbcaCriteria);
+        if(cbcas.size() == 0){
+            throw new SwException("客户名称不存在");
+        }
+        //客户名称id
+        Integer cbca01 = cbcas.get(0).getCbca01();
+
+
+
+        GsSalesOrders gsSalesOrders = new GsSalesOrders();
+        gsSalesOrders.setCreateTime(date);
+        gsSalesOrders.setCreateBy(userid);
+        gsSalesOrders.setUpdateTime(date);
+        gsSalesOrders.setUpdateBy(userid);
+        gsSalesOrders.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+        NumberDo numberDo = new NumberDo();
+        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
+        String orderNo = numberGenerate.createOrderNo(numberDo).getOrderNo();
+        gsSalesOrders.setOrderNo(orderNo);
+        gsSalesOrders.setSupplierId(supplierId);
+        gsSalesOrders.setSalerId(caua01);
+        gsSalesOrders.setCustomerId(cbca01);
+        gsSalesOrders.setOrderDate(date);
+        gsSalesOrders.setStatus(TaskStatus.mr.getCode().byteValue());
+        gsSalesOrdersMapper.insertSelective(gsSalesOrders);
+
+        GsSalesOrdersCriteria gsSalesOrdersCriteria = new GsSalesOrdersCriteria();
+        gsSalesOrdersCriteria.createCriteria().andOrderNoEqualTo(orderNo);
+        List<GsSalesOrders> gsSalesOrderss = gsSalesOrdersMapper.selectByExample(gsSalesOrdersCriteria);
+        Integer id = gsSalesOrderss.get(0).getId();
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        GsSalesOrdersDetailsMapper mapper = session.getMapper(GsSalesOrdersDetailsMapper.class);
+
+        for (int i = 0; i < itemList.size(); i++) {
+
+            if(itemList.get(i).getNum()== 0){
+                throw new SwException("商品数量不能为空");
+            }
+            if(itemList.get(i).getPrices()== 0){
+                throw new SwException("商品单价不能为空");
+            }
+
+            itemList.get(i).setQty(itemList.get(i).getNum());
+            if("".equals(itemList.get(i).getGoodstype())){
+                throw new SwException("商品型号不能为空");
+            }
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodstype());
+            List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+            if(cbpbs.size() == 0){
+                throw new SwException("商品型号不存在");
+            }
+            //商品id
+            Integer goodsid = cbpbs.get(0).getCbpb01();
+            itemList.get(i).setCreateTime(date);
+            itemList.get(i).setCreateBy(String.valueOf(userid));
+            itemList.get(i).setUpdateTime(date);
+            itemList.get(i).setUpdateBy(String.valueOf(userid));
+            itemList.get(i).setDeleteFlag(String.valueOf(DeleteFlagEnum.NOT_DELETE.getCode().byteValue()));
+            itemList.get(i).setQty(itemList.get(i).getNum());
+            itemList.get(i).setGoodsId(goodsid);
+            itemList.get(i).setPrice(BigDecimal.valueOf(itemList.get(i).getPrices()));
+            itemList.get(i).setRemark(itemList.get(i).getRemark());
+            itemList.get(i).setGsSalesOrders(id.toString());
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
+
+    @Override
+    public String importSwJsGoods(List<GsSalesOrdersdrDto> swJsGoodsList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        this.insertSwJsStores(swJsGoodsList);
+
+
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
+    }
+
+
 
 
 }

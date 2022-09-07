@@ -130,6 +130,9 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         if(cbcas.size()>0){
             throw new SwException("客户名称不能重复");
         }
+        if(cbcaDto.getCbca28()==null){
+              throw new SwException("客户等级只能为数字");
+        }
         Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
         Date date = new Date();
         cbca.setCbca02(date);
@@ -154,10 +157,22 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         cbca.setCbca21(cbcaDto.getCbca21());
         cbca.setCbca22(cbcaDto.getCbca22());
         cbca.setCbca23(cbcaDto.getCbca23());
-        cbca.setCbca24(cbcaDto.getCbca24());
+       if("增值税专用发票".equals(cbcaDto.getCbca24())||
+               "增值税普通发票".equals(cbcaDto.getCbca24())||
+                "个人普通发票".equals(cbcaDto.getCbca24())||
+                "不开发票".equals(cbcaDto.getCbca24())
+
+       ) {
+           cbca.setCbca24(cbcaDto.getCbca24());
+       }
+       else {
+           throw new SwException("发票类型填写错误");
+       }
         cbca.setCbca25(cbcaDto.getCbca25());
         cbca.setCbca26(cbcaDto.getCbca26());
         cbca.setCbca27(cbcaDto.getCbca27());
+        String s = cbcaDto.getCbca28().toString();
+
         cbca.setCbca28(cbcaDto.getCbca28());
 
 

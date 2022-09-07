@@ -339,6 +339,10 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Transactional
     @Override
     public int insertSwJsStoress(List<Cbac> itemList) {
+        Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(itemList.get(0).getCbaa01());
+        if (!cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())) {
+            throw new SwException("审核状态才能扫码");
+        }
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbacMapper mapper = session.getMapper(CbacMapper.class);
         Date date = new Date();
@@ -353,13 +357,20 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
             //如果查不到添加信息到库存表
             Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
+            if(cbaa==null){
+                throw new SwException("调拨单不存在");
+            }
+            //调出仓库
+            Integer outstore = cbaa.getCbaa09();
+            Integer instore = cbaa.getCbaa10();
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取调出仓库id
-            gsGoodsSkuDo.setWhId(cbaa.getCbaa09());
+            gsGoodsSkuDo.setWhId(outstore);
             //获取商品id
             gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbac08());
             gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            //通过仓库id和货物id判断是否存在//调出仓库
+            //通过仓库id和货物id判断是否存在
+            // 调出仓库
             List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
             if(gsGoodsSkus.size()==0){
              throw new SwException("调出仓库没有该货物");
@@ -373,19 +384,21 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
                 if(qty==0){
                     throw new SwException("调出仓库该货物数量为0");
                 }
-                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbac08());
-                gsGoodsSkuDo1.setWhId(cbaa.getCbaa10());
-                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbac10());
-
-                gsGoodsSkuDo1.setQty(qty-1.0);
+                gsGoodsSkuDo1.setGoodsId(gsGoodsSkus.get(0).getGoodsId());
+                gsGoodsSkuDo1.setWhId(outstore);
+                gsGoodsSkuDo1.setLocationId(gsGoodsSkus.get(i).getLocationId());
+                double v = 1.0;
+                double v1 = qty - v;
+                gsGoodsSkuDo1.setQty(v1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
 
             }
 
             //调入仓库加
             GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
             //获取调入仓库id
-            gsGoodsSkuDo1.setWhId(cbaa.getCbaa10());
+            gsGoodsSkuDo1.setWhId(instore);
             //获取商品id
             gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbac08());
             gsGoodsSkuDo1.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
@@ -394,7 +407,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
             if(gsGoodsSkus1.size()==0){
                 GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
                 gsGoodsSkuDo2.setGoodsId(itemList.get(i).getCbac08());
-                gsGoodsSkuDo2.setWhId(cbaa.getCbaa10());
+                gsGoodsSkuDo2.setWhId(instore);
                 gsGoodsSkuDo2.setLocationId(itemList.get(i).getCbac10());
                 gsGoodsSkuDo2.setQty(1.0);
                 taskService.addGsGoodsSku(gsGoodsSkuDo2);
@@ -403,12 +416,13 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                 GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
 
-                gsGoodsSkuDo2.setGoodsId(itemList.get(i).getCbac08());
-                gsGoodsSkuDo2.setWhId(cbaa.getCbaa10());
-                gsGoodsSkuDo2.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSkuDo2.setGoodsId(gsGoodsSkus1.get(0).getGoodsId());
+                gsGoodsSkuDo2.setWhId(instore);
+                gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(i).getLocationId());
                 //查出
                 Double qty = gsGoodsSkus1.get(0).getQty();
-                gsGoodsSkuDo2.setQty(qty+1.0);
+                double v = qty + 1.0;
+                gsGoodsSkuDo2.setQty(v);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo2);
 
             }
@@ -426,6 +440,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
                 session.clearCache();
             }
         }
+        CbaaDo cbaaDo = new CbaaDo();
+        cbaaDo.setCbaa01(itemList.get(0).getCbaa01());
+        this.insertSwJsSkuBarcodebjwc(cbaaDo);
         session.commit();
         session.clearCache();
         return 1;    }

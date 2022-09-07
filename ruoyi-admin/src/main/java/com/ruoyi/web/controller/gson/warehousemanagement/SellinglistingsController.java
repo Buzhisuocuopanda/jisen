@@ -45,11 +45,11 @@ public class SellinglistingsController extends BaseController {
     private ISellinglistingsService iSellinglistingsService;
 
     /**
-     * 新增销售上架单
+     * 更新销售上架单
      */
     @ApiOperation(
-            value ="新增销售上架单",
-            notes = "新增销售上架单"
+            value ="更新销售上架单",
+            notes = "更新销售上架单"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
     public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody GsGoodsSnDo goodsSnDo) {

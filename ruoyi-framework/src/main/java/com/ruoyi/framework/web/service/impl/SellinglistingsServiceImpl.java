@@ -38,7 +38,7 @@ private GsGoodsSnMapper goodsSnMapper;
         goodsSn.setUpdateBy(Math.toIntExact(userid));
         goodsSn.setStatus(Groudstatus.SJ.getCode());
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
-        example.createCriteria().andIdEqualTo(goodsSnDo.getId())
+        example.createCriteria().andSnEqualTo(goodsSnDo.getSn())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
          goodsSnMapper.updateByExampleSelective(goodsSn, example);
         return 1;

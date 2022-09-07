@@ -1,10 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
-import com.ruoyi.system.domain.dto.DeleteSaleOrderDto;
-import com.ruoyi.system.domain.dto.GsSalesOrdersChangeDto;
-import com.ruoyi.system.domain.dto.GsSalesOrdersDto;
-import com.ruoyi.system.domain.dto.GsSalesOrdersInDto;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 
 import java.util.List;
@@ -20,13 +17,13 @@ public interface SalesScheduledOrdersService {
 
     List<GsSalesOrdersDetailsVo> saleOrderListdetail(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 
-    void SalesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto);
+    void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto);
 
-    void SalesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto);
+    void salesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto);
 
-    void SalesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto);
+    void salesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto);
 
-    void SalesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto);
+    void salesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto);
 
     void addSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto);
 
@@ -36,13 +33,13 @@ public interface SalesScheduledOrdersService {
 
     List<GsSalesOrdersInVo> seleteSubscribetotheinventoryslip(GsSalesOrdersInVo gsSalesOrdersInVo);
 
-    void Subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto);
+    void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto);
 
-    void Subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto);
+    void subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto);
 
-    void Subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto);
+    void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto);
 
-    void Subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto);
+    void subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto);
 
     void addGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
@@ -52,13 +49,19 @@ public interface SalesScheduledOrdersService {
 
     List<GsSalesOrdersChangeVo> seleteGsSalesOrdersChange(GsSalesOrdersChangeVo gsSalesOrdersChangeVo);
 
-    void GsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    void gsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
-    void GsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    void gsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
-    void GsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
-    void GsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    void gsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
     List<GsSalesOrderssVo> seleteSalesbookingsummary(GsSalesOrderssVo gsSalesOrderssVo);
+
+
+    //导入新增
+    int insertSwJsStores(List<GsSalesOrdersdrDto> itemList);
+
+    String importSwJsGoods(List<GsSalesOrdersdrDto> swJsGoodsList, boolean updateSupport, String operName);
 }

@@ -302,12 +302,14 @@ public class TaskServiceImpl implements TaskService {
         GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(goodsSkuDo, GsGoodsSku.class, null);
         gsGoodsSku.setUpdateTime(date);
         gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+        gsGoodsSku.setQty(goodsSkuDo.getQty());
         GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
             example.createCriteria()
                 .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
                 .andWhIdEqualTo(goodsSkuDo.getWhId());
                // .andLocationIdEqualTo(goodsSkuDo.getLocationId());
-        gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku,example);
+        int i = gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku, example);
+
         return gsGoodsSku;
     }
 
