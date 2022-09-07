@@ -81,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBAB01, CBAB02, CBAB03, CBAB04, CBAB05, CBAB06, CBAB07, CBAB08, CBAB09, CBAB10, CBAB11, 
+    CBAB01, CBAB02, CBAB03, CBAB04, CBAB05, CBAB06, CBAB07, CBAB08, CBAB09, CBAB10, CBAB11,
     CBAB12, CBAB13, CBAA01, CBAB14, CBAB15, CBAB16, CBAB17, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbabCriteria" resultMap="BaseResultMap">
@@ -99,7 +99,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBAB`
     where CBAB01 = #{cbab01,jdbcType=INTEGER}
@@ -115,19 +115,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbab">
-    insert into `CBAB` (CBAB01, CBAB02, CBAB03, 
-      CBAB04, CBAB05, CBAB06, 
-      CBAB07, CBAB08, CBAB09, 
-      CBAB10, CBAB11, CBAB12, 
-      CBAB13, CBAA01, CBAB14, 
-      CBAB15, CBAB16, CBAB17, 
+    insert into `CBAB` (CBAB01, CBAB02, CBAB03,
+      CBAB04, CBAB05, CBAB06,
+      CBAB07, CBAB08, CBAB09,
+      CBAB10, CBAB11, CBAB12,
+      CBAB13, CBAA01, CBAB14,
+      CBAB15, CBAB16, CBAB17,
       user_id)
-    values (#{cbab01,jdbcType=INTEGER}, #{cbab02,jdbcType=INTEGER}, #{cbab03,jdbcType=TIMESTAMP}, 
-      #{cbab04,jdbcType=INTEGER}, #{cbab05,jdbcType=TIMESTAMP}, #{cbab06,jdbcType=INTEGER}, 
-      #{cbab07,jdbcType=INTEGER}, #{cbab08,jdbcType=INTEGER}, #{cbab09,jdbcType=DOUBLE}, 
-      #{cbab10,jdbcType=DOUBLE}, #{cbab11,jdbcType=DOUBLE}, #{cbab12,jdbcType=DOUBLE}, 
-      #{cbab13,jdbcType=VARCHAR}, #{cbaa01,jdbcType=INTEGER}, #{cbab14,jdbcType=INTEGER}, 
-      #{cbab15,jdbcType=INTEGER}, #{cbab16,jdbcType=INTEGER}, #{cbab17,jdbcType=INTEGER}, 
+    values (#{cbab01,jdbcType=INTEGER}, #{cbab02,jdbcType=INTEGER}, #{cbab03,jdbcType=TIMESTAMP},
+      #{cbab04,jdbcType=INTEGER}, #{cbab05,jdbcType=TIMESTAMP}, #{cbab06,jdbcType=INTEGER},
+      #{cbab07,jdbcType=INTEGER}, #{cbab08,jdbcType=INTEGER}, #{cbab09,jdbcType=DOUBLE},
+      #{cbab10,jdbcType=DOUBLE}, #{cbab11,jdbcType=DOUBLE}, #{cbab12,jdbcType=DOUBLE},
+      #{cbab13,jdbcType=VARCHAR}, #{cbaa01,jdbcType=INTEGER}, #{cbab14,jdbcType=INTEGER},
+      #{cbab15,jdbcType=INTEGER}, #{cbab16,jdbcType=INTEGER}, #{cbab17,jdbcType=INTEGER},
       #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbab">
@@ -429,4 +429,46 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBAB01 = #{cbab01,jdbcType=INTEGER}
   </update>
+
+  <select id="salesAnalysis" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
+
+    SELECT
+    ca.CBCA08 AS customerName,
+    oa.CBOA02 AS createTime,
+    USER.nick_name AS saleUser,
+    oa.CBOA07 AS saleOrderNo,
+    pb.CBPB12 AS model,
+    pb.CBPB10 AS brand,
+    ob.CBOB09 AS qty,
+    ob.CBOB12 AS price
+    FROM
+    CBOB ob
+    LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
+    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
+    LEFT JOIN sys_user USER ON USER.user_id = oa.CBOA10
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ob.CBOB08
+    WHERE
+    oa.CBOA11 = 5
+    AND ob.CBOB07 = 0
+    <if test="customerId !=null ">
+    AND oa.CBOA09 = #{customerId}
+    </if>
+    <if test="model !=null and model !='' ">
+    AND pb.CBPB12 = #{model}
+    </if>
+    <if test="brand !=null and brand !='' ">
+    AND pb.CBPB10 = #{brand}
+    </if>
+    <if test="saleUserId !=null ">
+    AND oa.CBOA10 = #{saleUserId}
+    </if>
+    <if test="startTime !=null ">
+    AND oa.CBOA02  &gt;= #{startTime}
+    </if>
+    <if test="endTime !=null ">
+    AND oa.CBOA02 &lt;=#{endTime}
+    </if>
+
+  </select>
+
 </mapper>

@@ -8,6 +8,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
+import com.ruoyi.common.utils.PdfUtil;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
@@ -25,11 +26,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName SaleOrderController
@@ -860,6 +864,8 @@ public class SaleOrderController extends BaseController {
 
     }
 
+
+
     private static void genarateReport(XSSFWorkbook wb) {
         XSSFSheet sheet1 = wb.getSheetAt(0);
 //        XSSFSheet sheet2 = wb.getSheetAt(1);
@@ -943,13 +949,38 @@ public class SaleOrderController extends BaseController {
 
 
 
-    /**
-     * todo 销售订单完成后也会标记销售订单变更单标记完成
-     */
+    @PostMapping("/getPdf")
+    public void getPdf(HttpServletResponse response) {
 
-    /**
-     * todo 销售订单可以基于销售退库单创建
-     */
+        //基于pdf生成打印
+        String name = "夏帅";
+        String billy = "夏帅121";
+        List<String> list=new ArrayList<>();
+        list.add("12");
+        list.add("123");
+        list.add("126");
+        list.add("121");
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderNo",name);
+        map.put("saleUser",billy);
+        map.put("goodsList",list);
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        // 定义输出类型
+        response.setContentType("application/PDF;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + "assessment.pdf");
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            PdfUtil pdf = new PdfUtil();
+//src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
+            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ;
+    }
 
 
 }

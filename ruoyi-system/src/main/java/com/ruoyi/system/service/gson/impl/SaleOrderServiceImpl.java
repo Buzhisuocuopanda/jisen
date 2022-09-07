@@ -874,8 +874,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     if (calas.size() > 0) {
                         currency = calas.get(0).getCala02();
                     }
-
-
                 }
                 //查销售人员
                 SysUserCriteria suex = new SysUserCriteria();
