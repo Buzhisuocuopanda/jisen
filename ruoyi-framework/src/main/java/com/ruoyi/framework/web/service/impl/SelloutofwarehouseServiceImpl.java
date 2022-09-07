@@ -270,7 +270,8 @@ if(cbob==null){
         saleOrderAddDto.setCurrency(cbsb1.getCbsb16());
         saleOrderAddDto.setInvoiceType(cbsb1.getCbsb24());
         saleOrderAddDto.setOrderType(TaskType.xsdd.getCode().intValue());
-        saleOrderAddDto.setOrderClass(cbsb1.getCbsb31());
+       int j= cbsb1.getCbsb31()==1 ? 2: 1;
+        saleOrderAddDto.setOrderClass(j);
         saleOrderAddDto.setGoods(goods);
        saleOrderService.addSaleOrder(saleOrderAddDto);
 

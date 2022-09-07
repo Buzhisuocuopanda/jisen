@@ -135,6 +135,8 @@ public class SwJsStoreSkuController extends BaseController {
             List<Cbwa> list = swJsStoreSkuService.selectSwJsStoreSkuList(cbwa);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【查询仓库信息列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbwa), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {

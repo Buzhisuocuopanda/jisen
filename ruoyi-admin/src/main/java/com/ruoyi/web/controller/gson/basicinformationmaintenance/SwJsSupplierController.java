@@ -27,6 +27,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
+
 /**
  * 【供应商信息】Controller
  *
@@ -189,10 +191,17 @@ public class SwJsSupplierController extends BaseController {
             String message = swJsSupplierService.importSwJsGoodsClassify(swJsSupplierList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
+            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
-            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+        } catch (ServiceException e) {
+            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【导入供应商信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

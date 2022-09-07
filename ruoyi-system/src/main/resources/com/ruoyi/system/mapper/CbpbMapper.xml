@@ -403,10 +403,10 @@
     c.CALA01=a.CBPB10
     where
       CBPB06=0
-      <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
-      <if test="cbpb12 != null "> and a.CBPB12 = #{cbpb12}</if>
-    <if test="cbpa07 != null "> and b.CBPA07 = #{cbpa07}</if>
-
+      <if test="cbpa07 != null "> and b.CBPA07 like concat('%',  #{cbpa07}, '%')</if>
+      <if test="cbpb12 != null "> and a.CBPB12 like concat('%',  #{cbpb12}, '%')</if>
+ORDER BY
+    a.CBPB02 DESC
 
   </select>
 

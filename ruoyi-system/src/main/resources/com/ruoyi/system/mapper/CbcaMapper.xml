@@ -710,7 +710,7 @@
     <if test="cbca04 != null "> and CBCA04 = #{cbca04}</if>
     <if test="cbca05 != null "> and CBCA05 = #{cbca05}</if>
     <if test="cbca07 != null  and cbca07 != ''"> and CBCA07 = #{cbca07}</if>
-    <if test="cbca08 != null  and cbca08 != ''"> and CBCA08 = #{cbca08}</if>
+    <if test="cbca08 != null  and cbca08 != ''"> and CBCA08 like concat('%',  #{cbca08}, '%')</if>
     <if test="cbca09 != null  and cbca09 != ''"> and CBCA09 = #{cbca09}</if>
     <if test="cbca10 != null  and cbca10 != ''"> and CBCA10 = #{cbca10}</if>
     <if test="cbca11 != null  and cbca11 != ''"> and CBCA11 = #{cbca11}</if>
@@ -731,6 +731,7 @@
     <if test="cbca26 != null  and cbca26 != ''"> and CBCA26 = #{cbca26}</if>
     <if test="cbca27 != null  and cbca27 != ''"> and CBCA27 = #{cbca27}</if>
     <if test="cbca28 != null "> and CBCA28 = #{cbca28}</if>
+     order by CBCA02 desc
     </where>
   </select>
 </mapper>

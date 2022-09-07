@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.dto.CblaDto;
 import com.ruoyi.system.domain.vo.CblaVo;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.mapper.CbpeMapper;
+import com.ruoyi.system.mapper.CbwaMapper;
 import com.ruoyi.system.service.ISwJsStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
     private CblaMapper cblaMapper;
     @Resource
     private CbpeMapper cbpeMapper;
+    @Resource
+    private CbwaMapper cbwaMapper;
     @Override
     public int insertSwJsStore(CblaDto cblaDto) {
         //库位码唯一
@@ -60,7 +63,17 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         cbla.setCbla07(cblaDto.getCbla07());
         cbla.setCbla08(cblaDto.getCbla08());
         cbla.setCbla09(cblaDto.getCbla09());
-        cbla.setCbla10(cblaDto.getCbla10());
+        if(!(cblaDto.getStorename() ==null)){
+            CbwaCriteria example1 = new CbwaCriteria();
+            example1.createCriteria().andCbwa09EqualTo(cblaDto.getStorename());
+            List<Cbwa> cbwas = cbwaMapper.selectByExample(example1);
+            if(cbwas.size()>0){
+                cbla.setCbla10(cbwas.get(0).getCbwa01());
+            }
+        }else {
+            cbla.setCbla10(cblaDto.getCbla10());
+
+        }
         cbla.setCbla11(cblaDto.getCbla11());
         cbla.setCbla12(cblaDto.getCbla12());
         cbla.setCbla13(cblaDto.getCbla13());
@@ -156,24 +169,24 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
                 Cbla u = cblaMapper.selectByPrimaryKey(swJsGoods.getCbla01());
                 log.info(swJsGoods.getCbla01() + "");
                 if (StringUtils.isNull(u)) {
-                    swJsGoods.setCbla08(swJsGoods.getCbla08());
+                    swJsGoods.setCbla09(swJsGoods.getCbla09());
+
+                   if(swJsGoods.getStorename()==""){
+                       throw new SwException("仓库名称不能为空");}
                     this.insertSwJsStore(swJsGoods);
                     successNum++;
-                    successMsg.append("<br/>").append(successNum).append("商品信息").append(swJsGoods.getCbla08()).append(" 导入成功");
-                } else if (updateSupport) {
-                    //  swJsGoods.setUpdateBy(Long.valueOf(operName));
-                    this.updateSwJsStore(swJsGoods);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("商品信息 ").append(swJsGoods.getCbla08()).append(" 更新成功");
-                } else {
+                    successMsg.append("<br/>").append(successNum).append("条").append("库位信息").append(swJsGoods.getCbla09()).append(" 导入成功");
+                }
+                else
+                {
                     failureNum++;
-                    failureMsg.append("<br/>").append(failureNum).append("商品信息").append(swJsGoods.getCbla08()).append(" 已存在");
+                    failureMsg.append("<br/>").append(failureNum).append("库位信息").append(swJsGoods.getCbla09()).append(" 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "商品分类信息" + swJsGoods.getCbla08() + " 导入失败：";
+                String msg = "<br/>" + failureNum + "库位信息" + swJsGoods.getCbla09() + " 导入失败：";
                 failureMsg.append(msg).append(e.getMessage());
                 log.error(msg, e);
             }

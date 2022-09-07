@@ -160,28 +160,28 @@ private CbsaMapper cbsaMapper;
                 log.info(swJsSupplier.getCbsa07()+"");
                 if (StringUtils.isNull(u))
                 {
-                    swJsSupplier.setCbsa07(swJsSupplier.getCbsa07());
+                    swJsSupplier.setCbsa07(swJsSupplier.getCbsa08());
                     this.insertSwJsSupplier(swJsSupplier);
                     successNum++;
-                    successMsg.append("<br/>").append(successNum).append("商品分类信息").append(swJsSupplier.getCbsa07()).append(" 导入成功");
+                    successMsg.append("<br/>").append(successNum).append("供应商信息").append(swJsSupplier.getCbsa08()).append(" 导入成功");
                 }
                 else if (updateSupport)
                 {
                     swJsSupplier.setCbsa03(Math.toIntExact(userid));
                     this.updateSwJsSupplier(swJsSupplier);
                     successNum++;
-                    successMsg.append("<br/>").append(successNum).append("商品分类信息 ").append(swJsSupplier.getCbsa07()).append(" 更新成功");
+                    successMsg.append("<br/>").append(successNum).append("供应商信息 ").append(swJsSupplier.getCbsa08()).append(" 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>").append(failureNum).append("商品分类信息").append(swJsSupplier.getCbsa07()).append(" 已存在");
+                    failureMsg.append("<br/>").append(failureNum).append("供应商信息").append(swJsSupplier.getCbsa08()).append(" 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "商品分类信息" + swJsSupplier.getCbsa07() + " 导入失败：";
+                String msg = "<br/>" + failureNum + "供应商信息" + swJsSupplier.getCbsa08() + " 导入失败：";
                 failureMsg.append(msg).append(e.getMessage());
                 log.error(msg, e);
             }

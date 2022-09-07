@@ -647,6 +647,67 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 导出销售订单详情2
+     */
+    @ApiOperation(
+            value ="导出销售订单详情2",
+            notes = "导出销售订单详情2"
+    )
+    @PostMapping("/saleOrderdetailsexport")
+    public AjaxResult saleOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+
+        try {
+            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+            InputStream in = null;
+            XSSFWorkbook wb = null;
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            File is = new File("D:\\data\\模板.xlsx");
+            wb = new XSSFWorkbook(is);
+            genarateReports(wb, res);
+            saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+        } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+           return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+    } catch (Exception e) {
+        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+       return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+    }
+    return AjaxResult.success();
+    }
+
+    /**
+     * 导出销售订单详情1
+     */
+    @ApiOperation(
+            value ="导出销售订单详情1",
+            notes = "导出销售订单详情1"
+    )
+    @PostMapping("/saleOrderdetailsexport1")
+    public AjaxResult saleOrderdetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+
+        try {
+            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+            InputStream in = null;
+            XSSFWorkbook wb = null;
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            File is = new File("D:\\data\\模板1.xlsx");
+            wb = new XSSFWorkbook(is);
+            genarateReportss(wb, res);
+            saveExcelToDisk(wb, "D:\\data\\报告1.xlsx");
+        } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+        return AjaxResult.success();
+    }
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
         InputStream in = null;
@@ -656,6 +717,146 @@ public class SaleOrderController extends BaseController {
         wb = new XSSFWorkbook(is);
         genarateReport(wb);
         saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+
+    }
+    //导入模板1
+    private static void genarateReportss(XSSFWorkbook wb, SaleOrderDetailVo res) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderNo(),2,2);
+        FormExcelUtil.setCellData(sheet1,res.getCustomerNo(),2,4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderDate().toString(),2,6);
+        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),3,2);
+        FormExcelUtil.setCellData(sheet1,res.getReceivePhone(),3,4);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),3,6);
+        FormExcelUtil.setCellData(sheet1,res.getAddress(),4,2);
+        FormExcelUtil.setCellData(sheet1,res.getOrderType(),4,6);
+
+        // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
+        // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
+        Double sumQty = res.getSumQty()==null?0:res.getSumQty();
+        FormExcelUtil.setCellData(sheet1,sumQty,8,4);
+        Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
+        FormExcelUtil.setCellData(sheet1,sumPrice,8,6);
+        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),9,2);
+        List<SaleOrderAudit> audits = res.getAudits();
+        if(audits.size()>0){
+            String name=audits.get(0).getRole()==null?"":audits.get(0).getRole();
+            String ress="由"+name+"审核";
+            FormExcelUtil.setCellData(sheet1,ress,13,3);
+        }
+
+
+        List<SaleOderDetailGoods> goods = res.getGoods();
+
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<goods.size();i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+            rlist.add(goods.get(i).getBrand());
+            rlist.add(goods.get(i).getModel());
+            rlist.add(goods.get(i).getDescription());
+            rlist.add(goods.get(i).getQty());
+            rlist.add(goods.get(i).getCurrentPrice());
+            rlist.add(goods.get(i).getTotalPrice());
+            data1.add(rlist);
+        }
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 7, data1.size(), 4, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+
+    }
+    //导入模板2
+    private static void genarateReports(XSSFWorkbook wb, SaleOrderDetailVo res) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderNo(),4,2);
+        FormExcelUtil.setCellData(sheet1,res.getCustomerNo(),4,4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderDate().toString(),4,6);
+        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),5,2);
+       // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
+       // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
+        FormExcelUtil.setCellData(sheet1,res.getAddress(),7,2);
+        FormExcelUtil.setCellData(sheet1,res.getOrderType(),7,6);
+        Double sumQty = res.getSumQty()==null?0:res.getSumQty();
+        FormExcelUtil.setCellData(sheet1,sumQty,11,4);
+        Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
+        FormExcelUtil.setCellData(sheet1,sumPrice,11,6);
+        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),11,6);
+
+        List<SaleOderDetailGoods> goods = res.getGoods();
+
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<goods.size();i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+            rlist.add(goods.get(i).getBrand());
+            rlist.add(goods.get(i).getModel());
+            rlist.add(goods.get(i).getDescription());
+            rlist.add(goods.get(i).getQty());
+            rlist.add(goods.get(i).getCurrentPrice());
+            rlist.add(goods.get(i).getTotalPrice());
+            data1.add(rlist);
+        }
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 10, data1.size(), 4, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
 
     }
 

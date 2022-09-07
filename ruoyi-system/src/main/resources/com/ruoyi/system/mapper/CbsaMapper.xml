@@ -439,7 +439,7 @@
   </sql>
   <select id="selectCBSAList" parameterType="CBSA" resultMap="CBSAResult">
     <include refid="selectCBSAVo"/>
-    <where>
+    where
       CBSA06=0
       <if test="cbsa01 != null "> and CBSA01 = #{cbsa01}</if>
       <if test="cbsa02 != null "> and CBSA02 = #{cbsa02}</if>
@@ -447,8 +447,8 @@
       <if test="cbsa04 != null "> and CBSA04 = #{cbsa04}</if>
       <if test="cbsa05 != null "> and CBSA05 = #{cbsa05}</if>
       <if test="cbsa07 != null  and cbsa07 != ''"> and CBSA07 = #{cbsa07}</if>
-      <if test="cbsa08 != null  and cbsa08 != ''"> and CBSA08 = #{cbsa08}</if>
-      <if test="cbsa09 != null  and cbsa09 != ''"> and CBSA09 = #{cbsa09}</if>
+      <if test="cbsa08 != null  and cbsa08 != ''"> and CBSA08 like concat('%',  #{cbsa08}, '%')</if>
+      <if test="cbsa09 != null  and cbsa09 != ''"> and CBSA09 like concat('%',  #{cbsa09}, '%')</if>
       <if test="cbsa10 != null  and cbsa10 != ''"> and CBSA10 = #{cbsa10}</if>
       <if test="cbsa11 != null  and cbsa11 != ''"> and CBSA11 = #{cbsa11}</if>
       <if test="cbsa12 != null  and cbsa12 != ''"> and CBSA12 = #{cbsa12}</if>
@@ -458,7 +458,7 @@
       <if test="cbsa16 != null  and cbsa16 != ''"> and CBSA16 = #{cbsa16}</if>
       <if test="cbsa17 != null  and cbsa17 != ''"> and CBSA17 = #{cbsa17}</if>
       <if test="cbsa18 != null "> and CBSA18 = #{cbsa18}</if>
-    </where>
+    order by CBSA02 desc
   </select>
 
   <insert id="insertCBSA" parameterType="CBSA">

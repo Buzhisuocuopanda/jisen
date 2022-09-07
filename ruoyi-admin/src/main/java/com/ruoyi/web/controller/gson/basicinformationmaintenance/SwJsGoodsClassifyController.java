@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
+
 /**
  * 商品分类信息维护Controller
  *
@@ -168,11 +170,11 @@ public class SwJsGoodsClassifyController extends BaseController {
             String message = swJsGoodsClassifyService.importSwJsGoodsClassify(swJsGoodsClassifyList, updateSupport, operName);
             return AjaxResult.success(message);
         } catch (SwException e) {
-            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file), e.getMessage());
+            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(message), e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (ServiceException e) {
-            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file), e.getMessage());
+            log.error("【导入商品分类】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(message), e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {

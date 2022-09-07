@@ -85,6 +85,10 @@ private CbsjMapper cbbsjMapper;
     @Transactional
     @Override
     public int insertSwJsStores(List<Cbsj> itemList) {
+        Cbsh cbsh1 = cbshMapper.selectByPrimaryKey(itemList.get(0).getCbsh01());
+        if(!cbsh1.getCbsh09().equals(TaskStatus.sh.getCode())){
+            throw new SwException("审核状态才能扫码");
+        }
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbsjMapper mapper = session.getMapper(CbsjMapper.class);
         Date date = new Date();
@@ -145,6 +149,10 @@ private CbsjMapper cbbsjMapper;
                 session.clearCache();
             }
         }
+        itemList.get(0).getCbsh01();
+        CbshDo cbshDo = new CbshDo();
+        cbshDo.setCbsh01(itemList.get(0).getCbsh01());
+        this.swJsStoreend(cbshDo);
         session.commit();
         session.clearCache();
         return 1;    }
@@ -172,9 +180,9 @@ private CbsjMapper cbbsjMapper;
         example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
-        if(cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())||cbshes.get(0).getCbsh09().equals(TaskStatus.fsh.getCode())){}
-        else{
-            throw new SwException("非审核和反审不能完成");
+        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())){
+
+            throw new SwException("非审核不能完成");
         }
         Long userId = SecurityUtils.getUserId();
 
@@ -226,6 +234,52 @@ private CbsjMapper cbbsjMapper;
     @Override
     public List<CbsjVo> SwJsStorelistsss(CbsjVo cbsjVo) {
         return   cbshMapper.SwJsStorelistsss(cbsjVo);
+    }
+
+    @Override
+    public int swJsStoreendsh(CbshDo cbshDo) {
+        CbshCriteria example1 = new CbshCriteria();
+        example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
+        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.mr.getCode())){
+            throw new SwException("非标记完成不能取消");
+        }
+        Long userId = SecurityUtils.getUserId();
+
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh09(TaskStatus.sh.getCode());
+        CbshCriteria example = new CbshCriteria();
+        example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return   cbshMapper.updateByExampleSelective(cbsh, example);
+    }
+
+    @Override
+    public int swJsStoreendfs(CbshDo cbshDo) {
+        CbshCriteria example1 = new CbshCriteria();
+        example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
+        if(!cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())){
+            throw new SwException("审核状态才能反审");
+        }
+        Long userId = SecurityUtils.getUserId();
+
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh09(TaskStatus.mr.getCode());
+        CbshCriteria example = new CbshCriteria();
+        example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
+                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        return   cbshMapper.updateByExampleSelective(cbsh, example);
     }
 
 

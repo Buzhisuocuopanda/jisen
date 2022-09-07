@@ -55,9 +55,11 @@ public class CbsaDto {
     @Excel(name = "联系电话")
     private String cbsa15;
     @NotBlank(message = "发票地址不能为空")
+    @Excel(name = "发票地址")
     private String cbsa16;
 
     @NotBlank(message = "发票电话不能为空")
+    @Excel(name = "发票电话")
     private String cbsa17;
 
     @NotNull(message = "出库顺序不能为空")

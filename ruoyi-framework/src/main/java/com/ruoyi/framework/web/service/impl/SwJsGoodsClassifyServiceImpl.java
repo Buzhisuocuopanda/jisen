@@ -72,14 +72,6 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         if(listt.size()>0){
             throw new SwException("分类编号或分类名已存在");
         }
-        if(cbpaDo.getCbpa09()==null){
-            throw new SwException("上级分类没输入");
-
-        }
-  /*      Cbpa cbpa1 = cbpaMapper.selectByPrimaryKey(cbpaDo.getCbpa09());
-        if(cbpa1==null){
-            throw new SwException("上级分类不存在");
-        }*/
 
         Cbpa cbpa = BeanCopyUtils.coypToClass(cbpaDo, Cbpa.class, null);
         Date date = new Date();
@@ -90,7 +82,10 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         cbpa.setCbpa06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpa.setCbpa07(cbpaDo.getCbpa07());
         cbpa.setCbpa08(cbpaDo.getCbpa07());
-        cbpa.setCbpa09(cbpaDo.getCbpa09());
+        if(cbpaDo.getCbpa09()==null){
+            cbpa.setCbpa09(0);
+        }
+
         cbpa.setCbpa11(cbpaDo.getCbpa11());
         cbpa.setCbpa12(cbpaDo.getCbpa12());
 

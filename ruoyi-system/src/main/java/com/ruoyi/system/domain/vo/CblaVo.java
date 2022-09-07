@@ -21,7 +21,7 @@ public class CblaVo {
     @Excel(name = "库位顺序")
 
     private Integer cbla07;
-
+    @Excel(name = "状态")
     private String cbla08;
     @Excel(name = "库位码")
 
@@ -36,6 +36,6 @@ public class CblaVo {
     private String cbla12;
 
     private String cbla13;
-
+    @Excel(name = "仓库名称")
     private String cbwa09;
 }

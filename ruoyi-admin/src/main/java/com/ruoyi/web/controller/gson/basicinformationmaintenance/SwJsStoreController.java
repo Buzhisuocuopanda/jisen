@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
+
 /**
  * 库位Controller
  *
@@ -184,16 +186,18 @@ public class SwJsStoreController extends BaseController {
             String message = swJsStoreService.importSwJsGoods(swJsGoodsList, updateSupport,operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
+            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }
         catch (ServiceException e) {
-            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (Exception e) {
-            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入库位信息】接口出现异常,参数${},异常${}$", JSON.toJSON(message),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -211,7 +215,7 @@ public class SwJsStoreController extends BaseController {
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<Cbla> util = new ExcelUtil<Cbla>(Cbla.class);
+        ExcelUtil<CblaDto> util = new ExcelUtil<CblaDto>(CblaDto.class);
         util.importTemplateExcel(response,"导入客户下载模板");
     }
 

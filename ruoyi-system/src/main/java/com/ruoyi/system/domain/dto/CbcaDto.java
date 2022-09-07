@@ -29,7 +29,7 @@ public class CbcaDto {
   //  @Excel(name = "订单号")
    // @NotBlank(message = "订单号不能为空")
     private String cbca09;
-    @Excel(name = "名称首字母")
+    @Excel(name = "名称首字母简写")
    // @NotBlank(message = "名称首字母不能为空")
     private String cbca10;
     @NotBlank(message = "开户行不能为空")
@@ -63,11 +63,11 @@ public class CbcaDto {
     @Excel(name = "联系人1")
 
     private String cbca18;
-  @Excel(name = "联系人1办公室电话不能为空")
+  @Excel(name = "联系人1办公室电话")
   @NotBlank(message = "联系人1办公室电话不能为空")
 
   private String cbca19;
-  @Excel(name = "联系人2办公室电话不能为空")
+  @Excel(name = "联系人2办公室电话")
   @NotBlank(message = "联系人2办公室电话不能为空")
 
   private String cbca20;

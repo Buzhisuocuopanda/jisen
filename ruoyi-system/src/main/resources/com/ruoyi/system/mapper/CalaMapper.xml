@@ -276,7 +276,7 @@
 
   <select id="selectSwJsListList" parameterType="CALA" resultMap="CALAResult">
     <include refid="selectCALAVo"/>
-    <where>
+    WHERE
       CALA07=0
     <if test="cala01 != null "> and CALA01 = #{cala01}</if>
     <if test="cala02 != null  and cala02 != ''"> and CALA02 = #{cala02}</if>
@@ -286,10 +286,9 @@
     <if test="cala06 != null "> and CALA06 = #{cala06}</if>
     <if test="cala08 != null  and cala08 != ''"> and CALA08 like concat('%', #{cala08}, '%')</if>
     <if test="cala09 != null  and cala09 != ''"> and CALA09 like concat('%', #{cala09}, '%')</if>
-    <if test="cala10 != null  and cala10 != ''"> and CALA10 like concat('%', #{cala10}, '%')</if>
+    <if test="cala10 != null  and cala10 != ''"> and CALA10 like concat('%',  #{cala10}, '%')</if>
     <if test="cala11 != null  and cala11 != ''"> and CALA11 like concat('%', #{cala11}, '%')</if>
     <if test="cala12 != null  and cala12 != ''"> and CALA12 like concat('%', #{cala12}, '%')</if>
-    </where>
   </select>
   <select id="selectSwJsListById" parameterType="Long" resultMap="CALAResult">
     <include refid="selectCALAVo"/>

@@ -270,6 +270,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     @Transactional
     @Override
     public int insertSwJsStoress(List<Cbsg> itemList) {
+
+        Cbse cbse1 = cbseMapper.selectByPrimaryKey(itemList.get(0).getCbse01());
+        if(!cbse1.getCbse11().equals(TaskStatus.sh.getCode())){
+            throw new SwException("审核状态才能扫码");
+        }
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbsgMapper mapper = session.getMapper(CbsgMapper.class);
         Date date = new Date();
@@ -360,6 +366,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             cbibDo.setCbib19(cbscs.get(i).getCbsf15());
             taskService.InsertCBIB(cbibDo);
         }
+        CbseDo cbseDo = new CbseDo();
+        cbseDo.setCbse01(itemList.get(0).getCbse01());
+        this.insertSwJsSkuBarcodebjwc(cbseDo);
         session.commit();
         session.clearCache();
         return 1;

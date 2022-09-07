@@ -266,7 +266,7 @@ public class TaskServiceImpl implements TaskService {
                 .andSnEqualTo(goodsSnDo.getSn());
         List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
         if(gsGoodsSns.size()>0){
-            throw new SwException("sn码已存在才能审核");
+            throw new SwException("sn码已存在");
         }
         Date date=new Date();
         Long userid = SecurityUtils.getUserId();
@@ -305,8 +305,8 @@ public class TaskServiceImpl implements TaskService {
         GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
             example.createCriteria()
                 .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
-                .andWhIdEqualTo(goodsSkuDo.getWhId())
-                .andLocationIdEqualTo(goodsSkuDo.getLocationId());
+                .andWhIdEqualTo(goodsSkuDo.getWhId());
+               // .andLocationIdEqualTo(goodsSkuDo.getLocationId());
         gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku,example);
         return gsGoodsSku;
     }

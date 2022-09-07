@@ -389,8 +389,8 @@
   </sql>
   <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
     <include refid="selectCBWAVo"/>
-    <where>
-      CBWA06=0
+where
+    CBWA06=0
       <if test="cbwa01 != null "> and CBWA01 = #{cbwa01}</if>
       <if test="cbwa02 != null "> and CBWA02 = #{cbwa02}</if>
       <if test="cbwa03 != null "> and CBWA03 = #{cbwa03}</if>
@@ -398,15 +398,16 @@
       <if test="cbwa05 != null "> and CBWA05 = #{cbwa05}</if>
       <if test="cbwa07 != null "> and CBWA07 = #{cbwa07}</if>
       <if test="cbwa08 != null  and cbwa08 != ''"> and CBWA08 = #{cbwa08}</if>
-      <if test="cbwa09 != null  and cbwa09 != ''"> and CBWA09 = #{cbwa09}</if>
+      <if test="cbwa09 != null  and cbwa09 != ''"> and CBWA09 like concat('%',  #{cbwa09}, '%')</if>
       <if test="cbwa10 != null  and cbwa10 != ''"> and CBWA10 = #{cbwa10}</if>
       <if test="cbwa11 != null  and cbwa11 != ''"> and CBWA11 = #{cbwa11}</if>
       <if test="cbwa12 != null  and cbwa12 != ''"> and CBWA12 = #{cbwa12}</if>
       <if test="cbwa13 != null "> and CBWA13 = #{cbwa13}</if>
       <if test="cbwa14 != null "> and CBWA14 = #{cbwa14}</if>
       <if test="cbwa15 != null "> and CBWA15 = #{cbwa15}</if>
-    </where>
+    order by CBWA02 desc
   </select>
+
   <select id="selectCBWAByCbwa01" parameterType="Long" resultMap="CBWAResult">
     <include refid="selectCBWAVo"/>
     where CBWA06=0

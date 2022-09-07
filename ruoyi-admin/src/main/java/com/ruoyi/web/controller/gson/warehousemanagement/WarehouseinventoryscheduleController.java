@@ -188,14 +188,70 @@ public class WarehouseinventoryscheduleController extends BaseController {
     }
 
     /**
+     * 仓库盘点明细审核
+     */
+    @ApiOperation(
+            value ="仓库盘点明细审核",
+            notes = "仓库盘点明细审核"
+    )
+    @PostMapping("/swJsStoreendsh")
+    public AjaxResult swJsStoreendsh(@RequestBody  CbshDo cbshDo) {
+        try {
+            return toAjax(warehouseinventoryscheduleService.swJsStoreendsh(cbshDo));
+        }catch (SwException e) {
+            log.error("【仓库盘点明细审核】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库盘点明细审核】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库盘点明细审核】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库盘点明细反审
+     */
+    @ApiOperation(
+            value ="仓库盘点明细反审",
+            notes = "仓库盘点明细反审"
+    )
+    @PostMapping("/swJsStoreendfs")
+    public AjaxResult swJsStoreendfs(@RequestBody  CbshDo cbshDo) {
+        try {
+            return toAjax(warehouseinventoryscheduleService.swJsStoreendfs(cbshDo));
+        }catch (SwException e) {
+            log.error("【仓库盘点明细反审】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库盘点明细反审】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库盘点明细反审】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 仓库盘点明细取消完成
      */
     @ApiOperation(
             value ="仓库盘点明细取消完成",
             notes = "仓库盘点明细取消完成"
     )
-    @PostMapping("/swJsStoreendd")
-    public AjaxResult swJsStoreendd(@RequestBody  CbshDo cbshDo) {
+    @PostMapping("/swJsStoreenddqxwc")
+    public AjaxResult swJsStoreenddqxwc(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(warehouseinventoryscheduleService.swJsStoreendd(cbshDo));
         }catch (SwException e) {
