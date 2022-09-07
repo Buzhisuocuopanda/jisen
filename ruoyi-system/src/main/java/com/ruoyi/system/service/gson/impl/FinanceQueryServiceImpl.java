@@ -4,7 +4,6 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.system.domain.Cbib;
 import com.ruoyi.system.domain.CbibCriteria;
 import com.ruoyi.system.domain.Cbqb;
-import com.ruoyi.system.domain.GsGoodsSku;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
@@ -14,7 +13,6 @@ import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
