@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsPurchaseOrder;
 import com.ruoyi.system.domain.GsPurchaseOrderCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsPurchaseOrderMapper {
@@ -27,4 +29,6 @@ public interface GsPurchaseOrderMapper {
     int updateByPrimaryKeySelective(GsPurchaseOrder record);
 
     int updateByPrimaryKey(GsPurchaseOrder record);
+
+    List<GsPurchaseOrderVo> selectSwJsTaskGoodsRelLists(GsPurchaseOrderVo gsPurchaseOrderVo);
 }

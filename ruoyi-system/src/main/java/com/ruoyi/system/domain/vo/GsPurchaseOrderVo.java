@@ -1,36 +1,24 @@
 package com.ruoyi.system.domain.vo;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class GsPurchaseOrderVo {
+public class GsPurchaseOrderVo extends BaseEntity {
 
     private Long id;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Long createBy;
-
-    private Long updateBy;
-
-    private Byte deleteFlag;
 
     private String orderNo;
 
     private Date orderDate;
 
-    private Integer customerId;
+    private String cbca08;
 
-    private Integer salerId;
+    private String caua09;
 
-    private Integer supplierId;
+    private String cbsa08;
 
-    private Byte status;
+    private String cbwa08;
 
-    private Integer whId;
-
-    private Integer userId;
 }
