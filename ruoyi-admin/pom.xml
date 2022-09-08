@@ -97,5 +97,68 @@
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>
+    <profiles>
+        <!--开发-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <maven.profiles.activation>dev</maven.profiles.activation>
+                <logback.project.level>INFO</logback.project.level>
+                <logback.spring.level>INFO</logback.spring.level>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <finalName>${project.name}-${project.version}</finalName>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
 
+        <!--测试-->
+        <profile>
+            <id>test</id>
+            <properties>
+                <maven.profiles.activation>test</maven.profiles.activation>
+                <logback.project.level>INFO</logback.project.level>
+                <logback.spring.level>INFO</logback.spring.level>
+            </properties>
+            <build>
+                <finalName>${project.name}-${project.version}</finalName>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+        <!--生产-->
+        <profile>
+            <id>pro</id>
+            <properties>
+                <maven.profiles.activation>pro</maven.profiles.activation>
+                <logback.project.level>INFO</logback.project.level>
+                <logback.spring.level>INFO</logback.spring.level>
+            </properties>
+            <build>
+                <finalName>${project.name}-${project.version}</finalName>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+
+        </profile>
+
+
+    </profiles>
 </project>
