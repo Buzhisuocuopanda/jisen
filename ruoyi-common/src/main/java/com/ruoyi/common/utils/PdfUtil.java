@@ -1,27 +1,10 @@
 package com.ruoyi.common.utils;
 
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.colors.DeviceGray;
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-
-
-
-import com.itextpdf.layout.property.HorizontalAlignment;
-import com.itextpdf.layout.property.TextAlignment;
-
-import com.itextpdf.layout.property.UnitValue;
-import com.itextpdf.layout.property.VerticalAlignment;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
-
-import javax.accessibility.Accessible;
 import javax.servlet.ServletOutputStream;
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 
