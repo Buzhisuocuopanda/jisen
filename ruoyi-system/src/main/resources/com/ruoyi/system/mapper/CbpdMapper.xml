@@ -541,7 +541,7 @@
   </select>
   <select id="getInfossss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
     SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08,
-    d.CBPB12,d.CBPB08,
+    d.CBPB12,d.CBPB08,d.CBPB15,
 
     b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
     p.CBPA07,

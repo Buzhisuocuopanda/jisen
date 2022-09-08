@@ -408,7 +408,7 @@ where
     order by CBWA02 desc
   </select>
 
-  <select id="selectCBWAByCbwa01" parameterType="Long" resultMap="CBWAResult">
+  <select id="selectCBWAByCbwa01" resultMap="CBWAResult">
     <include refid="selectCBWAVo"/>
     where CBWA06=0
   </select>

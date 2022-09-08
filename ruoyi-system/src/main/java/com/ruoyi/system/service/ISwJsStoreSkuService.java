@@ -14,5 +14,5 @@ public interface ISwJsStoreSkuService {
 
     List<Cbwa> selectSwJsStoreSkuList(Cbwa cbwa);
 
-    String selectCBWAByCbwa01(Long cbwa01);
+    List<Cbwa> selectCBWAByCbwa01(Cbwa cbwa);
 }

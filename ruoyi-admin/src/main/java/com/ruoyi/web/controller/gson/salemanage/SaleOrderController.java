@@ -714,14 +714,40 @@ public class SaleOrderController extends BaseController {
     }
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
-        InputStream in = null;
+     /*   InputStream in = null;
         XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
         File is = new File("D:\\data\\模板.xlsx");
         wb = new XSSFWorkbook(is);
         genarateReport(wb);
-        saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+        saveExcelToDisk(wb, "D:\\data\\报告.xlsx");*/
+        //基于pdf生成打印
+        /*String name = "夏帅";
+        String billy = "夏帅121";
+        List<String> list=new ArrayList<>();
+        list.add("12");
+        list.add("123");
+        list.add("126");
+        list.add("121");
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderNo",name);
+        map.put("saleUser",billy);
+        map.put("goodsList",list);
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        // 定义输出类型
+        response.setContentType("application/PDF;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + "assessment.pdf");
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            PdfUtil pdf = new PdfUtil();
+//src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
+            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
     }
     //导入模板1
     private static void genarateReportss(XSSFWorkbook wb, SaleOrderDetailVo res) {
@@ -925,7 +951,10 @@ public class SaleOrderController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {if(os!=null)os.close();} catch (IOException e) { log.error("error", e);}
+            try {if(os!=null) {
+                os.close();
+            }
+            } catch (IOException e) { log.error("error", e);}
         }
     }
 
@@ -974,7 +1003,7 @@ public class SaleOrderController extends BaseController {
             ServletOutputStream out = response.getOutputStream();
             PdfUtil pdf = new PdfUtil();
 //src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
-            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");
+            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx1.pdf");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

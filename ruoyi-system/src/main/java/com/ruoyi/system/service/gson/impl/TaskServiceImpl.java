@@ -41,6 +41,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private GsWorkInstanceMapper gsWorkInstanceMapper;
+
+    @Resource
+    private GsWorkInstanceAuditLogMapper gsWorkInstanceAuditLogMapper;
     @Override
     public Cbib InsertCBIB(Integer typeid, Integer storeId, String type) {
 
@@ -368,12 +371,68 @@ public class TaskServiceImpl implements TaskService {
         gsWorkInstance.setUpdateTime(date);
         gsWorkInstance.setCreateBy(userid);
         gsWorkInstance.setUpdateBy(userid);
-        gsWorkInstance.setOrderNo(goodsWorkInstanceDo.getOrderNo());
+        String orderNo = goodsWorkInstanceDo.getOrderNo();
+        gsWorkInstance.setOrderNo(orderNo);
         gsWorkInstance.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-        gsWorkInstance.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
-        gsWorkInstance.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+        gsWorkInstance.setOrderType(goodsWorkInstanceDo.getOrderType());
+        gsWorkInstance.setOrderClose(goodsWorkInstanceDo.getOrderClose());
+        gsWorkInstance.setOrderStatus(goodsWorkInstanceDo.getOrderStatus());
         gsWorkInstance.setOrderMsg(goodsWorkInstanceDo.getOrderMsg());
         gsWorkInstanceMapper.insertSelective(gsWorkInstance);
+        GsWorkInstanceCriteria example = new GsWorkInstanceCriteria();
+        example.createCriteria().andOrderNoEqualTo(orderNo);
+        List<GsWorkInstance> gsWorkInstances = gsWorkInstanceMapper.selectByExample(example);
+        Integer id = gsWorkInstances.get(0).getId();
+        GsWorkInstanceAuditLog gsWorkInstanceAuditLog = new GsWorkInstanceAuditLog();
+        gsWorkInstanceAuditLog.setCreateTime(date);
+        gsWorkInstanceAuditLog.setUpdateTime(date);
+        gsWorkInstanceAuditLog.setCreateBy(userid);
+        gsWorkInstanceAuditLog.setUpdateBy(userid);
+        gsWorkInstanceAuditLog.setWorkInstanceId(id);
+        gsWorkInstanceAuditLog.setAuditResult(goodsWorkInstanceDo.getAuditResult());
+        gsWorkInstanceAuditLog.setAuditMsg(goodsWorkInstanceDo.getAuditMsg());
+        gsWorkInstanceAuditLogMapper.insertSelective(gsWorkInstanceAuditLog);
+        return gsWorkInstance;
+    }
+
+    @Override
+    public GsWorkInstance editGsWorkInstance(GsWorkInstanceDo goodsWorkInstanceDo) {
+        if(goodsWorkInstanceDo.getOrderNo()==null){
+            throw new SwException("订单号不能为空");
+        }
+
+        GsWorkInstanceCriteria example1 = new GsWorkInstanceCriteria();
+        example1.createCriteria().andOrderNoEqualTo(goodsWorkInstanceDo.getOrderNo());
+        List<GsWorkInstance> gsWorkInstances = gsWorkInstanceMapper.selectByExample(example1);
+        if(gsWorkInstances.size()==0){
+            throw new SwException("订单号不存在");
+        }
+        Integer id = gsWorkInstances.get(0).getId();
+
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsWorkInstance gsWorkInstance = BeanCopyUtils.coypToClass(goodsWorkInstanceDo, GsWorkInstance.class, null);
+        gsWorkInstance.setUpdateTime(date);
+        gsWorkInstance.setUpdateBy(userid);
+        gsWorkInstance.setOrderClose(goodsWorkInstanceDo.getOrderClose());
+        gsWorkInstance.setOrderStatus(goodsWorkInstanceDo.getOrderStatus());
+
+        GsWorkInstanceCriteria example = new GsWorkInstanceCriteria();
+        example.createCriteria().andOrderNoEqualTo(goodsWorkInstanceDo.getOrderNo());
+           gsWorkInstanceMapper.updateByExampleSelective(gsWorkInstance, example);
+
+
+
+        GsWorkInstanceAuditLog gsWorkInstanceAuditLog = new GsWorkInstanceAuditLog();
+        gsWorkInstanceAuditLog.setCreateTime(date);
+        gsWorkInstanceAuditLog.setUpdateTime(date);
+        gsWorkInstanceAuditLog.setCreateBy(userid);
+        gsWorkInstanceAuditLog.setUpdateBy(userid);
+        gsWorkInstanceAuditLog.setWorkInstanceId(id);
+        gsWorkInstanceAuditLog.setAuditResult(goodsWorkInstanceDo.getAuditResult());
+        gsWorkInstanceAuditLog.setAuditMsg(goodsWorkInstanceDo.getAuditMsg());
+        gsWorkInstanceAuditLogMapper.insertSelective(gsWorkInstanceAuditLog);
+
         return gsWorkInstance;
     }
 

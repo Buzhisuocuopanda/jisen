@@ -140,26 +140,28 @@ public class AftersalesController extends BaseController {
     }
 
 
-/*    *//**
+   /**
      * 查询售后单
-     *//*
+     */
     @ApiOperation(
-            value ="采购入库单查询",
-            notes = "采购入库单查询"
+            value ="查询售后单",
+            notes = "查询售后单"
     )
-    @GetMapping("/SwJsSkuBarcodelist")
-    public AjaxResult<TableDataInfo> swJsGoodslist(GsAfterSalesVo gsAfterSalesVo) {
+    @GetMapping("/aftersaleslist")
+    public AjaxResult<TableDataInfo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo) {
         try {
             startPage();
-            List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelLists(gsAfterSalesVo);
+            List<GsAfterSalesVo> list = aftersalesService.aftersaleslist(gsAfterSalesVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
+            log.error("【查询售后单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsAfterSalesVo),ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【采购入库单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsAfterSalesVo),ExceptionUtils.getStackTrace(e));
+            log.error("【查询售后单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsAfterSalesVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
-    }*/
+    }
 }

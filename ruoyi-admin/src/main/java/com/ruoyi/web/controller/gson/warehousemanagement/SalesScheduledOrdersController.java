@@ -51,6 +51,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="添加销售预订单",
+            notes = "添加销售预订单"
+    )
     @PostMapping("/addSalesScheduledOrders")
     public AjaxResult addSalesScheduledOrders(@Valid @RequestBody GsSalesOrdersDto gsSalesOrdersDto, BindingResult bindingResult) {
         try {
@@ -82,6 +86,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="修改销售预订单",
+            notes = "修改销售预订单"
+    )
     @PostMapping("/editSalesScheduledOrders")
     public AjaxResult editSalesScheduledOrders(@Valid @RequestBody GsSalesOrdersDto gsSalesOrdersDto, BindingResult bindingResult) {
         try {
@@ -112,6 +120,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param deleteSaleOrderDto
      * @return
      */
+    @ApiOperation(
+            value ="删除销售预订单",
+            notes = "删除销售预订单"
+    )
     @PostMapping("/deleteSalesScheduledOrders")
     public AjaxResult deleteSalesScheduledOrders(@Valid @RequestBody DeleteSaleOrderDto deleteSaleOrderDto, BindingResult bindingResult) {
         try {
@@ -148,6 +160,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDo
      * @return
      */
+    @ApiOperation(
+            value ="查询销售预订单",
+            notes = "查询销售预订单"
+    )
     @GetMapping("/saleOrderList")
     public AjaxResult<List<TableDataInfo>> saleOrderList( GsSalesOrdersDo gsSalesOrdersDo) {
         try {
@@ -171,6 +187,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDetailsVo
      * @return
      */
+    @ApiOperation(
+            value ="销售预订单详情",
+            notes = "销售预订单详情"
+    )
     @PostMapping("/saleOrderListdetail")
     public AjaxResult<List<TableDataInfo>> saleOrderListdetail( GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
         try {
@@ -194,6 +214,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="审核销售预订单",
+            notes = "审核销售预订单"
+    )
     @PostMapping("/SalesScheduledOrderssh")
     public AjaxResult salesScheduledOrderssh(@RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
@@ -224,6 +248,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="反审销售预订单",
+            notes = "反审销售预订单"
+    )
     @PostMapping("/SalesScheduledOrdersfs")
     public AjaxResult salesScheduledOrdersfs( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
@@ -253,6 +281,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="销售预订单标记完成",
+            notes = "销售预订单标记完成"
+    )
     @PostMapping("/SalesScheduledOrdersbjwc")
     public AjaxResult SalesScheduledOrdersbjwc( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
@@ -282,6 +314,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersDto
      * @return
      */
+    @ApiOperation(
+            value ="销售预订单取消完成",
+            notes = "销售预订单取消完成"
+    )
     @PostMapping("/SalesScheduledOrdersqxwc")
     public AjaxResult SalesScheduledOrdersqxwc( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
@@ -312,6 +348,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="添加预订单入库单",
+            notes = "添加预订单入库单"
+    )
     @PostMapping("/addSubscribetotheinventoryslip")
     public AjaxResult addSubscribetotheinventoryslip(@Valid @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto, BindingResult bindingResult) {
         try {
@@ -342,6 +382,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="修改预订单入库单",
+            notes = "修改预订单入库单"
+    )
     @PostMapping("/editSubscribetotheinventoryslip")
     public AjaxResult editSubscribetotheinventoryslip(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -372,6 +416,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="删除预订单入库单",
+            notes = "删除预订单入库单"
+    )
     @PostMapping("/deleteSubscribetotheinventoryslip")
     public AjaxResult deleteSubscribetotheinventoryslip(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -403,6 +451,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInVo
      * @return
      */
+    @ApiOperation(
+            value ="查询预订单入库单",
+            notes = "查询预订单入库单"
+    )
     @GetMapping("/seleteSubscribetotheinventoryslip")
     public AjaxResult<List<TableDataInfo>> seleteSubscribetotheinventoryslip( GsSalesOrdersInVo gsSalesOrdersInVo) {
         try {
@@ -428,6 +480,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="审核预订单入库单",
+            notes = "审核预订单入库单"
+    )
     @PostMapping("/Subscribetotheinventoryslipsh")
     public AjaxResult Subscribetotheinventoryslipsh(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -458,6 +514,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="反审预订单入库单",
+            notes = "反审预订单入库单"
+    )
     @PostMapping("/Subscribetotheinventoryslipfs")
     public AjaxResult Subscribetotheinventoryslipfs(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -488,6 +548,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="预订单入库单标记完成",
+            notes = "预订单入库单标记完成"
+    )
     @PostMapping("/Subscribetotheinventoryslipbjwc")
     public AjaxResult Subscribetotheinventoryslipbjwc(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -519,6 +583,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersInDto
      * @return
      */
+    @ApiOperation(
+            value ="预订单入库单取消完成",
+            notes = "预订单入库单取消完成"
+    )
     @PostMapping("/Subscribetotheinventoryslipqxwc")
     public AjaxResult Subscribetotheinventoryslipqxwc(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
@@ -550,6 +618,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="添加预订单变更单",
+            notes = "添加预订单变更单"
+    )
     @PostMapping("/addGsSalesOrdersChange")
     public AjaxResult addGsSalesOrdersChange(@Valid @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto, BindingResult bindingResult) {
         try {
@@ -581,6 +653,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="修改预订单变更单",
+            notes = "修改预订单变更单"
+    )
     @PostMapping("/editGsSalesOrdersChange")
     public AjaxResult editGsSalesOrdersChange( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -610,6 +686,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="删除预订单变更单",
+            notes = "删除预订单变更单"
+    )
     @PostMapping("/deleteGsSalesOrdersChange")
     public AjaxResult deleteGsSalesOrdersChange( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -640,6 +720,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeVo
      * @return
      */
+    @ApiOperation(
+            value ="查询预订单变更单",
+            notes = "查询预订单变更单"
+    )
     @GetMapping("/seleteGsSalesOrdersChange")
     public AjaxResult<List<TableDataInfo>> seleteGsSalesOrdersChange( GsSalesOrdersChangeVo gsSalesOrdersChangeVo) {
         try {
@@ -665,6 +749,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="审核预订单变更单",
+            notes = "审核预订单变更单"
+    )
     @PostMapping("/GsSalesOrdersChangesh")
     public AjaxResult GsSalesOrdersChangesh( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -694,6 +782,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="反审预订单变更单",
+            notes = "反审预订单变更单"
+    )
     @PostMapping("/GsSalesOrdersChangefs")
     public AjaxResult GsSalesOrdersChangefs( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -723,6 +815,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="标记完成预订单变更单",
+            notes = "标记完成预订单变更单"
+    )
     @PostMapping("/GsSalesOrdersChangebjwc")
     public AjaxResult GsSalesOrdersChangebjwc( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -752,6 +848,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrdersChangeDto
      * @return
      */
+    @ApiOperation(
+            value ="预订单变更单取消完成",
+            notes = "预订单变更单取消完成"
+    )
     @PostMapping("/GsSalesOrdersChangeqxwc")
     public AjaxResult GsSalesOrdersChangeqxwc( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
@@ -782,6 +882,10 @@ public class SalesScheduledOrdersController extends BaseController {
      * @param gsSalesOrderssVo
      * @return
      */
+    @ApiOperation(
+            value ="查询预订单变更单",
+            notes = "查询预订单变更单"
+    )
     @GetMapping("/seleteSalesbookingsummary")
     public AjaxResult<List<TableDataInfo>> seleteSalesbookingsummary( GsSalesOrderssVo gsSalesOrderssVo) {
         try {

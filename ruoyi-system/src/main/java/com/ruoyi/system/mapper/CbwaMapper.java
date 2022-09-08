@@ -30,7 +30,7 @@ public interface CbwaMapper {
 
     List<Cbwa> selectCBWAList(Cbwa cbwa);
 
-    String selectCBWAByCbwa01(Long cbwa01);
+    List<Cbwa> selectCBWAByCbwa01(Cbwa cbwa);
 
     //查该商品的仓库台账
     List<Cbwa> selectCalculationOrderPriority();

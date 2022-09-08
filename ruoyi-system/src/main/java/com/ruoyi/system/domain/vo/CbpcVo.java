@@ -101,12 +101,16 @@ public class CbpcVo  extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
+    private String cbpb09;
+
+    private String cbpb12;
 
 
     private String cbsa08;
     private String cbwa09;
     private String cala08;
 
+    private String cbpb15;
 
 
 }

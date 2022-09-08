@@ -85,7 +85,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Transactional
     @Override
     public int insertSwJsStores(List<Cbab> itemList) {
-
+if(itemList.size()==0){
+    throw new SwException("明细不能为空");
+}
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbabMapper mapper = session.getMapper(CbabMapper.class);
         Date date = new Date();
@@ -97,11 +99,11 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
             itemList.get(i).setCbab06(Math.toIntExact(userid));
             itemList.get(i).setCbab07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
-            Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
-            //调出仓库id
-            Integer cbaa09 = cbaa.getCbaa09();
-            //调出仓库数量
-            Double qty = gsGoodsSkuMapper.selectByPrimaryKey(cbaa09).getQty();
+//            Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
+//            //调出仓库id
+//            Integer cbaa09 = cbaa.getCbaa09();
+//            //调出仓库数量
+//            Double qty = gsGoodsSkuMapper.selectByPrimaryKey(cbaa09).getQty();
 
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次防止内存溢出
