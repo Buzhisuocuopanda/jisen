@@ -179,9 +179,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                     .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbph> cbphs = cbphMapper.selectByExample(example);
             //数量
-            Double cbph09 = cbphs.get(i).getCbph09();
             //单价
-            Double cbph10 = cbphs.get(i).getCbph10();
 
             //如果查不到添加信息到库存表
             Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());

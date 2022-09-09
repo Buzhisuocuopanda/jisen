@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.GsPurchaseOrderCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
+import com.ruoyi.system.domain.vo.GsPurchaseOrdersVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsPurchaseOrderMapper {
@@ -31,4 +32,6 @@ public interface GsPurchaseOrderMapper {
     int updateByPrimaryKey(GsPurchaseOrder record);
 
     List<GsPurchaseOrderVo> selectSwJsTaskGoodsRelLists(GsPurchaseOrderVo gsPurchaseOrderVo);
+
+    List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo);
 }

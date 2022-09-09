@@ -61,7 +61,7 @@ public class SaleOrderAddDto {
     @NotNull(message = "请传入订单分类")
     private Integer orderClass;
 
-    @Size(min = 1,message = "请至少添加一件货物")
+   // @Size(min = 1,message = "请至少添加一件货物")
     private List<SaleOrderGoodsDto> goods=new ArrayList<>();
 
 

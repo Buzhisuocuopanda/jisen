@@ -22,4 +22,10 @@ public class GsSalesOrdersDo extends BaseEntity {
     private Integer whId;
 
     private Integer userId;
+
+    //单据开始时间
+    private Date startTime;
+
+    //单据结束时间
+    private Date endTime;
 }

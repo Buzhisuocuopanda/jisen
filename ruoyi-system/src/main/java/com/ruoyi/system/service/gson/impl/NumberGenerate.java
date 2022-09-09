@@ -50,6 +50,9 @@ public class NumberGenerate {
 
     @Resource
     private CbshMapper cbshMapper;
+
+    @Resource
+    private GsSalesOrdersMapper gsSalesOrdersMapper;
 @Resource
 private CbieMapper cbieMapper;
 
@@ -473,6 +476,32 @@ private CbieMapper cbieMapper;
             Integer num=0;
             for (Cbie res : cbpks) {
                 Integer no = getNum(res.getCbie07(),12);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
+    public synchronized String getSaleOrdersNo() {
+        //拼接规则 PO202208040017 OC +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo="PO"+format;
+        GsSalesOrdersCriteria example=new GsSalesOrdersCriteria();
+        example.createCriteria()
+                .andOrderNoLike(orderNo+"%");
+        List<GsSalesOrders> gsSalesOrders = gsSalesOrdersMapper.selectByExample(example);
+        if(gsSalesOrders.size()==0){
+            return orderNo+"0001";
+        }else {
+            Integer num=0;
+            for (GsSalesOrders cboa : gsSalesOrders) {
+                Integer no = getNum(cboa.getOrderNo(),10);
                 if(num<no){
                     num=no;
                 }

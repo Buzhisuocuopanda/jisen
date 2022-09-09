@@ -49,7 +49,7 @@ public class CbpbDo {
     @NotBlank(message = "upc不能为空")
     @Excel(name = "upc")
     private String cbpb15;
-    @Size(min = 1, message = "客户明细不能为空")
+   // @Size(min = 1,message = "请至少添加一条客户明细")
     private List<CbpfDo> goods=new ArrayList<>();
 
     private Integer cbpf01;

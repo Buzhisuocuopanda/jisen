@@ -455,8 +455,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboaMapper.insertWithId(cboa);
         GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
         gsWorkInstanceDo.setOrderType((byte) 1);
-        gsWorkInstanceDo.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
-        gsWorkInstanceDo.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+        gsWorkInstanceDo.setOrderClose((byte) 2);
+        gsWorkInstanceDo.setOrderStatus((byte) 1);
         gsWorkInstanceDo.setOrderNo(cboa.getCboa07());
         taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbob cbob = null;

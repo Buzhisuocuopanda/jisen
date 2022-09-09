@@ -95,7 +95,8 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
         gsSalesOrders.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         NumberDo numberDo = new NumberDo();
         numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
-        gsSalesOrders.setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
+        String saleOrdersNo = numberGenerate.getSaleOrdersNo();
+        gsSalesOrders.setOrderNo(saleOrdersNo);
         gsSalesOrders.setSupplierId(gsSalesOrdersDto.getSupplierId());
         gsSalesOrders.setSalerId(gsSalesOrdersDto.getSalerId());
         gsSalesOrders.setCustomerId(gsSalesOrdersDto.getCustomerId());
@@ -216,7 +217,7 @@ return;
         }
 
         if(!TaskStatus.sh.getCode().equals(gsSalesOrders.getStatus().intValue())){
-            throw new SwException("未审核状态才能审核");
+            throw new SwException("审核状态才能反审");
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();

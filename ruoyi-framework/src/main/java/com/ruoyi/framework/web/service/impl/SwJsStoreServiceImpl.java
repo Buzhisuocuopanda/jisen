@@ -65,8 +65,12 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         cbla.setCbla09(cblaDto.getCbla09());
         if(!(cblaDto.getStorename() ==null)){
             CbwaCriteria example1 = new CbwaCriteria();
-            example1.createCriteria().andCbwa09EqualTo(cblaDto.getStorename());
+            example1.createCriteria().andCbwa09EqualTo(cblaDto.getStorename())
+                    .andCbwa15EqualTo(1);
             List<Cbwa> cbwas = cbwaMapper.selectByExample(example1);
+            if(cbwas.size()==0){
+                throw new SwException("所填仓库不可用");
+            }
             if(cbwas.size()>0){
                 cbla.setCbla10(cbwas.get(0).getCbwa01());
             }

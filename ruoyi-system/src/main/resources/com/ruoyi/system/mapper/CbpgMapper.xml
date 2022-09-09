@@ -417,8 +417,8 @@
 
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
-    h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,
-    f.CBPI09,i.CBLA09
+    h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,h.CBPB15,
+    f.CBPI09,i.CBLA09,b.CBPH08
     from CBPG a
     LEFT JOIN
     CBPH b
@@ -440,13 +440,13 @@
     on f.CBPI08=g.CBBA01
     left join
     CBPB h
-    on h.CBPB01=g.CBBA08
+    on h.CBPB01=b.CBPH08
     LEFT JOIN
     CBLA i
     ON i.CBLA01=f.CBPI10
 
     WHERE
-      a.CBPG06=0
+    a.CBPG06=0
     <if test="cbpg01 != null "> and a.CBPG01 = #{cbpg01}</if>
     <if test="cbwa09 != null "> and d.cbwa09 = #{cbwa09}</if>
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
@@ -494,6 +494,7 @@
 
     WHERE
       a.CBPG06=0
+    <if test="cbpg11 != null "> and a.CBPG11 like concat('%', #{cbpg11}, '%')</if>
     <if test="cbpg01 != null "> and a.CBPG07 like concat('%', #{cbpg01}, '%')</if>
     <if test="cbpg07 != null "> and a.CBPG07 like concat('%', #{cbpg07}, '%')</if>
     <if test="cbsa08 != null "> and c.CBSA08 like concat('%', #{cbsa08}, '%')</if>

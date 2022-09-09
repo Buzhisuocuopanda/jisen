@@ -386,6 +386,7 @@
     on a.CBPC16=d.CALA01
     WHERE
     a.CBPC06=0
+    <if test="cbpc11 != null "> and a.CBPC11 like concat('%',  #{cbpc11}, '%')</if>
     <if test="cbpc01 != null "> and a.CBPC01 like concat('%',  #{cbpc01}, '%')</if>
     <if test="cbpc07 != null  and cbpc07 != ''"> and a.CBPC07 like concat('%',  #{cbpc07}, '%')</if>
     <if test="cbpc09 != null "> and a.CBPC09 like concat('%',  #{cbpc09}, '%')</if>
@@ -540,10 +541,10 @@
     order by a.CBPC08 desc
   </select>
   <select id="getInfossss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
-    SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08,
+    SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08 as cala08s,
     d.CBPB12,d.CBPB08,d.CBPB15,
 
-    b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
+    b.CBPD08, b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
     p.CBPA07,
     c.CBPE09,c.CBPE10,l.CBLA09
 

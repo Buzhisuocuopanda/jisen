@@ -17,6 +17,7 @@ import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
+import com.ruoyi.system.domain.vo.GsPurchaseOrdersVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.IPurchaseordertableService;
 import io.swagger.annotations.Api;
@@ -275,6 +276,37 @@ public class PurchaseordertableController extends BaseController {
 
         }catch (Exception e) {
             log.error("【采购订单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 采购订单详情
+     */
+    @ApiOperation(
+            value ="采购订单详情",
+            notes = "采购订单详情"
+    )
+    @GetMapping("/SwJsSkuBarcodelists")
+    public AjaxResult<TableDataInfo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
+        try {
+            startPage();
+            List<GsPurchaseOrdersVo> list = purchaseordertableService.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【采购订单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(gsPurchaseOrdersVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【采购订单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(gsPurchaseOrdersVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【采购订单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrdersVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

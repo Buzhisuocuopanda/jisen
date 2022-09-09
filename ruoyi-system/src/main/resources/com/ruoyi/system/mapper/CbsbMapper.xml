@@ -666,7 +666,7 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbsbVo">
     SELECT
-    a.CBSB01,
+    a.CBSB01,a.CBSB11,
     a.CBSB07,a.CBSB30,a.CBSB08,b.CBCA08,b.CBCA28,a.CBSB18,a.CBSB19,c.CAUA15,d.CBWA09,e.CALA08,
     a.CBSB21,a.CBSB31,a.CBSB32,a.CBSB11,a.CBSB22
     from

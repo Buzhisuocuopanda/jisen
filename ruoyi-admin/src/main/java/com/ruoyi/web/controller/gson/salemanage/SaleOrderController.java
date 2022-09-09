@@ -10,6 +10,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.PdfUtil;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.dto.*;
@@ -27,9 +28,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -669,7 +674,11 @@ public class SaleOrderController extends BaseController {
             File is = new File("D:\\data\\模板.xlsx");
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
-            saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+            String orderNo = res.getOrderNo();
+            String name="D:\\data\\"+ "销售订单"+orderNo+".xlsx";
+
+            saveExcelToDisk(wb, name);
+
         } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -682,6 +691,38 @@ public class SaleOrderController extends BaseController {
     return AjaxResult.success();
     }
 
+    public static void download(HttpServletResponse response, InputStream inputStream, String fileName){
+        BufferedOutputStream bos = null;
+        try {
+            // 定义输出缓冲 10k
+            byte[] buffer = new byte[10240];
+            String userAgent = response.getHeader("user-agent").toLowerCase();
+            if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
+                fileName = URLEncoder.encode(fileName, "UTF-8");
+            } else {
+                fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+            }
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/msword");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            bos = new BufferedOutputStream(response.getOutputStream());
+            int bytesRead = 0;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     /**
      * 导出销售订单详情1
      */
@@ -692,6 +733,7 @@ public class SaleOrderController extends BaseController {
     @PostMapping("/saleOrderdetailsexport1")
     public AjaxResult saleOrderdetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
 
+        String name = null;
         try {
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
             InputStream in = null;
@@ -700,8 +742,18 @@ public class SaleOrderController extends BaseController {
             File is = new File("D:\\data\\模板1.xlsx");
             wb = new XSSFWorkbook(is);
             genarateReportss(wb, res);
-            saveExcelToDisk(wb, "D:\\data\\报告1.xlsx");
-        } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            String orderNo = res.getOrderNo();
+            name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
+            File file = new File("text.java");
+
+            String filePath = file.getAbsolutePath();
+            saveExcelToDisk(wb, name);
+
+            //  download( response, Files.newInputStream(Paths.get(name)), name);
+            // util.exportExcel(response, wb, "商品数据");
+
+        } catch (SwException e) {
+            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
@@ -709,6 +761,10 @@ public class SaleOrderController extends BaseController {
             log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        } finally {
+            if (name != null) {
+                FileUtils.deleteFile(name);
+            }
         }
         return AjaxResult.success();
     }
