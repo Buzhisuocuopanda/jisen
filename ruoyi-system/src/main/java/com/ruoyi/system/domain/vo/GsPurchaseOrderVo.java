@@ -19,6 +19,8 @@ public class GsPurchaseOrderVo extends BaseEntity {
 
     private String cbsa08;
 
-    private String cbwa08;
+    private String cbwa09;
+
+    private Byte status;
 
 }

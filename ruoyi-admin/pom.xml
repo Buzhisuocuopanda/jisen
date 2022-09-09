@@ -72,6 +72,7 @@
 
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/aspose-cells-8.5.2.jar</systemPath>
+           <version>8.5.2</version>
         </dependency>
 
     </dependencies>

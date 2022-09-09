@@ -355,9 +355,10 @@
     SELECT
       a.order_no as orderNo,
       b.CBCA08,c.CAUA09,
-      d.CBSA08,e.CBWA08,
+      d.CBSA08,e.CBWA09,
       a.order_date as orderDate,
-      a.id
+      a.id,
+      a.status as status
     FROM
       gs_purchase_order a
         LEFT JOIN
