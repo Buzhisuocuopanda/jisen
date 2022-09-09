@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.gson.salemanage;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.constant.PathConstant;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -10,17 +12,25 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.PdfUtil;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import com.ruoyi.web.utils.Excel2PdfUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.common.IOUtil;
+import org.springframework.http.MediaType;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +51,10 @@ import java.util.Map;
  * Create by gfy
  * Date 2022/8/1 16:59
  */
+
+@Api(
+        tags = {"销售管理"}
+)
 @RestController
 @RequestMapping("/sale")
 @Slf4j
@@ -50,6 +64,9 @@ public class SaleOrderController extends BaseController {
     private SaleOrderService saleOrderService;
 
 
+    @Resource
+    private RuoYiConfig ruoYiConfig;
+
     /**
      * 国际订单下单后确认库存列表
      *
@@ -57,6 +74,13 @@ public class SaleOrderController extends BaseController {
      * @return
      */
 
+    /**
+     * 国际订单下单后确认库存列表
+     */
+    @ApiOperation(
+            value ="国际订单下单后确认库存列表",
+            notes = "国际订单下单后确认库存列表"
+    )
     @PostMapping("/skuList")
     public AjaxResult<List<SaleOrderSkuVo>> saleOrderSkuList(@RequestBody SaleOrderSkuDto saleOrderSkuDto) {
         try {
@@ -79,6 +103,10 @@ public class SaleOrderController extends BaseController {
      * @param totalOrderListDto
      * @return
      */
+    @ApiOperation(
+            value ="获取生产总订单列表",
+            notes = "获取生产总订单列表"
+    )
     @PostMapping("/totalOrderList")
     public AjaxResult<TableDataInfo> totalOrderList(@RequestBody TotalOrderListDto totalOrderListDto) {
         try {
@@ -102,6 +130,10 @@ public class SaleOrderController extends BaseController {
      * @param totalOrderAddDto
      * @return
      */
+    @ApiOperation(
+            value ="添加生产总订单",
+            notes = "添加生产总订单"
+    )
     @PostMapping("/addTotalOrder")
     public AjaxResult addTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
@@ -127,6 +159,10 @@ public class SaleOrderController extends BaseController {
      * @param totalOrderAddDto
      * @return
      */
+    @ApiOperation(
+            value ="修改生产总订单",
+            notes = "修改生产总订单"
+    )
     @PostMapping("/mdfTotalOrder")
     public AjaxResult mdfTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
@@ -179,6 +215,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 导出生产总订单
      */
+    @ApiOperation(
+            value ="导出生产总订单",
+            notes = "导出生产总订单"
+    )
     @PostMapping("/totalOrderExcelList")
     public void totalOrderExcelList(@RequestBody TotalOrderListDto totalOrderListDto, HttpServletResponse response) {
         List<TotalOrderListVo> totalOrderListVos = saleOrderService.totalOrderList(totalOrderListDto);
@@ -192,6 +232,10 @@ public class SaleOrderController extends BaseController {
      * @param saleOrderListDto
      * @return
      */
+    @ApiOperation(
+            value ="销售订单列表",
+            notes = "销售订单列表"
+    )
     @PostMapping("/saleOrderList")
     public AjaxResult<List<TableDataInfo>> saleOrderList(@RequestBody SaleOrderListDto saleOrderListDto) {
         try {
@@ -216,6 +260,10 @@ public class SaleOrderController extends BaseController {
      * @param saleOrderAddDto
      * @return
      */
+    @ApiOperation(
+            value ="添加销售订单",
+            notes = "添加销售订单"
+    )
     @PostMapping("/addSaleOrder")
     public AjaxResult addSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
@@ -241,6 +289,10 @@ public class SaleOrderController extends BaseController {
      * @param orderId
      * @return
      */
+    @ApiOperation(
+            value ="销售订单详情",
+            notes = "销售订单详情"
+    )
     @GetMapping("/saleOderDetail")
     public AjaxResult<SaleOrderDetailVo> saleOderDetail(@RequestParam Integer orderId) {
         try {
@@ -265,7 +317,10 @@ public class SaleOrderController extends BaseController {
      * @param bindingResult
      * @return
      */
-
+    @ApiOperation(
+            value ="销售订单状态更改 包含指定结束",
+            notes = "销售订单状态更改 包含指定结束"
+    )
     @PostMapping("/auditSaleOrder")
     public AjaxResult auditSaleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
@@ -291,6 +346,10 @@ public class SaleOrderController extends BaseController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation(
+            value ="修改销售订单",
+            notes = "修改销售订单"
+    )
     @PostMapping("/mdfSaleOrder")
     public AjaxResult mdfSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
@@ -319,6 +378,11 @@ public class SaleOrderController extends BaseController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation(
+            value ="删除销售订单",
+            notes = "删除销售订单"
+    )
+
     @PostMapping("/delSaleOrder")
     public AjaxResult delSaleOrder(@Valid @RequestBody DelSaleOrderDto delSaleOrderDto, BindingResult bindingResult) {
         try {
@@ -348,6 +412,11 @@ public class SaleOrderController extends BaseController {
      * @param
      * @return
      */
+    @ApiOperation(
+            value ="国际订单导入",
+            notes = "国际订单导入"
+    )
+
     @PostMapping("/importySaleOrder")
     public AjaxResult importySaleOrder(MultipartFile file) {
         try {
@@ -370,7 +439,13 @@ public class SaleOrderController extends BaseController {
     /**
      * 重新提交销售订单
      */
+    @ApiOperation(
+            value ="重新提交销售订单",
+            notes = "重新提交销售订单"
+    )
+
     @PostMapping("/reAddSaleOrder")
+    @ApiParam("销售订单id")
     public AjaxResult reAddSaleOrder(@RequestParam Integer orderId) {
         try {
 
@@ -390,6 +465,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 根据客户查标准单价可用库存
      */
+    @ApiOperation(
+            value ="根据客户查标准单价可用库存",
+            notes = "根据客户查标准单价可用库存"
+    )
 
     @PostMapping("/goodsPriceAndSku")
     public AjaxResult goodsPriceAndSku(@Valid @RequestBody GoodsPriceAndSkuDto goodsPriceAndSkuDto,BindingResult bindingResult) {
@@ -415,6 +494,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 导出销售订单
      */
+    @ApiOperation(
+            value ="导出销售订单",
+            notes = "导出销售订单"
+    )
     @PostMapping("/saleOrderExcelList")
     public void totalOrderExcelList(@RequestBody SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
         List<SaleOrderListVo> saleOrderListVos = saleOrderService.saleOrderList(saleOrderListDto);
@@ -432,6 +515,11 @@ public class SaleOrderController extends BaseController {
      * @param saleOrderListDto
      * @return
      */
+
+    @ApiOperation(
+            value ="财务复审列表",
+            notes = "财务复审列表"
+    )
     @PostMapping("/finsaleOrderList")
     public AjaxResult<List<TableDataInfo>> finsaleOrderList(@RequestBody SaleOrderListDto saleOrderListDto) {
         try {
@@ -457,7 +545,10 @@ public class SaleOrderController extends BaseController {
      * @param bindingResult
      * @return
      */
-
+    @ApiOperation(
+            value ="财务复审",
+            notes = "财务复审"
+    )
     @PostMapping("/auditFinSaleOrder")
     public AjaxResult auditSaauditFinSaleOrderleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
@@ -476,9 +567,12 @@ public class SaleOrderController extends BaseController {
     }
 
     /**
-     * 销售清单列表
+     * 购物车列表
      */
-
+    @ApiOperation(
+            value ="购物车列表",
+            notes = "购物车列表"
+    )
     @GetMapping("/goodsShopList")
     public AjaxResult goodsShopList() {
         try {
@@ -501,6 +595,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 销售变更单列表
      */
+    @ApiOperation(
+            value ="销售变更单列表",
+            notes = "销售变更单列表"
+    )
     @PostMapping("/saleChangeList")
     public AjaxResult<TableDataInfo> saleChangeList(@RequestBody SaleOrderListDto saleOrderListDto) {
         try {
@@ -524,7 +622,10 @@ public class SaleOrderController extends BaseController {
      * 销售变更单创建
      */
 
-
+    @ApiOperation(
+            value ="销售变更单创建",
+            notes = "销售变更单创建"
+    )
     @PostMapping("/addSaleOrderChange")
     public AjaxResult addSaleOrderChange(@RequestBody SaleOrderChangeDto saleOrderChangeDto) {
         try {
@@ -544,6 +645,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 根据订单编号和商品id获取库存等信息
      */
+    @ApiOperation(
+            value ="根据订单编号和商品id获取库存等信息",
+            notes = "根据订单编号和商品id获取库存等信息"
+    )
     @PostMapping("/orderChangeGoodsMsg")
     public AjaxResult<List<OrderChangeGoodsMsgVo>> orderChangeGoodsMsg(@RequestBody OrderChangeGoodsMsgDto orderChangeGoodsMsgDto) {
         try {
@@ -567,8 +672,12 @@ public class SaleOrderController extends BaseController {
     /**
      * 销售订单变更单详情
      */
-
+    @ApiOperation(
+            value ="销售订单变更单详情",
+            notes = "销售订单变更单详情"
+    )
     @GetMapping("/orderChangeDetail")
+    @ApiParam("变更单id")
     public AjaxResult<OrderChangeDetailVo> orderChangeDetail(@RequestParam Integer orderId) {
         try {
 
@@ -591,6 +700,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 销售订单变更单修改
      */
+    @ApiOperation(
+            value ="销售订单变更单修改",
+            notes = "销售订单变更单修改"
+    )
     @PostMapping("/mdfSaleOrderChange")
     public AjaxResult mdfSaleOrderChange(@RequestBody SaleOrderChangeDto saleOrderChangeDto) {
         try {
@@ -612,7 +725,10 @@ public class SaleOrderController extends BaseController {
      * 销售订单变更单审核
      */
 
-
+    @ApiOperation(
+            value ="销售订单变更单审核",
+            notes = "销售订单变更单审核"
+    )
     @PostMapping("/auditSaleChange")
     public AjaxResult auditSaleChange(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
@@ -634,7 +750,10 @@ public class SaleOrderController extends BaseController {
     /**
      * 删除销售变更
      */
-
+    @ApiOperation(
+            value ="删除销售变更",
+            notes = "删除销售变更"
+    )
     @PostMapping("/delSaleChange")
     public AjaxResult delSaleChange(@Valid @RequestBody DelSaleChangeDto delSaleChangeDto, BindingResult bindingResult) {
         try {
@@ -928,24 +1047,111 @@ public class SaleOrderController extends BaseController {
             try {if(os!=null)os.close();} catch (IOException e) { log.error("error", e);}
         }
     }
+//
+//    /**
+//     * 删除销售变更单
+//     */
+//    @ApiOperation(
+//            value ="删除销售变更单",
+//            notes = "删除销售变更单"
+//    )
+//    @PostMapping("/delSaleChange")
+//    public AjaxResult delSaleChange(@Valid @RequestBody DelSaleChangeDto delSaleChangeDto, BindingResult bindingResult) {
+//        try {
+//            ValidUtils.bindvaild(bindingResult);
+//            delSaleChangeDto.setUserId(getUserId().intValue());
+//            saleOrderService.delSaleChange(delSaleChangeDto);
+//            return AjaxResult.success();
+//        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+//
+//        } catch (Exception e) {
+//            log.error("【删除销售变更】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(delSaleChangeDto), ExceptionUtils.getStackTrace(e));
+//
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+//        }
+//    }
+//
 
-
-    @PostMapping("/exportSaleOrderDetail2")
-    public AjaxResult exportSaleOrderDetail2(@Valid @RequestBody DelSaleChangeDto delSaleChangeDto, BindingResult bindingResult) {
+    /**
+     * 销售订单打印2
+     */
+    @ApiOperation(
+            value ="销售订单打印2",
+            notes = "销售订单打印2"
+    )
+    @GetMapping("/printSaleOrder")
+    public void printSaleOrder( @RequestParam  Integer orderId,HttpServletResponse response) throws IOException {
+        InputStream in = null;
+        String excelPaht="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
         try {
-            ValidUtils.bindvaild(bindingResult);
-            delSaleChangeDto.setUserId(getUserId().intValue());
-            saleOrderService.delSaleChange(delSaleChangeDto);
-            return AjaxResult.success();
+
+
+            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+
+
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+
+
+            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
+            wb = new XSSFWorkbook(is);
+            genarateReports(wb, res);
+            long time = System.currentTimeMillis();
+             excelPaht=   RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
+            saveExcelToDisk(wb,excelPaht );
+
+            //转成pdf
+             pdfPath=RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".pdf";
+            Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
+            in=new FileInputStream(new File(pdfPath));
+//            response.reset();
+//            response.setCharacterEncoding("UTF-8");
+//            // 定义输出类型
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("content-type", "application/octet-stream");
+////            response.setHeader("Content-Disposition", "attachment; filename=" + "销售订单_"+res.getOrderNo()+time+".pdf");
+//            response.setHeader("Content-Disposition", "attachment;fileName=" + "销售订单_"+res.getOrderNo()+time+".pdf");// 设置文件名
+////            IOUtils.copy(in,response.getOutputStream());
+//            StreamUtils.copy(in,response.getOutputStream());
+//            response.getOutputStream().flush();
+//            return null;
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".pdf");
+            FileUtils.writeBytes(pdfPath, response.getOutputStream());
+
+
+
         } catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除销售变更】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(delSaleChangeDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单打印2】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+
+        }finally {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(pdfPath!=null){
+                FileUtils.deleteFile(pdfPath);
+            }
+
+
+
         }
     }
+
+
 
 
 

@@ -1,11 +1,12 @@
 package com.ruoyi.common.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
  * 读取项目相关配置
- * 
+ *
  * @author ruoyi
  */
 @Component
@@ -26,6 +27,11 @@ public class RuoYiConfig
 
     /** 上传路径 */
     private static String profile;
+    private static String swprofile;
+
+    public  void setSwprofile(String swprofile) {
+        RuoYiConfig.swprofile = swprofile;
+    }
 
     /** 获取地址开关 */
     private static boolean addressEnabled;
@@ -131,5 +137,13 @@ public class RuoYiConfig
     public static String getUploadPath()
     {
         return getProfile() + "/upload";
+    }
+
+    /**
+     * 获取赛微软路径
+     */
+    public static String getSwprofile()
+    {
+        return swprofile;
     }
 }

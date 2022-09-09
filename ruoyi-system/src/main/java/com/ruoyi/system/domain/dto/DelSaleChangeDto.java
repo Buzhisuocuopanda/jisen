@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ public class DelSaleChangeDto {
 
 
     @NotNull(message = "请选择要删除的销售变更单")
+    @ApiModelProperty("销售变更单id")
     private Integer id;
 
     private Integer userId;

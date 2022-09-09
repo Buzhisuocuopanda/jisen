@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -14,9 +15,11 @@ import javax.validation.constraints.NotNull;
 public class GoodsPriceAndSkuDto {
 
     @NotNull(message = "请选择货物id")
+    @ApiModelProperty("商品id")
     private Integer goodsId;
 
     @NotNull(message = "请选择客户id")
+    @ApiModelProperty("客户id")
     private Integer customerId;
 
 }

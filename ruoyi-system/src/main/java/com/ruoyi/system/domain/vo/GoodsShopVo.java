@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,16 +13,22 @@ import lombok.Data;
 public class GoodsShopVo {
 
     //主鍵id
+    @ApiModelProperty("购物车id")
     private Integer id;
 
     //品牌
+    @ApiModelProperty("品牌")
     private String brand;
 
 
     //型号
+    @ApiModelProperty("型号")
+
     private String model;
 
     //描述
+    @ApiModelProperty("描述")
+
     private String description;
 
 

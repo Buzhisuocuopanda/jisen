@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -11,13 +12,18 @@ import lombok.Data;
 @Data
 public class TotalOrderListDto {
 
+    @ApiModelProperty("型号")
 
     //型号
     private String model;
 
+    @ApiModelProperty("生产总订单号")
+
     //生产总订单号
     private String orderNo;
 
-    //状态 0：NO  4:OK
+    @ApiModelProperty("状态 0：NO  4:OK")
+
+    //
     private Integer status;
 }

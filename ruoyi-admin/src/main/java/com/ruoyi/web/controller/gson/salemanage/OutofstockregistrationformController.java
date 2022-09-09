@@ -25,7 +25,10 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -208,6 +211,10 @@ public class OutofstockregistrationformController extends BaseController {
         response.setHeader("Content-Disposition", "attachment; filename=" + "assessment.pdf");
         try {
             ServletOutputStream out = response.getOutputStream();
+//            File file = new File("D:\\data\\Detailszx12121.pdf");
+//            OutputStream out=null;
+
+//                out = new FileOutputStream(file);
             PdfUtil pdf = new PdfUtil();
 //src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
             pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");

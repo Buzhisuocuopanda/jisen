@@ -1707,5 +1707,19 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     }
 
+    @Override
+    public void printSaleOrder(Integer sqleOrderId) {
+
+    }
+
+//    @Override
+//    public GsWorkInstance createTask() {
+//
+//        //创建审批任务
+//
+//
+//
+//    }
+
 
 }

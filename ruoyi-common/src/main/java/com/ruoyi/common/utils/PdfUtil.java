@@ -2,9 +2,11 @@ package com.ruoyi.common.utils;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 import javax.servlet.ServletOutputStream;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -23,7 +25,7 @@ public class PdfUtil {
      * @param templatePath pdf模板路径
      */
     // 利用模板生成pdf
-    public  void fillTemplate(Map<String,Object> o, ServletOutputStream out, String templatePath) {
+    public  void fillTemplate(Map<String,Object> o, OutputStream out, String templatePath) {
 
 
 
@@ -88,12 +90,63 @@ public class PdfUtil {
             //end
 
 
+            //创建第二个表单
+            AcroFields.FieldPosition fieldPosition2=form.getFieldPositions("table2").get(0);
+
+
+            PdfPTable tjtable=new PdfPTable(4);
+            //表头
+            tjtable.setHeaderRows(1);
+            tjtable.setWidthPercentage(500);
+
+            //这里根据字段数量，其Size大小必须与字段数一样，否则会报错
+            tjtable.setWidths(new float[]{22,50,55,19});
+            tjtable.setSpacingBefore(10);
+            tjtable.setLockedWidth(true);
+            //下方的数字用来对宽度进行校准，数值越大，表格越窄
+//            relListTable.setTotalWidth(PageSize.A4.getWidth()-122);
+            tjtable.setTotalWidth(PageSize.A4.getWidth()-16.5f);
+            //表头字段
+//            String[] headerNames={"ce","ce1","ce2","ce3A","ce","ce","ce"};
+//            Arrays.asList(headerNames).forEach(v -> {
+//                PdfPCell cell=new PdfPCell(new Paragraph(v,font));
+//                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+////                cell.setBackgroundColor(new BaseColor(238,238,238));
+//                cell.setFixedHeight(25f);
+//                relListTable.addCell(cell);
+//            });
+            for(int i=0;i<20;i++){
+                tjtable.addCell(createCell("内容"+i,font));
+                tjtable.addCell(createCell("内容2"+i,font));
+                tjtable.addCell(createCell("内容3"+i,font));
+                tjtable.addCell(createCell("内容4"+i,font));
+
+            }
+            float bottom = fieldPosition.position.getBottom();
+            float left = fieldPosition2.position.getLeft();
+
+//            PdfContentByte cb2 =stamper.getOverContent(1);
+            PdfContentByte cb2 =stamper.getUnderContent(1);
+
+            tjtable.writeSelectedRows(0,-1,0,-1,fieldPosition2.position.getLeft(),
+                    bottom,cb2);
+
+
+
             stamper.setFormFlattening(true);// 如果为false那么生成的PDF文件还能编辑，一定要设为true
             stamper.close();
             Document doc = new Document();
             PdfCopy copy = new PdfCopy(doc, out);
 
             doc.open();
+
+
+
+
+
+
+
 
 //
 //            PdfPTable tableBox = new PdfPTable(3);
@@ -132,6 +185,35 @@ public class PdfUtil {
 //        cell.setBackgroundColor(new BaseColor(238,238,238));
         cell.setFixedHeight(25f);
         return cell;
+    }
+
+
+
+
+
+    /**
+     * 合并原pdf为新文件
+     *
+     * @param files   pdf绝对路径集
+     * @param newfile 新pdf绝对路径
+     * @return
+     * @throws IOException
+     * @throws Exception
+     */
+    public static void mergePdfFiles(ArrayList<String> files, String newfile) throws Exception {
+        PDFMergerUtility mergePdf = new PDFMergerUtility();
+        for (String file : files) {
+            mergePdf.addSource(file);
+        }
+        mergePdf.setDestinationFileName(newfile);
+        mergePdf.mergeDocuments();
+    }
+
+    public static void main(String[] args) throws Exception {
+        ArrayList<String> files =new ArrayList<>();
+        files.add("D:\\data\\Detailszx.pdf");
+        files.add("D:\\data\\Detailszx.pdf");
+        mergePdfFiles(files,"D:\\data\\12121Detailszx.pdf");
     }
 
 

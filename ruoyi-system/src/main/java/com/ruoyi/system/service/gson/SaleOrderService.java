@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.GsWorkInstance;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 
@@ -63,4 +64,8 @@ public interface SaleOrderService {
     void auditSaleChange(AuditSaleOrderDto auditSaleOrderDto);
 
     void delSaleChange(DelSaleChangeDto delSaleChangeDto);
+
+    void printSaleOrder(Integer sqleOrderId);
+//    GsWorkInstance createTask();
+
 }

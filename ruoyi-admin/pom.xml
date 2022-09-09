@@ -66,6 +66,14 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>cells</artifactId>
+
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/aspose-cells-8.5.2.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>

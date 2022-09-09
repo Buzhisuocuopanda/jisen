@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -18,8 +19,10 @@ import java.util.List;
 @Data
 public class SaleOrderChangeDto {
     //销售订单号id
+    @ApiModelProperty("销售订单号id")
     private Integer orderId;
     //修改的时候用的变更订单号id
+    @ApiModelProperty("修改的时候用的变更订单号id")
     private Integer id;
 
 
