@@ -10,6 +10,7 @@ import com.ruoyi.system.domain.Do.GsPurchaseOrderDetailDo;
 import com.ruoyi.system.domain.Do.GsPurchaseOrderDo;
 import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
+import com.ruoyi.system.domain.vo.GsPurchaseOrdersVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.domain.vo.NumberVo;
 import com.ruoyi.system.mapper.*;
@@ -301,5 +302,10 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     @Override
     public List<GsPurchaseOrderVo> selectSwJsTaskGoodsRelLists(GsPurchaseOrderVo gsPurchaseOrderVo) {
         return purchaseOrderMapper.selectSwJsTaskGoodsRelLists(gsPurchaseOrderVo);
+    }
+
+    @Override
+    public List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
+        return purchaseOrderMapper.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
     }
 }

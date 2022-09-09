@@ -388,5 +388,40 @@
     </if>
 
 </select>
+    <select id="SwJsSkuBarcodelists" resultType="com.ruoyi.system.domain.vo.GsPurchaseOrdersVo">
+      SELECT
+        a.order_no,b.CBCA08,c.CAUA09,d.CBSA08,e.CBWA09,a.order_date,a.id,
+        f.goods_id,f.qty,f.price,f.remark,f.in_qty,f.change_qty,f.surplus_qty,
+        g.CBPB08,g.CBPB15,g.CBPB12
+      FROM
+        gs_purchase_order a
+          LEFT JOIN
+        CBCA b
+        ON
+          b.CBCA01=a.customer_id
+          LEFT JOIN
+        CAUA c
+        ON
+          c.CAUA01=a.saler_id
+          LEFT JOIN
+        CBSA d
+        ON
+          d.CBSA01=a.supplier_id
+          LEFT JOIN
+        CBWA e
+        ON
+          e.CBWA01=a.wh_id
+          LEFT JOIN
+        gs_purchase_order_detail f
+        ON
+          a.id=f.purchase_order_id
+          LEFT JOIN
+        CBPB g
+        ON
+          g.CBPB01=f.goods_id
+        WHERE
+        a.id = #{id}
+
+    </select>
 
 </mapper>

@@ -23,7 +23,7 @@ public class CbcaDto {
 
     private String cbca07;
     @NotBlank(message = "客户名称不能为空")
-    @Length(min =1 , max = 20, message = "客户名称长度不能超过20个字符")
+   // @Length(min =1 , max = 20, message = "客户名称长度不能超过20个字符")
     @Excel(name = "名称")
     private String cbca08;
   //  @Excel(name = "订单号")
@@ -33,16 +33,16 @@ public class CbcaDto {
    // @NotBlank(message = "名称首字母不能为空")
     private String cbca10;
     @NotBlank(message = "开户行不能为空")
-    @Length(min =1 , max = 20, message = "开户行长度不能超过20个字符")
+   // @Length(min =1 , max = 20, message = "开户行长度不能超过20个字符")
     @Excel(name = "开户行")
     private String cbca11;
     @NotBlank(message = "账号不能为空")
-    @Length(min =1 , max = 30, message = "账号长度不能超过30个字符")
+   // @Length(min =1 , max = 30, message = "账号长度不能超过30个字符")
     @Excel(name = "银行账号")
 
     private String cbca12;
     @NotBlank(message = "纳税人识别号不能为空")
-    @Length(min =1 , max = 30, message = "纳税人识别号长度不能超过30个字符")
+   // @Length(min =1 , max = 30, message = "纳税人识别号长度不能超过30个字符")
     @Excel(name = "纳税人识别号")
 
     private String cbca13;
@@ -50,11 +50,11 @@ public class CbcaDto {
     @NotBlank(message = "联系人不能为空")
     private String cbca14;
     @NotBlank(message = "地址不能为空")
-    @Length(min =1 , max = 20, message = "地址长度不能超过20个字符")
+   // @Length(min =1 , max = 20, message = "地址长度不能超过20个字符")
     @Excel(name = "地址")
     private String cbca15;
     @NotBlank(message = "电话不能为空")
-    @Length(min =1 , max = 20, message = "电话长度不能超过20个字符")
+    //@Length(min =1 , max = 20, message = "电话长度不能超过20个字符")
     @Excel(name = "电话")
     private String cbca16;
     @Excel(name = "备注")

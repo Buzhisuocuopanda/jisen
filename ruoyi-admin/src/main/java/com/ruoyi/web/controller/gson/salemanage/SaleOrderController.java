@@ -37,9 +37,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -788,7 +792,11 @@ public class SaleOrderController extends BaseController {
             File is = new File("D:\\data\\模板.xlsx");
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
-            saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+            String orderNo = res.getOrderNo();
+            String name="D:\\data\\"+ "销售订单"+orderNo+".xlsx";
+
+            saveExcelToDisk(wb, name);
+
         } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -801,6 +809,38 @@ public class SaleOrderController extends BaseController {
     return AjaxResult.success();
     }
 
+    public static void download(HttpServletResponse response, InputStream inputStream, String fileName){
+        BufferedOutputStream bos = null;
+        try {
+            // 定义输出缓冲 10k
+            byte[] buffer = new byte[10240];
+            String userAgent = response.getHeader("user-agent").toLowerCase();
+            if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
+                fileName = URLEncoder.encode(fileName, "UTF-8");
+            } else {
+                fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+            }
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/msword");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            bos = new BufferedOutputStream(response.getOutputStream());
+            int bytesRead = 0;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     /**
      * 导出销售订单详情1
      */
@@ -811,6 +851,7 @@ public class SaleOrderController extends BaseController {
     @PostMapping("/saleOrderdetailsexport1")
     public AjaxResult saleOrderdetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
 
+        String name = null;
         try {
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
             InputStream in = null;
@@ -819,8 +860,18 @@ public class SaleOrderController extends BaseController {
             File is = new File("D:\\data\\模板1.xlsx");
             wb = new XSSFWorkbook(is);
             genarateReportss(wb, res);
-            saveExcelToDisk(wb, "D:\\data\\报告1.xlsx");
-        } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            String orderNo = res.getOrderNo();
+            name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
+            File file = new File("text.java");
+
+            String filePath = file.getAbsolutePath();
+            saveExcelToDisk(wb, name);
+
+            //  download( response, Files.newInputStream(Paths.get(name)), name);
+            // util.exportExcel(response, wb, "商品数据");
+
+        } catch (SwException e) {
+            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
@@ -828,19 +879,49 @@ public class SaleOrderController extends BaseController {
             log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        } finally {
+            if (name != null) {
+                FileUtils.deleteFile(name);
+            }
         }
         return AjaxResult.success();
     }
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
-        InputStream in = null;
+     /*   InputStream in = null;
         XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
         File is = new File("D:\\data\\模板.xlsx");
         wb = new XSSFWorkbook(is);
         genarateReport(wb);
-        saveExcelToDisk(wb, "D:\\data\\报告.xlsx");
+        saveExcelToDisk(wb, "D:\\data\\报告.xlsx");*/
+        //基于pdf生成打印
+        /*String name = "夏帅";
+        String billy = "夏帅121";
+        List<String> list=new ArrayList<>();
+        list.add("12");
+        list.add("123");
+        list.add("126");
+        list.add("121");
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderNo",name);
+        map.put("saleUser",billy);
+        map.put("goodsList",list);
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        // 定义输出类型
+        response.setContentType("application/PDF;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + "assessment.pdf");
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            PdfUtil pdf = new PdfUtil();
+//src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
+            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
     }
     //导入模板1
     private static void genarateReportss(XSSFWorkbook wb, SaleOrderDetailVo res) {
@@ -1044,7 +1125,10 @@ public class SaleOrderController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {if(os!=null)os.close();} catch (IOException e) { log.error("error", e);}
+            try {if(os!=null) {
+                os.close();
+            }
+            } catch (IOException e) { log.error("error", e);}
         }
     }
 //
@@ -1180,7 +1264,7 @@ public class SaleOrderController extends BaseController {
             ServletOutputStream out = response.getOutputStream();
             PdfUtil pdf = new PdfUtil();
 //src/main/resources/static/swagger/images/msgh.pdf   模板路径记得更换自己的，我放在项目里面了
-            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx.pdf");
+            pdf.fillTemplate(map ,out,"D:\\data\\Detailszx1.pdf");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

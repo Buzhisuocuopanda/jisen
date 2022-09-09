@@ -10,6 +10,34 @@ import java.util.Date;
 public class CbpcVo  extends BaseEntity
 {
     private Integer cbpc01;
+    private Date cbpc08;
+
+    private String cala08;
+
+    private String cbsa08;
+
+    private String cbwa09;
+
+    private String cala08s;
+
+    private String cbpb08;
+
+    private String cbpb12;
+
+    private String cbpb15;
+
+    private Double cbpd09;
+
+    private Double cbpd10;
+
+    private Double cbpd11;
+
+    private Double cbpd12;
+
+    private String cbpd13;
+
+    private String cbpa07;
+
 
     private Date cbpc02;
 
@@ -23,7 +51,6 @@ public class CbpcVo  extends BaseEntity
 
     private String cbpc07;
 
-    private Date cbpc08;
 
     private Integer cbpc09;
 
@@ -61,15 +88,12 @@ public class CbpcVo  extends BaseEntity
 
     private Integer cbpd08;
 
-    private Double cbpd09;
+    private String cbpe09;
 
-    private Double cbpd10;
+    private Integer cbpe10;
 
-    private Double cbpd11;
+    private String cbla09;
 
-    private Double cbpd12;
-
-    private String cbpd13;
     private Integer cbpe01;
 
     private Integer cbpe02;
@@ -86,9 +110,6 @@ public class CbpcVo  extends BaseEntity
 
     private Integer cbpe08;
 
-    private String cbpe09;
-
-    private Integer cbpe10;
 
     private Integer cbpe11;
 
@@ -101,11 +122,8 @@ public class CbpcVo  extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
+    private String cbpb09;
 
-
-    private String cbsa08;
-    private String cbwa09;
-    private String cala08;
 
 
 

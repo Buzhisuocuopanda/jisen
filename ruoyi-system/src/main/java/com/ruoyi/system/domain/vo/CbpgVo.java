@@ -27,6 +27,7 @@ public class CbpgVo  extends BaseEntity
 
     private String cbpb08;
 
+    private Integer cbph08;
 
 
     private String cbpb12;
@@ -46,5 +47,6 @@ public class CbpgVo  extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
+    private String cbpb15;
 
 }

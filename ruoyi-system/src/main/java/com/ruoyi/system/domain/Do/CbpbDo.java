@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CbpbDo {
 
     private String cbpb07;
     @NotBlank(message = "商品描述不能为空")
-    @Length(min=1, max=50, message="商品描述长度不能超过50个字符")
+   // @Length(min=1, max=50, message="商品描述长度不能超过50个字符")
     @Excel(name = "商品描述")
     private String cbpb08;
 
@@ -38,7 +39,7 @@ public class CbpbDo {
 
     private Integer cbpb11;
     @NotBlank(message = "商品型号不能为空")
-    @Length(min=1, max=15, message="商品型号长度不能超过15个字符")
+   // @Length(min=1, max=15, message="商品型号长度不能超过15个字符")
     @Excel(name = "型号")
     private String cbpb12;
 
@@ -48,7 +49,7 @@ public class CbpbDo {
     @NotBlank(message = "upc不能为空")
     @Excel(name = "upc")
     private String cbpb15;
-
+   // @Size(min = 1,message = "请至少添加一条客户明细")
     private List<CbpfDo> goods=new ArrayList<>();
 
     private Integer cbpf01;

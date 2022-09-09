@@ -1,11 +1,12 @@
-package com.ruoyi.system.domain.Do;
+package com.ruoyi.system.domain.dto;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class GsWorkInstanceDo {
+public class GsWorkInstanceDto {
+
     private Integer id;
 
     private Date createTime;
@@ -27,10 +28,4 @@ public class GsWorkInstanceDo {
     private Byte orderStatus;
 
     private String orderMsg;
-
-    private Byte auditResult;
-
-    private String auditMsg;
-
-
 }

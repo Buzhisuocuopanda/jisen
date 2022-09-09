@@ -8,6 +8,8 @@ import com.ruoyi.system.domain.Cbpc;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.GsAfterSalesCriteria;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
+import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.GsAfterSalesVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.GsAfterSalesMapper;
 import com.ruoyi.system.service.AftersalesService;
@@ -80,7 +82,10 @@ public class AftersalesServiceImpl implements AftersalesService {
         aftersalesMapper.updateByExample(gsAfterSales,gsAfterSalesCriteria1);
         return 1;    }
 
-
+    @Override
+    public List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo) {
+        return aftersalesMapper.aftersaleslist(gsAfterSalesVo);
+    }
 
 
 }

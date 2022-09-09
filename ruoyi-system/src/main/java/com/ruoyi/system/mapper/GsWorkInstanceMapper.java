@@ -31,7 +31,7 @@ public interface GsWorkInstanceMapper {
 
     int updateByPrimaryKey(GsWorkInstance record);
 
-    List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo);
-
     List<UnfinishedentsVo> selectUnfinisheddocuments(UnfinishedentsVo unfinishedentsVo);
+
+    List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo);
 }

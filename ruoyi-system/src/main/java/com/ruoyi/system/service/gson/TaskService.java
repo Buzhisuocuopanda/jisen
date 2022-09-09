@@ -34,4 +34,7 @@ public interface TaskService {
 
      //流程审批表
     GsWorkInstance addGsWorkInstance(GsWorkInstanceDo goodsWorkInstanceDo);
+
+    GsWorkInstance editGsWorkInstance(GsWorkInstanceDo goodsWorkInstanceDo);
+
 }

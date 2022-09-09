@@ -79,6 +79,7 @@ public class SaleOrderAddDto {
 
     @Size(min = 1,message = "请至少添加一件货物")
     @ApiModelProperty("商品列表信息")
+   // @Size(min = 1,message = "请至少添加一件货物")
     private List<SaleOrderGoodsDto> goods=new ArrayList<>();
 
 

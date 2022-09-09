@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.GsAfterSalesCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbpcVo;
+import com.ruoyi.system.domain.vo.GsAfterSalesVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsAfterSalesMapper {
@@ -27,4 +30,6 @@ public interface GsAfterSalesMapper {
     int updateByPrimaryKeySelective(GsAfterSales record);
 
     int updateByPrimaryKey(GsAfterSales record);
+
+    List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo);
 }

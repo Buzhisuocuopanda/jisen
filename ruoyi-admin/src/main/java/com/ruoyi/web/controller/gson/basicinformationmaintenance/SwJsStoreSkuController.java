@@ -155,15 +155,16 @@ public class SwJsStoreSkuController extends BaseController {
             value ="仓库信息列表",
             notes = "仓库信息列表"
     )
-    @GetMapping(value = "/{cbwa01}")
-    public AjaxResult getInfo(@PathVariable("cbwa01") Long cbwa01) {
+    @GetMapping(value = "/cangkuliebiao")
+    public AjaxResult<Cbwa > getInfo(Cbwa cbwa) {
         try {
-        return AjaxResult.success(swJsStoreSkuService.selectCBWAByCbwa01(cbwa01));
+            List<Cbwa> list= swJsStoreSkuService.selectCBWAByCbwa01(cbwa);
+            return AjaxResult.success(list);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询仓库信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbwa01), ExceptionUtils.getStackTrace(e));
+            //log.error("【查询仓库信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

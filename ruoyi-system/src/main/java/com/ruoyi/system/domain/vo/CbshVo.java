@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class CbshVo   extends BaseEntity
 {
+    private Integer cbsh01;
+
 
     private String cbsh07;
 

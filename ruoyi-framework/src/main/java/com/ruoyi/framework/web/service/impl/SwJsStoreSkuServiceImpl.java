@@ -131,7 +131,7 @@ private CbpcMapper cbpcMapper;
     }
 
     @Override
-    public String selectCBWAByCbwa01(Long cbwa01) {
-        return cbwaMapper.selectCBWAByCbwa01(cbwa01);
+    public List<Cbwa> selectCBWAByCbwa01(Cbwa cbwa) {
+        return cbwaMapper.selectCBWAByCbwa01(cbwa);
     }
 }

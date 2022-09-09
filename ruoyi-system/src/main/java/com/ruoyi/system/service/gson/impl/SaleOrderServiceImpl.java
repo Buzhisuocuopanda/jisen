@@ -15,6 +15,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import com.ruoyi.system.service.gson.TaskService;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     @Resource
     private CbodMapper cbodMapper;
+
+    @Resource
+    private TaskService taskService;
 
     @Override
     public List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto) {
@@ -449,6 +453,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa25(saleOrderAddDto.getCustomerNo());
         cboa.setCboa27(saleOrderAddDto.getOrderClass());
         cboaMapper.insertWithId(cboa);
+        GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
+        gsWorkInstanceDo.setOrderType((byte) 1);
+        gsWorkInstanceDo.setOrderClose((byte) 2);
+        gsWorkInstanceDo.setOrderStatus((byte) 1);
+        gsWorkInstanceDo.setOrderNo(cboa.getCboa07());
+        taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbob cbob = null;
         //创建销售订单明细表
         for (SaleOrderGoodsDto good : goods) {
@@ -1053,6 +1063,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 }
 
             }
+            GsWorkInstanceDo goodsWorkInstanceDo = new GsWorkInstanceDo();
+            goodsWorkInstanceDo.setOrderType((byte) 2);
+            goodsWorkInstanceDo.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
+            goodsWorkInstanceDo.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+            taskService.editGsWorkInstance(goodsWorkInstanceDo);
         }
 
         //更改销售订单状态
@@ -1311,6 +1326,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
          cboc.setCboc24(cboa.getCboa24());
         cboc.setCboc26(cboa.getCboa01());
          cbocMapper.insertWithId(cboc);
+        GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
+        gsWorkInstanceDo.setOrderType((byte) 2);
+        gsWorkInstanceDo.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
+        gsWorkInstanceDo.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+        gsWorkInstanceDo.setOrderNo(cboc.getCboc07());
+        taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbod cbod=null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
 
@@ -1613,7 +1634,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             cboc.setCboc11(SaleOrderStatusEnums.YITIJIAO.getCode());
             cbocMapper.updateByPrimaryKey(cboc);
-
+            //更新审批流程表
+            GsWorkInstanceDo goodsWorkInstanceDo = new GsWorkInstanceDo();
+            goodsWorkInstanceDo.setOrderType((byte) 2);
+            goodsWorkInstanceDo.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
+            goodsWorkInstanceDo.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
+            taskService.editGsWorkInstance(goodsWorkInstanceDo);
 
         }else  if(auditSaleOrderDto.getOpeateType()==2){
             if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cboc.getCboc11())){
