@@ -433,7 +433,7 @@ a.CBSH06=0
       a.CBSH07,c.CBWA09,b.CBSJ03,
       e.CALA08,
       d.CBPB15,d.CBPB12,d.CBPB08,b.CBSJ09,f.CBLA09,
-      b.CBSJ11,b.CBSJ12,a.CBSH01
+      b.CBSJ11,b.CBSJ12,a.CBSH01,b.CBSJ08
     FROM
       CBSJ b
         LEFT JOIN

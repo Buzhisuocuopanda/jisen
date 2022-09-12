@@ -373,7 +373,8 @@
     b.CAUA17 as caua17,c.CBSA08 as cbsa08,
     a.goodsclassify as goodsclassify,
     a.qty as qty,
-    a.id as id
+    a.id as id,
+    a.status as status
     FROM
     `gs_ Sales_orders_change` a
     LEFT JOIN
