@@ -71,6 +71,9 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
+    @Resource
+    private CbwaMapper cbwaMapper;
+
 
     /**
      * 添加销售预订单
@@ -613,9 +616,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
-        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getSupplierId());
         if(cbsa == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cbsa.getCbsa06())){
-            throw new SwException("没有查到该仓库");
+            throw new SwException("没有查到该供应商");
         }
         String vendername = cbsa.getCbsa08();
         //供应商
