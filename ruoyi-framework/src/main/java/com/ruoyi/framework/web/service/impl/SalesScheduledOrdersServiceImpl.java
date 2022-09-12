@@ -571,7 +571,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             throw new SwException("没有查到该订单");
         }
 
-        if(!TaskStatus.sh.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
+        if(!TaskStatus.sh.getCode().equals(gsSalesOrdersChange.getStatus().intValue())){
             throw new SwException("审核状态才能反审");
         }
         Long userid = SecurityUtils.getUserId();
@@ -589,7 +589,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             throw new SwException("没有查到该订单");
         }
 
-        if(!TaskStatus.sh.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
+        if(!TaskStatus.sh.getCode().equals(gsSalesOrdersChange.getStatus().intValue())){
             throw new SwException("审核状态才能完成");
         }
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersChange.getGsSalesOrders());
@@ -645,7 +645,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             throw new SwException("没有查到该订单");
         }
 
-        if(!TaskStatus.bjwc.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
+        if(!TaskStatus.bjwc.getCode().equals(gsSalesOrdersChange.getStatus().intValue())){
             throw new SwException("审核状态才能反审");
         }
         Long userid = SecurityUtils.getUserId();

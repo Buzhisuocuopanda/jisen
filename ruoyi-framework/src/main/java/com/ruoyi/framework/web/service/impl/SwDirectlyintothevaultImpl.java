@@ -1,6 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.*;
+import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
@@ -12,6 +13,7 @@ import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.mapper.CbicMapper;
 import com.ruoyi.system.mapper.CblaMapper;
+import com.ruoyi.system.mapper.CbpbMapper;
 import com.ruoyi.system.mapper.CbsaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -40,14 +42,28 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     private CbsaMapper cbsaMapper;
     @Resource
     private CblaMapper cblaMapper;
+
+    @Resource
+    private CbpbMapper cbbpbMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
+        if(cbicDto.getUpc()==null){
+            throw new SwException("upc没输入");
+        }
+
+        CbpbCriteria example = new CbpbCriteria();
+        example.createCriteria().andCbpb15EqualTo(cbicDto.getUpc());
+        List<Cbpb> cbpbs = cbbpbMapper.selectByExample(example);
+        if(cbpbs.size()==0){
+            throw new SwException("该upc没有对应商品");
+
+        }
         // 检查供应商
         baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
-        Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
+      //  Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
 
         Long userid = SecurityUtils.getUserId();
 
@@ -68,6 +84,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbic.setCbic04(Math.toIntExact(userid));
         cbic.setCbic05(Math.toIntExact(userid));
         cbic.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbic.setCbic09(cbpbs.get(0).getCbpb01());
         cbic.setCbic12(date);
         cbic.setUserId(Math.toIntExact(userid));
        cbicMapper.insertSelective(cbic);

@@ -368,7 +368,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="seleteGsSalesOrdersChange" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo">
-    SELECT
+    SELECT DISTINCT
     a.order_no as orderNo,a.order_date as orderDate,
     b.CAUA17 as caua17,c.CBSA08 as cbsa08,
     a.goodsclassify as goodsclassify,
