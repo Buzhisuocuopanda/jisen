@@ -594,6 +594,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         }
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersChange.getGsSalesOrders());
 
+        if(gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())){
+            throw new SwException("没有查到该预订单");
+        }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrdersChange.setUpdateTime(date);
