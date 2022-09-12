@@ -1,11 +1,12 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.TaskType;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
+import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
@@ -70,6 +71,49 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbic.setCbic12(date);
         cbic.setUserId(Math.toIntExact(userid));
        cbicMapper.insertSelective(cbic);
+
+        GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+        //获取仓库id
+        gsGoodsSkuDo.setWhId(cbicDto.getCbic07());
+        //获取商品id
+        gsGoodsSkuDo.setGoodsId(cbicDto.getCbic09());
+        //获取库位id
+        gsGoodsSkuDo.setLocationId(cbicDto.getCbic08());
+        gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        //通过仓库id和货物id判断是否存在
+        List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+        if(gsGoodsSkus.size()==0){
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            gsGoodsSkuDo1.setGoodsId(cbicDto.getCbic09());
+            gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
+            gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
+            gsGoodsSkuDo1.setQty(1.0);
+            taskService.addGsGoodsSku(gsGoodsSkuDo1);
+        }
+        //如果存在则更新库存数量
+        else {
+            //加锁
+            baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            gsGoodsSkuDo1.setGoodsId(cbicDto.getCbic09());
+            gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
+            gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
+            //查出
+            Double qty = gsGoodsSkus.get(0).getQty();
+            gsGoodsSkuDo1.setQty(qty+1.0);
+            taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+        }
+        //加sn表
+        GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+        gsGoodsSnDo.setSn(cbicDto.getCbic10());
+        gsGoodsSnDo.setGoodsId(cbicDto.getCbic09());
+        gsGoodsSnDo.setWhId(cbicDto.getCbic07());
+        gsGoodsSnDo.setLocationId(cbicDto.getCbic08());
+        gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+        gsGoodsSnDo.setInTime(date);
+        gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+        taskService.addGsGoodsSns(gsGoodsSnDo);
 
         CbicCriteria cbicCriteria = new CbicCriteria();
         cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
