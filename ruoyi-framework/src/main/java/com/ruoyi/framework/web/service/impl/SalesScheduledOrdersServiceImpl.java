@@ -614,6 +614,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        if(cbsa == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cbsa.getCbsa06())){
+            throw new SwException("没有查到该仓库");
+        }
         String vendername = cbsa.getCbsa08();
         //供应商
         Integer supplierId = gsSalesOrders.getSupplierId();
