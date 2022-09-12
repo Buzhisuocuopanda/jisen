@@ -369,7 +369,7 @@
   </update>
   <select id="seleteGsSalesOrdersChange" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo">
     SELECT
-    a.order_no,a.order_date,b.CAUA17 as caua17,c.CBSA08 as cbsa08,a.goodsclassify,a.qty
+    a.order_no,a.order_date,b.CAUA17 as caua17,c.CBSA08 as cbsa08,a.goodsclassify,a.qty,a.id
     FROM
     `gs_ Sales_orders_change` a
     LEFT JOIN
