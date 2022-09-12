@@ -29,6 +29,9 @@ public class CbaasVo {
 
     private String cbpb12;
 
+    private String cbpb15;
+
+
     private Double cbab09;
 
 
