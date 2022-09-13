@@ -66,19 +66,78 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>com.aspose</groupId>
-            <artifactId>cells</artifactId>
+<!--        <dependency>-->
+<!--            <groupId>com.aspose</groupId>-->
+<!--            <artifactId>cells</artifactId>-->
 
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/aspose-cells-8.5.2.jar</systemPath>
-           <version>8.5.2</version>
-        </dependency>
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/src/main/resources/lib/aspose-cells-8.5.2.jar</systemPath>-->
+<!--           <version>8.5.2</version>-->
+<!--        </dependency>-->
+
+
+            <dependency>
+                <groupId>com.aspose.cells</groupId>
+                <artifactId>aspose-cells</artifactId>
+                <version>20.4 - c</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/src/main/resources/lib/aspose-cells-20.4 - c.jar</systemPath>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aspose.words</groupId>
+                <artifactId>aspose-words</artifactId>
+                <version>words-18.10-jdk16</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/src/main/resources/lib/aspose-words-18.10-jdk16.jar</systemPath>
+            </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- 不需要使用变量替换掉的前缀标识 -->
+                    <escapeString>\</escapeString>
+                    <!-- 不需要过滤的文件扩展名。如果不过滤，会进行变量替换，像证书之类的，一定要处理 -->
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                    <resources>
+                        <!-- 控制好资源文件 -->
+                        <resource>
+                            <directory>${basedir}/src/main/resources</directory>
+                            <targetPath>BOOT-INF/classes</targetPath>
+                            <!-- 默认不写包含所有，如果写了，那就只包含写的 -->
+                            <!--<includes>
+                                <include>**/*.p12</include>
+                                <include>**/*.yml</include>
+                                <include>**/*.xml</include>
+                            </includes>-->
+                            <excludes>
+                                <!-- 排除掉 -->
+                                <exclude>**/lib/**</exclude>
+                            </excludes>
+                            <filtering>true</filtering>
+                        </resource>
+                        <!-- 把第三方 Jar 引导进入指定位置 -->
+                        <resource>
+                            <directory>${basedir}/src/main/resources</directory>
+                            <targetPath>BOOT-INF</targetPath>
+                            <!-- 默认不写包含所有，如果写了，那就只包含写的 -->
+                            <includes>
+                                <include>**/*.jar</include>
+                            </includes>
+                            <filtering>false</filtering>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

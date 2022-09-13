@@ -33,4 +33,6 @@ public interface CbpmMapper {
     List<CbpmTakeOrderDo> selectByTakeIdAndGoodId(@Param("takeId") Integer takeId, @Param("goodsId")Integer goodsId);
 
 
+    List<CbpmTakeOrderDo> selectByTakeId(@Param("takeId") Integer cbpk01);
+
 }

@@ -28,6 +28,7 @@ public class TakeGoodsOrderDetailVo {
     @ApiModelProperty("销售订单号")
     private String saleOrderNo;
 
+    private String orderNo;
 
     //客户单号
     @ApiModelProperty("客户单号")
@@ -121,5 +122,11 @@ public class TakeGoodsOrderDetailVo {
     //扫码记录
     @ApiModelProperty("扫码记录")
     private List<TakeOrderSugestVo> scans=new ArrayList<>();
+
+    private String auditUserName;
+
+    private Double sumQty;
+
+    private String orderDateMsg;
 
 }

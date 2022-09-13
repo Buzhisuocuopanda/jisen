@@ -1161,6 +1161,7 @@ public class SaleOrderController extends BaseController {
 
 
             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
+
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             long time = System.currentTimeMillis();
@@ -1170,7 +1171,7 @@ public class SaleOrderController extends BaseController {
             //转成pdf
              pdfPath=RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".pdf";
             Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
-            in=new FileInputStream(new File(pdfPath));
+//            in=new FileInputStream(new File(pdfPath));
           //  in.close();
 //            response.reset();
 //            response.setCharacterEncoding("UTF-8");

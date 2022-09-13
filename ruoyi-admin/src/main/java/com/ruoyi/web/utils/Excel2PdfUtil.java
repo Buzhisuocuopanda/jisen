@@ -6,9 +6,7 @@ package com.ruoyi.web.utils;
  * Create by gfy
  * Date 2022/9/9 8:35
  */
-import com.aspose.cells.License;
-import com.aspose.cells.PdfSaveOptions;
-import com.aspose.cells.Workbook;
+import com.aspose.cells.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +28,14 @@ public class Excel2PdfUtil {
 //            File pdfFile = new File("src/main/resources/template/肩关节功能评定量表.pdf"); // 输出路径
             File pdfFile = new File(saveAddress); // 输出路径
             FileInputStream excelstream = new FileInputStream(Address);
-            Workbook wb = new Workbook(excelstream);// excel路径，这里是先把数据放进缓存表里，然后把缓存表转化成PDF
+            IndividualFontConfigs configs = new IndividualFontConfigs();
+            configs.setFontFolder("/usr/share/fonts/", true);
+            LoadOptions loadOptions  = new LoadOptions();
+            loadOptions.setFontConfigs(configs);
+
+//            FileInputStream fi = new FileInputStream("D://MOBAN.xlsx");
+            Workbook wb = new Workbook(excelstream, loadOptions);
+//            Workbook wb = new Workbook(excelstream);// excel路径，这里是先把数据放进缓存表里，然后把缓存表转化成PDF
             FileOutputStream fileOS = new FileOutputStream(pdfFile);
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.setOnePagePerSheet(true);//参数true把内容放在一张PDF页面上；

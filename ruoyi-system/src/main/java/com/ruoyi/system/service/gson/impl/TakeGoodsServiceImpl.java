@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -226,6 +228,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         TakeGoodsOrderDetailVo res=new TakeGoodsOrderDetailVo();
         res.setContacts(cbpk.getCbpk07());
         res.setCurrency(cbpk.getCbpk16());
+        res.setOrderNo(cbpk.getCbpk07());
         if(CurrencyEnum.CNY.getCode().equals(cbpk.getCbpk16())){
             res.setCurrencyMsg(CurrencyEnum.CNY.getMsg());
         }else {
@@ -261,6 +264,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             res.setUserId(user.getUserId().intValue());
             res.setUserName(user.getNickName());
         }
+        if(cbpk.getCbpk12()!=null){
+            SysUser auditUser = sysUserMapper.selectByPrimaryKey(cbpk.getCbpk12().longValue());
+            if(auditUser!=null){
+
+                res.setAuditUserName(auditUser.getNickName());
+            }
+        }
+
+
         if(cbpk.getCbpk17()!=null){
             SysUser saleUser = sysUserMapper.selectByPrimaryKey(cbpk.getCbpk17().longValue());
             if(saleUser!=null){
@@ -305,6 +317,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
         TakeOrderGoodsVo good=null;
+        Double sumQty=0.0;
 
         Map<Integer,TakeOrderGoodsVo> goodsMap=new HashMap<>();
         for (Cbpl cbpl : cbpls) {
@@ -378,6 +391,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //            good.setSupplierId();
             good.setTotalPrice(cbpl.getCbpl12());
 
+            sumQty=sumQty+cbpl.getCbpl09();
 
 
             res.getGoods().add(good);
@@ -386,13 +400,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
         }
 
+        res.setSumQty(sumQty);
 //        CbpmCriteria pmex=new CbpmCriteria();
 //        pmex.createCriteria()
 //                .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
 //                .andCbpm08EqualTo(good.getGoodsId())
 //                .andCbpk01EqualTo(cbpk.getCbpk01());
 //        pmex.setOrderByClause("CBPM11 ASC");
-        List<CbpmTakeOrderDo> cbpms = cbpmMapper.selectByTakeIdAndGoodId(cbpk.getCbpk01(),good.getGoodsId());
+        List<CbpmTakeOrderDo> cbpms = cbpmMapper.selectByTakeId(cbpk.getCbpk01());
         //查提货建议表
         TakeOrderSugestVo sugest=null;
         Map<Integer,Integer> scanMap=new HashMap<>();
@@ -432,7 +447,11 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }
 
 
-
+        if(res.getOrderDate()!=null){
+            SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+            String format = sd.format(res.getOrderDate());
+            res.setOrderDateMsg(format);
+        }
         return res;
     }
 
@@ -709,6 +728,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 throw new SwException("必须在已提交状态下才能审核");
             }
             cbpk.setCbpk11(SaleOrderStatusEnums.YISHENHE.getCode());
+            cbpk.setCbpk12(auditTakeOrderDto.getUserId());
 
             //生成提货建议单
 
@@ -810,10 +830,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }
 
 
-
-
-
-
+        cbpk.setCbpk12(auditTakeOrderDto.getUserId());
         cbpk.setCbpk05(auditTakeOrderDto.getUserId());
         cbpk.setCbpk04(new Date());
         cbpkMapper.updateByPrimaryKey(cbpk);

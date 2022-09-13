@@ -9,6 +9,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
 import com.ruoyi.system.domain.dto.ChangeSuggestDto;
@@ -17,18 +18,23 @@ import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
+import com.ruoyi.web.utils.Excel2PdfUtil;
+import com.ruoyi.web.utils.FileCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -243,24 +249,26 @@ public class TakeGoodsController extends BaseController {
 
 
     @PostMapping("/exportDetail")
-    public void exportDetail(@RequestParam Integer id){
+    public void exportDetail(@RequestParam Integer id, HttpServletResponse response){
+        String excelPaht="";
         try {
-//            long time = System.currentTimeMillis();
-//
-//            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
-//            InputStream in = null;
-//            XSSFWorkbook wb = null;
-////        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-//            String excelPaht = RuoYiConfig.getSwprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
-//
-//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
-//            wb = new XSSFWorkbook(is);
-//            genarateReports(wb, res);
-//            String orderNo = res.getOrderNo();
-//
-//            saveExcelToDisk(wb, excelPaht);
-//            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
-//            FileUtils.writeBytes(excelPaht, response.getOutputStream());
+            long time = System.currentTimeMillis();
+
+            TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
+            InputStream in = null;
+            XSSFWorkbook wb = null;
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+             excelPaht = RuoYiConfig.getSwprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
+
+            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL);
+
+            wb = new XSSFWorkbook(is);
+            genarateReports(wb, res);
+            String orderNo = res.getOrderNo();
+
+            saveExcelToDisk(wb, excelPaht);
+            FileUtils.setAttachmentResponseHeader(response, "提货单_"+res.getOrderNo()+time+".xlsx");
+            FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
 
 
@@ -268,13 +276,476 @@ public class TakeGoodsController extends BaseController {
 //            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【更改提货建议表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【导出提货单excel详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
 //            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }finally {
+            FileUtils.deleteFile(excelPaht);
+        }
+    }
+
+    private static void saveExcelToDisk(XSSFWorkbook wb, String filePath){
+        File file = new File(filePath);
+        OutputStream os=null;
+        try {
+            os = new FileOutputStream(file);
+            wb.write(os);
+            os.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {if(os!=null) {
+                os.close();
+            }
+            } catch (IOException e) { log.error("error", e);}
+        }
+    }
+    //导入模板2
+    private static void genarateReports(XSSFWorkbook wb, TakeGoodsOrderDetailVo res) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderNo(),4,2);
+        FormExcelUtil.setCellData(sheet1,res.getCustomerNo(),4,4);
+        FormExcelUtil.setCellData(sheet1,res.getOrderDateMsg(),4,7);
+        FormExcelUtil.setCellData(sheet1,res.getCustomerName(),5,2);
+        FormExcelUtil.setCellData(sheet1,res.getWhName(),5,4);
+        FormExcelUtil.setCellData(sheet1,res.getSaleUserName(),5,6);
+        // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
+        // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+        FormExcelUtil.setCellData(sheet1,res.getContacts(),6,2);
+        FormExcelUtil.setCellData(sheet1,res.getPhone(),6,4);
+        FormExcelUtil.setCellData(sheet1,res.getCurrencyMsg(),7,2);
+        FormExcelUtil.setCellData(sheet1,res.getReceiver(),7,4);
+        FormExcelUtil.setCellData(sheet1,res.getReceivPhone(),8,2);
+        FormExcelUtil.setCellData(sheet1,res.getReceiveAdress(),8,4);
+        FormExcelUtil.setCellData(sheet1,res.getUserName(),15,2);
+        FormExcelUtil.setCellData(sheet1,res.getAuditUserName(),15,4);
+        Double sumQty = res.getSumQty()==null?0:res.getSumQty();
+        FormExcelUtil.setCellData(sheet1,sumQty,11,4);
+
+
+        List<TakeOrderGoodsVo> goods = res.getGoods();
+
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<goods.size();i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+            rlist.add(goods.get(i).getBrand());
+            rlist.add(goods.get(i).getModel());
+            rlist.add(goods.get(i).getDescription());
+//            rlist.add("");
+            rlist.add(goods.get(i).getQty());
+            rlist.add(goods.get(i).getScanQty());
+            rlist.add(goods.get(i).getRemark());
+
+            data1.add(rlist);
+        }
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 10, data1.size(), 4, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+
+    }
+
+    /**
+     * 销售提货单打印
+     */
+    @ApiOperation(
+            value ="销售提货单打印",
+            notes = "销售提货单打印"
+    )
+    @PostMapping("/printTakeOrderOrder")
+    public void printTakeOrderOrder( @RequestParam  Integer id,HttpServletResponse response) throws IOException {
+        InputStream in = null;
+        String excelPaht="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
+        try {
+
+            long time = System.currentTimeMillis();
+
+            TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
+
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            excelPaht = RuoYiConfig.getSwprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
+//            FileCopyUtils.copyFile(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL,excelPaht);
+            File is = new File(RuoYiConfig.getSwprofile());
+            wb = new XSSFWorkbook(is);
+            genarateReports(wb, res);
+            String orderNo = res.getOrderNo();
+
+            saveExcelToDisk(wb, excelPaht);
+
+
+            //转成pdf
+            pdfPath=RuoYiConfig.getSwprofile()+"提货单详情_"+res.getOrderNo()+time+".pdf";
+            Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
+//            in=new FileInputStream(new File(pdfPath));
+            //  in.close();
+//            response.reset();
+//            response.setCharacterEncoding("UTF-8");
+//            // 定义输出类型
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("content-type", "application/octet-stream");
+////            response.setHeader("Content-Disposition", "attachment; filename=" + "销售订单_"+res.getOrderNo()+time+".pdf");
+//            response.setHeader("Content-Disposition", "attachment;fileName=" + "销售订单_"+res.getOrderNo()+time+".pdf");// 设置文件名
+////            IOUtils.copy(in,response.getOutputStream());
+//            StreamUtils.copy(in,response.getOutputStream());
+//            response.getOutputStream().flush();
+//            return null;
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, "提货单详情_"+res.getOrderNo()+time+".pdf");
+            FileUtils.writeBytes(pdfPath, response.getOutputStream());
+
+
+
+
+        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售提货单打印】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(id), ExceptionUtils.getStackTrace(e));
+
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+
+        }finally {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(pdfPath!=null){
+                FileUtils.deleteFile(pdfPath);
+            }
+
+
+
         }
     }
 
 
+
+    /**
+     * 提货单出库建议打印
+     */
+    @ApiOperation(
+            value ="提货单出库建议打印",
+            notes = "提货单出库建议打印"
+    )
+    @PostMapping("/printTakeOrderSuggest")
+    public void printTakeOrderSuggest( @RequestParam  Integer id,HttpServletResponse response) throws IOException {
+        InputStream in = null;
+        String excelPaht="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
+        try {
+
+            long time = System.currentTimeMillis();
+
+            TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
+
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            excelPaht = RuoYiConfig.getSwprofile() + "提货单_出库建议表" + res.getOrderNo() + time + ".xlsx";
+
+
+//            FileCopyUtils.copyFile(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL,excelPaht);
+            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL);
+            wb = new XSSFWorkbook(is);
+            genarateSuggestReports(wb, res);
+            String orderNo = res.getOrderNo();
+
+            saveExcelToDisk(wb, excelPaht);
+
+
+            //转成pdf
+            pdfPath=RuoYiConfig.getSwprofile()+"提货单出库建议_"+res.getOrderNo()+".pdf";
+            Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
+//            in=new FileInputStream(new File(pdfPath));
+            //  in.close();
+//            response.reset();
+//            response.setCharacterEncoding("UTF-8");
+//            // 定义输出类型
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("content-type", "application/octet-stream");
+////            response.setHeader("Content-Disposition", "attachment; filename=" + "销售订单_"+res.getOrderNo()+time+".pdf");
+//            response.setHeader("Content-Disposition", "attachment;fileName=" + "销售订单_"+res.getOrderNo()+time+".pdf");// 设置文件名
+////            IOUtils.copy(in,response.getOutputStream());
+//            StreamUtils.copy(in,response.getOutputStream());
+//            response.getOutputStream().flush();
+//            return null;
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, "提货单出库建议_"+res.getOrderNo()+".pdf");
+            FileUtils.writeBytes(pdfPath, response.getOutputStream());
+
+
+            return;
+
+        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单出库建议打印】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(id), ExceptionUtils.getStackTrace(e));
+
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+
+        }finally {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(pdfPath!=null){
+                FileUtils.deleteFile(pdfPath);
+            }
+
+
+
+        }
+    }
+
+    private void genarateSuggestReports(XSSFWorkbook wb, TakeGoodsOrderDetailVo re) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,re.getCustomerName(),2,2);
+        FormExcelUtil.setCellData(sheet1,re.getOrderNo(),2,6);
+
+
+        List<TakeOrderSugestVo> goods = re.getSugests();
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<goods.size();i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+
+            rlist.add(goods.get(i).getNumber());
+            rlist.add(goods.get(i).getGoodClass());
+            rlist.add(goods.get(i).getBrand());
+            rlist.add(goods.get(i).getModel());
+            rlist.add(goods.get(i).getDescription());
+            rlist.add(goods.get(i).getSn());
+            rlist.add(goods.get(i).getSku());
+            rlist.add(goods.get(i).getScanStatus());
+//            rlist.add("");
+
+
+            data1.add(rlist);
+        }
+
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 4, data1.size(), 3, 1, 8);
+
+        FormExcelUtil.setTableData(sheet1, data1, 4, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+    }
+
+    /**
+     * 提货单扫码记录打印
+     */
+    @ApiOperation(
+            value ="提货单扫码记录打印",
+            notes = "提货单扫码记录打印"
+    )
+    @PostMapping("/printTakeOrderScanLog")
+    public void printTakeOrderScanLog( @RequestParam  Integer id,HttpServletResponse response) throws IOException {
+        InputStream in = null;
+        String excelPaht="";
+        String excelPaht2="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
+        try {
+
+            long time = System.currentTimeMillis();
+
+            TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
+
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            excelPaht = RuoYiConfig.getSwprofile() + "提货单_扫描记录表" + res.getOrderNo() + time + ".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_扫描记录表" + res.getOrderNo() + time + ".xlsx";
+
+
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL),new File(excelPaht2));
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL);
+            File is = new File(excelPaht2);
+            wb = new XSSFWorkbook(is);
+            genarateScanLogReports(wb, res);
+            String orderNo = res.getOrderNo();
+
+            saveExcelToDisk(wb, excelPaht);
+
+
+            //转成pdf
+            pdfPath=RuoYiConfig.getSwprofile()+"提货单扫描记录_"+res.getOrderNo()+".pdf";
+            Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
+//            in=new FileInputStream(new File(pdfPath));
+            //  in.close();
+//            response.reset();
+//            response.setCharacterEncoding("UTF-8");
+//            // 定义输出类型
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("content-type", "application/octet-stream");
+////            response.setHeader("Content-Disposition", "attachment; filename=" + "销售订单_"+res.getOrderNo()+time+".pdf");
+//            response.setHeader("Content-Disposition", "attachment;fileName=" + "销售订单_"+res.getOrderNo()+time+".pdf");// 设置文件名
+////            IOUtils.copy(in,response.getOutputStream());
+//            StreamUtils.copy(in,response.getOutputStream());
+//            response.getOutputStream().flush();
+//            return null;
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, "提货单扫描记录_"+res.getOrderNo()+".pdf");
+            FileUtils.writeBytes(pdfPath, response.getOutputStream());
+
+
+            return;
+
+        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单扫码记录打印】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(id), ExceptionUtils.getStackTrace(e));
+
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+
+        }finally {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                boolean b = FileUtils.deleteFile(excelPaht);
+                System.out.println(b);
+            }
+            if(pdfPath!=null){
+                boolean b = FileUtils.deleteFile(pdfPath);
+                System.out.println(b);
+            }
+            if(excelPaht2!=null){
+                boolean b = FileUtils.deleteFile(excelPaht2);
+                System.out.println(b);
+            }
+
+
+        }
+    }
+
+    private void genarateScanLogReports(XSSFWorkbook wb, TakeGoodsOrderDetailVo re) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows=0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        FormExcelUtil.setCellData(sheet1,re.getCustomerName(),2,2);
+        FormExcelUtil.setCellData(sheet1,re.getOrderNo(),2,6);
+
+
+        List<TakeOrderSugestVo> goods = re.getScans();
+        List<List<Object>> data1=new ArrayList<>();
+        for (int i=0;i<goods.size();i++) {
+            List<Object> rlist=new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+
+            rlist.add(goods.get(i).getNumber());
+            rlist.add(goods.get(i).getGoodClass());
+            rlist.add(goods.get(i).getBrand());
+            rlist.add(goods.get(i).getModel());
+            rlist.add(goods.get(i).getDescription());
+            rlist.add(goods.get(i).getSn());
+            rlist.add(goods.get(i).getSku());
+
+//            rlist.add("");
+
+
+            data1.add(rlist);
+        }
+
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 4, data1.size(), 3, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 4, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+    }
 
 
 }

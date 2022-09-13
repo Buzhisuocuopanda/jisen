@@ -366,4 +366,16 @@ FROM
 	ORDER BY pm.CBPM11
   </select>
 
+  <select id="selectByTakeId"  resultMap="TakeGoodScanMap">
+        SELECT
+	pm.*,
+	la.CBLA09 as sku
+FROM
+	`CBPM` pm
+	LEFT JOIN CBLA la ON la.CBLA01 = pm.CBPM10
+	where pm.CBPM07=0
+	and pm.CBPK01 =#{takeId}
+	ORDER BY pm.CBPM11
+  </select>
+
 </mapper>
