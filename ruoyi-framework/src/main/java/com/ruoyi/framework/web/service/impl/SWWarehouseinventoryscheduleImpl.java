@@ -180,6 +180,10 @@ private CbsjMapper cbbsjMapper;
         example1.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example1);
+        if(cbshes.size()==0){
+            throw new SwException("库存盘点主表找不到");
+
+        }
         if(!cbshes.get(0).getCbsh09().equals(TaskStatus.sh.getCode())){
 
             throw new SwException("非审核不能完成");

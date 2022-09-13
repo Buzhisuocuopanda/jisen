@@ -22,7 +22,7 @@ public class CbicDto {
     private Integer cbic07;
 
     private Integer cbic08;
-    @NotNull(message = "商品id不能为空")
+   // @NotNull(message = "商品id不能为空")
     private Integer cbic09;
     @NotBlank(message = "sn不能为空")
     private String cbic10;
@@ -30,7 +30,7 @@ public class CbicDto {
     private Integer cbic11;
 
     private Date cbic12;
-    @NotNull(message = "供应商id不能为空")
+   // @NotNull(message = "供应商id不能为空")
     private Integer cbic13;
 
     private Integer cbic14;
@@ -38,4 +38,7 @@ public class CbicDto {
     private Integer cbic15;
 
     private Integer userId;
+
+    private String upc;
+
 }

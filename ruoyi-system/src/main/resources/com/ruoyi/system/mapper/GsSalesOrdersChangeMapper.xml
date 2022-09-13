@@ -368,8 +368,13 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="seleteGsSalesOrdersChange" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo">
-    SELECT
-    a.order_no,a.order_date,b.CAUA17 as caua17,c.CBSA08 as cbsa08,a.goodsclassify,a.qty
+    SELECT DISTINCT
+    a.order_no as orderNo,a.order_date as orderDate,
+    b.CAUA17 as caua17,c.CBSA08 as cbsa08,
+    a.goodsclassify as goodsclassify,
+    a.qty as qty,
+    a.id as id,
+    a.status as status
     FROM
     `gs_ Sales_orders_change` a
     LEFT JOIN

@@ -19,5 +19,6 @@ public class CbsjVo extends BaseEntity {
     private Integer cbsj11;
     private String cbsj12;
     private Integer cbsh01;
+    private Integer cbsj08;
 
 }

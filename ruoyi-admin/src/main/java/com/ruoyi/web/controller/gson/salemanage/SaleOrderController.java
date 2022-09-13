@@ -785,6 +785,8 @@ public class SaleOrderController extends BaseController {
     public AjaxResult saleOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
 
         try {
+            long time = System.currentTimeMillis();
+
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
             InputStream in = null;
             XSSFWorkbook wb = null;
@@ -796,51 +798,21 @@ public class SaleOrderController extends BaseController {
             String name="D:\\data\\"+ "销售订单"+orderNo+".xlsx";
 
             saveExcelToDisk(wb, name);
+            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
+            FileUtils.writeBytes(name, response.getOutputStream());
 
         } catch (SwException e) {        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
     } catch (Exception e) {
-        log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+        log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
        return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
     }
     return AjaxResult.success();
     }
 
-    public static void download(HttpServletResponse response, InputStream inputStream, String fileName){
-        BufferedOutputStream bos = null;
-        try {
-            // 定义输出缓冲 10k
-            byte[] buffer = new byte[10240];
-            String userAgent = response.getHeader("user-agent").toLowerCase();
-            if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
-                fileName = URLEncoder.encode(fileName, "UTF-8");
-            } else {
-                fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-            }
-
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/msword");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-            bos = new BufferedOutputStream(response.getOutputStream());
-            int bytesRead = 0;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                bos.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
     /**
      * 导出销售订单详情1
      */
@@ -853,6 +825,8 @@ public class SaleOrderController extends BaseController {
 
         String name = null;
         try {
+            long time = System.currentTimeMillis();
+
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
             InputStream in = null;
             XSSFWorkbook wb = null;
@@ -867,8 +841,9 @@ public class SaleOrderController extends BaseController {
             String filePath = file.getAbsolutePath();
             saveExcelToDisk(wb, name);
 
-            //  download( response, Files.newInputStream(Paths.get(name)), name);
-            // util.exportExcel(response, wb, "商品数据");
+          //  saveExcelToDisk(wb, name);
+            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
+            FileUtils.writeBytes(name, response.getOutputStream());
 
         } catch (SwException e) {
             log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
@@ -1164,7 +1139,7 @@ public class SaleOrderController extends BaseController {
             value ="销售订单打印2",
             notes = "销售订单打印2"
     )
-    @GetMapping("/printSaleOrder")
+    @PostMapping("/printSaleOrder")
     public void printSaleOrder( @RequestParam  Integer orderId,HttpServletResponse response) throws IOException {
         InputStream in = null;
         String excelPaht="";
@@ -1190,6 +1165,7 @@ public class SaleOrderController extends BaseController {
              pdfPath=RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".pdf";
             Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
             in=new FileInputStream(new File(pdfPath));
+          //  in.close();
 //            response.reset();
 //            response.setCharacterEncoding("UTF-8");
 //            // 定义输出类型

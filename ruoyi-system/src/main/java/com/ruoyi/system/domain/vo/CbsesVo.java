@@ -8,6 +8,7 @@ import java.util.Date;
 public class CbsesVo extends BaseEntity {
 
     private String cbse07;
+    private String cbpb15;
 
     private Date cbse08;
     private String cbca08;

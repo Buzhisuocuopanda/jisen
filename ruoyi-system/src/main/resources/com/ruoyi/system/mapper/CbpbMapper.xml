@@ -390,7 +390,7 @@
   </sql>
   <select id="selectSwJsGoodsList"  resultType="com.ruoyi.system.domain.vo.CbpbVo">
     SELECT
-    b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01,a.CBPB10
+    b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01,a.CBPB10,a.CBPB15
     FROM
     CBPB a
     LEFT JOIN
@@ -405,7 +405,9 @@
       CBPB06=0
       <if test="cbpa07 != null "> and b.CBPA07 like concat('%',  #{cbpa07}, '%')</if>
       <if test="cbpb12 != null "> and a.CBPB12 like concat('%',  #{cbpb12}, '%')</if>
-ORDER BY
+    <if test="cbpb15 != null "> and a.CBPB15 like concat('%',  #{cbpb15}, '%')</if>
+
+    ORDER BY
     a.CBPB02 DESC
 
   </select>

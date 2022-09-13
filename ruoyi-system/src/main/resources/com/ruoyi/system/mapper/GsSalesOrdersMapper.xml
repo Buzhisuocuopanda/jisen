@@ -446,7 +446,7 @@ where
       so.id= #{id}
   </select>
     <select id="seleteSalesbookingsummary" resultType="com.ruoyi.system.domain.vo.GsSalesOrderssVo">
-      SELECT
+      SELECT distinct
         so.id AS id,
         so.order_no AS orderNo,
         so.order_date AS orderDate,

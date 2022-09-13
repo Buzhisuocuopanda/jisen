@@ -16,6 +16,7 @@ public class CbshVo   extends BaseEntity
     private String cbsh08;
 
 
+
     private Integer cbsh09;
 
     private String cbla08;
