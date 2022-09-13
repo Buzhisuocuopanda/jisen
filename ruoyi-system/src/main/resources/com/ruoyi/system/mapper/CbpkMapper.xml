@@ -674,9 +674,7 @@
     LEFT JOIN sys_user us on us.user_id=pk.CBPK17
     LEFT JOIN CBWA wa on wa.CBWA01=pk.CBPK10
     where pk.CBPK06=0
-    <if test="startTime != null">
-      and pk.CBPK07 like concat('%', #{orderNo}, '%')
-    </if>
+
     <if test="startTime != null">
       and pk.CBPK08  &gt;= #{startTime}
     </if>

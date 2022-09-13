@@ -2,19 +2,19 @@ package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.constant.PathConstant;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
 import com.ruoyi.system.domain.dto.ChangeSuggestDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
-import com.ruoyi.system.domain.vo.SaleOrderListVo;
-import com.ruoyi.system.domain.vo.TakeGoodsOrderDetailVo;
-import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
-import com.ruoyi.system.domain.vo.TakeOrderDetailVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
 import io.swagger.annotations.Api;
@@ -23,9 +23,12 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -242,10 +245,25 @@ public class TakeGoodsController extends BaseController {
     @PostMapping("/exportDetail")
     public void exportDetail(@RequestParam Integer id){
         try {
+//            long time = System.currentTimeMillis();
+//
+//            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+//            InputStream in = null;
+//            XSSFWorkbook wb = null;
+////        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+//            String excelPaht = RuoYiConfig.getSwprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
+//
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
+//            wb = new XSSFWorkbook(is);
+//            genarateReports(wb, res);
+//            String orderNo = res.getOrderNo();
+//
+//            saveExcelToDisk(wb, excelPaht);
+//            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
+//            FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
-//            changeSuggestDto.setUserId(getUserId().intValue());
-//            takeGoodsService.mdfTakeSuggest(changeSuggestDto);
-//            return AjaxResult.success();
+
+
         } catch (SwException e) {
 //            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
