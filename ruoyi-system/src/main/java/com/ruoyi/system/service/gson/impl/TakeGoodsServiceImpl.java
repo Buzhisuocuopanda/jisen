@@ -214,16 +214,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
         }
 
-
-
-
-
-
-
-
-
-
-
     }
 
     @Override
@@ -271,13 +261,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             res.setUserId(user.getUserId().intValue());
             res.setUserName(user.getNickName());
         }
+        if(cbpk.getCbpk17()!=null){
+            SysUser saleUser = sysUserMapper.selectByPrimaryKey(cbpk.getCbpk17().longValue());
+            if(saleUser!=null){
+                res.setSaleUserId(saleUser.getUserId().intValue());
+                res.setSaleUserName(saleUser.getNickName());
 
-        SysUser saleUser = sysUserMapper.selectByPrimaryKey(cbpk.getCbpk17().longValue());
-        if(saleUser!=null){
-            res.setSaleUserId(saleUser.getUserId().intValue());
-            res.setSaleUserName(saleUser.getNickName());
-
+            }
         }
+
 
         Cbwa cbwa = cbwaMapper.selectByPrimaryKey(cbpk.getCbpk10());
         if(cbwa!=null){
