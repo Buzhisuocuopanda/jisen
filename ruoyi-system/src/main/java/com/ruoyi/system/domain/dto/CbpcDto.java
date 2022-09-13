@@ -23,10 +23,12 @@ public class CbpcDto extends Cbpd {
     @Excel(name = "日期")
 
     private Date cbpc08;
-    @Excel(name = "供应商")
+    @Excel(name = "供料单位")
+    private String SuppierName;
 
     private Integer cbpc09;
     @Excel(name = "仓库")
+    private String storename;
 
     private Integer cbpc10;
 
@@ -40,6 +42,7 @@ public class CbpcDto extends Cbpd {
 
     private Date cbpc15;
     @Excel(name = "结算货币")
+    private String moneytype;
 
     private Integer cbpc16;
 
@@ -61,6 +64,7 @@ public class CbpcDto extends Cbpd {
 
     private Integer cbpd07;
     @Excel(name = "商品型号")
+    private String goodtype;
 
     private Integer cbpd08;
     @Excel(name = "数量")
@@ -69,12 +73,10 @@ public class CbpcDto extends Cbpd {
 
     private Double cbpd10;
     @Excel(name = "单价")
-
     private Double cbpd11;
 
     private Double cbpd12;
     @Excel(name = "备注")
-
     private String cbpd13;
 
 

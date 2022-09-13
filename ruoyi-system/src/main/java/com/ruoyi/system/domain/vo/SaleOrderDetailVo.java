@@ -128,5 +128,11 @@ public class SaleOrderDetailVo {
     @ApiModelProperty("审核记录")
     private List<SaleOrderAudit> audits = new ArrayList<>();
 
+    //客户名称
+    @ApiModelProperty("客户名称")
+    private String customerName;
 
+    //仓库名称
+    @ApiModelProperty("仓库名称")
+    private String storename;
 }

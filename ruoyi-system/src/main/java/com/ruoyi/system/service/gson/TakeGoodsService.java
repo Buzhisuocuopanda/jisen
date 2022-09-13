@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.system.domain.Cbpm;
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
 import com.ruoyi.system.domain.dto.ChangeSuggestDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
@@ -32,4 +33,6 @@ public interface TakeGoodsService {
     void auditTakeOrder(AuditTakeOrderDto auditTakeOrderDto);
 
     void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto);
+
+    int TakeGoodsOrdersm(List<Cbpm> itemList);
 }

@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpmTakeOrderDo;
@@ -13,6 +14,10 @@ import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.TakeGoodsService;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,6 +81,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private SqlSessionFactory sqlSessionFactory;
 
 
 
@@ -864,6 +872,65 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
 
+    }
+
+    @Override
+    public int TakeGoodsOrdersm(List<Cbpm> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("请选择要扫码的商品");
+        }
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpmMapper mapper = session.getMapper(CbpmMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getCbpk01());
+            if(!cbpk.getCbpk11().equals(TaskStatus.sh.getCode())){
+                throw new SwException("审核状态才能扫码");
+            }
+            CbpmCriteria example=new CbpmCriteria();
+                example.createCriteria()
+                    .andCbpm09EqualTo(itemList.get(i).getCbpm09());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+            if(cbpms.size()==0){
+                throw new SwException("您选择的Sn商品不在出库建议表中" );
+            }
+            itemList.get(i).setCbpm03(date);
+            itemList.get(i).setCbpm04(Math.toIntExact(userid));
+            itemList.get(i).setCbpm05(date);
+            itemList.get(i).setCbpm06(Math.toIntExact(userid));
+            itemList.get(i).setCbpm07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setCbpm11(ScanStatusEnum.YISAOMA.getCode());
+
+            GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+            example1.createCriteria()
+                    .andSnEqualTo(itemList.get(i).getCbpm09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
+            if(gsGoodsSns.size()==0){
+                throw new SwException("您选择的Sn商品不在货物SN表中" );
+            }
+            GsGoodsSn goodsSn = new GsGoodsSn();
+            goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+            goodsSn.setStatus(GoodsType.yck.getCode());
+            GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
+            example2.createCriteria()
+                    .andSnEqualTo(itemList.get(i).getCbpm09());
+            gsGoodsSnMapper.updateByExampleSelective(goodsSn, example2);
+
+            mapper.insertSelective(itemList.get(i));
+
+        }
+        Cbpk cbpk=new Cbpk();
+        cbpk.setCbpk01(itemList.get(0).getCbpk01());
+        cbpk.setCbpk11(TaskStatus.bjwc.getCode());
+        cbpkMapper.updateByPrimaryKeySelective(cbpk);
+//        CbpkCriteria example=new CbpkCriteria();
+//        example.createCriteria()
+//                .andCbpk01EqualTo(itemList.get(0).getCbpk01());
+//        cbpkMapper.updateByExampleSelective(cbpk,example);
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
 

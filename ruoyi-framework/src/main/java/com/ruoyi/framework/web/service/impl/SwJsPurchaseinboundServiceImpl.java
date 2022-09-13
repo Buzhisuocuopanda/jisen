@@ -200,6 +200,10 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsStores(List<CbpcDto> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("导入数据为空");
+        }
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         Date cbpc08 = itemList.get(0).getCbpc08();

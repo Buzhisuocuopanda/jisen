@@ -25,5 +25,7 @@ public class PathConstant {
     public static final String TAKE_ORDER_SUGGEST_EXCEL = "提货单出库建议导出模板.xlsx";
     public static final String TAKE_ORDER_SCANLOG_EXCEL = "提货单扫描记录.xlsx";
 
+    public static final String SALE_OUT_ORDER_DETAIL_EXCEL1 = "销售出库单详情导出详情1.xlsx";
+    public static final String SALE_SCAN_ORDER_DETAIL_EXCEL1 = "销售出库扫码记录.xlsx";
 
 }
