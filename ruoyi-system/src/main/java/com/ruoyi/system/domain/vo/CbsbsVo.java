@@ -19,6 +19,7 @@ public class CbsbsVo extends BaseEntity {
     private Integer cbca28;
     private String cala08;
     private Integer cbsb31;
+    private String cbsb30;
 
     private String cbsb21;
     private String cbsa08;
@@ -35,5 +36,10 @@ public class CbsbsVo extends BaseEntity {
     private String cbla09;
     private Integer cbsd11;
     private Integer cbsb01;
+    private Integer cbsc02;
+    private String cbpa07;
+    private Integer cbsd02;
+
+private String cny;
 
 }

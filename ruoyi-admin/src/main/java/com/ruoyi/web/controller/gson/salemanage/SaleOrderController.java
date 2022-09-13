@@ -44,10 +44,8 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * ClassName SaleOrderController
@@ -792,8 +790,9 @@ public class SaleOrderController extends BaseController {
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
             String excelPaht = RuoYiConfig.getSwprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
+            File is = new File("D:\\data\\模板.xlsx");
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
+           // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             String orderNo = res.getOrderNo();
@@ -834,7 +833,9 @@ public class SaleOrderController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL1);
+            File is = new File("D:\\data\\模板1.xlsx");
+
+            //File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL1);
             wb = new XSSFWorkbook(is);
             genarateReportss(wb, res);
             String orderNo = res.getOrderNo();
@@ -921,30 +922,49 @@ public class SaleOrderController extends BaseController {
         //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
         //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
 //        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        Date orderDate = res.getOrderDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(orderDate);
         FormExcelUtil.setCellData(sheet1,res.getOrderNo(),2,2);
         FormExcelUtil.setCellData(sheet1,res.getCustomerNo(),2,4);
-        FormExcelUtil.setCellData(sheet1,res.getOrderDate().toString(),2,6);
+        FormExcelUtil.setCellData(sheet1,format,2,7);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),3,2);
         FormExcelUtil.setCellData(sheet1,res.getReceivePhone(),3,4);
         FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),3,6);
         FormExcelUtil.setCellData(sheet1,res.getAddress(),4,2);
-        FormExcelUtil.setCellData(sheet1,res.getOrderType(),4,6);
+       // FormExcelUtil.setCellData(sheet1,res.getOrderType(),4,6);
 
         // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
         // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
         FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
+        FormExcelUtil.setCellData(sheet1,"合计数量",8,3);
+
         Double sumQty = res.getSumQty()==null?0:res.getSumQty();
         FormExcelUtil.setCellData(sheet1,sumQty,8,4);
+        FormExcelUtil.setCellData(sheet1,"合计金额",8,5);
+
         Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
         FormExcelUtil.setCellData(sheet1,sumPrice,8,6);
         FormExcelUtil.setCellData(sheet1,res.getCapPrice(),9,2);
-        List<SaleOrderAudit> audits = res.getAudits();
-        if(audits.size()>0){
-            String name=audits.get(0).getRole()==null?"":audits.get(0).getRole();
-            String ress="由"+name+"审核";
-            FormExcelUtil.setCellData(sheet1,ress,13,3);
-        }
+        String saleUser = res.getSaleUser();
+        String rese=format+"制单("+saleUser+")";
+        String auditUser = res.getAuditUser();
+        String resa=format+"审核("+auditUser+")";
+        FormExcelUtil.setCellData(sheet1,rese,10,1);
+        FormExcelUtil.setCellData(sheet1,resa,10,3);
+        String storename = res.getStorename();
+        String resss=format+"仓库:"+storename;
+        FormExcelUtil.setCellData(sheet1,resss,10,5);
+        Date date = new Date();
+        String ress=format+"由"+auditUser+"审核";
+
+        FormExcelUtil.setCellData(sheet1,ress,13,3);
+
+//        List<SaleOrderAudit> audits = res.getAudits();
+//        if(audits.size()>0){
+//            String name=audits.get(0).getRole()==null?"":audits.get(0).getRole();
+//        }
 
 
         List<SaleOderDetailGoods> goods = res.getGoods();
@@ -964,9 +984,9 @@ public class SaleOrderController extends BaseController {
         }
 //        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
 
-        FormExcelUtil.insertRowsStyleBatch(sheet1, 7, data1.size(), 4, 1, 7);
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 7, data1.size(), 2, 1, 7);
 
-        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+        FormExcelUtil.setTableData(sheet1, data1, 7, 1);
 //        addRows += data1.size()-2;
         /***第二个表格*********************************/
 //        List<List<Object>> data2 = ea.getData2();
@@ -998,19 +1018,26 @@ public class SaleOrderController extends BaseController {
 //        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
         FormExcelUtil.setCellData(sheet1,res.getOrderNo(),4,2);
         FormExcelUtil.setCellData(sheet1,res.getCustomerNo(),4,4);
-        FormExcelUtil.setCellData(sheet1,res.getOrderDate().toString(),4,6);
-        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),5,2);
-       // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
-       // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+        Date orderDate = res.getOrderDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(orderDate);
+        FormExcelUtil.setCellData(sheet1,format,4,7);
+        FormExcelUtil.setCellData(sheet1,res.getCustomerName(),5,2);
+        FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
+        FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
-        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,6);
         FormExcelUtil.setCellData(sheet1,res.getAddress(),7,2);
-        FormExcelUtil.setCellData(sheet1,res.getOrderType(),7,6);
+       // FormExcelUtil.setCellData(sheet1,res.getOrderType(),7,6);
+        FormExcelUtil.setCellData(sheet1,res.getFcNumber(),8,2);
+        FormExcelUtil.setCellData(sheet1,res.getOther(),8,4);
+
         Double sumQty = res.getSumQty()==null?0:res.getSumQty();
         FormExcelUtil.setCellData(sheet1,sumQty,11,4);
         Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
         FormExcelUtil.setCellData(sheet1,sumPrice,11,6);
-        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),11,6);
+       // FormExcelUtil.setCellData(sheet1,res.getSumPrice(),11,6);
+        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),12,2);
 
         List<SaleOderDetailGoods> goods = res.getGoods();
 

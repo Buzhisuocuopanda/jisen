@@ -6,7 +6,11 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Cbpi;
+import com.ruoyi.system.domain.Cbpm;
 import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
 import com.ruoyi.system.domain.dto.ChangeSuggestDto;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
@@ -17,12 +21,16 @@ import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.domain.vo.TakeOrderDetailVo;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,6 +39,9 @@ import java.util.List;
  * Create by gfy
  * Date 2022/8/10 16:56
  */
+@Api(
+        tags = {"提货单"}
+)
 @RestController
 @RequestMapping("/whmanagement")
 @Slf4j
@@ -216,6 +227,36 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     * 提货单扫码
+     */
+    @ApiOperation(
+            value ="提货单扫码",
+            notes = "提货单扫码"
+    )
+    @PostMapping("/TakeGoodsOrdersm")
+    public AjaxResult TakeGoodsOrdersm(@Valid @RequestBody List<Cbpm> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(takeGoodsService.TakeGoodsOrdersm(itemList));
+        }catch (SwException e) {
+            log.error("【提货单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【提货单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单扫码】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 
 }

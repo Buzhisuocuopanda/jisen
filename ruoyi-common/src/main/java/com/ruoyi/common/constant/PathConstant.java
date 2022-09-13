@@ -22,5 +22,7 @@ public class PathConstant {
     public static final String SALE_ORDER_DETAIL_EXCEL1 = "销售订单详情导出详情1.xlsx";
     public static final String SALE_ORDER_DETAIL_EXCEL2 = "销售订单详情导出详情2.xlsx";
 
+    public static final String SALE_OUT_ORDER_DETAIL_EXCEL1 = "销售出库单详情导出详情1.xlsx";
+    public static final String SALE_SCAN_ORDER_DETAIL_EXCEL1 = "销售出库扫码记录.xlsx";
 
 }
