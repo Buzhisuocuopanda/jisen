@@ -96,54 +96,55 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <!-- 不需要使用变量替换掉的前缀标识 -->
-                    <escapeString>\</escapeString>
-                    <!-- 不需要过滤的文件扩展名。如果不过滤，会进行变量替换，像证书之类的，一定要处理 -->
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                    <resources>
-                        <!-- 控制好资源文件 -->
-                        <resource>
-                            <directory>${basedir}/src/main/resources</directory>
-                            <targetPath>BOOT-INF/classes</targetPath>
-                            <!-- 默认不写包含所有，如果写了，那就只包含写的 -->
-                            <!--<includes>
-                                <include>**/*.p12</include>
-                                <include>**/*.yml</include>
-                                <include>**/*.xml</include>
-                            </includes>-->
-                            <excludes>
-                                <!-- 排除掉 -->
-                                <exclude>**/lib/**</exclude>
-                            </excludes>
-                            <filtering>true</filtering>
-                        </resource>
-                        <!-- 把第三方 Jar 引导进入指定位置 -->
-                        <resource>
-                            <directory>${basedir}/src/main/resources</directory>
-                            <targetPath>BOOT-INF</targetPath>
-                            <!-- 默认不写包含所有，如果写了，那就只包含写的 -->
-                            <includes>
-                                <include>**/*.jar</include>
-                            </includes>
-                            <filtering>false</filtering>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-resources-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <encoding>${project.build.sourceEncoding}</encoding>-->
+<!--                    &lt;!&ndash; 不需要使用变量替换掉的前缀标识 &ndash;&gt;-->
+<!--                    <escapeString>\</escapeString>-->
+<!--                    &lt;!&ndash; 不需要过滤的文件扩展名。如果不过滤，会进行变量替换，像证书之类的，一定要处理 &ndash;&gt;-->
+<!--                    <nonFilteredFileExtensions>-->
+<!--                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>-->
+<!--                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>-->
+<!--                    </nonFilteredFileExtensions>-->
+<!--                    <resources>-->
+<!--                        &lt;!&ndash; 控制好资源文件 &ndash;&gt;-->
+<!--                        <resource>-->
+<!--                            <directory>${basedir}/src/main/resources</directory>-->
+<!--                            <targetPath>BOOT-INF/classes</targetPath>-->
+<!--                            &lt;!&ndash; 默认不写包含所有，如果写了，那就只包含写的 &ndash;&gt;-->
+<!--                            &lt;!&ndash;<includes>-->
+<!--                                <include>**/*.p12</include>-->
+<!--                                <include>**/*.yml</include>-->
+<!--                                <include>**/*.xml</include>-->
+<!--                            </includes>&ndash;&gt;-->
+<!--                            <excludes>-->
+<!--                                &lt;!&ndash; 排除掉 &ndash;&gt;-->
+<!--                                <exclude>**/lib/**</exclude>-->
+<!--                            </excludes>-->
+<!--                            <filtering>true</filtering>-->
+<!--                        </resource>-->
+<!--                        &lt;!&ndash; 把第三方 Jar 引导进入指定位置 &ndash;&gt;-->
+<!--                        <resource>-->
+<!--                            <directory>${basedir}/src/main/resources</directory>-->
+<!--                            <targetPath>BOOT-INF</targetPath>-->
+<!--                            &lt;!&ndash; 默认不写包含所有，如果写了，那就只包含写的 &ndash;&gt;-->
+<!--                            <includes>-->
+<!--                                <include>**/*.jar</include>-->
+<!--                            </includes>-->
+<!--                            <filtering>false</filtering>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.1.1.RELEASE</version>
                 <configuration>
                     <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
                 <executions>
                     <execution>
