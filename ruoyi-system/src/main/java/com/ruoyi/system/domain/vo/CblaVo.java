@@ -38,4 +38,6 @@ public class CblaVo {
     private String cbla13;
     @Excel(name = "仓库名称")
     private String cbwa09;
+    private Integer cbwa01;
+
 }

@@ -22,7 +22,7 @@ public class CbicDto {
     private Integer cbic07;
 
     private Integer cbic08;
-    @NotNull(message = "商品id不能为空")
+   // @NotNull(message = "商品id不能为空")
     private Integer cbic09;
     @NotBlank(message = "sn不能为空")
     private String cbic10;

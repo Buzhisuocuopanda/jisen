@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class CbaasVo {
+    private Integer cbsa01;
 
     private Integer cbaa01;
 
@@ -21,6 +22,9 @@ public class CbaasVo {
     private String cbsa08;
 
     private Integer cbab15;
+
+    private Integer cbpb01;
+
 
     private String cbpb08;
 

@@ -60,7 +60,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
         }
         // 检查供应商
-        baseCheckService.checksupplier(cbicDto.getCbic13());
+      //  baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
       //  Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
@@ -74,7 +74,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         DirectWarehousingDto directWarehousingDto = new DirectWarehousingDto();
         directWarehousingDto.setStoreId(storeid);
         directWarehousingDto.setUserId(Math.toIntExact(userid));
-        directWarehousingDto.setGoodsId(cbicDto.getCbic09());
+        directWarehousingDto.setGoodsId(cbpbs.get(0).getCbpb01());
         orderDistributionService.directWarehousing(directWarehousingDto);
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
@@ -93,7 +93,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         //获取仓库id
         gsGoodsSkuDo.setWhId(cbicDto.getCbic07());
         //获取商品id
-        gsGoodsSkuDo.setGoodsId(cbicDto.getCbic09());
+        gsGoodsSkuDo.setGoodsId(cbpbs.get(0).getCbpb01());
         //获取库位id
         gsGoodsSkuDo.setLocationId(cbicDto.getCbic08());
         gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
@@ -101,7 +101,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
         if(gsGoodsSkus.size()==0){
             GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-            gsGoodsSkuDo1.setGoodsId(cbicDto.getCbic09());
+            gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
             gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
             gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
             gsGoodsSkuDo1.setQty(1.0);
@@ -112,7 +112,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
             //加锁
             baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
             GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-            gsGoodsSkuDo1.setGoodsId(cbicDto.getCbic09());
+            gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
             gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
             gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
             //查出
@@ -124,7 +124,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         //加sn表
         GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
         gsGoodsSnDo.setSn(cbicDto.getCbic10());
-        gsGoodsSnDo.setGoodsId(cbicDto.getCbic09());
+        gsGoodsSnDo.setGoodsId(cbpbs.get(0).getCbpb01());
         gsGoodsSnDo.setWhId(cbicDto.getCbic07());
         gsGoodsSnDo.setLocationId(cbicDto.getCbic08());
         gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
@@ -142,10 +142,10 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbibDo.setCbib04(date);
         cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
-        cbibDo.setCbib06(cbsa.getCbsa08());
+       // cbibDo.setCbib06(cbsa.getCbsa08());
 
         cbibDo.setCbib07(cbics.get(0).getCbic01());
-        cbibDo.setCbib08(cbicDto.getCbic09());
+        cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
 
         cbibDo.setCbib17(TaskType.zjrk.getMsg());
         cbibDo.setCbib19(cbicDto.getCbic13());
