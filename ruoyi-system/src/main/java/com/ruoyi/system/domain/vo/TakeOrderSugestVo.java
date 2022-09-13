@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -13,6 +14,7 @@ public class TakeOrderSugestVo {
 
 
     //序号
+    @ApiModelProperty("序号")
     private Integer number;
 
     //类型

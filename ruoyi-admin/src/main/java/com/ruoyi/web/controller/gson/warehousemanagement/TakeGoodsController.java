@@ -17,6 +17,9 @@ import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.domain.vo.TakeOrderDetailVo;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.formula.functions.T;
@@ -33,6 +36,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/whmanagement")
+@Api(
+        tags = {"提货单模块"}
+)
 @Slf4j
 public class TakeGoodsController extends BaseController {
 
@@ -44,6 +50,11 @@ public class TakeGoodsController extends BaseController {
      * 提货单列表
      * @return
      */
+
+    @ApiOperation(
+            value ="提货单列表",
+            notes = "提货单列表"
+    )
     @PostMapping("/takeOrderList")
     public AjaxResult<TableDataInfo> takeOrderList(@RequestBody TakeGoodsOrderListDto takeGoodsOrderListDto){
         try {
@@ -86,7 +97,13 @@ public class TakeGoodsController extends BaseController {
      * 提货单详情
      * @return
      */
+    @ApiOperation(
+            value ="提货单详情",
+            notes = "提货单详情"
+    )
     @GetMapping("/takeOrderDetail")
+    @ApiParam("提货单id")
+
     public AjaxResult<TakeGoodsOrderDetailVo> takeOrderDetail(@RequestParam Integer id){
         try {
 
@@ -216,6 +233,30 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     * 导出提货单excel详情
+     */
+
+
+    @PostMapping("/exportDetail")
+    public void exportDetail(@RequestParam Integer id){
+        try {
+
+//            changeSuggestDto.setUserId(getUserId().intValue());
+//            takeGoodsService.mdfTakeSuggest(changeSuggestDto);
+//            return AjaxResult.success();
+        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【更改提货建议表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
 
 
 }
