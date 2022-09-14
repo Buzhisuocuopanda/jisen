@@ -83,8 +83,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CABRAA01, CABRAA02, CABRAA03, CABRAA04, CABRAA05, CABRAA06, CABRAA07, CABRAA08, CABRAA09, 
-    CABRAA10, CABRAA11, CABRAA12, CABRAA13, CABRAA14, CABRAA15, CABRAA16, CABRAA17, CABRAA18, 
+    CABRAA01, CABRAA02, CABRAA03, CABRAA04, CABRAA05, CABRAA06, CABRAA07, CABRAA08, CABRAA09,
+    CABRAA10, CABRAA11, CABRAA12, CABRAA13, CABRAA14, CABRAA15, CABRAA16, CABRAA17, CABRAA18,
     CABRAA19, CABRAA20, CABRAA21
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CabraaCriteria" resultMap="BaseResultMap">
@@ -102,7 +102,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CABRAA`
     where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
@@ -118,20 +118,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cabraa">
-    insert into `CABRAA` (CABRAA01, CABRAA02, CABRAA03, 
-      CABRAA04, CABRAA05, CABRAA06, 
-      CABRAA07, CABRAA08, CABRAA09, 
-      CABRAA10, CABRAA11, CABRAA12, 
-      CABRAA13, CABRAA14, CABRAA15, 
-      CABRAA16, CABRAA17, CABRAA18, 
+    insert into `CABRAA` (CABRAA01, CABRAA02, CABRAA03,
+      CABRAA04, CABRAA05, CABRAA06,
+      CABRAA07, CABRAA08, CABRAA09,
+      CABRAA10, CABRAA11, CABRAA12,
+      CABRAA13, CABRAA14, CABRAA15,
+      CABRAA16, CABRAA17, CABRAA18,
       CABRAA19, CABRAA20, CABRAA21
       )
-    values (#{cabraa01,jdbcType=INTEGER}, #{cabraa02,jdbcType=TIMESTAMP}, #{cabraa03,jdbcType=TIMESTAMP}, 
-      #{cabraa04,jdbcType=INTEGER}, #{cabraa05,jdbcType=INTEGER}, #{cabraa06,jdbcType=INTEGER}, 
-      #{cabraa07,jdbcType=VARCHAR}, #{cabraa08,jdbcType=INTEGER}, #{cabraa09,jdbcType=VARCHAR}, 
-      #{cabraa10,jdbcType=VARCHAR}, #{cabraa11,jdbcType=INTEGER}, #{cabraa12,jdbcType=TIMESTAMP}, 
-      #{cabraa13,jdbcType=INTEGER}, #{cabraa14,jdbcType=VARCHAR}, #{cabraa15,jdbcType=TIMESTAMP}, 
-      #{cabraa16,jdbcType=INTEGER}, #{cabraa17,jdbcType=INTEGER}, #{cabraa18,jdbcType=VARCHAR}, 
+    values (#{cabraa01,jdbcType=INTEGER}, #{cabraa02,jdbcType=TIMESTAMP}, #{cabraa03,jdbcType=TIMESTAMP},
+      #{cabraa04,jdbcType=INTEGER}, #{cabraa05,jdbcType=INTEGER}, #{cabraa06,jdbcType=INTEGER},
+      #{cabraa07,jdbcType=VARCHAR}, #{cabraa08,jdbcType=INTEGER}, #{cabraa09,jdbcType=VARCHAR},
+      #{cabraa10,jdbcType=VARCHAR}, #{cabraa11,jdbcType=INTEGER}, #{cabraa12,jdbcType=TIMESTAMP},
+      #{cabraa13,jdbcType=INTEGER}, #{cabraa14,jdbcType=VARCHAR}, #{cabraa15,jdbcType=TIMESTAMP},
+      #{cabraa16,jdbcType=INTEGER}, #{cabraa17,jdbcType=INTEGER}, #{cabraa18,jdbcType=VARCHAR},
       #{cabraa19,jdbcType=VARCHAR}, #{cabraa20,jdbcType=INTEGER}, #{cabraa21,jdbcType=VARCHAR}
       )
   </insert>
@@ -462,4 +462,5 @@
       CABRAA21 = #{cabraa21,jdbcType=VARCHAR}
     where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
   </update>
+
 </mapper>
