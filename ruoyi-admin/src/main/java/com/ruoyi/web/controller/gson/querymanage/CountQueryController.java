@@ -9,6 +9,7 @@ import com.ruoyi.system.domain.dto.GoodsUseDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;

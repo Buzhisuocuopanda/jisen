@@ -54,6 +54,7 @@ public class SwJsGoodsClassifyController extends BaseController {
             notes = "新增商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyadd")
+    @PreAuthorize("@ss.hasPermi('system:classify:add')")
     public AjaxResult swJsGoodsClassifyadd(@Valid @RequestBody CbpaDo cbpaDo, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -83,6 +84,7 @@ public class SwJsGoodsClassifyController extends BaseController {
             notes = "修改商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyedit")
+    @PreAuthorize("@ss.hasPermi('system:classify:edit')")
     public AjaxResult swJsGoodsClassifyedit(@RequestBody(required = false) CbpaDo cbpaDo, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -111,6 +113,7 @@ public class SwJsGoodsClassifyController extends BaseController {
             notes = "删除商品分类"
     )
     @PostMapping("/SwJsGoodsClassifyremove")
+    @PreAuthorize("@ss.hasPermi('system:classify:remove')")
     public AjaxResult swJsGoodsClassifyremove(@RequestBody CbpaDo cbpaDo) {
         try {
             return toAjax(swJsGoodsClassifyService.deleteSwJsGoodsClassifyById(cbpaDo));
@@ -160,7 +163,7 @@ public class SwJsGoodsClassifyController extends BaseController {
             notes = "导入商品分类"
     )
     @PostMapping("/importSwJsGoodsClassify")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:classify:import')")
     @ResponseBody
     public AjaxResult importSwJsGoodsClassify(MultipartFile file, boolean updateSupport) {
         try {

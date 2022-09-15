@@ -56,6 +56,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "添加销售预订单"
     )
     @PostMapping("/addSalesScheduledOrders")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:add')")
     public AjaxResult addSalesScheduledOrders(@Valid @RequestBody GsSalesOrdersDto gsSalesOrdersDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -91,6 +92,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "修改销售预订单"
     )
     @PostMapping("/editSalesScheduledOrders")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:edit')")
     public AjaxResult editSalesScheduledOrders(@Valid @RequestBody GsSalesOrdersDto gsSalesOrdersDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -125,6 +127,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "删除销售预订单"
     )
     @PostMapping("/deleteSalesScheduledOrders")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:remove')")
     public AjaxResult deleteSalesScheduledOrders(@Valid @RequestBody DeleteSaleOrderDto deleteSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -165,6 +168,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "查询销售预订单"
     )
     @GetMapping("/saleOrderList")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:list')")
     public AjaxResult<List<TableDataInfo>> saleOrderList( GsSalesOrdersDo gsSalesOrdersDo) {
         try {
             startPage();
@@ -192,6 +196,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "销售预订单详情"
     )
     @PostMapping("/saleOrderListdetail")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:detail')")
     public AjaxResult<List<TableDataInfo>> saleOrderListdetail( GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
         try {
             startPage();
@@ -219,6 +224,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "审核销售预订单"
     )
     @PostMapping("/SalesScheduledOrderssh")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:sh')")
     public AjaxResult salesScheduledOrderssh(@RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
             salesScheduledOrdersService.salesScheduledOrderssh(gsSalesOrdersDto);
@@ -253,6 +259,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "反审销售预订单"
     )
     @PostMapping("/SalesScheduledOrdersfs")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:fs')")
     public AjaxResult salesScheduledOrdersfs( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
             salesScheduledOrdersService.salesScheduledOrdersfs(gsSalesOrdersDto);
@@ -286,6 +293,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "销售预订单标记完成"
     )
     @PostMapping("/SalesScheduledOrdersbjwc")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:bjwc')")
     public AjaxResult SalesScheduledOrdersbjwc( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
             salesScheduledOrdersService.salesScheduledOrdersbjwc(gsSalesOrdersDto);
@@ -319,6 +327,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "销售预订单取消完成"
     )
     @PostMapping("/SalesScheduledOrdersqxwc")
+    @PreAuthorize("@ss.hasPermi('system:saleOrder:qxwc')")
     public AjaxResult SalesScheduledOrdersqxwc( @RequestBody GsSalesOrdersDto gsSalesOrdersDto) {
         try {
             salesScheduledOrdersService.salesScheduledOrdersqxwc(gsSalesOrdersDto);
@@ -341,6 +350,7 @@ public class SalesScheduledOrdersController extends BaseController {
 
     }
 
+    //销售预订单入库单
 
     /**
      * 添加预订单入库单
@@ -353,6 +363,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "添加预订单入库单"
     )
     @PostMapping("/addSubscribetotheinventoryslip")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:add')")
     public AjaxResult addSubscribetotheinventoryslip(@Valid @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -387,6 +398,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "修改预订单入库单"
     )
     @PostMapping("/editSubscribetotheinventoryslip")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:edit')")
     public AjaxResult editSubscribetotheinventoryslip(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -421,6 +433,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "删除预订单入库单"
     )
     @PostMapping("/deleteSubscribetotheinventoryslip")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:remove')")
     public AjaxResult deleteSubscribetotheinventoryslip(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -456,6 +469,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "查询预订单入库单"
     )
     @GetMapping("/seleteSubscribetotheinventoryslip")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:list')")
     public AjaxResult<List<TableDataInfo>> seleteSubscribetotheinventoryslip( GsSalesOrdersInVo gsSalesOrdersInVo) {
         try {
             startPage();
@@ -485,6 +499,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "审核预订单入库单"
     )
     @PostMapping("/Subscribetotheinventoryslipsh")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:sh')")
     public AjaxResult Subscribetotheinventoryslipsh(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -519,6 +534,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "反审预订单入库单"
     )
     @PostMapping("/Subscribetotheinventoryslipfs")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:fs')")
     public AjaxResult Subscribetotheinventoryslipfs(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -553,6 +569,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "预订单入库单标记完成"
     )
     @PostMapping("/Subscribetotheinventoryslipbjwc")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:bjwc')")
     public AjaxResult Subscribetotheinventoryslipbjwc(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -588,6 +605,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "预订单入库单取消完成"
     )
     @PostMapping("/Subscribetotheinventoryslipqxwc")
+    @PreAuthorize("@ss.hasPermi('system:salesReceipt:qxwc')")
     public AjaxResult Subscribetotheinventoryslipqxwc(  @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto) {
         try {
 
@@ -611,6 +629,7 @@ public class SalesScheduledOrdersController extends BaseController {
 
     }
 
+    // 销售预订单变更单
 
     /**
      * 添加预订单变更单
@@ -623,6 +642,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "添加预订单变更单"
     )
     @PostMapping("/addGsSalesOrdersChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:add')")
     public AjaxResult addGsSalesOrdersChange(@Valid @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -658,6 +678,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "修改预订单变更单"
     )
     @PostMapping("/editGsSalesOrdersChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:edit')")
     public AjaxResult editGsSalesOrdersChange( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.editGsSalesOrdersChange(gsSalesOrdersChangeDto);
@@ -691,6 +712,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "删除预订单变更单"
     )
     @PostMapping("/deleteGsSalesOrdersChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:remove')")
     public AjaxResult deleteGsSalesOrdersChange( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.deleteGsSalesOrdersChange(gsSalesOrdersChangeDto);
@@ -725,6 +747,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "查询预订单变更单"
     )
     @GetMapping("/seleteGsSalesOrdersChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:list')")
     public AjaxResult<List<TableDataInfo>> seleteGsSalesOrdersChange( GsSalesOrdersChangeVo gsSalesOrdersChangeVo) {
         try {
             startPage();
@@ -754,6 +777,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "审核预订单变更单"
     )
     @PostMapping("/GsSalesOrdersChangesh")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:sh')")
     public AjaxResult GsSalesOrdersChangesh( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.gsSalesOrdersChangesh(gsSalesOrdersChangeDto);
@@ -787,6 +811,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "反审预订单变更单"
     )
     @PostMapping("/GsSalesOrdersChangefs")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:fs')")
     public AjaxResult GsSalesOrdersChangefs( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.gsSalesOrdersChangefs(gsSalesOrdersChangeDto);
@@ -820,6 +845,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "标记完成预订单变更单"
     )
     @PostMapping("/GsSalesOrdersChangebjwc")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:bjwc')")
     public AjaxResult GsSalesOrdersChangebjwc( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.gsSalesOrdersChangebjwc(gsSalesOrdersChangeDto);
@@ -853,6 +879,7 @@ public class SalesScheduledOrdersController extends BaseController {
             notes = "预订单变更单取消完成"
     )
     @PostMapping("/GsSalesOrdersChangeqxwc")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:qxwc')")
     public AjaxResult GsSalesOrdersChangeqxwc( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         try {
             salesScheduledOrdersService.gsSalesOrdersChangeqxwc(gsSalesOrdersChangeDto);

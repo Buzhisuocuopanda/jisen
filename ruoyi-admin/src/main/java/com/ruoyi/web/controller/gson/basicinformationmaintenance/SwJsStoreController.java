@@ -53,6 +53,7 @@ public class SwJsStoreController extends BaseController {
             notes = "新增库位信息维护"
     )
     @PostMapping("/SwJsStoreadd")
+    @PreAuthorize("@ss.hasPermi('system:store:add')")
     public AjaxResult swJsStoreadd(@Valid @RequestBody CblaDto cblaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -83,6 +84,7 @@ public class SwJsStoreController extends BaseController {
             notes = "修改库位信息维护"
     )
     @PostMapping("/SwJsStoreedit")
+    @PreAuthorize("@ss.hasPermi('system:store:edit')")
     public AjaxResult swJsStoreedit(@RequestBody CblaDto cblaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -111,6 +113,7 @@ public class SwJsStoreController extends BaseController {
             notes = "删除库位信息维护"
     )
     @PostMapping("/SwJsStoreremove")
+    @PreAuthorize("@ss.hasPermi('system:store:remove')")
     public AjaxResult swJsStoreremove(@RequestBody CblaDto cblaDto) {
         try {
             return toAjax(swJsStoreService.deleteSwJsStoreById(cblaDto));
@@ -139,6 +142,7 @@ public class SwJsStoreController extends BaseController {
             notes = "条件查询查询库位信息维护"
     )
     @GetMapping("/SwJsStorelist")
+    @PreAuthorize("@ss.hasPermi('system:store:list')")
     public AjaxResult<TableDataInfo> swJsStorelist(CblaVo CblaVo) {
         try {
             startPage();
@@ -159,6 +163,7 @@ public class SwJsStoreController extends BaseController {
      */
 
     @PostMapping("/export")
+    @PreAuthorize("@ss.hasPermi('system:store:export')")
     public void export(HttpServletResponse response, CblaVo cblaVo) {
         List<CblaVo> list = swJsStoreService.selectSwJsStoreList(cblaVo);
         ExcelUtil<CblaVo> util = new ExcelUtil<CblaVo>(CblaVo.class);
@@ -173,7 +178,7 @@ public class SwJsStoreController extends BaseController {
             notes = "导入库位信息"
     )
     @PostMapping("/importSwJsStorelist")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:store:import')")
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
