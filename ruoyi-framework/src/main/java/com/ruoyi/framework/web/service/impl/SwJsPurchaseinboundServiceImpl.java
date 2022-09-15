@@ -59,6 +59,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
    @Resource
    private CbsaMapper cbsaMapper;
 
+
+
 @Resource
 private NumberGenerate numberGenerate;
 
@@ -133,6 +135,8 @@ private NumberGenerate numberGenerate;
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+
+
             //校验sn码
             String sn = itemList.get(i).getCbpe09();
             CbpeCriteria examples = new CbpeCriteria();
@@ -142,6 +146,8 @@ private NumberGenerate numberGenerate;
             if (cbpes.size() > 0) {
                 throw new SwException("该sn已存在");
             }
+            //校验库位
+            Cbla cbla = baseCheckService.checkStoresku(itemList.get(i).getCbpe10());
 
             itemList.get(i).setCbpe03(date);
             itemList.get(i).setCbpe04(Math.toIntExact(userid));
@@ -181,6 +187,9 @@ private NumberGenerate numberGenerate;
                  gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
                  //查出
                  Double qty = gsGoodsSkus.get(0).getQty();
+                 if(qty+1.0>cbla.getCbla11()){
+                     throw new SwException("库存数量达到库位上限");
+                 }
                  gsGoodsSkuDo1.setQty(qty+1.0);
                  taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 

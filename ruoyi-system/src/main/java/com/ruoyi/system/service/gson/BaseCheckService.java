@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.vo.CbpdVo;
@@ -38,6 +39,7 @@ public interface BaseCheckService {
 
     Cbpb checkGoods(Integer goodsId);
 
+    Cbla checkStoresku(Integer Storeskuid);
 
     SysUser checkUserTask(Long userId, String auditPerm);
 
@@ -46,6 +48,8 @@ public interface BaseCheckService {
     Cbca checkCustomer(Integer customerId);
 
     Cboa checkSaleOrder(Integer orderId);
+
+    GsGoodsSn checkGsGoodsSn(GsGoodsSnDo gsGoodsSnDo);
 
 
 

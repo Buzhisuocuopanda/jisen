@@ -3,6 +3,7 @@ package com.ruoyi.framework.web.service.impl;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.Groudstatus;
+import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Cbpc;
@@ -29,6 +30,19 @@ private GsGoodsSnMapper goodsSnMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
+        if(goodsSnDo.getSn()==null){
+                throw new SwException("SN不能为空");
+        }
+        GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+        example1.createCriteria().andSnEqualTo(goodsSnDo.getSn())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsGoodsSn> gsGoodsSns = goodsSnMapper.selectByExample(example1);
+        if(gsGoodsSns.size()==0){
+            throw new SwException("SN不存在");
+        }
+        if(gsGoodsSns.get(0).getStatus()==1){
+            throw new SwException("SN已经上架");
+        }
 
 
         Long userid = SecurityUtils.getUserId();

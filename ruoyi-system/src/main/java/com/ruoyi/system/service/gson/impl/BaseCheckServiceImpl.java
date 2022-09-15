@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.CbbaCriteria;
 import com.ruoyi.system.domain.Cboa;
 import com.ruoyi.system.domain.Cbpb;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.Do.SaleOrderCheckDo;
 import com.ruoyi.system.mapper.CbbaMapper;
 import com.ruoyi.system.mapper.CbpbMapper;
@@ -67,6 +68,12 @@ public class BaseCheckServiceImpl implements BaseCheckService {
 
     @Resource
     private CbpaMapper cbpaMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
 
     @Override
     public Cbpb checkGoodsForUpdate(Integer goodsId, String goodsName) {
@@ -221,6 +228,19 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     }
 
     @Override
+    public Cbla checkStoresku(Integer Storeskuid) {
+        if(Storeskuid==null){
+            throw new SwException("请选择库位");
+        }
+        Cbla cbla = cblaMapper.selectByPrimaryKey(Storeskuid);
+        if(cbla==null || DeleteFlagEnum.DELETE.getCode().equals(cbla.getCbla06())){
+
+            throw new SwException("未找到库位");
+        }
+        return cbla;
+    }
+
+    @Override
     public SysUser checkUserTask(Long userId, String auditPerm) {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         String auditPerm1 = sysUser.getAuditPerm();
@@ -316,6 +336,21 @@ public class BaseCheckServiceImpl implements BaseCheckService {
         }
 
         return cboa;
+    }
+
+    @Override
+    public GsGoodsSn checkGsGoodsSn(GsGoodsSnDo gsGoodsSnDo) {
+        if(gsGoodsSnDo.getSn()==null){
+            throw new SwException("sn不能为空");
+        }
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(gsGoodsSnDo.getSn());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+        if(gsGoodsSns.size()==0){
+            throw new SwException("sn不在货物sn表中");
+        }
+        GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
+        return gsGoodsSn;
     }
 
 

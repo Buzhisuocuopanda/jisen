@@ -546,7 +546,7 @@
 
     b.CBPD08, b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
     p.CBPA07,
-    c.CBPE09,c.CBPE10,l.CBLA09
+    c.CBPE09,c.CBPE10,l.CBLA09,c.CBPE03
 
 
     from CBPC a
