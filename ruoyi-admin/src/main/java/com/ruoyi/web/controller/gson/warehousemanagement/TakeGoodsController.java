@@ -423,6 +423,7 @@ public class TakeGoodsController extends BaseController {
     public void printTakeOrderOrder( @RequestParam  Integer id,HttpServletResponse response) throws IOException {
         InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
         String pdfPath="";
         XSSFWorkbook wb = null;
         try {
@@ -434,7 +435,13 @@ public class TakeGoodsController extends BaseController {
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
             excelPaht = RuoYiConfig.getSwprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
 //            FileCopyUtils.copyFile(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL,excelPaht);
-            File is = new File(RuoYiConfig.getSwprofile());
+//            File is = new File(RuoYiConfig.getSwprofile());
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_" + res.getOrderNo() + time + ".xlsx";
+
+
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL),new File(excelPaht2));
+            File is = new File(excelPaht2);
+//
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             String orderNo = res.getOrderNo();
@@ -484,6 +491,10 @@ public class TakeGoodsController extends BaseController {
             if(excelPaht!=null){
                 FileUtils.deleteFile(excelPaht);
             }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
+            }
+
             if(pdfPath!=null){
                 FileUtils.deleteFile(pdfPath);
             }
@@ -506,6 +517,7 @@ public class TakeGoodsController extends BaseController {
     public void printTakeOrderSuggest( @RequestParam  Integer id,HttpServletResponse response) throws IOException {
         InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
         String pdfPath="";
         XSSFWorkbook wb = null;
         try {
@@ -515,11 +527,18 @@ public class TakeGoodsController extends BaseController {
             TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
 
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            excelPaht = RuoYiConfig.getSwprofile() + "提货单_出库建议表" + res.getOrderNo() + time + ".xlsx";
+            excelPaht = RuoYiConfig.getSwprofile() + "提货单_出库建议表_" + res.getOrderNo() + time + ".xlsx";
 
 
 //            FileCopyUtils.copyFile(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL,excelPaht);
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL);
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL);
+
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_出库建议表_" + res.getOrderNo() + time + ".xlsx";
+
+
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL),new File(excelPaht2));
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL);
+            File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
             genarateSuggestReports(wb, res);
             String orderNo = res.getOrderNo();
@@ -568,6 +587,9 @@ public class TakeGoodsController extends BaseController {
 
             if(excelPaht!=null){
                 FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
             }
             if(pdfPath!=null){
                 FileUtils.deleteFile(pdfPath);
