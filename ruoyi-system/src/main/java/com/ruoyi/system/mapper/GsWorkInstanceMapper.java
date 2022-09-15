@@ -34,4 +34,6 @@ public interface GsWorkInstanceMapper {
     List<UnfinishedentsVo> selectUnfinisheddocuments(UnfinishedentsVo unfinishedentsVo);
 
     List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo);
+
+    List<ApprovalVo> selectApprovalrecordsdb(ApprovalVo approvalVo);
 }

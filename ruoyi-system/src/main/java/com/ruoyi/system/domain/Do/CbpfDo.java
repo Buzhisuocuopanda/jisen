@@ -30,6 +30,6 @@ public class CbpfDo {
     private Integer cbpf06;
 
     @Excel(name = "生效时间")
-   // @NotNull(message = "生效时间不能为空")
+    @NotNull(message = "生效时间不能为空")
     private Date cbpf07;
 }

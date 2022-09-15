@@ -39,7 +39,7 @@ public interface BaseCheckService {
     Cbpb checkGoods(Integer goodsId);
 
 
-    SysUser checkUserTask(Long userId, Byte auditPerm);
+    SysUser checkUserTask(Long userId, String auditPerm);
 
     GsGoodsSku checkGoodsSku(Integer goodsId,Integer storeId);
 

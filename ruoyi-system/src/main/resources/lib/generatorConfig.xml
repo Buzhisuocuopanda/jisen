@@ -71,7 +71,7 @@
         </javaClientGenerator>
 
         <!-- 要生成哪些表-->
-        <table schema="" tableName="gs_work_instance_audit_log" delimitIdentifiers="true"/>
+        <table schema="" tableName="CABRAA" delimitIdentifiers="true"/>
 
     </context>
 </generatorConfiguration>

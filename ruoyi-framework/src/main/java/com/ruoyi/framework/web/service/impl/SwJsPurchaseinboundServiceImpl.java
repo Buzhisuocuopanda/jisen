@@ -96,10 +96,13 @@ private NumberGenerate numberGenerate;
             cbpc.setCbpc03(Math.toIntExact(userid));
             cbpc.setCbpc04(date);
             cbpc.setCbpc05(Math.toIntExact(userid));
+            cbpc.setCbpc08(date);
             cbpc.setCbpc11(TaskStatus.mr.getCode());
             cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
             String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
             cbpc.setCbpc07(purchaseinboundNo);
+            cbpc.setCbpc13(date);
+            cbpc.setCbpc15(date);
             cbpc.setUserId(Math.toIntExact(userid));
             cbpcMapper.insertSelective(cbpc);
 
@@ -130,6 +133,16 @@ private NumberGenerate numberGenerate;
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            //校验sn码
+            String sn = itemList.get(i).getCbpe09();
+            CbpeCriteria examples = new CbpeCriteria();
+            examples.createCriteria().andCbpe09EqualTo(sn)
+                    .andCbpe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpe> cbpes = cbpeMapper.selectByExample(examples);
+            if (cbpes.size() > 0) {
+                throw new SwException("该sn已存在");
+            }
+
             itemList.get(i).setCbpe03(date);
             itemList.get(i).setCbpe04(Math.toIntExact(userid));
             itemList.get(i).setCbpe05(date);
@@ -189,9 +202,9 @@ private NumberGenerate numberGenerate;
             }
         }
         //标记审核完成
-        CbpdDto cbpdDto = new CbpdDto();
+    /*    CbpdDto cbpdDto = new CbpdDto();
         cbpdDto.setCbpc01(itemList.get(0).getCbpc01());
-        this.SwJsSkuBarcodeshsss(cbpdDto);
+        this.SwJsSkuBarcodeshsss(cbpdDto);*/
         session.commit();
         session.clearCache();
         return 1;

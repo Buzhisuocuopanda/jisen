@@ -308,26 +308,26 @@
 
   <select id="selectApprovalrecords" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
     SELECT
-      b.order_type as orderType,
-      b.order_no as orderNo,
-      a.CBOA08 as cboa08,
-      a.CBOA13 as cboa13,
-      b.order_msg as orderMsg
+    b.*
     FROM
-      CBOA a
-        LEFT JOIN
-      gs_work_instance b
-      ON
-        a.CBOA07=b.order_no
+    CBOA a
+    LEFT JOIN
+    CABRAA b
+    ON
+    a.CBOA07=b.CABRAA14
+    LEFT JOIN
+    gs_work_instance c
+    ON
+    c.order_no=b.CABRAA14
     WHERE
-          b.order_type=1
-        and
-          b.order_close=2
-        AND
-          b.order_status=1 or
-      b.order_status=2
-    <if test="orderNo != null "> and b.order_no  = #{orderNo}</if>
-
+    b.CABRAA06=0
+    <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
+    <if test="startTime != null">
+      and b.CABRAA15 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and b.CABRAA15 &lt;=#{endTime}
+    </if>
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
@@ -337,30 +337,61 @@
   </select>
   <select id="selectUnfinisheddocuments" resultType="com.ruoyi.system.domain.vo.UnfinishedentsVo">
     SELECT
-      b.order_type as orderType,
-      b.order_no as orderNo,
-      a.CBOC08 as cboc08,
-      a.CBOC13 as cboc13,
-      b.order_msg as orderMsg
+    b.*
     FROM
-      CBOC a
-        LEFT JOIN
-      gs_work_instance b
-      ON
-        a.CBOC07=b.order_no
-    WHERE
-      b.order_type=2
-      and
-      b.order_close=2
-      AND
-      b.order_status=1
-    <if test="orderNo != null "> and b.order_no  = #{orderNo}</if>
+    CABRAA b
 
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-      and date_format(a.CBOC08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    LEFT JOIN
+    CBOC c
+    ON
+    c.CBOC07=b.CABRAA14
+    LEFT JOIN
+    CBOA a
+    ON
+    a.CBOA07=b.CABRAA14
+    WHERE
+    b.CABRAA06=0
+    and
+    a.cboa11!=6
+    or
+    c.CBOC11!=6
+
+    <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
+
+    <if test="startTime != null">
+      and b.CABRAA15 &gt;= #{startTime}
     </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-      and date_format(a.CBOC08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    <if test="endTime != null">
+      and b.CABRAA15 &lt;=#{endTime}
+    </if>
+  </select>
+  <select id="selectApprovalrecordsdb" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
+    SELECT
+      b.*
+    FROM
+      CABRAA b
+
+        LEFT JOIN
+      CBOC c
+      ON
+        c.CBOC07=b.CABRAA14
+        LEFT JOIN
+      CBOA a
+      ON
+        a.CBOA07=b.CABRAA14
+    WHERE
+          b.CABRAA06=0
+        and
+          a.cboa11=2
+       or
+      a.cboa11=5
+    <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
+
+    <if test="startTime != null">
+      and b.CABRAA15 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+    and b.CABRAA15 &lt;=#{endTime}
     </if>
   </select>
 

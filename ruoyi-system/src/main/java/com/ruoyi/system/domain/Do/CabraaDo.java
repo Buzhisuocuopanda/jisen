@@ -1,31 +1,10 @@
-package com.ruoyi.system.domain.vo;
+package com.ruoyi.system.domain.Do;
 
-import com.ruoyi.common.core.domain.BaseEntity;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-
 @Data
-public class ApprovalVo extends BaseEntity {
-    @ApiModelProperty("单据开始时间")
-    private Date startTime;
-
-    //单据结束时间
-    @ApiModelProperty("单据结束时间")
-
-    private Date endTime;
-
-    private Byte orderType;
-
-    private String orderNo;
-
-    private Date cboa08;
-
-    private Date cboa13;
-
-    private String orderMsg;
-
+public class CabraaDo {
     private Integer cabraa01;
 
     private Date cabraa02;

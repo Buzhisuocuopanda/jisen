@@ -436,4 +436,14 @@ public class TaskServiceImpl implements TaskService {
         return gsWorkInstance;
     }
 
+    @Override
+    public Cabraa addGCabraa(CabraaDo cabraaDo) {
+        Date date=new Date();
+        Long userid = SecurityUtils.getUserId();
+        Cabraa cabraa = BeanCopyUtils.coypToClass(cabraaDo, Cabraa.class,null);
+        cabraa.setCabraa03(date);
+
+        return null;
+    }
+
 }

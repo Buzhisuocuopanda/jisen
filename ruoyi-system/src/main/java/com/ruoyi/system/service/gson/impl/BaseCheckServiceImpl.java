@@ -221,18 +221,21 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     }
 
     @Override
-    public SysUser checkUserTask(Long userId, Byte auditPerm) {
+    public SysUser checkUserTask(Long userId, String auditPerm) {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         String auditPerm1 = sysUser.getAuditPerm();
-        String s1 = auditPerm.toString();
+        String[] s1 = auditPerm.split(",");
 
-        String s = auditPerm1.toString();
-        String[] split = s.split(",");
+        String[] split = auditPerm1.split(",");
         Set<String> set = new HashSet<String>(Arrays.asList(split));
-
-        if(!set.contains(s1)){
-            throw new SwException("没有审核权限：");
-        }
+       for (String s : s1) {
+                if(!set.contains(s)){
+                    throw new SwException("您没有审核权限");
+                }
+            }
+//        if(!set.contains(s1)){
+//            throw new SwException("没有审核权限：");
+//        }
         return sysUser;
     }
 
