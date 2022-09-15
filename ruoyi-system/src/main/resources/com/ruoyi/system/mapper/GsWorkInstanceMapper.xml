@@ -337,12 +337,17 @@
   </select>
   <select id="selectUnfinisheddocuments" resultType="com.ruoyi.system.domain.vo.UnfinishedentsVo">
     SELECT
-    b.*
+    b.CABRAA02 as cabraa02,
+    b.CABRAA14 as cabraa14,
+    b.CABRAA07 as cabraa07,
+    b.CABRAA01 as cabraa01,
+    b.CABRAA15 as cabraa15,
+    b.CABRAA17 as cabraa17
     FROM
+    CBOC c
+    LEFT JOIN
     CABRAA b
 
-    LEFT JOIN
-    CBOC c
     ON
     c.CBOC07=b.CABRAA14
     LEFT JOIN
@@ -351,19 +356,17 @@
     a.CBOA07=b.CABRAA14
     WHERE
     b.CABRAA06=0
-    and
-    a.cboa11!=6
-    or
-    c.CBOC11!=6
-
     <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
-
     <if test="startTime != null">
       and b.CABRAA15 &gt;= #{startTime}
     </if>
     <if test="endTime != null">
       and b.CABRAA15 &lt;=#{endTime}
     </if>
+    and
+    a.cboa11!=6
+#     or
+#     c.CBOC11!=6
   </select>
   <select id="selectApprovalrecordsdb" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
     SELECT
@@ -380,11 +383,10 @@
       ON
         a.CBOA07=b.CABRAA14
     WHERE
-          b.CABRAA06=0
-        and
-          a.cboa11=2
-       or
-      a.cboa11=5
+    a.cboa11 in (2,5)
+
+    and
+    b.CABRAA06=0
     <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
 
     <if test="startTime != null">
@@ -393,6 +395,7 @@
     <if test="endTime != null">
     and b.CABRAA15 &lt;=#{endTime}
     </if>
+
   </select>
 
 </mapper>

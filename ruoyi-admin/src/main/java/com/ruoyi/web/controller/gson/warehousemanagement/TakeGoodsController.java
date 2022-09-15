@@ -94,6 +94,10 @@ public class TakeGoodsController extends BaseController {
      * 添加提货单
      * @return
      */
+    @ApiOperation(
+            value ="添加提货单",
+            notes = "添加提货单"
+    )
     @PostMapping("/addTakeGoodsOrder")
     public AjaxResult addTakeGoodsOrder(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
         try {

@@ -33,28 +33,30 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Override
     public List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo) {
+        List<ApprovalVo> approvalVos = gsWorkInstanceMapper.selectApprovalrecords(approvalVo);
         Long userid = SecurityUtils.getUserId();
         String task= "1,2";
        baseCheckService.checkUserTask(userid, task);
-        return  gsWorkInstanceMapper.selectApprovalrecords(approvalVo);
+        return  approvalVos;
     }
 
     @Override
     public List<UnfinishedentsVo> selectUnfinisheddocuments(UnfinishedentsVo unfinishedentsVo) {
+        List<UnfinishedentsVo> unfinishedentsVos = gsWorkInstanceMapper.selectUnfinisheddocuments(unfinishedentsVo);
         Long userid = SecurityUtils.getUserId();
         String task= "1,2";
         baseCheckService.checkUserTask(userid, task);
-        return  gsWorkInstanceMapper.selectUnfinisheddocuments(unfinishedentsVo);
+        return  unfinishedentsVos;
 
     }
 
     @Override
     public List<ApprovalVo> selectApprovalrecordsdb(ApprovalVo approvalVo) {
+        List<ApprovalVo> approvalVos = gsWorkInstanceMapper.selectApprovalrecordsdb(approvalVo);
         Long userid = SecurityUtils.getUserId();
         String task= "1,2";
-        baseCheckService.checkUserTask(userid, task);
-
-        return  gsWorkInstanceMapper.selectApprovalrecordsdb(approvalVo);
+         baseCheckService.checkUserTask(userid, task);
+        return approvalVos;
     }
 
     @Override

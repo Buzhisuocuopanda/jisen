@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ApprovalService {
 
-
+     //查询审批记录
     List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo);
 
     List<UnfinishedentsVo> selectUnfinisheddocuments(UnfinishedentsVo unfinishedentsVo);

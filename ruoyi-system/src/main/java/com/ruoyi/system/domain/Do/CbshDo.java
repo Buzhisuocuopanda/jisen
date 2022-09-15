@@ -18,7 +18,7 @@ public class CbshDo {
     private Integer cbsh05;
 
     private Integer cbsh06;
-    @NotBlank(message = "编号不能为空")
+   // @NotBlank(message = "编号不能为空")
     private String cbsh07;
 
     private Date cbsh08;
