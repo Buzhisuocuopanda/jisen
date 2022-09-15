@@ -518,7 +518,7 @@
 
   <select id="selectsalerman" resultType="com.ruoyi.system.domain.vo.CauaVo">
     SELECT
-      a.CAUA17 as caua17
+      a.*
     FROM
       CAUA a
   </select>
