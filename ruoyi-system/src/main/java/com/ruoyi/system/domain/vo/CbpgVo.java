@@ -72,5 +72,6 @@ public class CbpgVo  extends BaseEntity
     private Integer cbpi11;
 
     private String cbpi12;
+    private String cbpa08;
 
 }
