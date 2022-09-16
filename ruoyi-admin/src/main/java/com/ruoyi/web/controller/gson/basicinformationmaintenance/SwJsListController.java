@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,7 @@ public class SwJsListController extends BaseController {
             notes = "新增列维护"
     )
     @PostMapping("/SwJsListadd")
+    @PreAuthorize("@ss.hasPermi('system:list:add')")
     public AjaxResult swJsListadd(@Valid @RequestBody CalaDto calaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -79,6 +81,7 @@ public class SwJsListController extends BaseController {
             notes = "修改列表维护"
     )
     @PostMapping("/SwJsListedit")
+    @PreAuthorize("@ss.hasPermi('system:list:edit')")
     public AjaxResult swJsListedit(@RequestBody CalaDto calaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -107,6 +110,7 @@ public class SwJsListController extends BaseController {
             notes = "删除列表维护"
     )
     @PostMapping("/SwJsListremove")
+    @PreAuthorize("@ss.hasPermi('system:list:remove')")
     public AjaxResult swJsListremove(@RequestBody  CalaDto calaDto) {
         try {
             return toAjax(swJsListService.deleteSwJsListById(calaDto));
@@ -133,6 +137,7 @@ public class SwJsListController extends BaseController {
             value ="查询列维护列表",
             notes = "查询列维护列表")
     @GetMapping("/SwJsListlist")
+    @PreAuthorize("@ss.hasPermi('system:list:list')")
     public AjaxResult<TableDataInfo> swJsListlist(Cala cala) {
         try {
             startPage();
@@ -160,6 +165,7 @@ public class SwJsListController extends BaseController {
             value ="详情列维护列表",
             notes = "详情列维护列表")
     @GetMapping(value = "/{id}")
+    @PreAuthorize("@ss.hasPermi('system:list:detail')")
     public AjaxResult swJsListgetInfo(@PathVariable("id") Long id) {
         try {
             return AjaxResult.success(swJsListService.selectSwJsListById(id));

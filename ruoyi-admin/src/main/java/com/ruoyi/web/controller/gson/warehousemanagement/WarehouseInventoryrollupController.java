@@ -55,6 +55,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化新增主表"
     )
     @PostMapping("/SwJsStoreadd")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:add')")
     public AjaxResult<IdVo> swJsStoreadd(@Valid @RequestBody CbieDo cbieDo, BindingResult bindingResult) {
         IdVo res=null;
         try {

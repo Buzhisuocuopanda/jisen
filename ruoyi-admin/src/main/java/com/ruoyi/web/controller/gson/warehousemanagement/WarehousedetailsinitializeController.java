@@ -53,6 +53,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化新增主表"
     )
     @PostMapping("/SwJsStoreadd")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:add')")
     public AjaxResult<IdVo> swJsStoreadd(@Valid @RequestBody CbieDo cbieDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -82,6 +83,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "仓库盘点汇总表新增明细表"
     )
     @PostMapping("/SwJsStoreadds")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:detail')")
     public AjaxResult swJsStoreadd(@Valid @RequestBody List<Cbig> itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -113,6 +115,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "删除库存明细初始化"
     )
     @PostMapping("/SwJsStoreremove")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:remove')")
     public AjaxResult swJsStoreremove(@RequestBody  CbieDo cbieDo) {
         try {
             return toAjax(swarehousedetailsinitializeService.deleteSwJsStoreById(cbieDo));
@@ -141,6 +144,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化审核"
     )
     @PostMapping("/swJsStoreendd")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:sh')")
     public AjaxResult swJsStoreendd(@RequestBody  CbieDo cbieDo ) {
         try {
             return toAjax(swarehousedetailsinitializeService.swJsStoreendd(cbieDo));
@@ -169,6 +173,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化反审"
     )
     @PostMapping("/swJsStoreendds")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:fs')")
     public AjaxResult swJsStoreendds(@RequestBody  CbieDo cbieDo ) {
         try {
             return toAjax(swarehousedetailsinitializeService.swJsStoreendds(cbieDo));
@@ -196,6 +201,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundshss")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:bjwc')")
     public AjaxResult swJsPurchaseinboundshss( @RequestBody CbigDo cbigDo ) {
         try {
             return toAjax(swarehousedetailsinitializeService.SwJsSkuBarcodeshsss(cbigDo));
@@ -254,6 +260,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化查询"
     )
     @GetMapping("/SwJsStorelistss")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:list')")
     public AjaxResult<TableDataInfo> SwJsStorelistss(CbieVo cbieVo) {
         try {
             startPage();
@@ -285,6 +292,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "库存明细初始化详情"
     )
     @GetMapping("/SwJsStorelist")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:detail')")
     public AjaxResult<TableDataInfo> swJsStorelist( CbigVo cbigVo) {
         try {
             startPage();
@@ -315,7 +323,7 @@ public class WarehousedetailsinitializeController extends BaseController {
             notes = "导入库存明细初始化主表"
     )
     @PostMapping("/importSwJsGoods")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:swJsStorea:import')")
     @ResponseBody
     public AjaxResult importWarehousedetailsinitialize(MultipartFile file, boolean updateSupport) {
         try {
