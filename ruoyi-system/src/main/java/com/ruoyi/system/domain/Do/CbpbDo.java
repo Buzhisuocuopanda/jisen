@@ -48,8 +48,9 @@ public class CbpbDo {
     private Integer cbpb14;
     @NotBlank(message = "upc不能为空")
     @Excel(name = "upc")
+    @Length(min=1, max=12, message="upc最大长度为12位")
     private String cbpb15;
-   // @Size(min = 1,message = "请至少添加一条客户明细")
+    //@Size(min = 1,message = "请至少添加一条客户明细")
     private List<CbpfDo> goods=new ArrayList<>();
 
     private Integer cbpf01;

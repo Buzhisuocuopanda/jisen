@@ -62,6 +62,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "新增商品"
     )
     @PostMapping("/SwJsGoodsadd")
+    @PreAuthorize("@ss.hasPermi('system:goods:add')")
     public AjaxResult swJsGoodsadd(@Valid @RequestBody CbpbDo cbpbDo, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -120,6 +121,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "修改商品"
     )
     @PostMapping("/SwJsGoodsedit")
+    @PreAuthorize("@ss.hasPermi('system:goods:edit')")
     public AjaxResult swJsGoodsedit(@RequestBody CbpbDo cbpbDo) {
         try {
 
@@ -147,6 +149,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "删除商品"
     )
     @PostMapping("/SwJsGoodsremove")
+    @PreAuthorize("@ss.hasPermi('system:goods:remove')")
     public AjaxResult swJsGoodsremove(@RequestBody CbpbDo cbpbDo) {
         try {
             return toAjax(swJsGoodsService.deleteSwJsGoodsClassifyById(cbpbDo));
@@ -173,6 +176,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "查询商品列表"
     )
     @GetMapping("/SwJsGoodslist")
+    @PreAuthorize("@ss.hasPermi('system:goods:list')")
     public AjaxResult<TableDataInfo> swJsGoodslist(CbpbVo cbpbVo) {
         try {
             startPage();
@@ -196,7 +200,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "导入商品"
     )
     @PostMapping("/importSwJsGoods")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:goods:import')")
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
@@ -260,6 +264,7 @@ public class SwJsGoodsController extends BaseController {
             notes = "导出商品列表"
     )
     @PostMapping("/SwJsGoodsexport")
+    @PreAuthorize("@ss.hasPermi('system:goods:export')")
     public void swJsGoodsexport(HttpServletResponse response, CbpbVo cbpbVo) {
         List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsList(cbpbVo);
         ExcelUtil<CbpbVo> util = new ExcelUtil<>(CbpbVo.class);

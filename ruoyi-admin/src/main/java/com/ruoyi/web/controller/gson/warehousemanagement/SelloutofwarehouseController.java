@@ -34,7 +34,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -323,11 +325,11 @@ public class SelloutofwarehouseController extends BaseController {
     }
 
     /**
-     * 新增销售出库单详情
+     * 销售出库单详情
      */
     @ApiOperation(
-            value ="新增销售出库单详情",
-            notes = "新增销售出库单详情"
+            value ="销售出库单详情",
+            notes = "销售出库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbsbsVo cbsbsVo) {
@@ -336,27 +338,27 @@ public class SelloutofwarehouseController extends BaseController {
             List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbsVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
-            log.error("【新增销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (ServiceException e) {
-            log.error("【新增销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (Exception e) {
-            log.error("【新增销售出库单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbsVo),ExceptionUtils.getStackTrace(e));
+            log.error("【销售出库单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbsVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
     /**
-     * 新增销售出库单删除
+     * 销售出库单删除
      */
     @ApiOperation(
-            value ="新增销售出库单删除",
-            notes = "新增销售出库单删除"
+            value ="销售出库单删除",
+            notes = "销售出库单删除"
     )
     @PostMapping("/Selloutofwarehousedel")
     public AjaxResult Selloutofwarehousedel( @RequestBody CbsbDo cbsbDo) {
@@ -429,11 +431,11 @@ public class SelloutofwarehouseController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            File is = new File("D:\\data\\销售出库单详情导出详情1.xlsx");
+            File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
            // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
-            genarateReportss(wb, res, list);
+            genarateReportsss(wb, res, list);
             String orderNo = res.getCbsb07();
             //name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
             excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单_"+res.getCbsb07()+time+".xlsx";
@@ -454,12 +456,12 @@ public class SelloutofwarehouseController extends BaseController {
             FileUtils.writeBytes(pdfPath, response.getOutputStream());
 
         } catch (SwException e) {
-            log.error("【导出销售出货单详情1】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【打印销售出货单详情1】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导出销售出货单详情1】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【打印销售出货单详情1】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
@@ -487,9 +489,12 @@ public class SelloutofwarehouseController extends BaseController {
         //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
         //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
 //        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        Date orderDate = res.getCbsb08();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(orderDate);
         FormExcelUtil.setCellData(sheet1, res.getCbsb07(), 4, 2);
         FormExcelUtil.setCellData(sheet1, res.getCbsb30(), 4, 4);
-        FormExcelUtil.setCellData(sheet1, res.getCbsb08().toString(), 4, 6);
+        FormExcelUtil.setCellData(sheet1, format, 4, 6);
         FormExcelUtil.setCellData(sheet1, res.getCbsa08(), 5, 2);
         FormExcelUtil.setCellData(sheet1, res.getCbwa09(), 5, 4);
         FormExcelUtil.setCellData(sheet1, res.getCaua15(), 5, 6);
@@ -581,6 +586,159 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+    /**
+     * 导出销售出货单详情
+     */
+    @ApiOperation(
+            value ="导出销售出货单详情",
+            notes = "导出销售出货单详情"
+    )
+    @PostMapping("/saleoutOrderdetailsexport")
+    public AjaxResult saleoutOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+        String excelPaht="";
+        String pdfPath="";
+
+        try {
+            long time = System.currentTimeMillis();
+            CbsbsVo cbsbvo=new CbsbsVo();
+            cbsbvo.setCbsb01(orderId);
+            List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbvo);
+            InputStream in = null;
+            XSSFWorkbook wb = null;
+//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
+            // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
+            wb = new XSSFWorkbook(is);
+            CbsbsVo res = list.get(0);
+            genarateReportsss(wb, res, list);
+            String orderNo = res.getCbsb07();
+            //name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
+            excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单详情_"+res.getCbsb07()+time+".xlsx";
+
+            File file = new File("text.java");
+
+            String filePath = file.getAbsolutePath();
+            saveExcelToDisk(wb, excelPaht);
+
+            //  saveExcelToDisk(wb, name);
+            FileUtils.setAttachmentResponseHeader(response, "销售出货单详情_"+res.getCbsb07()+time+".xlsx");
+            FileUtils.writeBytes(excelPaht, response.getOutputStream());
+
+        } catch (SwException e) {
+            log.error("【导出销售出货单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【导出销售出货单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        } finally {
+            if (excelPaht != null) {
+                FileUtils.deleteFile(excelPaht);
+            }
+        }
+        return AjaxResult.success();
+    }
+
+
+    private static void genarateReportsss(XSSFWorkbook wb, CbsbsVo res, List<CbsbsVo> goods) {
+        XSSFSheet sheet1 = wb.getSheetAt(0);
+//        XSSFSheet sheet2 = wb.getSheetAt(1);
+        // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
+        sheet1.setForceFormulaRecalculation(true);
+//        sheet2.setForceFormulaRecalculation(true);
+
+        /***设置单个单元格内容*********************************/
+//        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
+        /***第一个表格*********************************/
+//        ExampleData ea = new ExampleData();
+//        List<List<Object>> data1 = ea.getData1(10);
+        int addRows = 0;
+        //动态插入行
+        //FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+        //按照styleRow行的格式，在startNum行后添加insertRows行，并且针对styleColStart~ styleColEnd列同步模板行styleRow的格式
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
+        Date orderDate = res.getCbsb08();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(orderDate);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb07(), 4, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb30(), 4, 4);
+        FormExcelUtil.setCellData(sheet1, format, 4, 7);
+        FormExcelUtil.setCellData(sheet1, res.getCbsa08(), 5, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbwa09(), 5, 4);
+        FormExcelUtil.setCellData(sheet1, res.getCaua15(), 5, 7);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb18(), 6, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb19(), 6, 7);
+        FormExcelUtil.setCellData(sheet1, res.getCny(), 7, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb21(), 8, 4);
+
+
+        // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
+        // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+//        FormExcelUtil.setCellData(sheet1,res.getCny(),7,2);
+//        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),7,4);
+//        Double sumQty = res.getSumQty()==null?0:res.getSumQty();
+//        FormExcelUtil.setCellData(sheet1,sumQty,8,4);
+//        Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
+//        FormExcelUtil.setCellData(sheet1,sumPrice,8,6);
+//        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),9,2);
+//        FormExcelUtil.setCellData(sheet1,res.getSaleUser(),10,1);
+//        FormExcelUtil.setCellData(sheet1,res.getAuditUser(),10,3);
+//        FormExcelUtil.setCellData(sheet1,res.getStorename(),10,5);
+//        String auditUser = res.getAuditUser();
+//        Date date = new Date();
+//        String ress=date+"由"+auditUser+"审核";
+//
+//        FormExcelUtil.setCellData(sheet1,ress,13,3);
+
+//        List<SaleOrderAudit> audits = res.getAudits();
+//        if(audits.size()>0){
+//            String name=audits.get(0).getRole()==null?"":audits.get(0).getRole();
+//        }
+
+        // List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbvo);
+
+        // List<SaleOderDetailGoods> goods = res.getGoods();
+
+        List<List<Object>> data1 = new ArrayList<>();
+        Double sum = 0.0;
+        for (int i = 0; i < goods.size(); i++) {
+            List<Object> rlist = new ArrayList<>();
+//        SaleOrderSkuVo res=new SaleOrderSkuVo();
+//        res.setGoodsName("aa");
+            rlist.add(goods.get(i).getCala08());
+            rlist.add(goods.get(i).getCbpb12());
+            rlist.add(goods.get(i).getCbpb08());
+            rlist.add(goods.get(i).getCbsc09());
+            Double scannum = goods.get(i).getCbsc09();
+            rlist.add(scannum);
+            rlist.add(goods.get(i).getCbsc13());
+            data1.add(rlist);
+            Double cbsc09 = goods.get(i).getCbsc09();
+            if(cbsc09!=null){
+                sum+=cbsc09;
+            }
+        }
+        FormExcelUtil.setCellData(sheet1, sum, 11, 4);
+        FormExcelUtil.setCellData(sheet1, sum, 11, 5);
+
+//        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
+
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 10, data1.size(), 9, 1, 7);
+
+        FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+//        addRows += data1.size()-2;
+        /***第二个表格*********************************/
+//        List<List<Object>> data2 = ea.getData2();
+//        FormExcelUtil.insertRowsStyleBatch(sheet1, 10+addRows, data2.size()-2, 10+addRows, 1, 6);
+//        FormExcelUtil.setTableData(sheet1, data2, 10+addRows, 1);
+//        addRows += data2.size()-2;
+//        /***第三个表格*********************************/
+//        List<List<Object>> data3 = ea.getData3();
+//        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
+
+    }
 
     /**
      * 打印销售出货单建议表

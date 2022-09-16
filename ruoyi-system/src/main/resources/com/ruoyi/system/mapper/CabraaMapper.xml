@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CabraaMapper">
+
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cabraa">
     <id column="CABRAA01" jdbcType="INTEGER" property="cabraa01" />
     <result column="CABRAA02" jdbcType="TIMESTAMP" property="cabraa02" />

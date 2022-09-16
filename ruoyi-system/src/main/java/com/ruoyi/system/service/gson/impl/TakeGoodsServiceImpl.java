@@ -885,7 +885,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
             Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getCbpk01());
-            if(!cbpk.getCbpk11().equals(TaskStatus.sh.getCode())){
+            if(!cbpk.getCbpk11().equals(2)){
                 throw new SwException("审核状态才能扫码");
             }
             CbpmCriteria example=new CbpmCriteria();
@@ -895,12 +895,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(cbpms.size()==0){
                 throw new SwException("您选择的Sn商品不在出库建议表中" );
             }
-            itemList.get(i).setCbpm03(date);
-            itemList.get(i).setCbpm04(Math.toIntExact(userid));
-            itemList.get(i).setCbpm05(date);
-            itemList.get(i).setCbpm06(Math.toIntExact(userid));
-            itemList.get(i).setCbpm07(DeleteFlagEnum.NOT_DELETE.getCode());
+
             itemList.get(i).setCbpm11(ScanStatusEnum.YISAOMA.getCode());
+
 
             GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
             example1.createCriteria()
@@ -917,7 +914,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andSnEqualTo(itemList.get(i).getCbpm09());
             gsGoodsSnMapper.updateByExampleSelective(goodsSn, example2);
 
-            mapper.insertSelective(itemList.get(i));
+            mapper.updateByExampleSelective(itemList.get(i),example);
 
         }
         Cbpk cbpk=new Cbpk();

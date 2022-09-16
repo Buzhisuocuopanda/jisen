@@ -146,7 +146,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
                 .andCbpb14EqualTo(cbpaDo.getCbpa01());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example4);
         if(cbpbs.size()>0){
-            throw new SwException("商品编号已在用不可修改");
+            throw new SwException("商品编号已在用");
         }
 
 
@@ -180,7 +180,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example2);
         if(cbpbs.size()>0){
-            throw new SwException("在用商品分类不可删除");
+            throw new SwException("该商品分类已在用");
         }
 
         cbpa.setCbpa06(DeleteFlagEnum.DELETE.getCode());

@@ -1155,9 +1155,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cboa cboa= baseCheckService.checkSaleOrder(auditSaleOrderDto.getOrderId());
         Integer orderStatus = cboa.getCboa11();
         //检查是否具有审核权限
-        Byte perType=1;
+        String perType="1";
         if(OrderTypeEnum.GUOJIDINGDAN.getCode().equals(cboa.getCboa27())){
-            perType=2;
+            perType="2";
         }
         baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(),perType);
 
@@ -1312,7 +1312,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cboa cboa= baseCheckService.checkSaleOrder(auditSaleOrderDto.getOrderId());
         //检查是否具有审核权限
 
-        SysUser sysUser = baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(), new Byte("11"));
+        SysUser sysUser = baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(), new String("11"));
 
         //判断是反审还是复审
         if(auditSaleOrderDto.getOpeateType().equals(4)){
@@ -1742,7 +1742,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cboc.getCboc11())){
                 throw new SwException("只有在已提交状态下才能操作");
             }
-            baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(),new Byte("12"));
+            baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(),new String("12"));
 
             cboc.setCboc11(SaleOrderStatusEnums.YISHENHE.getCode());
             cbocMapper.updateByPrimaryKey(cboc);

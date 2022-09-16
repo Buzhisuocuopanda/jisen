@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +56,7 @@ public class SwJsSupplierController extends BaseController {
             notes = "新增供应商信息"
     )
     @PostMapping("/SwJsSupplieradd")
+    @PreAuthorize("@ss.hasPermi('system:supplier:add')")
     public AjaxResult SwJsSupplieradd(@Valid @RequestBody CbsaDto cbsaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -84,6 +86,7 @@ public class SwJsSupplierController extends BaseController {
             notes = "修改供应商信息"
     )
     @PostMapping("/SwJsSupplieredit")
+    @PreAuthorize("@ss.hasPermi('system:supplier:edit')")
     public AjaxResult SwJsSupplieredit(@RequestBody CbsaDto cbsaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -113,6 +116,7 @@ public class SwJsSupplierController extends BaseController {
             notes = "删除供应商信息"
     )
     @PostMapping("/SwJsSupplierremove")
+    @PreAuthorize("@ss.hasPermi('system:supplier:remove')")
     public AjaxResult SwJsSupplierremove(@RequestBody CbsaDto cbsaDto) {
         try {
             return toAjax(swJsSupplierService.deleteSwJsSupplierById(cbsaDto));
@@ -139,6 +143,7 @@ public class SwJsSupplierController extends BaseController {
             notes = "查询供应商信息列表"
     )
     @GetMapping("/SwJsSupplierlist")
+    @PreAuthorize("@ss.hasPermi('system:supplier:list')")
     public AjaxResult<TableDataInfo> SwJsSupplierlist(Cbsa cbsa) {
         try{
             startPage();
@@ -167,6 +172,7 @@ public class SwJsSupplierController extends BaseController {
             notes = "导出供应商信息"
     )
     @PostMapping("/SwJsSupplierexport")
+    @PreAuthorize("@ss.hasPermi('system:supplier:export')")
     public void SwJsSupplierexport(HttpServletResponse response, Cbsa cbsa) {
         List<Cbsa> list = swJsSupplierService.selectSwJsSupplierList(cbsa);
         ExcelUtil<Cbsa> util = new ExcelUtil<Cbsa>(Cbsa.class);
@@ -183,6 +189,7 @@ public class SwJsSupplierController extends BaseController {
     )
     @PostMapping("/importSwJsSupplier")
     @ResponseBody
+    @PreAuthorize("@ss.hasPermi('system:supplier:import')")
     public AjaxResult importSwJsSupplier(MultipartFile file, boolean updateSupport) {
         try {
             ExcelUtil<CbsaDto> util = new ExcelUtil<>(CbsaDto.class);

@@ -116,7 +116,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     /**
      * 新增采购退货单明细
      *
-     * @param cbpgDto 审核信息
+     * @param itemList 审核信息
      * @return 结果
      */
     @Transactional
@@ -158,6 +158,21 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+
+            String sn = itemList.get(i).getCbpi09();
+            CbpiCriteria erd = new CbpiCriteria();
+            erd.createCriteria().andCbpi09EqualTo(sn)
+                    .andCbpi06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpi> cbpiList = cbpiMapper.selectByExample(erd);
+            if(cbpiList.size()>0){
+                throw new SwException("该sn已存在");
+            }
+            //校验sn库存表李是否有该sn
+            GsGoodsSnDo gsGoodsSnDoss =new GsGoodsSnDo();
+            gsGoodsSnDoss.setSn(sn);
+           baseCheckService.checkGsGoodsSn(gsGoodsSnDoss);
+
+
 
             Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
             if(!cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){

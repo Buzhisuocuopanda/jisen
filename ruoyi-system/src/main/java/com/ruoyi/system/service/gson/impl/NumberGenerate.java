@@ -190,7 +190,7 @@ private CbieMapper cbieMapper;
         }
         CbpcCriteria example=new CbpcCriteria();
         example.createCriteria()
-                .andCbpc07Like(format+"%");
+                .andCbpc07Like("%"+format+"%");
         List<Cbpc> cbpks = cbpcMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";
@@ -548,7 +548,7 @@ private CbieMapper cbieMapper;
         String orderNo="OS"+format;
         CbpkCriteria example=new CbpkCriteria();
         example.createCriteria()
-                .andCbpk07Like(orderNo+"%");
+                .andCbpk07Like("%"+orderNo+"%");
         List<Cbpk> cbpks = cbpkMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";

@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Caua;
 import com.ruoyi.system.domain.CauaCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CauaVo;
+import com.ruoyi.system.domain.vo.UnfinishedentsVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CauaMapper {
@@ -19,4 +22,6 @@ public interface CauaMapper {
     int updateByExampleSelective(@Param("record") Caua record, @Param("example") CauaCriteria example);
 
     int updateByExample(@Param("record") Caua record, @Param("example") CauaCriteria example);
+
+    List<CauaVo> selectsalerman(CauaVo cauaVo);
 }

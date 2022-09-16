@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.vo.ApprovalVo;
+import com.ruoyi.system.domain.vo.CauaVo;
 import com.ruoyi.system.domain.vo.UnfinishedentsVo;
 import com.ruoyi.system.service.gson.ApprovalService;
 import io.swagger.annotations.Api;
@@ -40,6 +41,35 @@ public class ApprovalController extends BaseController {
     private ApprovalService approvalService;
 
     /**
+     * 代办事宜
+     */
+    @ApiOperation(
+            value ="代办事宜",
+            notes = "代办事宜"
+    )
+    @GetMapping("/Approvalrecordsdb")
+    public AjaxResult<TableDataInfo> Approvalrecordsdb(ApprovalVo approvalVo) {
+        try{
+            startPage();
+            List<ApprovalVo> list = approvalService.selectApprovalrecordsdb(approvalVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【代办事宜】接口出现异常,参数${},异常${}$", JSON.toJSON(approvalVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【代办事宜】接口出现异常,参数${}$,异常${}$", JSON.toJSON(approvalVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
      * 查询审批记录
      */
     @ApiOperation(
@@ -56,12 +86,12 @@ public class ApprovalController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (ServiceException e) {
-            log.error("【查询供应商信息列表】接口出现异常,参数${},异常${}$", JSON.toJSON(approvalVo), ExceptionUtils.getStackTrace(e));
+            log.error("【查询审批记录】接口出现异常,参数${},异常${}$", JSON.toJSON(approvalVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (Exception e) {
-            log.error("【查询供应商信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(approvalVo),ExceptionUtils.getStackTrace(e));
+            log.error("【查询审批记录】接口出现异常,参数${}$,异常${}$", JSON.toJSON(approvalVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -96,4 +126,33 @@ public class ApprovalController extends BaseController {
         }
     }
 
+
+
+    /**
+     * 查询销售人员
+     */
+    @ApiOperation(
+            value ="查询销售人员",
+            notes = "查询销售人员"
+    )
+    @GetMapping("/salerman")
+    public AjaxResult<CauaVo> Unfinisheddocuments(CauaVo cauaVo) {
+        try{
+            startPage();
+            List<CauaVo> list = approvalService.selectsalerman(cauaVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【查询销售人员】接口出现异常,参数${},异常${}$", JSON.toJSON(cauaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【查询销售人员】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cauaVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

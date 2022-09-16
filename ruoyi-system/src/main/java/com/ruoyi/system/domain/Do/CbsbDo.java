@@ -19,8 +19,8 @@ public class CbsbDo {
     private Integer cbsb05;
 
     private Integer cbsb06;
-    @NotBlank(message = "编号不能为空")
-    @Length(min =1 , max = 20)
+    //@NotBlank(message = "编号不能为空")
+   // @Length(min =1 , max = 20)
     private String cbsb07;
 
     private Date cbsb08;

@@ -973,9 +973,9 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,sumPrice,8,6);
         FormExcelUtil.setCellData(sheet1,res.getCapPrice(),9,2);
         String saleUser = res.getSaleUser();
-        String rese=format+"制单("+saleUser+")";
+        String rese="制单:"+saleUser;
         String auditUser = res.getAuditUser();
-        String resa=format+"审核("+auditUser+")";
+        String resa="审核:"+auditUser;
         FormExcelUtil.setCellData(sheet1,rese,10,1);
         FormExcelUtil.setCellData(sheet1,resa,10,3);
 //        String storename = res.getStorename();
@@ -1063,6 +1063,7 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,sumPrice,11,6);
        // FormExcelUtil.setCellData(sheet1,res.getSumPrice(),11,6);
         FormExcelUtil.setCellData(sheet1,res.getCapPrice(),12,2);
+        FormExcelUtil.setCellData(sheet1,"制单:",16,1);
 
         List<SaleOderDetailGoods> goods = res.getGoods();
 

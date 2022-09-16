@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "新增仓库信息"
     )
     @PostMapping("/SwJsStoreSkuadd")
+    @PreAuthorize("@ss.hasPermi('system:sku:add')")
     public AjaxResult SwJsStoreSkuadd(@Valid @RequestBody CbwaDto cbwaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -78,6 +80,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "修改仓库信息"
     )
     @PostMapping("/SwJsStoreSkuedit")
+    @PreAuthorize("@ss.hasPermi('system:sku:edit')")
     public AjaxResult SwJsStoreSkuedit(@RequestBody CbwaDto cbwaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -107,6 +110,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "删除仓库信息"
     )
     @PostMapping("/SwJsStoreyremove")
+    @PreAuthorize("@ss.hasPermi('system:sku:remove')")
     public AjaxResult SwJsStoreremove(@RequestBody CbwaDto cbwaDto) {
         try {
             return toAjax(swJsStoreSkuService.deleteSwJsStoreremoveById(cbwaDto));
@@ -129,6 +133,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "查询仓库信息列表"
     )
     @GetMapping("/SwJsStorelist")
+    @PreAuthorize("@ss.hasPermi('system:sku:list')")
     public AjaxResult<TableDataInfo> SwJsStorelist( Cbwa cbwa) {
         try {
             startPage();
@@ -156,6 +161,7 @@ public class SwJsStoreSkuController extends BaseController {
             notes = "仓库信息列表"
     )
     @GetMapping(value = "/cangkuliebiao")
+    @PreAuthorize("@ss.hasPermi('system:sku:list')")
     public AjaxResult<Cbwa > getInfo(Cbwa cbwa) {
         try {
             List<Cbwa> list= swJsStoreSkuService.selectCBWAByCbwa01(cbwa);

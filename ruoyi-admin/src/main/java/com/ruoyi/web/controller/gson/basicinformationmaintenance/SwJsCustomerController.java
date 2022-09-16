@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,6 +55,7 @@ public class SwJsCustomerController extends BaseController {
             notes = "新增客户信息"
     )
     @PostMapping("/SwJsCustomeradd")
+    @PreAuthorize("@ss.hasPermi('system:customer:add')")
     public AjaxResult SwJsCustomeradd(@Valid @RequestBody CbcaDto cbcaDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -82,6 +84,7 @@ public class SwJsCustomerController extends BaseController {
             notes = "修改客户信息"
     )
     @PostMapping("/SwJsCustomeredit")
+    @PreAuthorize("@ss.hasPermi('system:customer:edit')")
     public AjaxResult SwJsCustomeredit(@RequestBody CbcaDto cbcaDto) {
         try {
             return toAjax(swJsCustomerService.updateSwJsCustomer(cbcaDto));
@@ -108,6 +111,7 @@ public class SwJsCustomerController extends BaseController {
             notes = "删除客户信息"
     )
     @PostMapping("/SwJsGoodsClassifyremove")
+    @PreAuthorize("@ss.hasPermi('system:customer:remove')")
     public AjaxResult SwJsCustomerremove(@RequestBody CbcaDto cbcaDto) {
         try {
             return toAjax(swJsCustomerService.deleteSwJsCustomerById(cbcaDto));
@@ -136,6 +140,7 @@ public class SwJsCustomerController extends BaseController {
             notes = "查询客户信息列表"
     )
     @GetMapping("/SwJsCustomerlist")
+    @PreAuthorize("@ss.hasPermi('system:customer:list')")
     public AjaxResult<TableDataInfo> SwJsCustomerlist(Cbca cbca) {
         try{
             startPage();
@@ -164,6 +169,7 @@ public class SwJsCustomerController extends BaseController {
             notes = "导出客户信息列表"
     )
     @PostMapping("/SwJsCustomerexport")
+    @PreAuthorize("@ss.hasPermi('system:customer:export')")
     public void export(HttpServletResponse response, Cbca cbca) {
         List<Cbca> list = swJsCustomerService.selectSwJsCustomerList(cbca);
         ExcelUtil<Cbca> util = new ExcelUtil<>(Cbca.class);
@@ -179,6 +185,7 @@ public class SwJsCustomerController extends BaseController {
     )
     @PostMapping("/importSwJsCustomer")
     @ResponseBody
+    @PreAuthorize("@ss.hasPermi('system:customer:import')")
     public AjaxResult importSwJsCustomer(MultipartFile file, boolean updateSupport) {
         try {
             ExcelUtil<CbcaDto> util = new ExcelUtil<>(CbcaDto.class);
