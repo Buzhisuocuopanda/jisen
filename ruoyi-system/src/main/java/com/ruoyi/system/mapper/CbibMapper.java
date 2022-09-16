@@ -27,11 +27,11 @@ public interface CbibMapper {
 
     List<Cbib> selectLastZjrk(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
 
-    List<Cbib> selectLast(Integer goodsId, Integer whId);
+    List<Cbib> selectLast(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
 
 
 
-    Integer selectCountZjrk(Integer goodsId, Integer whId);
+    Integer selectCountZjrk(@Param("goodsId")Integer goodsId,@Param("whId") Integer whId);
 
-    Double selectSumSaleOut(Integer goodsId, Integer whId);
+    Double selectSumSaleOut(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
 }

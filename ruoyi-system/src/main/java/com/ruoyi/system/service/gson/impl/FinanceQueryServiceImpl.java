@@ -43,10 +43,12 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     private CbqbMapper cbqbMapper;
     @Resource
     private CbobMapper cbobMapper;
+    @Resource
+    private CbsdMapper cbsdMapper;
 
     @Override
     public List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
-        List<FnQueryAyntgesisVo> list=cbscMapper.fnSynthesis(fnQueryAynthesisDto);
+        List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis(fnQueryAynthesisDto);
         Map<Integer, String> integerStringMap = baseCheckService.brandMap();
 
         SimpleDateFormat sd=new SimpleDateFormat("yyyy-MMM-dd");
@@ -66,9 +68,10 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
+        List<FnGoodsSkuVo> list=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
-        List<FnGoodsSkuVo> list=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
+
         for (FnGoodsSkuVo fnGoodsSkuVo : list) {
             fnGoodsSkuVo.setBrand(brandMap.get(fnGoodsSkuVo.getBrand()));
 
@@ -79,15 +82,20 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
             //期初入库 查台账期初入库的
             CbibCriteria ibex=new CbibCriteria();
-            ibex.createCriteria()
-                    .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
-                    .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
-                    .andCbib17EqualTo("期初入库");
-            ibex.setOrderByClause("CBIB04 DESC");
-            List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
-            if(cbibs.size()>0){
-                fnGoodsSkuVo.setFirstQty(cbibs.get(0).getCbib16());
+            //zgl  添加非null判断
+            if(fnGoodsSkuVo.getGoodsId()!=null&&fnGoodsSkuVo.getWhId()!=null){
+                ibex.createCriteria()
+                        .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
+                        .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
+                        .andCbib17EqualTo("期初入库");
+                ibex.setOrderByClause("CBIB04 DESC");
+                List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
+                if(cbibs.size()>0){
+                    fnGoodsSkuVo.setFirstQty(cbibs.get(0).getCbib16());
+                }
             }
+
+
 
             //生产入库
 //            CbibCriteria mkibex=new CbibCriteria();
@@ -97,7 +105,13 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //                    .andCbib17EqualTo("直接入库");
 //            ibex.setOrderByClause("CBIB04 DESC");
             Integer count = cbibMapper.selectCountZjrk(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+            //zgl  修改count为null时报错的bug
+            if(count!=null){
                 fnGoodsSkuVo.setFirstQty(Double.valueOf(count));
+            }else {
+                fnGoodsSkuVo.setFirstQty(0d);
+            }
+
 
             //不良返工 查质检单
           List<Cbqb> res=  cbqbMapper.selectGoodsBad(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
@@ -123,10 +137,11 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
-        Map<Integer, String> brandMap = baseCheckService.brandMap();
-
         //查复审通过的销售订单明细
         List<SaleAnalysisVo> list= cbobMapper.salesAnalysis(fnsalesAnalysisDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+
+
         for (SaleAnalysisVo saleAnalysisVo : list) {
             saleAnalysisVo.setBrand(brandMap.get(saleAnalysisVo.getBrand()));
         }

@@ -382,8 +382,8 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBAC01 = #{cbac01,jdbcType=INTEGER}
   </update>
-
-  <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
+<!--zgl-->
+  <!--<select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
 
 SELECT
 	pe.CBPE03 AS inWhTime,
@@ -434,6 +434,6 @@ FROM
 	ORDER BY sd.CBSD03 DESC
 
 
-  </select>
+  </select>-->
 
 </mapper>

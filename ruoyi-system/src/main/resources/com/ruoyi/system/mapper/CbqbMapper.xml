@@ -328,7 +328,7 @@ SELECT
 CBQB qb
 LEFT JOIN
 gs_goods_sn sn on sn.sn =qb.CBQB10
-where sn.goods_id =#{gooodsId}
+where sn.goods_id =#{goodsId}
 and sn.wh_id =#{whId}
 
 
