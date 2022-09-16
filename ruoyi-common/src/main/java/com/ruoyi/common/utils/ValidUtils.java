@@ -4,6 +4,7 @@ package com.ruoyi.common.utils;
 
 import com.ruoyi.common.exception.ServiceException;
 
+import com.ruoyi.common.exception.SwException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -23,7 +24,7 @@ public class ValidUtils {
         }
 
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            throw new ServiceException(fieldError.getDefaultMessage());
+            throw new SwException(fieldError.getDefaultMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.CbpbCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,4 +38,6 @@ public interface CbpbMapper {
     int updateCBPB(Cbpb cbpb);
 
     Cbpb selectByPrimaryKeyForUpdate(@Param("id") Integer id);
+
+    List<CbpbVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
 }

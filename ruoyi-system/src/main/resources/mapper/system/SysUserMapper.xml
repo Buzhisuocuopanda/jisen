@@ -253,4 +253,73 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from `sys_user`
 		where user_id = #{userId,jdbcType=BIGINT}
 	</select>
+
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<resultMap id="BaseResultMap" type="com.ruoyi.common.core.domain.entity.SysUser">
+		<id column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="dept_id" jdbcType="BIGINT" property="deptId" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+		<result column="user_type" jdbcType="VARCHAR" property="userType" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="phonenumber" jdbcType="VARCHAR" property="phonenumber" />
+		<result column="sex" jdbcType="CHAR" property="sex" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="status" jdbcType="CHAR" property="status" />
+		<result column="del_flag" jdbcType="CHAR" property="delFlag" />
+		<result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+		<result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
+		<result column="create_by" jdbcType="VARCHAR" property="createBy" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="audit_perm" jdbcType="VARCHAR" property="auditPerm" />
+	</resultMap>
+
+	<select id="selectByExample" parameterType="com.ruoyi.system.domain.SysUserCriteria" resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from `sys_user`
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
 </mapper>

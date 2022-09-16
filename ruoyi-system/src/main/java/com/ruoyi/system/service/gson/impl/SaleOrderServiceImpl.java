@@ -2,6 +2,7 @@ package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.AuditStatusConstants;
 import com.ruoyi.common.constant.TotalOrderConstants;
+
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
@@ -122,8 +123,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto) {
 
+
+
         List<TotalOrderListVo> res = cbbaMapper.totalOrderList(totalOrderListDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (TotalOrderListVo re : res) {
+            if(re.getBrand()!=null){
+                re.setBrand(brandMap.get(Integer.valueOf(re.getBrand())));
+            }
+
             re.setCurrentOrderQty(re.getOrderQty() - re.getShippedQty());
             if (OrderTypeEnum.GUOJIDINGDAN.getCode().equals(re.getOrderType())) {
                 re.setOrderTypeMsg(OrderTypeEnum.GUOJIDINGDAN.getMsg());
@@ -521,9 +529,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         }
 
-
-
-
         return;
 
     }
@@ -538,6 +543,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         res.setId(cboa.getCboa01());
         res.setAddress(cboa.getCboa18());
         res.setCustomerId(cboa.getCboa09());
+        if(cboa.getCboa09()!=null){
+            SysUser customer = sysUserMapper.selectByPrimaryKey(cboa.getCboa09().longValue());
+            if(customer!=null){
+                res.setCustomerName(customer.getNickName());
+            }
+        }
+
         res.setCustomerNo(cboa.getCboa25());
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboa.getCboa09());
         if (cbca != null) {
@@ -645,6 +657,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (auditUser != null) {
                 audit = auditUser.getNickName() == null ? "" : auditUser.getNickName();
             }
+            res.setAuditUser(auditUser.getUserName());
 
             saleOrderAudit.setDescription(createTime + " 由 " + audit + " 审核");
             saleOrderAudit.setId(cabraa.getCabraa01());
@@ -846,17 +859,22 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 strings = new ArrayList<>();
             }
             strings.add(saleOrderExcelDto);
+            goodsMap.put(saleOrderExcelDto.getTotalOrderNo() + "_" + saleOrderExcelDto.getCustomerName(),strings);
 
             List<String> customers = customerMap.get(saleOrderExcelDto.getTotalOrderNo());
-            if (strings == null) {
+            if (customers == null) {
                 customers = new ArrayList<>();
             }
             customers.add(saleOrderExcelDto.getCustomerName());
+            customerMap.put(saleOrderExcelDto.getTotalOrderNo(),customers);
 
         }
 
         for (String key : totalOrderMap.keySet()) {
             List<String> customers = customerMap.get(key);
+            if (customers == null) {
+                customers = new ArrayList<>();
+            }
             for (String customer : customers) {
                 List<SaleOrderExcelDto> saleOrderExcelDtos = goodsMap.get(key + "_" + customer);
                 CbcaCriteria caex = new CbcaCriteria();
@@ -924,7 +942,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
                 cboa.setCboa27(OrderTypeEnum.GUOJIDINGDAN.getCode());
-                int insert = cboaMapper.insert(cboa);
+              cboaMapper.insertWithId(cboa);
                 Cbob cbob = null;
                 for (int i = 0; i < saleOrderExcelDtos.size(); i++) {
                     SaleOrderExcelDto saleOrderExcelDto = saleOrderExcelDtos.get(i);
@@ -978,7 +996,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     cbob.setCbob13(saleOrderExcelDto.getRemark());
                     cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob14(normalPrice);
-
+                    cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob17(cbba.getCbba01());
                     cbob.setCbob18(saleOrderExcelDto.getTotalOrderNo());
                     cbobMapper.insert(cbob);

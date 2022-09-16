@@ -7,6 +7,7 @@ import com.ruoyi.common.constant.PathConstant;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
@@ -25,6 +26,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -34,6 +36,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -109,8 +112,8 @@ public class SaleOrderController extends BaseController {
             value ="获取生产总订单列表",
             notes = "获取生产总订单列表"
     )
-    @PostMapping("/totalOrderList")
-    public AjaxResult<TableDataInfo> totalOrderList(@RequestBody TotalOrderListDto totalOrderListDto) {
+    @GetMapping("/totalOrderList")
+    public AjaxResult<TableDataInfo> totalOrderList( TotalOrderListDto totalOrderListDto) {
         try {
             startPage();
             List<TotalOrderListVo> res = saleOrderService.totalOrderList(totalOrderListDto);
@@ -119,7 +122,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【获取生产总订单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(totalOrderListDto), ExceptionUtils.getStackTrace(e));
+            log.error("【获取生产总订单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(totalOrderListDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -168,7 +171,14 @@ public class SaleOrderController extends BaseController {
     @PostMapping("/mdfTotalOrder")
     public AjaxResult mdfTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
-            ValidUtils.bindvaild(bindingResult);
+            if(DeleteFlagEnum.DELETE.getCode().equals(totalOrderAddDto.getDelete())){
+                if(totalOrderAddDto.getId()==null){
+                    throw new SwException("请选择生产总订单");
+                }
+            }else {
+                ValidUtils.bindvaild(bindingResult);
+            }
+
             totalOrderAddDto.setUserId(getUserId().intValue());
             if (totalOrderAddDto.getId() == null) {
                 throw new SwException("请选择要修改的生产总订单");
@@ -222,10 +232,24 @@ public class SaleOrderController extends BaseController {
             notes = "导出生产总订单"
     )
     @PostMapping("/totalOrderExcelList")
-    public void totalOrderExcelList(@RequestBody TotalOrderListDto totalOrderListDto, HttpServletResponse response) {
+    public void totalOrderExcelList( TotalOrderListDto totalOrderListDto, HttpServletResponse response) {
         List<TotalOrderListVo> totalOrderListVos = saleOrderService.totalOrderList(totalOrderListDto);
         ExcelUtil<TotalOrderListVo> util = new ExcelUtil<>(TotalOrderListVo.class);
         util.exportExcel(response, totalOrderListVos, "生产总订单数据");
+    }
+
+    /**
+     * 导出生产总订单模板
+     */
+    @ApiOperation(
+            value ="导出生产总订单模板",
+            notes = "导出生产总订单模板"
+    )
+    @PostMapping("/totalOrderExcelListtmp")
+    public void totalOrderExcelListtmp( HttpServletResponse response) {
+        List<TotalOrderExcelDto> totalOrderLstVos =new ArrayList<>();
+        ExcelUtil<TotalOrderExcelDto> util = new ExcelUtil<>(TotalOrderExcelDto.class);
+        util.exportExcel(response, totalOrderLstVos, "生产总订单数据模板");
     }
 
     /**
@@ -238,8 +262,8 @@ public class SaleOrderController extends BaseController {
             value ="销售订单列表",
             notes = "销售订单列表"
     )
-    @PostMapping("/saleOrderList")
-    public AjaxResult<List<TableDataInfo>> saleOrderList(@RequestBody SaleOrderListDto saleOrderListDto) {
+    @GetMapping("/saleOrderList")
+    public AjaxResult<List<TableDataInfo>> saleOrderList( SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
             List<SaleOrderListVo> list = saleOrderService.saleOrderList(saleOrderListDto);
@@ -431,7 +455,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【国际订单导入】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+            log.error("【国际订单导入】接口出现异常,参数${}$,异常${}$",  "", ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -954,9 +978,9 @@ public class SaleOrderController extends BaseController {
         String resa=format+"审核("+auditUser+")";
         FormExcelUtil.setCellData(sheet1,rese,10,1);
         FormExcelUtil.setCellData(sheet1,resa,10,3);
-        String storename = res.getStorename();
-        String resss=format+"仓库:"+storename;
-        FormExcelUtil.setCellData(sheet1,resss,10,5);
+//        String storename = res.getStorename();
+//        String resss=format+"仓库:"+storename;
+//        FormExcelUtil.setCellData(sheet1,resss,10,5);
         Date date = new Date();
         String ress=format+"由"+auditUser+"审核";
 

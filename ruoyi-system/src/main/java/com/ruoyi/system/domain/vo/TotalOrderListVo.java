@@ -22,6 +22,8 @@ public class TotalOrderListVo {
     @ApiModelProperty("订单号")
 
     private String orderNo;
+    private Integer goodsId;
+
     @Excel(name = "型号")
     @ApiModelProperty("型号")
 
@@ -54,4 +56,22 @@ public class TotalOrderListVo {
     @Excel(name = "状态")
     @ApiModelProperty("状态 0：NO  4:OK")
     private String status;
+
+    private String goods;
+
+    private Double qty;
+    private String brand;
+
+    public String getGoods() {
+        if(brand!=null && model !=null && description !=null){
+            return brand+"-" +model+"-"+description;
+        }else {
+            return goods;
+        }
+
+    }
+
+    public Double getQty() {
+        return orderQty;
+    }
 }

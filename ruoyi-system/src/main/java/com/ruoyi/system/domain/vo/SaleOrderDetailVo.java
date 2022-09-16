@@ -133,6 +133,6 @@ public class SaleOrderDetailVo {
     private String customerName;
 
     //仓库名称
-    @ApiModelProperty("仓库名称")
-    private String storename;
+//    @ApiModelProperty("仓库名称")
+//    private String storename;
 }
