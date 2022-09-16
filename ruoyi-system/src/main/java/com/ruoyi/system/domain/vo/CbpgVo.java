@@ -48,5 +48,6 @@ public class CbpgVo  extends BaseEntity
     private String endTime;
 
     private String cbpb15;
+    private String cbla09;
 
 }

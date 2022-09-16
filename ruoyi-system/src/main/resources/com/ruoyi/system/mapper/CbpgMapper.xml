@@ -418,7 +418,7 @@
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
     h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,h.CBPB15,
-    i.CBLA09,b.CBPH08,f.*,i.CBLA09
+    i.CBLA09,b.CBPH08,f.*
     from CBPG a
     LEFT JOIN
     CBPH b
