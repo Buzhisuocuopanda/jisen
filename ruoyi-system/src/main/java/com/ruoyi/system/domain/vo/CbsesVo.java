@@ -31,5 +31,6 @@ public class CbsesVo extends BaseEntity {
     private String cbwa09;
 
     private Integer cbsf08;
+    private String cbpa07;
 
 }

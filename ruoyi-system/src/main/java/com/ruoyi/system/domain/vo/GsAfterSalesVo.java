@@ -33,6 +33,7 @@ public class GsAfterSalesVo extends BaseEntity {
 
     private String process;
     private String cbpb08;
+    private String cbpb15;
 
     private String cbca08;
     private String cbsa08;

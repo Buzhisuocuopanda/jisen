@@ -15,6 +15,8 @@ import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
 import com.ruoyi.system.domain.vo.InwuquVo;
 import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import com.ruoyi.system.service.gson.FinanceQueryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,9 @@ import java.util.List;
  * Create by gfy
  * Date 2022/9/2 15:27
  */
+@Api(
+        tags = {"财务报表"}
+)
 @RestController
 @RequestMapping("/query")
 @Slf4j
@@ -46,6 +51,10 @@ public class FinanceQueryController extends BaseController {
      * @param fnQueryAynthesisDto
      * @return
      */
+    @ApiOperation(
+            value ="财务综合报表查询",
+            notes = "财务综合报表查询"
+    )
     @GetMapping("/fnSynthesis")
     public AjaxResult<TableDataInfo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
 
@@ -72,6 +81,10 @@ public class FinanceQueryController extends BaseController {
      * @param fnGoodsSkuDto
      * @return
      */
+    @ApiOperation(
+            value ="库存情况报表",
+            notes = "库存情况报表"
+    )
     @GetMapping("/fnSkuList")
     public AjaxResult<TableDataInfo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
 
@@ -98,6 +111,10 @@ public class FinanceQueryController extends BaseController {
      * @param fnsalesAnalysisDto
      * @return
      */
+    @ApiOperation(
+            value ="销售分析",
+            notes = "销售分析"
+    )
     @GetMapping("/salesAnalysis")
     public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
 

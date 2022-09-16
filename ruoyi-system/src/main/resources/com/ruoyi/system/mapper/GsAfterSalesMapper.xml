@@ -355,7 +355,11 @@
   <select id="aftersaleslist" resultType="com.ruoyi.system.domain.vo.GsAfterSalesVo">
     SELECT
       b.CBPB08,a.id,a.sale_order_no as saleOrderNo,
-      c.CBCA08,a.sn,d.CBSA08,a.create_time as createTime
+      c.CBCA08,a.sn as sn,
+      d.CBSA08,a.create_time as createTime,
+      b.CBPB15 as cbpb15,
+      a.answer_msg as answerMsg,
+      a.question as question
     FROM
       gs_after_sales a
         LEFT JOIN
