@@ -28,5 +28,5 @@ public interface CbqbMapper {
 
     int updateByPrimaryKey(Cbqb record);
 
-    List<Cbqb> selectGoodsBad(Integer goodsId, Integer whId);
+    List<Cbqb> selectGoodsBad(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
 }

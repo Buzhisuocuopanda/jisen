@@ -7,7 +7,9 @@ import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
 import com.ruoyi.system.domain.dto.CbpcDto;
+import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
+import com.ruoyi.system.domain.vo.GoodsSelectVo;
 
 import java.util.List;
 
@@ -46,4 +48,5 @@ public interface ISwJsGoodsService {
 
     int insertSwJsStores(List<CbpbDto> itemList);
 
+    List<GoodsSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
 }

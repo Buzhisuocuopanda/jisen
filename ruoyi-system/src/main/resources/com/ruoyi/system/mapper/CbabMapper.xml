@@ -430,45 +430,6 @@
     where CBAB01 = #{cbab01,jdbcType=INTEGER}
   </update>
 
-  <select id="salesAnalysis" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
 
-    SELECT
-    ca.CBCA08 AS customerName,
-    oa.CBOA02 AS createTime,
-    USER.nick_name AS saleUser,
-    oa.CBOA07 AS saleOrderNo,
-    pb.CBPB12 AS model,
-    pb.CBPB10 AS brand,
-    ob.CBOB09 AS qty,
-    ob.CBOB12 AS price
-    FROM
-    CBOB ob
-    LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
-    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
-    LEFT JOIN sys_user USER ON USER.user_id = oa.CBOA10
-    LEFT JOIN CBPB pb ON pb.CBPB01 = ob.CBOB08
-    WHERE
-    oa.CBOA11 = 5
-    AND ob.CBOB07 = 0
-    <if test="customerId !=null ">
-    AND oa.CBOA09 = #{customerId}
-    </if>
-    <if test="model !=null and model !='' ">
-    AND pb.CBPB12 = #{model}
-    </if>
-    <if test="brand !=null and brand !='' ">
-    AND pb.CBPB10 = #{brand}
-    </if>
-    <if test="saleUserId !=null ">
-    AND oa.CBOA10 = #{saleUserId}
-    </if>
-    <if test="startTime !=null ">
-    AND oa.CBOA02  &gt;= #{startTime}
-    </if>
-    <if test="endTime !=null ">
-    AND oa.CBOA02 &lt;=#{endTime}
-    </if>
-
-  </select>
 
 </mapper>

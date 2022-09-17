@@ -13,8 +13,10 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
+import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
+import com.ruoyi.system.domain.vo.GoodsSelectVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -411,4 +414,22 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         session.commit();
         session.clearCache();
         return 1;    }
+
+    @Override
+    public List<GoodsSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto) {
+        List<CbpbVo> cbpbVos = cbpbMapper.swJsGoodslistBySelect(goodsSelectDto);
+        List<GoodsSelectVo> res=new ArrayList<>();
+        GoodsSelectVo gs=null;
+        for (CbpbVo vo : cbpbVos) {
+            gs=new GoodsSelectVo();
+            gs.setValue(vo.getCbpb01());
+            if(vo.getCala08()!=null && vo.getCbpb12()!=null && vo.getCbpb08()!=null){
+                gs.setLabel(vo.getCala08()+"-"+ vo.getCbpb12()+"-"+vo.getCbpb08());
+            }
+            res.add(gs);
+
+        }
+        return res;
+
+    }
 }

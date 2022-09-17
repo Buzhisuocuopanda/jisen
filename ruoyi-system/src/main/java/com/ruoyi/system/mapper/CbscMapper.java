@@ -30,7 +30,7 @@ public interface CbscMapper {
     int updateByPrimaryKeySelective(Cbsc record);
 
     int updateByPrimaryKey(Cbsc record);
-
-    List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);
+    //zgl
+    /*List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);*/
 
 }

@@ -6,16 +6,15 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
-import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
-import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
-import com.ruoyi.system.domain.vo.InwuquVo;
-import com.ruoyi.system.domain.vo.SaleAnalysisVo;
+import com.ruoyi.system.domain.dto.InwuqusDto;
+import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -34,9 +33,6 @@ import java.util.List;
  * Create by gfy
  * Date 2022/9/2 15:27
  */
-@Api(
-        tags = {"财务报表"}
-)
 @RestController
 @RequestMapping("/query")
 @Slf4j
@@ -46,15 +42,14 @@ public class FinanceQueryController extends BaseController {
     @Resource
     private FinanceQueryService financeQueryService;
 
+    @Resource
+    private CountQueryService countQueryService;
+
     /**
      * 财务综合报表查询
      * @param fnQueryAynthesisDto
      * @return
      */
-    @ApiOperation(
-            value ="财务综合报表查询",
-            notes = "财务综合报表查询"
-    )
     @GetMapping("/fnSynthesis")
     public AjaxResult<TableDataInfo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
 
@@ -81,16 +76,11 @@ public class FinanceQueryController extends BaseController {
      * @param fnGoodsSkuDto
      * @return
      */
-    @ApiOperation(
-            value ="库存情况报表",
-            notes = "库存情况报表"
-    )
     @GetMapping("/fnSkuList")
     public AjaxResult<TableDataInfo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
 
         try {
             startPage();
-
             List<FnGoodsSkuVo> list=financeQueryService.fnSkuList(fnGoodsSkuDto);
             return AjaxResult.success(getDataTable(list));
 
@@ -107,20 +97,43 @@ public class FinanceQueryController extends BaseController {
     }
 
     /**
+     * 财务库存明细查询
+     */
+    @ApiOperation(
+            value ="财务库存明细查询",
+            notes = "财务库存明细查询"
+    )
+    @GetMapping("/fnInventorysummaryquerys")
+    public AjaxResult<TableDataInfo> fnInventorysummaryquery(InwuqusDto inwuqusDto) {
+        try {
+            startPage();
+            List<InwuqusVo> list = countQueryService.selectInventorysummaryquerys(inwuqusDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 销售分析
      * @param fnsalesAnalysisDto
      * @return
      */
-    @ApiOperation(
-            value ="销售分析",
-            notes = "销售分析"
-    )
     @GetMapping("/salesAnalysis")
     public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
 
         try {
             startPage();
-
             List<SaleAnalysisVo> list=financeQueryService.salesAnalysis(fnsalesAnalysisDto);
             return AjaxResult.success(getDataTable(list));
 

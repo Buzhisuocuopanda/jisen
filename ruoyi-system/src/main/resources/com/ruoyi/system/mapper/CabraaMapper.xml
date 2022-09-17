@@ -463,4 +463,5 @@
       CABRAA21 = #{cabraa21,jdbcType=VARCHAR}
     where CABRAA01 = #{cabraa01,jdbcType=INTEGER}
   </update>
+
 </mapper>

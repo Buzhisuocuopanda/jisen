@@ -2,6 +2,7 @@ package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.AuditStatusConstants;
 import com.ruoyi.common.constant.TotalOrderConstants;
+
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
@@ -122,8 +123,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto) {
 
+
+
         List<TotalOrderListVo> res = cbbaMapper.totalOrderList(totalOrderListDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (TotalOrderListVo re : res) {
+            if(re.getBrand()!=null){
+                re.setBrand(brandMap.get(Integer.valueOf(re.getBrand())));
+            }
+
             re.setCurrentOrderQty(re.getOrderQty() - re.getShippedQty());
             if (OrderTypeEnum.GUOJIDINGDAN.getCode().equals(re.getOrderType())) {
                 re.setOrderTypeMsg(OrderTypeEnum.GUOJIDINGDAN.getMsg());
@@ -521,9 +529,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         }
 
-
-
-
         return;
 
     }
@@ -538,6 +543,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         res.setId(cboa.getCboa01());
         res.setAddress(cboa.getCboa18());
         res.setCustomerId(cboa.getCboa09());
+        if(cboa.getCboa09()!=null){
+            SysUser customer = sysUserMapper.selectByPrimaryKey(cboa.getCboa09().longValue());
+            if(customer!=null){
+                res.setCustomerName(customer.getNickName());
+            }
+        }
+
         res.setCustomerNo(cboa.getCboa25());
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboa.getCboa09());
         if (cbca != null) {
@@ -645,6 +657,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (auditUser != null) {
                 audit = auditUser.getNickName() == null ? "" : auditUser.getNickName();
             }
+            res.setAuditUser(auditUser.getUserName());
 
             saleOrderAudit.setDescription(createTime + " 由 " + audit + " 审核");
             saleOrderAudit.setId(cabraa.getCabraa01());
@@ -846,17 +859,22 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 strings = new ArrayList<>();
             }
             strings.add(saleOrderExcelDto);
+            goodsMap.put(saleOrderExcelDto.getTotalOrderNo() + "_" + saleOrderExcelDto.getCustomerName(),strings);
 
             List<String> customers = customerMap.get(saleOrderExcelDto.getTotalOrderNo());
-            if (strings == null) {
+            if (customers == null) {
                 customers = new ArrayList<>();
             }
             customers.add(saleOrderExcelDto.getCustomerName());
+            customerMap.put(saleOrderExcelDto.getTotalOrderNo(),customers);
 
         }
 
         for (String key : totalOrderMap.keySet()) {
             List<String> customers = customerMap.get(key);
+            if (customers == null) {
+                customers = new ArrayList<>();
+            }
             for (String customer : customers) {
                 List<SaleOrderExcelDto> saleOrderExcelDtos = goodsMap.get(key + "_" + customer);
                 CbcaCriteria caex = new CbcaCriteria();
@@ -924,7 +942,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
                 cboa.setCboa27(OrderTypeEnum.GUOJIDINGDAN.getCode());
-                int insert = cboaMapper.insert(cboa);
+              cboaMapper.insertWithId(cboa);
                 Cbob cbob = null;
                 for (int i = 0; i < saleOrderExcelDtos.size(); i++) {
                     SaleOrderExcelDto saleOrderExcelDto = saleOrderExcelDtos.get(i);
@@ -978,7 +996,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     cbob.setCbob13(saleOrderExcelDto.getRemark());
                     cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob14(normalPrice);
-
+                    cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob17(cbba.getCbba01());
                     cbob.setCbob18(saleOrderExcelDto.getTotalOrderNo());
                     cbobMapper.insert(cbob);
@@ -1132,8 +1150,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Transactional
     @Override
     public void auditSaleOrder(AuditSaleOrderDto auditSaleOrderDto) {
+        Date date = new Date();
 
         Cboa cboa= baseCheckService.checkSaleOrder(auditSaleOrderDto.getOrderId());
+        Integer orderStatus = cboa.getCboa11();
         //检查是否具有审核权限
         String perType="1";
         if(OrderTypeEnum.GUOJIDINGDAN.getCode().equals(cboa.getCboa27())){
@@ -1142,7 +1162,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(),perType);
 
         if(auditSaleOrderDto.getOpeateType().equals(5)){
+
+            if(!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(orderStatus)){
+                throw new SwException("只有在已复审的状态下才能指定结束");
+            }
             //指定结束
+            cboa.setCboa11(SaleOrderStatusEnums.ZHIDINGJIESHU.getCode());
             //除未提交都要释放未发货的库存占用
             if(!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(cboa.getCboa11())){
                 CbobCriteria obex=new CbobCriteria();
@@ -1179,8 +1204,74 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
 
+        }else if(auditSaleOrderDto.getOpeateType().equals(SaleOrderStatusEnums.YISHENHE.getCode())){
+            //审核通过
+            if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(orderStatus)){
+                throw new SwException("失败，订单状态必须为已提交");
+            }
+            cboa.setCboa11(SaleOrderStatusEnums.YISHENHE.getCode());
+            Cabraa cabraa=new Cabraa();
+            cabraa.setCabraa02(date);
+            cabraa.setCabraa03(date);
+            cabraa.setCabraa04(auditSaleOrderDto.getUserId());
+            cabraa.setCabraa05(auditSaleOrderDto.getUserId());
+            cabraa.setCabraa06(DeleteFlagEnum.NOT_DELETE.getCode());
+            cabraa.setCabraa07("销售订单");
+            cabraa.setCabraa12(date);
+            cabraa.setCabraa14(cboa.getCboa07());
+            cabraa.setCabraa15(date);
+            cabraa.setCabraa18("[审核]ok");
+            cabraa.setCabraa11(auditSaleOrderDto.getUserId());
+            cabraaMapper.insert(cabraa);
+
+        }else if(auditSaleOrderDto.getOpeateType().equals(SaleOrderStatusEnums.YIFUSHEN.getCode())){
+
+            if(!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(orderStatus)){
+                throw new SwException("只有在已复审的状态下才能指定结束");
+            }
+            //指定结束
+            cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
+            //除未提交都要释放未发货的库存占用
+            if(!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(cboa.getCboa11())){
+                CbobCriteria obex=new CbobCriteria();
+                obex.createCriteria()
+                        .andCboa01EqualTo(cboa.getCboa01())
+                        .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+                for (Cbob cbob : cbobs) {
+                    GsGoodsUseCriteria guex=new GsGoodsUseCriteria();
+                    guex.createCriteria()
+                            .andOrderNoEqualTo(cboa.getCboa07())
+                            .andGoodsIdEqualTo(cbob.getCbob08());
+                    List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
+                    Double noUse=cbob.getCbob09()-cbob.getCbob10();
+
+                    for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                        if(noUse>=gsGoodsUs.getLockQty()){
+                            gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+                            noUse=noUse-gsGoodsUs.getLockQty();
+
+                        }else {
+                            gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-noUse);
+                            gsGoodsUs.setUpdateTime(new Date());
+                            gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                            noUse=0.0;
+                        }
+
+                        if(noUse==0){
+                            break;
+                        }
+                    }
+
+                }
+            }
         }
 
+
+
+        cboa.setCboa05(auditSaleOrderDto.getUserId());
+        cboa.setCboa04(date);
+        cboaMapper.updateByPrimaryKey(cboa);
 
     }
 
@@ -1702,6 +1793,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cbob.setCbob11(cbod.getCbod11());
                 cbob.setCbob12(cbob.getCbob12());
                 cbobMapper.updateByPrimaryKey(cbob);
+
+
+
+
+
 
             }
 

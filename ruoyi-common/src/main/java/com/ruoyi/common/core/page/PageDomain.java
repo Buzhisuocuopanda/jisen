@@ -4,7 +4,7 @@ import com.ruoyi.common.utils.StringUtils;
 
 /**
  * 分页数据
- * 
+ *
  * @author ruoyi
  */
 public class PageDomain
@@ -22,7 +22,7 @@ public class PageDomain
     private String isAsc = "asc";
 
     /** 分页参数合理化 */
-    private Boolean reasonable = true;
+    private Boolean reasonable = false;
 
     public String getOrderBy()
     {
@@ -89,7 +89,7 @@ public class PageDomain
     {
         if (StringUtils.isNull(reasonable))
         {
-            return Boolean.TRUE;
+            return Boolean.FALSE;
         }
         return reasonable;
     }
