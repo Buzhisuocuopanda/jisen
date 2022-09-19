@@ -344,7 +344,8 @@
     b.CABRAA07 as cabraa07,
     b.CABRAA01 as cabraa01,
     b.CABRAA15 as cabraa15,
-    b.CABRAA17 as cabraa17
+    b.CABRAA17 as cabraa17,
+    b.CABRAA21 as cabraa21
     FROM
     CABRAA b
     LEFT JOIN

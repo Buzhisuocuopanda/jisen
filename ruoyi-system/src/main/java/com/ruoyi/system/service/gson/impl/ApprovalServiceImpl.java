@@ -42,22 +42,22 @@ public class ApprovalServiceImpl implements ApprovalService {
     //查询审批记录
     @Override
     public List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo) {
-        String key="faqs";//设置键名
-        ListOperations<String,ApprovalVo> list = redisTemplate.opsForList();
-        Boolean bool=redisTemplate.hasKey(key);//判断是否存在该键名
-
-        if (bool){
-
-            return   list.range(key,0,-1);//如果存在直接从缓存查询返回集合
-        }else {
+//        String key="faqs";//设置键名
+//        ListOperations<String,ApprovalVo> list = redisTemplate.opsForList();
+//        Boolean bool=redisTemplate.hasKey(key);//判断是否存在该键名
+//
+//        if (bool){
+//
+//            return   list.range(key,0,-1);//如果存在直接从缓存查询返回集合
+//        }else {
         List<ApprovalVo> approvalVos = gsWorkInstanceMapper.selectApprovalrecords(approvalVo);
-            list.leftPushAll(key,approvalVos);//如果不存在将设置好的key键值和查询数据库的结果放入
+            //list.leftPushAll(key,approvalVos);//如果不存在将设置好的key键值和查询数据库的结果放入
             Long userid = SecurityUtils.getUserId();
         String task= "1,2";
        baseCheckService.checkUserTask(userid, task);
         return  approvalVos;
-        }
-    }
+//        }
+   }
 
     @Override
     public List<UnfinishedentsVo> selectUnfinisheddocuments(UnfinishedentsVo unfinishedentsVo) {
