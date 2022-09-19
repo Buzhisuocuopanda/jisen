@@ -53,6 +53,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Resource
     private BaseCheckService baseCheckService;
 
+    @Resource
+    private CbacMapper cbacMapper;
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
@@ -219,65 +221,151 @@ if(itemList.size()==0){
         example.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
+        CbabCriteria example2 = new CbabCriteria();
+        example2.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+        List<Cbab> cbabs1 = cbabMapper.selectByExample(example2);
+        if(cbabs1.size() == 0){
+            throw new SwException("该仓库调拨单明细不存在");
+        }
+        List<Cbac> cbacs=null;
+      for(int i=0;i<cbabs1.size();i++) {
+        CbacCriteria example3 = new CbacCriteria();
+         example3.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
+            .andCbac08EqualTo(cbabs1.get(i).getCbab08());
+            cbacs = cbacMapper.selectByExample(example3);
+            if(cbacs.size()==0){
+                throw new SwException("该仓库调拨单扫码记录不存在");
 
-        //调入仓库
-        Integer storeid = cbaa1.getCbaa10();
-        //调出仓库
-        Integer storeid1 = cbaa1.getCbaa09();
-        //编号
-        String number = cbaa1.getCbaa07();
-        //单据id
-        Integer id = cbaa1.getCbaa01();
+            }
+      }
 
-        //查仓库调拨单明细表
-        CbabCriteria example1 = new CbabCriteria();
-        example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
-                .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbab> cbabs = cbabMapper.selectByExample(example1);
-        for(int i=0;i<cbabs.size();i++) {
-            //供应商名称
-            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbabs.get(i).getCbab14());
-            String vendername = cbsa.getCbsa08();
-            //商品id
-            Integer goodsid = cbabs.get(i).getCbab08();
+        for(int j=0;j<cbacs.size();j++) {
+            Double num = (double) cbacs.size();
+            //调出仓库
+        Integer outstore = cbaa.getCbaa09();
+        Integer instore = cbaa.getCbaa10();
+        GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+        //获取调出仓库id
+        gsGoodsSkuDo.setWhId(outstore);
+        //获取商品id
+        gsGoodsSkuDo.setGoodsId(cbacs.get(j).getCbac08());
+        gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        //通过仓库id和货物id判断是否存在
+        // 调出仓库
+        List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+        if(gsGoodsSkus.size()==0){
+            throw new SwException("调出仓库没有该货物");
+        }
+        else {
+            //加锁
+            baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            //查出
+            Double qty = gsGoodsSkus.get(0).getQty();
+            if(qty==0){
+                throw new SwException("调出仓库该货物数量为0");
+            }
+            gsGoodsSkuDo1.setGoodsId(gsGoodsSkus.get(0).getGoodsId());
+            gsGoodsSkuDo1.setWhId(outstore);
+            gsGoodsSkuDo1.setLocationId(gsGoodsSkus.get(j).getLocationId());
 
-            //台账新增数据调入仓库
-            CbibDo cbibDo = new CbibDo();
-            cbibDo.setCbib02(storeid);
-            cbibDo.setCbib03(number);
-            cbibDo.setCbib05(String.valueOf(TaskType.xsthd.getCode()));
-            cbibDo.setCbib06(vendername);
-            cbibDo.setCbib07(id);
-            cbibDo.setCbib08(goodsid);
-            cbibDo.setCbib11(cbabs.get(i).getCbab09());
-            cbibDo.setCbib12(cbabs.get(i).getCbab12());
-            cbibDo.setCbib13((double) 0);
-            cbibDo.setCbib14((double) 0);
+            double v1 = qty - num;
+            gsGoodsSkuDo1.setQty(v1);
+            taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-            cbibDo.setCbib17(TaskType.cqrk.getMsg());
-            cbibDo.setCbib19(cbabs.get(i).getCbab14());
-            taskService.InsertCBIB(cbibDo);
-
-             //台账新增数据调出仓库
-            CbibDo cbibDo1 = new CbibDo();
-            cbibDo1.setCbib02(storeid1);
-            cbibDo1.setCbib03(number);
-            cbibDo1.setCbib05(String.valueOf(TaskType.zjd.getCode()));
-            cbibDo1.setCbib06(vendername);
-            cbibDo1.setCbib07(id);
-            cbibDo1.setCbib08(goodsid);
-            cbibDo1.setCbib11((double) 0);
-            cbibDo1.setCbib12((double) 0);
-            cbibDo1.setCbib13(cbabs.get(i).getCbab09());
-            cbibDo1.setCbib14(cbabs.get(i).getCbab12());
-
-            cbibDo1.setCbib17(TaskType.cqrk.getMsg());
-            cbibDo1.setCbib19(cbabs.get(i).getCbab14());
-            taskService.InsertCBIB(cbibDo1);
 
         }
 
+        //调入仓库加
+        GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+        //获取调入仓库id
+        gsGoodsSkuDo1.setWhId(instore);
+        //获取商品id
+        gsGoodsSkuDo1.setGoodsId(cbacs.get(j).getCbac08());
+        gsGoodsSkuDo1.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        //通过仓库id和货物id判断是否存在
+        List<GsGoodsSku> gsGoodsSkus1 = taskService.checkGsGoodsSku(gsGoodsSkuDo1);
+        if(gsGoodsSkus1.size()==0){
+            GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+            gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
+            gsGoodsSkuDo2.setWhId(instore);
+            gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
+            gsGoodsSkuDo2.setQty(num);
+            taskService.addGsGoodsSku(gsGoodsSkuDo2);
+        }
+        else {
+            //加锁
+            baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+            GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
 
+            gsGoodsSkuDo2.setGoodsId(gsGoodsSkus1.get(0).getGoodsId());
+            gsGoodsSkuDo2.setWhId(instore);
+            gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(j).getLocationId());
+            //查出
+            Double qty = gsGoodsSkus1.get(0).getQty();
+            double v = qty + num;
+            gsGoodsSkuDo2.setQty(v);
+            taskService.updateGsGoodsSku(gsGoodsSkuDo2);
+        }
+
+            //调入仓库
+            Integer storeid = cbaa1.getCbaa10();
+            //调出仓库
+            Integer storeid1 = cbaa1.getCbaa09();
+            //编号
+            String number = cbaa1.getCbaa07();
+            //单据id
+            Integer id = cbaa1.getCbaa01();
+
+            //查仓库调拨单明细表
+            CbabCriteria example1 = new CbabCriteria();
+            example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
+                    .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbab> cbabs = cbabMapper.selectByExample(example1);
+            for (int i = 0; i < cbabs.size(); i++) {
+                //供应商名称
+                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbabs.get(i).getCbab14());
+                String vendername = cbsa.getCbsa08();
+                //商品id
+                Integer goodsid = cbabs.get(i).getCbab08();
+
+                //台账新增数据调入仓库
+                CbibDo cbibDo = new CbibDo();
+                cbibDo.setCbib02(storeid);
+                cbibDo.setCbib03(number);
+                cbibDo.setCbib05(String.valueOf(TaskType.xsthd.getCode()));
+                cbibDo.setCbib06(vendername);
+                cbibDo.setCbib07(id);
+                cbibDo.setCbib08(goodsid);
+                cbibDo.setCbib11(cbabs.get(i).getCbab09());
+                cbibDo.setCbib12(cbabs.get(i).getCbab12());
+                cbibDo.setCbib13((double) 0);
+                cbibDo.setCbib14((double) 0);
+
+                cbibDo.setCbib17(TaskType.cqrk.getMsg());
+                cbibDo.setCbib19(cbabs.get(i).getCbab14());
+                taskService.InsertCBIB(cbibDo);
+
+                //台账新增数据调出仓库
+                CbibDo cbibDo1 = new CbibDo();
+                cbibDo1.setCbib02(storeid1);
+                cbibDo1.setCbib03(number);
+                cbibDo1.setCbib05(String.valueOf(TaskType.zjd.getCode()));
+                cbibDo1.setCbib06(vendername);
+                cbibDo1.setCbib07(id);
+                cbibDo1.setCbib08(goodsid);
+                cbibDo1.setCbib11((double) 0);
+                cbibDo1.setCbib12((double) 0);
+                cbibDo1.setCbib13(cbabs.get(i).getCbab09());
+                cbibDo1.setCbib14(cbabs.get(i).getCbab12());
+
+                cbibDo1.setCbib17(TaskType.cqrk.getMsg());
+                cbibDo1.setCbib19(cbabs.get(i).getCbab14());
+                taskService.InsertCBIB(cbibDo1);
+
+            }
+
+        }
         return cbaaMapper.updateByExampleSelective(cbaa, example);
     }
     /**
@@ -357,7 +445,7 @@ if(itemList.size()==0){
             itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
-            //如果查不到添加信息到库存表
+           /* //如果查不到添加信息到库存表
             Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
             if(cbaa==null){
                 throw new SwException("调拨单不存在");
@@ -413,7 +501,8 @@ if(itemList.size()==0){
                 gsGoodsSkuDo2.setLocationId(itemList.get(i).getCbac10());
                 gsGoodsSkuDo2.setQty(1.0);
                 taskService.addGsGoodsSku(gsGoodsSkuDo2);
-            } else {
+            }
+            else {
                 //加锁
                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                 GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
@@ -427,7 +516,7 @@ if(itemList.size()==0){
                 gsGoodsSkuDo2.setQty(v);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo2);
 
-            }
+            }*/
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbac09());
@@ -442,9 +531,9 @@ if(itemList.size()==0){
                 session.clearCache();
             }
         }
-        CbaaDo cbaaDo = new CbaaDo();
-        cbaaDo.setCbaa01(itemList.get(0).getCbaa01());
-        this.insertSwJsSkuBarcodebjwc(cbaaDo);
+//        CbaaDo cbaaDo = new CbaaDo();
+//        cbaaDo.setCbaa01(itemList.get(0).getCbaa01());
+//        this.insertSwJsSkuBarcodebjwc(cbaaDo);
         session.commit();
         session.clearCache();
         return 1;    }

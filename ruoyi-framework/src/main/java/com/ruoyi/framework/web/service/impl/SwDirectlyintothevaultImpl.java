@@ -60,10 +60,10 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
         }
         // 检查供应商
-      //  baseCheckService.checksupplier(cbicDto.getCbic13());
+        baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
-      //  Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
+        Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
 
         Long userid = SecurityUtils.getUserId();
 
@@ -136,11 +136,14 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
         List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
 
+        Integer cbic13 = cbicDto.getCbic13();
+        Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
 
         CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
         cbibDo.setCbib02(storeid);
         cbibDo.setCbib04(date);
         cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+        cbibDo.setCbib06(cbsa1.getCbsa08());
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
        // cbibDo.setCbib06(cbsa.getCbsa08());
 

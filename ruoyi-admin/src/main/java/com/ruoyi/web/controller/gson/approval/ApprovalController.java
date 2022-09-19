@@ -1,9 +1,12 @@
 package com.ruoyi.web.controller.gson.approval;
 
 import com.alibaba.fastjson2.JSON;
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -155,4 +158,46 @@ public class ApprovalController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    public static TableDataInfo mySetPage(List list){
+
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        TableDataInfo rspData =new TableDataInfo();
+        rspData.setCode(0);
+        rspData.setRows(myStartPage(list, pageNum, pageSize));
+        rspData.setTotal(new PageInfo(list).getTotal());
+        return rspData;
+
+    }
+
+
+    public static List myStartPage(List list, Integer pageNum, Integer pageSize){
+        if(list ==null){
+            return null;
+        }
+        if(list.size()==0){
+            return null;
+        }
+        Integer count = list.size();//
+        Integer pageCount =0;//
+        if(count % pageSize ==0){
+            pageCount = count / pageSize;
+        }else{
+            pageCount = count / pageSize +1;
+        }
+        int fromIndex =0;//
+        int toIndex =0;//
+        if(pageNum != pageCount){
+            fromIndex =(pageNum -1)* pageSize;
+            toIndex = fromIndex + pageSize;
+        }else{
+            fromIndex =(pageNum -1)* pageSize;
+            toIndex = count;
+        }
+        List pageList = list.subList(fromIndex,toIndex);
+        return pageList;
+    }
+
+
 }

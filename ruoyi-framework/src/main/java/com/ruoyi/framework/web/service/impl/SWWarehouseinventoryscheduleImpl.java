@@ -103,7 +103,7 @@ private CbsjMapper cbbsjMapper;
 
             //如果查不到添加信息到库存表
             Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.get(i).getCbsh01());
-            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+          /*  GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbsh.getCbsh10());
             //获取商品id
@@ -131,7 +131,7 @@ private CbsjMapper cbbsjMapper;
                 gsGoodsSkuDo1.setQty(qty+1.0);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-            }
+            }*/
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsj09());
             gsGoodsSnDo.setGoodsId(itemList.get(i).getCbsj08());
@@ -149,10 +149,10 @@ private CbsjMapper cbbsjMapper;
                 session.clearCache();
             }
         }
-        itemList.get(0).getCbsh01();
+   /*     itemList.get(0).getCbsh01();
         CbshDo cbshDo = new CbshDo();
         cbshDo.setCbsh01(itemList.get(0).getCbsh01());
-        this.swJsStoreend(cbshDo);
+        this.swJsStoreend(cbshDo);*/
         session.commit();
         session.clearCache();
         return 1;    }
@@ -199,6 +199,46 @@ private CbsjMapper cbbsjMapper;
         CbshCriteria example = new CbshCriteria();
         example.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01())
                 .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+
+        CbsjCriteria example2 = new CbsjCriteria();
+        example2.createCriteria().andCbsh01EqualTo(cbshDo.getCbsh01());
+        List<Cbsj> cbsjs = cbbsjMapper.selectByExample(example2);
+        for(int i=0;i<cbsjs.size();i++) {
+            double num = cbsjs.size();
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbsh.getCbsh10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(cbsjs.get(i).getCbsj08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if (gsGoodsSkus.size() == 0) {
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                gsGoodsSkuDo1.setGoodsId(cbsjs.get(i).getCbsj08());
+                gsGoodsSkuDo1.setWhId(cbsh.getCbsh10());
+                gsGoodsSkuDo1.setLocationId(cbsjs.get(i).getCbsj10());
+                gsGoodsSkuDo1.setQty(num);
+                taskService.addGsGoodsSku(gsGoodsSkuDo1);
+            }
+//如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                gsGoodsSkuDo1.setGoodsId(cbsjs.get(i).getCbsj08());
+                gsGoodsSkuDo1.setWhId(cbsh.getCbsh10());
+                gsGoodsSkuDo1.setLocationId(cbsjs.get(i).getCbsj10());
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                gsGoodsSkuDo1.setQty(qty + num);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+            }
+
+
+        }
         return   cbshMapper.updateByExampleSelective(cbsh, example);
     }
 

@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Cbpc;
@@ -51,14 +52,15 @@ public class AftersalesServiceImpl implements AftersalesService {
         gsAfterSalesCriteria.createCriteria().andSaleOrderNoEqualTo(gsAfterSalesDto.getSaleOrderNo())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsAfterSales> gsAfterSaless = aftersalesMapper.selectByExample(gsAfterSalesCriteria);
-        if(gsAfterSaless.size()>0 && gsAfterSaless.get(0).getId().equals(gsAfterSalesDto.getId())){
-            throw new RuntimeException("该订单已存在售后单");
+        if(gsAfterSaless.size()>0 &&! gsAfterSaless.get(0).getId().equals(gsAfterSalesDto.getId())){
+            throw new SwException("该订单已存在售后单");
         }
         Long userid = SecurityUtils.getUserId();
         GsAfterSales gsAfterSales = BeanCopyUtils.coypToClass(gsAfterSalesDto, GsAfterSales.class, null);
         Date date = new Date();
         gsAfterSales.setUpdateTime(date);
         gsAfterSales.setUpdateBy(userid);
+        gsAfterSales.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
 
         GsAfterSalesCriteria gsAfterSalesCriteria1 = new GsAfterSalesCriteria();
         gsAfterSalesCriteria1.createCriteria().andIdEqualTo(gsAfterSalesDto.getId())

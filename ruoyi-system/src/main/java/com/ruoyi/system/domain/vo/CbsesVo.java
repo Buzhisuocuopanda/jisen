@@ -31,5 +31,35 @@ public class CbsesVo extends BaseEntity {
     private String cbwa09;
 
     private Integer cbsf08;
+    private String cbpa07;
+    private Integer cbpa01;
+    //  @Excel(name = "创建时间")
+
+    private Date cbpa02;
+    // @Excel(name = "修改时间")
+    private Date cbpa03;
+    //   @Excel(name = "创建人id")
+
+    private Integer cbpa04;
+    //   @Excel(name = "修改人id")
+
+    private Integer cbpa05;
+    //  @Excel(name = "是否删除")
+
+    private Integer cbpa06;
+    // @Excel(name = "分类名称")
+
+    //  @Excel(name = "名称1")
+
+    private String cbpa08;
+    //  @Excel(name = "父节点id")
+
+    private Integer cbpa09;
+    //  @Excel(name = "分类编号")
+
+    private String cbpa11;
+    // @Excel(name = "父节点编号")
+
+    private String cbpa12;
 
 }

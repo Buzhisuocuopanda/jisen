@@ -481,7 +481,7 @@
       SELECT
         a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,a.CBSE18,
         i.CBSA08,e.CBSF16,g.CALA08,f.CBPB12,f.CBPB08,e.CBSF09,e.CBSF09,f.CBPB15,
-        e.CBSF11,e.CBSF12,e.CBSF13,h.CBSG09,l.CBLA09,a.CBSE01,e.CBSF08
+        e.CBSF11,e.CBSF12,e.CBSF13,h.CBSG09,l.CBLA09,a.CBSE01,e.CBSF08,m.*
       from
         CBSE a
           LEFT JOIN
@@ -520,6 +520,10 @@
         CBLA l
         ON
           l.CBLA01=h.CBSG10
+      left join
+            CBPA m
+      on
+          m.CBPA01=f.CBPB14
 where
       <if test="cbse01 != null ">  a.CBSE01 = #{cbse01}</if>
       <if test="cbwa09 != null "> and c.cbwa09 = #{cbwa09}</if>

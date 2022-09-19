@@ -41,18 +41,18 @@ public class CbsbDo {
 
     private Integer cbsb16;
     @NotBlank(message = "销售人员不能为空")
-    @Length(min =1 , max = 10)
+  //  @Length(min =1 , max = 10, message = "销售人员长度")
     private String cbsb17;
     @NotBlank(message = "联系人不能为空")
-    @Length(min =1 , max = 10)
+  //  @Length(min =1 , max = 10)
     private String cbsb18;
     @NotBlank(message = "电话不能为空")
-    @Length(min =1 , max = 20)
+  //  @Length(min =1 , max = 20)
     private String cbsb19;
 
     private Integer cbsb20;
     @NotBlank(message = "收货地址不能为空")
-    @Length(min =1 , max = 20)
+   // @Length(min =1 , max = 20)
     private String cbsb21;
 
     private String cbsb22;
@@ -71,7 +71,7 @@ public class CbsbDo {
 
     private String cbsb29;
     @NotBlank(message = "客户订单号不能为空")
-    @Length(min =1 , max = 20)
+  //  @Length(min =1 , max = 20)
     private String cbsb30;
 
     private Integer cbsb31;

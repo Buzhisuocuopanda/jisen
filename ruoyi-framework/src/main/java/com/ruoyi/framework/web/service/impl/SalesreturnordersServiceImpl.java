@@ -239,6 +239,80 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         CbseCriteria example1 = new CbseCriteria();
         example1.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        CbsfCriteria example3 = new CbsfCriteria();
+        example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsf> cbsfs = cbsfMapper.selectByExample(example3);
+        if(cbsfs.size()==0){
+            throw new SwException("销售退货单明细表为空");
+        }
+
+        List<Cbsg> cbsgs=null;
+        for(int i=0;i<cbsfs.size();i++){
+        CbsgCriteria example2 = new CbsgCriteria();
+             example2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
+                     .andCbsg08EqualTo(cbsfs.get(i).getCbsf08());
+     cbsgs = cbsgMapper.selectByExample(example2);
+        if(cbsgs.size()==0){
+            throw new SwException("没有扫码记录");
+
+        }
+}
+        for(int i=0;i<cbsgs.size();i++){
+            double num = cbsgs.size();
+            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //获取仓库id
+            gsGoodsSkuDo.setWhId(cbse.getCbse10());
+            //获取商品id
+            gsGoodsSkuDo.setGoodsId(cbsgs.get(i).getCbsg08());
+            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            //通过仓库id和货物id判断是否存在
+            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+            if(gsGoodsSkus.size()==0){
+                throw new SwException("没有该库存信息");
+            }
+            //如果存在则更新库存数量
+            else {
+                //加锁
+                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                //查出
+                Double qty = gsGoodsSkus.get(0).getQty();
+                if (qty == 0) {
+                    throw new SwException("库存数量不足");
+                }
+                //获取仓库id
+                gsGoodsSkuDo1.setWhId(cbse.getCbse10());
+                //获取商品id
+                gsGoodsSkuDo1.setGoodsId(cbsgs.get(i).getCbsg08());
+                gsGoodsSkuDo1.setLocationId(cbsgs.get(i).getCbsg10());
+                if(num>qty){
+                    throw new SwException("退库数量大于库存数量");
+                }
+                gsGoodsSkuDo1.setQty(qty - num);
+                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+            }
+
+                CbibDo cbibDo = new CbibDo();
+                cbibDo.setCbib02(cbse.getCbse10());
+                cbibDo.setCbib03(cbse.getCbse07());
+                cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbsfs.get(i).getCbsf15());
+
+                cbibDo.setCbib06(cbsa.getCbsa08());
+                cbibDo.setCbib07(cbsfs.get(i).getCbsf01());
+                cbibDo.setCbib08(cbsgs.get(i).getCbsg08());
+                //本次入库数量
+                cbibDo.setCbib11((double) 0);
+                cbibDo.setCbib12((double) 0);
+                cbibDo.setCbib13(num);
+                cbibDo.setCbib14(num*cbsfs.get(0).getCbsf11());
+                cbibDo.setCbib17(TaskType.xstkd.getMsg());
+                cbibDo.setCbib19(cbsfs.get(i).getCbsf15());
+                taskService.InsertCBIB(cbibDo);
+
+            }
+
         return cbseMapper.updateByExampleSelective(cbse,example1);    }
 
     @Override
@@ -290,7 +364,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
             //如果查不到添加信息到库存表
             Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(i).getCbse01());
-            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+   /*         GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbse.getCbse10());
             //获取商品id
@@ -319,7 +393,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 gsGoodsSkuDo1.setQty(qty-1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-            }
+            }*/
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
@@ -347,6 +421,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             throw new SwException("没有该销售出库单明细表为空");
         }
 
+/*
         for(int i=0;i<cbscs.size();i++){
             CbibDo cbibDo = new CbibDo();
             cbibDo.setCbib02(cbse.getCbse10());
@@ -366,9 +441,10 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             cbibDo.setCbib19(cbscs.get(i).getCbsf15());
             taskService.InsertCBIB(cbibDo);
         }
-        CbseDo cbseDo = new CbseDo();
-        cbseDo.setCbse01(itemList.get(0).getCbse01());
-        this.insertSwJsSkuBarcodebjwc(cbseDo);
+*/
+//        CbseDo cbseDo = new CbseDo();
+//        cbseDo.setCbse01(itemList.get(0).getCbse01());
+       // this.insertSwJsSkuBarcodebjwc(cbseDo);
         session.commit();
         session.clearCache();
         return 1;
