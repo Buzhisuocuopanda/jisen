@@ -464,8 +464,8 @@
       (SELECT @i:=0) AS itable
 where
     a.CBIE06=0
-      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09}</if>
-      <if test="cala08 != null "> and h.CALA08 = #{cala08}</if>
+      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09} </if>
+      <if test="cala08 != null "> and h.CALA08 = #{cala08} </if>
       <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
       <if test="cbpb01 != null "> and c.CBPB01 = #{cbpb01}</if>
 
@@ -518,6 +518,10 @@ where
       </if>
       <if test="cbig10 != null and cbig10 !=''">
         and a.cbig10 like concat('%', #{cbig10}, '%')
+      </if>
+
+      <if test="cbpb01 != null">
+        and e.cbpb01 =#{cbpb01}
       </if>
 
 

@@ -429,4 +429,11 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         return res;
 
     }
+
+    @Override
+    public List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo) {
+        return cbpbMapper.selectSwJsGoodsAll(cbpbVo);
+    }
+
+
 }

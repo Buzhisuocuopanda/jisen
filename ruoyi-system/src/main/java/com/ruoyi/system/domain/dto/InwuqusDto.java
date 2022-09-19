@@ -12,4 +12,6 @@ public class InwuqusDto {
 
     private String cbig10;
 
+    private Integer cbpb01;
+
 }
