@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.enums.CurrencyEnum;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,19 +35,28 @@ public class SaleOrderDetailVo {
 
     //    @NotNull(message = "日期不能为空")
     @ApiModelProperty("日期")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
     //    @NotNull(message = "请选择客户")
     @ApiModelProperty("客户id")
     private Integer customerId;
 
+
     //    @NotNull(message = "请选择销售人员")
     @ApiModelProperty("销售人员")
     private String saleUser;
+    @ApiModelProperty("销售人员")
+    private Integer saleUserId;
 
     //    @NotNull(message = "请选择货币类型")
     @ApiModelProperty("货币类型")
     private Integer currency;
+    @ApiModelProperty("货币类型")
+    private String currencyMsg;
+//    @ApiModelProperty("货币类型")
+//    private Integer currency;
+
 
     //收货人姓名
     @ApiModelProperty("收货人姓名")
@@ -111,7 +122,7 @@ public class SaleOrderDetailVo {
 
     //合计数量
     @ApiModelProperty("合计数量")
-    private Double sumQty;
+        private Double sumQty;
     //合计金额
     @ApiModelProperty("合计金额")
     private Double sumPrice;
@@ -132,6 +143,14 @@ public class SaleOrderDetailVo {
     @ApiModelProperty("客户名称")
     private String customerName;
 
+    public String getCurrencyMsg() {
+        if(CurrencyEnum.CNY.getCode().equals(currency)){
+            return "CNY";
+        }else {
+            return "USD";
+        }
+//        return currencyMsg;
+    }
     //仓库名称
 //    @ApiModelProperty("仓库名称")
 //    private String storename;

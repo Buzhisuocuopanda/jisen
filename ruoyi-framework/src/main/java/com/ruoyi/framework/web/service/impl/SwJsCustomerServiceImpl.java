@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 
 import com.ruoyi.common.exception.ServiceException;
@@ -9,16 +10,17 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Cbca;
+import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.CbcaDto;
-import com.ruoyi.system.mapper.CbcaMapper;
-import com.ruoyi.system.mapper.CbpfMapper;
-import com.ruoyi.system.mapper.CbsbMapper;
-import com.ruoyi.system.mapper.GsSystemUseMapper;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
     private CbsbMapper cbsbMapper;
     @Resource
     private CbpfMapper cbpfMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
 
 
@@ -236,6 +241,60 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public List<BaseSelectVo> SwJsCustomerlistSelect(BaseSelectDto baseSelectDto) {
+        Cbca cbca=new Cbca();
+        cbca.setCbca06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbca.setCbca07("启用");
+        cbca.setCbca08(baseSelectDto.getSelectMsg());
+        List<Cbca> cbcas = cbcaMapper.selectCBWAList(cbca);
+        List<BaseSelectVo> res=new ArrayList<>();
+        BaseSelectVo bv=null;
+        for (Cbca cbca1 : cbcas) {
+            bv=new BaseSelectVo();
+            bv.setValue(cbca1.getCbca01());
+            bv.setLabel(cbca1.getCbca08());
+            res.add(bv);
+        }
+        return res;
+    }
+
+    @Override
+    public List<BaseSelectVo> systemUserSelect(BaseSelectDto baseSelectDto) {
+        if(baseSelectDto.getSelectMsg()==null){
+            baseSelectDto.setSelectMsg("");
+        }
+        SysUserCriteria example=new SysUserCriteria();
+        example.createCriteria()
+                .andDelFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().toString())
+                .andStatusEqualTo("0")
+                .andNickNameLike("%" +baseSelectDto.getSelectMsg()+"%");
+        List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+        List<BaseSelectVo> res=new ArrayList<>();
+        BaseSelectVo bv=null;
+        for (SysUser sysUser : sysUsers) {
+            bv=new BaseSelectVo();
+            bv.setValue(sysUser.getUserId().intValue());
+            bv.setLabel(sysUser.getNickName());
+            res.add(bv);
+
+        }
+        return res;
+    }
+
+    @Override
+    public CbcaDto customerDetail(CbcaDto cbcaDto) {
+        if(cbcaDto.getCbca01()==null){
+            throw new SwException("请选择客户");
+        }
+        Cbca cbca = cbcaMapper.selectByPrimaryKey(cbcaDto.getCbca01());
+        if(cbca==null){
+            throw new SwException("没有查到该客户");
+        }
+        CbcaDto cbcaDto1 = BeanCopyUtils.coypToClass(cbca, CbcaDto.class,null);
+        return cbcaDto1;
     }
 
 

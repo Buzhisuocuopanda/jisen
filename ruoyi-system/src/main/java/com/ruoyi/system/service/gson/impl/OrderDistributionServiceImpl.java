@@ -828,24 +828,57 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             Double num = goodsOperationDo.getNum();
             OutSuggestionsDo out = null;
             for (Cbwa cbwa : list) {
-                //查台账
-                Cbib cbib = cbibMapper.selectLastByGoodsIdAndStoreId(goodsOperationDo.getGoodsId(), cbwa.getCbwa01());
-                if (cbib == null) {
-                    continue;
+                Double canUseNum=0.0;
+                Double useNum=0.0;
+                if(!WareHouseType.GUOJIWAREHOUSE.equals(cbwa.getCbwa09())){
+                    //查台账
+                    Cbib cbib = cbibMapper.selectLastByGoodsIdAndStoreId(goodsOperationDo.getGoodsId(), cbwa.getCbwa01());
+                    if (cbib == null) {
+                        continue;
+                    }
+
+                    if (cbib.getCbib15() == 0) {
+                        continue;
+                    }
+                    //查占用
+                    List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), goodsOperationDo.getGoodsId());
+                     useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+                    canUseNum=cbib.getCbib15();
+                }else {
+                            //再查GQW的 gqw分配给GBSH开头的订单的分配数量 -占用数量
+                            CbbaCriteria baex=new CbbaCriteria();
+                            baex.createCriteria()
+                                    .andCbba08EqualTo(goodsOperationDo.getGoodsId())
+                                    .andCbba07Like("GBSH"+"%");
+                            List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
+        //            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+
+                             canUseNum=cbbas.stream().mapToDouble(Cbba::getCbba13).sum();
+
+                            //查占用数量
+                            GsGoodsUseCriteria gqwEx=new GsGoodsUseCriteria();
+                            gqwEx.createCriteria()
+                                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+                                    .andGoodsIdEqualTo(goodsOperationDo.getGoodsId());
+                            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+                             useNum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+
+        //            gqw仓库数据
+        //                    Double gqwQty=gqwMakeQty-sum;
+
+//                            if(gqwQty<0){
+//                                gqwQty=0.0;
+//                            }
+
+//                            num=num+gqwMakeQty;
                 }
 
-                if (cbib.getCbib15() == 0) {
-                    continue;
-                }
-                //查占用
-                List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), goodsOperationDo.getGoodsId());
-                Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 
 
                 out = new OutSuggestionsDo();
-                if (cbib.getCbib15() - useNum < num.doubleValue()) {
-                    out.setQty(cbib.getCbib15() - useNum);
-                    num = num - cbib.getCbib15() + useNum;
+                if (canUseNum - useNum < num.doubleValue()) {
+                    out.setQty(canUseNum - useNum);
+                    num = num - canUseNum + useNum;
                 } else {
                     out.setQty(num);
                     num = 0.0;
@@ -878,6 +911,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
             }
+
+
+
             if (num > 0.0) {
                 //说明库存不够
                 throw new SwException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
@@ -966,34 +1002,91 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
     @Override
+    //国内订单查可用库存
     public QtyMsgVo checkSku(CheckSkuDo checkSkuDo) {
-
-        //该库存检测适用于国内订单创建
-        //查该商品的仓库台账
-        List<Cbwa> list = cbwaMapper.selectCalculationOrderPriority();
-
-        if (list.size() == 0) {
-            throw new SwException("无可用分配库存的仓库");
-        }
-
         Double canUseNum = 0.0;
 
-        for (Cbwa cbwa : list) {
-            //查台账
-            Cbib cbib = cbibMapper.selectLastByGoodsIdAndStoreId(checkSkuDo.getGoodsId(), cbwa.getCbwa01());
-            if (cbib == null) {
-                continue;
+        if (OrderTypeEnum.GUONEIDINGDAN.getCode().equals(checkSkuDo.getOrderClass())) {
+
+            //该库存检测适用于国内订单创建
+            //查该商品的仓库台账
+            List<Cbwa> list = cbwaMapper.selectCalculationOrderPriorityNoGqw();
+
+            if (list.size() == 0) {
+                throw new SwException("无可用分配库存的仓库");
             }
 
-            if (cbib.getCbib15() == 0) {
-                continue;
-            }
-            //查占用
-            List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), checkSkuDo.getGoodsId());
-            Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
-            Double num = cbib.getCbib15() - useNum;
-            canUseNum = canUseNum + num;
 
+
+            for (Cbwa cbwa : list) {
+                //查台账
+                Cbib cbib = cbibMapper.selectLastByGoodsIdAndStoreId(checkSkuDo.getGoodsId(), cbwa.getCbwa01());
+                if (cbib == null) {
+                    continue;
+                }
+
+                if (cbib.getCbib15() ==null || cbib.getCbib15()==0) {
+                    continue;
+                }
+                //查占用
+                List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), checkSkuDo.getGoodsId());
+                Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+                Double num = cbib.getCbib15() - useNum;
+                canUseNum = canUseNum + num;
+
+            }
+
+
+            //再查GQW的 gqw分配给GBSH开头的订单的分配数量 -占用数量
+            CbbaCriteria baex = new CbbaCriteria();
+            baex.createCriteria()
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+
+                    .andCbba08EqualTo(checkSkuDo.getGoodsId())
+                    .andCbba12EqualTo(TotalOrderConstants.NO)
+                    .andCbba07Like("GBSH" + "%");
+            List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
+//            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+
+            Double gqwMakeQty = cbbas.stream().mapToDouble(Cbba::getCbba13).sum();
+
+            //查占用数量
+            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
+            gqwEx.createCriteria()
+                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+
+                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+            Double sum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+
+//            gqw仓库数据
+            Double gqwQty = gqwMakeQty - sum;
+
+            if (gqwQty < 0) {
+                gqwQty = 0.0;
+            }
+
+            canUseNum = canUseNum + gqwMakeQty;
+
+        }else {
+            CbbaCriteria example = new CbbaCriteria();
+            example.createCriteria()
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbba12EqualTo(TotalOrderConstants.NO)
+                    .andCbba08EqualTo(checkSkuDo.getGoodsId())
+                    .andCbba07NotLike("GBSH" + "%");
+            List<Cbba> cbbas = cbbaMapper.selectByExample(example);
+            Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
+            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
+            gqwEx.createCriteria()
+                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+
+                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+            Double sum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+
+            Double gqwQty = gqwMakeQty - sum;
+            canUseNum =   gqwQty;
         }
 
         QtyMsgVo res = new QtyMsgVo();

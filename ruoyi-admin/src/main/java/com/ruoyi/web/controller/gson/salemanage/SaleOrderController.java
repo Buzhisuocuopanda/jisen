@@ -380,7 +380,7 @@ public class SaleOrderController extends BaseController {
     public AjaxResult mdfSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            if (saleOrderAddDto.getOrderId() == null) {
+            if (saleOrderAddDto.getId() == null) {
                 throw new SwException("请选择要修改的销售订单");
             }
             saleOrderAddDto.setUserId(getUserId().intValue());

@@ -12,6 +12,7 @@ import lombok.Data;
 public class CheckSkuDo {
     private Integer goodsId;
 
+    private Integer orderClass;
 
 
 

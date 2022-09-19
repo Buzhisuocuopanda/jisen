@@ -636,7 +636,7 @@ and gs.order_no=#{orderNo}
 
       and ca.CBCA08 like concat('%', #{customer}, '%')
     </if>
-    order by oa.CBOA02
+    order by oa.CBOA02 DESC
 
   </select>
 
@@ -682,7 +682,7 @@ and gs.order_no=#{orderNo}
 
       and ca.CBCA08 like concat('%', #{customer}, '%')
     </if>
-    order by oa.CBOA02
+    order by oa.CBOA02 DESC
 
   </select>
 

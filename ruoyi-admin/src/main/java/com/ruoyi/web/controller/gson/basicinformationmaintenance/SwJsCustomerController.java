@@ -11,8 +11,10 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbca;
+import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.CbcaDto;
 import com.ruoyi.system.domain.dto.CbsaDto;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -161,6 +163,7 @@ public class SwJsCustomerController extends BaseController {
         }
     }
 
+
     /**
      * 导出客户信息列表
      */
@@ -235,4 +238,90 @@ public class SwJsCustomerController extends BaseController {
 
 
     }
+
+
+    /**
+     * 客户信息选择框
+     */
+    @ApiOperation(
+            value ="客户信息选择框",
+            notes = "客户信息选择框"
+    )
+    @GetMapping("/SwJsCustomerlistSelect")
+    public AjaxResult<TableDataInfo> SwJsCustomerlistSelect(BaseSelectDto baseSelectDto) {
+        try{
+            startPage();
+            List<BaseSelectVo> list = swJsCustomerService.SwJsCustomerlistSelect(baseSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【客户信息选择框】接口出现异常,参数${},异常${}$", JSON.toJSON(baseSelectDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【客户信息选择框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(baseSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 客户信息选择框
+     */
+    @ApiOperation(
+            value ="获取用户信息选择框",
+            notes = "获取用户信息选择框"
+    )
+    @GetMapping("/systemUserSelect")
+    public AjaxResult<TableDataInfo> systemUserSelect(BaseSelectDto baseSelectDto) {
+        try{
+            startPage();
+            List<BaseSelectVo> list = swJsCustomerService.systemUserSelect(baseSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【获取用户信息选择框】接口出现异常,参数${},异常${}$", JSON.toJSON(baseSelectDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【获取用户信息选择框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(baseSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 客户信息详情
+     */
+    @ApiOperation(
+            value ="客户信息详情",
+            notes = "客户信息详情"
+    )
+    @GetMapping("/customerDetail")
+    public AjaxResult<CbcaDto> customerDetail(CbcaDto cbcaDto) {
+        try{
+            CbcaDto res = swJsCustomerService.customerDetail(cbcaDto);
+
+            return AjaxResult.success(res);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【客户信息详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【客户信息详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 }

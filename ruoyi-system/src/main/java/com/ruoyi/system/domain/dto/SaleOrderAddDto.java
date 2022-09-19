@@ -22,7 +22,7 @@ public class SaleOrderAddDto {
     //修改的时候用的订单号id
     @ApiModelProperty("修改时用的销售订单id")
 
-    private Integer orderId;
+    private Integer id;
 
 
 //    @NotBlank(message = "客户单号不能为空")
@@ -71,7 +71,7 @@ public class SaleOrderAddDto {
 //10销售订单
     @NotNull(message = "请传入订单类型")
     @ApiModelProperty("订单类型 全部填 10")
-    private Integer orderType;
+    private Integer orderType ;
 
     @NotNull(message = "请传入订单分类")
     @ApiModelProperty("订单分类 1：国际 2国内")

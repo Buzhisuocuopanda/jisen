@@ -22,4 +22,8 @@ public class GoodsPriceAndSkuDto {
     @ApiModelProperty("客户id")
     private Integer customerId;
 
+    @NotNull(message = "请选择是国际订单还是国内订单")
+    @ApiModelProperty("订单分类 1:国际订单 2：国内订单")
+    private Integer orderClass;
+
 }
