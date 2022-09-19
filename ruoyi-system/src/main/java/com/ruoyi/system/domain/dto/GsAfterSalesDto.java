@@ -29,7 +29,7 @@ public class GsAfterSalesDto {
     private String question;
     @NotBlank(message = "SN不能为空")
     private String sn;
-    @NotNull(message = "供料单位不能为空")
+   // @NotNull(message = "供料单位不能为空")
     private Integer suplierId;
     @NotBlank(message = "处理结果不能为空")
     private String answerMsg;

@@ -66,7 +66,7 @@ public class AftersalesServiceImpl implements AftersalesService {
         GsAfterSalesCriteria gsAfterSalesCriteria1 = new GsAfterSalesCriteria();
         gsAfterSalesCriteria1.createCriteria().andIdEqualTo(gsAfterSalesDto.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        aftersalesMapper.updateByExample(gsAfterSales,gsAfterSalesCriteria1);
+        aftersalesMapper.updateByExampleSelective(gsAfterSales,gsAfterSalesCriteria1);
         return 1;
     }
 
@@ -82,7 +82,7 @@ public class AftersalesServiceImpl implements AftersalesService {
         GsAfterSalesCriteria gsAfterSalesCriteria1 = new GsAfterSalesCriteria();
         gsAfterSalesCriteria1.createCriteria().andIdEqualTo(gsAfterSalesDto.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        aftersalesMapper.updateByExample(gsAfterSales,gsAfterSalesCriteria1);
+        aftersalesMapper.updateByExampleSelective(gsAfterSales,gsAfterSalesCriteria1);
         return 1;    }
 
     @Override
