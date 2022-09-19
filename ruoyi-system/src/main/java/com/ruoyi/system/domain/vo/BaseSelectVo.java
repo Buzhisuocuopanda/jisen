@@ -9,7 +9,7 @@ import lombok.Data;
  * Date 2022/9/16 9:20
  */
 @Data
-public class GoodsSelectVo {
+public class BaseSelectVo {
 
     private Integer value;
 

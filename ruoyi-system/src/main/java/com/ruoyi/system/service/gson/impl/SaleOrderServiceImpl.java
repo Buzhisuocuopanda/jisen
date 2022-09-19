@@ -3,6 +3,7 @@ package com.ruoyi.system.service.gson.impl;
 import com.ruoyi.common.constant.AuditStatusConstants;
 import com.ruoyi.common.constant.TotalOrderConstants;
 
+import com.ruoyi.common.constant.WareHouseType;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
@@ -96,6 +97,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     @Resource
     private TaskService taskService;
+
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
 
     @Override
     public List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto) {
@@ -543,11 +548,18 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         res.setId(cboa.getCboa01());
         res.setAddress(cboa.getCboa18());
         res.setCustomerId(cboa.getCboa09());
+
+        res.setCurrency(cboa.getCboa16());
         if(cboa.getCboa09()!=null){
-            SysUser customer = sysUserMapper.selectByPrimaryKey(cboa.getCboa09().longValue());
-            if(customer!=null){
-                res.setCustomerName(customer.getNickName());
+            Cbca cbca = cbcaMapper.selectByPrimaryKey(cboa.getCboa09());
+            if(cbca!=null){
+                res.setCustomerName(cbca.getCbca08());
             }
+
+//            SysUser customer = sysUserMapper.selectByPrimaryKey(cboa.getCboa09().longValue());
+//            if(customer!=null){
+//                res.setCustomerName(customer.getNickName());
+//            }
         }
 
         res.setCustomerNo(cboa.getCboa25());
@@ -587,6 +599,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
             if (saleUser != null) {
                 res.setSaleUser(saleUser.getNickName());
+                res.setSaleUserId(saleUser.getUserId().intValue());
+
             }
         }
 
@@ -608,15 +622,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         laexample.createCriteria()
                 .andCala10EqualTo("商品品牌");
         List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<String, String> brandMap = new HashMap<>();
+        Map<Integer, String> brandMap = new HashMap<>();
         for (Cala cala : calas) {
-            brandMap.put(cala.getCala02(), cala.getCala08());
+            brandMap.put(cala.getCala01(), cala.getCala08());
         }
 
 
         for (Cbob cbob : cbobs) {
             good = new SaleOderDetailGoods();
-            good.setId(cbob.getCboa01());
+            good.setId(cbob.getCbob01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbob.getCbob08());
             if (cbpb != null) {
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
@@ -632,7 +646,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             good.setTotalOrderNo(cbob.getCbob18());
             sunPrice = sunPrice + cbob.getCbob12();
             sumQty = sumQty + cbob.getCbob09();
+            CheckSkuDo checkDo=new CheckSkuDo();
+            checkDo.setOrderClass(cboa.getCboa27());
+            checkDo.setGoodsId(good.getGoodsId());
+            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkDo);
+            good.setCanUseSku(qtyMsgVo.getCanUseNum());
             res.getGoods().add(good);
+
+
+
         }
         //金额数量合计
 
@@ -653,11 +675,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             saleOrderAudit.setAuditResult(cabraa.getCabraa18());
             String createTime = sd.format(cabraa.getCabraa15());
             SysUser auditUser = sysUserMapper.selectByPrimaryKey(cabraa.getCabraa04().longValue());
-            String audit = null;
+            String audit = "";
             if (auditUser != null) {
                 audit = auditUser.getNickName() == null ? "" : auditUser.getNickName();
+                res.setAuditUser(auditUser.getUserName());
             }
-            res.setAuditUser(auditUser.getUserName());
+
 
             saleOrderAudit.setDescription(createTime + " 由 " + audit + " 审核");
             saleOrderAudit.setId(cabraa.getCabraa01());
@@ -677,7 +700,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public void mdfSaleOrder(SaleOrderAddDto saleOrderAddDto) {
         //只有在未提交状态下才能修改
-        Cboa cboa = cboaMapper.selectByPrimaryKey(saleOrderAddDto.getOrderId());
+        Cboa cboa = cboaMapper.selectByPrimaryKey(saleOrderAddDto.getId());
         if (cboa == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cboa.getCboa06())) {
             throw new SwException("没有查到该订单");
         }
@@ -1120,32 +1143,75 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         res.setGoodsId(goodsPriceAndSkuDto.getGoodsId());
 
 
+        //查库存
+        CheckSkuDo chekDo=new CheckSkuDo();
+        chekDo.setGoodsId(goodsPriceAndSkuDto.getGoodsId());
+        chekDo.setOrderClass(2);
+        QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(chekDo);
+            res.setCanUseSku(qtyMsgVo.getCanUseNum());
+            res.setCkSku(qtyMsgVo.getCanUseNum());
+//        List<Cbwa> list = cbwaMapper.selectCalculationOrderPriority();
+//
+//        if (list.size() == 0) {
+//            throw new SwException("无可用分配库存的仓库");
+//        }
 
-        List<Cbwa> list = cbwaMapper.selectCalculationOrderPriority();
+//        Cbib cbib = cbibMapper.selectLastByGoodsId(goodsPriceAndSkuDto.getGoodsId());
+//        if(cbib==null){
+//            throw new SwException("没有找到该商品的仓库台账");
+//        }
+//        List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByGoodsId(goodsPriceAndSkuDto.getGoodsId());
+//        Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+//        if(cbib.getCbib15()!=null){
+//            Double num = cbib.getCbib15() - useNum;
+//            if(num<0){
+//                num=0.0;
+//            }
+//            res.setCanUseSku(num);
+//            res.setCkSku(num);
+//        }
+//
 
-        if (list.size() == 0) {
-            throw new SwException("无可用分配库存的仓库");
-        }
 
-        Cbib cbib = cbibMapper.selectLastByGoodsId(goodsPriceAndSkuDto.getGoodsId());
-        if(cbib==null){
-            throw new SwException("没有找到该商品的仓库台账");
-        }
-        List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByGoodsId(goodsPriceAndSkuDto.getGoodsId());
-        Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
-        Double num = cbib.getCbib15() - useNum;
-        if(num<0){
-            num=0.0;
-        }
-
-        res.setCanUseSku(num);
-        res.setCkSku(num);
         if(res.getNormalPrice()==null){
             res.setNormalPrice(0.0);
         }
         return res;
 
     }
+
+
+   private Double getCanUseSku(GoodsPriceAndSkuDto goodsPriceAndSkuDto){
+//       Double canUseQty=0.0;
+//        if(OrderTypeEnum.GUONEIDINGDAN.getCode().equals(goodsPriceAndSkuDto.getOrderClass())){
+//        da
+//        }else {
+//            GsGoodsSkuCriteria example=new GsGoodsSkuCriteria();
+//            example.createCriteria()
+//                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+//                    .andGoodsIdEqualTo(goodsPriceAndSkuDto.getGoodsId())
+//                    .andDeleteFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+//            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+//            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+//
+//            GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+//            usex.createCriteria()
+//                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+//                    .andGoodsIdEqualTo(goodsPriceAndSkuDto.getGoodsId());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+//
+//            Double useQty=gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+//            canUseQty= countQty-useQty;
+//
+//        }
+//       if(canUseQty<0){
+//            canUseQty=0.0
+//       }
+
+
+       return null;
+
+   }
 
     @Transactional
     @Override
@@ -1559,9 +1625,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         laexample.createCriteria()
                 .andCala10EqualTo("商品品牌");
         List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<String, String> brandMap = new HashMap<>();
+        Map<Integer, String> brandMap = new HashMap<>();
         for (Cala cala : calas) {
-            brandMap.put(cala.getCala02(), cala.getCala08());
+            brandMap.put(cala.getCala01(), cala.getCala08());
         }
 
 

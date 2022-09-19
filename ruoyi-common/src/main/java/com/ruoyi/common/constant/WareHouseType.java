@@ -15,5 +15,10 @@ public class WareHouseType {
         public static final String GUOJIWAREHOUSE = "GQW";
 
 
+        /**
+         * 国际订单走的仓库
+         */
+        public static final Integer GQWWHID = 5;
+
 
 }

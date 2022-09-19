@@ -17,6 +17,8 @@ import com.ruoyi.system.domain.Cbpf;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
+import com.ruoyi.system.domain.dto.GoodsSelectDto;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;
@@ -187,6 +189,29 @@ public class SwJsGoodsController extends BaseController {
 
         } catch (Exception e) {
             log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpbVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 商品列表选择框
+     */
+    @ApiOperation(
+            value ="商品列表选择框",
+            notes = "商品列表选择框"
+    )
+    @GetMapping("/swJsGoodslistBySelect")
+    public AjaxResult<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto) {
+        try {
+            startPage();
+            List<BaseSelectVo> list = swJsGoodsService.swJsGoodslistBySelect(goodsSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSelectDto),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

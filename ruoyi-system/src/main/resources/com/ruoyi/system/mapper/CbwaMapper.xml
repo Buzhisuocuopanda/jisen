@@ -426,5 +426,17 @@ WHERE
 	AND c.allocation_flag =1
 	order by c.CBWA07
   </select>
+  <select id="selectCalculationOrderPriorityNoGqw" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	`CBWA` c
+WHERE
+	c.CBWA06 = 0
+	AND c.CBWA08 = '启用'
+	AND c.allocation_flag =1
+	AND c.CBWA09!= 'GQW'
+	order by c.CBWA07
+  </select>
 
 </mapper>

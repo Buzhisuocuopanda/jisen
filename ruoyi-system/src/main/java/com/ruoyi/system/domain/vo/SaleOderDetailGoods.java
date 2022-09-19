@@ -13,6 +13,7 @@ import lombok.Data;
 public class SaleOderDetailGoods {
 
     private Integer id;
+    private Integer goodsId;
 
     //品牌
     @ApiModelProperty("品牌")
@@ -53,6 +54,25 @@ public class SaleOderDetailGoods {
 
     private String totalOrderNo;
 
+    private double canUseSku;
 
+    private String goodsMsg;
+
+
+    public String getGoodsMsg() {
+        return brand+"-'"+model+"-"+description;
+    }
+
+    public Integer getGoodsId() {
+        return id;
+    }
+
+    private BaseSelectVo goodsVo=new BaseSelectVo();
+
+    public BaseSelectVo getGoodsVo() {
+        goodsVo.setLabel(getGoodsMsg());
+        goodsVo.setValue(getGoodsId());
+        return goodsVo;
+    }
 
 }

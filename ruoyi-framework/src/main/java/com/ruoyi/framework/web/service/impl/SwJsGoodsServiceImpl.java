@@ -1,9 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 
-import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -14,9 +12,8 @@ import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
-import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
-import com.ruoyi.system.domain.vo.GoodsSelectVo;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -416,12 +413,12 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         return 1;    }
 
     @Override
-    public List<GoodsSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto) {
+    public List<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto) {
         List<CbpbVo> cbpbVos = cbpbMapper.swJsGoodslistBySelect(goodsSelectDto);
-        List<GoodsSelectVo> res=new ArrayList<>();
-        GoodsSelectVo gs=null;
+        List<BaseSelectVo> res=new ArrayList<>();
+        BaseSelectVo gs=null;
         for (CbpbVo vo : cbpbVos) {
-            gs=new GoodsSelectVo();
+            gs=new BaseSelectVo();
             gs.setValue(vo.getCbpb01());
             if(vo.getCala08()!=null && vo.getCbpb12()!=null && vo.getCbpb08()!=null){
                 gs.setLabel(vo.getCala08()+"-"+ vo.getCbpb12()+"-"+vo.getCbpb08());

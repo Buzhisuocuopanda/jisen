@@ -96,6 +96,15 @@ public class SysUser extends BaseEntity
     private Long roleId;
 
     private String auditPerm;
+    private String userType;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     public String getAuditPerm() {
         return auditPerm;

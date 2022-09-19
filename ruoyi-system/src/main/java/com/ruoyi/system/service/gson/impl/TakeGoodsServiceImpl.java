@@ -318,9 +318,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         laexample.createCriteria()
                 .andCala10EqualTo("商品品牌");
         List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<String, String> brandMap = new HashMap<>();
+        Map<Integer, String> brandMap = new HashMap<>();
         for (Cala cala : calas) {
-            brandMap.put(cala.getCala02(), cala.getCala08());
+            brandMap.put(cala.getCala01(), cala.getCala08());
         }
 
 
@@ -524,9 +524,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         laexample.createCriteria()
                 .andCala10EqualTo("商品品牌");
         List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<String, String> brandMap = new HashMap<>();
+        Map<Integer, String> brandMap = new HashMap<>();
         for (Cala cala : calas) {
-            brandMap.put(cala.getCala02(), cala.getCala08());
+            brandMap.put(cala.getCala01(), cala.getCala08());
         }
 //        CbobCriteria obex=new CbobCriteria();
 //        obex.createCriteria()
