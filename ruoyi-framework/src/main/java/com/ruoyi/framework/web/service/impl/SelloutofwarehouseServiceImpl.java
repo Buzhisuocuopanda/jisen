@@ -73,6 +73,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private CbsaMapper cbsaMapper;
 
+    @Resource
+    private CbodMapper cbodMapper;
+
     /**
      * 新增销售出库主单
      *
@@ -246,38 +249,75 @@ if(cbob==null){
         List<Cbsc> cbscs1 = cbscMapper.selectByExample(example2);
         int size = cbscs1.size();
 
-        List<SaleOrderGoodsDto> goods =   new ArrayList<>(size);
-        ;
-        for (int i = 0; i < cbscs1.size(); i++) {
+        for(int i=0;i<size;i++){
+            Integer cbsc14 = cbscs1.get(i).getCbsc14();
+            Cbob cbob = cbobMapper.selectByPrimaryKey(cbsc14);
+            if(cbob == null){
+                throw new SwException("找不到此销售订单明细");
+            }
+            CbsdCriteria example3 = new CbsdCriteria();
+            example3.createCriteria().andCbsd08EqualTo(cbscs1.get(i).getCbsc08())
+                            .andCbsb01EqualTo(cbscs1.get(i).getCbsb01());
+            List<Cbsd> cbsds = cbsdMapper.selectByExample(example3);
+            if(cbsds.size()==0){
+                throw new SwException("找不到此销售出货单扫码记录");
 
-            goods.add(new SaleOrderGoodsDto());
-            goods.get(i).setNumber(cbscs1.get(i).getCbsc02());
-            goods.get(i).setGoodsId(cbscs1.get(i).getCbsc08());
-            goods.get(i).setQty(cbscs1.get(i).getCbsc09());
-            goods.get(i).setNormalPrice(cbscs1.get(i).getCbsc11());
-            goods.get(i).setCurrentPrice(cbscs1.get(i).getCbsc11());
-            goods.get(i).setTotalPrice(cbscs1.get(i).getCbsc12());
-            goods.get(i).setRemark(cbscs1.get(i).getCbsc13());
-            goods.get(i).setTotalOrderNo(cbsb1.getCbsb07());
+            }
+            cbob.setCbob10(cbob.getCbob10()+cbsds.size());
+            cbob.setCbob01(cbsc14);
+            cbobMapper.updateByPrimaryKeySelective(cbob);
         }
-        int size1 = goods.size();
-        SaleOrderAddDto saleOrderAddDto = new SaleOrderAddDto();
-        saleOrderAddDto.setCustomerNo(cbsb1.getCbsb30());
-        saleOrderAddDto.setOrderDate(date);
-        saleOrderAddDto.setCustomerId(cbsb1.getCbsb09());
-        int i = cbsb1.getCbsb17() == null ? 0 : Integer.parseInt(cbsb1.getCbsb17());
-        saleOrderAddDto.setSaleUserId(i);
-        saleOrderAddDto.setCurrency(cbsb1.getCbsb16());
-        saleOrderAddDto.setInvoiceType(cbsb1.getCbsb24());
-        saleOrderAddDto.setOrderType(TaskType.xsdd.getCode().intValue());
-       int j= cbsb1.getCbsb31()==1 ? 2: 1;
-        saleOrderAddDto.setOrderClass(j);
-        saleOrderAddDto.setGoods(goods);
-       saleOrderService.addSaleOrder(saleOrderAddDto);
+        List<Cbsd> cbsds=null;
+        for(int i=0;i<size;i++){
 
+        CbsdCriteria examples=new CbsdCriteria();
+        examples.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
+                .andCbsd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbsd08EqualTo(cbscs1.get(i).getCbsc08());
+     cbsds = cbsdMapper.selectByExample(examples);
+        if(cbsds.size()==0){
+            throw new SwException("销售出库单扫描记录未查到");
 
+        }}
 
-        return         cbsbMapper.updateByExampleSelective(cbsb, example1);
+        Double num = (double) cbsds.size();
+        for(int l=0;l<cbsds.size();l++) {
+    GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+    //获取仓库id
+    gsGoodsSkuDo.setWhId(cbsb.getCbsb10());
+    //获取商品id
+    gsGoodsSkuDo.setGoodsId(cbsds.get(l).getCbsd08());
+    gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+    //通过仓库id和货物id判断是否存在
+    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+    if (gsGoodsSkus.size() == 0) {
+        throw new SwException("没有该库存信息");
+
+    }
+    //如果存在则更新库存数量
+    else {
+        //加锁
+        baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+        GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+        //查出
+        Double qty = gsGoodsSkus.get(0).getQty();
+        if (qty == 0) {
+            throw new SwException("库存数量不足");
+        }
+        //获取仓库id
+        gsGoodsSkuDo1.setWhId(cbsb.getCbsb10());
+        //获取商品id
+        gsGoodsSkuDo1.setGoodsId(cbsds.get(l).getCbsd08());
+        gsGoodsSkuDo1.setLocationId(cbsds.get(l).getCbsd10());
+        if(num>qty){
+            throw new SwException("出库数量大于库存数量");
+
+        }
+        gsGoodsSkuDo1.setQty(qty - num);
+        taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+    }
+}
+        return cbsbMapper.updateByExampleSelective(cbsb, example1);
 
     }
 
@@ -382,7 +422,15 @@ if(cbob==null){
             if(cbpkList.size()==0){
                 throw new SwException("该商品不在提货单里");
             }
-            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            //更新sn表
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(itemList.get(i).getCbsd09());
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+          /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbsb.getCbsb10());
             //获取商品id
@@ -412,14 +460,8 @@ if(cbob==null){
                 gsGoodsSkuDo1.setQty(qty-1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-            }
-            //更新sn表
-            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
-            gsGoodsSnDo.setSn(itemList.get(i).getCbsd09());
-            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
-            gsGoodsSnDo.setOutTime(date);
-            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
-            taskService.updateGsGoodsSn(gsGoodsSnDo);
+            }*/
+
 
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
@@ -463,9 +505,9 @@ if(cbob==null){
         }
         //状态设为标记完成，回写总订单
 
-        CbsbDo cbsbDo = new CbsbDo();
-        cbsbDo.setCbsb01(itemList.get(0).getCbsb01());
-       this.insertSwJsSkuBarcodeshwc(cbsbDo);
+//        CbsbDo cbsbDo = new CbsbDo();
+//        cbsbDo.setCbsb01(itemList.get(0).getCbsb01());
+       //this.insertSwJsSkuBarcodeshwc(cbsbDo);
         session.commit();
         session.clearCache();
         return 1;

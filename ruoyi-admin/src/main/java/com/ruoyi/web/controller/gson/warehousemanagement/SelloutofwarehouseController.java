@@ -748,7 +748,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "打印销售出货单建议表"
     )
     @PostMapping("/saleoutOrderdetailsuggestsexport1")
-    public AjaxResult saleoutOrderdetailsuggestsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+    public void saleoutOrderdetailsuggestsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
         String excelPaht="";
         String pdfPath="";
 
@@ -787,18 +787,18 @@ public class SelloutofwarehouseController extends BaseController {
         } catch (SwException e) {
             log.error("【打印销售出货单建议表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+          //  return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
             log.error("【打印销售出货单建议表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+           // return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
             if (excelPaht != null) {
                 FileUtils.deleteFile(excelPaht);
             }
         }
-        return AjaxResult.success();
+        return ;
     }
 
 
@@ -867,7 +867,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "打印扫描记录表"
     )
     @PostMapping("/salescanOrderdetailsuggestsexport1")
-    public AjaxResult salescanOrderdetailsuggestsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+    public void salescanOrderdetailsuggestsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
         String excelPaht="";
         String pdfPath="";
 
@@ -910,18 +910,17 @@ public class SelloutofwarehouseController extends BaseController {
         } catch (SwException e) {
             log.error("【打印扫描记录表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+           // return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
             log.error("【打印扫描记录表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
 
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+           // return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
             if (excelPaht != null) {
                 FileUtils.deleteFile(excelPaht);
             }
         }
-        return AjaxResult.success();
     }
     private static void genarateReport(XSSFWorkbook wb, CbsbsVo res, List<CbsbsVo> goods) {
         XSSFSheet sheet1 = wb.getSheetAt(0);

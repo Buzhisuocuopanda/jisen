@@ -189,15 +189,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
          //   mapper.insertSelective(itemList.get(i));
 
             //查商品数量和单价
-             CbphCriteria example = new CbphCriteria();
-            example.createCriteria().andCbpg01EqualTo(itemList.get(i).getCbpg01())
-                    .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-            List<Cbph> cbphs = cbphMapper.selectByExample(example);
+//             CbphCriteria example = new CbphCriteria();
+//            example.createCriteria().andCbpg01EqualTo(itemList.get(i).getCbpg01())
+//                    .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+//            List<Cbph> cbphs = cbphMapper.selectByExample(example);
             //数量
             //单价
 
-            //如果查不到添加信息到库存表
-            Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
+            //如果查不到报错
+     /*       Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbpg.getCbpg10());
@@ -227,7 +227,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 gsGoodsSkuDo1.setQty(qty-1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-            }
+            }*/
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());
@@ -600,11 +600,11 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             //供应商id
             Integer vendorid = cbpg1.getCbpg09();
             //商品id
-            Integer goodsid = cbph.getCbph08();
+            //Integer goodsid = cbph.getCbph08();
             //仓库id
             Integer storeid = cbpg1.getCbpg10();
             //数量
-            Double num = cbph.getCbph09();
+            //Double num = cbph.getCbph09();
             //编号
             String number = cbpg1.getCbpg07();
             //金额
@@ -616,9 +616,18 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
                 CbpiCriteria example2 = new CbpiCriteria();
                 example2.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
-                        .andCbpi07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                        .andCbpi07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                        .andCbpi08EqualTo(cbph.getCbph08());
                 List<Cbpi> cbpis = cbpiMapper.selectByExample(example2);
+                if(cbpis.size()==0){
+                    throw new SwException("没有该采购退库扫码信息");
+                }
+            Double num= (double) cbpis.size();
                 for (Cbpi cbpi : cbpis) {
+
+                    Integer goodsid = cbpi.getCbpi08();
+                    //库位id
+                    Integer cbpi10 = cbpi.getCbpi10();
                     //sn
 //                    String sn = cbpi.getCbpi09();
 //                    //以扫数量
@@ -632,7 +641,35 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 //                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
 //                    //库存表id
 //                    Integer id = gsGoodsSkus.get(0).getId();
-
+                   // Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
+                    GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+                    //获取仓库id
+                    gsGoodsSkuDo.setWhId(cbpg.getCbpg10());
+                    //获取商品id
+                    gsGoodsSkuDo.setGoodsId(goodsid);
+                    gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                    //通过仓库id和货物id判断是否存在
+                    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                    if(gsGoodsSkus.size()==0){
+                        throw new SwException("没有该库存信息");
+                    }
+                    //如果存在则更新库存数量
+                    else {
+                        //加锁
+                        baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                        GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                        //查出
+                        Double qty = gsGoodsSkus.get(0).getQty();
+                        if(qty==0){
+                            throw new SwException("库存数量不足");
+                        }
+                        //获取仓库id
+                        gsGoodsSkuDo1.setWhId(cbpg.getCbpg10());
+                        //获取商品id
+                        gsGoodsSkuDo1.setGoodsId(goodsid);
+                        gsGoodsSkuDo1.setLocationId(cbpi10);
+                        gsGoodsSkuDo1.setQty(qty-1);
+                        taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
                     //台账操作
                     CbibDo cbibDo = new CbibDo();
@@ -649,7 +686,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                     cbibDo.setCbib17(TaskType.cgrkd.getMsg());
                     cbibDo.setCbib19(vendorid);
                     taskService.InsertCBIB(cbibDo);
-                }
+                }}
 
         }
         CbpgCriteria example = new CbpgCriteria();

@@ -159,10 +159,28 @@ public class TaskServiceImpl implements TaskService {
 
         Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
         if(cbib1==null){
+            if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
+                cbib.setCbib11((double) 1);
+                cbib.setCbib12((double) 0);
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(1.0);
+                cbib.setCbib16((double) 0);
+            }
+            //采购入库
+            if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
+
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbibDo.getCbib11());
+                cbib.setCbib16(cbibDo.getCbib12());
+
+            }
             cbib.setCbib09((double) 0);
             cbib.setCbib10((double) 0);
             cbib.setCbib18(1);
         }else {
+            //上次结存数量和价格
             cbib.setCbib09(cbib1.getCbib09());
             cbib.setCbib10(cbib1.getCbib10());
             cbib.setCbib18(cbib1.getCbib18()+1);
@@ -181,6 +199,9 @@ public class TaskServiceImpl implements TaskService {
 
                  cbib.setCbib13((double) 0);
                  cbib.setCbib14((double) 0);
+                 cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());
+                 cbib.setCbib16(cbib1.getCbib10()+cbibDo.getCbib12());
+
              }
            //采购退库单
             if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){

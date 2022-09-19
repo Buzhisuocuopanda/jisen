@@ -32,6 +32,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author 15698
+ */
 @Slf4j
 @Service
 public class SwJsPurchaseinboundServiceImpl implements ISwJsPurchaseinboundService {
@@ -161,7 +164,7 @@ private NumberGenerate numberGenerate;
             if(cbpc==null){
                 throw new SwException("采购入库单不存在");
             }
-            GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+           /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
             //获取商品id
@@ -193,7 +196,7 @@ private NumberGenerate numberGenerate;
                  gsGoodsSkuDo1.setQty(qty+1.0);
                  taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-             }
+             }*/
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
                 gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
@@ -445,7 +448,8 @@ private NumberGenerate numberGenerate;
                     gsGoodsSku.setQty(num);
                     gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
-                } else {
+                }
+                else {
                     //更新数据
 //                    List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getId).collect(Collectors.toList());
 //                    int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
@@ -484,13 +488,66 @@ private NumberGenerate numberGenerate;
             }
             }
         else {
-            //判断是哪个仓库  扫码仓库
-            CbpdCriteria example1=new CbpdCriteria();
-            example1.createCriteria()
+
+
+            CbpdCriteria example2 = new CbpdCriteria();
+            example2.createCriteria()
                     .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbpc01EqualTo(cbpdDto.getCbpc01());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
-            for(int i=0;i<cbpds.size();i++){
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(example2);
+
+            List<Cbpe> cbpes = null;
+            for (int i = 0; i < cbpds.size(); i++) {
+                //判断是哪个仓库  扫码仓库
+                CbpeCriteria example1 = new CbpeCriteria();
+                example1.createCriteria()
+                        .andCbpe07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                        .andCbpc01EqualTo(cbpdDto.getCbpc01())
+                        .andCbpe08EqualTo(cbpds.get(i).getCbpd08());
+                cbpes = cbpeMapper.selectByExample(example1);
+                if (cbpes.size() == 0) {
+                    throw new SwException("扫码数量为0条");
+                }
+            }
+            Double num = (double) cbpes.size();
+
+            for (int i = 0; i < cbpes.size(); i++) {
+                Integer goodsid = cbpes.get(i).getCbpe08();
+                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+                example.createCriteria()
+                        .andGoodsIdEqualTo(goodsid)
+                        .andWhIdEqualTo(cbpc1.getCbpc10());
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+                // double num = doubles[i];
+                //对库存表的操作
+                if (gsGoodsSkus.size() == 0) {
+                    //新增数据
+                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                    gsGoodsSku.setCreateTime(date);
+                    gsGoodsSku.setUpdateTime(date);
+                    gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                    gsGoodsSku.setGoodsId(goodsid);
+                    gsGoodsSku.setWhId(cbpc1.getCbpc10());
+                    gsGoodsSku.setQty(num);
+                    gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+                } else {
+                    //更新数据
+//                    List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getId).collect(Collectors.toList());
+//                    int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
+//                    int id = ints1[0];
+
+                    Integer id = gsGoodsSkus.get(0).getId();
+                    GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                    gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setUpdateTime(date);
+                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+                }
+
+
                 //台账操作
                 //调用台账方法，最后加
                 CbpdCriteria example3 = new CbpdCriteria();
@@ -503,14 +560,15 @@ private NumberGenerate numberGenerate;
                 cbibDo.setCbib02(cbpc1.getCbpc10());
                 cbibDo.setCbib03(cbpc1.getCbpc07());
                 cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
-                cbibDo.setCbib06(cbsa.getCbsa07());
+                cbibDo.setCbib06(cbsa.getCbsa08());
                 cbibDo.setCbib07(cbpc1.getCbpc01());
-                cbibDo.setCbib08(cbpds.get(i).getCbpd08());
+                cbibDo.setCbib08(cbpes.get(i).getCbpe08());
                 //本次入库数量
-                cbibDo.setCbib11(cbpds1.get(i).getCbpd09());
-                cbibDo.setCbib12(cbpds1.get(i).getCbpd12());
-                cbibDo.setCbib15(cbpds1.get(i).getCbpd09());
-                cbibDo.setCbib16(cbpds1.get(i).getCbpd12());
+                cbibDo.setCbib11(num);
+                Double cbpd11 = cbpds1.get(0).getCbpd11();
+                Double prices = cbpd11 * num;
+                cbibDo.setCbib12(prices);
+
                 cbibDo.setCbib17(TaskType.cgrkd.getMsg());
                 cbibDo.setCbib19(cbpc1.getCbpc09());
                 taskService.InsertCBIB(cbibDo);

@@ -374,7 +374,8 @@
       CBSA d
       ON
         d.CBSA01=a.suplier_id
-            where CBPB15
+            where
+            a.delete_flag=0
     <if test="saleOrderNo != null "> and a.sale_order_no like concat('%',  #{saleOrderNo}, '%')</if>
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->

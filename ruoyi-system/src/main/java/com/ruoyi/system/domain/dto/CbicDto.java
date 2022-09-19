@@ -30,7 +30,7 @@ public class CbicDto {
     private Integer cbic11;
 
     private Date cbic12;
-   // @NotNull(message = "供应商id不能为空")
+    @NotNull(message = "供应商id不能为空")
     private Integer cbic13;
 
     private Integer cbic14;
