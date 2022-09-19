@@ -308,7 +308,7 @@
 
   <select id="selectApprovalrecords" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
     SELECT
-    b.*
+    b.*,a.CBOA01 as id
     FROM
     CBOA a
     LEFT JOIN
@@ -345,7 +345,8 @@
     b.CABRAA01 as cabraa01,
     b.CABRAA15 as cabraa15,
     b.CABRAA17 as cabraa17,
-    b.CABRAA21 as cabraa21
+    b.CABRAA21 as cabraa21,
+    a.CBOA01 as id
     FROM
     CABRAA b
     LEFT JOIN
@@ -374,7 +375,7 @@
   </select>
   <select id="selectApprovalrecordsdb" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
     SELECT
-      b.*
+      b.*,a.CBOA01 as id
     FROM
       CABRAA b
 

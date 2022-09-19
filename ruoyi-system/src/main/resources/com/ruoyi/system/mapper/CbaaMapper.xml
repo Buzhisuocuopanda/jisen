@@ -486,26 +486,26 @@ where
         d.CALA01=a.CBAA16
     where
       a.CBAA06=0
-    <if test="cbwa09 != null "> and b.CBWA09 = #{cbwa09}</if>
-    <if test="cbaa02 != null "> and CBAA02 = #{cbaa02}</if>
-    <if test="cbaa03 != null "> and CBAA03 = #{cbaa03}</if>
-    <if test="cbaa04 != null "> and CBAA04 = #{cbaa04}</if>
-    <if test="cbaa05 != null "> and CBAA05 = #{cbaa05}</if>
-    <if test="cbaa06 != null "> and CBAA06 = #{cbaa06}</if>
-    <if test="cbaa07 != null  and cbaa07 != ''"> and CBAA07 = #{cbaa07}</if>
-    <if test="cbaa08 != null "> and CBAA08 = #{cbaa08}</if>
-    <if test="cbaa09 != null "> and CBAA09 = #{cbaa09}</if>
-    <if test="cbaa10 != null "> and CBAA10 = #{cbaa10}</if>
-    <if test="cbaa11 != null "> and CBAA11 = #{cbaa11}</if>
-    <if test="cbaa12 != null "> and CBAA12 = #{cbaa12}</if>
-    <if test="cbaa13 != null "> and CBAA13 = #{cbaa13}</if>
-    <if test="cbaa14 != null "> and CBAA14 = #{cbaa14}</if>
-    <if test="cbaa15 != null "> and CBAA15 = #{cbaa15}</if>
-    <if test="cbaa16 != null "> and CBAA16 = #{cbaa16}</if>
-    <if test="cbaa17 != null  and cbaa17 != ''"> and CBAA17 = #{cbaa17}</if>
-    <if test="cbaa18 != null "> and CBAA18 = #{cbaa18}</if>
-    <if test="cbaa19 != null "> and CBAA19 = #{cbaa19}</if>
-    <if test="userId != null "> and user_id = #{userId}</if>
+    <if test="cbwa09 != null "> and b.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
+    <if test="cbaa02 != null "> and CBAA02 like concat('%',  #{cbaa02}, '%')</if>
+    <if test="cbaa03 != null "> and CBAA03 like concat('%',  #{cbaa03}, '%')</if>
+    <if test="cbaa04 != null "> and CBAA04 like concat('%',  #{cbaa04}, '%')</if>
+    <if test="cbaa05 != null "> and CBAA05 like concat('%',  #{cbaa05}, '%')</if>
+    <if test="cbaa06 != null "> and CBAA06 like concat('%',  #{cbaa06}, '%')</if>
+    <if test="cbaa07 != null  and cbaa07 != ''"> and CBAA07 like concat('%',  #{cbaa07}, '%')</if>
+    <if test="cbaa08 != null "> and CBAA08 like concat('%',  #{cbaa08}, '%')</if>
+    <if test="cbaa09 != null "> and CBAA09 like concat('%',  #{cbaa09}, '%')</if>
+    <if test="cbaa10 != null "> and CBAA10 like concat('%',  #{cbaa10}, '%')</if>
+    <if test="cbaa11 != null "> and CBAA11 like concat('%',  #{cbaa11}, '%')</if>
+    <if test="cbaa12 != null "> and CBAA12 like concat('%',  #{cbaa12}, '%')</if>
+    <if test="cbaa13 != null "> and CBAA13  like concat('%',  #{cbaa13}, '%')</if>
+    <if test="cbaa14 != null "> and CBAA14 like concat('%',  #{cbaa14}, '%')</if>
+    <if test="cbaa15 != null "> and CBAA15 like concat('%',  #{cbaa15}, '%')</if>
+    <if test="cbaa16 != null "> and CBAA16 like concat('%',  #{cbaa16}, '%')</if>
+    <if test="cbaa17 != null  and cbaa17 != ''"> and CBAA17 like concat('%',  #{cbaa17}, '%')</if>
+    <if test="cbaa18 != null "> and CBAA18 like concat('%',  #{cbaa18}, '%')</if>
+    <if test="cbaa19 != null "> and CBAA19 like concat('%',  #{cbaa19}, '%')</if>
+    <if test="userId != null "> and user_id like concat('%',  #{userId}, '%')</if>
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(a.CBAA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>

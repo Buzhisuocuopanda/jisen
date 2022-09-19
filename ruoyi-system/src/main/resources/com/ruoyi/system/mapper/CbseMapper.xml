@@ -469,10 +469,10 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBSE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-    <if test="cbwa09 != null "> and c.CBWA09 = #{cbwa09}</if>
-    <if test="cbse07 != null "> and a.cbse07 = #{cbse07}</if>
-    <if test="cbca08 != null "> and b.cbca08 = #{cbca08}</if>
-    <if test="cbse11 != null "> and  a.CBSE11 = #{cbse11}</if>
+    <if test="cbwa09 != null "> and c.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
+    <if test="cbse07 != null "> and a.cbse07 like concat('%',  #{cbse07}, '%')</if>
+    <if test="cbca08 != null "> and b.cbca08 like concat('%',  #{cbca08}, '%')</if>
+    <if test="cbse11 != null "> and  a.CBSE11 like concat('%',  #{cbse11}, '%')</if>
 
 
 

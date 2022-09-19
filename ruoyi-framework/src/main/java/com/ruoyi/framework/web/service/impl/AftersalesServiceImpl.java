@@ -41,6 +41,7 @@ public class AftersalesServiceImpl implements AftersalesService {
         gsAfterSales.setCreateBy(userid);
         gsAfterSales.setUpdateBy(userid);
         gsAfterSales.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        String saleOrderNo = gsAfterSalesDto.getSaleOrderNo();
         aftersalesMapper.insertSelective(gsAfterSales);
         return 1;
     }

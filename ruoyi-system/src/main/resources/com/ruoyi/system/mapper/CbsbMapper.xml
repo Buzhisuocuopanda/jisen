@@ -690,7 +690,7 @@ where
 
     where
     a.cbsb06=0
-    <if test="cbwa09 != null  and cbwa09 != '' "> and d.CBWA09 = #{cbwa09}</if>
+    <if test="cbwa09 != null  and cbwa09 != '' "> and d.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
 
     <if test="cbca08 != null "> and b.CBCA08 like concat('%',  #{cbca08}, '%')</if>
     <if test="cbsb01 != null "> and a.CBSB01 like concat('%',  #{cbsb01}, '%')</if>
