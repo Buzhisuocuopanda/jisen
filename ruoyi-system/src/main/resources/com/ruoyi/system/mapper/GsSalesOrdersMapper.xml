@@ -375,7 +375,8 @@
       b.CAUA17 AS saler,
       c.CBCA08 AS customer,
       d.cbwa09 AS wh,
-      so.status AS status
+      so.status AS status,
+      so.*
     FROM
       `gs_ Sales_orders` AS so
 
