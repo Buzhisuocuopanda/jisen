@@ -404,6 +404,9 @@ WHERE so.delete_flag=0
     <if test="endTime != null">
       and so.order_date &lt;=#{endTime}
     </if>
+    <if test="endTime != null">
+      and so.order_date &lt;=#{endTime}
+    </if>
   </select>
   <select id="saleOrderListdetail" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
     SELECT

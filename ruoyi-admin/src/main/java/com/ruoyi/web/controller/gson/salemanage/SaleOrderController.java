@@ -86,21 +86,47 @@ public class SaleOrderController extends BaseController {
             value ="国际订单下单后确认库存列表",
             notes = "国际订单下单后确认库存列表"
     )
-    @PostMapping("/skuList")
-    public AjaxResult<List<SaleOrderSkuVo>> saleOrderSkuList(@RequestBody SaleOrderSkuDto saleOrderSkuDto) {
+    @GetMapping("/skuList")
+    public AjaxResult<List<SaleOrderSkuVo>> saleOrderSkuList( SaleOrderSkuDto saleOrderSkuDto) {
         try {
+            startPage();
             List<SaleOrderSkuVo> list = saleOrderService.saleOrderSkuList(saleOrderSkuDto);
             return AjaxResult.success(list);
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【国际订单下单后确认库存列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(saleOrderSkuDto), ExceptionUtils.getStackTrace(e));
+            log.error("【国际订单下单后确认库存列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(saleOrderSkuDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
 
     }
+
+    /**
+     * 国际订单确认库存
+     */
+    @ApiOperation(
+            value ="国际订单确认库存",
+            notes = "国际订单确认库存"
+    )
+    @GetMapping("/updateGjQty")
+    public AjaxResult updateGjQty( @RequestBody UpdateGjQtyDto updateGjQtyDto) {
+        try {
+
+          saleOrderService.updateGjQty(updateGjQtyDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【updateGjQty】接口出现异常,参数${}$,异常${}$", JSON.toJSON(updateGjQtyDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
 
     /**
      * 获取生产总订单列表
@@ -152,6 +178,32 @@ public class SaleOrderController extends BaseController {
 
         } catch (Exception e) {
             log.error("【添加生产总订单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(totalOrderAddDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 生产总订单详情
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(
+            value ="生产总订单详情",
+            notes = "生产总订单详情"
+    )
+    @GetMapping("/totalOrderDetail")
+    public AjaxResult totalOrderDetail(@RequestParam Integer id) {
+        try {
+            TotalOrderVo totalOrderVo = saleOrderService.totalOrderDetail(id);
+            return AjaxResult.success(totalOrderVo);
+        } catch (SwException e) {
+            log.error(e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【生产总订单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(id), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -461,7 +513,35 @@ public class SaleOrderController extends BaseController {
         }
     }
 
+    /**
+     * 国际订单导入模板
+     *
+     * @param
+     * @param
+     * @return
+     */
+    @ApiOperation(
+            value ="国际订单导入模板",
+            notes = "国际订单导入模板"
+    )
 
+    @PostMapping("/exportSaleOrderTmp")
+    public void exportSaleOrderTmp( HttpServletResponse response) {
+        try {
+
+            ExcelUtil<SaleOrderExcelDto> util = new ExcelUtil<SaleOrderExcelDto>(SaleOrderExcelDto.class);
+            util.importTemplateExcel(response,"国际订单导入模板");
+
+//            return AjaxResult.success("下载成功");
+        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【国际订单导入模板】接口出现异常,参数${}$,异常${}$",  "", ExceptionUtils.getStackTrace(e));
+
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
     /**
      * 重新提交销售订单

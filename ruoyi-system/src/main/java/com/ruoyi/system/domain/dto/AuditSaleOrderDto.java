@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * ClassName AuditSaleOrderDto
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AuditSaleOrderDto {
 
-    @NotBlank(message = "请选择销售订单")
+    @NotNull(message = "请选择销售订单")
     @ApiModelProperty("销售订单id")
     //如果是销售变更单就是销售变更单id
     private Integer orderId;
@@ -22,8 +23,8 @@ public class AuditSaleOrderDto {
 
     private Integer userId;
 
-    @NotBlank(message = "审核操作为空")
-    @ApiModelProperty("1 提交操作 2、撤销提交  3 审核 4、复审 5、指定结束 6、反审")
+    @NotNull(message = "审核操作为空")
+    @ApiModelProperty("1 提交操作 2、撤销提交  3 审核 4、复审 5、指定结束 6、反审 7 标记完成 8 已复核反审")
 
     //1 提交操作 2、撤销提交  3 审核 4、复审 5、指定结束 6、反审
     private Integer opeateType;

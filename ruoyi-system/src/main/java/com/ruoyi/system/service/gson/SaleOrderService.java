@@ -66,6 +66,10 @@ public interface SaleOrderService {
     void delSaleChange(DelSaleChangeDto delSaleChangeDto);
 
     void printSaleOrder(Integer sqleOrderId);
+
+    TotalOrderVo totalOrderDetail(Integer id);
+
+    void updateGjQty(UpdateGjQtyDto updateGjQtyDto);
 //    GsWorkInstance createTask();
 
 }

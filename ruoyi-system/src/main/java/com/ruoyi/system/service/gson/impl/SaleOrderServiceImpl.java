@@ -115,6 +115,27 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                .andCbba07NotLike("GBSH"+"%");
 //        List<Cbba> cbbas = cbbaMapper.selectByExample(example);
 //        Double sum = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        //查询国际订单可用库存
+        for (SaleOrderSkuVo saleOrderSkuVo : saleOrderSkuVos) {
+            if(saleOrderSkuVo.getBrand()!=null){
+                String bm = brandMap.get(saleOrderSkuVo.getBrand());
+                saleOrderSkuVo.setGoodsMsg(bm+"-"+saleOrderSkuVo.getModel()+""+saleOrderSkuVo.getDescription());
+            }
+
+            //查出该生产总订单的占用
+            List<GsGoodsUse> list=gsGoodsUseMapper.selectLockByTotalOrderNo(saleOrderSkuVo.getTotalOrderNo());
+            saleOrderSkuVo.setGoodsUses(list);
+            double sum = list.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+            saleOrderSkuVo.setLockQty(sum);
+            if(saleOrderSkuVo.getMakeQty()!=null){
+                saleOrderSkuVo.setCanUseQty(saleOrderSkuVo.getMakeQty()-sum);
+            }
+
+
+
+        }
+
         return saleOrderSkuVos;
     }
 
@@ -354,7 +375,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 saleOrderListVo.setSettleCurrentMsg("USD");
             }
 
-            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN)){
+            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN.getCode())){
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUOJIDINGDAN.getMsg());
             }else {
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUONEIDINGDAN.getMsg());
@@ -1227,13 +1248,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
         baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(),perType);
 
-        if(auditSaleOrderDto.getOpeateType().equals(5)){
+      if(auditSaleOrderDto.getOpeateType().equals(7)){
 
             if(!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(orderStatus)){
-                throw new SwException("只有在已复审的状态下才能指定结束");
+                throw new SwException("只有在已复审的状态下才能标记完成");
             }
             //指定结束
-            cboa.setCboa11(SaleOrderStatusEnums.ZHIDINGJIESHU.getCode());
+            cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
             //除未提交都要释放未发货的库存占用
             if(!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(cboa.getCboa11())){
                 CbobCriteria obex=new CbobCriteria();
@@ -1270,7 +1291,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
 
-        }else if(auditSaleOrderDto.getOpeateType().equals(SaleOrderStatusEnums.YISHENHE.getCode())){
+        }else if(auditSaleOrderDto.getOpeateType().equals(3)){
             //审核通过
             if(!SaleOrderStatusEnums.YITIJIAO.getCode().equals(orderStatus)){
                 throw new SwException("失败，订单状态必须为已提交");
@@ -1290,7 +1311,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cabraa.setCabraa11(auditSaleOrderDto.getUserId());
             cabraaMapper.insert(cabraa);
 
-        }else if(auditSaleOrderDto.getOpeateType().equals(SaleOrderStatusEnums.YIFUSHEN.getCode())){
+        }else if(auditSaleOrderDto.getOpeateType().equals(6)){
+          //反审
+          if(!SaleOrderStatusEnums.YISHENHE.getCode().equals(orderStatus)){
+              throw new SwException("失败，订单状态必须为已审核");
+          }
+          cboa.setCboa11(SaleOrderStatusEnums.YITIJIAO.getCode());
+
+
+      }else if(auditSaleOrderDto.getOpeateType().equals(5)){
 
             if(!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(orderStatus)){
                 throw new SwException("只有在已复审的状态下才能指定结束");
@@ -1353,7 +1382,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 saleOrderListVo.setSettleCurrentMsg("USD");
             }
 
-            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN)){
+            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN.getCode())){
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUOJIDINGDAN.getMsg());
             }else {
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUONEIDINGDAN.getMsg());
@@ -1427,7 +1456,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 saleOrderListVo.setSettleCurrentMsg("USD");
             }
 
-            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN)){
+            if(saleOrderListVo.getOrderClass().equals(OrderTypeEnum.GUOJIDINGDAN.getCode())){
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUOJIDINGDAN.getMsg());
             }else {
                 saleOrderListVo.setOrderClassMsg(OrderTypeEnum.GUONEIDINGDAN.getMsg());
@@ -1897,6 +1926,36 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     @Override
     public void printSaleOrder(Integer sqleOrderId) {
+
+    }
+
+    @Override
+    public TotalOrderVo totalOrderDetail(Integer id) {
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        Cbba cbba = cbbaMapper.selectByPrimaryKey(id);
+        TotalOrderVo res=new TotalOrderVo();
+        res.setGoodsId(cbba.getCbba08());
+        Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbba.getCbba08());
+        if(cbpb!=null){
+
+            if(brandMap.get(cbpb.getCbpb10())!=null){
+                res.setGoods(cbpb.getCbpb10()+"-"+cbpb.getCbpb12()+"-"+cbpb.getCbpb08());
+
+            }
+        }
+
+        res.setOrderNo(cbba.getCbba07());
+        res.setPriority(cbba.getCbba15());
+        res.setQty(cbba.getCbba09());
+        return res;
+    }
+
+    @Transactional
+    @Override
+    public void updateGjQty(UpdateGjQtyDto updateGjQtyDto) {
+
+        //添加占用
+
 
     }
 

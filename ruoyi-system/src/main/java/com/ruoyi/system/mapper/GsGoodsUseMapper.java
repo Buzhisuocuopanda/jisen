@@ -31,4 +31,6 @@ public interface GsGoodsUseMapper {
     List<GsGoodsUse> selectByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId);
 
     List<GsGoodsUse> selectByGoodsId( @Param("goodsId") Integer goodsId);
+
+    List<GsGoodsUse> selectLockByTotalOrderNo(String totalOrderNo);
 }

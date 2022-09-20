@@ -573,23 +573,32 @@
   </update>
   <select id="saleOrderSkuList" resultType="com.ruoyi.system.domain.vo.SaleOrderSkuVo">
 SELECT
-    ob.CBOB08 AS orderNo,
-    ob.CBOB09 AS goodsNum,
-    pb.CBPB08 AS description,
+    oa.CBOA07 AS orderNo,
+    ob.CBOB18 AS totalOrderNo,
+    ba.CBBA15 AS priority,
+    ba.CBBA13 AS goodsNum,
+    pb.CBPB10 AS brand,
     pb.CBPB12 AS model,
-    pa.CBPA07 as goodsClass,
-    gs.lock_qty as lockQty,
-    ob.CBOB10 as shipmentQty
-
-
+    pb.CBPB08 AS description,
+    ba.CBBA13 AS makeQty
 FROM
     `CBOB` AS ob
-    INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
-    INNER JOIN gs_goods_use gs ON gs.goods_id =pb.CBPB01
-    INNER JOIN CBPA pa on pa.CBPA01 = pb.CBPB14
+    LEFT JOIN CBBA ba ON ba.CBBA01=ob.CBOB18
+    LEFT JOIN CBOA oa on oa.CBOA01 = ob.CBOA01
+    LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
 
-where ob.CBOB08=#{orderNo}
-and gs.order_no=#{orderNo}
+where   oa.CBOA06=0
+AND oa.CBOA27=1
+AND oa.CBOA11!=0
+AND oa.CBOA11!=6
+AND oa.CBOA11!=5
+<if test="orderNo !=null">
+and ba.CBOA07=#{orderNo}
+</if>
+    <if test="totalOrderNo !=null">
+      and ob.CBOB18=#{totalOrderNo}
+    </if>
+order by ob.CBOB03 DESC
   </select>
 
   <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">

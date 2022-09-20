@@ -353,4 +353,17 @@ FROM
 WHERE
   g.goods_id =#{goodsId}
   </select>
+
+
+  <select id="selectLockByTotalOrderNo" resultMap="BaseResultMap">
+        SELECT
+   *
+FROM
+   `gs_goods_use` g
+   INNER JOIN CBOA oa on oa.CBOA07=g.order_no
+   INNER JOIN CBOB ob on ob.CBOA01=oa.CBOA01
+   INNER JOIN CBBA ba on ba.CBBA01=ob.CBOB17
+WHERE
+  ba.CBBA07 =#{totalOrderNo}
+  </select>
 </mapper>

@@ -19,6 +19,9 @@ public class SaleOrderSkuDto {
     @ApiModelProperty("销售订单号")
     private String orderNo;
 
+    private String totalOrderNo;
+
+
 //    private String goodsName;
 //
 //    private Date startTime;
