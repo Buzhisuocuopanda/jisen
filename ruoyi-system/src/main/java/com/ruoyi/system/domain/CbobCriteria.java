@@ -1264,6 +1264,66 @@ public class CbobCriteria {
             addCriterion("CBOB18 not between", value1, value2, "cbob18");
             return (Criteria) this;
         }
+
+        public Criteria andConfirmQtyIsNull() {
+            addCriterion("confirm_qty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyIsNotNull() {
+            addCriterion("confirm_qty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyEqualTo(Double value) {
+            addCriterion("confirm_qty =", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyNotEqualTo(Double value) {
+            addCriterion("confirm_qty <>", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyGreaterThan(Double value) {
+            addCriterion("confirm_qty >", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyGreaterThanOrEqualTo(Double value) {
+            addCriterion("confirm_qty >=", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyLessThan(Double value) {
+            addCriterion("confirm_qty <", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyLessThanOrEqualTo(Double value) {
+            addCriterion("confirm_qty <=", value, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyIn(List<Double> values) {
+            addCriterion("confirm_qty in", values, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyNotIn(List<Double> values) {
+            addCriterion("confirm_qty not in", values, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyBetween(Double value1, Double value2) {
+            addCriterion("confirm_qty between", value1, value2, "confirmQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmQtyNotBetween(Double value1, Double value2) {
+            addCriterion("confirm_qty not between", value1, value2, "confirmQty");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
