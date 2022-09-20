@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -49,6 +50,9 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
     @Resource
     private CbpbMapper cbpbMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
     @Override
     public void insertOutofstockregistrationform(CboeDo cboeDo) {
 
@@ -65,6 +69,9 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         cboe.setCboe06(DeleteFlagEnum.NOT_DELETE.getCode());
         String takeOrderNos = numberGenerate.getTakeOrderNos();
         cboe.setCboe07(takeOrderNos);
+        cboe.setCboe08(date);
+        cboe.setCboe09(cboeDo.getCustomerId());
+        cboe.setCboe10(cboeDo.getSaleUserId());
         cboe.setUserId(Math.toIntExact(userid));
         cboeMapper.insertSelective(cboe);
         CboeCriteria example1 = new CboeCriteria();
@@ -76,15 +83,15 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         Cbof cbof = null;
         for (CbofDo good : goods) {
           cbof =new Cbof();
-          cbof.setCbof02(good.getCbof02());
+                cbof.setCbof02(goods.size());
                 cbof.setCbof03(date);
                 cbof.setCbof04(Math.toIntExact(userid));
                 cbof.setCbof05(date);
                 cbof.setCbof06(Math.toIntExact(userid));
                 cbof.setCbof07(DeleteFlagEnum.NOT_DELETE.getCode());
-                cbof.setCbof08(good.getCbof08());
-                cbof.setCbof09(good.getCbof09());
-                cbof.setCbof13(good.getCbof13());
+                cbof.setCbof08(good.getGoodsId());
+                cbof.setCbof09(good.getQty());
+                cbof.setCbof13(good.getRemark());
                 cbof.setCboe01(idVo.getId());
                 cbofMapper.insertSelective(cbof);
 
@@ -174,7 +181,16 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         res.setCboe08(cboe.getCboe08());
         res.setCbca08(cbca.getCbca08());
         res.setCaua15(caua.getCaua15());
+        res.setCustomerId(cboe.getCboe10());
+        res.setCustomerName(cbca.getCbca08());
+        if(cboe.getCboe10()!=null){
+            SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboe.getCboe10().longValue());
+            if (saleUser != null) {
+                res.setSaleUser(saleUser.getNickName());
+                res.setSaleUserId(saleUser.getUserId().intValue());
 
+            }
+        }
         //货物明细
         CbofCriteria example = new CbofCriteria();
         example.createCriteria().andCboe01EqualTo(orderId)
@@ -225,7 +241,12 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         Date date = new Date();
         cboe.setCboe04(date);
         cboe.setCboe05(Math.toIntExact(userid));
-
+        if(cboeDo.getCustomerId()!=null){
+            cboe.setCboe09(cboeDo.getCustomerId());
+        }
+        if(cboeDo.getSaleUserId()!=null){
+            cboe.setCboe10(cboeDo.getSaleUserId());
+        }
         cboe.setUserId(Math.toIntExact(userid));
         cboeMapper.updateByPrimaryKeySelective(cboe);
 
@@ -241,6 +262,15 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
             cbof.setCbof09(good.getCbof09());
             cbof.setCbof13(good.getCbof13());
             cbof.setCboe01(cboeDo.getCboe01());
+            if(good.getGoodsId()!=null){
+                cbof.setCbof08(good.getGoodsId());
+            }
+            if(good.getQty()!=null){
+                cbof.setCbof09(good.getQty());
+            }
+            if(good.getRemark()!=""){
+                cbof.setCbof13(good.getRemark());
+            }
             CbofCriteria example = new CbofCriteria();
             example.createCriteria().andCboe01EqualTo(cboeDo.getCboe01())
                     .andCbof07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

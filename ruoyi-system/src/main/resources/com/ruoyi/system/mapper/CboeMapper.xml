@@ -323,7 +323,7 @@
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CboeVo">
     SELECT DISTINCT
       a.CBOE07,a.CBOE08,b.CBCA08
-         ,c.CAUA15,a.CBOE01,a.CBOE02
+         ,c.CAUA15,a.CBOE01,a.CBOE02,a.CBOE01 as id
     from
       CBOE a
         LEFT JOIN
@@ -342,6 +342,8 @@ where a.CBOE06=0
       and date_format(a.CBOE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
     <if test="cboe07 != null "> and a.cboe07 = #{cboe07}</if>
+    <if test="id != null "> and a.cboe01 = #{id}</if>
+
 
 
   </select>

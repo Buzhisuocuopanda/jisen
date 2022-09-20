@@ -35,4 +35,9 @@ public class CboeDo {
 
     private List<CbofDo> goods=new ArrayList<>();
 
+    private Integer customerId;
+
+    private Integer saleUserId;
+
+
 }

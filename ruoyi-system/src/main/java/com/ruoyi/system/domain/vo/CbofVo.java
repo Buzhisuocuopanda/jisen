@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -22,5 +23,14 @@ public class CbofVo {
     private Double cbof09;
     private String cbof13;
 
+    private Integer customerId;
+
+    private String customerName;
+
+
+    @ApiModelProperty("销售人员")
+    private String saleUser;
+    @ApiModelProperty("销售人员")
+    private Integer saleUserId;
     private List<SaleOderDetailGoods> goods = new ArrayList<>();
 }

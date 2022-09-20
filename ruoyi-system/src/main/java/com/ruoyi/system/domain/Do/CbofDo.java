@@ -27,4 +27,15 @@ public class CbofDo {
     private String cbof13;
 
     private Integer cboe01;
+
+    private Integer goodsId;
+
+    private Integer number;
+
+    private Double qty;
+
+    private String remark;
+
+
+
 }

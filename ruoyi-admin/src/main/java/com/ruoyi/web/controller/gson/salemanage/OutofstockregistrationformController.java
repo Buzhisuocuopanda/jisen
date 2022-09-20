@@ -68,7 +68,7 @@ public class OutofstockregistrationformController extends BaseController {
          outofstockregistrationformService.insertOutofstockregistrationform(cboeDo);
             return AjaxResult.success();
         }catch (ServiceException e) {
-            log.error("【修改采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cboeDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增缺货登记表】接口出现异常,参数${},异常${}$", JSON.toJSON(cboeDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
@@ -104,12 +104,12 @@ public class OutofstockregistrationformController extends BaseController {
                 return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
             }catch (SwException e) {
-            log.error("【修改缺货登记表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cboeDo), ExceptionUtils.getStackTrace(e));
+            log.error("【修改缺货登记表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cboeDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改缺货登记表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cboeDo), ExceptionUtils.getStackTrace(e));
+            log.error("【修改缺货登记表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cboeDo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -135,7 +135,7 @@ public class OutofstockregistrationformController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增缺货登记表明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【新增缺货登记表明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -154,7 +154,7 @@ public class OutofstockregistrationformController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【修改缺货登记表明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(itemList), ExceptionUtils.getStackTrace(e));
+            log.error("【修改缺货登记表明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -209,7 +209,7 @@ public class OutofstockregistrationformController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【缺货登记表详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cbofVo),ExceptionUtils.getStackTrace(e));
+            log.error("【缺货登记表详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbofVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -231,6 +231,8 @@ public class OutofstockregistrationformController extends BaseController {
             CbofVo res = outofstockregistrationformService.saleOderDetail(orderId);
             return AjaxResult.success(res);
         } catch (SwException e) {
+            log.error("【售后单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
@@ -253,10 +255,12 @@ public class OutofstockregistrationformController extends BaseController {
         try {
             return toAjax(outofstockregistrationformService.deleteSwJsSkuBarcodsById(cboeDo));
         }catch (SwException e) {
+            log.error("【删除缺货登记表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cboeDo),ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除缺货登记表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(cboeDo),ExceptionUtils.getStackTrace(e));
+            log.error("【删除缺货登记表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cboeDo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
