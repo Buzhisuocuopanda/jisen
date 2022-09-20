@@ -25,7 +25,10 @@ public class LedgerVo extends BaseEntity {
 
     private String cbwa11;
 
+    private String cbib11;
+
     private Double cbib12;
+
 
     private Double cbib13;
 
@@ -34,4 +37,8 @@ public class LedgerVo extends BaseEntity {
     private Double cbib15;
 
     private Double cbib16;
+
+    private Date startTime;
+
+    private Date endTime;
 }

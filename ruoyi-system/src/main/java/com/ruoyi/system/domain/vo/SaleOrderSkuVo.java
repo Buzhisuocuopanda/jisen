@@ -1,8 +1,12 @@
 package com.ruoyi.system.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.system.domain.GsGoodsUse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName SaleOrderSkuVo
@@ -17,11 +21,22 @@ public class SaleOrderSkuVo {
     @ApiModelProperty("销售订单号")
     private String orderNo;
 
+
+    @ApiModelProperty("生产总订单号")
+    private String totalOrderNo;
+
+    @ApiModelProperty("优先级")
+    private String priority;
+
     @ApiModelProperty("商品库存数量")
     private Double goodsNum;
 
     @ApiModelProperty("商品名称")
-    private String goodsName;
+    private String goodsMsg;
+
+    private String brand;
+    private String model;
+    private String description;
 
     @ApiModelProperty("占用数量")
     //占用数量
@@ -33,6 +48,9 @@ public class SaleOrderSkuVo {
     //发货数量
     private Double shipmentQty;
 
+    private Double canUseQty;
+
+    private List<GsGoodsUse> goodsUses=new ArrayList<>();
 
 
 

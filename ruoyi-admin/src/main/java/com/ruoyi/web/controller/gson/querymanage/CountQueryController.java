@@ -57,92 +57,7 @@ public class CountQueryController  extends BaseController {
     @Resource
     private ISwJsStoreService swJsStoreService;
 
-    @ApiOperation(
-            value ="查询商品列表（不分页）",
-            notes = "查询商品列表（不分页）"
-    )
-    @GetMapping("/SwJsGoodsAll")
-    /**
-     *@author: zhaoguoliang
-     *@date: Create in 2022/9/19 15:44
-     */
-    public AjaxResult<List<CbpbVo>> swJsGoodsAll(CbpbVo cbpbVo) {
-        try {
-            List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsAll(cbpbVo);
-            return AjaxResult.success(list);
-        }catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
-            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpbVo),ExceptionUtils.getStackTrace(e));
-
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-    }
-
-    @ApiOperation(
-            value ="查询仓库列表（不分页）",
-            notes = "查询仓库列表（不分页）"
-    )
-    @GetMapping("/SwJsStoreSkuAll")
-    /**
-     *@author: zhaoguoliang
-     *@date: Create in 2022/9/19 15:43
-     */
-    public AjaxResult<List<Cbwa>> swJsStoreSkuAll(Cbwa cbwa) {
-        try {
-            List<Cbwa> list = swJsStoreSkuService.selectSwJsStoreSkuList(cbwa);
-            return AjaxResult.success(list);
-        }catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-        } catch (Exception e) {
-            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbwa),ExceptionUtils.getStackTrace(e));
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-    }
-
-    @ApiOperation(
-            value ="查询品牌列表（不分页）",
-            notes = "查询品牌列表（不分页）"
-    )
-    @GetMapping("/swJsAll")
-    /**
-     *@author: zhaoguoliang
-     *@date: Create in 2022/9/19 15:43
-     */
-    public AjaxResult<List<Cala>> swJsAll(Cala cala) {
-        try {
-            List<Cala> list = swJsListService.selectSwJsListList(cala);
-            return AjaxResult.success(list);
-        }catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-        } catch (Exception e) {
-            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cala),ExceptionUtils.getStackTrace(e));
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-    }
-
-
-    /**
-     *@author: zhaoguoliang
-     *@date: Create in 2022/9/19 16:26
-     */
-    @ApiOperation(
-            value ="查询库位列表（不分页）",
-            notes = "查询库位列表（不分页）"
-    )
-    @GetMapping("/SwJsStoreAll")
-    public AjaxResult<List<CblaVo>> swJsStoreAll(CblaVo cblaVo) {
-        try {
-            List<CblaVo> list = swJsStoreService.selectSwJsStoreList(cblaVo);
-            return AjaxResult.success(list);
-        }catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-        } catch (Exception e) {
-            log.error("【条件查询查询库位信息维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cblaVo),ExceptionUtils.getStackTrace(e));
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-    }
 
     /**
      * 库存汇总查询
@@ -358,5 +273,92 @@ public class CountQueryController  extends BaseController {
     }
 
 
+
+    @ApiOperation(
+            value ="查询商品列表（不分页）",
+            notes = "查询商品列表（不分页）"
+    )
+    @GetMapping("/SwJsGoodsAll")
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/19 15:44
+     */
+    public AjaxResult<List<CbpbVo>> swJsGoodsAll(CbpbVo cbpbVo) {
+        try {
+            List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsAll(cbpbVo);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpbVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/19 15:43
+     */
+    @ApiOperation(
+            value ="查询仓库列表（不分页）",
+            notes = "查询仓库列表（不分页）"
+    )
+    @GetMapping("/SwJsStoreSkuAll")
+    public AjaxResult<List<Cbwa>> swJsStoreSkuAll(Cbwa cbwa) {
+        try {
+            List<Cbwa> list = swJsStoreSkuService.selectSwJsStoreSkuList(cbwa);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbwa),ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    @ApiOperation(
+            value ="查询品牌列表（不分页）",
+            notes = "查询品牌列表（不分页）"
+    )
+    @GetMapping("/swJsAll")
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/19 15:43
+     */
+    public AjaxResult<List<Cala>> swJsAll(Cala cala) {
+        try {
+            List<Cala> list = swJsListService.selectSwJsListList(cala);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cala),ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/19 16:26
+     */
+    @ApiOperation(
+            value ="查询库位列表（不分页）",
+            notes = "查询库位列表（不分页）"
+    )
+    @GetMapping("/SwJsStoreAll")
+    public AjaxResult<List<CblaVo>> swJsStoreAll(CblaVo cblaVo) {
+        try {
+            startPage();
+            List<CblaVo> list = swJsStoreService.selectSwJsStoreList(cblaVo);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【条件查询查询库位信息维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cblaVo),ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 }
