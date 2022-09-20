@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsAfterSalesVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
 import com.ruoyi.system.mapper.GsAfterSalesMapper;
 import com.ruoyi.system.service.AftersalesService;
 import org.springframework.stereotype.Service;
@@ -88,6 +89,14 @@ public class AftersalesServiceImpl implements AftersalesService {
     @Override
     public List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo) {
         return aftersalesMapper.aftersaleslist(gsAfterSalesVo);
+    }
+
+    @Override
+    public GsAfterSales saleOderDetail(Integer orderId) {
+        GsAfterSalesVo res = new GsAfterSalesVo();
+        GsAfterSales gsAfterSales = aftersalesMapper.selectByPrimaryKey(orderId);
+
+        return gsAfterSales;
     }
 
 

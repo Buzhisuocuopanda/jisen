@@ -40,4 +40,7 @@ public interface CbpbMapper {
     Cbpb selectByPrimaryKeyForUpdate(@Param("id") Integer id);
 
     List<CbpbVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
+
+    List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo);
+
 }

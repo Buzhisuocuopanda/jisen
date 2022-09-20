@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.salemanage;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -10,6 +11,7 @@ import com.ruoyi.common.utils.PdfUtil;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbof;
 import com.ruoyi.system.domain.Do.CboeDo;
+import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.vo.CboeVo;
 import com.ruoyi.system.domain.vo.CbofVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -162,7 +164,32 @@ public class OutofstockregistrationformController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 缺货登记表详情
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(
+            value ="缺货登记表详情",
+            notes = "缺货登记表详情"
+    )
+    @GetMapping("/saleOderDetail")
+    public AjaxResult<CbofVo> saleOderDetail(@RequestParam Integer orderId) {
+        try {
 
+            CbofVo res = outofstockregistrationformService.saleOderDetail(orderId);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【售后单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
 
     /**
      * 删除缺货登记表

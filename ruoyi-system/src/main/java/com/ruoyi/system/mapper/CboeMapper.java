@@ -34,4 +34,6 @@ public interface CboeMapper {
     List<CboeVo> selectSwJsTaskGoodsRelLists(CboeVo cboeVo);
 
     List<CbofVo> selectSwJsTaskGoodsRelListss(CbofVo cbofVo);
+
+    CbofVo saleOderDetail(Integer orderId);
 }

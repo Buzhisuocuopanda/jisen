@@ -6,6 +6,8 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CboeDo;
+import com.ruoyi.system.domain.Do.CbofDo;
+import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.CboeVo;
 import com.ruoyi.system.domain.vo.CbofVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -33,8 +35,13 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+
+    @Resource
+    private CbofMapper cbofMapper;
     @Override
     public IdVo insertOutofstockregistrationform(CboeDo cboeDo) {
+
+        List<CbofDo> goods = cboeDo.getGoods();
 
         Long userid = SecurityUtils.getUserId();
 
@@ -55,7 +62,23 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         List<Cboe> cboess = cboeMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cboess.get(0).getCboe01());
-        return idVo;
+        Cbof cbof = null;
+        for (CbofDo good : goods) {
+          cbof =new Cbof();
+          cbof.setCbof02(good.getCbof02());
+                cbof.setCbof03(date);
+                cbof.setCbof04(Math.toIntExact(userid));
+                cbof.setCbof05(date);
+                cbof.setCbof06(Math.toIntExact(userid));
+                cbof.setCbof07(DeleteFlagEnum.NOT_DELETE.getCode());
+                cbof.setCbof08(good.getCbof08());
+                cbof.setCbof09(good.getCbof09());
+                cbof.setCbof13(good.getCbof13());
+                cbof.setCboe01(idVo.getId());
+                cbofMapper.insertSelective(cbof);
+
+        }
+            return idVo;
     }
 
     @Override
@@ -127,6 +150,11 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         example1.createCriteria().andCboe01EqualTo(cboeDo.getCboe01())
                 .andCboe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return   cboeMapper.updateByExampleSelective(cboe, example1);
+    }
+
+    @Override
+    public CbofVo saleOderDetail(Integer orderId) {
+        return cboeMapper.saleOderDetail(orderId);
     }
 }
 

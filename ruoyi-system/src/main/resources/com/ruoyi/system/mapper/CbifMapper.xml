@@ -385,7 +385,7 @@
   <select id="SwJsStoreslistss" resultType="com.ruoyi.system.domain.vo.CbifVo">
     SELECT
       a.CBIE07,a.CBIE02,b.CBWA09,c.CALA08,d.CBSA08,g.CBPA07,h.CALA08,f.CBPB12,
-      f.CBPB15,f.CBPB08,e.*,a.CBIE01
+      f.CBPB15,f.CBPB08,e.CBIF13,a.CBIE01
     FROM
       CBIE a
         LEFT JOIN
@@ -464,9 +464,9 @@
       (SELECT @i:=0) AS itable
 where
     a.CBIE06=0
-      <if test="cbwa09 != null "> and f.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
-      <if test="cala08 != null "> and h.CALA08 like concat('%',  #{cala08}, '%')</if>
-      <if test="cbpb08 != null "> and c.CBPB08 like concat('%',  #{cbpb08}, '%')</if>
+      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09} </if>
+      <if test="cala08 != null "> and h.CALA08 = #{cala08} </if>
+      <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
       <if test="cbpb01 != null "> and c.CBPB01 = #{cbpb01}</if>
 
     </select>
@@ -518,6 +518,10 @@ where
       </if>
       <if test="cbig10 != null and cbig10 !=''">
         and a.cbig10 like concat('%', #{cbig10}, '%')
+      </if>
+
+      <if test="cbpb01 != null">
+        and e.cbpb01 =#{cbpb01}
       </if>
 
 

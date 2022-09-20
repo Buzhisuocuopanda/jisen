@@ -513,10 +513,12 @@ private NumberGenerate numberGenerate;
 
             for (int i = 0; i < cbpes.size(); i++) {
                 Integer goodsid = cbpes.get(i).getCbpe08();
+                Integer cbpe10 = cbpes.get(i).getCbpe10();
                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
                         .andGoodsIdEqualTo(goodsid)
-                        .andWhIdEqualTo(cbpc1.getCbpc10());
+                        .andWhIdEqualTo(cbpc1.getCbpc10())
+                        .andLocationIdEqualTo(cbpe10);
                 List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
                 // double num = doubles[i];
                 //对库存表的操作

@@ -1,9 +1,12 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Cbpb;
 import com.ruoyi.system.domain.Cbpf;
+import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
@@ -42,8 +45,20 @@ public interface ISwJsGoodsService {
     String importSwJsCustomer(List<Cbpf> swJsCustomersList, boolean updateSupport, String operName);
 
 
-
     int insertSwJsStores(List<CbpbDto> itemList);
 
+    /**
+     * zgl
+     * 查询全部商品信息(不分页)
+     * @param cbpbVo
+     * @return
+     */
+    List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo);
+
+    /**
+     * gfy
+     * @param goodsSelectDto
+     * @return
+     */
     List<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
 }

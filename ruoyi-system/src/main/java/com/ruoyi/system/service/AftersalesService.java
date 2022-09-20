@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsAfterSalesVo;
@@ -17,4 +18,6 @@ public interface AftersalesService {
     int deletesales(GsAfterSalesDto gsAfterSalesDto);
 
     List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo);
+
+    GsAfterSales saleOderDetail(Integer orderId);
 }
