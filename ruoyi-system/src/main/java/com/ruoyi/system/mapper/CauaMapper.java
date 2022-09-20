@@ -5,7 +5,6 @@ import com.ruoyi.system.domain.CauaCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CauaVo;
-import com.ruoyi.system.domain.vo.UnfinishedentsVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CauaMapper {
@@ -13,15 +12,24 @@ public interface CauaMapper {
 
     int deleteByExample(CauaCriteria example);
 
+    int deleteByPrimaryKey(Integer caua01);
+
     int insert(Caua record);
 
     int insertSelective(Caua record);
 
     List<Caua> selectByExample(CauaCriteria example);
 
+    Caua selectByPrimaryKey(Integer caua01);
+
     int updateByExampleSelective(@Param("record") Caua record, @Param("example") CauaCriteria example);
 
     int updateByExample(@Param("record") Caua record, @Param("example") CauaCriteria example);
 
+    int updateByPrimaryKeySelective(Caua record);
+
+    int updateByPrimaryKey(Caua record);
+
     List<CauaVo> selectsalerman(CauaVo cauaVo);
+
 }

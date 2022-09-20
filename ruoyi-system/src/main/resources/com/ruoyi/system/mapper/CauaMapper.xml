@@ -2,6 +2,160 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CauaMapper">
 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CAUA`
+    where CAUA01 = #{caua01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CAUA`
+    where CAUA01 = #{caua01,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Caua">
+    update `CAUA`
+    <set>
+      <if test="caua02 != null">
+        CAUA02 = #{caua02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caua03 != null">
+        CAUA03 = #{caua03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caua04 != null">
+        CAUA04 = #{caua04,jdbcType=INTEGER},
+      </if>
+      <if test="caua05 != null">
+        CAUA05 = #{caua05,jdbcType=INTEGER},
+      </if>
+      <if test="caua06 != null">
+        CAUA06 = #{caua06,jdbcType=INTEGER},
+      </if>
+      <if test="caua07 != null">
+        CAUA07 = #{caua07,jdbcType=VARCHAR},
+      </if>
+      <if test="caua08 != null">
+        CAUA08 = #{caua08,jdbcType=VARCHAR},
+      </if>
+      <if test="caua09 != null">
+        CAUA09 = #{caua09,jdbcType=VARCHAR},
+      </if>
+      <if test="caua10 != null">
+        CAUA10 = #{caua10,jdbcType=VARCHAR},
+      </if>
+      <if test="caua11 != null">
+        CAUA11 = #{caua11,jdbcType=INTEGER},
+      </if>
+      <if test="caua12 != null">
+        CAUA12 = #{caua12,jdbcType=VARCHAR},
+      </if>
+      <if test="caua13 != null">
+        CAUA13 = #{caua13,jdbcType=VARCHAR},
+      </if>
+      <if test="caua14 != null">
+        CAUA14 = #{caua14,jdbcType=VARCHAR},
+      </if>
+      <if test="caua15 != null">
+        CAUA15 = #{caua15,jdbcType=VARCHAR},
+      </if>
+      <if test="caua16 != null">
+        CAUA16 = #{caua16,jdbcType=VARCHAR},
+      </if>
+      <if test="caua17 != null">
+        CAUA17 = #{caua17,jdbcType=VARCHAR},
+      </if>
+      <if test="caua18 != null">
+        CAUA18 = #{caua18,jdbcType=INTEGER},
+      </if>
+      <if test="caua19 != null">
+        CAUA19 = #{caua19,jdbcType=VARCHAR},
+      </if>
+      <if test="caua20 != null">
+        CAUA20 = #{caua20,jdbcType=INTEGER},
+      </if>
+      <if test="caua21 != null">
+        CAUA21 = #{caua21,jdbcType=VARCHAR},
+      </if>
+      <if test="caua22 != null">
+        CAUA22 = #{caua22,jdbcType=VARCHAR},
+      </if>
+      <if test="caua23 != null">
+        CAUA23 = #{caua23,jdbcType=VARCHAR},
+      </if>
+      <if test="caua24 != null">
+        CAUA24 = #{caua24,jdbcType=VARCHAR},
+      </if>
+      <if test="caua25 != null">
+        CAUA25 = #{caua25,jdbcType=VARCHAR},
+      </if>
+      <if test="caua26 != null">
+        CAUA26 = #{caua26,jdbcType=VARCHAR},
+      </if>
+      <if test="caua27 != null">
+        CAUA27 = #{caua27,jdbcType=VARCHAR},
+      </if>
+      <if test="caua28 != null">
+        CAUA28 = #{caua28,jdbcType=VARCHAR},
+      </if>
+      <if test="caua29 != null">
+        CAUA29 = #{caua29,jdbcType=VARCHAR},
+      </if>
+      <if test="caua30 != null">
+        CAUA30 = #{caua30,jdbcType=VARCHAR},
+      </if>
+      <if test="caua31 != null">
+        CAUA31 = #{caua31,jdbcType=VARCHAR},
+      </if>
+      <if test="caua32 != null">
+        CAUA32 = #{caua32,jdbcType=VARCHAR},
+      </if>
+      <if test="caua33 != null">
+        CAUA33 = #{caua33,jdbcType=VARCHAR},
+      </if>
+      <if test="caua34 != null">
+        CAUA34 = #{caua34,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CAUA01 = #{caua01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Caua">
+    update `CAUA`
+    set CAUA02 = #{caua02,jdbcType=TIMESTAMP},
+      CAUA03 = #{caua03,jdbcType=TIMESTAMP},
+      CAUA04 = #{caua04,jdbcType=INTEGER},
+      CAUA05 = #{caua05,jdbcType=INTEGER},
+      CAUA06 = #{caua06,jdbcType=INTEGER},
+      CAUA07 = #{caua07,jdbcType=VARCHAR},
+      CAUA08 = #{caua08,jdbcType=VARCHAR},
+      CAUA09 = #{caua09,jdbcType=VARCHAR},
+      CAUA10 = #{caua10,jdbcType=VARCHAR},
+      CAUA11 = #{caua11,jdbcType=INTEGER},
+      CAUA12 = #{caua12,jdbcType=VARCHAR},
+      CAUA13 = #{caua13,jdbcType=VARCHAR},
+      CAUA14 = #{caua14,jdbcType=VARCHAR},
+      CAUA15 = #{caua15,jdbcType=VARCHAR},
+      CAUA16 = #{caua16,jdbcType=VARCHAR},
+      CAUA17 = #{caua17,jdbcType=VARCHAR},
+      CAUA18 = #{caua18,jdbcType=INTEGER},
+      CAUA19 = #{caua19,jdbcType=VARCHAR},
+      CAUA20 = #{caua20,jdbcType=INTEGER},
+      CAUA21 = #{caua21,jdbcType=VARCHAR},
+      CAUA22 = #{caua22,jdbcType=VARCHAR},
+      CAUA23 = #{caua23,jdbcType=VARCHAR},
+      CAUA24 = #{caua24,jdbcType=VARCHAR},
+      CAUA25 = #{caua25,jdbcType=VARCHAR},
+      CAUA26 = #{caua26,jdbcType=VARCHAR},
+      CAUA27 = #{caua27,jdbcType=VARCHAR},
+      CAUA28 = #{caua28,jdbcType=VARCHAR},
+      CAUA29 = #{caua29,jdbcType=VARCHAR},
+      CAUA30 = #{caua30,jdbcType=VARCHAR},
+      CAUA31 = #{caua31,jdbcType=VARCHAR},
+      CAUA32 = #{caua32,jdbcType=VARCHAR},
+      CAUA33 = #{caua33,jdbcType=VARCHAR},
+      CAUA34 = #{caua34,jdbcType=VARCHAR}
+    where CAUA01 = #{caua01,jdbcType=INTEGER}
+  </update>
+
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Caua">
     <result column="CAUA01" jdbcType="INTEGER" property="caua01" />
     <result column="CAUA02" jdbcType="TIMESTAMP" property="caua02" />

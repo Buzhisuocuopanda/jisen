@@ -2,7 +2,9 @@ package com.ruoyi.system.domain.vo;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CbofVo {
@@ -20,4 +22,5 @@ public class CbofVo {
     private Double cbof09;
     private String cbof13;
 
+    private List<SaleOderDetailGoods> goods = new ArrayList<>();
 }

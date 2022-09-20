@@ -8,12 +8,8 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CboeDo;
 import com.ruoyi.system.domain.Do.CbofDo;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
-import com.ruoyi.system.domain.vo.CboeVo;
-import com.ruoyi.system.domain.vo.CbofVo;
-import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.mapper.CboeMapper;
-import com.ruoyi.system.mapper.CbofMapper;
-import com.ruoyi.system.mapper.CbsfMapper;
+import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.OutofstockregistrationformService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
@@ -24,7 +20,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class OutofstockregistrationformServiceImpl implements OutofstockregistrationformService {
     @Resource
@@ -38,8 +37,20 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
     @Resource
     private CbofMapper cbofMapper;
+
+    @Resource
+    private CbcaMapper cbcaMapper;
+
+    @Resource
+    private CauaMapper cauaMapper;
+
+    @Resource
+    private CalaMapper calaMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
     @Override
-    public IdVo insertOutofstockregistrationform(CboeDo cboeDo) {
+    public void insertOutofstockregistrationform(CboeDo cboeDo) {
 
         List<CbofDo> goods = cboeDo.getGoods();
 
@@ -78,7 +89,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
                 cbofMapper.insertSelective(cbof);
 
         }
-            return idVo;
+            return ;
     }
 
     @Override
@@ -154,7 +165,89 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
     @Override
     public CbofVo saleOderDetail(Integer orderId) {
-        return cboeMapper.saleOderDetail(orderId);
+        CbofVo res = new CbofVo();
+        Cboe cboe = cboeMapper.selectByPrimaryKey(orderId);
+        Cbca cbca = cbcaMapper.selectByPrimaryKey(cboe.getCboe09());
+        Caua caua = cauaMapper.selectByPrimaryKey(cboe.getCboe10());
+        res.setCboe01(cboe.getCboe01());
+        res.setCboe07(cboe.getCboe07());
+        res.setCboe08(cboe.getCboe08());
+        res.setCbca08(cbca.getCbca08());
+        res.setCaua15(caua.getCaua15());
+
+        //货物明细
+        CbofCriteria example = new CbofCriteria();
+        example.createCriteria().andCboe01EqualTo(orderId)
+                .andCbof07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbof> cbofs = cbofMapper.selectByExample(example);
+
+        Double sumQty = 0.0;
+        List<SaleOderDetailGoods> goods = res.getGoods();
+        SaleOderDetailGoods good = null;
+        CalaCriteria laexample = new CalaCriteria();
+        laexample.createCriteria()
+                .andCala10EqualTo("商品品牌");
+        List<Cala> calas = calaMapper.selectByExample(laexample);
+        Map<Integer, String> brandMap = new HashMap<>();
+        for (Cala cala : calas) {
+            brandMap.put(cala.getCala01(), cala.getCala08());
+        }
+
+        for(Cbof cbof : cbofs){
+            good = new SaleOderDetailGoods();
+            good.setId(cbof.getCbof01());
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbof.getCbof08());
+            if (cbpb != null) {
+                good.setBrand(brandMap.get(cbpb.getCbpb10()));
+                good.setDescription(cbpb.getCbpb08());
+                good.setModel(cbpb.getCbpb12());
+
+            }
+            good.setRemark(cbof.getCbof13());
+            good.setQty(cbof.getCbof09());
+            sumQty = sumQty + cbof.getCbof09();
+            res.getGoods().add(good);
+
+
+        }
+
+        return res;
+    }
+
+    @Override
+    public void editOutofstockregistrationform(CboeDo cboeDo) {
+        List<CbofDo> goods = cboeDo.getGoods();
+
+        Long userid = SecurityUtils.getUserId();
+
+        Cboe cboe = BeanCopyUtils.coypToClass(cboeDo, Cboe.class, null);
+        cboe.setCboe01(cboeDo.getCboe01());
+        Date date = new Date();
+        cboe.setCboe04(date);
+        cboe.setCboe05(Math.toIntExact(userid));
+
+        cboe.setUserId(Math.toIntExact(userid));
+        cboeMapper.updateByPrimaryKeySelective(cboe);
+
+        Cbof cbof = null;
+        for (CbofDo good : goods) {
+            cbof =new Cbof();
+
+            cbof.setCbof04(Math.toIntExact(userid));
+            cbof.setCbof05(date);
+            cbof.setCbof06(Math.toIntExact(userid));
+            cbof.setCbof07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbof.setCbof08(good.getCbof08());
+            cbof.setCbof09(good.getCbof09());
+            cbof.setCbof13(good.getCbof13());
+            cbof.setCboe01(cboeDo.getCboe01());
+            CbofCriteria example = new CbofCriteria();
+            example.createCriteria().andCboe01EqualTo(cboeDo.getCboe01())
+                    .andCbof07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbofMapper.updateByExampleSelective(cbof, example);
+
+        }
+        return ;
     }
 }
 
