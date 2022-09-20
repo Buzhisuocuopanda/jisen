@@ -422,7 +422,7 @@
     <select id="selectInventorysummaryquery" resultType="com.ruoyi.system.domain.vo.InwuquVo">
       SELECT (@i:=@i+1) AS '序号' ,
       e.CBPA07 as totalclassify,
-      d.CBPA07,h.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBIF09,f.CBWA09,g.lock_qty,c.CBPB01
+      d.CBPA07,h.CALA08,c.CBPB12,c.CBPB15,c.CBPB08,b.CBIF09,f.CBWA09,g.lock_qty as lockQty,c.CBPB01
       FROM
       CBIE a
       LEFT JOIN
@@ -465,6 +465,7 @@
 where
     a.CBIE06=0
       <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09} </if>
+      <if test="cbpa07 != null "> and d.CBPA07 = #{cbpa07} </if>
       <if test="cala08 != null "> and h.CALA08 = #{cala08} </if>
       <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
       <if test="cbpb01 != null "> and c.CBPB01 = #{cbpb01}</if>
@@ -647,13 +648,18 @@ where
     <if test="cbpb01 != null ">
       and   e.cbpb01=#{cbpb01}
     </if>
-
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+    <if test="startTime != null">
+      and oa.CBOA08 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and oa.CBOA08 &lt;=#{endTime}
+    </if>
+   <!-- <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+    <if test="params.endTime != null and params.endTime != ''">&lt;!&ndash; 结束时间检索 &ndash;&gt;
       and date_format(a.CBOA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-    </if>
+    </if>-->
   </select>
   <select id="selectInntorysummaryquery" resultType="com.ruoyi.system.domain.vo.OutofstockregistrationVo">
     SELECT
@@ -689,8 +695,11 @@ where
     <if test="cbpa08 != null and cbpa08 != ''">
       and  d.CBPA08 like concat('%', #{cbpa08}, '%')
     </if>
+    <if test="cbpa07 != null and cbpa07 != ''">
+      and  e.CBPA07=#{cbpa07}
+    </if>
     <if test="cala08 != null and cala08 != ''">
-      and f.CALA08 like concat('%', #{cala08}, '%')
+      and f.CALA08 = #{cala08}
     </if>
     <if test="cbpb01 != null ">
       and   c.cbpb01=#{cbpb01}
