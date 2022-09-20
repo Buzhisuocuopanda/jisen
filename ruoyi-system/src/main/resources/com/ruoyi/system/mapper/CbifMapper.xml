@@ -464,8 +464,8 @@
       (SELECT @i:=0) AS itable
 where
     a.CBIE06=0
-      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09}</if>
-      <if test="cala08 != null "> and h.CALA08 = #{cala08}</if>
+      <if test="cbwa09 != null "> and f.CBWA09 = #{cbwa09} </if>
+      <if test="cala08 != null "> and h.CALA08 = #{cala08} </if>
       <if test="cbpb08 != null "> and c.CBPB08 = #{cbpb08}</if>
       <if test="cbpb01 != null "> and c.CBPB01 = #{cbpb01}</if>
 
@@ -520,12 +520,16 @@ where
         and a.cbig10 like concat('%', #{cbig10}, '%')
       </if>
 
+      <if test="cbpb01 != null">
+        and e.cbpb01 =#{cbpb01}
+      </if>
+
 
     </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
     SELECT
       b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
-      a.CBIB09,a.CBIB10,b.CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
+      a.CBIB09,a.CBIB10,a.CBIB11,b.CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
     FROM
       CBIB a
         LEFT JOIN
@@ -539,24 +543,30 @@ where
     WHERE
     b.CBWA06=0
     <if test="cbib17 != null and cbib17 != ''">
-      AND a.CBIB17 =#{cbib17}
+      AND ( a.CBIB17 like concat('%', #{cbib17}, '%')
     </if>
     <if test="cbwa09 != null and cbwa09 != ''">
-      and b.CBWA09 =#{cbwa09}
+      or b.CBWA09 like concat('%', #{cbwa09}, '%'))
     </if>
 
-    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+    <if test="startTime != null">
+      and a.cbib04 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and a.cbib04 &lt;=#{endTime}
+    </if>
+    <!--<if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.cbib04,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
-    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+    <if test="params.endTime != null and params.endTime != ''">&lt;!&ndash; 结束时间检索 &ndash;&gt;
       and date_format(a.cbib04,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-    </if>
+    </if>-->
 #     LIMIT 100
 
   </select>
   <select id="selectInventorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccupancyVo">
     select
-      a.CBOA07,b.CBCA08,a.CBOA25,d.CBPA07,f.CALA08,c.CBPB12,g.lock_qty,
+      a.CBOA07,b.CBCA08,a.CBOA25,d.CBPA07,f.CALA08,c.CBPB12,g.lock_qty as lockQty,
       e.CBOB09,e.CBOB10,e.CBOB15
     from
       CBOA a
