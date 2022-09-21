@@ -1,8 +1,12 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.Cbsf;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbseDo {
 
@@ -45,5 +49,9 @@ public class CbseDo {
     private Integer userId;
 
     private Integer changeType;
+
+
+    private List<Cbsf> goods=new ArrayList<>();
+
 
 }

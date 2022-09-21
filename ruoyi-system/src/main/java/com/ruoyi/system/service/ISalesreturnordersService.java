@@ -31,4 +31,6 @@ public interface ISalesreturnordersService {
     int insertSwJsStoress(List<Cbsg> itemList);
 
     int insertSwJsSkuBarcodergqr(CbseDo cbseDo);
+
+    void Selloutofwarehousedeitone(CbseDo cbseDo);
 }

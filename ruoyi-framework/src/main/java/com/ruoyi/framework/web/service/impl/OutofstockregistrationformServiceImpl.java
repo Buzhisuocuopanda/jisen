@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CboeDo;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -154,7 +157,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
     }
 
     @Override
-    public int deleteSwJsSkuBarcodsById(CboeDo cboeDo) {
+    public int deleteSwJsSkuBarcodsById(CboeVo cboeDo) {
 
         Long userid = SecurityUtils.getUserId();
 
@@ -165,7 +168,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         cboe.setCboe05(Math.toIntExact(userid));
         cboe.setCboe06(DeleteFlagEnum.DELETE.getCode());
         CboeCriteria example1 = new CboeCriteria();
-        example1.createCriteria().andCboe01EqualTo(cboeDo.getCboe01())
+        example1.createCriteria().andCboe01EqualTo(cboeDo.getId())
                 .andCboe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return   cboeMapper.updateByExampleSelective(cboe, example1);
     }
@@ -175,12 +178,13 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         CbofVo res = new CbofVo();
         Cboe cboe = cboeMapper.selectByPrimaryKey(orderId);
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboe.getCboe09());
-        Caua caua = cauaMapper.selectByPrimaryKey(cboe.getCboe10());
         res.setCboe01(cboe.getCboe01());
         res.setCboe07(cboe.getCboe07());
-        res.setCboe08(cboe.getCboe08());
+        Date cboe08 = cboe.getCboe08();
+
+
+        res.setCboe08(cboe08);
         res.setCbca08(cbca.getCbca08());
-        res.setCaua15(caua.getCaua15());
         res.setCustomerId(cboe.getCboe10());
         res.setCustomerName(cbca.getCbca08());
         if(cboe.getCboe10()!=null){
@@ -214,6 +218,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
             good.setId(cbof.getCbof01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbof.getCbof08());
             if (cbpb != null) {
+                good.setGoodsId(cbpb.getCbpb01());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
@@ -226,19 +231,25 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
 
         }
-
+        res.setSumQty(sumQty);
+        SysUser createUser = sysUserMapper.selectByPrimaryKey(cboe.getCboe03().longValue());
+        if (createUser != null) {
+            res.setMakeUser(createUser.getNickName());
+        }
         return res;
     }
 
     @Override
     public void editOutofstockregistrationform(CboeDo cboeDo) {
         List<CbofDo> goods = cboeDo.getGoods();
-
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
         Long userid = SecurityUtils.getUserId();
-
+        Date date = new Date();
         Cboe cboe = BeanCopyUtils.coypToClass(cboeDo, Cboe.class, null);
         cboe.setCboe01(cboeDo.getCboe01());
-        Date date = new Date();
+
         cboe.setCboe04(date);
         cboe.setCboe05(Math.toIntExact(userid));
         if(cboeDo.getCustomerId()!=null){

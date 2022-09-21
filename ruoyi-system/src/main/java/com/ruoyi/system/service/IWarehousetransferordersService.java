@@ -38,4 +38,6 @@ public interface IWarehousetransferordersService {
     List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
 
     int insertSwJsStoress(List<Cbac> itemList);
+
+    void Warehousetransferorderseditone(CbaaDo cbaaDo);
 }

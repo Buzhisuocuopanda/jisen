@@ -5,10 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsPurchaseOrderDetailDo;
-import com.ruoyi.system.domain.Do.GsPurchaseOrderDo;
-import com.ruoyi.system.domain.Do.NumberDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
 import com.ruoyi.system.domain.vo.GsPurchaseOrdersVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -307,5 +304,38 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     @Override
     public List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
         return purchaseOrderMapper.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
+    }
+
+    @Override
+    public void SwJsPurchasereturnordersedit(GsPurchaseOrderDo gsPurchaseOrderDo) {
+     if(gsPurchaseOrderDo.getId()==null){
+         throw new SwException("id不能为空");
+     }
+        List<GsPurchaseOrderDetail> goods = gsPurchaseOrderDo.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+
+        GsPurchaseOrder cboe = BeanCopyUtils.coypToClass(gsPurchaseOrderDo, GsPurchaseOrder.class, null);
+        cboe.setId(gsPurchaseOrderDo.getId());
+        cboe.setUpdateBy(userid);
+        cboe.setUpdateTime(new Date());
+        purchaseOrderMapper.updateByPrimaryKeySelective(cboe);
+
+        GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
+        for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
+            gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
+            if(gsPurchaseOrderDetail1.getId()==null){
+                throw new SwException("采购订单明细不能为空");
+            }
+            gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
+            gsPurchaseOrderDetail.setGoodsId(gsPurchaseOrderDetail1.getGoodsId());
+            gsPurchaseOrderDetail.setQty(gsPurchaseOrderDetail1.getQty());
+            gsPurchaseOrderDetail.setPrice(gsPurchaseOrderDetail1.getPrice());
+            gsPurchaseOrderDetail.setUpdateBy(userid);
+            gsPurchaseOrderDetail.setUpdateTime(new Date());
+            gsPurchaseOrderDetailMapper.updateByPrimaryKeySelective(gsPurchaseOrderDetail);
+        }
     }
 }

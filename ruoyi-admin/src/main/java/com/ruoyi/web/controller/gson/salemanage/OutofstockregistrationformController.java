@@ -251,7 +251,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "删除缺货登记表"
     )
     @PostMapping("/SwJsPurchaseinboundremove")
-    public AjaxResult swJsPurchaseinboundremove(@RequestBody CboeDo cboeDo) {
+    public AjaxResult swJsPurchaseinboundremove(@RequestBody CboeVo cboeDo) {
         try {
             return toAjax(outofstockregistrationformService.deleteSwJsSkuBarcodsById(cboeDo));
         }catch (SwException e) {

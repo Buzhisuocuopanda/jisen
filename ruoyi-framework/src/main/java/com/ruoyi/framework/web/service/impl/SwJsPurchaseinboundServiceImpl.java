@@ -29,7 +29,9 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +64,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
    @Resource
    private CbsaMapper cbsaMapper;
 
+   @Resource
+   private CblaMapper cblaMapper;
+
 
 
 @Resource
@@ -87,7 +92,7 @@ private NumberGenerate numberGenerate;
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-    //    baseCheckService.checkGoods(cbpdDto.getCbpd08());
+       baseCheckService.checkGoods(cbpdDto.getCbpd08());
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
@@ -130,7 +135,28 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("请选择要扫的商品");
+        }
+        if(itemList.get(0).getCbpc01()==null){
+            throw new SwException("采购订单主单id不能为空");
+        }
+        Cbpc cbpcs = cbpcMapper.selectByPrimaryKey(itemList.get(0).getCbpc01());
+        Integer storeid = cbpcs.getCbpc10();
 
+        CbpdCriteria cas = new CbpdCriteria();
+        cas.createCriteria().andCbpc01EqualTo(itemList.get(0).getCbpc01())
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpd> cbphs = cbpdMapper.selectByExample(cas);
+        if (cbphs.size() == 0) {
+            throw new SwException("采购入库单明细为空");
+        }
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbphs.size(); i++) {
+            Integer cbph08 = cbphs.get(i).getCbpd08();
+            uio = new HashSet<>();
+            uio.add(cbph08);
+        }
 
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -138,6 +164,23 @@ private NumberGenerate numberGenerate;
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getCbpe08() == null) {
+                throw new SwException("商品id不能为空");
+            }
+            if(!uio.contains(itemList.get(i).getCbpe08())){
+                throw new SwException("该商品不在采购退货单明细中");
+            }
+
+            if(itemList.get(i).getCbpe10()==null){
+                throw new SwException("库位id不能为空");
+            }
+            Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpe10());
+            if (cblas == null) {
+                throw new SwException("库位不存在");
+            }
+            if (!cblas.getCbla10().equals(storeid)) {
+                throw new SwException("库位不属于该仓库");
+            }
 
 
             //校验sn码
@@ -275,6 +318,10 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsSkuBarcsodesm(List<Cbpd> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("采购入库明细不能为空");
+        }
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpdMapper mapper = session.getMapper(CbpdMapper.class);
         Date date = new Date();
@@ -295,6 +342,48 @@ private NumberGenerate numberGenerate;
         session.commit();
         session.clearCache();
         return 1;
+    }
+
+    @Override
+    public void SwJsPurchaseinboundeditone(CbpdDto cbpdDto) {
+        if(cbpdDto.getCbpc01()==null){
+            throw new SwException("采购订单id不能为空");
+        }
+        List<Cbpd> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
+        cbpc.setCbpc01(cbpdDto.getCbpc01());
+        cbpc.setCbpc04(date);
+        cbpc.setCbpc05(Math.toIntExact(userid));
+        cbpcMapper.updateByPrimaryKeySelective(cbpc);
+
+        Cbpd cbpd = null;
+        for(Cbpd good:goods){
+            cbpd = new Cbpd();
+            if(good.getCbpd01()==null){
+                throw new SwException("采购订单明细id不能为空");
+            }
+            cbpd.setCbpd01(good.getCbpd01());
+            cbpd.setCbpd05(date);
+            cbpd.setCbpd06(Math.toIntExact(userid));
+            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpd.setCbpd08(good.getCbpd08());
+            cbpd.setCbpd09(good.getCbpd09());
+            cbpd.setCbpd10(good.getCbpd10());
+            cbpd.setCbpd11(good.getCbpd11());
+            cbpd.setCbpd12(good.getCbpd12());
+            cbpd.setCbpd13(good.getCbpd13());
+
+            CbpdCriteria cbpdCriteria = new CbpdCriteria();
+            cbpdCriteria.createCriteria().andCbpd01EqualTo(good.getCbpd01());
+            cbpdMapper.updateByExampleSelective(cbpd,cbpdCriteria);
+        }
+        return;
+
     }
 
     /**
@@ -690,7 +779,7 @@ private NumberGenerate numberGenerate;
             for(int i=0;i<size;i++){
                 if(cbpes.get(i).getCbpe11().equals(ScanStatusEnum.YISAOMA.getCode())) {
 
-                    throw new SwException("已扫码不能反审");
+                    throw new SwException("已扫码不能取消完成");
                 }
             }
         }

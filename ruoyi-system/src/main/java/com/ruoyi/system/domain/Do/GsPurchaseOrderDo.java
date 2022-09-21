@@ -1,8 +1,12 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.GsPurchaseOrderDetail;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class GsPurchaseOrderDo {
     private Long id;
@@ -32,4 +36,7 @@ public class GsPurchaseOrderDo {
     private Integer whId;
 
     private Integer userId;
+
+    private List<GsPurchaseOrderDetail> goods=new ArrayList<>();
+
 }

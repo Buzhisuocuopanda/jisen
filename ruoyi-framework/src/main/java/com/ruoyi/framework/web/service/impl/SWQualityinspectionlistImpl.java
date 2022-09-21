@@ -5,6 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.CbofDo;
 import com.ruoyi.system.domain.Do.CbqaDo;
 import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
@@ -291,5 +292,49 @@ private CbpmMapper cbpmMapper;
                 .andCbqa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
         return cbqaMapper.updateByExampleSelective(cbqa,example1);
+    }
+
+    @Override
+    public void SwJsPurchaseinboundeditone(CbqaDo cbqaDo) {
+        if(cbqaDo.getCbqa01()==null){
+            throw new SwException("质检单id不能为空");
+        }
+        List<Cbqb> goods = cbqaDo.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+
+        Long userid = SecurityUtils.getUserId();
+         Date date = new Date();
+        Cbqa cboe = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
+        cboe.setCbqa01(cbqaDo.getCbqa01());
+        cboe.setCbqa05(Math.toIntExact(userid));
+        cboe.setCbqa04(date);
+        cbqaMapper.updateByPrimaryKeySelective(cboe);
+
+        Cbqb cbqb = null;
+        for(Cbqb good:goods){
+            cbqb = new Cbqb();
+            if(good.getCbqb01()==null){
+                throw new SwException("质检单明细id不能为空");
+            }
+            cbqb.setCbqb01(good.getCbqb01());
+            cbqb.setCbqb02(good.getCbqb02());
+            cbqb.setCbqb03(good.getCbqb03());
+            cbqb.setCbqb04(good.getCbqb04());
+            cbqb.setCbqb05(date);
+            cbqb.setCbqb06(Math.toIntExact(userid));
+            cbqb.setCbqb07(good.getCbqb07());
+            cbqb.setCbqb08(good.getCbqb08());
+            cbqb.setCbqb09(good.getCbqb09());
+            cbqb.setCbqb10(good.getCbqb10());
+
+            CbqbCriteria example1 = new CbqbCriteria();
+            example1.createCriteria().andCbqb01EqualTo(good.getCbqb01())
+                    .andCbqb07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbqbMapper.updateByExampleSelective(cbqb,example1);
+
+        }
+
     }
 }

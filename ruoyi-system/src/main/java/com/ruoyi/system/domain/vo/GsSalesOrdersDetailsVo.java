@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 public class GsSalesOrdersDetailsVo extends BaseEntity {
 
+    private Integer detailId;
     private Integer id;
 
     private Integer goodsId;

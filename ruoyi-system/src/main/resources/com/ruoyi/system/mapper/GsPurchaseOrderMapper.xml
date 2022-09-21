@@ -393,7 +393,7 @@
       SELECT
         a.order_no,b.CBCA08,c.CAUA09,d.CBSA08,e.CBWA09,a.order_date,a.id,
         f.goods_id,f.qty,f.price,f.remark,f.in_qty,f.change_qty,f.surplus_qty,
-        g.CBPB08,g.CBPB15,g.CBPB12
+        g.CBPB08,g.CBPB15,g.CBPB12,f.id as relId
       FROM
         gs_purchase_order a
           LEFT JOIN

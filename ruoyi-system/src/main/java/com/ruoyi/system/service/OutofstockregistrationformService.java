@@ -19,7 +19,7 @@ public interface OutofstockregistrationformService {
 
     List<CbofVo> selectSwJsTaskGoodsRelListss(CbofVo cbofVo);
 
-    int deleteSwJsSkuBarcodsById(CboeDo cboeDo);
+    int deleteSwJsSkuBarcodsById(CboeVo cboeDo);
 
     CbofVo saleOderDetail(Integer orderId);
 

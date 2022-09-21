@@ -74,7 +74,32 @@ public class WarehousetransferordersController extends BaseController {
         }
     }
 
+    @ApiOperation(
+            value ="仓库调拨单修改1",
+            notes = "仓库调拨单修改1"
+    )
+    @PostMapping("/Warehousetransferorderseditone")
+    public AjaxResult Warehousetransferorderseditone(@Valid @RequestBody CbaaDo cbaaDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            warehousetransferordersService.Warehousetransferorderseditone(cbaaDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【仓库调拨单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【仓库调拨单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库调拨单修改1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     @ApiOperation(
             value ="仓库调拨单新增明细表",

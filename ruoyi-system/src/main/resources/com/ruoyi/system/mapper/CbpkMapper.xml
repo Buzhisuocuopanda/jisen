@@ -712,7 +712,7 @@ ORDER BY
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbsVo">
       SELECT
       a.CBSB07,c.CBCA09,a.CBSB08,c.CBCA08,d.CBWA09,i.CAUA15,
-      a.CBSB18,a.CBSB19,c.CBCA28,e.CALA08 as cny,a.CBSB18,a.CBSB31,
+      a.CBSB18,a.CBSB19,c.CBCA28,e.CALA08 as cny,a.CBSB18,a.CBSB31,b.CBSC01,
       a.CBSB19,a.CBSB21,f.CBSA08,b.CBSC17,h.CALA08,g.CBPB12,g.CBPB08,g.CBPB15,b.CBSC08,
       b.CBSC09,b.CBSC09,b.CBSC11,b.CBSC12,b.CBSC13,j.CBSD09,k.CBLA09,j.CBSD11,a.CBSB01,a.CBSB30,b.CBSC02,l.CBPA07,j.CBSD02
 

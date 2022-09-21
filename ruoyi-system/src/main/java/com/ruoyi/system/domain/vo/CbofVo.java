@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class CbofVo {
+    private String makeUser;
 
     private Integer cboe01;
     private String cboe07;
@@ -33,4 +34,7 @@ public class CbofVo {
     @ApiModelProperty("销售人员")
     private Integer saleUserId;
     private List<SaleOderDetailGoods> goods = new ArrayList<>();
+
+    private Double sumQty;
+
 }

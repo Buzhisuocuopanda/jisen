@@ -134,32 +134,56 @@ return;
      */
     @Override
     public void editSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
+        if (gsSalesOrdersDto.getId() == null) {
+            throw new SwException("id不能为空");
+        }
+
+
+        List<GsSalesOrdersDetailsDto> goods = gsSalesOrdersDto.getGoods();
+        if (goods.size() == 0) {
+            throw new SwException("请至少添加一件货物");
+        }
+
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
         }
 
-        if(!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(gsSalesOrders.getStatus().intValue())){
+        if (!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(gsSalesOrders.getStatus().intValue())) {
             throw new SwException("销售预订单状态必须为未提交状态");
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
-        NumberDo numberDo = new NumberDo();
-        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
-        gsSalesOrders.setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
+        gsSalesOrders.setId(gsSalesOrdersDto.getId());
         gsSalesOrders.setSupplierId(gsSalesOrdersDto.getSupplierId());
         gsSalesOrders.setSalerId(gsSalesOrdersDto.getSalerId());
         gsSalesOrders.setCustomerId(gsSalesOrdersDto.getCustomerId());
         gsSalesOrders.setOrderDate(date);
-        gsSalesOrders.setStatus(TaskStatus.mr.getCode().byteValue());
         gsSalesOrders.setWhId(gsSalesOrdersDto.getWhId());
         gsSalesOrders.setUserId(userid.intValue());
         gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
-         return;
-    }
 
+        GsSalesOrdersDetails gsSalesOrdersDetails = null;
+        for (GsSalesOrdersDetailsDto good : goods) {
+            gsSalesOrdersDetails = new GsSalesOrdersDetails();
+            if(good.getId()==null){
+                throw new SwException("销售预订单明细id不能为空");
+            }
+            gsSalesOrdersDetails.setId(good.getId());
+            gsSalesOrdersDetails.setUpdateTime(date);
+            gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+            gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
+            gsSalesOrdersDetails.setQty(good.getQty());
+            gsSalesOrdersDetails.setPrice(good.getPrice());
+            gsSalesOrdersDetails.setRemark(good.getRemark());
+            gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersDto.getId().toString());
+            gsSalesOrdersDetailsMapper.updateByPrimaryKeySelective(gsSalesOrdersDetails);
+
+            return;
+        }
+    }
     @Override
     public void deleteSalesScheduledOrders(DeleteSaleOrderDto deleteSaleOrderDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(deleteSaleOrderDto.getOrderId());

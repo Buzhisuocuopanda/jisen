@@ -1,11 +1,15 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.Cbsc;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbsbDo {
     private Integer cbsb01;
@@ -79,4 +83,7 @@ public class CbsbDo {
     private Integer cbsb32;
 
     private Integer userId;
+
+    private List<Cbsc> goods=new ArrayList<>();
+
 }

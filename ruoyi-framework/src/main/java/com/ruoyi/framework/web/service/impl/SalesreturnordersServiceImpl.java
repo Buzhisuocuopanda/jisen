@@ -512,5 +512,50 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         return 1;
     }
 
+    @Override
+    public void Selloutofwarehousedeitone(CbseDo cbseDo) {
+        List<Cbsf> goods = cbseDo.getGoods();
+
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        if(cbseDo.getCbse01()==null){
+            throw new SwException("销售出库单id不能为空");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
+        cbse.setCbse01(cbseDo.getCbse01());
+        cbse.setCbse04(date);
+        cbse.setCbse05(Math.toIntExact(userid));
+        cbseMapper.updateByPrimaryKeySelective(cbse);
+
+        Cbsf cbsf = null;
+        for(Cbsf good:goods){
+         cbsf=new Cbsf();
+         cbsf.setCbsf05(date);
+            cbsf.setCbsf06(Math.toIntExact(userid));
+            if(good.getCbsf01()==null){
+                throw new SwException("销售出库单明细id不能为空");
+            }
+            cbsf.setCbsf01(good.getCbsf01());
+            cbsf.setCbsf08(good.getCbsf08());
+            cbsf.setCbsf09(good.getCbsf09());
+            cbsf.setCbsf10(good.getCbsf10());
+            cbsf.setCbsf11(good.getCbsf11());
+            cbsf.setCbsf12(good.getCbsf12());
+            cbsf.setCbsf13(good.getCbsf13());
+            cbsf.setCbsf14(good.getCbsf14());
+            cbsf.setCbsf15(good.getCbsf15());
+            cbsf.setCbsf16(good.getCbsf16());
+            CbsfCriteria example = new CbsfCriteria();
+            example.createCriteria().andCbsf01EqualTo(good.getCbsf01())
+                    .andCbsf07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbsfMapper.updateByExampleSelective(cbsf, example);
+        }
+        return;
+
+    }
+
 
 }

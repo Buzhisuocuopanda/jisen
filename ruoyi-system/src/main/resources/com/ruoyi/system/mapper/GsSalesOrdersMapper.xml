@@ -422,7 +422,8 @@ WHERE so.delete_flag=0
       ss.goods_id AS goodsId,
       ss.price AS price,
       ss.qty AS qty,
-      ss.remark AS remark
+      ss.remark AS remark,
+      ss.id AS detailId
     FROM
       `gs_ Sales_orders` AS so
 

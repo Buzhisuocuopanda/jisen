@@ -6,6 +6,8 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class CbsbsVo extends BaseEntity {
+    private Integer cbsc01;
+
     private String cbsb07;
     private String cbca09;
     private Date cbsb08;

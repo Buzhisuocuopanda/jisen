@@ -78,7 +78,35 @@ public class PurchaseordertableController extends BaseController {
         }
     }
 
+    /**
+     * 修改采购订单表
+     */
+    @ApiOperation(
+            value ="修改采购订单表",
+            notes = "修改采购订单表"
+    )
+    @PostMapping("/SwJsPurchasereturnordersedit")
+    public AjaxResult SwJsPurchasereturnordersedit(@Valid @RequestBody GsPurchaseOrderDo gsPurchaseOrderDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            purchaseordertableService.SwJsPurchasereturnordersedit(gsPurchaseOrderDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【修改采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
 
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【修改采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【修改采购订单表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsPurchaseOrderDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 新增采购订单表明细
      */

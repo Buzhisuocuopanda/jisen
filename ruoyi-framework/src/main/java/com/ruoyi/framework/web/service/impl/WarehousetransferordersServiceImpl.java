@@ -5,10 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbaaDo;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsGoodsSnDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.vo.CbaaVo;
 import com.ruoyi.system.domain.vo.CbaasVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
@@ -27,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class WarehousetransferordersServiceImpl implements IWarehousetransferordersService {
     @Resource
@@ -55,6 +55,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
     @Resource
     private CbacMapper cbacMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
@@ -429,15 +432,66 @@ if(itemList.size()==0){
     @Transactional
     @Override
     public int insertSwJsStoress(List<Cbac> itemList) {
+        if(itemList.size() == 0){
+            throw new SwException("请选择要扫描商品");
+        }
+        if(itemList.get(0).getCbaa01() == null){
+            throw new SwException("调拨单主表id不能为空");
+        }
         Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(itemList.get(0).getCbaa01());
         if (!cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())) {
             throw new SwException("审核状态才能扫码");
         }
+        Integer outstore = cbaa1.getCbaa09();
+        Integer instore = cbaa1.getCbaa10();
+
+        CbabCriteria cas = new CbabCriteria();
+        cas.createCriteria().andCbaa01EqualTo(itemList.get(0).getCbaa01())
+                .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbab> cbphs = cbabMapper.selectByExample(cas);
+        if (cbphs.size() == 0) {
+            throw new SwException("调拨单明细为空");
+        }
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbphs.size(); i++) {
+            Integer cbph08 = cbphs.get(i).getCbab08();
+            uio = new HashSet<>();
+            uio.add(cbph08);
+        }
+
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbacMapper mapper = session.getMapper(CbacMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+
+            if (itemList.get(i).getCbac08() == null) {
+                throw new SwException("商品id不能为空");
+            }
+            if(!uio.contains(itemList.get(i).getCbac08())){
+                throw new SwException("该商品不在采购退货单明细中");
+            }
+            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbac10());
+            if (cbla == null) {
+                throw new SwException("库位不存在");
+            }
+            if (!cbla.getCbla03().equals(instore)) {
+                throw new SwException("调入仓库没有该库位");
+            }
+            String sn = itemList.get(i).getCbac09();
+            CbacCriteria erd = new CbacCriteria();
+            erd.createCriteria().andCbac09EqualTo(sn)
+                    .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbac> cbpiList = cbacMapper.selectByExample(erd);
+            if (cbpiList.size() > 0) {
+                throw new SwException("该sn已存在");
+            }
+            //校验sn库存表李是否有该sn
+            GsGoodsSnDo gsGoodsSnDoss = new GsGoodsSnDo();
+            gsGoodsSnDoss.setSn(sn);
+            baseCheckService.checkGsGoodsSn(gsGoodsSnDoss);
+
             itemList.get(i).setCbac03(date);
             itemList.get(i).setCbac04(Math.toIntExact(userid));
             itemList.get(i).setCbac05(date);
@@ -537,6 +591,51 @@ if(itemList.size()==0){
         session.commit();
         session.clearCache();
         return 1;    }
+
+    @Override
+    public void Warehousetransferorderseditone(CbaaDo cbaaDo) {
+        if(cbaaDo.getCbaa01()==null){
+            throw new SwException("调拨单id不能为空");
+        }
+        List<Cbab> goods = cbaaDo.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
+        cbaa.setCbaa01(cbaaDo.getCbaa01());
+        cbaa.setCbaa04(date);
+        cbaa.setCbaa05(Math.toIntExact(userid));
+        cbaaMapper.updateByPrimaryKeySelective(cbaa);
+
+        Cbab cbab = null;
+        for (Cbab good : goods) {
+            cbab = new Cbab();
+            if(good.getCbab01()==null){
+                throw new SwException("调拨单明细id不能为空");
+            }
+            cbab.setCbab01(good.getCbab01());
+
+            cbab.setCbab04(Math.toIntExact(userid));
+            cbab.setCbab05(date);
+            cbab.setCbab06(good.getCbab06());
+            cbab.setCbab07(good.getCbab07());
+            cbab.setCbab08(good.getCbab08());
+            cbab.setCbab09(good.getCbab09());
+            cbab.setCbab10(good.getCbab10());
+            cbab.setCbab11(good.getCbab11());
+            cbab.setCbab12(good.getCbab12());
+            cbab.setCbab13(good.getCbab13());
+            cbab.setCbab14(good.getCbab14());
+            cbab.setCbab15(good.getCbab15());
+            cbab.setCbab16(good.getCbab16());
+            cbab.setCbab17(good.getCbab17());
+     cbabMapper.updateByPrimaryKeySelective(cbab);
+
+        }
+            return;
+        }
 
 
 }

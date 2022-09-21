@@ -28,4 +28,6 @@ public interface IPurchaseordertableService {
     List<GsPurchaseOrderVo> selectSwJsTaskGoodsRelLists(GsPurchaseOrderVo gsPurchaseOrderVo);
 
     List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo);
+
+    void SwJsPurchasereturnordersedit(GsPurchaseOrderDo gsPurchaseOrderDo);
 }

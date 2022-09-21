@@ -50,4 +50,6 @@ public interface ISwJsPurchaseinboundService {
     int insertSwJsStores(List<CbpcDto> itemList);
 
     int insertSwJsSkuBarcsodesm(List<Cbpd> itemList);
+
+    void SwJsPurchaseinboundeditone(CbpdDto cbpdDto);
 }
