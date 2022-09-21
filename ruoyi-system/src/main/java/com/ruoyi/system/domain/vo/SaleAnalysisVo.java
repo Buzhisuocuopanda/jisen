@@ -29,8 +29,11 @@ public class SaleAnalysisVo {
     private String saleOrderNo;
     @Excel(name = "型号")
     private String model;
+
+
+    private Integer brand;
     @Excel(name = "品牌")
-    private String brand;
+    private String brandName;
 
     @Excel(name = "数量")
     private Double qty;

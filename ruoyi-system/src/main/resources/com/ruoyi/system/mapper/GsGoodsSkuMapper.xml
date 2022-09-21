@@ -315,6 +315,7 @@
     SELECT
     pb.CBPB10 as brand,
     pa.CBPA07 as sClass,
+    e.CBPA07 as bClass,
     pb.CBPB12 as model,
     pb.CBPB09 as description,
     sku.goods_id as goodsId,
@@ -324,6 +325,7 @@
     `gs_goods_sku` sku
     LEFT JOIN CBPB pb ON pb.CBPB01 = sku.goods_id
     LEFT JOIN CBPA pa ON pa.CBPA01 = pb.CBPB14
+    LEFT JOIN CBPA  e ON e.CBPA01 = pa.CBPA09
     WHERE
     sku.delete_flag = 0
     <if test="whId !=null">
@@ -332,12 +334,16 @@
     </if>
 
     <if test="goodsId !=null">
-
-    AND sku.goods_id = #{goodsId}
+        AND sku.goods_id = #{goodsId}
     </if>
 	<if test="brandId !=null">
       AND pb.CBPB10 = #{brandId}
-
+    </if>
+    <if test="startTime != null">
+      and sku.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and sku.create_time &lt;=#{endTime}
     </if>
 
   </select>

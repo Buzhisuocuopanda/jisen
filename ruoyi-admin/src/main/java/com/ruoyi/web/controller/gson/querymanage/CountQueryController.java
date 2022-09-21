@@ -108,24 +108,31 @@ public class CountQueryController  extends BaseController {
             notes = "库存明细查询"
     )
     @GetMapping("/Inventorysummaryquerys")
-    public AjaxResult<TableDataInfo> Inventorysummaryquery(InwuqusDto inwuqusDto) {
+    public AjaxResult<TableDataInfo> Inventorysummaryquerys(InwuqusDto inwuqusDto) {
         try {
             startPage();
             List<InwuqusVo> list = countQueryService.selectInventorysummaryquerys(inwuqusDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-
         }catch (ServiceException e) {
             log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
-
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-
         } catch (Exception e) {
             log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
-
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+    @ApiOperation(
+            value ="导出库存明细查询",
+            notes = "导出库存明细查询"
+    )
+    @PostMapping("/InventorysummaryquerysExcelList")
+    public void InventorysummaryquerysExcelList(InwuqusDto inwuqusDto, HttpServletResponse response) {
+        List<InwuqusVo> list = countQueryService.selectInventorysummaryquerys(inwuqusDto);
+        ExcelUtil<InwuqusVo> util = new ExcelUtil<>(InwuqusVo.class);
+        util.exportExcel(response, list, "库存明细查询数据");
     }
 
     /**
@@ -136,7 +143,7 @@ public class CountQueryController  extends BaseController {
             notes = "库存台账查询"
     )
     @GetMapping("/Inventorysmmaryquerys")
-    public AjaxResult<TableDataInfo> Inventorysummaryquery(LedgerVo ledgerVo) {
+    public AjaxResult<TableDataInfo> Inventorysmmaryquerys(LedgerVo ledgerVo) {
         try {
             startPage();
             List<LedgerVo> list = countQueryService.selectInventorysmmaryquerys(ledgerVo);
@@ -293,7 +300,16 @@ public class CountQueryController  extends BaseController {
         }
     }
 
-
+    @ApiOperation(
+            value ="导出销售库存查询",
+            notes = "导出销售库存查询"
+    )
+    @PostMapping("/InvsentorsysummaryqueryExcelList")
+    public void InvsentorsysummaryqueryExcelList(InwuquVo inwuquVo, HttpServletResponse response) {
+        List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquVo);
+        ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
+        util.exportExcel(response, list, "缺货登记查询数据");
+    }
     /**
      * 生产总订单查询
      */
@@ -317,7 +333,16 @@ public class CountQueryController  extends BaseController {
         }
     }
 
-
+    @ApiOperation(
+            value ="导出生产总订单查询",
+            notes = "导出生产总订单查询"
+    )
+    @PostMapping("/InvsensstorsysummaryqueryExcelList")
+    public void InvsensstorsysummaryqueryExcelList(SczddVo sczddVo, HttpServletResponse response) {
+        List<SczddVo> list = countQueryService.selectInnorysummaryquery(sczddVo);
+        ExcelUtil<SczddVo> util = new ExcelUtil<>(SczddVo.class);
+        util.exportExcel(response, list, "生产总订单查询数据");
+    }
 
     @ApiOperation(
             value ="查询商品下拉列表（不分页）",

@@ -361,13 +361,15 @@ SELECT
 	sd.CBSD08 AS goodsId,
 	sd.CBSD09 AS sn,
 	oa.CBOA16 AS currency,
-	ob.CBOB11 AS salePrice,
+	ob.CBOB11 AS uPrice,
+    ob.CBOB14 AS rPrice,
 	ca.CBCA09 AS suplierName,
 	sa.CBSA08 AS gc,
-	pd.CBPD11 AS cgPrice,
+	pd.CBPD11 AS cgUprice,
 	pb.CBPB08 AS description,
 	pb.CBPB10 AS brand,
-	pb.CBPB12 AS model
+	pb.CBPB12 AS model,
+	sc.CBSC09 AS qty
 FROM
 	CBSD sd
 	LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01
