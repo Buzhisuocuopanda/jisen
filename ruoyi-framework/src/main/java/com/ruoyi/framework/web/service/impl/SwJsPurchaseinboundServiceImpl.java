@@ -941,7 +941,20 @@ private NumberGenerate numberGenerate;
      */
     @Override
     public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
-        return cbpdMapper.getInfossss(cbpcVo);
+        List<CbpcVo> infossss = cbpdMapper.getInfossss(cbpcVo);
+        Integer cbpc01 = cbpcVo.getCbpc01();
+        if(cbpc01==null){
+            throw new SwException("采购入库单id不能为空");
+        }
+        for(int i=0;i<infossss.size();i++) {
+            CbpeCriteria example = new CbpeCriteria();
+            example.createCriteria().andCbpc01EqualTo(cbpc01)
+                    .andCbpe08EqualTo(infossss.get(i).getCbpd08());
+            List<Cbpe> cbpes = cbpeMapper.selectByExample(example);
+            int size = cbpes.size();
+            infossss.get(i).setSaoma(size);
+        }
+        return  infossss;
     }
 
 

@@ -41,6 +41,7 @@ public class CbaasVo {
 
     private Double cbab09;
 
+    private Integer cbab08;
 
     private Double cbab11;
 
@@ -55,6 +56,7 @@ public class CbaasVo {
     private String cbla09;
 
 
+    private Integer saoma;
 
 
 

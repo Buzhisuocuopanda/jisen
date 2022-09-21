@@ -339,7 +339,20 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Override
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
-        return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+        List<CbsesVo> cbsesVos = cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+        Integer cbse01 = cbsesVo.getCbse01();
+        if(cbse01==null){
+            throw new SwException("采购入库单id不能为空");
+        }
+        for(int i=0;i<cbsesVos.size();i++) {
+            CbsgCriteria example = new CbsgCriteria();
+            example.createCriteria().andCbse01EqualTo(cbse01)
+                    .andCbsg08EqualTo(cbsesVos.get(i).getCbsf08());
+            List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
+            int size = cbsgs.size();
+            cbsesVos.get(i).setSaoma(size);
+        }
+        return cbsesVos;
     }
     @Transactional
     @Override

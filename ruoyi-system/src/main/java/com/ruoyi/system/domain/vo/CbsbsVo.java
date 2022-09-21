@@ -43,5 +43,6 @@ public class CbsbsVo extends BaseEntity {
     private Integer cbsd02;
 
 private String cny;
+    private Integer saoma;
 
 }

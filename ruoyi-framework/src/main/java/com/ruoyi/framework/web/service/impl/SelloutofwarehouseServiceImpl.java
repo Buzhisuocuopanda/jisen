@@ -422,8 +422,23 @@ if(cbob==null){
      */
     @Override
     public List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo) {
-        return cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
-    }
+        List<CbsbsVo> cbsbsVos = cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
+        Integer cbsb01 = cbsbsVo.getCbsb01();
+        if(cbsb01==null){
+            throw new SwException("销售出库单id不能为空");
+        }
+        for(int i=0;i<cbsbsVos.size();i++) {
+            CbsdCriteria example2 = new CbsdCriteria();
+            example2.createCriteria().andCbsb01EqualTo(cbsb01)
+                    .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
+            List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
+            int size = cbpes.size();
+
+            cbsbsVos.get(i).setSaoma(size);
+        }
+            return cbsbsVos;
+        }
+
 
     @Transactional
     @Override

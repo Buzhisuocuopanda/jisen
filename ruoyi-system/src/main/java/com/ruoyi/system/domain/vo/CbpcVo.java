@@ -126,5 +126,6 @@ public class CbpcVo  extends BaseEntity
 
 
 
+    private Integer saoma;
 
 }

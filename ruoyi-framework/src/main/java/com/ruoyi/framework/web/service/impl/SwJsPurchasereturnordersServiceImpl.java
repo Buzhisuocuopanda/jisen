@@ -532,7 +532,19 @@ return;
      */
     @Override
     public List<CbpgVo> selectSwJsTaskGoodsRelLists(CbpgVo cbpgVo) {
-        return  cbpgMapper.getInfoss(cbpgVo);
+        List<CbpgVo> infoss = cbpgMapper.getInfoss(cbpgVo);
+        Integer cbpg01 = cbpgVo.getCbpg01();
+
+        for(int i=0;i<infoss.size();i++) {
+
+            CbpiCriteria example = new CbpiCriteria();
+            example.createCriteria().andCbpg01EqualTo(cbpg01)
+                    .andCbpi08EqualTo(infoss.get(i).getCbph08());
+            List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
+            int size = cbpis.size();
+            infoss.get(i).setSaoma(size);
+        }
+        return infoss;
     }
     /**
      * 采购退货单列表

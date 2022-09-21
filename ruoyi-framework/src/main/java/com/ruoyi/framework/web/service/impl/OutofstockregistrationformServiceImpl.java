@@ -283,7 +283,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
                 cbof.setCbof13(good.getRemark());
             }
             CbofCriteria example = new CbofCriteria();
-            example.createCriteria().andCboe01EqualTo(cboeDo.getCboe01())
+            example.createCriteria().andCbof01EqualTo(good.getCbof01())
                     .andCbof07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             cbofMapper.updateByExampleSelective(cbof, example);
 

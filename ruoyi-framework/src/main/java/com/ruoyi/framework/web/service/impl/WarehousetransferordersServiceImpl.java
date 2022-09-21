@@ -426,7 +426,21 @@ if(itemList.size()==0){
 
     @Override
     public List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo) {
-        return cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
+        List<CbaasVo> cbaasVos = cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
+        Integer cbaa01 = cbaasVo.getCbaa01();
+        if(cbaa01==null){
+            throw new SwException("调拨单id不能为空");
+        }
+        for(int i=0;i<cbaasVos.size();i++) {
+            CbacCriteria example = new CbacCriteria();
+            example.createCriteria().andCbaa01EqualTo(cbaa01)
+                    .andCbac08EqualTo(cbaasVos.get(i).getCbab08());
+            List<Cbac> cbacs = cbacMapper.selectByExample(example);
+            int size = cbacs.size();
+
+            cbaasVos.get(i).setSaoma(size);
+        }
+        return cbaasVos;
     }
 
     @Transactional
