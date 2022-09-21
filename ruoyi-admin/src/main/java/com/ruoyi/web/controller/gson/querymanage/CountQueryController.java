@@ -2,15 +2,20 @@ package com.ruoyi.web.controller.gson.querymanage;
 
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cala;
+import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbwa;
 import com.ruoyi.system.domain.dto.GoodsUseDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
+import com.ruoyi.system.domain.dto.TotalOrderListDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.*;
+import com.ruoyi.system.service.gson.ApprovalService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -56,7 +62,12 @@ public class CountQueryController  extends BaseController {
     private ISwJsListService swJsListService;
     @Resource
     private ISwJsStoreService swJsStoreService;
-
+    @Resource
+    private ISwJsGoodsClassifyService swJsGoodsClassifyService;
+    @Resource
+    private ISwJsCustomerService swJsCustomerService;
+    @Resource
+    private ApprovalService approvalService;
 
 
     /**
@@ -174,6 +185,22 @@ public class CountQueryController  extends BaseController {
         }
     }
 
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/20 15:24
+     *
+     */
+    @ApiOperation(
+            value ="导出商品占用查询",
+            notes = "导出商品占用查询"
+    )
+    @PostMapping("/InventorysmsmaryquerysExcelList")
+    public void inventorysmsmaryquerysExcelList(OccupancyVo occupancyVo, HttpServletResponse response) {
+        List<OccupancyVo> list = countQueryService.selectInventorysmsmaryquerys(occupancyVo);
+        ExcelUtil<OccupancyVo> util = new ExcelUtil<>(OccupancyVo.class);
+        util.exportExcel(response, list, "商品占用查询数据");
+    }
+
 
     /**
      *  销售订单明细查询
@@ -198,7 +225,16 @@ public class CountQueryController  extends BaseController {
         }
     }
 
-
+    @ApiOperation(
+            value ="导出销售订单明细查询",
+            notes = "导出销售订单明细查询"
+    )
+    @PostMapping("/InventorysmssmaryquerysExcelList")
+    public void InventorysmssmaryquerysExcelList(OccuspancyVo occuspancyVo, HttpServletResponse response) {
+        List<OccuspancyVo> list = countQueryService.selectInvntorysmsmaryquerys(occuspancyVo);
+        ExcelUtil<OccuspancyVo> util = new ExcelUtil<>(OccuspancyVo.class);
+        util.exportExcel(response, list, "销售订单明细数据");
+    }
 
 
     /**
@@ -223,7 +259,16 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
-
+    @ApiOperation(
+            value ="导出销售库存查询",
+            notes = "导出销售库存查询"
+    )
+    @PostMapping("/InventsorysummaryqueryExcelList")
+    public void InventsorysummaryqueryExcelList(InwuquVo inwuquVo, HttpServletResponse response) {
+        List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquVo);
+        ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
+        util.exportExcel(response, list, "销售库存查询数据");
+    }
 
     /**
      * 缺货登记表查询
@@ -275,8 +320,8 @@ public class CountQueryController  extends BaseController {
 
 
     @ApiOperation(
-            value ="查询商品列表（不分页）",
-            notes = "查询商品列表（不分页）"
+            value ="查询商品下拉列表（不分页）",
+            notes = "查询商品下拉列表（不分页）"
     )
     @GetMapping("/SwJsGoodsAll")
     /**
@@ -301,8 +346,8 @@ public class CountQueryController  extends BaseController {
      *@date: Create in 2022/9/19 15:43
      */
     @ApiOperation(
-            value ="查询仓库列表（不分页）",
-            notes = "查询仓库列表（不分页）"
+            value ="查询仓库下拉列表（不分页）",
+            notes = "查询仓库下拉列表（不分页）"
     )
     @GetMapping("/SwJsStoreSkuAll")
     public AjaxResult<List<Cbwa>> swJsStoreSkuAll(Cbwa cbwa) {
@@ -318,8 +363,8 @@ public class CountQueryController  extends BaseController {
     }
 
     @ApiOperation(
-            value ="查询品牌列表（不分页）",
-            notes = "查询品牌列表（不分页）"
+            value ="查询品牌下拉列表（不分页）",
+            notes = "查询品牌下拉列表（不分页）"
     )
     @GetMapping("/swJsAll")
     /**
@@ -344,8 +389,8 @@ public class CountQueryController  extends BaseController {
      *@date: Create in 2022/9/19 16:26
      */
     @ApiOperation(
-            value ="查询库位列表（不分页）",
-            notes = "查询库位列表（不分页）"
+            value ="查询库位下拉列表（不分页）",
+            notes = "查询库位下拉列表（不分页）"
     )
     @GetMapping("/SwJsStoreAll")
     public AjaxResult<List<CblaVo>> swJsStoreAll(CblaVo cblaVo) {
@@ -357,6 +402,82 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
             log.error("【条件查询查询库位信息维护】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cblaVo),ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/20 14:30
+     */
+    @ApiOperation(
+            value = "获取商品分类下拉列表",
+            notes = "获取商品分类下拉列表"
+    )
+    @GetMapping("/SwJsGoodsClassifyAll")
+    public AjaxResult swJsGoodsClassifyAll(Cbpa cbpa) {
+        try {
+            List<Cbpa> depts = swJsGoodsClassifyService.selectDeptList(cbpa);
+            return AjaxResult.success(depts);
+        } catch (SwException e) {
+            log.error("【获取部门下拉树列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(cbpa), e.getMessage());
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【获取部门下拉树列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpa), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/20 14:30
+     */
+    /**
+     * 查询客户信息列表
+     */
+    @ApiOperation(
+            value ="查询客户信息下拉列表",
+            notes = "查询客户信息下拉列表"
+    )
+    @GetMapping("/SwJsCustomerAll")
+    public AjaxResult SwJsCustomerAll(Cbca cbca) {
+        try{
+            List<Cbca> list = swJsCustomerService.selectSwJsCustomerList(cbca);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (ServiceException e) {
+            log.error("【查询客户信息下拉列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbca), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
+            log.error("【查询客户信息下拉列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbca),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/20 14:47
+     */
+    @ApiOperation(
+            value ="查询销售人员下拉列表",
+            notes = "查询销售人员下拉列表"
+    )
+    @GetMapping("/salermanAll")
+    public AjaxResult UnfinisheddocumentsAll(CauaVo cauaVo) {
+        try{
+            List<CauaVo> list = approvalService.selectsalerman(cauaVo);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (ServiceException e) {
+            log.error("【查询销售人员】接口出现异常,参数${},异常${}$", JSON.toJSON(cauaVo), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
+            log.error("【查询销售人员】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cauaVo),ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
