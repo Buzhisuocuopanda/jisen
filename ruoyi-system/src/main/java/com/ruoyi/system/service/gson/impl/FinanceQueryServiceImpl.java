@@ -51,7 +51,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis(fnQueryAynthesisDto);
         Map<Integer, String> integerStringMap = baseCheckService.brandMap();
 
-        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MMM-dd");
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
         for (FnQueryAyntgesisVo fnQueryAyntgesisVo : list) {
             if(fnQueryAyntgesisVo.getInWhTime()!=null){
                 fnQueryAyntgesisVo.setInWhTimeMsg(sd.format(fnQueryAyntgesisVo.getInWhTime()));
@@ -59,7 +59,10 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             if(fnQueryAyntgesisVo.getOutWhTime()!=null){
                 fnQueryAyntgesisVo.setOutWhTimeMsg(sd.format(fnQueryAyntgesisVo.getOutWhTime()));
             }
-            fnQueryAyntgesisVo.setBrand(integerStringMap.get(fnQueryAyntgesisVo.getBrand()));
+            if(fnQueryAyntgesisVo.getBrand()!=null){
+                fnQueryAyntgesisVo.setBrand(integerStringMap.get(Integer.parseInt(fnQueryAyntgesisVo.getBrand())));
+            }
+
 
         }
         return list;
@@ -73,12 +76,23 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
         for (FnGoodsSkuVo fnGoodsSkuVo : list) {
-            fnGoodsSkuVo.setBrand(brandMap.get(fnGoodsSkuVo.getBrand()));
-
-            Cbpa cbpa = classMap.get(fnGoodsSkuVo.getSClass());
-            if(cbpa!=null){
-                fnGoodsSkuVo.setBClass(cbpa.getCbpa07());
+            if(fnGoodsSkuVo.getBrand()!=null){
+                fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
             }
+
+            /*if(fnGoodsSkuVo.getSClass()!=null){
+                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
+                if(cbpa!=null){
+                    fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+                }
+            }
+            if(fnGoodsSkuVo.getBClass()!=null){
+                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getBClass()));
+                if(cbpa!=null){
+                    fnGoodsSkuVo.setBClass(cbpa.getCbpa07());
+                }
+            }*/
+
 
             //期初入库 查台账期初入库的
             CbibCriteria ibex=new CbibCriteria();
@@ -143,7 +157,10 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
 
         for (SaleAnalysisVo saleAnalysisVo : list) {
-            saleAnalysisVo.setBrand(brandMap.get(saleAnalysisVo.getBrand()));
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+
         }
         return list;
 

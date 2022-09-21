@@ -473,7 +473,7 @@ where
     </select>
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
-        c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15
+        a.CBIG01,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15
       FROM
         CBIG a
           LEFT JOIN
