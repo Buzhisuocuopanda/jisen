@@ -9,9 +9,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpgDto;
-import com.ruoyi.system.domain.vo.CbpgVo;
-import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.domain.vo.NumberVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -533,6 +531,11 @@ return;
     @Override
     public List<CbpgVo> selectSwJsTaskGoodsRelLists(CbpgVo cbpgVo) {
         List<CbpgVo> infoss = cbpgMapper.getInfoss(cbpgVo);
+        CbpgVo res = new CbpgVo();
+        List<ScanVo> goods = res.getGoods();
+
+
+
         Integer cbpg01 = cbpgVo.getCbpg01();
 
         for(int i=0;i<infoss.size();i++) {
@@ -542,8 +545,21 @@ return;
                     .andCbpi08EqualTo(infoss.get(i).getCbph08());
             List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
             int size = cbpis.size();
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(infoss.get(i).getCbpa08());
+                scanVo.setPinpai(infoss.get(i).getPinpai());
+                scanVo.setCbpb08(infoss.get(i).getCbpb08());
+                scanVo.setCbpb12(infoss.get(i).getCbpb12());
+                scanVo.setSn(infoss.get(j).getCbpi09());
+                scanVo.setKwm(infoss.get(i).getCbla09());
+                scanVo.setCbpe03(infoss.get(j).getCbpi03());
+                goods.add(scanVo);
+            }
             infoss.get(i).setSaoma(size);
         }
+        infoss.get(0).setGoods(goods);
+
         return infoss;
     }
     /**

@@ -423,6 +423,10 @@ if(cbob==null){
     @Override
     public List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo) {
         List<CbsbsVo> cbsbsVos = cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
+
+        CbsbsVo res = new CbsbsVo();
+        List<ScanVo> goods = res.getGoods();
+
         Integer cbsb01 = cbsbsVo.getCbsb01();
         if(cbsb01==null){
             throw new SwException("销售出库单id不能为空");
@@ -432,11 +436,24 @@ if(cbob==null){
             example2.createCriteria().andCbsb01EqualTo(cbsb01)
                     .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
             List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
-            int size = cbpes.size();
 
+                int size = cbpes.size();
+            for(int j=0;j<size;j++) {
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(cbsbsVos.get(i).getCbpa07());
+                scanVo.setPinpai(cbsbsVos.get(i).getCala08());
+                scanVo.setCbpb08(cbsbsVos.get(i).getCbpb08());
+                scanVo.setCbpb12(cbsbsVos.get(i).getCbpb12());
+                scanVo.setSn(cbpes.get(j).getCbsd09());
+                scanVo.setKwm(cbsbsVos.get(i).getCbla09());
+                scanVo.setCbpe03(cbpes.get(j).getCbsd03());
+                goods.add(scanVo);
+            }
             cbsbsVos.get(i).setSaoma(size);
         }
-            return cbsbsVos;
+        cbsbsVos.get(0).setGoods(goods);
+
+        return cbsbsVos;
         }
 
 
