@@ -10,8 +10,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -28,10 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -942,19 +938,37 @@ private NumberGenerate numberGenerate;
     @Override
     public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
         List<CbpcVo> infossss = cbpdMapper.getInfossss(cbpcVo);
+        CbpcVo res = new CbpcVo();
+        List<ScanVo> goods = res.getGoods();
+
         Integer cbpc01 = cbpcVo.getCbpc01();
-        if(cbpc01==null){
+        if (cbpc01 == null) {
             throw new SwException("采购入库单id不能为空");
         }
-        for(int i=0;i<infossss.size();i++) {
+        for (int i = 0; i < infossss.size(); i++) {
             CbpeCriteria example = new CbpeCriteria();
             example.createCriteria().andCbpc01EqualTo(cbpc01)
                     .andCbpe08EqualTo(infossss.get(i).getCbpd08());
             List<Cbpe> cbpes = cbpeMapper.selectByExample(example);
             int size = cbpes.size();
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(infossss.get(i).getCbpa07());
+                scanVo.setPinpai(infossss.get(i).getCala08());
+                scanVo.setCbpb08(infossss.get(i).getCbpb08());
+                scanVo.setCbpb12(infossss.get(i).getCbpb12());
+                scanVo.setSn(cbpes.get(j).getCbpe09());
+                scanVo.setKwm(infossss.get(i).getCbla09());
+                scanVo.setCbpe03(cbpes.get(j).getCbpe03());
+                goods.add(scanVo);
+            }
             infossss.get(i).setSaoma(size);
+
         }
-        return  infossss;
+        infossss.get(0).setGoods(goods);
+       // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
+
+        return infossss;
     }
 
 
