@@ -318,6 +318,7 @@ private CbpmMapper cbpmMapper;
         CbqbCriteria sdw=new CbqbCriteria();
         sdw.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01());
         List<Cbqb> cbqbs = cbqbMapper.selectByExample(sdw);
+
         if(cbqbs.size()==0){
             throw new SwException("质检单明细为空");
         }

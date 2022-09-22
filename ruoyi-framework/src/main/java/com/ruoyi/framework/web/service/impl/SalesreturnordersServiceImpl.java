@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -561,8 +563,16 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         CbsfCriteria cbsfs = new CbsfCriteria();
         cbsfs.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
         List<Cbsf> cbsfs1 = cbsfMapper.selectByExample(cbsfs);
+        if(cbsfs1.size()==0){
+            throw new SwException("没有销售出库单明细表信息");
+        }
 
-
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbsfs1.size(); i++) {
+            int id = cbsfs1.get(i).getCbsf01();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
         Cbsf cbsf = null;
         for(Cbsf good:goods){
          cbsf=new Cbsf();
@@ -570,6 +580,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             cbsf.setCbsf06(Math.toIntExact(userid));
             if(good.getCbsf01()==null){
                 throw new SwException("销售出库单明细id不能为空");
+            }
+            if(!uio.contains(good.getCbsf01())){
+                throw new SwException("该商品不在销售出库单明细中");
             }
             cbsf.setCbsf01(good.getCbsf01());
             cbsf.setCbsf08(good.getCbsf08());
