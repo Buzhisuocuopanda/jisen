@@ -577,8 +577,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             cbsf.setCbsf15(good.getCbsf15());
             cbsf.setCbsf16(good.getCbsf16());
             CbsfCriteria example = new CbsfCriteria();
-            example.createCriteria().andCbsf01EqualTo(good.getCbsf01())
-                    .andCbsf07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            example.createCriteria().andCbsf01EqualTo(good.getCbsf01());
             cbsfMapper.updateByExampleSelective(cbsf, example);
         }
         return;

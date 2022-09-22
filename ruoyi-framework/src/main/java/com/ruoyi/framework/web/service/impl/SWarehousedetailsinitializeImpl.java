@@ -67,6 +67,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         cbie.setCbie05(Math.toIntExact(userId));
         cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbie.setCbie07(warehouseinitializationNo);
+        cbie.setCbie10(TaskStatus.mr.getCode());
         cbie.setUserId(Math.toIntExact(userId));
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();

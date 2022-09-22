@@ -330,8 +330,7 @@ private CbpmMapper cbpmMapper;
             cbqb.setCbqb10(good.getCbqb10());
 
             CbqbCriteria example1 = new CbqbCriteria();
-            example1.createCriteria().andCbqb01EqualTo(good.getCbqb01())
-                    .andCbqb07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            example1.createCriteria().andCbqb01EqualTo(good.getCbqb01());
             cbqbMapper.updateByExampleSelective(cbqb,example1);
 
         }
