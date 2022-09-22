@@ -289,7 +289,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         gsPurchaseOrder.setUpdateTime(date);
         gsPurchaseOrder.setCreateBy(userid);
         gsPurchaseOrder.setUpdateBy(userid);
-        gsPurchaseOrder.setStatus(TaskStatus.bjwc.getCode().byteValue());
+        gsPurchaseOrder.setStatus(TaskStatus.qxwc.getCode().byteValue());
         GsPurchaseOrderCriteria example = new GsPurchaseOrderCriteria();
         example.createCriteria().andIdEqualTo(gsPurchaseOrderDo.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());

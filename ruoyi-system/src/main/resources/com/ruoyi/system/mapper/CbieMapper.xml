@@ -425,6 +425,8 @@
       a.CBIE06=0
     and
     b.cbwa12='条码管理'
+    <if test='cbwa09 != null and cbwa09 != ""'> and b.CBWA09  like concat('%', #{cbwa09}, '%')</if>
+
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBIE02 <![CDATA[<=]]>#{endTime}</if>
@@ -502,8 +504,7 @@ where
         a.CBIE09=b.CBWA01
     where
       a.CBIE06=0
-      and
-      b.cbwa12='数量管理'
+
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
 

@@ -141,6 +141,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
     @PostMapping("/SwJsStoreremove")
     public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
         try {
+            
             return toAjax(warehouseinventoryscheduleService.deleteSwJsStoreById(cbshDo));
         }catch (SwException e) {
             log.error("【删除仓库盘点明细】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));

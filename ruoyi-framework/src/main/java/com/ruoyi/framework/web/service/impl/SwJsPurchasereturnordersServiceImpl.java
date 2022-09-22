@@ -465,13 +465,12 @@ return;
                 .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbph> cbphs = cbphMapper.selectByExample(example1);
         if(cbphs.size()>0) {
+for(int i=0;i<cbphs.size();i++) {
+    Integer cbph08 = cbphs.get(i).getCbph08();
 
-            Integer cbph08 = cbphs.get(0).getCbph08();
-
-            Cbba cbba = cbbaMapper.selectByPrimaryKey(cbph08);
-            Integer goodsid = cbba.getCbba08();
-            //检查是否有库存
-            baseCheckService.checkGoodsSku(goodsid, storeid);
+    //检查是否有库存
+    baseCheckService.checkGoodsSku(cbph08, storeid);
+}
         }
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);

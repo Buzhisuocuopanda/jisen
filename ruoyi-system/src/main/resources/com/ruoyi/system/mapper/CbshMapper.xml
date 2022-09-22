@@ -418,7 +418,7 @@ where
 a.CBSH06=0
     <if test='cbwa09 != null and cbwa09 != ""'> and b.CBWA09  like concat('%', #{cbwa09}, '%')</if>
 
-    <if test='cbsh07 != null and cbsh09 != ""'> and a.CBSH09  like concat('%', #{cbsh09}, '%')</if>
+    <if test='cbsh09 != null and cbsh09 != ""'> and a.CBSH09  like concat('%', #{cbsh09}, '%')</if>
     <if test='cbsh07 != null and cbsh07 != ""'> and a.CBSH07  like concat('%', #{cbsh07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.cbsh08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.cbsh08 <![CDATA[<=]]>#{endTime}</if>

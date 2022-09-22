@@ -400,6 +400,12 @@ WHERE so.delete_flag=0
     <if test="orderNo != null and orderNo !=''">
       and  so.order_no like concat('%', #{orderNo}, '%')
     </if>
+    <if test="wh != null and wh !=''">
+      and  d.cbwa09 like concat('%', #{wh}, '%')
+    </if>
+    <if test="supplier != null and supplier !=''">
+      and  a.CBSA08 like concat('%', #{supplier}, '%')
+    </if>
     <if test="startTime != null">
       and so.order_date &gt;= #{startTime}
     </if>

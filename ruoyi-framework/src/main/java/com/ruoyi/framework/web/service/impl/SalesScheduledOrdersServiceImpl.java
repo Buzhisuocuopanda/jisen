@@ -196,6 +196,7 @@ return;
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
+        gsSalesOrders.setId(deleteSaleOrderDto.getOrderId());
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
         gsSalesOrders.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
@@ -256,6 +257,9 @@ return;
 
     @Override
     public void salesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto) {
+        if(gsSalesOrdersDto.getId()==null){
+            throw new SwException("销售预订单id不能为空");
+        }
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -266,6 +270,7 @@ return;
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
+        gsSalesOrders.setId(gsSalesOrdersDto.getId());
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
         gsSalesOrders.setStatus(TaskStatus.bjwc.getCode().byteValue());
@@ -281,7 +286,10 @@ return;
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
-        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getSupplierId());
+        if(cbsa == null){
+            throw new SwException("没有查到该供应商");
+        }
         //供应商
         Integer supplierId = gsSalesOrders.getSupplierId();
 
