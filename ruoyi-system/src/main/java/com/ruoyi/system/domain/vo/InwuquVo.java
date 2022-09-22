@@ -27,6 +27,7 @@ public class InwuquVo {
 
 
     private String cbwa09;
+    private String[] cbwa09s;
 
     @Excel(name = "可用库存数量")
     private Double lockQty;
