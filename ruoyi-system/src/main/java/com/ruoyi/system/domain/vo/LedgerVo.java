@@ -18,10 +18,10 @@ public class LedgerVo extends BaseEntity {
     @Excel(name="单据类型")
     private String cbib17;
 
-    @Excel(name="往来单位")
+    @Excel(name="单据编号")
     private String cbib03;
 
-
+    @Excel(name="往来单位")
     private String cbib06;
 
     @Excel(name="商品")

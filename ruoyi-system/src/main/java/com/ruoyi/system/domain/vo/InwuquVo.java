@@ -25,7 +25,7 @@ public class InwuquVo {
     @Excel(name = "数量")
     private Double cbif09;
 
-
+    @Excel(name = "仓库")
     private String cbwa09;
     private String[] cbwa09s;
 

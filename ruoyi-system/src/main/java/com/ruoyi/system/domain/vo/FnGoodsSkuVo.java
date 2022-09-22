@@ -17,6 +17,9 @@ import java.util.Date;
 @Data
 public class FnGoodsSkuVo {
 
+    @Excel(name = "仓库")
+    private String cbwa09;
+
     @Excel(name = "供应商")
     private String supplieName;
 
@@ -31,7 +34,7 @@ public class FnGoodsSkuVo {
 
     @Excel(name = "型号")
     private String model;
-    @Excel(name = "描述")
+    /*@Excel(name = "描述")*/
     private String description;
 
     @Excel(name = "期初入库")
