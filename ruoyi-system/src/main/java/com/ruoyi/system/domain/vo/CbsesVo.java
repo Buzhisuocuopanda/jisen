@@ -3,9 +3,13 @@ package com.ruoyi.system.domain.vo;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbsesVo extends BaseEntity {
+
 
     private Integer cbsf01;
 
@@ -66,6 +70,9 @@ public class CbsesVo extends BaseEntity {
 
 
     private Integer saoma;
+    private List<ScanVo> goods = new ArrayList<>();
+
+    private String pinpai;
 
 
 }

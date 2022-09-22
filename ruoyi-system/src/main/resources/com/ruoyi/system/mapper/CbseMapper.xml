@@ -479,9 +479,10 @@
   </select>
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsesVo">
       SELECT
-        a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,a.CBSE18,
-        i.CBSA08,e.CBSF16,g.CALA08,f.CBPB12,f.CBPB08,e.CBSF09,e.CBSF09,f.CBPB15,
-        e.CBSF11,e.CBSF12,e.CBSF13,h.CBSG09,l.CBLA09,a.CBSE01,e.CBSF08,m.*,e.CBSF01
+      a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,a.CBSE18,
+      i.CBSA08,e.CBSF16,g.CALA08 as pinpai ,h.CBSG03,
+      f.CBPB12,f.CBPB08,e.CBSF09,f.CBPB15,
+      e.CBSF11,e.CBSF12,e.CBSF13,h.CBSG09,l.CBLA09,a.CBSE01,e.CBSF08,m.CBPA08,e.CBSF01
       from
         CBSE a
           LEFT JOIN
@@ -533,7 +534,8 @@ where
       <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
         and date_format(a.CBSE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
-
+      GROUP BY
+      e.CBSF08
 </select>
 
 </mapper>

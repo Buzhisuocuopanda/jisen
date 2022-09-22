@@ -9,9 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
-import com.ruoyi.system.domain.vo.CbseVo;
-import com.ruoyi.system.domain.vo.CbsesVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISalesreturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -340,9 +338,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     @Override
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
         List<CbsesVo> cbsesVos = cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+        CbsesVo res = new CbsesVo();
+        List<ScanVo> goods = res.getGoods();
+
         Integer cbse01 = cbsesVo.getCbse01();
         if(cbse01==null){
-            throw new SwException("采购入库单id不能为空");
+            throw new SwException("销售退库单id不能为空");
         }
         for(int i=0;i<cbsesVos.size();i++) {
             CbsgCriteria example = new CbsgCriteria();
@@ -350,8 +351,22 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     .andCbsg08EqualTo(cbsesVos.get(i).getCbsf08());
             List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
             int size = cbsgs.size();
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(cbsesVos.get(i).getCbpa08());
+                scanVo.setPinpai(cbsesVos.get(i).getPinpai());
+                scanVo.setCbpb08(cbsesVos.get(i).getCbpb08());
+                scanVo.setCbpb12(cbsesVos.get(i).getCbpb12());
+                scanVo.setSn(cbsgs.get(j).getCbsg09());
+                scanVo.setKwm(cbsesVos.get(i).getCbla09());
+                scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
+                goods.add(scanVo);
+            }
+
             cbsesVos.get(i).setSaoma(size);
         }
+        cbsesVos.get(0).setGoods(goods);
+
         return cbsesVos;
     }
     @Transactional
