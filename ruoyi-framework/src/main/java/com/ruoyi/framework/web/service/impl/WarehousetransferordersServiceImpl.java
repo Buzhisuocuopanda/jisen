@@ -6,10 +6,7 @@ import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
-import com.ruoyi.system.domain.vo.CbaaVo;
-import com.ruoyi.system.domain.vo.CbaasVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -427,6 +424,10 @@ if(itemList.size()==0){
     @Override
     public List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo) {
         List<CbaasVo> cbaasVos = cbaaMapper.selectSwJsTaskGoodsRelListss(cbaasVo);
+
+        CbaasVo res = new CbaasVo();
+        List<ScanVo> goods = res.getGoods();
+
         Integer cbaa01 = cbaasVo.getCbaa01();
         if(cbaa01==null){
             throw new SwException("调拨单id不能为空");
@@ -437,9 +438,21 @@ if(itemList.size()==0){
                     .andCbac08EqualTo(cbaasVos.get(i).getCbab08());
             List<Cbac> cbacs = cbacMapper.selectByExample(example);
             int size = cbacs.size();
-
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(cbaasVos.get(i).getCbpa08());
+                scanVo.setPinpai(cbaasVos.get(i).getPinpai());
+                scanVo.setCbpb08(cbaasVos.get(i).getCbpb08());
+                scanVo.setCbpb12(cbaasVos.get(i).getCbpb12());
+                scanVo.setSn(cbacs.get(j).getCbac09());
+                scanVo.setKwm(cbaasVos.get(i).getCbla09());
+                scanVo.setCbpe03(cbacs.get(j).getCbac03());
+                goods.add(scanVo);
+            }
             cbaasVos.get(i).setSaoma(size);
         }
+        cbaasVos.get(0).setGoods(goods);
+
         return cbaasVos;
     }
 
