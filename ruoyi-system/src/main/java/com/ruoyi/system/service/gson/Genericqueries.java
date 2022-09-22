@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface Genericqueries {
 //库存汇总查询
-    List<InwuquVo> selectInventorysummaryquery(InwuquVo inwuquVo);
+    List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto);
 //库存明细查询
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 //库存台账查询

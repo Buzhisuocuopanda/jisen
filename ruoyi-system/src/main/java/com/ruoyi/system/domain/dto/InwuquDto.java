@@ -1,15 +1,12 @@
-package com.ruoyi.system.domain.vo;
+package com.ruoyi.system.domain.dto;
 
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class OutofstockregistrationVo {
+public class InwuquDto {
     @Excel(name = "大类")
-    private String cbpa08;
-
+    private String totalclassify;
     @Excel(name = "分类名称")
     private String cbpa07;
 
@@ -26,14 +23,14 @@ public class OutofstockregistrationVo {
     private String cbpb08;
 
     @Excel(name = "数量")
-    private Double cbof09;
+    private Double cbif09;
 
-    @Excel(name = "客户")
-    private String cbca08;
 
-    @Excel(name = "日期",dateFormat = "yyyy-MM-dd")
-    private Date cboe08;
+    private String cbwa09;
+    private String[] cbwa09s;
 
+    @Excel(name = "可用库存数量")
+    private Double lockQty;
     private Integer cbpb01;
 
 }

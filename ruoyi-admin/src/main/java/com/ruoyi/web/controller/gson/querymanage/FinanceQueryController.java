@@ -173,6 +173,17 @@ public class FinanceQueryController extends BaseController {
 
     }
 
+    @ApiOperation(
+            value ="导出销售分析",
+            notes = "导出销售分析"
+    )
+    @PostMapping("/salesAnalysisExcelList")
+    public void salesAnalysisExcelList(FnsalesAnalysisDto fnsalesAnalysisDto, HttpServletResponse response) {
+        List<SaleAnalysisVo> list = financeQueryService.salesAnalysis(fnsalesAnalysisDto);
+        ExcelUtil<SaleAnalysisVo> util = new ExcelUtil<>(SaleAnalysisVo.class);
+        util.exportExcel(response, list, "销售分析数据");
+    }
+
 
 
 }

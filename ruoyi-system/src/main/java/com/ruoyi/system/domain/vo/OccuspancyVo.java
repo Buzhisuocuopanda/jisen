@@ -11,7 +11,7 @@ public class OccuspancyVo extends BaseEntity {
     @Excel(name = "单据编号")
     private String cboa07;
 
-    @Excel(name = "单据日期")
+    @Excel(name = "单据日期",dateFormat = "yyyy-MM-dd")
     private Date cboa08;
 
     @Excel(name = "客户")
