@@ -22,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class SWQualityinspectionlistImpl implements ISWQualityinspectionlistService {
     @Resource
@@ -312,11 +315,27 @@ private CbpmMapper cbpmMapper;
         cboe.setCbqa04(date);
         cbqaMapper.updateByPrimaryKeySelective(cboe);
 
+        CbqbCriteria sdw=new CbqbCriteria();
+        sdw.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01());
+        List<Cbqb> cbqbs = cbqbMapper.selectByExample(sdw);
+        if(cbqbs.size()==0){
+            throw new SwException("质检单明细为空");
+        }
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbqbs.size(); i++) {
+            Integer id = cbqbs.get(i).getCbqb01();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
+
         Cbqb cbqb = null;
         for(Cbqb good:goods){
             cbqb = new Cbqb();
             if(good.getCbqb01()==null){
                 throw new SwException("质检单明细id不能为空");
+            }
+            if(!uio.contains(good.getCbqb01())){
+                throw new SwException("质检单明细id不存在");
             }
             cbqb.setCbqb01(good.getCbqb01());
             cbqb.setCbqb02(good.getCbqb02());

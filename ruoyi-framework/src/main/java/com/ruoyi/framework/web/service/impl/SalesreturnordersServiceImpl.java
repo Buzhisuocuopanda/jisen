@@ -558,6 +558,11 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setCbse05(Math.toIntExact(userid));
         cbseMapper.updateByPrimaryKeySelective(cbse);
 
+        CbsfCriteria cbsfs = new CbsfCriteria();
+        cbsfs.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsf> cbsfs1 = cbsfMapper.selectByExample(cbsfs);
+
+
         Cbsf cbsf = null;
         for(Cbsf good:goods){
          cbsf=new Cbsf();

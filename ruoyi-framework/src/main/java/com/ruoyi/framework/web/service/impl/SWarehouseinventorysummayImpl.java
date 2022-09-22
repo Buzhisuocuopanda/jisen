@@ -84,7 +84,7 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         cbsh.setCbsh05(Math.toIntExact(userId));
         cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbsh.setCbsh07(warehouseinitializationNo);
-        cbsh.setCbsh08(cbshDo.getCbsh08());
+        cbsh.setCbsh08(date);
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);
         CbshCriteria example = new CbshCriteria();

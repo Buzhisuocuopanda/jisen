@@ -49,7 +49,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
 
 
     @ApiOperation(
-            value ="仓库盘汇总新增主表",
+            value ="仓库盘点汇总新增主表",
             notes = "仓库盘汇总新增主表"
     )
     @PostMapping("/SwJsStoreadd")

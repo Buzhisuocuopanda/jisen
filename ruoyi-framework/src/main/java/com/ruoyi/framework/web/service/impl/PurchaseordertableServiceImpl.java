@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -323,11 +325,28 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         cboe.setUpdateTime(new Date());
         purchaseOrderMapper.updateByPrimaryKeySelective(cboe);
 
+        GsPurchaseOrderDetailCriteria sddf=new GsPurchaseOrderDetailCriteria();
+        sddf.createCriteria().andPurchaseOrderIdEqualTo(Math.toIntExact(gsPurchaseOrderDo.getId()));
+        List<GsPurchaseOrderDetail> gsPurchaseOrderDetails = gsPurchaseOrderDetailMapper.selectByExample(sddf);
+        if(gsPurchaseOrderDetails.size()==0){
+            throw new SwException("采购订单明细为空");
+        }
+
+        Set<Long> uio = null;
+        for (int i = 0; i < gsPurchaseOrderDetails.size(); i++) {
+            Long id = gsPurchaseOrderDetails.get(i).getId();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
+
         GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
         for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
             gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
             if(gsPurchaseOrderDetail1.getId()==null){
                 throw new SwException("采购订单明细不能为空");
+            }
+            if(!uio.contains(gsPurchaseOrderDetail1.getId())){
+                throw new SwException("该商品不在采购订单明细中");
             }
             gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
             gsPurchaseOrderDetail.setGoodsId(gsPurchaseOrderDetail1.getGoodsId());

@@ -458,15 +458,15 @@ private CbieMapper cbieMapper;
 
         if (storeId / 10 == 0) {
             String s = "II0" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "II" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }else {
             int i = storeId % 3;
             String s = "II0" + i + format;
-            s=orderNo;
+            orderNo=s;
         }
         CbieCriteria example=new CbieCriteria();
         example.createCriteria()
