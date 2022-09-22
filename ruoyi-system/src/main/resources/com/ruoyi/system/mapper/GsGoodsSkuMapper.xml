@@ -320,12 +320,14 @@
     pb.CBPB09 as description,
     sku.goods_id as goodsId,
     sku.wh_id as whId,
-    sku.qty as skuQty
+    sku.qty as skuQty,
+    wa.CBWA09
     FROM
     `gs_goods_sku` sku
     LEFT JOIN CBPB pb ON pb.CBPB01 = sku.goods_id
     LEFT JOIN CBPA pa ON pa.CBPA01 = pb.CBPB14
     LEFT JOIN CBPA  e ON e.CBPA01 = pa.CBPA09
+    LEFT JOIN CBWA  wa ON wa.CBWA01 = sku.wh_id
     WHERE
     sku.delete_flag = 0
 
