@@ -71,6 +71,8 @@ public class CountQueryController  extends BaseController {
     private ApprovalService approvalService;
 
 
+
+
     /**
      * 库存汇总查询
      */

@@ -315,7 +315,7 @@
     WHERE
         a.delete_flag=0
     <if test="ponumber != null and ponumber !=''">
-     and a.PONumber   like concat('%', #{ponumber}, '%')
+     and a.PONumber like concat('%', #{ponumber}, '%')
     </if>
     <if test="startTime != null">
       and a.create_time &gt;= #{startTime}

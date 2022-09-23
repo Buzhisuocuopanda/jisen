@@ -88,7 +88,7 @@ private NumberGenerate numberGenerate;
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-       baseCheckService.checkGoods(cbpdDto.getCbpd08());
+     //  baseCheckService.checkGoods(cbpdDto.getCbpd08());
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())

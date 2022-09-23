@@ -145,7 +145,10 @@ public class TakeGoodsController extends BaseController {
     /**
      * 根据销售订单id查出提货单信息
      */
-
+    @ApiOperation(
+            value ="根据销售订单id查出提货单信息",
+            notes = "根据销售订单id查出提货单信息"
+    )
     @GetMapping("/takeOrderDetailBySaleId")
     public AjaxResult<TakeGoodsOrderDetailVo> takeOrderDetailBySaleId(@RequestParam Integer saleOrderId,@RequestParam Integer whId){
         try {
@@ -167,7 +170,10 @@ public class TakeGoodsController extends BaseController {
     /**
      * 提货单编辑
      */
-
+    @ApiOperation(
+            value ="提货单编辑",
+            notes = "提货单编辑"
+    )
     @PostMapping("/mdfTakeGoodsOrder")
     public AjaxResult mdfTakeGoodsOrder(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
         try {
@@ -192,7 +198,9 @@ public class TakeGoodsController extends BaseController {
     /**
      * 提货单删除
      */
-
+    @ApiOperation(
+            value ="提货单删除",
+            notes = "提货单删除")
     @PostMapping("/delTakeGoodsOrder")
     public AjaxResult delTakeGoodsOrder(@RequestParam Integer id){
         try {
@@ -214,7 +222,9 @@ public class TakeGoodsController extends BaseController {
     /**
      * 提货单状态更改
      */
-
+    @ApiOperation(
+            value ="提货单状态更改",
+            notes = "提货单状态更改")
     @PostMapping("/auditTakeOrder")
     public AjaxResult auditTakeOrder(@RequestBody AuditTakeOrderDto auditTakeOrderDto){
         try {
@@ -238,7 +248,9 @@ public class TakeGoodsController extends BaseController {
      * 更改提货建议表
      */
 
-
+    @ApiOperation(
+            value ="更改提货建议表",
+            notes = "更改提货建议表")
     @PostMapping("/mdfTakeSuggest")
     public AjaxResult mdfTakeSuggest(@RequestBody ChangeSuggestDto changeSuggestDto){
         try {
@@ -289,7 +301,9 @@ public class TakeGoodsController extends BaseController {
      * 导出提货单excel详情
      */
 
-
+    @ApiOperation(
+            value ="导出提货单excel详情",
+            notes = "导出提货单excel详情")
     @PostMapping("/exportDetail")
     public void exportDetail(@RequestParam Integer id, HttpServletResponse response){
         String excelPaht="";

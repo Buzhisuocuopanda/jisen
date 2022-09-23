@@ -16,6 +16,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.SaleOrderService;
@@ -673,6 +674,9 @@ public class SaleOrderController extends BaseController {
         }
     }
 
+
+
+
     /**
      * 购物车列表
      */
@@ -696,7 +700,32 @@ public class SaleOrderController extends BaseController {
         }
     }
 
+    /**
+     * 添加购物车
+     *
+     * @param goodsId
+     * @return
+     */
+    @ApiOperation(
+            value ="添加购物车",
+            notes = "添加购物车"
+    )
+    @GetMapping("/insertgoodsShop")
+    public AjaxResult<GsSaleShopping> insertgoodsShop(@RequestParam Integer goodsId) {
+        try {
 
+            saleOrderService.insertgoodsShop(goodsId);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【添加购物车】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(goodsId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
 
 
     /**

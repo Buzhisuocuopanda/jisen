@@ -21,6 +21,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.SalesScheduledOrdersService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import com.ruoyi.system.service.gson.impl.TaskServiceImpl;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -80,9 +81,9 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
      */
     @Override
     public void addSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
+        GsSalesOrdersDto gsSalesOrdersDto1 = new GsSalesOrdersDto();
 
-
-         List<GsSalesOrdersDetailsDto> goods=gsSalesOrdersDto.getGoods();
+        List<GsSalesOrdersDetailsDto> goods=gsSalesOrdersDto.getGoods();
         if (goods.size() == 0) {
             throw new SwException("请选择要销售的货物");
         }
@@ -492,7 +493,10 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
-        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getSupplierId());
+        if(cbsa == null){
+            throw new SwException("没有查到该仓库");
+        }
         String vendername = cbsa.getCbsa08();
         //供应商
         Integer supplierId = gsSalesOrders.getSupplierId();
