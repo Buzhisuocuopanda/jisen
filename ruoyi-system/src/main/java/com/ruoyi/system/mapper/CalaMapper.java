@@ -10,15 +10,23 @@ public interface CalaMapper {
 
     int deleteByExample(CalaCriteria example);
 
+    int deleteByPrimaryKey(Integer cala01);
+
     int insert(Cala record);
 
     int insertSelective(Cala record);
 
     List<Cala> selectByExample(CalaCriteria example);
 
+    Cala selectByPrimaryKey(Integer cala01);
+
     int updateByExampleSelective(@Param("record") Cala record, @Param("example") CalaCriteria example);
 
     int updateByExample(@Param("record") Cala record, @Param("example") CalaCriteria example);
+
+    int updateByPrimaryKeySelective(Cala record);
+
+    int updateByPrimaryKey(Cala record);
 
     List<Cala> selectSwJsListList(Cala cala);
 

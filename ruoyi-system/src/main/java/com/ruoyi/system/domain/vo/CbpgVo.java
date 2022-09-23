@@ -13,11 +13,18 @@ import java.util.List;
 @Data
 public class CbpgVo  extends BaseEntity
 {
+
+    private Integer cala01;
+
     private String pinpai;
 
     private Integer cbph01;
 
     private Integer cbpg01;
+
+    private Integer cbpg09;
+
+    private Integer cbpg10;
 
     private String cbpg07;
 

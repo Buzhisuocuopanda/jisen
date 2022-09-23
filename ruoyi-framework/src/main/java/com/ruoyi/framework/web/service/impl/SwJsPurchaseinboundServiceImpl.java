@@ -329,6 +329,7 @@ private NumberGenerate numberGenerate;
             itemList.get(i).setCbpd06(Math.toIntExact(userid));
             itemList.get(i).setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();

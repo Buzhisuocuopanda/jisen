@@ -55,6 +55,9 @@ public class NumberGenerate {
     private CboeMapper cboeMapper;
 
     @Resource
+    private  CbaaMapper cbaaMapper;
+
+    @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
 @Resource
 private CbieMapper cbieMapper;
@@ -449,6 +452,49 @@ private CbieMapper cbieMapper;
         }
 
     }
+
+    //调拨单
+    public synchronized String getWarehouseinitializationNos(int storeId) {
+        //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo = "";
+
+        if (storeId / 10 == 0) {
+            String s = "ST0" + storeId + format;
+            orderNo=s;
+        }
+        else if(storeId/10>0&&storeId/10<10){
+            String s = "ST" + storeId + format;
+            orderNo=s;
+        }else {
+            int i = storeId % 3;
+            String s = "ST0" + i + format;
+            orderNo=s;
+        }
+        CbaaCriteria example=new CbaaCriteria();
+        example.createCriteria()
+                .andCbaa07Like("%"+format+"%");
+        List<Cbaa> cbpks = cbaaMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+
+            Integer num=0;
+            for (Cbaa res : cbpks) {
+                Integer no = getNum(res.getCbaa07(),12);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
+
     //库存初始化单编号
     public synchronized String getBinitinitializationNo(int storeId) {
         //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增

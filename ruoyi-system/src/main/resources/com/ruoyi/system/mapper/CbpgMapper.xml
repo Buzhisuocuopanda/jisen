@@ -416,7 +416,7 @@
   </update>
 
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
-    SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
+    SELECT  a.CBPG01,a.CBPG07,a.CBPG09,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG10,e.CALA01,
     h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,h.CBPB15,
     i.CBLA09,b.CBPH08,
     f.CBPI01,f.CBPI02,f.CBPI03,f.CBPI08,f.CBPI09,f.CBPI10,
@@ -515,6 +515,7 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBPG08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+    order by a.CBPG08 desc
   </select>
 
 </mapper>

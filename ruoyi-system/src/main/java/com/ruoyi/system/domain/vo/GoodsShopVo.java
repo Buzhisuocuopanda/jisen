@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * ClassName GoodsShopVo
  * Description
@@ -32,6 +34,20 @@ public class GoodsShopVo {
     private String description;
 
 
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer createBy;
+
+    private Integer updateBy;
+
+    private Byte deleteFlag;
+
+    private Integer goodsId;
+
+    private Integer userId;
 
 
 

@@ -16,6 +16,7 @@ import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
@@ -699,6 +700,32 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 购物车列表list版
+     */
+    @ApiOperation(
+            value ="购物车列表list版",
+            notes = "购物车列表list版"
+    )
+    @GetMapping("/goodsShopListcas")
+    public AjaxResult<GoodsDetailAndSkuVo> goodsShopLists(@RequestBody List<GoodsPriceAndSkuDto> itemList) {
+        try {
+
+            List<GoodsDetailAndSkuVo> goodsShopVos = saleOrderService.goodsShopLists(itemList);
+            return AjaxResult.success(goodsShopVos);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售清单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
 
     /**
      * 添加购物车

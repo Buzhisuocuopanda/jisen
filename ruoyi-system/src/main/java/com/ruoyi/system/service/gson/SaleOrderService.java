@@ -72,6 +72,9 @@ public interface SaleOrderService {
     void updateGjQty(UpdateGjQtyDto updateGjQtyDto);
 
     void insertgoodsShop(Integer goodsId);
+
+
+    List<GoodsDetailAndSkuVo> goodsShopLists(List<GoodsPriceAndSkuDto> itemList);
 //    GsWorkInstance createTask();
 
 }

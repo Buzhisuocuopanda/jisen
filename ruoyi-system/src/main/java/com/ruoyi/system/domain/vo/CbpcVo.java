@@ -14,6 +14,10 @@ public class CbpcVo  extends BaseEntity
 {
     private Integer cbpc01;
     private Date cbpc08;
+    private Integer cbpc09;
+
+    private Integer cala01;
+
 
     private String cala08;
 
@@ -55,7 +59,6 @@ public class CbpcVo  extends BaseEntity
     private String cbpc07;
 
 
-    private Integer cbpc09;
 
     private Integer cbpc10;
 
