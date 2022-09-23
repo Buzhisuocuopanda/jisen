@@ -9,6 +9,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cala;
 import com.ruoyi.system.domain.Cbca;
+import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.Cbwa;
 import com.ruoyi.system.domain.dto.GoodsUseDto;
 import com.ruoyi.system.domain.dto.InwuquDto;
@@ -69,6 +70,8 @@ public class CountQueryController  extends BaseController {
     private ISwJsCustomerService swJsCustomerService;
     @Resource
     private ApprovalService approvalService;
+    @Resource
+    private ISwJsSupplierService swJsSupplierService;
 
 
 
@@ -520,5 +523,31 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/23 13:37
+     *
+     */
+    @ApiOperation(
+            value ="查询供应商信息下拉列表",
+            notes = "查询供应商信息下拉列表"
+    )
+    @GetMapping("/SwJsSupplierlistAll")
+    public AjaxResult SwJsSupplierlistAll(Cbsa cbsa) {
+        try{
+            List<Cbsa> list = swJsSupplierService.selectSwJsSupplierList(cbsa);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (ServiceException e) {
+            log.error("【查询供应商信息列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsa), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
+            log.error("【查询供应商信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsa),ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 }

@@ -162,7 +162,7 @@ public class FinanceQueryController extends BaseController {
     public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
         try {
             startPage();
-            List<SaleAnalysisVo> list=financeQueryService.salesAnalysis(fnsalesAnalysisDto);
+            List<SaleAnalysisVo> list=financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -179,7 +179,7 @@ public class FinanceQueryController extends BaseController {
     )
     @PostMapping("/salesAnalysisExcelList")
     public void salesAnalysisExcelList(FnsalesAnalysisDto fnsalesAnalysisDto, HttpServletResponse response) {
-        List<SaleAnalysisVo> list = financeQueryService.salesAnalysis(fnsalesAnalysisDto);
+        List<SaleAnalysisVo> list = financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
         ExcelUtil<SaleAnalysisVo> util = new ExcelUtil<>(SaleAnalysisVo.class);
         util.exportExcel(response, list, "销售分析数据");
     }
