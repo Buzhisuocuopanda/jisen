@@ -366,6 +366,7 @@ SELECT
 	ca.CBCA09 AS suplierName,
 	sa.CBSA08 AS gc,
 	pd.CBPD11 AS cgUprice,
+    pd.CBPD12 AS cgRprice,
 	pb.CBPB08 AS description,
 	pb.CBPB10 AS brand,
 	pb.CBPB12 AS model,
