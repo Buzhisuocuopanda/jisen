@@ -30,6 +30,7 @@ public class CbqaVo extends BaseEntity {
 
     private String cbqb10;
 
+    private Integer cbqb01;
 
     @ApiParam(value = "开始时间", required = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

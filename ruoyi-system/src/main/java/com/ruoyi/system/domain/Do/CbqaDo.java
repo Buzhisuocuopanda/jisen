@@ -1,9 +1,13 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.Cbqb;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbqaDo {
     private Integer cbqa01;
@@ -17,7 +21,7 @@ public class CbqaDo {
     private Integer cbqa05;
 
     private Integer cbqa06;
-    @NotBlank(message = "编号不能为空")
+   // @NotBlank(message = "编号不能为空")
     private String cbqa07;
 
     private Date cbqa08;
@@ -29,4 +33,7 @@ public class CbqaDo {
     private Date cbqa11;
 
     private Integer userId;
+
+    private List<Cbqb> goods=new ArrayList<>();
+
 }

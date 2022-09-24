@@ -28,4 +28,9 @@ public class GsSalesOrdersDo extends BaseEntity {
 
     //单据结束时间
     private Date endTime;
+
+    private String wh;
+    private String supplier;
+
+
 }

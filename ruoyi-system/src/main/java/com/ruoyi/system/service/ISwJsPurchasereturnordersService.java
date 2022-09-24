@@ -42,4 +42,6 @@ public interface ISwJsPurchasereturnordersService {
     int insertSwJsStores(List<CbpgDo> itemList);
 
     String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName);
+
+    void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto);
 }

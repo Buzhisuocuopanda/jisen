@@ -542,7 +542,7 @@
   </select>
   <select id="getInfossss" resultType="com.ruoyi.system.domain.vo.CbpcVo">
     SELECT a.CBPC07,a.CBPC08, h.CALA08,e.CBSA08,g.CBWA09, f.CALA08 as cala08s,
-    d.CBPB12,d.CBPB08,d.CBPB15,
+    d.CBPB12,d.CBPB08,d.CBPB15,b.CBPD01,a.CBPC01,
 
     b.CBPD08, b.CBPD09,b.CBPD11,b.CBPD12,b.CBPD13,
     p.CBPA07,
@@ -592,7 +592,8 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBPC08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-
+    group
+    by   b.CBPD08
   </select>
   <select id="selectgoodsinfo" resultType="com.ruoyi.system.domain.vo.CbpdVo">
     SELECT

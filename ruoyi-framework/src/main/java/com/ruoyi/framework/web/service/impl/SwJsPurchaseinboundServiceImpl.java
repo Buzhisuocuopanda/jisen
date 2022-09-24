@@ -10,8 +10,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -28,8 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +60,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
    @Resource
    private CbsaMapper cbsaMapper;
 
+   @Resource
+   private CblaMapper cblaMapper;
+
 
 
 @Resource
@@ -87,7 +88,7 @@ private NumberGenerate numberGenerate;
         //检查仓库
         baseCheckService.checkStore(cbpdDto.getCbpc10());
         //检查商品
-    //    baseCheckService.checkGoods(cbpdDto.getCbpd08());
+     //  baseCheckService.checkGoods(cbpdDto.getCbpd08());
 
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
@@ -130,7 +131,28 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("请选择要扫的商品");
+        }
+        if(itemList.get(0).getCbpc01()==null){
+            throw new SwException("采购订单主单id不能为空");
+        }
+        Cbpc cbpcs = cbpcMapper.selectByPrimaryKey(itemList.get(0).getCbpc01());
+        Integer storeid = cbpcs.getCbpc10();
 
+        CbpdCriteria cas = new CbpdCriteria();
+        cas.createCriteria().andCbpc01EqualTo(itemList.get(0).getCbpc01())
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpd> cbphs = cbpdMapper.selectByExample(cas);
+        if (cbphs.size() == 0) {
+            throw new SwException("采购入库单明细为空");
+        }
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbphs.size(); i++) {
+            Integer cbph08 = cbphs.get(i).getCbpd08();
+            uio = new HashSet<>();
+            uio.add(cbph08);
+        }
 
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -138,6 +160,23 @@ private NumberGenerate numberGenerate;
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getCbpe08() == null) {
+                throw new SwException("商品id不能为空");
+            }
+            if(!uio.contains(itemList.get(i).getCbpe08())){
+                throw new SwException("该商品不在采购退货单明细中");
+            }
+
+            if(itemList.get(i).getCbpe10()==null){
+                throw new SwException("库位id不能为空");
+            }
+            Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpe10());
+            if (cblas == null) {
+                throw new SwException("库位不存在");
+            }
+            if (!cblas.getCbla10().equals(storeid)) {
+                throw new SwException("库位不属于该仓库");
+            }
 
 
             //校验sn码
@@ -275,6 +314,10 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsSkuBarcsodesm(List<Cbpd> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("采购入库明细不能为空");
+        }
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpdMapper mapper = session.getMapper(CbpdMapper.class);
         Date date = new Date();
@@ -295,6 +338,48 @@ private NumberGenerate numberGenerate;
         session.commit();
         session.clearCache();
         return 1;
+    }
+
+    @Override
+    public void SwJsPurchaseinboundeditone(CbpdDto cbpdDto) {
+        if(cbpdDto.getCbpc01()==null){
+            throw new SwException("采购订单id不能为空");
+        }
+        List<Cbpd> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
+        cbpc.setCbpc01(cbpdDto.getCbpc01());
+        cbpc.setCbpc04(date);
+        cbpc.setCbpc05(Math.toIntExact(userid));
+        cbpcMapper.updateByPrimaryKeySelective(cbpc);
+
+        Cbpd cbpd = null;
+        for(Cbpd good:goods){
+            cbpd = new Cbpd();
+            if(good.getCbpd01()==null){
+                throw new SwException("采购订单明细id不能为空");
+            }
+            cbpd.setCbpd01(good.getCbpd01());
+            cbpd.setCbpd05(date);
+            cbpd.setCbpd06(Math.toIntExact(userid));
+            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpd.setCbpd08(good.getCbpd08());
+            cbpd.setCbpd09(good.getCbpd09());
+            cbpd.setCbpd10(good.getCbpd10());
+            cbpd.setCbpd11(good.getCbpd11());
+            cbpd.setCbpd12(good.getCbpd12());
+            cbpd.setCbpd13(good.getCbpd13());
+
+            CbpdCriteria cbpdCriteria = new CbpdCriteria();
+            cbpdCriteria.createCriteria().andCbpd01EqualTo(good.getCbpd01());
+            cbpdMapper.updateByExampleSelective(cbpd,cbpdCriteria);
+        }
+        return;
+
     }
 
     /**
@@ -513,10 +598,12 @@ private NumberGenerate numberGenerate;
 
             for (int i = 0; i < cbpes.size(); i++) {
                 Integer goodsid = cbpes.get(i).getCbpe08();
+                Integer cbpe10 = cbpes.get(i).getCbpe10();
                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
                         .andGoodsIdEqualTo(goodsid)
-                        .andWhIdEqualTo(cbpc1.getCbpc10());
+                        .andWhIdEqualTo(cbpc1.getCbpc10())
+                        .andLocationIdEqualTo(cbpe10);
                 List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
                 // double num = doubles[i];
                 //对库存表的操作
@@ -688,7 +775,7 @@ private NumberGenerate numberGenerate;
             for(int i=0;i<size;i++){
                 if(cbpes.get(i).getCbpe11().equals(ScanStatusEnum.YISAOMA.getCode())) {
 
-                    throw new SwException("已扫码不能反审");
+                    throw new SwException("已扫码不能取消完成");
                 }
             }
         }
@@ -850,7 +937,38 @@ private NumberGenerate numberGenerate;
      */
     @Override
     public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
-        return cbpdMapper.getInfossss(cbpcVo);
+        List<CbpcVo> infossss = cbpdMapper.getInfossss(cbpcVo);
+        CbpcVo res = new CbpcVo();
+        List<ScanVo> goods = res.getGoods();
+
+        Integer cbpc01 = cbpcVo.getCbpc01();
+        if (cbpc01 == null) {
+            throw new SwException("采购入库单id不能为空");
+        }
+        for (int i = 0; i < infossss.size(); i++) {
+            CbpeCriteria example = new CbpeCriteria();
+            example.createCriteria().andCbpc01EqualTo(cbpc01)
+                    .andCbpe08EqualTo(infossss.get(i).getCbpd08());
+            List<Cbpe> cbpes = cbpeMapper.selectByExample(example);
+            int size = cbpes.size();
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(infossss.get(i).getCbpa07());
+                scanVo.setPinpai(infossss.get(i).getCala08());
+                scanVo.setCbpb08(infossss.get(i).getCbpb08());
+                scanVo.setCbpb12(infossss.get(i).getCbpb12());
+                scanVo.setSn(cbpes.get(j).getCbpe09());
+                scanVo.setKwm(infossss.get(i).getCbla09());
+                scanVo.setCbpe03(cbpes.get(j).getCbpe03());
+                goods.add(scanVo);
+            }
+            infossss.get(i).setSaoma(size);
+
+        }
+        infossss.get(0).setGoods(goods);
+       // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
+
+        return infossss;
     }
 
 

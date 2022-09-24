@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.Do;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ public class CbshDo {
     private Integer cbsh06;
    // @NotBlank(message = "编号不能为空")
     private String cbsh07;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cbsh08;
 
     private Integer cbsh09;

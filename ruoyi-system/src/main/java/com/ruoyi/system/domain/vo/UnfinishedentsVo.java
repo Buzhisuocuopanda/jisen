@@ -63,4 +63,7 @@ public class UnfinishedentsVo extends BaseEntity {
     @ApiModelProperty("单据结束时间")
 
     private Date endTime;
+
+    private Integer id;
+
 }

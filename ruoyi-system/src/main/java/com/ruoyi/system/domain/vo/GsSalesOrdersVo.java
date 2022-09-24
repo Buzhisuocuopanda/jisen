@@ -39,4 +39,17 @@ public class GsSalesOrdersVo {
 
     //单据结束时间
     private Date endTime;
+
+
+
+    private Integer supplierId;
+
+    private Integer salerId;
+
+    private Integer customerId;
+
+
+
+    private Integer whId;
+
 }

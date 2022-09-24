@@ -5,7 +5,10 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbpcVo  extends BaseEntity
 {
@@ -124,7 +127,9 @@ public class CbpcVo  extends BaseEntity
 
     private String cbpb09;
 
+    private List<ScanVo> goods = new ArrayList<>();
 
 
+    private Integer saoma;
 
 }

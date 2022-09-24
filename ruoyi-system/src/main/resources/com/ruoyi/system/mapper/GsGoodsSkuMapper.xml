@@ -315,29 +315,57 @@
     SELECT
     pb.CBPB10 as brand,
     pa.CBPA07 as sClass,
+    e.CBPA07 as bClass,
     pb.CBPB12 as model,
     pb.CBPB09 as description,
     sku.goods_id as goodsId,
     sku.wh_id as whId,
-    sku.qty as skuQty
+    sku.qty as skuQty,
+    wa.CBWA09
     FROM
     `gs_goods_sku` sku
     LEFT JOIN CBPB pb ON pb.CBPB01 = sku.goods_id
     LEFT JOIN CBPA pa ON pa.CBPA01 = pb.CBPB14
+    LEFT JOIN CBPA  e ON e.CBPA01 = pa.CBPA09
+    LEFT JOIN CBWA  wa ON wa.CBWA01 = sku.wh_id
     WHERE
     sku.delete_flag = 0
-    <if test="whId !=null">
+
+    <if test="whIds != null">
+      and sku.wh_id in
+      <foreach item="whIdItem" collection="whIds" open="(" separator="," close=")">
+        #{whIdItem}
+      </foreach>
+    </if>
+    <!--<if test="whId !=null">
       AND sku.wh_id = #{whId}
 
-    </if>
+    </if>-->
 
-    <if test="goodsId !=null">
-
-    AND sku.goods_id = #{goodsId}
+    <if test="goodsIds != null">
+      and sku.goods_id in
+      <foreach item="goodsItem" collection="goodsIds" open="(" separator="," close=")">
+        #{goodsItem}
+      </foreach>
     </if>
-	<if test="brandId !=null">
+   <!-- <if test="goodsId !=null">
+        AND sku.goods_id = #{goodsId}
+    </if>-->
+
+    <if test="brandIds != null">
+      and pb.CBPB10 in
+      <foreach item="brandItem" collection="brandIds" open="(" separator="," close=")">
+        #{brandItem}
+      </foreach>
+    </if>
+	<!--<if test="brandId !=null">
       AND pb.CBPB10 = #{brandId}
-
+    </if>-->
+    <if test="startTime != null">
+      and sku.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and sku.create_time &lt;=#{endTime}
     </if>
 
   </select>

@@ -80,6 +80,8 @@ public interface SaleOrderService {
     GoodsPriceAndSkuVo goodsPriceAndSkuByOrderChange(GoodsPriceAndSkuDto goodsPriceAndSkuDto);
 
 
+
+    void insertgoodsShop(Integer goodsId);
 //    GsWorkInstance createTask();
 
 }

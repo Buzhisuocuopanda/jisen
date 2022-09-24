@@ -1,12 +1,14 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface CountQueryService {
-    List<InwuquVo> selectInventorysummaryquery(InwuquVo inwuquVo);
+    List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto);
 
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 

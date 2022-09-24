@@ -9,7 +9,7 @@ import com.ruoyi.system.domain.vo.IdVo;
 import java.util.List;
 
 public interface OutofstockregistrationformService {
-    IdVo insertOutofstockregistrationform(CboeDo cboeDo);
+    void insertOutofstockregistrationform(CboeDo cboeDo);
 
     int insertSwJsStores(List<Cbof> itemList);
 
@@ -19,5 +19,9 @@ public interface OutofstockregistrationformService {
 
     List<CbofVo> selectSwJsTaskGoodsRelListss(CbofVo cbofVo);
 
-    int deleteSwJsSkuBarcodsById(CboeDo cboeDo);
+    int deleteSwJsSkuBarcodsById(CboeVo cboeDo);
+
+    CbofVo saleOderDetail(Integer orderId);
+
+    void editOutofstockregistrationform(CboeDo cboeDo);
 }

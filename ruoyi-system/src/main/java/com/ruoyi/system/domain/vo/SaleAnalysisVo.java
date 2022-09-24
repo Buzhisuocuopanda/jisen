@@ -17,9 +17,9 @@ public class SaleAnalysisVo {
     @Excel(name = "客户名称")
     private String customerName;
 
-    @Excel(name = "下单时间")
-    private String createTimeMsg;
 
+    private String createTimeMsg;
+    @Excel(name = "下单时间",dateFormat = "yyyy-MM-dd")
     private Date createTime;
     @Excel(name = "供应商")
     private String supplier;
@@ -29,8 +29,11 @@ public class SaleAnalysisVo {
     private String saleOrderNo;
     @Excel(name = "型号")
     private String model;
+
+
+    private Integer brand;
     @Excel(name = "品牌")
-    private String brand;
+    private String brandName;
 
     @Excel(name = "数量")
     private Double qty;
@@ -41,6 +44,8 @@ public class SaleAnalysisVo {
 
     @Excel(name = "成本")
     private String cost;
+
+    private Integer cbsb01;
 
 
 

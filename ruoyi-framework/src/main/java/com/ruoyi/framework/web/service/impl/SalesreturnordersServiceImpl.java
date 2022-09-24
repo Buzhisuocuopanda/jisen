@@ -9,9 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
-import com.ruoyi.system.domain.vo.CbseVo;
-import com.ruoyi.system.domain.vo.CbsesVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISalesreturnordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -33,7 +31,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -339,7 +339,37 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Override
     public List<CbsesVo> selectSwJsTaskGoodsRelListss(CbsesVo cbsesVo) {
-        return cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+        List<CbsesVo> cbsesVos = cbseMapper.selectSwJsTaskGoodsRelListss(cbsesVo);
+        CbsesVo res = new CbsesVo();
+        List<ScanVo> goods = res.getGoods();
+
+        Integer cbse01 = cbsesVo.getCbse01();
+        if(cbse01==null){
+            throw new SwException("销售退库单id不能为空");
+        }
+        for(int i=0;i<cbsesVos.size();i++) {
+            CbsgCriteria example = new CbsgCriteria();
+            example.createCriteria().andCbse01EqualTo(cbse01)
+                    .andCbsg08EqualTo(cbsesVos.get(i).getCbsf08());
+            List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
+            int size = cbsgs.size();
+            for(int j=0;j<size;j++){
+                ScanVo scanVo = new ScanVo();
+                scanVo.setLx(cbsesVos.get(i).getCbpa08());
+                scanVo.setPinpai(cbsesVos.get(i).getPinpai());
+                scanVo.setCbpb08(cbsesVos.get(i).getCbpb08());
+                scanVo.setCbpb12(cbsesVos.get(i).getCbpb12());
+                scanVo.setSn(cbsgs.get(j).getCbsg09());
+                scanVo.setKwm(cbsesVos.get(i).getCbla09());
+                scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
+                goods.add(scanVo);
+            }
+
+            cbsesVos.get(i).setSaoma(size);
+        }
+        cbsesVos.get(0).setGoods(goods);
+
+        return cbsesVos;
     }
     @Transactional
     @Override
@@ -510,6 +540,66 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         taskService.updateGsGoodsSn(gsGoodsSnDo);*/
 
         return 1;
+    }
+
+    @Override
+    public void Selloutofwarehousedeitone(CbseDo cbseDo) {
+        List<Cbsf> goods = cbseDo.getGoods();
+
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        if(cbseDo.getCbse01()==null){
+            throw new SwException("销售出库单id不能为空");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
+        cbse.setCbse01(cbseDo.getCbse01());
+        cbse.setCbse04(date);
+        cbse.setCbse05(Math.toIntExact(userid));
+        cbseMapper.updateByPrimaryKeySelective(cbse);
+
+        CbsfCriteria cbsfs = new CbsfCriteria();
+        cbsfs.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsf> cbsfs1 = cbsfMapper.selectByExample(cbsfs);
+        if(cbsfs1.size()==0){
+            throw new SwException("没有销售出库单明细表信息");
+        }
+
+        Set<Integer> uio = null;
+        for (int i = 0; i < cbsfs1.size(); i++) {
+            int id = cbsfs1.get(i).getCbsf01();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
+        Cbsf cbsf = null;
+        for(Cbsf good:goods){
+         cbsf=new Cbsf();
+         cbsf.setCbsf05(date);
+            cbsf.setCbsf06(Math.toIntExact(userid));
+            if(good.getCbsf01()==null){
+                throw new SwException("销售出库单明细id不能为空");
+            }
+            if(!uio.contains(good.getCbsf01())){
+                throw new SwException("该商品不在销售出库单明细中");
+            }
+            cbsf.setCbsf01(good.getCbsf01());
+            cbsf.setCbsf08(good.getCbsf08());
+            cbsf.setCbsf09(good.getCbsf09());
+            cbsf.setCbsf10(good.getCbsf10());
+            cbsf.setCbsf11(good.getCbsf11());
+            cbsf.setCbsf12(good.getCbsf12());
+            cbsf.setCbsf13(good.getCbsf13());
+            cbsf.setCbsf14(good.getCbsf14());
+            cbsf.setCbsf15(good.getCbsf15());
+            cbsf.setCbsf16(good.getCbsf16());
+            CbsfCriteria example = new CbsfCriteria();
+            example.createCriteria().andCbsf01EqualTo(good.getCbsf01());
+            cbsfMapper.updateByExampleSelective(cbsf, example);
+        }
+        return;
+
     }
 
 

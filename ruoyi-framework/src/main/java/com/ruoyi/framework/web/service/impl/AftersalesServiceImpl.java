@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsAfterSalesVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
 import com.ruoyi.system.mapper.GsAfterSalesMapper;
 import com.ruoyi.system.service.AftersalesService;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class AftersalesServiceImpl implements AftersalesService {
         gsAfterSales.setCreateBy(userid);
         gsAfterSales.setUpdateBy(userid);
         gsAfterSales.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        String saleOrderNo = gsAfterSalesDto.getSaleOrderNo();
         aftersalesMapper.insertSelective(gsAfterSales);
         return 1;
     }
@@ -65,7 +67,7 @@ public class AftersalesServiceImpl implements AftersalesService {
         GsAfterSalesCriteria gsAfterSalesCriteria1 = new GsAfterSalesCriteria();
         gsAfterSalesCriteria1.createCriteria().andIdEqualTo(gsAfterSalesDto.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        aftersalesMapper.updateByExample(gsAfterSales,gsAfterSalesCriteria1);
+        aftersalesMapper.updateByExampleSelective(gsAfterSales,gsAfterSalesCriteria1);
         return 1;
     }
 
@@ -81,12 +83,20 @@ public class AftersalesServiceImpl implements AftersalesService {
         GsAfterSalesCriteria gsAfterSalesCriteria1 = new GsAfterSalesCriteria();
         gsAfterSalesCriteria1.createCriteria().andIdEqualTo(gsAfterSalesDto.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
-        aftersalesMapper.updateByExample(gsAfterSales,gsAfterSalesCriteria1);
+        aftersalesMapper.updateByExampleSelective(gsAfterSales,gsAfterSalesCriteria1);
         return 1;    }
 
     @Override
     public List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo) {
         return aftersalesMapper.aftersaleslist(gsAfterSalesVo);
+    }
+
+    @Override
+    public GsAfterSales saleOderDetail(Integer orderId) {
+        GsAfterSalesVo res = new GsAfterSalesVo();
+        GsAfterSales gsAfterSales = aftersalesMapper.selectByPrimaryKey(orderId);
+
+        return gsAfterSales;
     }
 
 

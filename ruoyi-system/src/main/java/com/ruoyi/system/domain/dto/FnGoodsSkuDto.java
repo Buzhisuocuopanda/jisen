@@ -16,12 +16,15 @@ public class FnGoodsSkuDto {
 
     //仓库id
     private Integer whId;
+    private Integer[] whIds;
 
     //商品id
     private Integer goodsId;
+    private Integer[] goodsIds;
 
     //品牌id
     private Integer brandId;
+    private Integer[] brandIds;
 
 
     private Date startTime;

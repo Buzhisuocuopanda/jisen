@@ -69,6 +69,7 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
         cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbie.setCbie07(binitinitializationNo);
         cbie.setUserId(Math.toIntExact(userId));
+        cbie.setCbie10(TaskStatus.mr.getCode());
         cbieMapper.insertSelective(cbie);
         CbieCriteria example = new CbieCriteria();
         example.createCriteria().andCbie07EqualTo(binitinitializationNo)

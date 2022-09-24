@@ -52,6 +52,9 @@ public class NumberGenerate {
     private CbshMapper cbshMapper;
 
     @Resource
+    private CboeMapper cboeMapper;
+
+    @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
 @Resource
 private CbieMapper cbieMapper;
@@ -424,17 +427,17 @@ private CbieMapper cbieMapper;
             String s = "ST0" + i + format;
             orderNo=s;
         }
-        CbshCriteria example=new CbshCriteria();
+        CbieCriteria example=new CbieCriteria();
         example.createCriteria()
-                .andCbsh07Like("%"+format+"%");
-        List<Cbsh> cbpks = cbshMapper.selectByExample(example);
+                .andCbie07Like("%"+format+"%");
+        List<Cbie> cbpks = cbieMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";
         }else {
 
             Integer num=0;
-            for (Cbsh res : cbpks) {
-                Integer no = getNum(res.getCbsh07(),12);
+            for (Cbie res : cbpks) {
+                Integer no = getNum(res.getCbie07(),12);
                 if(num<no){
                     num=no;
                 }
@@ -455,15 +458,15 @@ private CbieMapper cbieMapper;
 
         if (storeId / 10 == 0) {
             String s = "II0" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }
         else if(storeId/10>0&&storeId/10<10){
             String s = "II" + storeId + format;
-            s=orderNo;
+            orderNo=s;
         }else {
             int i = storeId % 3;
             String s = "II0" + i + format;
-            s=orderNo;
+            orderNo=s;
         }
         CbieCriteria example=new CbieCriteria();
         example.createCriteria()
@@ -546,16 +549,16 @@ private CbieMapper cbieMapper;
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
         String format = sd.format(new Date());
         String orderNo="OS"+format;
-        CbpkCriteria example=new CbpkCriteria();
+        CboeCriteria example=new CboeCriteria();
         example.createCriteria()
-                .andCbpk07Like("%"+orderNo+"%");
-        List<Cbpk> cbpks = cbpkMapper.selectByExample(example);
+                .andCboe07Like("%"+orderNo+"%");
+        List<Cboe> cbpks = cboeMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";
         }else {
             Integer num=0;
-            for (Cbpk res : cbpks) {
-                Integer no = getNum(res.getCbpk07(),12);
+            for (Cboe res : cbpks) {
+                Integer no = getNum(res.getCboe07(),12);
                 if(num<no){
                     num=no;
                 }

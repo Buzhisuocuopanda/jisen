@@ -77,6 +77,40 @@ public class SalesreturnordersController extends BaseController {
         }
     }
 
+
+
+    /**
+     * 销售退库单修改1
+     */
+    @ApiOperation(
+            value ="销售退库单修改1",
+            notes = "销售退库单修改1"
+    )
+    @PostMapping("/Selloutofwarehousedeitone")
+    public AjaxResult Selloutofwarehousedeitone(@Valid @RequestBody CbseDo cbseDo, BindingResult bindingResult) {
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            salesreturnordersService.Selloutofwarehousedeitone(cbseDo);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【销售退库单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【销售退库单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售退库单修改1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbseDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     @ApiOperation(
             value ="新增销售退库单明细",
             notes = "新增销售退库单明细"

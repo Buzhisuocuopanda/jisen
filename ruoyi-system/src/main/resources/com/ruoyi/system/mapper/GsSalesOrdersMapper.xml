@@ -374,7 +374,9 @@
       a.CBSA08 AS supplier,
       b.CAUA17 AS saler,
       c.CBCA08 AS customer,
-      d.cbwa09 AS wh
+      d.cbwa09 AS wh,
+      so.status AS status,
+      so.*
     FROM
       `gs_ Sales_orders` AS so
 
@@ -398,6 +400,12 @@ WHERE so.delete_flag=0
     <if test="orderNo != null and orderNo !=''">
       and  so.order_no like concat('%', #{orderNo}, '%')
     </if>
+    <if test="wh != null and wh !=''">
+      and  d.cbwa09 like concat('%', #{wh}, '%')
+    </if>
+    <if test="supplier != null and supplier !=''">
+      and  a.CBSA08 like concat('%', #{supplier}, '%')
+    </if>
     <if test="startTime != null">
       and so.order_date &gt;= #{startTime}
     </if>
@@ -420,7 +428,8 @@ WHERE so.delete_flag=0
       ss.goods_id AS goodsId,
       ss.price AS price,
       ss.qty AS qty,
-      ss.remark AS remark
+      ss.remark AS remark,
+      ss.id AS detailId
     FROM
       `gs_ Sales_orders` AS so
 

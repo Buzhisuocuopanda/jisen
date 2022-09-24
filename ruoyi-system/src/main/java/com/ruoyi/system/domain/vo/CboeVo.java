@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class CboeVo extends BaseEntity {
+
+    private Integer id;
+
     private Integer cboe01;
 
     private Date cboe02;

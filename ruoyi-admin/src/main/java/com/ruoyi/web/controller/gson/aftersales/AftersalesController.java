@@ -8,11 +8,13 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsAfterSalesVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
 import com.ruoyi.system.service.AftersalesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -163,5 +165,33 @@ public class AftersalesController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+
+    /**
+     * 售后单详情
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(
+            value ="售后单详情",
+            notes = "售后单详情"
+    )
+    @GetMapping("/saleOderDetail")
+    public AjaxResult<GsAfterSales> saleOderDetail(@RequestParam Integer orderId) {
+        try {
+
+            GsAfterSales res = aftersalesService.saleOderDetail(orderId);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【售后单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
     }
 }

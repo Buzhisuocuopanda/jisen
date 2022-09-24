@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.NumberToChineseUtil;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
@@ -2163,6 +2164,34 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
 
         return goodsPriceAndSkuVo;
+    }
+
+    @Override
+    public void insertgoodsShop(Integer goodsId) {
+
+        baseCheckService.checkGoods(goodsId);
+
+        Long userid = SecurityUtils.getUserId();
+
+        GsSaleShoppingCriteria example=new GsSaleShoppingCriteria();
+        example.createCriteria()
+                .andGoodsIdEqualTo(goodsId)
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsSaleShopping> gsGoodsShops = gsSaleShoppingMapper.selectByExample(example);
+        if(gsGoodsShops.size()==0){
+            GsSaleShopping gsGoodsShop=new GsSaleShopping();
+            Date date=new Date();
+            gsGoodsShop.setCreateTime(date);
+            gsGoodsShop.setUpdateTime(date);
+            gsGoodsShop.setCreateBy(Math.toIntExact(userid));
+            gsGoodsShop.setUpdateBy(Math.toIntExact(userid));
+            gsGoodsShop.setUserId(Math.toIntExact(userid));
+            gsGoodsShop.setGoodsId(goodsId);
+
+            gsSaleShoppingMapper.insertSelective(gsGoodsShop);
+        }
+        return;
+
     }
 
 //    @Override

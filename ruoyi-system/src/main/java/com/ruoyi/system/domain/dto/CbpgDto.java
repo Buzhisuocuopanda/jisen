@@ -1,8 +1,13 @@
 package com.ruoyi.system.domain.dto;
 
+import com.ruoyi.system.domain.Cbph;
+import com.ruoyi.system.domain.Do.CbofDo;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbpgDto {
     private Integer cbpg01;
@@ -91,6 +96,7 @@ public class CbpgDto {
 
     private String cbpi12;
 
+    private List<Cbph> goods=new ArrayList<>();
 
 
 }

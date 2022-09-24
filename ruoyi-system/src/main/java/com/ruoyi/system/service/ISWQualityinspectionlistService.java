@@ -44,4 +44,6 @@ public interface ISWQualityinspectionlistService {
     int insertSwJsSkuBarcodebjwc(CbqaDo cbqaDo);
 
     int insertSwJsSkuBarcodeqxwc(CbqaDo cbqaDo);
+
+    void SwJsPurchaseinboundeditone(CbqaDo cbqaDo);
 }

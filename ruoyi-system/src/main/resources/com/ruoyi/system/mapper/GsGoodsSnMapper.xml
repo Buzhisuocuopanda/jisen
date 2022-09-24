@@ -423,10 +423,10 @@ ORDER BY
       and pk.CBPK11 =#{status}
     </if>
     <if test="whName != null and whName != ''" >
-      and wa.CBWA09 like #{whName}
+      and wa.CBWA09 like concat('%',  #{whName}, '%')
     </if>
     <if test="saleOrderNo != null and saleOrderNo != ''" >
-      and pk.sale_order_no like #{saleOrderNo}
+      and pk.sale_order_no like concat('%',  #{saleOrderNo}, '%')
     </if>
   </select>
 

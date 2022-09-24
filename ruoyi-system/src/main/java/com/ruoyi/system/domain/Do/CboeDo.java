@@ -1,8 +1,12 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CboeDo {
     private Integer cboe01;
@@ -28,4 +32,12 @@ public class CboeDo {
     private Integer cboe09;
 
     private Integer userId;
+
+    private List<CbofDo> goods=new ArrayList<>();
+
+    private Integer customerId;
+
+    private Integer saleUserId;
+
+
 }

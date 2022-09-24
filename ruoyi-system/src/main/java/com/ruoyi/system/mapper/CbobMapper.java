@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbob;
 import com.ruoyi.system.domain.CbobCriteria;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
@@ -41,4 +42,7 @@ public interface CbobMapper {
     List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto);
 
 
+    List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto);
+
+    List<Map> salesAnalysis2Item(@Param("cbsb01")Integer cbsb01);
 }

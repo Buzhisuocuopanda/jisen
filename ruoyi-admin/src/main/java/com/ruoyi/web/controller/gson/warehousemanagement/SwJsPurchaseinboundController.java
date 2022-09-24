@@ -84,6 +84,41 @@ public class SwJsPurchaseinboundController extends BaseController {
         }
     }
 
+
+    /**
+     * 采购入库单修改1
+     */
+    @ApiOperation(
+            value ="采购入库单修改1",
+            notes = "采购入库单修改1"
+    )
+    @PostMapping("/SwJsPurchaseinboundeditone")
+    public AjaxResult SwJsPurchaseinboundeditone(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+         swJsPurchaseinboundService.SwJsPurchaseinboundeditone(cbpdDto);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【采购入库单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【采购入库单修改1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【采购入库单修改1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      * 新增采购入库单扫码
      */

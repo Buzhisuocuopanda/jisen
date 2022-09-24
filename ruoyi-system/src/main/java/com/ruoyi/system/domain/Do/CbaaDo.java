@@ -1,8 +1,12 @@
 package com.ruoyi.system.domain.Do;
 
+import com.ruoyi.system.domain.Cbab;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbaaDo {
     private Integer cbaa01;
@@ -43,5 +47,9 @@ public class CbaaDo {
     private Integer cbaa19;
 
     private Integer userId;
+
+
+    private List<Cbab> goods=new ArrayList<>();
+
 
 }

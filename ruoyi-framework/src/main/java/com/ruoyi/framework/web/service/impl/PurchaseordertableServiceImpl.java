@@ -5,10 +5,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsPurchaseOrderDetailDo;
-import com.ruoyi.system.domain.Do.GsPurchaseOrderDo;
-import com.ruoyi.system.domain.Do.NumberDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.vo.GsPurchaseOrderVo;
 import com.ruoyi.system.domain.vo.GsPurchaseOrdersVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -29,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -292,7 +291,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         gsPurchaseOrder.setUpdateTime(date);
         gsPurchaseOrder.setCreateBy(userid);
         gsPurchaseOrder.setUpdateBy(userid);
-        gsPurchaseOrder.setStatus(TaskStatus.bjwc.getCode().byteValue());
+        gsPurchaseOrder.setStatus(TaskStatus.sh.getCode().byteValue());
         GsPurchaseOrderCriteria example = new GsPurchaseOrderCriteria();
         example.createCriteria().andIdEqualTo(gsPurchaseOrderDo.getId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
@@ -307,5 +306,55 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     @Override
     public List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
         return purchaseOrderMapper.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
+    }
+
+    @Override
+    public void SwJsPurchasereturnordersedit(GsPurchaseOrderDo gsPurchaseOrderDo) {
+     if(gsPurchaseOrderDo.getId()==null){
+         throw new SwException("id不能为空");
+     }
+        List<GsPurchaseOrderDetail> goods = gsPurchaseOrderDo.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+
+        GsPurchaseOrder cboe = BeanCopyUtils.coypToClass(gsPurchaseOrderDo, GsPurchaseOrder.class, null);
+        cboe.setId(gsPurchaseOrderDo.getId());
+        cboe.setUpdateBy(userid);
+        cboe.setUpdateTime(new Date());
+        purchaseOrderMapper.updateByPrimaryKeySelective(cboe);
+
+        GsPurchaseOrderDetailCriteria sddf=new GsPurchaseOrderDetailCriteria();
+        sddf.createCriteria().andPurchaseOrderIdEqualTo(Math.toIntExact(gsPurchaseOrderDo.getId()));
+        List<GsPurchaseOrderDetail> gsPurchaseOrderDetails = gsPurchaseOrderDetailMapper.selectByExample(sddf);
+        if(gsPurchaseOrderDetails.size()==0){
+            throw new SwException("采购订单明细为空");
+        }
+
+        Set<Long> uio = null;
+        for (int i = 0; i < gsPurchaseOrderDetails.size(); i++) {
+            Long id = gsPurchaseOrderDetails.get(i).getId();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
+
+        GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
+        for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
+            gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
+            if(gsPurchaseOrderDetail1.getId()==null){
+                throw new SwException("采购订单明细不能为空");
+            }
+            if(!uio.contains(gsPurchaseOrderDetail1.getId())){
+                throw new SwException("该商品不在采购订单明细中");
+            }
+            gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
+            gsPurchaseOrderDetail.setGoodsId(gsPurchaseOrderDetail1.getGoodsId());
+            gsPurchaseOrderDetail.setQty(gsPurchaseOrderDetail1.getQty());
+            gsPurchaseOrderDetail.setPrice(gsPurchaseOrderDetail1.getPrice());
+            gsPurchaseOrderDetail.setUpdateBy(userid);
+            gsPurchaseOrderDetail.setUpdateTime(new Date());
+            gsPurchaseOrderDetailMapper.updateByPrimaryKeySelective(gsPurchaseOrderDetail);
+        }
     }
 }

@@ -258,10 +258,15 @@
 
   <select id="goodsShopList" resultType="com.ruoyi.system.domain.vo.GoodsShopVo">
  SELECT
-	gs.*
+   gs.*,
+   pb.CBPB08 as description,
+   pb.CBPB12 as model,
+   al.CALA08 as brand
+
 FROM
 	`gs_sale_shopping` gs
 	INNER JOIN CBPB pb on pb.CBPB01 =gs.goods_id
+    INNER JOIN CALA al on al.CALA01 =pb.CBPB10
 WHERE
 	gs.user_id =1
 

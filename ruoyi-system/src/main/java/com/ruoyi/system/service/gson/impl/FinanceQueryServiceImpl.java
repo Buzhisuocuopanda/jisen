@@ -51,7 +51,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis(fnQueryAynthesisDto);
         Map<Integer, String> integerStringMap = baseCheckService.brandMap();
 
-        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MMM-dd");
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
         for (FnQueryAyntgesisVo fnQueryAyntgesisVo : list) {
             if(fnQueryAyntgesisVo.getInWhTime()!=null){
                 fnQueryAyntgesisVo.setInWhTimeMsg(sd.format(fnQueryAyntgesisVo.getInWhTime()));
@@ -59,7 +59,10 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             if(fnQueryAyntgesisVo.getOutWhTime()!=null){
                 fnQueryAyntgesisVo.setOutWhTimeMsg(sd.format(fnQueryAyntgesisVo.getOutWhTime()));
             }
-            fnQueryAyntgesisVo.setBrand(integerStringMap.get(fnQueryAyntgesisVo.getBrand()));
+            if(fnQueryAyntgesisVo.getBrand()!=null){
+                fnQueryAyntgesisVo.setBrand(integerStringMap.get(Integer.parseInt(fnQueryAyntgesisVo.getBrand())));
+            }
+
 
         }
         return list;
@@ -73,12 +76,23 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
         for (FnGoodsSkuVo fnGoodsSkuVo : list) {
-            fnGoodsSkuVo.setBrand(brandMap.get(fnGoodsSkuVo.getBrand()));
-
-            Cbpa cbpa = classMap.get(fnGoodsSkuVo.getSClass());
-            if(cbpa!=null){
-                fnGoodsSkuVo.setBClass(cbpa.getCbpa07());
+            if(fnGoodsSkuVo.getBrand()!=null){
+                fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
             }
+
+            /*if(fnGoodsSkuVo.getSClass()!=null){
+                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
+                if(cbpa!=null){
+                    fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+                }
+            }
+            if(fnGoodsSkuVo.getBClass()!=null){
+                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getBClass()));
+                if(cbpa!=null){
+                    fnGoodsSkuVo.setBClass(cbpa.getCbpa07());
+                }
+            }*/
+
 
             //期初入库 查台账期初入库的
             CbibCriteria ibex=new CbibCriteria();
@@ -143,10 +157,64 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
 
         for (SaleAnalysisVo saleAnalysisVo : list) {
-            saleAnalysisVo.setBrand(brandMap.get(saleAnalysisVo.getBrand()));
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+
         }
         return list;
 
 
+    }
+
+ /*
+    @Override
+    public List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto) {
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbobMapper.salesAnalysis2(fnsalesAnalysisDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (SaleAnalysisVo saleAnalysisVo : list) {
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+        }
+        return list;
+    }*/
+
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/23 10:41
+     *查询销售分析展示数据
+     */
+    @Override
+    public List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto) {
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbobMapper.salesAnalysis2(fnsalesAnalysisDto);
+        for(int i=0;i<list.size();i++){
+            List<Map> mapList=cbobMapper.salesAnalysis2Item(list.get(i).getCbsb01());
+            String supplier ="";
+            for(int j=0;j<mapList.size();j++){
+                if(mapList.get(j)!=null){
+                    if(supplier.indexOf(mapList.get(j).get("supplier")+",")<0){
+                        supplier+=mapList.get(j).get("supplier")+",";
+                    }
+                }
+            }
+            list.get(i).setSupplier(supplier);
+            if(mapList.size()>0){
+                if(mapList.get(0)!=null){
+                    list.get(i).setCost((String)mapList.get(0).get("cost"));
+                }
+
+            }
+        }
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (SaleAnalysisVo saleAnalysisVo : list) {
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+        }
+        return list;
     }
 }

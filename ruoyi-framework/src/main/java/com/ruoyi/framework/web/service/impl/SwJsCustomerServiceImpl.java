@@ -138,6 +138,9 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         if(cbcaDto.getCbca28()==null){
               throw new SwException("客户等级只能为数字");
         }
+        if(cbcaDto.getCbca28()<1 || cbcaDto.getCbca28()>10){
+            throw new SwException("客户等级只能为1-5");
+        }
         Cbca cbca = BeanCopyUtils.coypToClass(cbcaDto, Cbca.class, null);
         Date date = new Date();
         cbca.setCbca02(date);

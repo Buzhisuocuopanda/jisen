@@ -76,6 +76,41 @@ public class QualityinspectionlistController  extends BaseController {
         }
     }
 
+
+
+    /**
+     * 修改质检单1
+     */
+    @ApiOperation(
+            value ="修改质检单1",
+            notes = "修改质检单1"
+    )
+    @PostMapping("/SwJsPurchaseinboundeditone")
+    public AjaxResult SwJsPurchaseinboundeditone(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            swQualityinspectionlistService.SwJsPurchaseinboundeditone(cbqaDo);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【修改质检单1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【修改质检单1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【修改质检单1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      * 新增质检单明细表
      */

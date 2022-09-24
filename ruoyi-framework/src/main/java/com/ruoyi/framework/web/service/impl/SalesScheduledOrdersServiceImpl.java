@@ -21,6 +21,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.SalesScheduledOrdersService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import com.ruoyi.system.service.gson.impl.TaskServiceImpl;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -30,9 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersService {
@@ -82,9 +81,9 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
      */
     @Override
     public void addSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
+        GsSalesOrdersDto gsSalesOrdersDto1 = new GsSalesOrdersDto();
 
-
-         List<GsSalesOrdersDetailsDto> goods=gsSalesOrdersDto.getGoods();
+        List<GsSalesOrdersDetailsDto> goods=gsSalesOrdersDto.getGoods();
         if (goods.size() == 0) {
             throw new SwException("请选择要销售的货物");
         }
@@ -134,32 +133,74 @@ return;
      */
     @Override
     public void editSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
+        if (gsSalesOrdersDto.getId() == null) {
+            throw new SwException("id不能为空");
+        }
+
+
+        List<GsSalesOrdersDetailsDto> goods = gsSalesOrdersDto.getGoods();
+        if (goods.size() == 0) {
+            throw new SwException("请至少添加一件货物");
+        }
+
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
         }
 
-        if(!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(gsSalesOrders.getStatus().intValue())){
+        if (!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(gsSalesOrders.getStatus().intValue())) {
             throw new SwException("销售预订单状态必须为未提交状态");
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
-        NumberDo numberDo = new NumberDo();
-        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
-        gsSalesOrders.setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
+        gsSalesOrders.setId(gsSalesOrdersDto.getId());
         gsSalesOrders.setSupplierId(gsSalesOrdersDto.getSupplierId());
         gsSalesOrders.setSalerId(gsSalesOrdersDto.getSalerId());
         gsSalesOrders.setCustomerId(gsSalesOrdersDto.getCustomerId());
         gsSalesOrders.setOrderDate(date);
-        gsSalesOrders.setStatus(TaskStatus.mr.getCode().byteValue());
         gsSalesOrders.setWhId(gsSalesOrdersDto.getWhId());
         gsSalesOrders.setUserId(userid.intValue());
         gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
-         return;
-    }
 
+        GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
+        gsSalesOrdersDetailsCriteria.createCriteria()
+                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrders.getId()));
+        List<GsSalesOrdersDetails> gsSalesOrdersDetails1 =
+                gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+        if(gsSalesOrdersDetails1.size()==0){
+            throw new SwException("没有查到该销售预订单明细");
+        }
+        Set<Integer> uio = null;
+        for (int i = 0; i < gsSalesOrdersDetails1.size(); i++) {
+            int id = gsSalesOrdersDetails1.get(i).getId();
+            uio = new HashSet<>();
+            uio.add(id);
+        }
+
+        GsSalesOrdersDetails gsSalesOrdersDetails = null;
+        for (GsSalesOrdersDetailsDto good : goods) {
+            gsSalesOrdersDetails = new GsSalesOrdersDetails();
+            if(good.getId()==null){
+                throw new SwException("销售预订单明细id不能为空");
+            }
+            if(!uio.contains(good.getId())){
+                throw new SwException("该商品不在采购订单明细中");
+            }
+            gsSalesOrdersDetails.setId(good.getId());
+            gsSalesOrdersDetails.setUpdateTime(date);
+            gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+            gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
+            gsSalesOrdersDetails.setQty(good.getQty());
+            gsSalesOrdersDetails.setPrice(good.getPrice());
+            gsSalesOrdersDetails.setRemark(good.getRemark());
+            gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersDto.getId().toString());
+            gsSalesOrdersDetailsMapper.updateByPrimaryKeySelective(gsSalesOrdersDetails);
+
+            return;
+        }
+    }
     @Override
     public void deleteSalesScheduledOrders(DeleteSaleOrderDto deleteSaleOrderDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(deleteSaleOrderDto.getOrderId());
@@ -172,6 +213,7 @@ return;
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
+        gsSalesOrders.setId(deleteSaleOrderDto.getOrderId());
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
         gsSalesOrders.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
@@ -232,6 +274,9 @@ return;
 
     @Override
     public void salesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto) {
+        if(gsSalesOrdersDto.getId()==null){
+            throw new SwException("销售预订单id不能为空");
+        }
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");
@@ -242,6 +287,7 @@ return;
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
+        gsSalesOrders.setId(gsSalesOrdersDto.getId());
         gsSalesOrders.setUpdateTime(date);
         gsSalesOrders.setUpdateBy(userid);
         gsSalesOrders.setStatus(TaskStatus.bjwc.getCode().byteValue());
@@ -257,7 +303,10 @@ return;
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
-        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getSupplierId());
+        if(cbsa == null){
+            throw new SwException("没有查到该供应商");
+        }
         //供应商
         Integer supplierId = gsSalesOrders.getSupplierId();
 
@@ -444,7 +493,10 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
         //仓库名称
-        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getWhId());
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrders.getSupplierId());
+        if(cbsa == null){
+            throw new SwException("没有查到该仓库");
+        }
         String vendername = cbsa.getCbsa08();
         //供应商
         Integer supplierId = gsSalesOrders.getSupplierId();

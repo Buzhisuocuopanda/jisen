@@ -8,6 +8,8 @@ import java.util.Date;
 public class GsPurchaseOrdersVo {
     private Long id;
 
+    private Long relId;
+
     private String orderNo;
 
     private Date orderDate;

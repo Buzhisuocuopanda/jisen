@@ -401,7 +401,7 @@ where a.CBSH06=0
   </select>
   <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbsiVo">
     SELECT
-      a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09
+      a.CBSH07,a.CBSH08,b.CBWA09,a.CBSH09,a.CBSH01
     FROM
       CBSH a
         LEFT JOIN

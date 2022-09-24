@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * ClassName FnGoodsSkuController
  * Description
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Data
 public class FnGoodsSkuVo {
+
+    @Excel(name = "仓库")
+    private String cbwa09;
 
     @Excel(name = "供应商")
     private String supplieName;
@@ -29,28 +34,25 @@ public class FnGoodsSkuVo {
 
     @Excel(name = "型号")
     private String model;
-    @Excel(name = "描述")
+    /*@Excel(name = "描述")*/
     private String description;
 
-
-
     @Excel(name = "期初入库")
-
     private Double firstQty;
+
     @Excel(name = "生产入库")
-
     private Double makeQty;
+
     @Excel(name = "不良返工")
-
     private Double badQty;
+
     @Excel(name = "累计")
-
     private Double totalQty;
+
     @Excel(name = "销售出库数量")
-
     private Double outSaleQty;
-    @Excel(name = "库存")
 
+    @Excel(name = "库存")
     private Double skuQty;
 
 
@@ -59,6 +61,7 @@ public class FnGoodsSkuVo {
     private Integer goodsId;
 
     private Integer whId;
+
 
 
 

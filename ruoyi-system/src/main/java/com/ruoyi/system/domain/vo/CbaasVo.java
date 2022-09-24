@@ -3,9 +3,18 @@ package com.ruoyi.system.domain.vo;
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbaasVo {
+
+    private String pinpai;
+
+
+    private Integer cbab01;
+
     private Integer cbsa01;
 
     private Integer cbaa01;
@@ -38,6 +47,7 @@ public class CbaasVo {
 
     private Double cbab09;
 
+    private Integer cbab08;
 
     private Double cbab11;
 
@@ -52,6 +62,8 @@ public class CbaasVo {
     private String cbla09;
 
 
+    private Integer saoma;
+    private List<ScanVo> goods = new ArrayList<>();
 
 
 

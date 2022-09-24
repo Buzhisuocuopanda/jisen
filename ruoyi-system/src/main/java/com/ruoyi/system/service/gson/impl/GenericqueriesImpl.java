@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson.impl;
 
+import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.CbifMapper;
@@ -13,8 +14,8 @@ public class GenericqueriesImpl implements Genericqueries {
     private CbifMapper cbifMapper;
 
     @Override
-    public List<InwuquVo> selectInventorysummaryquery(InwuquVo inwuquVo) {
-        return cbifMapper.selectInventorysummaryquery(inwuquVo);
+    public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
+        return cbifMapper.selectInventorysummaryquery(inwuquDto);
     }
 
     @Override

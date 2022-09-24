@@ -418,7 +418,9 @@
   <select id="getInfoss" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,
     h.CBPB08,h.CBPB12,b.CBPH09,b.CBPH10,b.CBPH11,b.CBPH13,h.CBPB15,
-    i.CBLA09,b.CBPH08,f.*,m.CBPA08
+    i.CBLA09,b.CBPH08,
+    f.CBPI01,f.CBPI02,f.CBPI03,f.CBPI08,f.CBPI09,f.CBPI10,
+    m.CBPA08,b.CBPH01,n.CALA08 as pinpai
     from CBPG a
     LEFT JOIN
     CBPH b
@@ -447,6 +449,10 @@
     left join
     CBPA m
     on m.CBPA01=h.CBPB14
+    LEFT JOIN
+    CALA n
+    on
+    n.CALA01=h.CBPB10
     WHERE
     a.CBPG06=0
     <if test="cbpg01 != null "> and a.CBPG01 = #{cbpg01}</if>
@@ -457,8 +463,8 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBPG08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-    order by a.CBPG08 desc
-
+    GROUP BY
+    b.cbph08
   </select>
   <select id="getInfos" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
