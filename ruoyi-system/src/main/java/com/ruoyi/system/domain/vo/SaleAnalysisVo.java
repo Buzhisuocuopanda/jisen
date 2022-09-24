@@ -45,6 +45,8 @@ public class SaleAnalysisVo {
     @Excel(name = "成本")
     private String cost;
 
+    private Integer cbsb01;
+
 
 
 

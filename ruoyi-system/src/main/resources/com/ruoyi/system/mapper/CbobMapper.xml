@@ -501,8 +501,7 @@ FROM
 
   <select id="salesAnalysis2" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
 
-    SELECT
-    ca.CBCA08 AS customerName,
+    SELECT  ca.CBCA08 AS customerName,
     oa.CBOA02 AS createTime,
     USER.nick_name AS saleUser,
     oa.CBOA07 AS saleOrderNo,
@@ -510,8 +509,7 @@ FROM
     pb.CBPB10 AS brand,
     ob.CBOB09 AS qty,
     ob.CBOB12 AS price,
-    sa.CBSA08 AS supplier,
-    pd.CBPD12 AS cost
+    sc.CBSB01
     FROM
     CBOB ob
     LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
@@ -519,10 +517,6 @@ FROM
     LEFT JOIN sys_user USER ON USER.user_id = oa.CBOA10
     LEFT JOIN CBPB pb ON pb.CBPB01 = ob.CBOB08
     LEFT JOIN CBSC sc ON sc.CBSC14 = ob.CBOB01
-    LEFT JOIN CBSA sa ON sa.CBSA01 = sc.CBSC15
-    LEFT JOIN CBSD sd ON sd.CBSB01 = sc.CBSB01
-    LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
-    LEFT JOIN CBPD pd ON pd.CBPC01 = pe.CBPC01
     WHERE
     oa.CBOA11 = 5
     AND ob.CBOB07 = 0
@@ -548,5 +542,20 @@ FROM
       AND oa.CBOA02 &lt;=#{endTime}
     </if>
 
+  </select>
+
+  <select id="salesAnalysis2Item" resultType="Map">
+
+    SELECT
+    sa.CBSA08 AS supplier,
+    pd.CBPD12 AS cost
+    FROM
+    CBSD sd
+    LEFT JOIN CBDA da ON da.CBDA09 = sd.CBSD09
+    LEFT JOIN CBSA sa ON sa.CBSA01 = da.CBDA13
+    LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
+    LEFT JOIN CBPD pd ON pd.CBPC01 = pe.CBPC01
+    WHERE
+    sd.CBSB01 =  #{cbsb01}
   </select>
 </mapper>

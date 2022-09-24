@@ -167,6 +167,21 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     }
 
+ /*
+    @Override
+    public List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto) {
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbobMapper.salesAnalysis2(fnsalesAnalysisDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (SaleAnalysisVo saleAnalysisVo : list) {
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+        }
+        return list;
+    }*/
+
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/9/23 10:41
@@ -176,6 +191,24 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     public List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto) {
         //查复审通过的销售订单明细
         List<SaleAnalysisVo> list= cbobMapper.salesAnalysis2(fnsalesAnalysisDto);
+        for(int i=0;i<list.size();i++){
+            List<Map> mapList=cbobMapper.salesAnalysis2Item(list.get(i).getCbsb01());
+            String supplier ="";
+            for(int j=0;j<mapList.size();j++){
+                if(mapList.get(j)!=null){
+                    if(supplier.indexOf(mapList.get(j).get("supplier")+",")<0){
+                        supplier+=mapList.get(j).get("supplier")+",";
+                    }
+                }
+            }
+            list.get(i).setSupplier(supplier);
+            if(mapList.size()>0){
+                if(mapList.get(0)!=null){
+                    list.get(i).setCost((String)mapList.get(0).get("cost"));
+                }
+
+            }
+        }
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (SaleAnalysisVo saleAnalysisVo : list) {
             if(saleAnalysisVo.getBrand()!=null){
