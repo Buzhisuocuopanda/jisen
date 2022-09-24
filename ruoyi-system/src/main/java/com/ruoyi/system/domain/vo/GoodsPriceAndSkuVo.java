@@ -28,4 +28,12 @@ public class GoodsPriceAndSkuVo {
     @ApiModelProperty("可用库存")
     private Double canUseSku;
 
+
+    private Double price;
+
+    private Double totalPrice;
+
+
+    private Double qty;
+
 }

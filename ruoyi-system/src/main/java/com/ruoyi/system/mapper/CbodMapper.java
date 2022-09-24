@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbod;
 import com.ruoyi.system.domain.CbodCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.BaseSelectDto;
+import com.ruoyi.system.domain.vo.OrderChangeGoodsVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbodMapper {
@@ -27,4 +30,6 @@ public interface CbodMapper {
     int updateByPrimaryKeySelective(Cbod record);
 
     int updateByPrimaryKey(Cbod record);
+
+    List<OrderChangeGoodsVO> orderChangeGoodsSelect(BaseSelectDto baseSelectDto);
 }

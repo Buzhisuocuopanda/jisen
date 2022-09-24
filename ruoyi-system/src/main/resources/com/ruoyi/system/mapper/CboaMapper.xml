@@ -30,6 +30,7 @@
     <result column="CBOA26" jdbcType="VARCHAR" property="cboa26" />
     <result column="CBOA27" jdbcType="INTEGER" property="cboa27" />
     <result column="CBOA28" jdbcType="INTEGER" property="cboa28" />
+    <result column="confirm_sku_status" jdbcType="TINYINT" property="confirmSkuStatus" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -92,7 +93,7 @@
   <sql id="Base_Column_List">
     CBOA01, CBOA02, CBOA03, CBOA04, CBOA05, CBOA06, CBOA07, CBOA08, CBOA09, CBOA10, CBOA11,
     CBOA12, CBOA13, CBOA14, CBOA15, CBOA16, CBOA17, CBOA18, CBOA19, CBOA20, CBOA21, CBOA22,
-    CBOA23, CBOA24, CBOA25, CBOA26, CBOA27, CBOA28
+    CBOA23, CBOA24, CBOA25, CBOA26, CBOA27, CBOA28, confirm_sku_status
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CboaCriteria" resultMap="BaseResultMap">
     select
@@ -134,7 +135,7 @@
       CBOA19, CBOA20, CBOA21,
       CBOA22, CBOA23, CBOA24,
       CBOA25, CBOA26, CBOA27,
-      CBOA28)
+      CBOA28, confirm_sku_status)
     values (#{cboa01,jdbcType=INTEGER}, #{cboa02,jdbcType=TIMESTAMP}, #{cboa03,jdbcType=INTEGER},
       #{cboa04,jdbcType=TIMESTAMP}, #{cboa05,jdbcType=INTEGER}, #{cboa06,jdbcType=INTEGER},
       #{cboa07,jdbcType=VARCHAR}, #{cboa08,jdbcType=TIMESTAMP}, #{cboa09,jdbcType=INTEGER},
@@ -144,7 +145,7 @@
       #{cboa19,jdbcType=VARCHAR}, #{cboa20,jdbcType=VARCHAR}, #{cboa21,jdbcType=VARCHAR},
       #{cboa22,jdbcType=VARCHAR}, #{cboa23,jdbcType=INTEGER}, #{cboa24,jdbcType=INTEGER},
       #{cboa25,jdbcType=VARCHAR}, #{cboa26,jdbcType=VARCHAR}, #{cboa27,jdbcType=INTEGER},
-      #{cboa28,jdbcType=INTEGER})
+      #{cboa28,jdbcType=INTEGER}, #{confirmSkuStatus,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cboa">
     insert into `CBOA`
@@ -233,6 +234,9 @@
       <if test="cboa28 != null">
         CBOA28,
       </if>
+      <if test="confirmSkuStatus != null">
+        confirm_sku_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cboa01 != null">
@@ -318,6 +322,9 @@
       </if>
       <if test="cboa28 != null">
         #{cboa28,jdbcType=INTEGER},
+      </if>
+      <if test="confirmSkuStatus != null">
+        #{confirmSkuStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -414,6 +421,9 @@
       <if test="record.cboa28 != null">
         CBOA28 = #{record.cboa28,jdbcType=INTEGER},
       </if>
+      <if test="record.confirmSkuStatus != null">
+        confirm_sku_status = #{record.confirmSkuStatus,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -448,7 +458,8 @@
       CBOA25 = #{record.cboa25,jdbcType=VARCHAR},
       CBOA26 = #{record.cboa26,jdbcType=VARCHAR},
       CBOA27 = #{record.cboa27,jdbcType=INTEGER},
-      CBOA28 = #{record.cboa28,jdbcType=INTEGER}
+      CBOA28 = #{record.cboa28,jdbcType=INTEGER},
+      confirm_sku_status = #{record.confirmSkuStatus,jdbcType=TINYINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -537,6 +548,9 @@
       <if test="cboa28 != null">
         CBOA28 = #{cboa28,jdbcType=INTEGER},
       </if>
+      <if test="confirmSkuStatus != null">
+        confirm_sku_status = #{confirmSkuStatus,jdbcType=TINYINT},
+      </if>
     </set>
     where CBOA01 = #{cboa01,jdbcType=INTEGER}
   </update>
@@ -568,37 +582,44 @@
       CBOA25 = #{cboa25,jdbcType=VARCHAR},
       CBOA26 = #{cboa26,jdbcType=VARCHAR},
       CBOA27 = #{cboa27,jdbcType=INTEGER},
-      CBOA28 = #{cboa28,jdbcType=INTEGER}
+      CBOA28 = #{cboa28,jdbcType=INTEGER},
+      confirm_sku_status = #{confirmSkuStatus,jdbcType=TINYINT}
     where CBOA01 = #{cboa01,jdbcType=INTEGER}
   </update>
+
   <select id="saleOrderSkuList" resultType="com.ruoyi.system.domain.vo.SaleOrderSkuVo">
-SELECT
+    SELECT
+    ob.CBOB01 AS id,
     oa.CBOA07 AS orderNo,
     ob.CBOB18 AS totalOrderNo,
     ba.CBBA15 AS priority,
     ba.CBBA13 AS goodsNum,
     pb.CBPB10 AS brand,
+    pb.CBPB01 AS goodsId,
     pb.CBPB12 AS model,
     pb.CBPB08 AS description,
-    ba.CBBA13 AS makeQty
-FROM
+    ba.CBBA13 AS makeQty,
+    ob.confirm_qty AS confirmQty
+
+    FROM
     `CBOB` AS ob
     LEFT JOIN CBBA ba ON ba.CBBA01=ob.CBOB18
     LEFT JOIN CBOA oa on oa.CBOA01 = ob.CBOA01
     LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
 
-where   oa.CBOA06=0
-AND oa.CBOA27=1
-AND oa.CBOA11!=0
-AND oa.CBOA11!=6
-AND oa.CBOA11!=5
-<if test="orderNo !=null">
-and ba.CBOA07=#{orderNo}
-</if>
+    where   oa.CBOA06=0
+    AND oa.CBOA27=1
+    AND oa.CBOA11!=0
+    AND oa.CBOA11!=6
+    AND oa.CBOA11!=5
+    AND oa.confirm_sku_status =2
+    <if test="orderNo !=null">
+      and ba.CBOA07=#{orderNo}
+    </if>
     <if test="totalOrderNo !=null">
       and ob.CBOB18=#{totalOrderNo}
     </if>
-order by ob.CBOB03 DESC
+    order by ob.CBOB03 DESC
   </select>
 
   <select id="saleOrderList" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
@@ -616,7 +637,8 @@ order by ob.CBOB03 DESC
     oa.CBOA27 as orderClass,
     oa.CBOA24 as orderType,
     oa.CBOA08 as orderDate,
-    oa.CBOA11 as status
+    oa.CBOA11 as status,
+    oa.confirm_sku_status as confirmSkuStatus
 
 
     FROM
@@ -630,8 +652,11 @@ order by ob.CBOB03 DESC
     <if test="endTime != null">
       and oa.CBOA08 &lt;=#{endTime}
     </if>
-    <if test="status != null">
-      and oa.CBOA11 =#{status]}
+    <if test="status != null and status !=-1">
+      and oa.CBOA11 =#{status}
+    </if>
+    <if test="status != null and status ==-1">
+      and (oa.CBOA11 =5 or oa.CBOA11 =2)
     </if>
     <if test="orderNo != null and orderNo != ''">
       and oa.CBOA07 like concat('%', #{orderNo}, '%')
@@ -717,4 +742,23 @@ order by ob.CBOB03 DESC
       #{cboa25,jdbcType=VARCHAR}, #{cboa26,jdbcType=VARCHAR}, #{cboa27,jdbcType=INTEGER},
       #{cboa28,jdbcType=INTEGER})
   </insert>
+<select id="orderlistSelect" resultType="com.ruoyi.system.domain.vo.BaseSelectVo">
+  SELECT
+	oa.CBOA01 AS value
+
+	,
+	oa.CBOA07 AS label
+FROM
+	`CBOA` oa
+WHERE
+	oa.CBOA06 =0
+  <if test="selectMsg != null and selectMsg != ''">
+    and oa.CBOA07 like concat('%', #{selectMsg}, '%')
+
+  </if>
+
+  order by oa.CBOA02 DESC
+
+
+</select>
 </mapper>

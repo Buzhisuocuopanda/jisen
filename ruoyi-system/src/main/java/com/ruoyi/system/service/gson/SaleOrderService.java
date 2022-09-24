@@ -70,6 +70,16 @@ public interface SaleOrderService {
     TotalOrderVo totalOrderDetail(Integer id);
 
     void updateGjQty(UpdateGjQtyDto updateGjQtyDto);
+
+    void confirmSkuSaleOrder(ConfirmSkuDto confirmSkuDto);
+
+    List<BaseSelectVo> orderlistSelect(BaseSelectDto baseSelectDto);
+
+    List<BaseSelectVo> orderChangeGoodsSelect(BaseSelectDto baseSelectDto);
+
+    GoodsPriceAndSkuVo goodsPriceAndSkuByOrderChange(GoodsPriceAndSkuDto goodsPriceAndSkuDto);
+
+
 //    GsWorkInstance createTask();
 
 }

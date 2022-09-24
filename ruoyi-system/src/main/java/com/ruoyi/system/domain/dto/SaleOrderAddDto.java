@@ -84,8 +84,12 @@ public class SaleOrderAddDto {
 
 
     //是否从购物车来 1 不是 2 是
-    @ApiModelProperty("是否从购物车来 1 不是 2 是")
-    private Integer fromShopping =1;
+//    @ApiModelProperty("是否从购物车来 1 不是 2 是")
+//    private Integer fromShopping =1;
+
+    @ApiModelProperty("购物车id集合")
+
+    private  List<Integer> shoppongIds=new ArrayList<>();
 
 
     private Integer userId;

@@ -4,8 +4,10 @@ import com.ruoyi.system.domain.Cbob;
 import com.ruoyi.system.domain.CbobCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
 import com.ruoyi.system.domain.dto.OrderChangeGoodsMsgDto;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.OrderChangeGoodsMsgVo;
 import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import org.apache.ibatis.annotations.Param;
@@ -37,4 +39,6 @@ public interface CbobMapper {
     List<OrderChangeGoodsMsgVo> orderChangeGoodsMsg(OrderChangeGoodsMsgDto orderChangeGoodsMsgDto);
 
     List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto);
+
+
 }

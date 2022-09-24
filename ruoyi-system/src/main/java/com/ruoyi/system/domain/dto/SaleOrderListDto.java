@@ -13,7 +13,6 @@ import java.util.Date;
  * Date 2022/8/4 16:23
  */
 @Data
-
 public class SaleOrderListDto {
 
     //单据开始时间

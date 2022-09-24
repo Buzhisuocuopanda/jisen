@@ -4,13 +4,14 @@ import com.ruoyi.system.domain.Cboa;
 import com.ruoyi.system.domain.CboaCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.SaleOrderListDto;
 import com.ruoyi.system.domain.dto.SaleOrderSkuDto;
+import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.SaleOrderListVo;
 import com.ruoyi.system.domain.vo.SaleOrderSkuVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-@Mapper
+
 public interface CboaMapper {
     long countByExample(CboaCriteria example);
 
@@ -41,4 +42,6 @@ public interface CboaMapper {
     List<SaleOrderListVo> finsaleOrderList(SaleOrderListDto saleOrderListDto);
 
     void insertWithId(Cboa cboa);
+
+    List<BaseSelectVo> orderlistSelect(BaseSelectDto baseSelectDto);
 }

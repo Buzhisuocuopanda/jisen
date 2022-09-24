@@ -42,6 +42,8 @@ public class SaleOrderChangeGoodsDto {
 
     private String remark;
 
+    private Integer cbobId;
+
 
 
 }

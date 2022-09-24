@@ -22,11 +22,11 @@ import java.util.List;
 public class SaleOrderDetailVo {
 
     //销售订单id
-    @ApiModelProperty("销售订单id")
+    @ApiModelProperty("销售订单id或销售变更单id")
     private Integer id;
 
     //销售订单编号
-    @ApiModelProperty("销售订单编号")
+    @ApiModelProperty("销售订单编号或销售变更单编号")
     private String orderNo;
 
     //    @NotBlank(message = "客户单号不能为空")
@@ -139,6 +139,8 @@ public class SaleOrderDetailVo {
     @ApiModelProperty("审核记录")
     private List<SaleOrderAudit> audits = new ArrayList<>();
 
+
+
     //客户名称
     @ApiModelProperty("客户名称")
     private String customerName;
@@ -151,6 +153,9 @@ public class SaleOrderDetailVo {
         }
 //        return currencyMsg;
     }
+
+    private List<BaseSelectVo> goodsSelects=new ArrayList<>();
+
     //仓库名称
 //    @ApiModelProperty("仓库名称")
 //    private String storename;

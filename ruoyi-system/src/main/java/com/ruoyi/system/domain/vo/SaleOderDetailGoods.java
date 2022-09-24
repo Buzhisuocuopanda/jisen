@@ -57,7 +57,14 @@ public class SaleOderDetailGoods {
     private double canUseSku;
 
     private String goodsMsg;
+    private Double confirmQty;
 
+    public Double getConfirmQty() {
+        if(confirmQty==null){
+            return 0.0;
+        }
+        return confirmQty;
+    }
 
     public String getGoodsMsg() {
         return brand+"-'"+model+"-"+description;

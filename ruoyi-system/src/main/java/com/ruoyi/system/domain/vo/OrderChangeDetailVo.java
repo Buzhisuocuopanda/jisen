@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.enums.CurrencyEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -37,7 +39,7 @@ public class OrderChangeDetailVo {
 
     //    @NotNull(message = "日期不能为空")
     @ApiModelProperty("订单日期")
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
     //    @NotNull(message = "请选择客户")
@@ -49,6 +51,8 @@ public class OrderChangeDetailVo {
     @ApiModelProperty("销售人员")
 
     private String saleUser;
+    @ApiModelProperty("销售人员")
+    private Integer saleUserId;
 
     //    @NotNull(message = "请选择货币类型")
     @ApiModelProperty("货币类型")
@@ -157,6 +161,22 @@ public class OrderChangeDetailVo {
     @ApiModelProperty("审核记录")
 
     private List<SaleOrderAudit> audits=new ArrayList<>();
+    //客户名称
+    @ApiModelProperty("客户名称")
+    private String customerName;
 
+    public String getCurrencyMsg() {
+        if(CurrencyEnum.CNY.getCode().equals(currency)){
+            return "CNY";
+        }else {
+            return "USD";
+        }
+//        return currencyMsg;
+    }
 
+    private String orderTypeMsg;
+
+    public String getOrderTypeMsg() {
+        return "销售订单";
+    }
 }
