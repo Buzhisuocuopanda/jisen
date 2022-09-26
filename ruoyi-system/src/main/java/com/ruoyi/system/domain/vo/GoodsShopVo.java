@@ -46,7 +46,6 @@ public class GoodsShopVo {
 
     private Byte deleteFlag;
 
-    private Integer goodsId;
 
     private Integer userId;
 

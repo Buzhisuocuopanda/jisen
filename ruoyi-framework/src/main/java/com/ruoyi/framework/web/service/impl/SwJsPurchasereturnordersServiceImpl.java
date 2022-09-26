@@ -536,29 +536,32 @@ for(int i=0;i<cbphs.size();i++) {
 
 
         Integer cbpg01 = cbpgVo.getCbpg01();
+        CbpiCriteria example1 = new CbpiCriteria();
+        example1.createCriteria().andCbpg01EqualTo(cbpg01);
+        List<Cbpi> cbpiss = cbpiMapper.selectByExample(example1);
+        if(cbpiss.size()>0) {
+            for (int i = 0; i < infoss.size(); i++) {
 
-        for(int i=0;i<infoss.size();i++) {
-
-            CbpiCriteria example = new CbpiCriteria();
-            example.createCriteria().andCbpg01EqualTo(cbpg01)
-                    .andCbpi08EqualTo(infoss.get(i).getCbph08());
-            List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
-            int size = cbpis.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(infoss.get(i).getCbpa08());
-                scanVo.setPinpai(infoss.get(i).getPinpai());
-                scanVo.setCbpb08(infoss.get(i).getCbpb08());
-                scanVo.setCbpb12(infoss.get(i).getCbpb12());
-                scanVo.setSn(infoss.get(j).getCbpi09());
-                scanVo.setKwm(infoss.get(i).getCbla09());
-                scanVo.setCbpe03(infoss.get(j).getCbpi03());
-                goods.add(scanVo);
+                CbpiCriteria example = new CbpiCriteria();
+                example.createCriteria().andCbpg01EqualTo(cbpg01)
+                        .andCbpi08EqualTo(infoss.get(i).getCbph08());
+                List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
+                int size = cbpis.size();
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(infoss.get(i).getCbpa08());
+                    scanVo.setPinpai(infoss.get(i).getPinpai());
+                    scanVo.setCbpb08(infoss.get(i).getCbpb08());
+                    scanVo.setCbpb12(infoss.get(i).getCbpb12());
+                    scanVo.setSn(infoss.get(j).getCbpi09());
+                    scanVo.setKwm(infoss.get(i).getCbla09());
+                    scanVo.setCbpe03(infoss.get(j).getCbpi03());
+                    goods.add(scanVo);
+                }
+                infoss.get(i).setSaoma(size);
             }
-            infoss.get(i).setSaoma(size);
+            infoss.get(0).setGoods(goods);
         }
-        infoss.get(0).setGoods(goods);
-
         return infoss;
     }
     /**

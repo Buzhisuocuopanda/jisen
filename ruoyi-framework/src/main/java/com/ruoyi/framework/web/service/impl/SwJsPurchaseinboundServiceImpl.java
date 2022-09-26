@@ -821,10 +821,8 @@ private NumberGenerate numberGenerate;
 
         //标记完成不可删除
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(cbpc1.getCbpc11().equals(TaskStatus.bjwc.getCode()) ||
-                cbpc1.getCbpc11().equals(TaskStatus.qxwc.getCode()) ||
-                cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())  ){
-            throw new SwException("非反审或默认不可删除");
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("默认情况才能删除");
         }
         Integer storeid = cbpc1.getCbpc10();
         CbpdCriteria example1=new CbpdCriteria();
@@ -946,29 +944,35 @@ private NumberGenerate numberGenerate;
         if (cbpc01 == null) {
             throw new SwException("采购入库单id不能为空");
         }
+        CbpeCriteria example4 = new CbpeCriteria();
+        example4.createCriteria().andCbpc01EqualTo(cbpc01);
+        List<Cbpe> cbpess = cbpeMapper.selectByExample(example4);
+        if(cbpess.size()>0){
+
         for (int i = 0; i < infossss.size(); i++) {
             CbpeCriteria example = new CbpeCriteria();
             example.createCriteria().andCbpc01EqualTo(cbpc01)
                     .andCbpe08EqualTo(infossss.get(i).getCbpd08());
             List<Cbpe> cbpes = cbpeMapper.selectByExample(example);
             int size = cbpes.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(infossss.get(i).getCbpa07());
-                scanVo.setPinpai(infossss.get(i).getCala08());
-                scanVo.setCbpb08(infossss.get(i).getCbpb08());
-                scanVo.setCbpb12(infossss.get(i).getCbpb12());
-                scanVo.setSn(cbpes.get(j).getCbpe09());
-                scanVo.setKwm(infossss.get(i).getCbla09());
-                scanVo.setCbpe03(cbpes.get(j).getCbpe03());
-                goods.add(scanVo);
+            if (size > 0) {
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(infossss.get(i).getCbpa07());
+                    scanVo.setPinpai(infossss.get(i).getCala08());
+                    scanVo.setCbpb08(infossss.get(i).getCbpb08());
+                    scanVo.setCbpb12(infossss.get(i).getCbpb12());
+                    scanVo.setSn(cbpes.get(j).getCbpe09());
+                    scanVo.setKwm(infossss.get(i).getCbla09());
+                    scanVo.setCbpe03(cbpes.get(j).getCbpe03());
+                    goods.add(scanVo);
+                }
+                infossss.get(i).setSaoma(size);
+
             }
-            infossss.get(i).setSaoma(size);
-
-        }
-        infossss.get(0).setGoods(goods);
-       // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
-
+            infossss.get(0).setGoods(goods);
+            // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
+        }}
         return infossss;
     }
 

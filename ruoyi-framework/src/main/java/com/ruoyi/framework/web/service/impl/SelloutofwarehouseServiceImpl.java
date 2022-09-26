@@ -431,28 +431,32 @@ if(cbob==null){
         if(cbsb01==null){
             throw new SwException("销售出库单id不能为空");
         }
-        for(int i=0;i<cbsbsVos.size();i++) {
-            CbsdCriteria example2 = new CbsdCriteria();
-            example2.createCriteria().andCbsb01EqualTo(cbsb01)
-                    .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
-            List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
+        CbsdCriteria example3 = new CbsdCriteria();
+        example3.createCriteria().andCbsb01EqualTo(cbsb01);
+        List<Cbsd> cbsds = cbsdMapper.selectByExample(example3);
+        if(cbsds.size()>0) {
+            for (int i = 0; i < cbsbsVos.size(); i++) {
+                CbsdCriteria example2 = new CbsdCriteria();
+                example2.createCriteria().andCbsb01EqualTo(cbsb01)
+                        .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
+                List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
 
                 int size = cbpes.size();
-            for(int j=0;j<size;j++) {
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(cbsbsVos.get(i).getCbpa07());
-                scanVo.setPinpai(cbsbsVos.get(i).getCala08());
-                scanVo.setCbpb08(cbsbsVos.get(i).getCbpb08());
-                scanVo.setCbpb12(cbsbsVos.get(i).getCbpb12());
-                scanVo.setSn(cbpes.get(j).getCbsd09());
-                scanVo.setKwm(cbsbsVos.get(i).getCbla09());
-                scanVo.setCbpe03(cbpes.get(j).getCbsd03());
-                goods.add(scanVo);
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(cbsbsVos.get(i).getCbpa07());
+                    scanVo.setPinpai(cbsbsVos.get(i).getCala08());
+                    scanVo.setCbpb08(cbsbsVos.get(i).getCbpb08());
+                    scanVo.setCbpb12(cbsbsVos.get(i).getCbpb12());
+                    scanVo.setSn(cbpes.get(j).getCbsd09());
+                    scanVo.setKwm(cbsbsVos.get(i).getCbla09());
+                    scanVo.setCbpe03(cbpes.get(j).getCbsd03());
+                    goods.add(scanVo);
+                }
+                cbsbsVos.get(i).setSaoma(size);
             }
-            cbsbsVos.get(i).setSaoma(size);
+            cbsbsVos.get(0).setGoods(goods);
         }
-        cbsbsVos.get(0).setGoods(goods);
-
         return cbsbsVos;
         }
 

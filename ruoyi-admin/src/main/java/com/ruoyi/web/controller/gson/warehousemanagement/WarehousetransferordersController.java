@@ -274,6 +274,36 @@ public class WarehousetransferordersController extends BaseController {
     }
 
     /**
+     * 仓库调拨单删除
+     */
+    @ApiOperation(
+            value ="仓库调拨单删除",
+            notes = "仓库调拨单删除"
+    )
+    @PostMapping("/Selloutofwarehousedel")
+    public AjaxResult Selloutofwarehousedel( @RequestBody CbaaDo cbaaDo) {
+        try {
+            return toAjax(warehousetransferordersService.Selloutofwarehousedel(cbaaDo));
+
+
+        }catch (SwException e) {
+            log.error("【仓库调拨单删除】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【仓库调拨单删除】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库调拨单删除】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 仓库调拨单反审
      */
     @ApiOperation(
