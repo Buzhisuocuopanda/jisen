@@ -39,9 +39,14 @@ public class CountQueryServiceImpl implements CountQueryService {
                 }
                 if(inwuquVos.get(i).getCbpb14()!=null){
                     Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
-                    inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
-                    if(cbpa.getCbpa09()!=null){
-                        inwuquVos.get(i).setTotalclassify(classMap.get(cbpa.getCbpa09()).getCbpa07());
+                    if(cbpa!=null){
+                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+                        if(cbpa.getCbpa09()!=null){
+                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                            if(cbpa2!=null){
+                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+                            }
+                        }
                     }
                 }
                 if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
