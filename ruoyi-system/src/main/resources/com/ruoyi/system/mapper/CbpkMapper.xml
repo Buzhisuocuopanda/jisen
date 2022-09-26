@@ -694,6 +694,7 @@
     <if test="saleOrderNo != null and saleOrderNo != ''" >
       and pk.sale_order_no like #{saleOrderNo}
     </if>
+      order by pk.CBPK08 desc
   </select>
 
   <select id="selectLastBySaleOrderNo" resultMap="BaseResultMap">

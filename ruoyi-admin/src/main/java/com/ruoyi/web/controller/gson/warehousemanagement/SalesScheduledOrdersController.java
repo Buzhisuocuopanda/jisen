@@ -11,6 +11,8 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
+import com.ruoyi.system.domain.GsSalesOrdersChange;
+import com.ruoyi.system.domain.GsSalesOrdersIn;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.SalesScheduledOrdersService;
@@ -355,7 +357,7 @@ public class SalesScheduledOrdersController extends BaseController {
     /**
      * 添加预订单入库单
      *
-     * @param gsSalesOrdersInDto
+     * @param gsSalesOrdersIn
      * @return
      */
     @ApiOperation(
@@ -364,23 +366,23 @@ public class SalesScheduledOrdersController extends BaseController {
     )
     @PostMapping("/addSubscribetotheinventoryslip")
     @PreAuthorize("@ss.hasPermi('system:salesReceipt:add')")
-    public AjaxResult addSubscribetotheinventoryslip(@Valid @RequestBody GsSalesOrdersInDto gsSalesOrdersInDto, BindingResult bindingResult) {
+    public AjaxResult addSubscribetotheinventoryslip(@Valid @RequestBody List<GsSalesOrdersIn> gsSalesOrdersIn, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            salesScheduledOrdersService.addSubscribetotheinventoryslip(gsSalesOrdersInDto);
-            return AjaxResult.success();
+            return toAjax(salesScheduledOrdersService.addSubscribetotheinventoryslip(gsSalesOrdersIn));
+//            return AjaxResult.success();
         } catch (SwException e) {
-            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersInDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersIn), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
-            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersInDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersIn), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersInDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单入库单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersIn), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -634,7 +636,7 @@ public class SalesScheduledOrdersController extends BaseController {
     /**
      * 添加预订单变更单
      *
-     * @param gsSalesOrdersChangeDto
+     * @param gsSalesOrdersChange
      * @return
      */
     @ApiOperation(
@@ -643,23 +645,23 @@ public class SalesScheduledOrdersController extends BaseController {
     )
     @PostMapping("/addGsSalesOrdersChange")
     @PreAuthorize("@ss.hasPermi('system:saleChange:add')")
-    public AjaxResult addGsSalesOrdersChange(@Valid @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto, BindingResult bindingResult) {
+    public AjaxResult addGsSalesOrdersChange(@Valid @RequestBody List<GsSalesOrdersChange> gsSalesOrdersChange, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            salesScheduledOrdersService.addGsSalesOrdersChange(gsSalesOrdersChangeDto);
-            return AjaxResult.success();
+            return toAjax(salesScheduledOrdersService.addGsSalesOrdersChange(gsSalesOrdersChange));
+//            return AjaxResult.success();
         } catch (SwException e) {
-            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChange), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
-            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChange), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));
+            log.error("【添加预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChange), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -748,7 +750,7 @@ public class SalesScheduledOrdersController extends BaseController {
     )
     @GetMapping("/seleteGsSalesOrdersChange")
     @PreAuthorize("@ss.hasPermi('system:saleChange:list')")
-    public AjaxResult<List<TableDataInfo>> seleteGsSalesOrdersChange( GsSalesOrdersChangeVo gsSalesOrdersChangeVo) {
+    public AjaxResult<List<TableDataInfo>> seleteGsSalesOrdersChange(GsSalesOrdersChangeVo gsSalesOrdersChangeVo) {
         try {
             startPage();
             List<GsSalesOrdersChangeVo> list = salesScheduledOrdersService.seleteGsSalesOrdersChange(gsSalesOrdersChangeVo);

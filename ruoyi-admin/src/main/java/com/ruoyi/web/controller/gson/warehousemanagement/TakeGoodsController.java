@@ -74,7 +74,7 @@ public class TakeGoodsController extends BaseController {
             notes = "提货单列表"
     )
     @PostMapping("/takeOrderList")
-    public AjaxResult<TableDataInfo> takeOrderList(@RequestBody TakeGoodsOrderListDto takeGoodsOrderListDto){
+    public AjaxResult<TableDataInfo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto){
         try {
             startPage();
             List<TakeGoodsOrderListVo> list= takeGoodsService.takeOrderList(takeGoodsOrderListDto);
