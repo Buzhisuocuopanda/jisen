@@ -2036,6 +2036,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             Double ckSku = goodsPriceAndSkuVo.getCkSku();
             Double normalPrice = goodsPriceAndSkuVo.getNormalPrice();
             GoodsDetailAndSkuVo goodsDetailAndSkuVo=new GoodsDetailAndSkuVo();
+            goodsDetailAndSkuVo.setGoodsId(goodsId);
             goodsDetailAndSkuVo.setGoodsBrand(cala.getCala08());
             goodsDetailAndSkuVo.setGoodsModel(cbpb.getCbpb12());
             goodsDetailAndSkuVo.setGoodsdatail(cbpb.getCbpb08());
@@ -2045,6 +2046,20 @@ public class SaleOrderServiceImpl implements SaleOrderService {
            res.add(goodsDetailAndSkuVo);
         }
         return res;
+    }
+
+    @Override
+    public void delgoodsShop(DelSaleOrderDto delSaleOrderDto) {
+        Long userid = SecurityUtils.getUserId();
+Date date=new Date();
+        GsSaleShopping gsSaleShopping=new GsSaleShopping();
+        gsSaleShopping.setId(delSaleOrderDto.getOrderId());
+        gsSaleShopping.setUpdateBy(Math.toIntExact(userid));
+        gsSaleShopping.setUpdateTime(date);
+        gsSaleShopping.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
+        gsSaleShoppingMapper.updateByPrimaryKeySelective(gsSaleShopping);
+
+        return;
     }
 
 
