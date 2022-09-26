@@ -5,6 +5,7 @@ import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -28,11 +29,17 @@ public class SaleOrderListVo {
     @ApiModelProperty("客户订单号")
     private String customerNo;
 
+
+
     //制单时间
-    @Excel(name = "制单时间")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("制单时间")
     private Date createTime;
+
+    @Excel(name = "制单时间")
+    @ApiModelProperty("制单时间EXCEL")
+    private String createTimeExcel;
+
 
     @Excel(name = "客户")
     @ApiModelProperty("客户")
@@ -77,10 +84,15 @@ public class SaleOrderListVo {
     @ApiModelProperty("其他")
     private String other;
 
-    @Excel(name = "日期")
     @ApiModelProperty("日期")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date orderDate;
+
+    @Excel(name = "日期")
+    @ApiModelProperty("日期")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private String orderDateExcel;
+
 
     private Integer status;
     @Excel(name = "状态")
@@ -88,6 +100,24 @@ public class SaleOrderListVo {
     private String statusMsg;
 
 
+    private Integer confirmSkuStatus;
+
+    public Integer getConfirmSkuStatus() {
+        if(confirmSkuStatus==null){
+            return 2;
+        }
+        return confirmSkuStatus;
+    }
+
+    private String confirmSkuStatusMsg;
+    public String getConfirmSkuStatusMsg() {
+        if(confirmSkuStatus!=null && confirmSkuStatus==1){
+            return "已确认库存";
+        }else {
+            return "未确认库存";
+        }
+
+    }
 
 
 }

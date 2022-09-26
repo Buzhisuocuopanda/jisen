@@ -60,6 +60,8 @@ public class Cboa implements Serializable {
 
     private Integer cboa28;
 
+    private Byte confirmSkuStatus;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCboa01() {
@@ -286,6 +288,14 @@ public class Cboa implements Serializable {
         this.cboa28 = cboa28;
     }
 
+    public Byte getConfirmSkuStatus() {
+        return confirmSkuStatus;
+    }
+
+    public void setConfirmSkuStatus(Byte confirmSkuStatus) {
+        this.confirmSkuStatus = confirmSkuStatus;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -325,7 +335,8 @@ public class Cboa implements Serializable {
             && (this.getCboa25() == null ? other.getCboa25() == null : this.getCboa25().equals(other.getCboa25()))
             && (this.getCboa26() == null ? other.getCboa26() == null : this.getCboa26().equals(other.getCboa26()))
             && (this.getCboa27() == null ? other.getCboa27() == null : this.getCboa27().equals(other.getCboa27()))
-            && (this.getCboa28() == null ? other.getCboa28() == null : this.getCboa28().equals(other.getCboa28()));
+            && (this.getCboa28() == null ? other.getCboa28() == null : this.getCboa28().equals(other.getCboa28()))
+            && (this.getConfirmSkuStatus() == null ? other.getConfirmSkuStatus() == null : this.getConfirmSkuStatus().equals(other.getConfirmSkuStatus()));
     }
 
     @Override
@@ -360,6 +371,7 @@ public class Cboa implements Serializable {
         result = prime * result + ((getCboa26() == null) ? 0 : getCboa26().hashCode());
         result = prime * result + ((getCboa27() == null) ? 0 : getCboa27().hashCode());
         result = prime * result + ((getCboa28() == null) ? 0 : getCboa28().hashCode());
+        result = prime * result + ((getConfirmSkuStatus() == null) ? 0 : getConfirmSkuStatus().hashCode());
         return result;
     }
 
@@ -397,6 +409,7 @@ public class Cboa implements Serializable {
         sb.append(", cboa26=").append(cboa26);
         sb.append(", cboa27=").append(cboa27);
         sb.append(", cboa28=").append(cboa28);
+        sb.append(", confirmSkuStatus=").append(confirmSkuStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

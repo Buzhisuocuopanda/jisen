@@ -1874,6 +1874,66 @@ public class CboaCriteria {
             addCriterion("CBOA28 not between", value1, value2, "cboa28");
             return (Criteria) this;
         }
+
+        public Criteria andConfirmSkuStatusIsNull() {
+            addCriterion("confirm_sku_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusIsNotNull() {
+            addCriterion("confirm_sku_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusEqualTo(Byte value) {
+            addCriterion("confirm_sku_status =", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusNotEqualTo(Byte value) {
+            addCriterion("confirm_sku_status <>", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusGreaterThan(Byte value) {
+            addCriterion("confirm_sku_status >", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("confirm_sku_status >=", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusLessThan(Byte value) {
+            addCriterion("confirm_sku_status <", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("confirm_sku_status <=", value, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusIn(List<Byte> values) {
+            addCriterion("confirm_sku_status in", values, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusNotIn(List<Byte> values) {
+            addCriterion("confirm_sku_status not in", values, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusBetween(Byte value1, Byte value2) {
+            addCriterion("confirm_sku_status between", value1, value2, "confirmSkuStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmSkuStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("confirm_sku_status not between", value1, value2, "confirmSkuStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

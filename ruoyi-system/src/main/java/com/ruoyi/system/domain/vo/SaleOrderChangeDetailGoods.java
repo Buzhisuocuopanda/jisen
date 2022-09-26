@@ -58,6 +58,48 @@ public class SaleOrderChangeDetailGoods {
 
     private Double bfQty;
 
+    private Integer goodsId;
+
+    private Double canUseSku;
+
+    private String goodsMsg;
+    private Double confirmQty;
+
+    public Double getConfirmQty() {
+        if(confirmQty==null){
+            return 0.0;
+        }
+        return confirmQty;
+    }
+
+    public String getGoodsMsg() {
+        return brand+"-'"+model+"-"+description;
+    }
+
+    public Integer getGoodsId() {
+        return id;
+    }
+
+    private BaseSelectVo goodsVo=new BaseSelectVo();
+
+    public BaseSelectVo getGoodsVo() {
+        goodsVo.setLabel(getGoodsMsg());
+        goodsVo.setValue(getGoodsId());
+        return goodsVo;
+    }
 
 
+    public Double getBfPrice() {
+        if(bfPrice==null){
+            return 0.00;
+        }
+        return bfPrice;
+    }
+
+    public Double getBfQty() {
+        if(bfQty==null){
+            return 0.00;
+        }
+        return bfQty;
+    }
 }

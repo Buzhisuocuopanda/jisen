@@ -22,15 +22,16 @@ public class GoodsShopVo {
     @ApiModelProperty("品牌")
     private String brand;
 
+    //商品id
+    @ApiModelProperty("商品id")
+    private Integer goodsId;
 
     //型号
     @ApiModelProperty("型号")
-
     private String model;
 
     //描述
     @ApiModelProperty("描述")
-
     private String description;
 
 

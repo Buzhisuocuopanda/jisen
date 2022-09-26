@@ -9,6 +9,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.ErrCode;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.PdfUtil;
@@ -88,12 +89,12 @@ public class SaleOrderController extends BaseController {
             value ="国际订单下单后确认库存列表",
             notes = "国际订单下单后确认库存列表"
     )
-    @GetMapping("/skuList")
-    public AjaxResult<List<SaleOrderSkuVo>> saleOrderSkuList( SaleOrderSkuDto saleOrderSkuDto) {
+    @GetMapping("/saleOrderSkuList")
+    public AjaxResult<List<TableDataInfo>> saleOrderSkuList( SaleOrderSkuDto saleOrderSkuDto) {
         try {
             startPage();
             List<SaleOrderSkuVo> list = saleOrderService.saleOrderSkuList(saleOrderSkuDto);
-            return AjaxResult.success(list);
+            return AjaxResult.success(getDataTable(list));
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
@@ -112,10 +113,12 @@ public class SaleOrderController extends BaseController {
             value ="国际订单确认库存",
             notes = "国际订单确认库存"
     )
-    @GetMapping("/updateGjQty")
-    public AjaxResult updateGjQty( @RequestBody UpdateGjQtyDto updateGjQtyDto) {
+    @PostMapping("/updateGjQty")
+    public AjaxResult updateGjQty(@Valid @RequestBody UpdateGjQtyDto updateGjQtyDto,BindingResult bindingResult) {
         try {
 
+            ValidUtils.bindvaild(bindingResult);
+            updateGjQtyDto.setUserId(getUserId().intValue());
           saleOrderService.updateGjQty(updateGjQtyDto);
             return AjaxResult.success();
         } catch (SwException e) {
@@ -419,6 +422,35 @@ public class SaleOrderController extends BaseController {
     }
 
 
+
+    /**
+     * 确认库存操作
+     *
+     * @param
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(
+            value ="确认或取消库存操作",
+            notes = "确认或取消库存操作"
+    )
+    @PostMapping("/confirmSkuSaleOrder")
+    public AjaxResult confirmSkuSaleOrder(@Valid @RequestBody ConfirmSkuDto confirmSkuDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            confirmSkuDto.setUserId(getUserId().intValue());
+            confirmSkuDto.setUserId(getUserId().intValue());
+            saleOrderService.confirmSkuSaleOrder(confirmSkuDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单状态更改】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(confirmSkuDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 修改销售订单
      *
@@ -608,13 +640,38 @@ public class SaleOrderController extends BaseController {
             notes = "导出销售订单"
     )
     @PostMapping("/saleOrderExcelList")
-    public void totalOrderExcelList(@RequestBody SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
+    public void saleOrderExcelList( SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<SaleOrderListVo> saleOrderListVos = saleOrderService.saleOrderList(saleOrderListDto);
+        for (SaleOrderListVo saleOrderListVo : saleOrderListVos) {
+            if(saleOrderListVo.getOrderDate()!=null){
+                saleOrderListVo.setOrderDateExcel(sd.format(saleOrderListVo.getOrderDate()));
+            }
+
+            if(saleOrderListVo.getCreateTime()!=null){
+                saleOrderListVo.setCreateTimeExcel(sdate.format(saleOrderListVo.getCreateTime()));
+            }
+        }
+
         ExcelUtil<SaleOrderListVo> util = new ExcelUtil<>(SaleOrderListVo.class);
         util.exportExcel(response, saleOrderListVos, "销售订单数据");
     }
 
 
+    /**
+     * 导出销售订单模板
+     */
+//    @ApiOperation(
+//            value ="导出销售订单",
+//            notes = "导出销售订单"
+//    )
+//    @PostMapping("/saleOrderExcelListTmp")
+//    public void saleOrderExcelListTmp( SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
+//        List<SaleOrderListVo> saleOrderListVos = new ArrayList<>();
+//        ExcelUtil<SaleOrderListVo> util = new ExcelUtil<>(SaleOrderListVo.class);
+//        util.exportExcel(response, saleOrderListVos, "销售订单数据");
+//    }
 
 
 
@@ -634,14 +691,47 @@ public class SaleOrderController extends BaseController {
         try {
             startPage();
             List<SaleOrderListVo> list = saleOrderService.finsaleOrderList(saleOrderListDto);
+
+
             return AjaxResult.success(getDataTable(list));
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【财务复审列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(saleOrderListDto), ExceptionUtils.getStackTrace(e));
+            log.error("【财务复审列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(saleOrderListDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+    @ApiOperation(
+            value ="导出财务复审列表",
+            notes = "导出财务复审列表"
+    )
+    @PostMapping("/exportfinsaleOrderList")
+    public void exportfinsaleOrderList( SaleOrderListDto saleOrderListDto ,HttpServletResponse response) {
+        try {
+            List<SaleOrderListVo> saleOrderListVos = saleOrderService.finsaleOrderList(saleOrderListDto);
+            SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            for (SaleOrderListVo saleOrderListVo : saleOrderListVos) {
+                if(saleOrderListVo.getOrderDate()!=null){
+                    saleOrderListVo.setOrderDateExcel(sd.format(saleOrderListVo.getOrderDate()));
+                }
+
+                if(saleOrderListVo.getCreateTime()!=null){
+                    saleOrderListVo.setCreateTimeExcel(sdate.format(saleOrderListVo.getCreateTime()));
+                }
+            }
+
+            ExcelUtil<SaleOrderListVo> util = new ExcelUtil<>(SaleOrderListVo.class);
+            util.exportExcel(response, saleOrderListVos, "销售订单数据");
+
+        } catch (Exception e) {
+            log.error("【财务复审列表导出】接口出现异常,参数${}$,异常${}$", JSON.toJSON(saleOrderListDto), ExceptionUtils.getStackTrace(e));
+
         }
 
     }
@@ -669,7 +759,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【财务复审】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(auditSaleOrderDto), ExceptionUtils.getStackTrace(e));
+            log.error("【财务复审】接口出现异常,参数${}$,异常${}$", JSON.toJSON(auditSaleOrderDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -695,7 +785,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售清单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【销售清单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -807,12 +897,46 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售变更单列表】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【销售变更单列表】接口出现异常,参数${}$,异常${}$",JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+
+
+    /**
+     * 导出销售变更单列表
+     */
+    @ApiOperation(
+            value ="导出销售变更单列表",
+            notes = "导出销售变更单列表"
+    )
+    @PostMapping("/exportSaleChangeList")
+    public void exportSaleChangeList( SaleOrderListDto saleOrderListDto,HttpServletResponse response) {
+        try {
+
+            List<SaleOrderListVo> list= saleOrderService.saleChangeList(saleOrderListDto);
+            SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (SaleOrderListVo saleOrderListVo : list) {
+                if(saleOrderListVo.getOrderDate()!=null){
+                    saleOrderListVo.setOrderDateExcel(sd.format(saleOrderListVo.getOrderDate()));
+                }
+
+                if(saleOrderListVo.getCreateTime()!=null){
+                    saleOrderListVo.setCreateTimeExcel(sdate.format(saleOrderListVo.getCreateTime()));
+                }
+            }
+
+            ExcelUtil<SaleOrderListVo> util = new ExcelUtil<>(SaleOrderListVo.class);
+            util.exportExcel(response, list, "销售订单数据");
+
+        } catch (Exception e) {
+            log.error("【导出销售变更单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+        }
+    }
 
 
 
@@ -834,7 +958,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售变更单创建】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【销售变更单创建】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -860,12 +984,63 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【根据订单编号和商品id获取库存等信息】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【根据订单编号和商品id获取库存等信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+    /**
+     * 销售变更单商品选择下拉框
+     */
+    @ApiOperation(
+            value ="销售变更单商品选择下拉框",
+            notes = "销售变更单商品选择下拉框"
+    )
+    @GetMapping("/orderChangeGoodsSelect")
+    public AjaxResult<TableDataInfo> orderChangeGoodsSelect( @Valid BaseSelectDto baseSelectDto ,BindingResult bindingResult) {
+        try {
+
+            ValidUtils.bindvaild(bindingResult);
+            List<BaseSelectVo> res= saleOrderService.orderChangeGoodsSelect(baseSelectDto);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售变更单商品选择下拉框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+
+//    /**
+//     * 销售订单变更单详情
+//     */
+//    @ApiOperation(
+//            value ="销售订单变更单详情",
+//            notes = "销售订单变更单详情"
+//    )
+//    @GetMapping("/orderChangeDetail")
+//    @ApiParam("变更单id")
+//    public AjaxResult<OrderChangeDetailVo> orderChangeDetail(@RequestParam Integer orderId) {
+//        try {
+//
+//            OrderChangeDetailVo res = saleOrderService.orderChangeDetail(orderId);
+//            return AjaxResult.success(res);
+//        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+//
+//        } catch (Exception e) {
+//            log.error("【销售订单变更单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+//
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+//        }
+//
+//    }
 
     /**
      * 销售订单变更单详情
@@ -885,14 +1060,12 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售订单变更单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单变更单详情】接口出现异常,参数${}$,异常${}$",JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
 
     }
-
-
 
 
     /**
@@ -912,7 +1085,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售订单变更单修改】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单变更单修改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -938,7 +1111,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售订单变更单审核】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(auditSaleOrderDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单变更单审核】接口出现异常,参数${}$,异常${}$", JSON.toJSON(auditSaleOrderDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -963,7 +1136,7 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【删除销售变更】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(delSaleChangeDto), ExceptionUtils.getStackTrace(e));
+            log.error("【删除销售变更】接口出现异常,参数${}$,异常${}$", JSON.toJSON(delSaleChangeDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -999,12 +1172,12 @@ public class SaleOrderController extends BaseController {
             FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
         } catch (SwException e) {
-            log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
     } catch (Exception e) {
-        log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+        log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
        return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
     }
@@ -1100,12 +1273,12 @@ public class SaleOrderController extends BaseController {
             FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
         } catch (SwException e) {
-            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【导出销售订单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
@@ -1568,7 +1741,7 @@ public class SaleOrderController extends BaseController {
 //            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售订单打印2】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(orderId), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单打印2】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
 //            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
 
@@ -1629,5 +1802,59 @@ public class SaleOrderController extends BaseController {
         return ;
     }
 
+    /**
+     * 获取销售订单下拉框
+     */
+    @ApiOperation(
+            value ="获取销售订单下拉框",
+            notes = "获取销售订单下拉框"
+    )
+    @GetMapping("/orderlistSelect")
+    public AjaxResult<TableDataInfo> orderlistSelect(BaseSelectDto baseSelectDto) {
+        try{
+            startPage();
+            List<BaseSelectVo> list = saleOrderService.orderlistSelect(baseSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【获取销售订单下拉框】接口出现异常,参数${},异常${}$", JSON.toJSON(baseSelectDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【获取销售订单下拉框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(baseSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+    /**
+     * 查询商品信息通过销售变更过单
+     */
+    @ApiOperation(
+            value ="查询商品信息通过销售变更单",
+            notes = "查询商品信息通过销售变更单"
+    )
+
+    @PostMapping("/goodsPriceAndSkuByOrderChange")
+    public AjaxResult goodsPriceAndSkuByOrderChange(@Valid @RequestBody GoodsPriceAndSkuDto goodsPriceAndSkuDto,BindingResult bindingResult) {
+        try {
+//            ValidUtils.bindvaild(bindingResult);
+
+            GoodsPriceAndSkuVo res= saleOrderService.goodsPriceAndSkuByOrderChange(goodsPriceAndSkuDto);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【goodsPriceAndSkuByOrderChange】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(goodsPriceAndSkuDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 }

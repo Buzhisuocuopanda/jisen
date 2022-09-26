@@ -21,6 +21,7 @@
     <result column="CBOB16" jdbcType="INTEGER" property="cbob16" />
     <result column="CBOB17" jdbcType="INTEGER" property="cbob17" />
     <result column="CBOB18" jdbcType="VARCHAR" property="cbob18" />
+    <result column="confirm_qty" jdbcType="DOUBLE" property="confirmQty" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,7 +83,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBOB01, CBOB02, CBOB03, CBOB04, CBOB05, CBOB06, CBOB07, CBOB08, CBOB09, CBOB10, CBOB11,
-    CBOB12, CBOB13, CBOA01, CBOB14, CBOB15, CBOB16, CBOB17, CBOB18
+    CBOB12, CBOB13, CBOA01, CBOB14, CBOB15, CBOB16, CBOB17, CBOB18, confirm_qty
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbobCriteria" resultMap="BaseResultMap">
     select
@@ -121,14 +122,14 @@
       CBOB10, CBOB11, CBOB12,
       CBOB13, CBOA01, CBOB14,
       CBOB15, CBOB16, CBOB17,
-      CBOB18)
+      CBOB18, confirm_qty)
     values (#{cbob01,jdbcType=INTEGER}, #{cbob02,jdbcType=INTEGER}, #{cbob03,jdbcType=TIMESTAMP},
       #{cbob04,jdbcType=INTEGER}, #{cbob05,jdbcType=TIMESTAMP}, #{cbob06,jdbcType=INTEGER},
       #{cbob07,jdbcType=INTEGER}, #{cbob08,jdbcType=INTEGER}, #{cbob09,jdbcType=DOUBLE},
       #{cbob10,jdbcType=DOUBLE}, #{cbob11,jdbcType=DOUBLE}, #{cbob12,jdbcType=DOUBLE},
       #{cbob13,jdbcType=VARCHAR}, #{cboa01,jdbcType=INTEGER}, #{cbob14,jdbcType=DOUBLE},
       #{cbob15,jdbcType=DOUBLE}, #{cbob16,jdbcType=INTEGER}, #{cbob17,jdbcType=INTEGER},
-      #{cbob18,jdbcType=VARCHAR})
+      #{cbob18,jdbcType=VARCHAR}, #{confirmQty,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbob">
     insert into `CBOB`
@@ -190,6 +191,9 @@
       <if test="cbob18 != null">
         CBOB18,
       </if>
+      <if test="confirmQty != null">
+        confirm_qty,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbob01 != null">
@@ -248,6 +252,9 @@
       </if>
       <if test="cbob18 != null">
         #{cbob18,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmQty != null">
+        #{confirmQty,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -317,6 +324,9 @@
       <if test="record.cbob18 != null">
         CBOB18 = #{record.cbob18,jdbcType=VARCHAR},
       </if>
+      <if test="record.confirmQty != null">
+        confirm_qty = #{record.confirmQty,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -342,7 +352,8 @@
       CBOB15 = #{record.cbob15,jdbcType=DOUBLE},
       CBOB16 = #{record.cbob16,jdbcType=INTEGER},
       CBOB17 = #{record.cbob17,jdbcType=INTEGER},
-      CBOB18 = #{record.cbob18,jdbcType=VARCHAR}
+      CBOB18 = #{record.cbob18,jdbcType=VARCHAR},
+      confirm_qty = #{record.confirmQty,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -404,6 +415,9 @@
       <if test="cbob18 != null">
         CBOB18 = #{cbob18,jdbcType=VARCHAR},
       </if>
+      <if test="confirmQty != null">
+        confirm_qty = #{confirmQty,jdbcType=DOUBLE},
+      </if>
     </set>
     where CBOB01 = #{cbob01,jdbcType=INTEGER}
   </update>
@@ -426,37 +440,39 @@
       CBOB15 = #{cbob15,jdbcType=DOUBLE},
       CBOB16 = #{cbob16,jdbcType=INTEGER},
       CBOB17 = #{cbob17,jdbcType=INTEGER},
-      CBOB18 = #{cbob18,jdbcType=VARCHAR}
+      CBOB18 = #{cbob18,jdbcType=VARCHAR},
+      confirm_qty = #{confirmQty,jdbcType=DOUBLE}
     where CBOB01 = #{cbob01,jdbcType=INTEGER}
   </update>
 
   <select id="orderChangeGoodsMsg" resultType="com.ruoyi.system.domain.vo.OrderChangeGoodsMsgVo">
 
 
-SELECT
-   ob.CBOB08 as goodsId,
-   ob.CBOB14 as normalPrice,
-   ob.CBOB12 as totalPrice,
-   ob.CBOB10 as sendQty,
-   ob.CBOB13 as remark,
-   la.CALA08 as brand,
-   pb.CBPB08 as description,
-   pb.CBPB12 as model
-FROM
-   CBOB ob
-   INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
-   LEFT JOIN CALA la on la.CALA02 = pb.CBPB10
-   and la.CALA10='商品品牌'
-   where ob.CBOB07=0
-   and ob.CBOA01 = #{orderId}
-   <if test="goodsText !=null and goodsText!=''">
-   (
-   or la.CALA08 like concat('%', #{goodsText}, '%')
-   or pb.CBPB12 like concat('%', #{goodsText}, '%')
-   or pb.CBPB08 like concat('%', #{goodsText}, '%')
-   )
-   </if>
+    SELECT
+    ob.CBOB08 as goodsId,
+    ob.CBOB14 as normalPrice,
+    ob.CBOB12 as totalPrice,
+    ob.CBOB10 as sendQty,
+    ob.CBOB13 as remark,
+    la.CALA08 as brand,
+    pb.CBPB08 as description,
+    pb.CBPB12 as model
+    FROM
+    CBOB ob
+    INNER JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+    LEFT JOIN CALA la on la.CALA02 = pb.CBPB10
+    and la.CALA10='商品品牌'
+    where ob.CBOB07=0
+    and ob.CBOA01 = #{orderId}
+    <if test="goodsText !=null and goodsText!=''">
+      (
+      or la.CALA08 like concat('%', #{goodsText}, '%')
+      or pb.CBPB12 like concat('%', #{goodsText}, '%')
+      or pb.CBPB08 like concat('%', #{goodsText}, '%')
+      )
+    </if>
   </select>
+  <!--zgl-->
 
   <select id="salesAnalysis" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
 
@@ -498,4 +514,70 @@ FROM
     </if>
 
   </select>
+
+  <select id="salesAnalysis2" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
+
+    SELECT  ca.CBCA08 AS customerName,
+    oa.CBOA02 AS createTime,
+    USER.nick_name AS saleUser,
+    oa.CBOA07 AS saleOrderNo,
+    pb.CBPB12 AS model,
+    pb.CBPB10 AS brand,
+    ob.CBOB09 AS qty,
+    ob.CBOB12 AS price,
+    sc.CBSB01
+    FROM
+    CBOB ob
+    LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
+    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
+    LEFT JOIN sys_user USER ON USER.user_id = oa.CBOA10
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ob.CBOB08
+    LEFT JOIN CBSC sc ON sc.CBSC14 = ob.CBOB01
+    WHERE
+    oa.CBOA11 = 5
+    AND ob.CBOB07 = 0
+    <if test="customerId !=null ">
+      AND oa.CBOA09 = #{customerId}
+    </if>
+    <if test="supplierId !=null ">
+      AND sa.CBSA01 = #{supplierId}
+    </if>
+    <if test="model !=null and model !='' ">
+      AND pb.CBPB12 = #{model}
+    </if>
+    <if test="brand !=null and brand !='' ">
+      AND pb.CBPB10 = #{brand}
+    </if>
+    <if test="saleUserId !=null ">
+      AND oa.CBOA10 = #{saleUserId}
+    </if>
+    <if test="startTime !=null ">
+      AND oa.CBOA02  &gt;= #{startTime}
+    </if>
+    <if test="endTime !=null ">
+      AND oa.CBOA02 &lt;=#{endTime}
+    </if>
+
+  </select>
+
+  <select id="salesAnalysis2Item" resultType="Map">
+
+    SELECT
+    sa.CBSA08 AS supplier,
+    pd.CBPD12 AS cost
+    FROM
+    CBSD sd
+    LEFT JOIN CBDA da ON da.CBDA09 = sd.CBSD09
+    LEFT JOIN CBSA sa ON sa.CBSA01 = da.CBDA13
+    LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
+    LEFT JOIN CBPD pd ON pd.CBPC01 = pe.CBPC01
+    WHERE
+    sd.CBSB01 =  #{cbsb01}
+  </select>
+
+
+
+
+
+
 </mapper>

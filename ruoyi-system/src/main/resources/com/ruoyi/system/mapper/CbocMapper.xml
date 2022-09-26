@@ -591,7 +591,7 @@
 
       and cboa.CBOA07 like concat('%', #{saleNo}, '%')
     </if>
-    order by oa.CBOA02
+    order by oa.CBOC02 DESC
 
   </select>
 

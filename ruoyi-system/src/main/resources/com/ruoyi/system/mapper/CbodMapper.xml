@@ -23,6 +23,7 @@
     <result column="CBOC01" jdbcType="INTEGER" property="cboc01" />
     <result column="bef_price" jdbcType="DOUBLE" property="befPrice" />
     <result column="bef_qty" jdbcType="DOUBLE" property="befQty" />
+    <result column="cbobId" jdbcType="INTEGER" property="cbobid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -83,8 +84,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBOD01, CBOD02, CBOD03, CBOD04, CBOD05, CBOD06, CBOD07, CBOD08, CBOD09, CBOD10, CBOD11, 
-    CBOD12, CBOD13, CBOD14, CBOD15, CBOD16, CBOD17, CBOD18, CBOC01, bef_price, bef_qty
+    CBOD01, CBOD02, CBOD03, CBOD04, CBOD05, CBOD06, CBOD07, CBOD08, CBOD09, CBOD10, CBOD11,
+    CBOD12, CBOD13, CBOD14, CBOD15, CBOD16, CBOD17, CBOD18, CBOC01, bef_price, bef_qty,
+    cbobId
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbodCriteria" resultMap="BaseResultMap">
     select
@@ -101,7 +103,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBOD`
     where CBOD01 = #{cbod01,jdbcType=INTEGER}
@@ -117,22 +119,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbod">
-    insert into `CBOD` (CBOD01, CBOD02, CBOD03, 
-      CBOD04, CBOD05, CBOD06, 
-      CBOD07, CBOD08, CBOD09, 
-      CBOD10, CBOD11, CBOD12, 
-      CBOD13, CBOD14, CBOD15, 
-      CBOD16, CBOD17, CBOD18, 
-      CBOC01, bef_price, bef_qty
-      )
-    values (#{cbod01,jdbcType=INTEGER}, #{cbod02,jdbcType=INTEGER}, #{cbod03,jdbcType=TIMESTAMP}, 
-      #{cbod04,jdbcType=INTEGER}, #{cbod05,jdbcType=TIMESTAMP}, #{cbod06,jdbcType=INTEGER}, 
-      #{cbod07,jdbcType=INTEGER}, #{cbod08,jdbcType=INTEGER}, #{cbod09,jdbcType=DOUBLE}, 
-      #{cbod10,jdbcType=DOUBLE}, #{cbod11,jdbcType=DOUBLE}, #{cbod12,jdbcType=DOUBLE}, 
-      #{cbod13,jdbcType=VARCHAR}, #{cbod14,jdbcType=DOUBLE}, #{cbod15,jdbcType=DOUBLE}, 
-      #{cbod16,jdbcType=INTEGER}, #{cbod17,jdbcType=DOUBLE}, #{cbod18,jdbcType=DOUBLE}, 
-      #{cboc01,jdbcType=INTEGER}, #{befPrice,jdbcType=DOUBLE}, #{befQty,jdbcType=DOUBLE}
-      )
+    insert into `CBOD` (CBOD01, CBOD02, CBOD03,
+      CBOD04, CBOD05, CBOD06,
+      CBOD07, CBOD08, CBOD09,
+      CBOD10, CBOD11, CBOD12,
+      CBOD13, CBOD14, CBOD15,
+      CBOD16, CBOD17, CBOD18,
+      CBOC01, bef_price, bef_qty,
+      cbobId)
+    values (#{cbod01,jdbcType=INTEGER}, #{cbod02,jdbcType=INTEGER}, #{cbod03,jdbcType=TIMESTAMP},
+      #{cbod04,jdbcType=INTEGER}, #{cbod05,jdbcType=TIMESTAMP}, #{cbod06,jdbcType=INTEGER},
+      #{cbod07,jdbcType=INTEGER}, #{cbod08,jdbcType=INTEGER}, #{cbod09,jdbcType=DOUBLE},
+      #{cbod10,jdbcType=DOUBLE}, #{cbod11,jdbcType=DOUBLE}, #{cbod12,jdbcType=DOUBLE},
+      #{cbod13,jdbcType=VARCHAR}, #{cbod14,jdbcType=DOUBLE}, #{cbod15,jdbcType=DOUBLE},
+      #{cbod16,jdbcType=INTEGER}, #{cbod17,jdbcType=DOUBLE}, #{cbod18,jdbcType=DOUBLE},
+      #{cboc01,jdbcType=INTEGER}, #{befPrice,jdbcType=DOUBLE}, #{befQty,jdbcType=DOUBLE},
+      #{cbobid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbod">
     insert into `CBOD`
@@ -200,6 +202,9 @@
       <if test="befQty != null">
         bef_qty,
       </if>
+      <if test="cbobid != null">
+        cbobId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbod01 != null">
@@ -264,6 +269,9 @@
       </if>
       <if test="befQty != null">
         #{befQty,jdbcType=DOUBLE},
+      </if>
+      <if test="cbobid != null">
+        #{cbobid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -339,6 +347,9 @@
       <if test="record.befQty != null">
         bef_qty = #{record.befQty,jdbcType=DOUBLE},
       </if>
+      <if test="record.cbobid != null">
+        cbobId = #{record.cbobid,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -366,7 +377,8 @@
       CBOD18 = #{record.cbod18,jdbcType=DOUBLE},
       CBOC01 = #{record.cboc01,jdbcType=INTEGER},
       bef_price = #{record.befPrice,jdbcType=DOUBLE},
-      bef_qty = #{record.befQty,jdbcType=DOUBLE}
+      bef_qty = #{record.befQty,jdbcType=DOUBLE},
+      cbobId = #{record.cbobid,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -434,6 +446,9 @@
       <if test="befQty != null">
         bef_qty = #{befQty,jdbcType=DOUBLE},
       </if>
+      <if test="cbobid != null">
+        cbobId = #{cbobid,jdbcType=INTEGER},
+      </if>
     </set>
     where CBOD01 = #{cbod01,jdbcType=INTEGER}
   </update>
@@ -458,7 +473,63 @@
       CBOD18 = #{cbod18,jdbcType=DOUBLE},
       CBOC01 = #{cboc01,jdbcType=INTEGER},
       bef_price = #{befPrice,jdbcType=DOUBLE},
-      bef_qty = #{befQty,jdbcType=DOUBLE}
+      bef_qty = #{befQty,jdbcType=DOUBLE},
+      cbobId = #{cbobid,jdbcType=INTEGER}
     where CBOD01 = #{cbod01,jdbcType=INTEGER}
   </update>
+
+  <!--  <select id="orderChangeGoodsSelect" resultType="com.ruoyi.system.domain.vo.OrderChangeGoodsVO">-->
+  <!--SELECT-->
+  <!--	od.CBOD08 AS goodsId,-->
+  <!--	la.CALA08 AS brand,-->
+  <!--	pb.CBPB12 AS model,-->
+  <!--	pb.CBPB09 AS description-->
+  <!--FROM-->
+  <!--	CBOD AS od-->
+  <!--	LEFT JOIN CBOC oc ON oc.CBOC01 = od.CBOC01-->
+  <!--	LEFT JOIN CBPB pb ON CBPB01 = od.CBOD08-->
+  <!--	LEFT JOIN CALA la ON la.CALA01 =pb.CBPB10-->
+  <!--	AND la.CALA10 ='商品品牌'-->
+  <!--WHERE-->
+  <!--	oc.CBOC07 = #{orderId}-->
+  <!--	AND od.CBOD07 = 0-->
+  <!--    <if test="selectMsg != null  and selectMsg !=''  ">-->
+  <!--      AND-->
+  <!--      (-->
+  <!--      la.CALA08 like concat('%', #{goodsMsg}, '%')-->
+  <!--      OR pb.CBPB12 like concat('%', #{goodsMsg}, '%')-->
+  <!--      OR pb.CBPB08 like concat('%', #{goodsMsg}, '%')-->
+  <!--      )-->
+
+
+  <!--    </if>-->
+  <!--	</select>-->
+
+
+  <select id="orderChangeGoodsSelect" resultType="com.ruoyi.system.domain.vo.OrderChangeGoodsVO">
+    SELECT
+    ob.CBOB08 AS goodsId,
+    ob.CBOB01 AS cbobId,
+    la.CALA08 AS brand,
+    pb.CBPB12 AS model,
+    pb.CBPB09 AS description
+    FROM
+    CBOB ob
+
+    LEFT JOIN CBPB pb ON CBPB01 = ob.CBOB08
+    LEFT JOIN CALA la ON la.CALA01 =pb.CBPB10
+    AND la.CALA10 ='商品品牌'
+    WHERE
+    ob.CBOA01 = #{orderId}
+    <if test="selectMsg != null  and selectMsg !=''  ">
+      AND
+      (
+      la.CALA08 like concat('%', #{goodsMsg}, '%')
+      OR pb.CBPB12 like concat('%', #{goodsMsg}, '%')
+      OR pb.CBPB08 like concat('%', #{goodsMsg}, '%')
+      )
+
+
+    </if>
+  </select>
 </mapper>

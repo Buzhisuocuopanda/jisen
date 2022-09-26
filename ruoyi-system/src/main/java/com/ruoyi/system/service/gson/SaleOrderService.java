@@ -71,6 +71,16 @@ public interface SaleOrderService {
 
     void updateGjQty(UpdateGjQtyDto updateGjQtyDto);
 
+    void confirmSkuSaleOrder(ConfirmSkuDto confirmSkuDto);
+
+    List<BaseSelectVo> orderlistSelect(BaseSelectDto baseSelectDto);
+
+    List<BaseSelectVo> orderChangeGoodsSelect(BaseSelectDto baseSelectDto);
+
+    GoodsPriceAndSkuVo goodsPriceAndSkuByOrderChange(GoodsPriceAndSkuDto goodsPriceAndSkuDto);
+
+
+
     void insertgoodsShop(Integer goodsId);
 
 

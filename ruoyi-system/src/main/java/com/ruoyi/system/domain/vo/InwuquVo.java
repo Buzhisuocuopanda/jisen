@@ -33,4 +33,7 @@ public class InwuquVo {
     private Double lockQty;
     private Integer cbpb01;
 
+    private Integer shopping;
+
+
 }

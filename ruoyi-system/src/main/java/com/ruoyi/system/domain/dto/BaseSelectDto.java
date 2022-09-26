@@ -13,4 +13,9 @@ public class BaseSelectDto {
 
     private String selectMsg;
 
+    private Integer orderId;
+
+
+
+
 }

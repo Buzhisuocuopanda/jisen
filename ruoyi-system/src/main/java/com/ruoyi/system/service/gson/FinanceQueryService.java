@@ -23,4 +23,6 @@ public interface FinanceQueryService {
 
     List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto);
 
+    List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto);
+
 }

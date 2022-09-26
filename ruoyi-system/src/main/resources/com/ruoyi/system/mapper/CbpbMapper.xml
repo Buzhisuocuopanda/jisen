@@ -499,7 +499,7 @@
         <if test="goodsMsg != null  and goodsMsg !=''  ">
             AND
             (
-            b.CBPA07 like concat('%', #{goodsMsg}, '%')
+            c.CALA08 like concat('%', #{goodsMsg}, '%')
             OR a.CBPB12 like concat('%', #{goodsMsg}, '%')
             OR a.CBPB08 like concat('%', #{goodsMsg}, '%')
             )

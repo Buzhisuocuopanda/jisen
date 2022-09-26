@@ -46,6 +46,8 @@ public class Cbod implements Serializable {
 
     private Double befQty;
 
+    private Integer cbobid;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbod01() {
@@ -216,6 +218,14 @@ public class Cbod implements Serializable {
         this.befQty = befQty;
     }
 
+    public Integer getCbobid() {
+        return cbobid;
+    }
+
+    public void setCbobid(Integer cbobid) {
+        this.cbobid = cbobid;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -248,7 +258,8 @@ public class Cbod implements Serializable {
             && (this.getCbod18() == null ? other.getCbod18() == null : this.getCbod18().equals(other.getCbod18()))
             && (this.getCboc01() == null ? other.getCboc01() == null : this.getCboc01().equals(other.getCboc01()))
             && (this.getBefPrice() == null ? other.getBefPrice() == null : this.getBefPrice().equals(other.getBefPrice()))
-            && (this.getBefQty() == null ? other.getBefQty() == null : this.getBefQty().equals(other.getBefQty()));
+            && (this.getBefQty() == null ? other.getBefQty() == null : this.getBefQty().equals(other.getBefQty()))
+            && (this.getCbobid() == null ? other.getCbobid() == null : this.getCbobid().equals(other.getCbobid()));
     }
 
     @Override
@@ -276,6 +287,7 @@ public class Cbod implements Serializable {
         result = prime * result + ((getCboc01() == null) ? 0 : getCboc01().hashCode());
         result = prime * result + ((getBefPrice() == null) ? 0 : getBefPrice().hashCode());
         result = prime * result + ((getBefQty() == null) ? 0 : getBefQty().hashCode());
+        result = prime * result + ((getCbobid() == null) ? 0 : getCbobid().hashCode());
         return result;
     }
 
@@ -306,6 +318,7 @@ public class Cbod implements Serializable {
         sb.append(", cboc01=").append(cboc01);
         sb.append(", befPrice=").append(befPrice);
         sb.append(", befQty=").append(befQty);
+        sb.append(", cbobid=").append(cbobid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

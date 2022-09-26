@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 public class SaleOrderSkuVo {
 
+    private Integer id;
 
     @ApiModelProperty("销售订单号")
     private String orderNo;
@@ -30,6 +31,8 @@ public class SaleOrderSkuVo {
 
     @ApiModelProperty("商品库存数量")
     private Double goodsNum;
+
+    private Integer goodsId;
 
     @ApiModelProperty("商品名称")
     private String goodsMsg;
@@ -50,9 +53,43 @@ public class SaleOrderSkuVo {
 
     private Double canUseQty;
 
+    private Double confirmQty;
+
     private List<GsGoodsUse> goodsUses=new ArrayList<>();
 
 
+    public Double getGoodsNum() {
+        if(goodsNum==null){
+            return 0.0;
+        }
+        return goodsNum;
+    }
 
+    public Double getLockQty() {
+        if(lockQty==null){
+            return 0.0;
+        }
+        return lockQty;
+    }
 
+    public Double getMakeQty() {
+        if(makeQty==null){
+            return 0.0;
+        }
+        return makeQty;
+    }
+
+    public Double getCanUseQty() {
+        if(canUseQty==null){
+            return 0.0;
+        }
+        return canUseQty;
+    }
+
+    public Double getConfirmQty() {
+        if(confirmQty==null){
+            return 0.0;
+        }
+        return confirmQty;
+    }
 }
