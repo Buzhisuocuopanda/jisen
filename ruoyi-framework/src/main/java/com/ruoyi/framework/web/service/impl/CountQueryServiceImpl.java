@@ -75,6 +75,57 @@ public class CountQueryServiceImpl implements CountQueryService {
         return inwuquVos;
     }
 
+
+    @Override
+    public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {
+        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        Map<Integer, Cbpa> classMap = baseCheckService.classMap();
+
+        for(int i=0;i<inwuquVos.size();i++){
+
+            if(inwuquVos.get(i)!=null){
+                if(inwuquVos.get(i).getCbpb10()!=null){
+                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+                }
+                if(inwuquVos.get(i).getCbpb14()!=null){
+                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+                    if(cbpa!=null){
+                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+                        if(cbpa.getCbpa09()!=null){
+                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                            if(cbpa2!=null){
+                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+                            }
+                        }
+                    }
+                }
+                if(inwuquVos.get(i).getCbib08()!=null){
+                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByGoodsId2(inwuquVos.get(i).getCbib02());
+                    Double sum =0d;
+                    for(int j=0;j<gsGoodsUses.size();j++){
+                        if(gsGoodsUses.get(j).getLockQty()!=null){
+                            sum+=gsGoodsUses.get(j).getLockQty();
+                        }
+                    }
+                    if(inwuquVos.get(i).getCbib15()!=null){
+                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
+                    }
+                }else {
+                    if(inwuquVos.get(i).getCbib15()!=null){
+                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
+                    }
+                }
+            }else {
+                InwuquVo inwuquVo =new InwuquVo();
+                inwuquVo.setCbib01(-1);
+                inwuquVos.set(i,inwuquVo);
+            }
+
+        }
+        return inwuquVos;
+    }
+
     @Override
     public List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto) {
         return cbifMapper.selectInventorysummaryquerys(inwuqusDto);

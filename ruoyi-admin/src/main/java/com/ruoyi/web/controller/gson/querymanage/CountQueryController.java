@@ -273,7 +273,7 @@ public class CountQueryController  extends BaseController {
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(InwuquDto inwuquDto) {
         try {
             startPage();
-            List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
+            List<InwuquVo> list = countQueryService.selectInventorysummaryquery2(inwuquDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

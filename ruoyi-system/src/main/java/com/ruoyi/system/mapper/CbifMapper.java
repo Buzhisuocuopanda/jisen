@@ -38,6 +38,8 @@ public interface CbifMapper {
 
     List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto);
 
+    List<InwuquVo> selectInventorysummaryquery3(InwuquDto inwuquDto);
+
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 
     List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo);

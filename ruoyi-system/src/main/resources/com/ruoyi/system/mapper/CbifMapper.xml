@@ -481,7 +481,7 @@ where
 
 
   <select id="selectInventorysummaryquery2"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
-    SELECT ib.CBIB01,ib.CBIB02,ib.CBIB08,ib.CBIB15, pb.CBPB08, pb.CBPB15, pb.CBPB12,pb.CBPB10,pb.CBPB14,
+    SELECT ib.CBIB01,ib.CBIB02,ib.CBIB08,ib.CBIB15, pb.CBPB08, pb.CBPB15, pb.CBPB12,pb.CBPB10,pb.CBPB14,pb.CBPB01,
     wa.CBWA09,max(ib.CBIB04) CBIB04
     FROM CBIB ib
     LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
@@ -494,20 +494,30 @@ where
         #{cbwaItem}
       </foreach>
     </if>
-    <if test="cbpa07 != null "> and pa1.CBPA07 = #{cbpa07} </if>
+    <if test="cbpa07 != null "> and pb.CBPB14 = #{cbpa07} </if>
     <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
     <if test="cbpb08 != null "> and pb.CBPB08 = #{cbpb08}</if>
     <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
 
 
   </select>
-<!--  /* and (SELECT count(*) FROM CBIB WHERE CBIB08 = ib.CBIB08 AND CBIB02 =ib.CBIB02 AND ib.CBIB04 &lt; CBIB04) &lt; 2*/
-LEFT JOIN gs_goods_use u ON u.goods_id=pb.CBPB01 and u.wh_id=wa.CBWA01
-pa1.CBPA07,
-    pa2.CBPA07 as totalclassify,
-    LEFT JOIN CBPA pa1 on pa1.CBPA01=pb.CBPB14
-    LEFT JOIN CBPA pa2 ON pa2.CBPA01=pa1.CBPA09
-  /*    a.CBIE06=0*/-->
+
+  <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
+    select t.CBPB14,t.CBPB10,t.CBPB12,t.CBPB15,t.CBPB08,t.CBPB01,SUM(t.CBIB15) cbib15 from
+    (SELECT ib.CBIB01,ib.CBIB02,ib.CBIB08,ib.CBIB15, pb.CBPB08, pb.CBPB15, pb.CBPB12,pb.CBPB10,pb.CBPB14,pb.CBPB01,
+    wa.CBWA09,max(ib.CBIB04) CBIB04
+    FROM CBIB ib
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
+    LEFT JOIN CBWA wa ON wa.CBWA01 = ib.CBIB02
+    GROUP BY ib.CBIB08,ib.CBIB02) t
+    GROUP BY t.CBIB08
+    HAVING 1=1
+    <if test="classId != null "> and t.CBPB14 = #{classId} </if>
+    <if test="cbpb10 != null "> and t.CBPB10 = #{cbpb10} </if>
+    <if test="cbpb01 != null "> and t.CBPB01 = #{cbpb01}</if>
+
+
+  </select>
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
         a.CBIG01,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15

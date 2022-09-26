@@ -366,6 +366,16 @@ WHERE
   g.goods_id =#{goodsId}
   </select>
 
+  <select id="selectByGoodsId2" resultMap="BaseResultMap">
+        SELECT
+   *
+FROM
+   `gs_goods_use` g
+WHERE
+ g.order_type=1 and
+  g.goods_id =#{goodsId}
+  </select>
+
 
   <select id="selectLockByTotalOrderNo" resultMap="BaseResultMap">
         SELECT

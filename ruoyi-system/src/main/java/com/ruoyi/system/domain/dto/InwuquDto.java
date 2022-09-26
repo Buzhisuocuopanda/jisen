@@ -34,5 +34,7 @@ public class InwuquDto {
     private Integer cbpb01;
 
     private Integer cbpb10;
+//    @Excel(name = "分类id")
+    private Integer classId;
 
 }
