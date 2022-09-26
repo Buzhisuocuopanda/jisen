@@ -33,4 +33,6 @@ public class InwuquDto {
     private Double lockQty;
     private Integer cbpb01;
 
+    private Integer cbpb10;
+
 }

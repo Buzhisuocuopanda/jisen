@@ -88,7 +88,8 @@ public class CountQueryController  extends BaseController {
         try {
             startPage();
             List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
-            return AjaxResult.success(getDataTable(list));
+            TableDataInfo t = getDataTable(list);
+            return AjaxResult.success(t);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
@@ -509,7 +510,7 @@ public class CountQueryController  extends BaseController {
             notes = "查询销售人员下拉列表"
     )
     @GetMapping("/salermanAll")
-    public AjaxResult UnfinisheddocumentsAll(CauaVo cauaVo) {
+    public AjaxResult salermanAll(CauaVo cauaVo) {
         try{
             List<CauaVo> list = approvalService.selectsalerman(cauaVo);
             return AjaxResult.success(list);

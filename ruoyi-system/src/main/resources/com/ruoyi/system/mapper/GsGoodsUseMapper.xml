@@ -345,6 +345,18 @@ WHERE
    g.wh_id = #{whId}
    AND g.goods_id =#{goodsId}
   </select>
+
+  <select id="selectByWhIdAndGoodsId2" resultMap="BaseResultMap">
+    SELECT
+   *
+FROM
+   `gs_goods_use` g
+WHERE
+    g.order_type=1 and
+   g.wh_id = #{whId}
+   AND g.goods_id =#{goodsId}
+  </select>
+
   <select id="selectByGoodsId" resultMap="BaseResultMap">
         SELECT
    *
