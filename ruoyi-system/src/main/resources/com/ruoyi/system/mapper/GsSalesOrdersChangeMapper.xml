@@ -390,12 +390,19 @@
     <if test="orderNo != null and orderNo !=''">
       and   a.order_no   like concat('%', #{orderNo}, '%')
     </if>
-    <if test="startTime != null">
-      and a.order_date &gt;= #{startTime}
-    </if>
-    <if test="endTime != null">
-      and a.order_date &lt;=#{endTime}
-    </if>
+<!--    <if test="startTime != null">-->
+<!--      and a.order_date &gt;= #{startTime}-->
+<!--    </if>-->
+<!--    <if test="endTime != null">-->
+<!--      and a.order_date &lt;=#{endTime}-->
+<!--    </if>-->
+
+      <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+          and date_format(a.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+      </if>
+      <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+          and date_format(a.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+      </if>
 
   </select>
 

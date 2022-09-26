@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
+import com.ruoyi.system.domain.GsSalesOrdersChange;
+import com.ruoyi.system.domain.GsSalesOrdersIn;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 
@@ -25,7 +27,7 @@ public interface SalesScheduledOrdersService {
 
     void salesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto);
 
-    void addSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto);
+    int addSubscribetotheinventoryslip(List<GsSalesOrdersIn> gsSalesOrdersInDto);
 
     void editSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto);
 
@@ -41,7 +43,7 @@ public interface SalesScheduledOrdersService {
 
     void subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto);
 
-    void addGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    int addGsSalesOrdersChange(List<GsSalesOrdersChange> gsSalesOrdersChange);
 
     void editGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
