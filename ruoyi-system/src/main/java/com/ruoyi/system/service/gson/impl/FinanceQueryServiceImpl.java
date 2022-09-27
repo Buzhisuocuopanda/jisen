@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,30 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
-        List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis(fnQueryAynthesisDto);
+        List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis2(fnQueryAynthesisDto);
+//        List<FnQueryAyntgesisVo> listresult =new ArrayList<>();
+        for(int i =0;i<list.size();i++){
+
+            List<FnQueryAyntgesisVo> list2=cbsdMapper.fnSynthesis(list.get(i).getCbsd01());
+            if(list2!=null&&list2.size()>0){
+                list.get(i).setInWhTime(list2.get(0).getInWhTime());
+                list.get(i).setOutWhTime(list2.get(0).getOutWhTime());
+                list.get(i).setOrderNo(list2.get(0).getOrderNo());
+                list.get(i).setModel(list2.get(0).getModel());
+                list.get(i).setDescription(list2.get(0).getDescription());
+                list.get(i).setQty(list2.get(0).getQty());
+            list.get(i).setSn(list2.get(0).getSn());
+                list.get(i).setUPrice(list2.get(0).getUPrice());
+                list.get(i).setRPrice(list2.get(0).getRPrice());
+                list.get(i).setSuplierName(list2.get(0).getSuplierName());
+                list.get(i).setBrand(list2.get(0).getBrand());
+                list.get(i).setGc(list2.get(0).getGc());
+                list.get(i).setCgUprice(list2.get(0).getCgUprice());
+                list.get(i).setCgRprice(list2.get(0).getCgRprice());
+            }
+
+
+        }
         Map<Integer, String> integerStringMap = baseCheckService.brandMap();
 
         SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");

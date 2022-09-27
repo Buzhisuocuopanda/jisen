@@ -57,7 +57,8 @@ public class FinanceQueryController extends BaseController {
         try {
             startPage();
          List<FnQueryAyntgesisVo> list=financeQueryService.fnSynthesis(fnQueryAynthesisDto);
-         return AjaxResult.success(getDataTable(list));
+            TableDataInfo tableDataInfo = getDataTable(list);
+         return AjaxResult.success(tableDataInfo);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {

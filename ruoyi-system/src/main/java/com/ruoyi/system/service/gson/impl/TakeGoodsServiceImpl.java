@@ -955,9 +955,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
         for (GsOutStockAdivceVo gsOutStockAdivceVo : list) {
 
-            if (brandMap.get(gsOutStockAdivceVo.getBrand()) != null) {
-                gsOutStockAdivceVo.setGoodsMsg((brandMap.get(gsOutStockAdivceVo.getBrand()) + "-" + gsOutStockAdivceVo.getModel() + "-" + gsOutStockAdivceVo.getDescription()));
-
+            if (brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())) != null) {
+//                gsOutStockAdivceVo.setGoodsMsg((brandMap.get(gsOutStockAdivceVo.getBrand()) + "-" + gsOutStockAdivceVo.getModel() + "-" + gsOutStockAdivceVo.getDescription()));
+                gsOutStockAdivceVo.setBrand(brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())));
             }
         }
 

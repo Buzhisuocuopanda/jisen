@@ -32,5 +32,11 @@ public interface CbsdMapper {
     int updateByPrimaryKey(Cbsd record);
 
     //zgl
-    List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);
+    List<FnQueryAyntgesisVo> fnSynthesis(@Param("cbsd01")Integer cbsd01);
+
+    //zgl
+    List<FnQueryAyntgesisVo> fnSynthesis2(FnQueryAynthesisDto fnQueryAynthesisDto);
+
+    //zgl
+    List<FnQueryAyntgesisVo> fnSynthesis3(FnQueryAynthesisDto fnQueryAynthesisDto);
 }
