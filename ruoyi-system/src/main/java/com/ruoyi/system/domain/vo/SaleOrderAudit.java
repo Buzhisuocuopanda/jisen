@@ -31,4 +31,9 @@ public class SaleOrderAudit {
 
     private String auditResult;
 
+    private String auditUser;
+
+    public String getAuditUser() {
+        return role;
+    }
 }

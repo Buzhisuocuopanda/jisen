@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBSD01, CBSD02, CBSD03, CBSD04, CBSD05, CBSD06, CBSD07, CBSD08, CBSD09, CBSD10, CBSD11, 
+    CBSD01, CBSD02, CBSD03, CBSD04, CBSD05, CBSD06, CBSD07, CBSD08, CBSD09, CBSD10, CBSD11,
     CBSD12, CBSB01, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbsdCriteria" resultMap="BaseResultMap">
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBSD`
     where CBSD01 = #{cbsd01,jdbcType=INTEGER}
@@ -110,15 +110,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsd">
-    insert into `CBSD` (CBSD01, CBSD02, CBSD03, 
-      CBSD04, CBSD05, CBSD06, 
-      CBSD07, CBSD08, CBSD09, 
-      CBSD10, CBSD11, CBSD12, 
+    insert into `CBSD` (CBSD01, CBSD02, CBSD03,
+      CBSD04, CBSD05, CBSD06,
+      CBSD07, CBSD08, CBSD09,
+      CBSD10, CBSD11, CBSD12,
       CBSB01, user_id)
-    values (#{cbsd01,jdbcType=INTEGER}, #{cbsd02,jdbcType=INTEGER}, #{cbsd03,jdbcType=TIMESTAMP}, 
-      #{cbsd04,jdbcType=INTEGER}, #{cbsd05,jdbcType=TIMESTAMP}, #{cbsd06,jdbcType=INTEGER}, 
-      #{cbsd07,jdbcType=INTEGER}, #{cbsd08,jdbcType=INTEGER}, #{cbsd09,jdbcType=VARCHAR}, 
-      #{cbsd10,jdbcType=INTEGER}, #{cbsd11,jdbcType=INTEGER}, #{cbsd12,jdbcType=VARCHAR}, 
+    values (#{cbsd01,jdbcType=INTEGER}, #{cbsd02,jdbcType=INTEGER}, #{cbsd03,jdbcType=TIMESTAMP},
+      #{cbsd04,jdbcType=INTEGER}, #{cbsd05,jdbcType=TIMESTAMP}, #{cbsd06,jdbcType=INTEGER},
+      #{cbsd07,jdbcType=INTEGER}, #{cbsd08,jdbcType=INTEGER}, #{cbsd09,jdbcType=VARCHAR},
+      #{cbsd10,jdbcType=INTEGER}, #{cbsd11,jdbcType=INTEGER}, #{cbsd12,jdbcType=VARCHAR},
       #{cbsb01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsd">

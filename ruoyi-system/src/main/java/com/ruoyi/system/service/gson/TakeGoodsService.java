@@ -1,10 +1,8 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbpm;
-import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
-import com.ruoyi.system.domain.dto.ChangeSuggestDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
+import com.ruoyi.system.domain.dto.*;
+import com.ruoyi.system.domain.vo.GsOutStockAdivceVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderDetailVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import com.ruoyi.system.domain.vo.TakeOrderDetailVo;
@@ -35,4 +33,8 @@ public interface TakeGoodsService {
     void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto);
 
     int TakeGoodsOrdersm(List<Cbpm> itemList);
+
+    List<GsOutStockAdivceVo> saleOrderSuggest(GsOutStockAdivceDto gsOutStockAdivceDto);
+
+    void auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto);
 }

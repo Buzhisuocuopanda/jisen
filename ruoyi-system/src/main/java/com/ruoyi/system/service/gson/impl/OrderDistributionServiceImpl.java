@@ -919,7 +919,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 throw new SwException("选择的货物库存不够，请刷新后重试，商品：" + goodsOperationDo.getGoodsName());
             }
 
-            if (res.getList().size() > 1) {
+            if (res.getList().size() > 0) {
                 prompt = 1;
             }
 

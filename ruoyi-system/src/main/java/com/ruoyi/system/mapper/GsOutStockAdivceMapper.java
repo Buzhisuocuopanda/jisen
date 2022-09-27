@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsOutStockAdivce;
 import com.ruoyi.system.domain.GsOutStockAdivceCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.GsOutStockAdivceDto;
+import com.ruoyi.system.domain.vo.GsOutStockAdivceVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsOutStockAdivceMapper {
@@ -27,4 +30,7 @@ public interface GsOutStockAdivceMapper {
     int updateByPrimaryKeySelective(GsOutStockAdivce record);
 
     int updateByPrimaryKey(GsOutStockAdivce record);
+
+    List<GsOutStockAdivceVo> saleOrderSuggest(GsOutStockAdivceDto gsOutStockAdivceDto);
+
 }

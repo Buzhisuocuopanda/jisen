@@ -489,6 +489,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa24(saleOrderAddDto.getOrderType());
         cboa.setCboa25(saleOrderAddDto.getCustomerNo());
         cboa.setCboa27(saleOrderAddDto.getOrderClass());
+        cboa.setCboa20(saleOrderAddDto.getFcNumber());
         cboaMapper.insertWithId(cboa);
         GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
         gsWorkInstanceDo.setOrderType((byte) 1);
@@ -499,6 +500,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cbob cbob = null;
         //创建销售订单明细表
         for (SaleOrderGoodsDto good : goods) {
+
+            if(good.getQty()==null || good.getQty()==0){
+                throw new SwException("请输入商品数量");
+            }
+
+            if(good.getTotalPrice() ==null ){
+                throw new SwException("请输入商品总价");
+            }
+
             //判断库存是否足够
 //            GoodsCheckStockVo goodsCheckStockVo=baseCheckService.checkGoodsStock(good.getGoodsId(),saleOrderAddDto.getOrderClass());
             cbob = new Cbob();
@@ -710,10 +720,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 res.setAuditUser(auditUser.getUserName());
             }
 
-
             saleOrderAudit.setDescription(createTime + " 由 " + audit + " 审核");
             saleOrderAudit.setId(cabraa.getCabraa01());
-            saleOrderAudit.setRole(cabraa.getCabraa19());
+            saleOrderAudit.setRole(res.getAuditUser());
             res.getAudits().add(saleOrderAudit);
         }
 
@@ -722,6 +731,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         baseDto.setOrderId(cboa.getCboa01());
         List<BaseSelectVo> baseSelectVos = orderChangeGoodsSelect(baseDto);
         res.setGoodsSelects(baseSelectVos);
+        res.setFpNumber(cboa.getCboa21());
         return res;
     }
 

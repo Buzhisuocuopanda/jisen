@@ -37,7 +37,7 @@ public class SaleOrderListDto {
     private String customer;
 
     //订单分类 1：国际订单 2：国内订单
-    @ApiModelProperty("订单分类 1：国际订单 2：国内订单")
+    @ApiModelProperty("订单分类 1：国际订单 2：国内订单 " )
 
     private Integer type;
 

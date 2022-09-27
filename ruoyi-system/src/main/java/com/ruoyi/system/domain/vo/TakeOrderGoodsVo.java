@@ -11,6 +11,9 @@ import lombok.Data;
 @Data
 public class TakeOrderGoodsVo {
 
+    //当前行数据id
+    private Integer cbplId;
+
     //货物id
     private Integer goodsId;
 

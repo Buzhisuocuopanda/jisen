@@ -688,11 +688,11 @@
     <if test="status != null">
       and pk.CBPK11 =#{status}
     </if>
-    <if test="whName != null and whName != ''" >
-      and wa.CBWA09 like #{whName}
+    <if test="whName != null  ">
+      and wa.CBWA01 = #{whName}
     </if>
-    <if test="saleOrderNo != null and saleOrderNo != ''" >
-      and pk.sale_order_no like #{saleOrderNo}
+    <if test="orderNo != null and orderNo != ''" >
+      and pk.CBPK07 like  concat('%', #{orderNo}, '%')
     </if>
   </select>
 

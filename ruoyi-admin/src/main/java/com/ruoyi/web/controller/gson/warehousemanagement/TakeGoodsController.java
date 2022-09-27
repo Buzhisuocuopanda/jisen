@@ -15,10 +15,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbpi;
 import com.ruoyi.system.domain.Cbpm;
-import com.ruoyi.system.domain.dto.AuditTakeOrderDto;
-import com.ruoyi.system.domain.dto.ChangeSuggestDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderAddDto;
-import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
@@ -824,6 +821,47 @@ public class TakeGoodsController extends BaseController {
 //        List<List<Object>> data3 = ea.getData3();
 //        FormExcelUtil.setTableData(sheet2, data3, 3, 1);
     }
+
+
+    //销售订单调拨建议
+    @GetMapping("outStockAdviceList")
+    public AjaxResult<TableDataInfo> outStockAdviceList(GsOutStockAdivceDto gsOutStockAdivceDto){
+        try {
+            startPage();
+           List<GsOutStockAdivceVo> list= takeGoodsService.saleOrderSuggest(gsOutStockAdivceDto);
+
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【调拨建议列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+
+    }
+
+    @GetMapping("auditOutStockEnd")
+    public AjaxResult auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto){
+        try {
+
+             takeGoodsService.auditOutStockEnd(gsOutStockAdivceDto);
+
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+
+    }
+
 
 
 

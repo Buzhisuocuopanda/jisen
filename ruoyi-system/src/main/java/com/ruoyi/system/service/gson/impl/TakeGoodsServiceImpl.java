@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.TakeOrderConstants;
+import com.ruoyi.common.constant.WareHouseType;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
@@ -13,6 +14,7 @@ import com.ruoyi.system.domain.Do.NumberDo;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -85,6 +87,12 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     @Resource
     private SqlSessionFactory sqlSessionFactory;
 
+    @Resource
+    private GsOutStockAdivceMapper gsOutStockAdivceMapper;
+
+    @Resource
+    private BaseCheckService baseCheckService;
+
 
 
 
@@ -112,7 +120,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             throw new SwException("没有查到该销售订单订单");
         }
         Cboa cboa = cboas.get(0);
-        if(SaleOrderStatusEnums.YIFUSHEN.getCode().equals(cboa.getCboa11())){
+        if(!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(cboa.getCboa11())){
             throw new SwException("销售订单必须为已复审状态");
         }
 
@@ -330,6 +338,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         Map<Integer,TakeOrderGoodsVo> goodsMap=new HashMap<>();
         for (Cbpl cbpl : cbpls) {
             good=new TakeOrderGoodsVo();
+            good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
                 good.setBrand(brandMap.get(cbpb.getCbpb10().toString()));
@@ -554,7 +563,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 CbobCriteria obex=new CbobCriteria();
                 obex.createCriteria()
                         .andCbob08EqualTo(goodsUse.getGoodsId())
-                        .andCbob06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                        .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                         .andCboa01EqualTo(cboa.getCboa01());
                 List<Cbob> cbobs = cbobMapper.selectByExample(obex);
                 if(cbobs.size()>0){
@@ -835,6 +844,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YISHENHE.getCode());
+        }else if(auditTakeOrderDto.getOpType().equals(2)){
+            cbpk.setCheckStatus(new Byte("1"));
+            List<GoodsDto> goods = auditTakeOrderDto.getGoods();
+            for (GoodsDto good : goods) {
+                Cbpl cbpl=new Cbpl();
+                cbpl.setCbpl01(good.getPlId());
+                cbpl.setGoodProductQty(good.getGoodQty());
+                cbplMapper.updateByPrimaryKeySelective(cbpl);
+            }
+
         }
 
 
@@ -928,6 +947,92 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         session.commit();
         session.clearCache();
         return 1;
+    }
+
+    @Override
+    public List<GsOutStockAdivceVo> saleOrderSuggest(GsOutStockAdivceDto gsOutStockAdivceDto) {
+        List<GsOutStockAdivceVo> list=   gsOutStockAdivceMapper.saleOrderSuggest(gsOutStockAdivceDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+
+        for (GsOutStockAdivceVo gsOutStockAdivceVo : list) {
+
+            if (brandMap.get(gsOutStockAdivceVo.getBrand()) != null) {
+                gsOutStockAdivceVo.setGoodsMsg((brandMap.get(gsOutStockAdivceVo.getBrand()) + "-" + gsOutStockAdivceVo.getModel() + "-" + gsOutStockAdivceVo.getDescription()));
+
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public void auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto) {
+
+        GsOutStockAdivce gsOutStockAdivce = gsOutStockAdivceMapper.selectByPrimaryKey(gsOutStockAdivceDto.getId());
+        if(gsOutStockAdivce==null){
+            throw new SwException("没有查到该调拨建议");
+        }
+
+        if(gsOutStockAdivce.getStatus()!=2){
+            throw new SwException("必须为待调拨状态才能标记完成");
+        }
+
+        Date date = new Date();
+        gsOutStockAdivce.setUpdateTime(date);
+        gsOutStockAdivce.setUpdateBy(gsOutStockAdivceDto.getUserId());
+        gsOutStockAdivce.setStatus(new Byte("3"));
+        gsOutStockAdivceMapper.updateByPrimaryKey(gsOutStockAdivce);
+
+        //增加占用
+        GsGoodsUseCriteria exeample=new GsGoodsUseCriteria();
+        exeample.createCriteria()
+                //cdc仓库id
+                .andWhIdEqualTo(WareHouseType.CDCWHID)
+                .andOrderNoEqualTo(gsOutStockAdivce.getSaleOrderNo())
+                .andGoodsIdEqualTo(gsOutStockAdivce.getGoodsId());
+        List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(exeample);
+        if(gsGoodsUses.size()>0){
+            GsGoodsUse goodsUse = gsGoodsUses.get(0);
+            goodsUse.setLockQty(goodsUse.getLockQty()+gsOutStockAdivce.getQty());
+            goodsUse.setUpdateTime(date);
+        }else {
+            GsGoodsUse gsGoodsUse=new GsGoodsUse();
+            gsGoodsUse.setLockQty(gsOutStockAdivce.getQty());
+            gsGoodsUse.setUpdateTime(date);
+            gsGoodsUse.setUpdateBy(gsOutStockAdivceDto.getUserId());
+            gsGoodsUse.setWhId(WareHouseType.CDCWHID);
+//            gsGoodsUse.setOrderType(new Byte("1"));
+            gsGoodsUse.setOrderNo(gsOutStockAdivce.getSaleOrderNo());
+            gsGoodsUse.setGoodsId(gsOutStockAdivce.getGoodsId());
+            gsGoodsUse.setCreateTime(date);
+            gsGoodsUse.setCreateBy(gsOutStockAdivceDto.getUserId());
+            gsGoodsUse.setOrderQty(0.0);
+            gsGoodsUseMapper.insert(gsGoodsUse);
+        }
+
+
+        //除CDC和GQW 减去仓库的库存占用
+        GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+        usex.createCriteria()
+                .andWhIdEqualTo(gsOutStockAdivce.getWhId())
+                .andGoodsIdEqualTo(gsOutStockAdivce.getGoodsId())
+                .andOrderNoEqualTo(gsOutStockAdivce.getSaleOrderNo());
+        List<GsGoodsUse> gsGoodsUsessub = gsGoodsUseMapper.selectByExample(usex);
+        if(gsGoodsUsessub.size()>0){
+            GsGoodsUse goodsUse = gsGoodsUsessub.get(0);
+            if((goodsUse.getLockQty()-gsOutStockAdivce.getQty())>0){
+                goodsUse.setLockQty(goodsUse.getLockQty()-gsOutStockAdivce.getQty());
+                goodsUse.setUpdateTime(date);
+                gsGoodsUseMapper.updateByPrimaryKey(goodsUse);
+            }else {
+                gsGoodsUseMapper.deleteByPrimaryKey(goodsUse.getId());
+            }
+
+
+        }
+
+
+
     }
 
 

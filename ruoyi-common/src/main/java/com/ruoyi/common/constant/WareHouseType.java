@@ -21,4 +21,10 @@ public class WareHouseType {
         public static final Integer GQWWHID = 5;
 
 
+
+        /**
+         * 国内订单走的仓库
+         */
+        public static final Integer CDCWHID = 1;
+
 }

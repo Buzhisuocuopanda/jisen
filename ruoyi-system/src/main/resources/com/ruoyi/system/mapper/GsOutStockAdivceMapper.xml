@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, sale_order_no, wh_id, 
+    id, create_time, update_time, create_by, update_by, delete_flag, sale_order_no, wh_id,
     goods_id, qty, `status`
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsOutStockAdivceCriteria" resultMap="BaseResultMap">
@@ -91,7 +91,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_out_stock_adivce`
     where id = #{id,jdbcType=INTEGER}
@@ -107,13 +107,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsOutStockAdivce">
-    insert into `gs_out_stock_adivce` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      sale_order_no, wh_id, goods_id, 
+    insert into `gs_out_stock_adivce` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      sale_order_no, wh_id, goods_id,
       qty, `status`)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{saleOrderNo,jdbcType=VARCHAR}, #{whId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT},
+      #{saleOrderNo,jdbcType=VARCHAR}, #{whId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},
       #{qty,jdbcType=DOUBLE}, #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsOutStockAdivce">
@@ -303,4 +303,39 @@
       `status` = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="saleOrderSuggest" resultType="com.ruoyi.system.domain.vo.GsOutStockAdivceVo">
+    SELECT
+	ad.id AS id,
+	ad.create_time as createTime,
+	ad.sale_order_no as saleOrderNo,
+	ad.wh_id as whId,
+	ad.goods_id as goodsId,
+	ad.qty as qty,
+	ad.`status` as status,
+	wa.CBWA09 as whName,
+	pb.CBPB10 as brand,
+	pb.CBPB12 as model,
+	pb.CBPB08 as description
+
+
+FROM
+	`gs_out_stock_adivce` ad
+	LEFT JOIN CBWA wa on wa.CBWA01 =ad.wh_id
+	LEFT JOIN CBPB pb on pb.CBPB01=ad.goods_id
+	where ad.delete_flag=0
+	<if test="whId!=null">
+      and ad.wh_id =#{whId}
+    </if>
+    <if test="whId!=null">
+      and ad.wh_id =#{whId}
+    </if>
+
+    <if test="whId!=null">
+      and ad.wh_id =#{whId}
+    </if>
+    <if test="orderNo !=null">
+      and ad.sale_order_no like concat('%',  #{orderNo}, '%')
+    </if>
+  </select>
 </mapper>

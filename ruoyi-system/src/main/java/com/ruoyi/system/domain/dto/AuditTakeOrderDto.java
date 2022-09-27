@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName AuditTakeOrderDto
@@ -18,9 +20,11 @@ public class AuditTakeOrderDto {
     private Integer takeOrderId;
 
     @NotNull(message = "操作类型不能为空")
-    // 1:审核通过 2：撤销 3：反审 4标记完成 5取消完成
+    // 1:审核通过 2：撤销 3：反审 4标记完成 5取消完成 6质检完成
     private Integer opType;
 
     private Integer userId;
+
+    private List<GoodsDto> goods=new ArrayList<>();
 
 }

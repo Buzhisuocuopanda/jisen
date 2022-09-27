@@ -36,7 +36,7 @@ public class TakeGoodsOrderListDto {
     private Integer status;
 
     @ApiModelProperty("仓库名称")
-    private String whName;
+    private Integer whName;
 
     //销售订单订单号
     @ApiModelProperty("销售订单订单号")
