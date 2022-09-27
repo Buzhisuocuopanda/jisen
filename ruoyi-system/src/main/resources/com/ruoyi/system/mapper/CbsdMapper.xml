@@ -355,34 +355,40 @@
   <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
 
 SELECT
-	pe.CBPE03 AS inWhTime,
-	sc.CBSC03 AS outWhTime,
-	oa.CBOA07 AS orderNo,
-	sd.CBSD08 AS goodsId,
-	sd.CBSD09 AS sn,
-	oa.CBOA16 AS currency,
-	ob.CBOB11 AS rPrice,
+    sd.CBSD08 AS goodsId,
+    sd.CBSD09 AS sn,
+    sc.CBSC03 AS outWhTime,
+    sc.CBSC09 AS qty,
+    ob.CBOB11 AS rPrice,
     ob.CBOB14 AS uPrice,
-	ca.CBCA09 AS suplierName,
-	sa.CBSA08 AS gc,
+    oa.CBOA07 AS orderNo,
+    oa.CBOA16 AS currency,
+    ca.CBCA09 AS suplierName,
+    pb.CBPB08 AS description,
+    pb.CBPB10 AS brand,
+    pb.CBPB12 AS model,
+
+	pe.CBPE03 AS inWhTime,
+    sa.CBSA08 AS gc,
 	pd.CBPD11 AS cgRprice,
-    pd.CBPD12 AS cgUprice,
-	pb.CBPB08 AS description,
-	pb.CBPB10 AS brand,
-	pb.CBPB12 AS model,
-	sc.CBSC09 AS qty
+    pd.CBPD12 AS cgUprice
+
+
 FROM
 	CBSD sd
-	LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01
-	LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
-	LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
-	LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
-	LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
-	LEFT JOIN CBPC pc ON pc.CBPC01 = pe.CBPC01
-	LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
-	LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
-	LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
+    LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01 and  sc.CBSC08 = sd.CBSD08
+    LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
+    LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
+    LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
+    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
     LEFT JOIN CBPB pb on sd.CBSD08 =pb.CBPB01
+
+    LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
+    LEFT JOIN CBPC pc ON pc.CBPC01 = pe.CBPC01 and pc.CBPC09 = pe.CBPE08
+    LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
+    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
+
+
 
     where sd.CBSD07 = 0
     <if test="saleOrderNo != null and saleOrderNo != ''">
@@ -393,8 +399,8 @@ FROM
       AND sb.CBSB10 = #{whId}
     </if>
 
-    <if test="customerName != null and customerName != ''">
-      AND ca.CBCA08 like concat('%', #{customerName}, '%')
+    <if test="customerId != null and customerId != ''">
+      AND ca.CBCA01 = #{customerId}
     </if>
 
     <if test="startTime != null">
@@ -407,5 +413,8 @@ FROM
 
 
   </select>
+
+
+
 
 </mapper>
