@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import lombok.SneakyThrows;
+
 import java.io.Serializable;
 import java.util.Date;
 

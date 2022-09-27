@@ -40,4 +40,6 @@ public interface IWarehousetransferordersService {
     int insertSwJsStoress(List<Cbac> itemList);
 
     void Warehousetransferorderseditone(CbaaDo cbaaDo);
+
+    int Selloutofwarehousedel(CbaaDo cbaaDo);
 }

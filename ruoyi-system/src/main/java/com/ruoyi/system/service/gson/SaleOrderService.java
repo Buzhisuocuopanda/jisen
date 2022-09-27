@@ -82,6 +82,11 @@ public interface SaleOrderService {
 
 
     void insertgoodsShop(Integer goodsId);
+
+
+    List<GoodsDetailAndSkuVo> goodsShopLists(List<GoodsPriceAndSkuDto> itemList);
+
+    void delgoodsShop(DelSaleOrderDto delSaleOrderDto);
 //    GsWorkInstance createTask();
 
 }

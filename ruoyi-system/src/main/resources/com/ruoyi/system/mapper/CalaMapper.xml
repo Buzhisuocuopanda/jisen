@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CalaMapper">
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CALA`
+    where CALA01 = #{cala01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `CALA`
+    where CALA01 = #{cala01,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cala">
+    update `CALA`
+    <set>
+      <if test="cala02 != null">
+        CALA02 = #{cala02,jdbcType=VARCHAR},
+      </if>
+      <if test="cala03 != null">
+        CALA03 = #{cala03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cala04 != null">
+        CALA04 = #{cala04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cala05 != null">
+        CALA05 = #{cala05,jdbcType=INTEGER},
+      </if>
+      <if test="cala06 != null">
+        CALA06 = #{cala06,jdbcType=INTEGER},
+      </if>
+      <if test="cala07 != null">
+        CALA07 = #{cala07,jdbcType=INTEGER},
+      </if>
+      <if test="cala08 != null">
+        CALA08 = #{cala08,jdbcType=VARCHAR},
+      </if>
+      <if test="cala09 != null">
+        CALA09 = #{cala09,jdbcType=VARCHAR},
+      </if>
+      <if test="cala10 != null">
+        CALA10 = #{cala10,jdbcType=VARCHAR},
+      </if>
+      <if test="cala11 != null">
+        CALA11 = #{cala11,jdbcType=VARCHAR},
+      </if>
+      <if test="cala12 != null">
+        CALA12 = #{cala12,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CALA01 = #{cala01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cala">
+    update `CALA`
+    set CALA02 = #{cala02,jdbcType=VARCHAR},
+      CALA03 = #{cala03,jdbcType=TIMESTAMP},
+      CALA04 = #{cala04,jdbcType=TIMESTAMP},
+      CALA05 = #{cala05,jdbcType=INTEGER},
+      CALA06 = #{cala06,jdbcType=INTEGER},
+      CALA07 = #{cala07,jdbcType=INTEGER},
+      CALA08 = #{cala08,jdbcType=VARCHAR},
+      CALA09 = #{cala09,jdbcType=VARCHAR},
+      CALA10 = #{cala10,jdbcType=VARCHAR},
+      CALA11 = #{cala11,jdbcType=VARCHAR},
+      CALA12 = #{cala12,jdbcType=VARCHAR}
+    where CALA01 = #{cala01,jdbcType=INTEGER}
+  </update>
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cala">
     <result column="CALA01" jdbcType="INTEGER" property="cala01" />
     <result column="CALA02" jdbcType="VARCHAR" property="cala02" />
@@ -256,26 +322,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <resultMap type="CALA" id="CALAResult">
-    <result property="cala01"    column="CALA01"    />
-    <result property="cala02"    column="CALA02"    />
-    <result property="cala03"    column="CALA03"    />
-    <result property="cala04"    column="CALA04"    />
-    <result property="cala05"    column="CALA05"    />
-    <result property="cala06"    column="CALA06"    />
-    <result property="cala07"    column="CALA07"    />
-    <result property="cala08"    column="CALA08"    />
-    <result property="cala09"    column="CALA09"    />
-    <result property="cala10"    column="CALA10"    />
-    <result property="cala11"    column="CALA11"    />
-    <result property="cala12"    column="CALA12"    />
+  <resultMap id="CALAResult" type="CALA">
+    <result column="CALA01" property="cala01" />
+    <result column="CALA02" property="cala02" />
+    <result column="CALA03" property="cala03" />
+    <result column="CALA04" property="cala04" />
+    <result column="CALA05" property="cala05" />
+    <result column="CALA06" property="cala06" />
+    <result column="CALA07" property="cala07" />
+    <result column="CALA08" property="cala08" />
+    <result column="CALA09" property="cala09" />
+    <result column="CALA10" property="cala10" />
+    <result column="CALA11" property="cala11" />
+    <result column="CALA12" property="cala12" />
   </resultMap>
   <sql id="selectCALAVo">
     select CALA01, CALA02, CALA03, CALA04, CALA05, CALA06, CALA07, CALA08, CALA09, CALA10, CALA11, CALA12 from CALA
   </sql>
 
   <select id="selectSwJsListList" parameterType="CALA" resultMap="CALAResult">
-    <include refid="selectCALAVo"/>
+    <include refid="selectCALAVo" />
     WHERE
       CALA07=0
     <if test="cala01 != null "> and CALA01 = #{cala01}</if>
@@ -291,7 +357,7 @@
     <if test="cala12 != null  and cala12 != ''"> and CALA12 like concat('%', #{cala12}, '%')</if>
   </select>
   <select id="selectSwJsListById" parameterType="Long" resultMap="CALAResult">
-    <include refid="selectCALAVo"/>
+    <include refid="selectCALAVo" />
   <where>
 
      CALA01 = #{cala01}

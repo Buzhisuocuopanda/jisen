@@ -68,7 +68,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         cbaa.setCbaa05(Math.toIntExact(userId));
         cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
 
-        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbaaDo.getCbaa10());
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNos(cbaaDo.getCbaa10());
 
         cbaa.setCbaa07(warehouseinitializationNo);
         cbaa.setCbaa11(TaskStatus.mr.getCode());
@@ -131,7 +131,8 @@ if(itemList.size()==0){
      */
     @Override
     public List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo) {
-        return cbaaMapper.selectSwJsTaskGoodsRelLists(cbaaVo);
+       return  cbaaMapper.selectSwJsTaskGoodsRelLists(cbaaVo);
+
     }
 
     /**
@@ -432,27 +433,32 @@ if(itemList.size()==0){
         if(cbaa01==null){
             throw new SwException("调拨单id不能为空");
         }
-        for(int i=0;i<cbaasVos.size();i++) {
-            CbacCriteria example = new CbacCriteria();
-            example.createCriteria().andCbaa01EqualTo(cbaa01)
-                    .andCbac08EqualTo(cbaasVos.get(i).getCbab08());
-            List<Cbac> cbacs = cbacMapper.selectByExample(example);
-            int size = cbacs.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(cbaasVos.get(i).getCbpa08());
-                scanVo.setPinpai(cbaasVos.get(i).getPinpai());
-                scanVo.setCbpb08(cbaasVos.get(i).getCbpb08());
-                scanVo.setCbpb12(cbaasVos.get(i).getCbpb12());
-                scanVo.setSn(cbacs.get(j).getCbac09());
-                scanVo.setKwm(cbaasVos.get(i).getCbla09());
-                scanVo.setCbpe03(cbacs.get(j).getCbac03());
-                goods.add(scanVo);
-            }
-            cbaasVos.get(i).setSaoma(size);
-        }
-        cbaasVos.get(0).setGoods(goods);
+        CbacCriteria example2 = new CbacCriteria();
+        example2.createCriteria().andCbac02EqualTo(cbaa01);
+        List<Cbac> cbacss = cbacMapper.selectByExample(example2);
 
+if(cbacss.size()>0) {
+    for (int i = 0; i < cbaasVos.size(); i++) {
+        CbacCriteria example = new CbacCriteria();
+        example.createCriteria().andCbaa01EqualTo(cbaa01)
+                .andCbac08EqualTo(cbaasVos.get(i).getCbab08());
+        List<Cbac> cbacs = cbacMapper.selectByExample(example);
+        int size = cbacs.size();
+        for (int j = 0; j < size; j++) {
+            ScanVo scanVo = new ScanVo();
+            scanVo.setLx(cbaasVos.get(i).getCbpa08());
+            scanVo.setPinpai(cbaasVos.get(i).getPinpai());
+            scanVo.setCbpb08(cbaasVos.get(i).getCbpb08());
+            scanVo.setCbpb12(cbaasVos.get(i).getCbpb12());
+            scanVo.setSn(cbacs.get(j).getCbac09());
+            scanVo.setKwm(cbaasVos.get(i).getCbla09());
+            scanVo.setCbpe03(cbacs.get(j).getCbac03());
+            goods.add(scanVo);
+        }
+        cbaasVos.get(i).setSaoma(size);
+    }
+    cbaasVos.get(0).setGoods(goods);
+}
         return cbaasVos;
     }
 
@@ -486,6 +492,19 @@ if(itemList.size()==0){
             uio.add(cbph08);
         }
 
+        Integer cbaa09 = cbaa1.getCbaa09();
+        GsGoodsSkuCriteria example5 = new GsGoodsSkuCriteria();
+        example5.createCriteria().andWhIdEqualTo(cbaa09);
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example5);
+        if (gsGoodsSkus.size() == 0) {
+            throw new SwException("调出仓库不存在库存中");
+        }
+        Set<Integer> nio = null;
+        for (int i = 0; i < gsGoodsSkus.size(); i++) {
+            Integer cbph08 = gsGoodsSkus.get(i).getWhId();
+            nio = new HashSet<>();
+            nio.add(cbph08);
+        }
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbacMapper mapper = session.getMapper(CbacMapper.class);
@@ -499,6 +518,11 @@ if(itemList.size()==0){
             if(!uio.contains(itemList.get(i).getCbac08())){
                 throw new SwException("该商品不在采购退货单明细中");
             }
+
+            if(!nio.contains(itemList.get(i).getCbac08())){
+                throw new SwException("该商品不在调出仓库中");
+            }
+
             Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbac10());
             if (cbla == null) {
                 throw new SwException("库位不存在");
@@ -663,6 +687,32 @@ if(itemList.size()==0){
         }
             return;
         }
+
+    @Override
+    public int Selloutofwarehousedel(CbaaDo cbaaDo) {
+if(cbaaDo.getCbaa01()==null){
+            throw new SwException("调拨单id不能为空");
+        }
+        Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaaDo.getCbaa01());
+if(cbaa1==null){
+            throw new SwException("调拨单不存在");
+        }
+if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能删除");
+        }
+
+
+        Long userId = SecurityUtils.getUserId();
+
+        Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
+        Date date = new Date();
+        cbaa.setCbaa01(cbaaDo.getCbaa01());
+        cbaa.setCbaa04(date);
+        cbaa.setCbaa05(Math.toIntExact(userId));
+        cbaa.setCbaa06(DeleteFlagEnum.DELETE.getCode());
+        cbaaMapper.updateByPrimaryKeySelective(cbaa);
+        return 1;
+    }
 
 
 }

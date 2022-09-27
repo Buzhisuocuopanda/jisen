@@ -123,8 +123,7 @@ private CbsaMapper cbsaMapper;
         //校验销售出库明细
         CbscCriteria use=new CbscCriteria();
         use.createCriteria()
-                .andCbsc15EqualTo(cbsaDto.getCbsa01())
-                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbsc15EqualTo(cbsaDto.getCbsa01());
         List<Cbsc> cbscs = cbscMapper.selectByExample(use);
         if(cbscs.size()>0){
             throw new SwException("在用供应商不可删除");

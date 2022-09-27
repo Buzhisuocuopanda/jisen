@@ -101,8 +101,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     @Override
     public List<TakeGoodsOrderListVo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto) {
 
-        List<TakeGoodsOrderListVo> res=cbpkMapper.takeOrderList(takeGoodsOrderListDto);
-
+         List<TakeGoodsOrderListVo> res=  cbpkMapper.takeOrderList(takeGoodsOrderListDto);
         return res;
     }
 

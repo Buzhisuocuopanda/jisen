@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -14,8 +15,10 @@ public class GsSalesOrdersDto {
 
     private Integer id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private Long createBy;
@@ -35,6 +38,7 @@ public class GsSalesOrdersDto {
     @NotNull(message = "客户id不能为空")
     private Integer customerId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date orderDate;
 
     private Byte status;

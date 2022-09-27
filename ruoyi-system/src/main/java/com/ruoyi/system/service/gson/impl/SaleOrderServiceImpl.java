@@ -2204,6 +2204,81 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     }
 
+    @Override
+    public List<GoodsDetailAndSkuVo> goodsShopLists(List<GoodsPriceAndSkuDto> itemList) {
+        List<GoodsDetailAndSkuVo> res=new ArrayList<>();
+        if(itemList.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        if(itemList.get(0).getCustomerId()==null){
+            throw new SwException("请选择客户");
+        }
+        if(itemList.get(0).getOrderClass()==null){
+            throw new SwException("请选择是国际订单还是国内订单");
+        }
+        Integer orderClass = itemList.get(0).getOrderClass();
+        Integer customerId = itemList.get(0).getCustomerId();
+        for (int i=0;i<itemList.size();i++) {
+            itemList.get(i).setCustomerId(customerId);
+            itemList.get(i).setOrderClass(orderClass);
+            GoodsPriceAndSkuVo goodsPriceAndSkuVo = this.goodsPriceAndSku(itemList.get(i));
+            if(goodsPriceAndSkuVo.getGoodsId()==null){
+                throw new SwException("没有查到该货物");
+            }
+            Integer goodsId = goodsPriceAndSkuVo.getGoodsId();
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsId);
+            if(cbpb==null){
+                throw new SwException("没有查到该货物");
+            }
+            if(cbpb.getCbpb10()==null){
+                throw new SwException("该货物品牌id为空");
+            }
+            Integer cbpb10 = cbpb.getCbpb10();
+
+            Cala cala = calaMapper.selectByPrimaryKey(cbpb10);
+            if(cala==null){
+                throw new SwException("没有查到该货物品牌");
+            }
+            if(goodsPriceAndSkuVo.getNormalPrice()==null){
+                throw new SwException("没有查到该货物的价格");
+            }
+            if(goodsPriceAndSkuVo.getCkSku()==null){
+                throw new SwException("没有查到该货物的库存");
+            }
+            if(goodsPriceAndSkuVo.getCanUseSku()==null){
+                throw new SwException("没有查到该货物的可用库存");
+            }
+            Double canUseSku = goodsPriceAndSkuVo.getCanUseSku();
+            Double ckSku = goodsPriceAndSkuVo.getCkSku();
+            Double normalPrice = goodsPriceAndSkuVo.getNormalPrice();
+            GoodsDetailAndSkuVo goodsDetailAndSkuVo=new GoodsDetailAndSkuVo();
+            goodsDetailAndSkuVo.setGoodsId(goodsId);
+            goodsDetailAndSkuVo.setGoodsBrand(cala.getCala08());
+            goodsDetailAndSkuVo.setGoodsModel(cbpb.getCbpb12());
+            goodsDetailAndSkuVo.setGoodsdatail(cbpb.getCbpb08());
+            goodsDetailAndSkuVo.setGoodsPrice(normalPrice);
+            goodsDetailAndSkuVo.setCkgoodsStock(ckSku);
+            goodsDetailAndSkuVo.setGoodsStock(canUseSku);
+           res.add(goodsDetailAndSkuVo);
+        }
+        return res;
+    }
+
+    @Override
+    public void delgoodsShop(DelSaleOrderDto delSaleOrderDto) {
+        Long userid = SecurityUtils.getUserId();
+Date date=new Date();
+        GsSaleShopping gsSaleShopping=new GsSaleShopping();
+        gsSaleShopping.setId(delSaleOrderDto.getOrderId());
+        gsSaleShopping.setUpdateBy(Math.toIntExact(userid));
+        gsSaleShopping.setUpdateTime(date);
+        gsSaleShopping.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
+        gsSaleShoppingMapper.updateByPrimaryKeySelective(gsSaleShopping);
+
+        return;
+    }
+
+
 //    @Override
 //    public GsWorkInstance createTask() {
 //

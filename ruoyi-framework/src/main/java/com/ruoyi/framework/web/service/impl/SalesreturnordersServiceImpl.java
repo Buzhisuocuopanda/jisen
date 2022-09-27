@@ -347,27 +347,35 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         if(cbse01==null){
             throw new SwException("销售退库单id不能为空");
         }
+        CbsgCriteria example1 = new CbsgCriteria();
+        example1.createCriteria().andCbse01EqualTo(cbse01);
+        List<Cbsg> cbsgss = cbsgMapper.selectByExample(example1);
+
+if(cbsgss.size()>0){
         for(int i=0;i<cbsesVos.size();i++) {
             CbsgCriteria example = new CbsgCriteria();
             example.createCriteria().andCbse01EqualTo(cbse01)
                     .andCbsg08EqualTo(cbsesVos.get(i).getCbsf08());
             List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
             int size = cbsgs.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(cbsesVos.get(i).getCbpa08());
-                scanVo.setPinpai(cbsesVos.get(i).getPinpai());
-                scanVo.setCbpb08(cbsesVos.get(i).getCbpb08());
-                scanVo.setCbpb12(cbsesVos.get(i).getCbpb12());
-                scanVo.setSn(cbsgs.get(j).getCbsg09());
-                scanVo.setKwm(cbsesVos.get(i).getCbla09());
-                scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
-                goods.add(scanVo);
-            }
+            if (size > 0) {
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(cbsesVos.get(i).getCbpa08());
+                    scanVo.setPinpai(cbsesVos.get(i).getPinpai());
+                    scanVo.setCbpb08(cbsesVos.get(i).getCbpb08());
+                    scanVo.setCbpb12(cbsesVos.get(i).getCbpb12());
+                    scanVo.setSn(cbsgs.get(j).getCbsg09());
+                    scanVo.setKwm(cbsesVos.get(i).getCbla09());
+                    scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
+                    goods.add(scanVo);
+                }
 
-            cbsesVos.get(i).setSaoma(size);
+                cbsesVos.get(i).setSaoma(size);
+
+            cbsesVos.get(0).setGoods(goods);
         }
-        cbsesVos.get(0).setGoods(goods);
+        }}
 
         return cbsesVos;
     }

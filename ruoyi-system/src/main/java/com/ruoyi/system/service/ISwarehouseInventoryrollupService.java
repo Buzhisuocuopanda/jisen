@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.Do.CbieDo;
 import com.ruoyi.system.domain.Do.CbifDo;
+import com.ruoyi.system.domain.Do.cbifsDo;
 import com.ruoyi.system.domain.vo.CbieVo;
 import com.ruoyi.system.domain.vo.CbifVo;
 import com.ruoyi.system.domain.vo.CbigVo;
@@ -32,5 +33,5 @@ public interface ISwarehouseInventoryrollupService {
 
     List<CbifVo> selectSwJsStoreList(CbifVo cbifVo);
 
-    String importWarehousedetailsinitialize(List<CbieDo> swJsGoodsList, boolean updateSupport, String operName);
+    String importWarehousedetailsinitialize(List<cbifsDo> swJsGoodsList, boolean updateSupport, String operName);
 }

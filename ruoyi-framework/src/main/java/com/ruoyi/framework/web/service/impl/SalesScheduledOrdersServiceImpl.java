@@ -28,6 +28,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -357,25 +358,33 @@ return;
         int i = gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
     }
 
+    @Transactional
     @Override
-    public void addSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
-
-
-        Long userid = SecurityUtils.getUserId();
-        GsSalesOrdersIn gsSalesOrdersIn  = BeanCopyUtils.coypToClass(gsSalesOrdersInDto, GsSalesOrdersIn.class, null);
+    public int addSubscribetotheinventoryslip(List<GsSalesOrdersIn>  itemList) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        GsSalesOrdersInMapper mapper = session.getMapper(GsSalesOrdersInMapper.class);
         Date date = new Date();
-        gsSalesOrdersIn.setCreateTime(date);
-        gsSalesOrdersIn.setUpdateTime(date);
-        gsSalesOrdersIn.setCreateBy(userid);
-        gsSalesOrdersIn.setUpdateBy(userid);
-        gsSalesOrdersIn.setDeleteFlag(String.valueOf(DeleteFlagEnum.NOT_DELETE.getCode()));
-        gsSalesOrdersIn.setPonumber(gsSalesOrdersInDto.getPonumber());
-        gsSalesOrdersIn.setGoodsId(gsSalesOrdersInDto.getGoodsId());
-        gsSalesOrdersIn.setInQty(gsSalesOrdersInDto.getInQty());
-        gsSalesOrdersIn.setGsSalesOrders(gsSalesOrdersInDto.getGsSalesOrders());
-        gsSalesOrdersIn.setStatus(TaskStatus.mr.getCode().byteValue());
-        gsSalesOrdersInMapper.insertSelective(gsSalesOrdersIn);
-            return;
+        Long userid = SecurityUtils.getUserId();
+        for (int i = 0; i < itemList.size(); i++) {
+            itemList.get(i).setCreateTime(date);
+            itemList.get(i).setUpdateTime(date);
+            itemList.get(i).setCreateBy(userid);
+            itemList.get(i).setUpdateBy(userid);
+            itemList.get(i).setDeleteFlag(String.valueOf(DeleteFlagEnum.NOT_DELETE.getCode()));
+//            gsSalesOrdersInDto.get(i).setPonumber(gsSalesOrdersInDto.getPonumber());
+//            gsSalesOrdersInDto.setGoodsId(gsSalesOrdersInDto.getGoodsId());
+//            gsSalesOrdersInDto.setInQty(gsSalesOrdersInDto.getInQty());
+//            gsSalesOrdersInDto.setGsSalesOrders(gsSalesOrdersInDto.getGsSalesOrders());
+            itemList.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
     @Override
@@ -538,29 +547,41 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
     }
 
+    @Transactional
     @Override
-    public void addGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public int addGsSalesOrdersChange(List<GsSalesOrdersChange>  gsSalesOrdersChangeDto) {
 
-        GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
-        BeanUtils.copyProperties(gsSalesOrdersChangeDto, gsSalesOrdersChange);
-        Long userid = SecurityUtils.getUserId();
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        GsSalesOrdersChangeMapper mapper = session.getMapper(GsSalesOrdersChangeMapper.class);
         Date date = new Date();
-        gsSalesOrdersChange.setCreateTime(date);
-        gsSalesOrdersChange.setCreateBy(userid);
-        gsSalesOrdersChange.setUpdateTime(date);
-        gsSalesOrdersChange.setUpdateBy(userid);
-        gsSalesOrdersChange.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
-        NumberDo numberDo = new NumberDo();
-        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
-        gsSalesOrdersChange.setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
-        gsSalesOrdersChange.setOrderDate(date);
-        gsSalesOrdersChange.setSalerId(gsSalesOrdersChangeDto.getSalerId());
-        gsSalesOrdersChange.setSupplierId(gsSalesOrdersChangeDto.getSupplierId());
-        gsSalesOrdersChange.setGoodsclassify(gsSalesOrdersChangeDto.getGoodsclassify());
-        gsSalesOrdersChange.setQty(gsSalesOrdersChangeDto.getQty());
-        gsSalesOrdersChange.setGsSalesOrders(gsSalesOrdersChangeDto.getGsSalesOrders());
-        gsSalesOrdersChange.setStatus(TaskStatus.mr.getCode().byteValue());
-        gsSalesOrdersChangeMapper.insertSelective(gsSalesOrdersChange);
+        Long userid = SecurityUtils.getUserId();
+//        GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
+//        BeanUtils.copyProperties(gsSalesOrdersChangeDto, gsSalesOrdersChange);
+        for (int i = 0; i < gsSalesOrdersChangeDto.size(); i++) {
+            gsSalesOrdersChangeDto.get(i).setCreateTime(date);
+            gsSalesOrdersChangeDto.get(i).setCreateBy(userid);
+            gsSalesOrdersChangeDto.get(i).setUpdateTime(date);
+            gsSalesOrdersChangeDto.get(i).setUpdateBy(userid);
+            gsSalesOrdersChangeDto.get(i).setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+            NumberDo numberDo = new NumberDo();
+            numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
+            gsSalesOrdersChangeDto.get(i).setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
+            gsSalesOrdersChangeDto.get(i).setOrderDate(date);
+//            gsSalesOrdersChangeDto.get(i).setSalerId(gsSalesOrdersChangeDto.getSalerId());
+//            gsSalesOrdersChangeDto.setSupplierId(gsSalesOrdersChangeDto.getSupplierId());
+//            gsSalesOrdersChangeDto.setGoodsclassify(gsSalesOrdersChangeDto.getGoodsclassify());
+//            gsSalesOrdersChangeDto.setQty(gsSalesOrdersChangeDto.getQty());
+//            gsSalesOrdersChangeDto.setGsSalesOrders(gsSalesOrdersChangeDto.getGsSalesOrders());
+            gsSalesOrdersChangeDto.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
+            mapper.insertSelective(gsSalesOrdersChangeDto.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
     @Override

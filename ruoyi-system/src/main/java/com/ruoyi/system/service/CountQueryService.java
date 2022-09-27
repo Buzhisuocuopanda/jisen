@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CountQueryService {
     List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto);
+    List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto);
 
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 

@@ -409,12 +409,19 @@ ORDER BY
     <if test="startTime != null">
       and pk.CBPK07 like concat('%', #{orderNo}, '%')
     </if>
-    <if test="startTime != null">
-      and pk.CBPK08  &gt;= #{startTime}
+<!--    <if test="startTime != null">-->
+<!--      and pk.CBPK08  &gt;= #{startTime}-->
+<!--    </if>-->
+<!--    <if test="endTime != null">-->
+<!--      and pk.CBPK08  &lt;=#{endTime}-->
+<!--    </if>-->
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+       and date_format(pk.CBPK08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
-    <if test="endTime != null">
-      and pk.CBPK08  &lt;=#{endTime}
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(pk.CBPK08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+
     <if test="customerName != null and customerName != ''" >
 
       and ca.CBCA08 like concat('%', #{customerName}, '%')

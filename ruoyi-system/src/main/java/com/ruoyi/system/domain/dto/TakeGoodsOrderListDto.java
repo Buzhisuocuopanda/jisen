@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.dto;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  * Date 2022/8/10 17:10
  */
 @Data
-public class TakeGoodsOrderListDto {
+public class TakeGoodsOrderListDto extends BaseEntity {
 
 
     //编号

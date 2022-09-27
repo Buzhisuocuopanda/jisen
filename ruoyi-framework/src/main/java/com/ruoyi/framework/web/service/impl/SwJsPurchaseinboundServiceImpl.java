@@ -63,6 +63,15 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
    @Resource
    private CblaMapper cblaMapper;
 
+   @Resource
+   private CbwaMapper cbwaMapper;
+
+   @Resource
+   private CalaMapper calaMapper;
+
+   @Resource
+   private CbpbMapper cbpbMapper;
+
 
 
 @Resource
@@ -236,6 +245,9 @@ private NumberGenerate numberGenerate;
                  taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
              }*/
+
+
+
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
                 gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
@@ -270,11 +282,51 @@ private NumberGenerate numberGenerate;
 
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
+        if(itemList.get(0).getStorename()==null){
+            throw new SwException("仓库名称不能为空");
+        }
+        String storename = itemList.get(0).getStorename();
+        CbwaCriteria cbwaCriteria = new CbwaCriteria();
+        cbwaCriteria.createCriteria().andCbwa09EqualTo(storename);
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(cbwaCriteria);
+        if(cbwas.size()==0){
+            throw new SwException("仓库不存在");
+        }
+        if(Objects.isNull(itemList.get(0).getSuppierName())){
+            throw new SwException("供应商名称不能为空");
+
+        }
+        CbsaCriteria cbsaCriteria = new CbsaCriteria();
+        cbsaCriteria.createCriteria().andCbsa08EqualTo(itemList.get(0).getSuppierName());
+        List<Cbsa> cbsas = cbsaMapper.selectByExample(cbsaCriteria);
+        if(cbsas.size()==0){
+            throw new SwException("供应商不存在");
+        }
+
+        if(Objects.isNull(itemList.get(0).getMoneytype())){
+            throw new SwException("货币类形不能为空");
+        }
+         CalaCriteria calaCriteria = new CalaCriteria();
+        calaCriteria.createCriteria()
+                .andCala08EqualTo(itemList.get(0).getMoneytype())
+                .andCala10EqualTo("币种");
+        List<Cala> calas = calaMapper.selectByExample(calaCriteria);
+            if(calas.size()==0){
+                throw new SwException("货币类形不存在");
+            }
+
+
+
+        Integer cala01 = calas.get(0).getCala01();
+        Integer cbsa01 = cbsas.get(0).getCbsa01();
+
+        Integer cbwa01 = cbwas.get(0).getCbwa01();
+
         Date cbpc08 = itemList.get(0).getCbpc08();
         Integer cbpc09 = itemList.get(0).getCbpc09();
         Integer cbpc10 = itemList.get(0).getCbpc10();
         Integer cbpc16 = itemList.get(0).getCbpc16();
-        String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpc10);
+        String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbwa01);
 
         Cbpc cbpc = new Cbpc();
         cbpc.setCbpc02(date);
@@ -284,22 +336,44 @@ private NumberGenerate numberGenerate;
         cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpc.setCbpc07(purchaseinboundNo);
         cbpc.setCbpc08(date);
-        cbpc.setCbpc09(cbpc09);
-        cbpc.setCbpc10(cbpc10);
-        cbpc.setCbpc16(cbpc16);
+        cbpc.setCbpc09(cbsa01);
+        cbpc.setCbpc10(cbwa01);
+        cbpc.setCbpc11(TaskStatus.mr.getCode());
+        cbpc.setCbpc16(cala01);
         cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpcMapper.insertSelective(cbpc);
+CbpcCriteria cbpcCriteria = new CbpcCriteria();
+        cbpcCriteria.createCriteria().andCbpc07EqualTo(purchaseinboundNo);
+        List<Cbpc> cbpcs = cbpcMapper.selectByExample(cbpcCriteria);
+        Integer cbpc01 = cbpcs.get(0).getCbpc01();
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpdMapper mapper = session.getMapper(CbpdMapper.class);
 
         for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getGoodtype())){
+                throw new SwException("商品不能为空");
+            }
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodtype());
+            List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+            if(cbpbs.size()==0){
+                throw new SwException("商品不存在");
+            }
+            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+
+
             itemList.get(i).setCbpd03(date);
             itemList.get(i).setCbpd04(Math.toIntExact(userid));
             itemList.get(i).setCbpd05(date);
             itemList.get(i).setCbpd06(Math.toIntExact(userid));
             itemList.get(i).setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setCbpd08(cbpb01);
+            itemList.get(i).setCbpd09(itemList.get(i).getCbpd09());
+            itemList.get(i).setCbpd11(itemList.get(i).getCbpd11());
+            itemList.get(i).setCbpd13(itemList.get(i).getCbpd13());
+            itemList.get(i).setCbpc01(cbpc01);
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -329,6 +403,7 @@ private NumberGenerate numberGenerate;
             itemList.get(i).setCbpd06(Math.toIntExact(userid));
             itemList.get(i).setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -820,10 +895,8 @@ private NumberGenerate numberGenerate;
 
         //标记完成不可删除
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(cbpc1.getCbpc11().equals(TaskStatus.bjwc.getCode()) ||
-                cbpc1.getCbpc11().equals(TaskStatus.qxwc.getCode()) ||
-                cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())  ){
-            throw new SwException("非反审或默认不可删除");
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("默认情况才能删除");
         }
         Integer storeid = cbpc1.getCbpc10();
         CbpdCriteria example1=new CbpdCriteria();
@@ -945,29 +1018,35 @@ private NumberGenerate numberGenerate;
         if (cbpc01 == null) {
             throw new SwException("采购入库单id不能为空");
         }
+        CbpeCriteria example4 = new CbpeCriteria();
+        example4.createCriteria().andCbpc01EqualTo(cbpc01);
+        List<Cbpe> cbpess = cbpeMapper.selectByExample(example4);
+        if(cbpess.size()>0){
+
         for (int i = 0; i < infossss.size(); i++) {
             CbpeCriteria example = new CbpeCriteria();
             example.createCriteria().andCbpc01EqualTo(cbpc01)
                     .andCbpe08EqualTo(infossss.get(i).getCbpd08());
             List<Cbpe> cbpes = cbpeMapper.selectByExample(example);
             int size = cbpes.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(infossss.get(i).getCbpa07());
-                scanVo.setPinpai(infossss.get(i).getCala08());
-                scanVo.setCbpb08(infossss.get(i).getCbpb08());
-                scanVo.setCbpb12(infossss.get(i).getCbpb12());
-                scanVo.setSn(cbpes.get(j).getCbpe09());
-                scanVo.setKwm(infossss.get(i).getCbla09());
-                scanVo.setCbpe03(cbpes.get(j).getCbpe03());
-                goods.add(scanVo);
+            if (size > 0) {
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(infossss.get(i).getCbpa07());
+                    scanVo.setPinpai(infossss.get(i).getCala08());
+                    scanVo.setCbpb08(infossss.get(i).getCbpb08());
+                    scanVo.setCbpb12(infossss.get(i).getCbpb12());
+                    scanVo.setSn(cbpes.get(j).getCbpe09());
+                    scanVo.setKwm(infossss.get(i).getCbla09());
+                    scanVo.setCbpe03(cbpes.get(j).getCbpe03());
+                    goods.add(scanVo);
+                }
+                infossss.get(i).setSaoma(size);
+
             }
-            infossss.get(i).setSaoma(size);
-
-        }
-        infossss.get(0).setGoods(goods);
-       // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
-
+            infossss.get(0).setGoods(goods);
+            // List<CbpcVo> list = new ArrayList<CbpcVo>(select);
+        }}
         return infossss;
     }
 

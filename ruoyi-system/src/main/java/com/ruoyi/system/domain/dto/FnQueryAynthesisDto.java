@@ -23,6 +23,8 @@ public class FnQueryAynthesisDto {
 
     //客户名称
     private String customerName;
+    //客户id
+    private Integer customerId;
 
     //开始日期
     private Date startTime;

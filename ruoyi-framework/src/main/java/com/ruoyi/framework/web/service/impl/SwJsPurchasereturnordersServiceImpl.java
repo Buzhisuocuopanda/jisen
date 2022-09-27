@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -78,6 +75,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Resource
     private CbsaMapper cbsaMapper;
+
+    @Resource
+    private CbwaMapper cbwaMapper;
+
+    @Resource
+    private CalaMapper calaMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
 
     /**
      * 新增采购退货主单
@@ -336,13 +342,49 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     @Transactional
     @Override
     public int insertSwJsStores(List<CbpgDo> itemList) {
+        if(Objects.isNull(itemList.get(0).getSuppierName())){
+            throw new SwException("供应商名称不能为空");
+
+        }
+        CbsaCriteria cbsaCriteria = new CbsaCriteria();
+        cbsaCriteria.createCriteria().andCbsa08EqualTo(itemList.get(0).getSuppierName());
+        List<Cbsa> cbsas = cbsaMapper.selectByExample(cbsaCriteria);
+        if(cbsas.size()==0){
+            throw new SwException("供应商不存在");
+        }
+        Integer cbsa01 = cbsas.get(0).getCbsa01();
+        if(itemList.get(0).getStorename()==null){
+            throw new SwException("仓库名称不能为空");
+        }
+        String storename = itemList.get(0).getStorename();
+        CbwaCriteria cbwaCriteria = new CbwaCriteria();
+        cbwaCriteria.createCriteria().andCbwa09EqualTo(storename);
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(cbwaCriteria);
+        if(cbwas.size()==0){
+            throw new SwException("仓库不存在");
+        }
+        Integer cbwa01 = cbwas.get(0).getCbwa01();
+
+        if(Objects.isNull(itemList.get(0).getMoneytype())){
+            throw new SwException("货币类形不能为空");
+        }
+        CalaCriteria calaCriteria = new CalaCriteria();
+        calaCriteria.createCriteria()
+                .andCala08EqualTo(itemList.get(0).getMoneytype())
+                .andCala10EqualTo("币种");
+        List<Cala> calas = calaMapper.selectByExample(calaCriteria);
+        if(calas.size()==0){
+            throw new SwException("货币类形不存在");
+        }
+        Integer cala01 = calas.get(0).getCala01();
+
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         Date cbpg08 = itemList.get(0).getCbpg08();
-        Integer cbpg09 = itemList.get(0).getCbpg09();
         Integer cbpg10 = itemList.get(0).getCbpg10();
         Integer cbpg16 = itemList.get(0).getCbpg16();
-        String purchaseinboundNo = numberGenerate.getPurchasereturnNo(cbpg10);
+        String purchaseinboundNo = numberGenerate.getPurchasereturnNo(cbwa01);
 
         Cbpg cbpg = new Cbpg();
         cbpg.setCbpg02(date);
@@ -352,22 +394,46 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpg.setCbpg07(purchaseinboundNo);
         cbpg.setCbpg08(date);
-        cbpg.setCbpg09(cbpg09);
-        cbpg.setCbpg10(cbpg10);
-        cbpg.setCbpg16(cbpg16);
+        cbpg.setCbpg09(cbsa01);
+        cbpg.setCbpg10(cbwa01);
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
+        cbpg.setCbpg16(cala01);
         cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpgMapper.insertSelective(cbpg);
+
+        CbpgCriteria cbpgCriteria = new CbpgCriteria();
+        cbpgCriteria.createCriteria().andCbpg07EqualTo(purchaseinboundNo);
+        List<Cbpg> cbpgs = cbpgMapper.selectByExample(cbpgCriteria);
+        Integer cbpg01 = cbpgs.get(0).getCbpg01();
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbphMapper mapper = session.getMapper(CbphMapper.class);
 
         for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getGoodtype())){
+                throw new SwException("商品不能为空");
+            }
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodtype());
+            List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+            if(cbpbs.size()==0){
+                throw new SwException("商品不存在");
+            }
+            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+
+
             itemList.get(i).setCbph03(date);
             itemList.get(i).setCbph04(Math.toIntExact(userid));
             itemList.get(i).setCbph05(date);
             itemList.get(i).setCbph06(Math.toIntExact(userid));
             itemList.get(i).setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setCbph08(cbpb01);
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setCbpg01(cbpg01);
+            itemList.get(i).setCbph09(itemList.get(0).getCbph09());
+            itemList.get(i).setCbph10(itemList.get(0).getCbph10());
+            itemList.get(i).setCbph13(itemList.get(0).getCbph13());
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -536,29 +602,32 @@ for(int i=0;i<cbphs.size();i++) {
 
 
         Integer cbpg01 = cbpgVo.getCbpg01();
+        CbpiCriteria example1 = new CbpiCriteria();
+        example1.createCriteria().andCbpg01EqualTo(cbpg01);
+        List<Cbpi> cbpiss = cbpiMapper.selectByExample(example1);
+        if(cbpiss.size()>0) {
+            for (int i = 0; i < infoss.size(); i++) {
 
-        for(int i=0;i<infoss.size();i++) {
-
-            CbpiCriteria example = new CbpiCriteria();
-            example.createCriteria().andCbpg01EqualTo(cbpg01)
-                    .andCbpi08EqualTo(infoss.get(i).getCbph08());
-            List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
-            int size = cbpis.size();
-            for(int j=0;j<size;j++){
-                ScanVo scanVo = new ScanVo();
-                scanVo.setLx(infoss.get(i).getCbpa08());
-                scanVo.setPinpai(infoss.get(i).getPinpai());
-                scanVo.setCbpb08(infoss.get(i).getCbpb08());
-                scanVo.setCbpb12(infoss.get(i).getCbpb12());
-                scanVo.setSn(infoss.get(j).getCbpi09());
-                scanVo.setKwm(infoss.get(i).getCbla09());
-                scanVo.setCbpe03(infoss.get(j).getCbpi03());
-                goods.add(scanVo);
+                CbpiCriteria example = new CbpiCriteria();
+                example.createCriteria().andCbpg01EqualTo(cbpg01)
+                        .andCbpi08EqualTo(infoss.get(i).getCbph08());
+                List<Cbpi> cbpis = cbpiMapper.selectByExample(example);
+                int size = cbpis.size();
+                for (int j = 0; j < size; j++) {
+                    ScanVo scanVo = new ScanVo();
+                    scanVo.setLx(infoss.get(i).getCbpa08());
+                    scanVo.setPinpai(infoss.get(i).getPinpai());
+                    scanVo.setCbpb08(infoss.get(i).getCbpb08());
+                    scanVo.setCbpb12(infoss.get(i).getCbpb12());
+                    scanVo.setSn(infoss.get(j).getCbpi09());
+                    scanVo.setKwm(infoss.get(i).getCbla09());
+                    scanVo.setCbpe03(infoss.get(j).getCbpi03());
+                    goods.add(scanVo);
+                }
+                infoss.get(i).setSaoma(size);
             }
-            infoss.get(i).setSaoma(size);
+            infoss.get(0).setGoods(goods);
         }
-        infoss.get(0).setGoods(goods);
-
         return infoss;
     }
     /**

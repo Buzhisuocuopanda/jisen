@@ -694,6 +694,7 @@
     <if test="orderNo != null and orderNo != ''" >
       and pk.CBPK07 like  concat('%', #{orderNo}, '%')
     </if>
+      order by pk.CBPK08 desc
   </select>
 
   <select id="selectLastBySaleOrderNo" resultMap="BaseResultMap">
