@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.vo;
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class InwuquVo {
     @Excel(name = "大类")
@@ -22,8 +24,10 @@ public class InwuquVo {
     @Excel(name = "描述")
     private String cbpb08;
 
-    @Excel(name = "数量")
-    private Double cbif09;
+ /*   @Excel(name = "数量")
+    private Double cbif09;*/
+     @Excel(name = "数量")
+     private Double cbib15;
 
     @Excel(name = "仓库")
     private String cbwa09;
@@ -34,6 +38,19 @@ public class InwuquVo {
     private Integer cbpb01;
 
     private Integer shopping;
+    private Integer cbib01;
+    private Integer cbib02;
+    private Integer cbib08;
+
+
+
+    private Date cbib04;
+
+    private Integer cbpb10;
+    //商品分类id
+    private Integer cbpb14;
+
+
 
 
 }
