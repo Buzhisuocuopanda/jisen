@@ -27,7 +27,7 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
-        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery2(inwuquDto);
+        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
@@ -79,7 +79,9 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Override
     public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
+        //商品品牌的map
         Map<Integer, String> brandMap = baseCheckService.brandMap();
+        //商品分类的map
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
         for(int i=0;i<inwuquVos.size();i++){
@@ -88,6 +90,7 @@ public class CountQueryServiceImpl implements CountQueryService {
                 if(inwuquVos.get(i).getCbpb10()!=null){
                     inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
                 }
+                //根据分类id查询商品分类名称和大类名称
                 if(inwuquVos.get(i).getCbpb14()!=null){
                     Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
                     if(cbpa!=null){
@@ -100,6 +103,7 @@ public class CountQueryServiceImpl implements CountQueryService {
                         }
                     }
                 }
+                //查询对应商品和仓库的货物占用记录，并
                 if(inwuquVos.get(i).getCbib08()!=null){
                     List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByGoodsId2(inwuquVos.get(i).getCbib02());
                     Double sum =0d;

@@ -502,14 +502,58 @@ where
 
   </select>
 
-  <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
-    select t.CBPB14,t.CBPB10,t.CBPB12,t.CBPB15,t.CBPB08,t.CBPB01,SUM(t.CBIB15) cbib15 from
-    (SELECT ib.CBIB01,ib.CBIB02,ib.CBIB08,ib.CBIB15, pb.CBPB08, pb.CBPB15, pb.CBPB12,pb.CBPB10,pb.CBPB14,pb.CBPB01,
-    wa.CBWA09,max(ib.CBIB04) CBIB04
-    FROM CBIB ib
+
+  <select id="selectInventorysummaryquery4"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
+    SELECT
+    ib.CBIB01,
+    ib.CBIB02,
+    ib.CBIB08,
+    ib.CBIB15,
+    pb.CBPB08,
+    pb.CBPB15,
+    pb.CBPB12,
+    pb.CBPB10,
+    pb.CBPB14,
+    pb.CBPB01,
+    wa.CBWA09
+    FROM
+    CBIB ib
     LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
     LEFT JOIN CBWA wa ON wa.CBWA01 = ib.CBIB02
-    GROUP BY ib.CBIB08,ib.CBIB02) t
+
+    WHERE
+    ib.CBIB01 IN ( SELECT max( tb.CBIB01 ) FROM CBIB tb GROUP BY tb.CBIB08, tb.CBIB02 )
+    <if test="cbwa09s != null">
+      and wa.CBWA09 in
+      <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
+    </if>
+    <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
+    <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
+  </select>
+
+  <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
+    select t.CBPB14,t.CBPB10,t.CBPB12,t.CBPB15,t.CBPB08,t.CBPB01,SUM(t.CBIB15) cbib15 from
+    (SELECT
+    ib.CBIB01,
+    ib.CBIB02,
+    ib.CBIB08,
+    ib.CBIB15,
+    pb.CBPB08,
+    pb.CBPB15,
+    pb.CBPB12,
+    pb.CBPB10,
+    pb.CBPB14,
+    pb.CBPB01,
+    wa.CBWA09
+    FROM
+    CBIB ib
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
+    LEFT JOIN CBWA wa ON wa.CBWA01 = ib.CBIB02
+    WHERE
+    ib.CBIB01 IN ( SELECT max( tb.CBIB01 ) FROM CBIB tb GROUP BY tb.CBIB08, tb.CBIB02 )) t
+
     GROUP BY t.CBIB08
     HAVING 1=1
     <if test="classId != null "> and t.CBPB14 = #{classId} </if>
@@ -584,16 +628,9 @@ where
     SELECT
       b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
       a.CBIB09,a.CBIB10,a.CBIB11,b.CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
-    FROM
-      CBIB a
-        LEFT JOIN
-      CBWA b
-      on
-        a.CBIB02=b.CBWA01
-        LEFT JOIN
-      CBPB c
-      ON
-        c.CBPB01=a.CBIB08
+    FROM CBIB a
+        LEFT JOIN CBWA b on a.CBIB02=b.CBWA01
+        LEFT JOIN CBPB c ON c.CBPB01=a.CBIB08
     WHERE
     b.CBWA06=0
     <if test="cbib17 != null and cbib17 != ''">
@@ -602,6 +639,10 @@ where
     <if test="cbwa09 != null and cbwa09 != ''">
       or b.CBWA09 like concat('%', #{cbwa09}, '%'))
     </if>
+    <if test="cbpb01 != null">
+      and a.CBIB08 = #{cbpb01}
+    </if>
+
 
     <if test="startTime != null">
       and a.cbib04 &gt;= #{startTime}

@@ -57,4 +57,7 @@ public class LedgerVo extends BaseEntity {
     private Date startTime;
 
     private Date endTime;
+
+    //商品id,加查询条件
+    private Integer cbpb01;
 }
