@@ -63,12 +63,16 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
-        Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
+       // Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
 
         Long userid = SecurityUtils.getUserId();
 
         //获取仓库id
         Cbla cbla = cblaMapper.selectByPrimaryKey(cbicDto.getCbic08());
+        if(cbla==null){
+            throw new SwException("找不到该仓库");
+
+        }
         Integer storeid = cbla.getCbla10();
         //回写生产总订单id
         DirectWarehousingDto directWarehousingDto = new DirectWarehousingDto();

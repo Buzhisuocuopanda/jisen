@@ -71,6 +71,14 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             throw new SwException("upc已存在");
         }
 
+        CbpbCriteria examples = new CbpbCriteria();
+        examples.createCriteria().andCbpb12EqualTo(cbpbDo.getCbpb12());
+        List<Cbpb> cbpbs1 = cbpbMapper.selectByExample(examples);
+        if(cbpbs1.size()>0){
+            throw new SwException("商品型号已存在");
+
+        }
+
         List<CbpfDo> goods = cbpbDo.getGoods();
 //        if(goods.size()==0){
 //            throw new SwException("结算货币不能为空");

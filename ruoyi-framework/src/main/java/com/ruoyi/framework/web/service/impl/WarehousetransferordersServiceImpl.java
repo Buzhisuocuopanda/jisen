@@ -131,7 +131,8 @@ if(itemList.size()==0){
      */
     @Override
     public List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo) {
-        return cbaaMapper.selectSwJsTaskGoodsRelLists(cbaaVo);
+       return  cbaaMapper.selectSwJsTaskGoodsRelLists(cbaaVo);
+
     }
 
     /**
@@ -491,6 +492,19 @@ if(cbacss.size()>0) {
             uio.add(cbph08);
         }
 
+        Integer cbaa09 = cbaa1.getCbaa09();
+        GsGoodsSkuCriteria example5 = new GsGoodsSkuCriteria();
+        example5.createCriteria().andWhIdEqualTo(cbaa09);
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example5);
+        if (gsGoodsSkus.size() == 0) {
+            throw new SwException("调出仓库不存在库存中");
+        }
+        Set<Integer> nio = null;
+        for (int i = 0; i < gsGoodsSkus.size(); i++) {
+            Integer cbph08 = gsGoodsSkus.get(i).getWhId();
+            nio = new HashSet<>();
+            nio.add(cbph08);
+        }
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbacMapper mapper = session.getMapper(CbacMapper.class);
@@ -504,6 +518,11 @@ if(cbacss.size()>0) {
             if(!uio.contains(itemList.get(i).getCbac08())){
                 throw new SwException("该商品不在采购退货单明细中");
             }
+
+            if(!nio.contains(itemList.get(i).getCbac08())){
+                throw new SwException("该商品不在调出仓库中");
+            }
+
             Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbac10());
             if (cbla == null) {
                 throw new SwException("库位不存在");

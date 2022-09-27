@@ -468,7 +468,7 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbaaVo">
     SELECT
-      a.CBAA01, a.CBAA07,a.CBAA08,b.CBWA09,b.CBWA10,d.CALA08,a.CBAA18,a.CBAA19,a.CBAA11
+      a.CBAA01, a.CBAA07,a.CBAA08,b.CBWA09,c.CBWA10,d.CALA08,a.CBAA18,a.CBAA19,a.CBAA11
 
     from
       CBAA a

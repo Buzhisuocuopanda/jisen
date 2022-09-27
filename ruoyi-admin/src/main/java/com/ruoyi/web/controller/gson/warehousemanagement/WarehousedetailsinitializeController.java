@@ -14,6 +14,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbig;
 import com.ruoyi.system.domain.Do.CbieDo;
 import com.ruoyi.system.domain.Do.CbigDo;
+import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.vo.CbieVo;
 import com.ruoyi.system.domain.vo.CbigVo;
 import com.ruoyi.system.domain.vo.IdVo;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -316,11 +318,11 @@ public class WarehousedetailsinitializeController extends BaseController {
     }
 
     /**
-     * 导入库存明细初始化主表
+     * 导入库存明细初始化
      */
     @ApiOperation(
-            value ="导入库存明细初始化主表",
-            notes = "导入库存明细初始化主表"
+            value ="导入库存明细初始化",
+            notes = "导入库存明细初始化"
     )
     @PostMapping("/importSwJsGoods")
     @PreAuthorize("@ss.hasPermi('system:swJsStorea:import')")
@@ -350,6 +352,18 @@ public class WarehousedetailsinitializeController extends BaseController {
         }
     }
 
-
+    /**
+     * 导入库存明细初始化下载模板
+     */
+    @ApiOperation(
+            value ="导入库存明细初始化下载模板",
+            notes = "导入库存明细初始化下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<CbieDo> util = new ExcelUtil<CbieDo>(CbieDo.class);
+        util.importTemplateExcel(response,"导入库存明细初始化");
+    }
 
 }

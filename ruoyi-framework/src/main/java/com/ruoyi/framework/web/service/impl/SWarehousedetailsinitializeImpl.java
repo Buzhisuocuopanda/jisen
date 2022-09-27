@@ -14,9 +14,7 @@ import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbieVo;
 import com.ruoyi.system.domain.vo.CbigVo;
 import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.mapper.CbieMapper;
-import com.ruoyi.system.mapper.CbigMapper;
-import com.ruoyi.system.mapper.CbsaMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWarehousedetailsinitializeService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
@@ -31,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 @Slf4j
 @Service
 public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitializeService {
@@ -49,7 +49,19 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
     private CbsaMapper cbsaMapper;
 
     @Resource
+    private CbwaMapper cbwaMapper;
+
+    @Resource
     private  NumberGenerate numberGenerate;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
+    @Resource
+    private CalaMapper calaMapper;
+
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
@@ -282,7 +294,9 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (CbieDo swJsGoods : swJsGoodsList)
+        this.insertSwJsStoress(swJsGoodsList);
+
+        /*for (CbieDo swJsGoods : swJsGoodsList)
         {
             try {
                 // 验证是否存在这个用户
@@ -310,7 +324,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
                 failureMsg.append(msg).append(e.getMessage());
                 log.error(msg, e);
             }
-        }
+        }*/
         if (failureNum > 0)
         {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
@@ -321,4 +335,113 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();    }
+
+    private void insertSwJsStoress(List<CbieDo> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("导入数据为空");
+        }
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        if(itemList.get(0).getStorename()==null){
+            throw new SwException("仓库名称不能为空");
+        }
+        String storename = itemList.get(0).getStorename();
+        CbwaCriteria cbwaCriteria = new CbwaCriteria();
+        cbwaCriteria.createCriteria().andCbwa09EqualTo(storename);
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(cbwaCriteria);
+        if(cbwas.size()==0){
+            throw new SwException("仓库不存在");
+        }
+        Integer cbwa01 = cbwas.get(0).getCbwa01();
+        if(Objects.isNull(itemList.get(0).getMoneytype())){
+            throw new SwException("货币类形不能为空");
+        }
+        CalaCriteria calaCriteria = new CalaCriteria();
+        calaCriteria.createCriteria()
+                .andCala08EqualTo(itemList.get(0).getMoneytype())
+                .andCala10EqualTo("币种");
+        List<Cala> calas = calaMapper.selectByExample(calaCriteria);
+        if(calas.size()==0){
+            throw new SwException("货币类形不存在");
+        }
+        Integer cala01 = calas.get(0).getCala01();
+
+        Cbie cbie = new Cbie();
+        cbie.setCbie02(date);
+        cbie.setCbie03(Math.toIntExact(userid));
+        cbie.setCbie04(date);
+        cbie.setCbie05(Math.toIntExact(userid));
+        cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbie.setCbie09(cbwa01);
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbwa01);
+        cbie.setCbie07(warehouseinitializationNo);
+        cbie.setCbie16(cala01);
+        cbieMapper.insertSelective(cbie);
+
+        CbieCriteria cbieCriteria = new CbieCriteria();
+        cbieCriteria.createCriteria().andCbie07EqualTo(warehouseinitializationNo);
+        List<Cbie> cbies = cbieMapper.selectByExample(cbieCriteria);
+        Integer cbie01 = cbies.get(0).getCbie01();
+
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbigMapper mapper = session.getMapper(CbigMapper.class);
+        for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getGoodtype())){
+                throw new SwException("商品型号不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getGoodupc())){
+                throw new SwException("upc不能为空");
+            }
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodtype());
+            List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+            if(cbpbs.size()==0){
+                throw new SwException("商品不存在");
+            }
+            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+            if(Objects.isNull(itemList.get(i).getSuppierName())){
+                throw new SwException("供应商名称不能为空");
+
+            }
+            CbsaCriteria cbsaCriteria = new CbsaCriteria();
+            cbsaCriteria.createCriteria().andCbsa08EqualTo(itemList.get(0).getSuppierName());
+            List<Cbsa> cbsas = cbsaMapper.selectByExample(cbsaCriteria);
+            if(cbsas.size()==0){
+                throw new SwException("供应商不存在");
+            }
+            Integer cbsa01 = cbsas.get(i).getCbsa01();
+
+            if(Objects.isNull(itemList.get(i).getStoreskunumber())){
+                throw new SwException("库位码不能为空");
+
+            }
+              CblaCriteria cblaCriteria = new CblaCriteria();
+            cblaCriteria.createCriteria().andCbla09EqualTo(itemList.get(i).getStoreskunumber());
+            List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
+            if(cblas.size()==0){
+                throw new SwException("库位码不存在");
+            }
+            Integer cbla01 = cblas.get(i).getCbla01();
+
+            itemList.get(i).setCbig03(date);
+            itemList.get(i).setCbig04(Math.toIntExact(userid));
+            itemList.get(i).setCbig05(date);
+            itemList.get(i).setCbig06(Math.toIntExact(userid));
+            itemList.get(i).setCbig07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setCbig08(cbla01);
+            itemList.get(i).setCbig09(cbpb01);
+            itemList.get(i).setCbig11(itemList.get(i).getCbig11());
+            itemList.get(i).setCbig13(itemList.get(i).getCbig13());
+            itemList.get(i).setCbig14(cbsa01);
+
+            itemList.get(i).setCbie01(cbie01);
+            mapper.insertSelective(itemList.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+
+    }
 }

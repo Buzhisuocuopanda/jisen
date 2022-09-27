@@ -1,9 +1,11 @@
 package com.ruoyi.system.domain.Do;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 @Data
+
 public class GsGoodsSnDo {
     private Integer id;
 

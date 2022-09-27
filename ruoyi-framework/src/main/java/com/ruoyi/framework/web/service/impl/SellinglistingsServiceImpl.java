@@ -30,6 +30,9 @@ private GsGoodsSnMapper goodsSnMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
+        if(goodsSnDo.getLocationId()==null){
+            throw new SwException("库位不能为空不能为空");
+        }
         if(goodsSnDo.getSn()==null){
                 throw new SwException("SN不能为空");
         }
@@ -51,6 +54,7 @@ private GsGoodsSnMapper goodsSnMapper;
         goodsSn.setUpdateTime(date);
         goodsSn.setUpdateBy(Math.toIntExact(userid));
         goodsSn.setStatus(Groudstatus.SJ.getCode());
+        goodsSn.setLocationId(goodsSnDo.getLocationId());
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andSnEqualTo(goodsSnDo.getSn())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());

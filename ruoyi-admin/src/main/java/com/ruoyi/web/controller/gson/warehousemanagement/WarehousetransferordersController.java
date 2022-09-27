@@ -9,23 +9,23 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbab;
 import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.*;
-import com.ruoyi.system.domain.vo.CbaaVo;
-import com.ruoyi.system.domain.vo.CbaasVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -422,5 +422,21 @@ public class WarehousetransferordersController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
+    }
+
+
+    /**
+     * 导出仓库调拨单
+     */
+    @ApiOperation(
+            value ="导出仓库调拨单",
+            notes = "导出仓库调拨单"
+    )
+    @PostMapping("/SwJsGoodsexport")
+   // @PreAuthorize("@ss.hasPermi('system:goods:export')")
+    public void swJsGoodsexport(HttpServletResponse response,CbaaVo cbaaVo) {
+        List<CbaaVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelLists(cbaaVo);
+        ExcelUtil<CbaaVo> util = new ExcelUtil<>(CbaaVo.class);
+        util.exportExcel(response, list, "仓库调拨单");
     }
 }
