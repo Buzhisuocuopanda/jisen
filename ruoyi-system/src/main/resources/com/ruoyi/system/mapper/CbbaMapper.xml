@@ -435,7 +435,7 @@ WHERE
 	pb.CBPB12 as model,
 	pb.CBPB08 as description,
 	ba.CBBA09 as orderQty,
-	ba.CBBA11 as makeQty,
+	ba.CBBA13 as makeQty,
 	ba.CBBA12 as status,
 	ba.CBBA10 as orderType,
     ba.CBBA11 as ShippedQty,
@@ -456,6 +456,7 @@ WHERE
       AND  ba.CBBA12 = #{status}
 
     </if>
+    order by ba.CBBA02 DESC
   </select>
 
   <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">

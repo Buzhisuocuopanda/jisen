@@ -34,7 +34,7 @@ public class CbicDto {
     private Integer cbic13;
 
     private Integer cbic14;
-    @NotNull(message = "国际国内订单类型不能为空")
+//    @NotNull(message = "国际国内订单类型不能为空")
     private Integer cbic15;
 
     private Integer userId;

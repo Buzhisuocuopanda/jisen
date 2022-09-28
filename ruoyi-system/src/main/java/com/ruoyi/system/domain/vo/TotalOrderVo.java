@@ -33,6 +33,8 @@ public class TotalOrderVo {
 
     private Double qty;
 
+    private Integer id;
+
 
 
 }
