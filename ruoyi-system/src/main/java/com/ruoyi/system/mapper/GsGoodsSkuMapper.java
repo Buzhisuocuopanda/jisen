@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsGoodsSku;
 import com.ruoyi.system.domain.GsGoodsSkuCriteria;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
@@ -36,4 +37,7 @@ public interface GsGoodsSkuMapper {
     List<GsGoodsSku> selectByGoodsIdAndWhIdForUpdate(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
 
     List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto);
+
+    List<Map> fnSkuListSupplier(@Param("goodsId") Integer goodsId);
+
 }
