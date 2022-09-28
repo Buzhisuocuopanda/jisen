@@ -38,7 +38,7 @@ public class GsSalesOrdersDto {
     @NotNull(message = "客户id不能为空")
     private Integer customerId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date orderDate;
 
     private Byte status;
