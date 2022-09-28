@@ -811,7 +811,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             int i = cbpmMapper.deleteByExample(plex);
             cbpk.setCbpk11(SaleOrderStatusEnums.WEITIJIAO.getCode());
 
-        }else if(auditTakeOrderDto.getOpType().equals(2)){
+        }else if(auditTakeOrderDto.getOpType().equals(3)){
             //反审 库建议的货品改为未出库
 
             if(!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())){
@@ -827,7 +827,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
             cbpk.setCbpk11(SaleOrderStatusEnums.YITIJIAO.getCode());
 
-        }else if(auditTakeOrderDto.getOpType().equals(2)){
+        }else if(auditTakeOrderDto.getOpType().equals(4)){
             //标记完成
 
             if(!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())){
@@ -836,7 +836,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YIWANCHENG.getCode());
-        }else if(auditTakeOrderDto.getOpType().equals(2)){
+        }else if(auditTakeOrderDto.getOpType().equals(5)){
             //取消完成
 
             if(!SaleOrderStatusEnums.YIWANCHENG.getCode().equals(cbpk.getCbpk11())){
@@ -844,7 +844,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YISHENHE.getCode());
-        }else if(auditTakeOrderDto.getOpType().equals(2)){
+        }else if(auditTakeOrderDto.getOpType().equals(6)){
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();
             for (GoodsDto good : goods) {
