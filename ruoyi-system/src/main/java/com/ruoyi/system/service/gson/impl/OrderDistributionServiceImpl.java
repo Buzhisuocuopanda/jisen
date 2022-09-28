@@ -579,12 +579,19 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     public DirectWarehousingVo directWarehousing(DirectWarehousingDto directWarehousingDto) {
         try {
             lockOtherOrder();
+            DirectWarehousingVo res=new DirectWarehousingVo();
             //
             //分配给总订单
             List<Cbba> list = cbbaMapper.selectByGoodsId(directWarehousingDto.getGoodsId());
             for (Cbba cbba : list) {
                 Double needQty = cbba.getCbba09() - cbba.getCbba11() - cbba.getCbba13();
                 if (needQty > 0) {
+
+                    if(TotalOrderConstants.GUONEIORDER.equals(cbba.getCbba07())){
+                        res.setOrderType(2);
+                    }else {
+                        res.setOrderType(1);
+                    }
                     cbba.setCbba13(cbba.getCbba13() + 1);
                     cbba.setCbba04(new Date());
                     cbba.setCbba05(directWarehousingDto.getUserId());
@@ -593,12 +600,13 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 }
             }
+            return res;
 
 
         } finally {
             unLockOtherOrder();
         }
-        return null;
+
     }
 
 //    @Override

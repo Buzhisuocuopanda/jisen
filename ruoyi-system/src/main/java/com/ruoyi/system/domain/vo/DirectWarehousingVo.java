@@ -10,4 +10,7 @@ import lombok.Data;
  */
 @Data
 public class DirectWarehousingVo {
+    //1:国际 2：国内
+    private Integer orderType;
+
 }

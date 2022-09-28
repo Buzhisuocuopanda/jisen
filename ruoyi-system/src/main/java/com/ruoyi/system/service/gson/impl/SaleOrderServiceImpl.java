@@ -1987,8 +1987,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     public TotalOrderVo totalOrderDetail(Integer id) {
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Cbba cbba = cbbaMapper.selectByPrimaryKey(id);
+        if(cbba==null){
+            throw new SwException("没有查到该生产总订单");
+        }
         TotalOrderVo res = new TotalOrderVo();
         res.setGoodsId(cbba.getCbba08());
+        res.setId(cbba.getCbba01());
         Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbba.getCbba08());
         if (cbpb != null) {
 
