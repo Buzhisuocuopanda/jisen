@@ -74,8 +74,8 @@ public class SaleOrderDetailVo {
     @ApiModelProperty("收货地址")
     private String address;
 
-    //备注
-//    private String remark;
+
+    private String remark;
 
     //工厂账号
     @ApiModelProperty("工厂账号")

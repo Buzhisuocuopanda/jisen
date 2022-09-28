@@ -499,6 +499,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa25(saleOrderAddDto.getCustomerNo());
         cboa.setCboa27(saleOrderAddDto.getOrderClass());
         cboa.setCboa20(saleOrderAddDto.getFcNumber());
+        cboa.setCboa21(saleOrderAddDto.getRemark());
         cboaMapper.insertWithId(cboa);
         GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
         gsWorkInstanceDo.setOrderType((byte) 1);
@@ -619,8 +620,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         res.setCustomerNo(cboa.getCboa25());
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboa.getCboa09());
         if (cbca != null) {
-            //todo 待确认
-//            res.setFcNumber();
+            res.setFcNumber(cboa.getCboa20());
+            res.setRemark(cboa.getCboa21());
             res.setFpAdress(cbca.getCbca26());
             res.setFpbank(cbca.getCbca11());
             res.setFpNumber(cbca.getCbca12());
@@ -780,7 +781,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa08(date);
         cboa.setCboa09(saleOrderAddDto.getCustomerId());
         cboa.setCboa10(saleOrderAddDto.getSaleUserId());
-        cboa.setCboa11(AuditStatusConstants.SO_COMMIT);
+        cboa.setCboa11(AuditStatusConstants.SO_NO_COMMIT);
         cboa.setCboa13(date);
         cboa.setCboa16(saleOrderAddDto.getCurrency());
         cboa.setCboa17(saleOrderAddDto.getReceiveName());
@@ -899,7 +900,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 .andSaleOrderNoEqualTo(cboa.getCboa07());
         int i1 = gsOutStockAdivceMapper.deleteByExample(adexample);
 
-
+        cboa.setCboa11(0);
+        cboaMapper.updateByPrimaryKey(cboa);
     }
 
     @Transactional
@@ -1152,8 +1154,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         advice.setGoodsId(outSuggestionsDo.getGoodsId());
                         advice.setQty(outSuggestionsDo.getQty());
                         advice.setSaleOrderNo(cboa.getCboa07());
-                        advice.setStatus(new Byte("1"));
-                        advice.setUpdateBy(userId.intValue());
+                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())){
+                            advice.setStatus(new Byte("3"));
+                        }else {
+                            advice.setStatus(new Byte("2"));
+                        }                        advice.setUpdateBy(userId.intValue());
                         advice.setUpdateTime(date);
                         advice.setWhId(outSuggestionsDo.getWhId());
                         gsOutStockAdivceMapper.insert(advice);
@@ -1328,7 +1333,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
 
-        } else if (auditSaleOrderDto.getOpeateType().equals(3)) {
+        } else if(auditSaleOrderDto.getOpeateType().equals(2)){
+            revokeSaleOrder(auditSaleOrderDto.getOrderId(),auditSaleOrderDto.getUserId());
+        }else if (auditSaleOrderDto.getOpeateType().equals(3)) {
             //审核通过
             if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(orderStatus)) {
                 throw new SwException("失败，订单状态必须为已提交");

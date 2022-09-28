@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.NumberToChineseUtil;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
@@ -321,18 +322,19 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         plex.setOrderByClause("CBPL02 desc");
         List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
         List<TakeOrderGoodsVo> goods = res.getGoods();
-        CalaCriteria laexample = new CalaCriteria();
-        laexample.createCriteria()
-                .andCala10EqualTo("商品品牌");
-        List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<Integer, String> brandMap = new HashMap<>();
-        for (Cala cala : calas) {
-            brandMap.put(cala.getCala01(), cala.getCala08());
-        }
-
+//        CalaCriteria laexample = new CalaCriteria();
+//        laexample.createCriteria()
+//                .andCala10EqualTo("商品品牌");
+//        List<Cala> calas = calaMapper.selectByExample(laexample);
+//        Map<Integer, String> brandMap = new HashMap<>();
+//        for (Cala cala : calas) {
+//            brandMap.put(cala.getCala01(), cala.getCala08());
+//        }
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
 
         TakeOrderGoodsVo good=null;
         Double sumQty=0.0;
+        Double sunPrice=0.0;
 
         Map<Integer,TakeOrderGoodsVo> goodsMap=new HashMap<>();
         for (Cbpl cbpl : cbpls) {
@@ -340,7 +342,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
-                good.setBrand(brandMap.get(cbpb.getCbpb10().toString()));
+                good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
                 Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
@@ -408,6 +410,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good.setTotalPrice(cbpl.getCbpl12());
 
             sumQty=sumQty+cbpl.getCbpl09();
+            sunPrice=sunPrice+cbpl.getCbpl11();
 
 
             res.getGoods().add(good);
@@ -415,6 +418,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsMap.put(good.getGoodsId(),good);
 
         }
+        res.setSumPrice(sunPrice);
+        res.setSumQty(sumQty);
+        res.setCapPrice(NumberToChineseUtil.moneyToChinese(res.getSumPrice()));
 
         res.setSumQty(sumQty);
 //        CbpmCriteria pmex=new CbpmCriteria();
@@ -455,7 +461,12 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 }
             }
             for (TakeOrderGoodsVo resGood : res.getGoods()) {
-                resGood.setScanQty(scanMap.get(resGood.getGoodsId()));
+                if(scanMap.get(resGood.getGoodsId())==null){
+                    resGood.setScanQty(0);
+                }else {
+                    resGood.setScanQty(scanMap.get(resGood.getGoodsId()));
+                }
+
 
             }
 
@@ -493,9 +504,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         res.setOrderDate(cboa.getCboa08());
         res.setPhone(cboa.getCboa19());
         res.setReceiveAdress(cboa.getCboa18());
-        //todo
-//        res.setReceiver();
-//        res.setReceivPhone();
+
+        res.setReceiver(cboa.getCboa17());
+        res.setReceivPhone(cboa.getCboa19());
         res.setSaleOrderId(cboa.getCboa01());
 
         res.setSaleOrderNo(cboa.getCboa07());
@@ -569,10 +580,11 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 if(cbobs.size()>0){
                     Cbob cbob=cbobs.get(0);
                     good.setNoSendQty(cbob.getCbob09()-cbob.getCbob10());
-                    good.setPrice(cbob.getCbob14());
+                    good.setPrice(cbob.getCbob11());
                     //todo
 //            good.setRemark();
                     good.setQty(goodsUse.getLockQty());
+                    good.setTotalPrice(cbob.getCbob12());
                     //TODO
 //            good.setSupplierId();
 
@@ -788,6 +800,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                         cbpm.setCbpm10(gsGoodsSn.getLocationId());
                         cbpm.setCbpm11(0);
                         cbpmMapper.insert(cbpm);
+                        gsGoodsSn.setStatus(new Byte("2"));
+                        gsGoodsSn.setUpdateTime(date);
+
+                        gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
 
 
                     }
@@ -819,13 +835,28 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
             CbpmCriteria scex=new CbpmCriteria();
             scex.createCriteria()
-                    .andCbpk01EqualTo(auditTakeOrderDto.getTakeOrderId())
-                    .andCbpm11EqualTo(1);
+                    .andCbpk01EqualTo(auditTakeOrderDto.getTakeOrderId());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(scex);
-            if(cbpms.size()>0){
-                throw new SwException("已有扫码的商品，不能反审");
-            }
+//            if(cbpms.size()>0){
+//                throw new SwException("已有扫码的商品，不能反审");
+//            }
             cbpk.setCbpk11(SaleOrderStatusEnums.YITIJIAO.getCode());
+            for (Cbpm cbpm : cbpms) {
+                if(cbpm.getCbpm11()==1){
+                                    throw new SwException("已有扫码的商品，不能反审");
+
+                }
+                cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
+
+                GsGoodsSn gs=new GsGoodsSn();
+                gs.setStatus(new Byte("1"));
+
+                GsGoodsSnCriteria example=new GsGoodsSnCriteria();
+                example.createCriteria()
+                        .andSnEqualTo(cbpm.getCbpm09());
+                int i = gsGoodsSnMapper.updateByExampleSelective(gs,example);
+            }
+
 
         }else if(auditTakeOrderDto.getOpType().equals(4)){
             //标记完成
@@ -977,12 +1008,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             throw new SwException("必须为待调拨状态才能标记完成");
         }
 
+
+
         Date date = new Date();
         gsOutStockAdivce.setUpdateTime(date);
         gsOutStockAdivce.setUpdateBy(gsOutStockAdivceDto.getUserId());
         gsOutStockAdivce.setStatus(new Byte("3"));
         gsOutStockAdivceMapper.updateByPrimaryKey(gsOutStockAdivce);
-
+        if(gsOutStockAdivce.getWhId().equals(WareHouseType.GQWWHID)){
+            return;
+        }
         //增加占用
         GsGoodsUseCriteria exeample=new GsGoodsUseCriteria();
         exeample.createCriteria()

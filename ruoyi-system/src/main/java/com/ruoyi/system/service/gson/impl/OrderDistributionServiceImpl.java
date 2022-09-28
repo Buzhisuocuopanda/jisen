@@ -1074,7 +1074,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 gqwQty = 0.0;
             }
 
-            canUseNum = canUseNum + gqwMakeQty;
+            canUseNum = canUseNum + gqwQty;
 
         }else {
             CbbaCriteria example = new CbbaCriteria();

@@ -38,7 +38,13 @@ public class TakeOrderSugestVo {
     //扫码状态
     private String scanStatus;
 
+    private String goodsMsg;
 
+    public String getGoodsMsg() {
 
-
+        if(brand!=null){
+            return brand+"-"+model+"-"+description;
+        }
+        return "";
+    }
 }
