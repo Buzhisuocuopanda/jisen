@@ -18,9 +18,9 @@ public class CbicDto {
     private Integer cbic05;
 
     private Integer cbic06;
-
+    @NotNull(message = "仓库id不能为空")
     private Integer cbic07;
-
+    @NotNull(message = "库位id不能为空")
     private Integer cbic08;
    // @NotNull(message = "商品id不能为空")
     private Integer cbic09;

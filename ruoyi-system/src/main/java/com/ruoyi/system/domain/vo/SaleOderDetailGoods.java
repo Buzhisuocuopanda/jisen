@@ -74,7 +74,7 @@ public class SaleOderDetailGoods {
         return id;
     }
 
-    private BaseSelectVo goodsVo=new BaseSelectVo();
+    private BaseSelectVo goodsVo =new BaseSelectVo();
 
     public BaseSelectVo getGoodsVo() {
         goodsVo.setLabel(getGoodsMsg());

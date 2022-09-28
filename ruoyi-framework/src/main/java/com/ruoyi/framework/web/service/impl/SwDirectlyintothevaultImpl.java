@@ -11,6 +11,7 @@ import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
+import com.ruoyi.system.domain.vo.DirectWarehousingVo;
 import com.ruoyi.system.mapper.CbicMapper;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.mapper.CbpbMapper;
@@ -79,7 +80,9 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         directWarehousingDto.setStoreId(storeid);
         directWarehousingDto.setUserId(Math.toIntExact(userid));
         directWarehousingDto.setGoodsId(cbpbs.get(0).getCbpb01());
-        orderDistributionService.directWarehousing(directWarehousingDto);
+       // directWarehousingDto.setOrderType(cbicDto.getCbic15());
+     orderDistributionService.directWarehousing(directWarehousingDto);
+
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
         Date date = new Date();

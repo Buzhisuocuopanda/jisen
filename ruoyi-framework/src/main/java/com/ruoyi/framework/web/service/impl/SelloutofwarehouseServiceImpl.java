@@ -93,6 +93,12 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
+        CbsbCriteria cbsbCriteria = new CbsbCriteria();
+        cbsbCriteria.createCriteria().andCbsb18EqualTo(cbsbDo.getCbsb18());
+        List<Cbsb> cbsbList = cbsbMapper.selectByExample(cbsbCriteria);
+        if (cbsbList.size() > 0) {
+            throw new SwException("该订单已存在");
+        }
 
         Long userid = SecurityUtils.getUserId();
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
