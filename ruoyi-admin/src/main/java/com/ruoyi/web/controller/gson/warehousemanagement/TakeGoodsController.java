@@ -11,6 +11,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbpi;
@@ -846,7 +847,7 @@ public class TakeGoodsController extends BaseController {
     @GetMapping("auditOutStockEnd")
     public AjaxResult auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto){
         try {
-
+            gsOutStockAdivceDto.setUserId(Integer.parseInt(SecurityUtils.getUserId()+""));
              takeGoodsService.auditOutStockEnd(gsOutStockAdivceDto);
 
             return AjaxResult.success();

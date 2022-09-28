@@ -62,12 +62,15 @@ public class FnQueryAyntgesisVo {
 //    @Excel(name = "生产总订单号")
 //    private String totalOrderNo;
 
-
+    private Integer cbsd01;
     private Integer goodsId;
 
     private Integer currency;
 
     private Double salePrice;
+
+    private Integer cbsb01;
+    private String cbsd09;
 
 //    private Double cgPrice;
 

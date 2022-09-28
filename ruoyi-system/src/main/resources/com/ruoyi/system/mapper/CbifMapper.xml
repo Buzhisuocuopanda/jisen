@@ -734,19 +734,19 @@ where a.CBOA06=0
 where
     a.CBOA06=0
     <if test="cbca08 != null and cbca08 != ''">
-      and  c.CBCA08 like concat('%', #{cbca08}, '%')
+      and  c.CBCA08 = #{cbca08}
     </if>
     <if test="caua17 != null and caua17 != ''">
-      and d.CAUA17 like concat('%', #{caua17}, '%')
+      and d.CAUA17 =#{caua17}
     </if>
     <if test="cbpb01 != null ">
       and   e.cbpb01=#{cbpb01}
     </if>
     <if test="startTime != null">
-      and oa.CBOA08 &gt;= #{startTime}
+      and a.CBOA08 &gt;= #{startTime}
     </if>
     <if test="endTime != null">
-      and oa.CBOA08 &lt;=#{endTime}
+      and a.CBOA08 &lt;=#{endTime}
     </if>
    <!-- <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

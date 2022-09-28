@@ -390,7 +390,7 @@
   <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
     <include refid="selectCBWAVo"/>
 where
-    CBWA15 =0
+    CBWA15 =1
     and
     CBWA06=0
       <if test="cbwa01 != null "> and CBWA01 = #{cbwa01}</if>
