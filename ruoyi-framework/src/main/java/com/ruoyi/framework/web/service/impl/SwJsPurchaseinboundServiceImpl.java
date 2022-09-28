@@ -177,7 +177,7 @@ private NumberGenerate numberGenerate;
                 throw new SwException("商品id不能为空");
             }
             if(!uio.contains(itemList.get(i).getCbpe08())){
-                throw new SwException("该商品不在采购退货单明细中");
+                throw new SwException("该商品不在采购入货单明细中");
             }
 
             if(itemList.get(i).getCbpe10()==null){
@@ -203,8 +203,7 @@ private NumberGenerate numberGenerate;
             //校验sn码
             String sn = itemList.get(i).getCbpe09();
             CbpeCriteria examples = new CbpeCriteria();
-            examples.createCriteria().andCbpe09EqualTo(sn)
-                    .andCbpe06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            examples.createCriteria().andCbpe09EqualTo(sn);
             List<Cbpe> cbpes = cbpeMapper.selectByExample(examples);
             if (cbpes.size() > 0) {
                 throw new SwException("该sn已存在");
@@ -275,7 +274,7 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
 
-            this.redisTemplate.delete("lock");
+          this.redisTemplate.delete("lock");
 
             mapper.insertSelective(itemList.get(i));
 

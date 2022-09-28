@@ -455,7 +455,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
     @Override
     public List<Cbpf> selectcbpfList(Cbpf cbpf) {
-        if(cbpf.getCbpf01()==null){
+        if(cbpf.getCbpf06()==null){
             throw new SwException("结算货币id不能为空！");
         }
         CbpfCriteria example = new CbpfCriteria();
