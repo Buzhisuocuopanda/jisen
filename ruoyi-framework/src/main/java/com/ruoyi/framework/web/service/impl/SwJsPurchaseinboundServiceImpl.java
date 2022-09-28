@@ -21,6 +21,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -29,6 +30,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +74,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
    @Resource
    private CbpbMapper cbpbMapper;
-
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
 
 @Resource
@@ -188,6 +191,14 @@ private NumberGenerate numberGenerate;
                 throw new SwException("库位不属于该仓库");
             }
 
+            while (!this.redisTemplate.opsForValue().setIfAbsent("lock", itemList.get(i).getCbpe09(),3, TimeUnit.SECONDS)) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace(); }
+            }
+
+
 
             //校验sn码
             String sn = itemList.get(i).getCbpe09();
@@ -247,7 +258,12 @@ private NumberGenerate numberGenerate;
 
              }*/
 
-
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSns.size()>0){
+                throw new SwException("该sn已存在库存sn表里");
+            }
 
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
@@ -258,6 +274,9 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
+
+            this.redisTemplate.delete("lock");
+
             mapper.insertSelective(itemList.get(i));
 
             if (i % 10 == 9) {//每10条提交一次

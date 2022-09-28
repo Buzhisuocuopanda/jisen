@@ -300,6 +300,13 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
             }*/
+            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+            example.createCriteria().andSnEqualTo(itemList.get(i).getCbpi09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+            if (gsGoodsSns.size() >=1 && gsGoodsSns.get(0).getStatus().equals(GoodsType.yck.getCode())) {
+                throw new SwException("该sn已出库");
+            }
+
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());

@@ -195,6 +195,30 @@ public class SwJsGoodsController extends BaseController {
     }
 
     /**
+     * 查询结算货币
+     */
+    @ApiOperation(
+            value ="查询结算货币",
+            notes = "查询结算货币"
+    )
+    @GetMapping("/SwJsGoodscny")
+   // @PreAuthorize("@ss.hasPermi('system:goods:list')")
+    public AjaxResult<TableDataInfo> swJsGoodslist(Cbpf cbpf) {
+        try {
+            startPage();
+            List<Cbpf> list = swJsGoodsService.selectcbpfList(cbpf);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询结算货币】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpf),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 商品列表选择框
      */
     @ApiOperation(
@@ -309,6 +333,9 @@ public class SwJsGoodsController extends BaseController {
         ExcelUtil<CbpbDto> util = new ExcelUtil<CbpbDto>(CbpbDto.class);
         util.importTemplateExcel(response,"导入商品下载模板");
     }
+
+
+
 
 
 }
