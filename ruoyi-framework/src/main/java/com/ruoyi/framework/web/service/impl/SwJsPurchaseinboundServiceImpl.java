@@ -675,6 +675,9 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
             for (int i = 0; i < cbpes.size(); i++) {
                 Integer goodsid = cbpes.get(i).getCbpe08();
+                if(cbpes.get(i).getCbpe10()==null){
+                    throw new SwException("库位id不能为空");
+                }
                 Integer cbpe10 = cbpes.get(i).getCbpe10();
                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
@@ -706,6 +709,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                    gsGoodsSku.setId(id);
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                     gsGoodsSku.setUpdateTime(date);

@@ -898,6 +898,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         if(itemList.size()==0){
             throw new SwException("请选择要扫码的商品");
         }
+
+
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpmMapper mapper = session.getMapper(CbpmMapper.class);
         Date date = new Date();
@@ -909,11 +912,24 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
             CbpmCriteria example=new CbpmCriteria();
                 example.createCriteria()
+                        .andCbpk01EqualTo(cbpk.getCbpk01())
                     .andCbpm09EqualTo(itemList.get(i).getCbpm09());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
             if(cbpms.size()==0){
                 throw new SwException("您选择的Sn商品不在出库建议表中" );
             }
+
+
+/*GsGoodsSnCriteria example0=new GsGoodsSnCriteria();
+            example0.createCriteria()
+                    .andSnEqualTo(itemList.get(i).getCbpm09());
+            List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(example0);
+            if(gsGoodsSnss.size()>0){
+                throw new SwException("替换后sn已存在" );
+            }*/
+
+
+
 
             itemList.get(i).setCbpm11(ScanStatusEnum.YISAOMA.getCode());
 

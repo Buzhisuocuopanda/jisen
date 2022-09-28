@@ -81,7 +81,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         directWarehousingDto.setUserId(Math.toIntExact(userid));
         directWarehousingDto.setGoodsId(cbpbs.get(0).getCbpb01());
        // directWarehousingDto.setOrderType(cbicDto.getCbic15());
-     orderDistributionService.directWarehousing(directWarehousingDto);
+        DirectWarehousingVo directWarehousingVo = orderDistributionService.directWarehousing(directWarehousingDto);
+
 
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
@@ -93,6 +94,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbic.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbic.setCbic09(cbpbs.get(0).getCbpb01());
         cbic.setCbic12(date);
+        cbic.setCbic15(directWarehousingVo.getOrderType());
         cbic.setUserId(Math.toIntExact(userid));
        cbicMapper.insertSelective(cbic);
 

@@ -514,8 +514,8 @@ if(cbob==null){
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);
             if(gsGoodsSns.size()==0){
                 throw new SwException("该sn不存在");
-
             }
+
 if(gsGoodsSns.get(0).getLocationId()==null){
     throw new SwException("库位id为空");
 

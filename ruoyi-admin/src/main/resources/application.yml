@@ -49,7 +49,7 @@ spring:
     # 国际化资源文件路径
     basename: i18n/messages
   profiles:
-    active: dev
+    active: test
 #    active: local
 
   # 文件上传

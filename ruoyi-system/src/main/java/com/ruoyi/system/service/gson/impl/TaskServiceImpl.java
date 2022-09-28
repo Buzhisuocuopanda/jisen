@@ -330,8 +330,8 @@ public class TaskServiceImpl implements TaskService {
         GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
             example.createCriteria()
                 .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
-                .andWhIdEqualTo(goodsSkuDo.getWhId());
-               // .andLocationIdEqualTo(goodsSkuDo.getLocationId());
+                .andWhIdEqualTo(goodsSkuDo.getWhId())
+                    .andLocationIdEqualTo(goodsSkuDo.getLocationId());
         int i = gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku, example);
 
         return gsGoodsSku;
@@ -342,6 +342,7 @@ public class TaskServiceImpl implements TaskService {
         GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
         example.createCriteria().andWhIdEqualTo(goodsSkuDo.getWhId())
                 .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
+                .andLocationIdEqualTo(goodsSkuDo.getLocationId())
                 .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
         return gsGoodsSkus;
