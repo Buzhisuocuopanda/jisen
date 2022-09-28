@@ -551,6 +551,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good=new TakeOrderGoodsVo();
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsUse.getGoodsId());
             if (cbpb != null) {
+                good.setGoodsId(cbpb.getCbpb01());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
@@ -769,7 +770,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
 
                 if(gsGoodsUses.size()>0){
-                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUses.get(0).getLockQty());
+                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUses.get(0).getLockQty().intValue());
 
                     for (int i=0;i< list.size() ;i++) {
                         GsGoodsSn gsGoodsSn = list.get(i);

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CbdaMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbda">
+    <result column="CBDA01" jdbcType="INTEGER" property="cbda01" />
+    <result column="CBDA02" jdbcType="INTEGER" property="cbda02" />
+    <result column="CBDA03" jdbcType="TIMESTAMP" property="cbda03" />
+    <result column="CBDA04" jdbcType="INTEGER" property="cbda04" />
+    <result column="CBDA05" jdbcType="TIMESTAMP" property="cbda05" />
+    <result column="CBDA06" jdbcType="INTEGER" property="cbda06" />
+    <result column="CBDA07" jdbcType="INTEGER" property="cbda07" />
+    <result column="CBDA08" jdbcType="INTEGER" property="cbda08" />
+    <result column="CBDA09" jdbcType="VARCHAR" property="cbda09" />
+    <result column="CBDA10" jdbcType="INTEGER" property="cbda10" />
+    <result column="CBDA11" jdbcType="INTEGER" property="cbda11" />
+    <result column="CBDA12" jdbcType="VARCHAR" property="cbda12" />
+    <result column="CBDA13" jdbcType="INTEGER" property="cbda13" />
+    <result column="CBDA14" jdbcType="INTEGER" property="cbda14" />
+    <result column="CBDA15" jdbcType="INTEGER" property="cbda15" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBDA01, CBDA02, CBDA03, CBDA04, CBDA05, CBDA06, CBDA07, CBDA08, CBDA09, CBDA10, CBDA11, 
+    CBDA12, CBDA13, CBDA14, CBDA15, `status`
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbdaCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBDA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbdaCriteria">
+    delete from `CBDA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbda">
+    insert into `CBDA` (CBDA01, CBDA02, CBDA03, 
+      CBDA04, CBDA05, CBDA06, 
+      CBDA07, CBDA08, CBDA09, 
+      CBDA10, CBDA11, CBDA12, 
+      CBDA13, CBDA14, CBDA15, 
+      `status`)
+    values (#{cbda01,jdbcType=INTEGER}, #{cbda02,jdbcType=INTEGER}, #{cbda03,jdbcType=TIMESTAMP}, 
+      #{cbda04,jdbcType=INTEGER}, #{cbda05,jdbcType=TIMESTAMP}, #{cbda06,jdbcType=INTEGER}, 
+      #{cbda07,jdbcType=INTEGER}, #{cbda08,jdbcType=INTEGER}, #{cbda09,jdbcType=VARCHAR}, 
+      #{cbda10,jdbcType=INTEGER}, #{cbda11,jdbcType=INTEGER}, #{cbda12,jdbcType=VARCHAR}, 
+      #{cbda13,jdbcType=INTEGER}, #{cbda14,jdbcType=INTEGER}, #{cbda15,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbda">
+    insert into `CBDA`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbda01 != null">
+        CBDA01,
+      </if>
+      <if test="cbda02 != null">
+        CBDA02,
+      </if>
+      <if test="cbda03 != null">
+        CBDA03,
+      </if>
+      <if test="cbda04 != null">
+        CBDA04,
+      </if>
+      <if test="cbda05 != null">
+        CBDA05,
+      </if>
+      <if test="cbda06 != null">
+        CBDA06,
+      </if>
+      <if test="cbda07 != null">
+        CBDA07,
+      </if>
+      <if test="cbda08 != null">
+        CBDA08,
+      </if>
+      <if test="cbda09 != null">
+        CBDA09,
+      </if>
+      <if test="cbda10 != null">
+        CBDA10,
+      </if>
+      <if test="cbda11 != null">
+        CBDA11,
+      </if>
+      <if test="cbda12 != null">
+        CBDA12,
+      </if>
+      <if test="cbda13 != null">
+        CBDA13,
+      </if>
+      <if test="cbda14 != null">
+        CBDA14,
+      </if>
+      <if test="cbda15 != null">
+        CBDA15,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbda01 != null">
+        #{cbda01,jdbcType=INTEGER},
+      </if>
+      <if test="cbda02 != null">
+        #{cbda02,jdbcType=INTEGER},
+      </if>
+      <if test="cbda03 != null">
+        #{cbda03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbda04 != null">
+        #{cbda04,jdbcType=INTEGER},
+      </if>
+      <if test="cbda05 != null">
+        #{cbda05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbda06 != null">
+        #{cbda06,jdbcType=INTEGER},
+      </if>
+      <if test="cbda07 != null">
+        #{cbda07,jdbcType=INTEGER},
+      </if>
+      <if test="cbda08 != null">
+        #{cbda08,jdbcType=INTEGER},
+      </if>
+      <if test="cbda09 != null">
+        #{cbda09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbda10 != null">
+        #{cbda10,jdbcType=INTEGER},
+      </if>
+      <if test="cbda11 != null">
+        #{cbda11,jdbcType=INTEGER},
+      </if>
+      <if test="cbda12 != null">
+        #{cbda12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbda13 != null">
+        #{cbda13,jdbcType=INTEGER},
+      </if>
+      <if test="cbda14 != null">
+        #{cbda14,jdbcType=INTEGER},
+      </if>
+      <if test="cbda15 != null">
+        #{cbda15,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbdaCriteria" resultType="java.lang.Long">
+    select count(*) from `CBDA`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBDA`
+    <set>
+      <if test="record.cbda01 != null">
+        CBDA01 = #{record.cbda01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda02 != null">
+        CBDA02 = #{record.cbda02,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda03 != null">
+        CBDA03 = #{record.cbda03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbda04 != null">
+        CBDA04 = #{record.cbda04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda05 != null">
+        CBDA05 = #{record.cbda05,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbda06 != null">
+        CBDA06 = #{record.cbda06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda07 != null">
+        CBDA07 = #{record.cbda07,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda08 != null">
+        CBDA08 = #{record.cbda08,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda09 != null">
+        CBDA09 = #{record.cbda09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbda10 != null">
+        CBDA10 = #{record.cbda10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda11 != null">
+        CBDA11 = #{record.cbda11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda12 != null">
+        CBDA12 = #{record.cbda12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbda13 != null">
+        CBDA13 = #{record.cbda13,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda14 != null">
+        CBDA14 = #{record.cbda14,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbda15 != null">
+        CBDA15 = #{record.cbda15,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBDA`
+    set CBDA01 = #{record.cbda01,jdbcType=INTEGER},
+      CBDA02 = #{record.cbda02,jdbcType=INTEGER},
+      CBDA03 = #{record.cbda03,jdbcType=TIMESTAMP},
+      CBDA04 = #{record.cbda04,jdbcType=INTEGER},
+      CBDA05 = #{record.cbda05,jdbcType=TIMESTAMP},
+      CBDA06 = #{record.cbda06,jdbcType=INTEGER},
+      CBDA07 = #{record.cbda07,jdbcType=INTEGER},
+      CBDA08 = #{record.cbda08,jdbcType=INTEGER},
+      CBDA09 = #{record.cbda09,jdbcType=VARCHAR},
+      CBDA10 = #{record.cbda10,jdbcType=INTEGER},
+      CBDA11 = #{record.cbda11,jdbcType=INTEGER},
+      CBDA12 = #{record.cbda12,jdbcType=VARCHAR},
+      CBDA13 = #{record.cbda13,jdbcType=INTEGER},
+      CBDA14 = #{record.cbda14,jdbcType=INTEGER},
+      CBDA15 = #{record.cbda15,jdbcType=INTEGER},
+      `status` = #{record.status,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

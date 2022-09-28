@@ -1857,4 +1857,11 @@ public class SaleOrderController extends BaseController {
         }
     }
 
+    @GetMapping("/initSn")
+    public AjaxResult initSn(){
+        saleOrderService.initSn();
+        return AjaxResult.success();
+    }
+
+
 }

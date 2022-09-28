@@ -87,6 +87,10 @@ public interface SaleOrderService {
     List<GoodsDetailAndSkuVo> goodsShopLists(List<GoodsPriceAndSkuDto> itemList);
 
     void delgoodsShop(DelSaleOrderDto delSaleOrderDto);
+
+    void initSn();
+
+
 //    GsWorkInstance createTask();
 
 }

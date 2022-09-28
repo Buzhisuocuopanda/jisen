@@ -106,6 +106,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Resource
     private CbpkMapper cbpkMapper;
 
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private CbdaMapper cbdaMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
+
 
     @Override
     public List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto) {
@@ -548,7 +557,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     advice.setGoodsId(outSuggestionsDo.getGoodsId());
                     advice.setQty(outSuggestionsDo.getQty());
                     advice.setSaleOrderNo(cboa.getCboa07());
-                    advice.setStatus(new Byte("1"));
+                    advice.setStatus(new Byte("2"));
                     advice.setUpdateBy(saleOrderAddDto.getUserId());
                     advice.setUpdateTime(date);
                     advice.setWhId(outSuggestionsDo.getWhId());
@@ -2276,6 +2285,29 @@ Date date=new Date();
         gsSaleShoppingMapper.updateByPrimaryKeySelective(gsSaleShopping);
 
         return;
+    }
+
+    @Override
+    public void initSn() {
+        CbdaCriteria exampl=new CbdaCriteria();
+        List<Cbda> cbods = cbdaMapper.selectByExample(exampl);
+        for (Cbda cbda : cbods) {
+
+            GsGoodsSn gs=new GsGoodsSn();
+            gs.setGoodsId(cbda.getCbda08());
+            gs.setGroudStatus(new Byte("1"));
+            gs.setSn(cbda.getCbda09());
+            gs.setStatus(new Byte("1"));
+            gs.setCreateTime(cbda.getCbda03());
+            Cbla cbla = cblaMapper.selectByPrimaryKey(cbda.getCbda10());
+            if(cbla!=null){
+                gs.setWhId(cbla.getCbla10());
+            }
+
+
+            gs.setLocationId(cbda.getCbda10());
+            gsGoodsSnMapper.insert(gs);
+        }
     }
 
 
