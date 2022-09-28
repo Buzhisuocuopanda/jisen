@@ -32,6 +32,8 @@ public interface CbibMapper {
 
 
     Integer selectCountZjrk(@Param("goodsId")Integer goodsId,@Param("whId") Integer whId);
+    //zgl ,修改selectCountZjrk方法的查count ，查询属于直接入库的本次入库数量
+    Integer selectCountZjrk2(@Param("goodsId")Integer goodsId,@Param("whId") Integer whId);
 
     Double selectSumSaleOut(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
 }

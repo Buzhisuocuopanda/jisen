@@ -391,6 +391,19 @@ ORDER BY
     ORDER BY
     c.CBIB04 DESC limit 1
   </select>
+
+  <select id="selectCountZjrk2" resultMap="BaseResultMap">
+    SELECT
+   sum(c.CBIB11)
+    FROM
+    `CBIB` c
+    WHERE
+
+    c.CBIB08 = #{goodsId}
+    and
+    c.CBIB02 = #{whId}
+    and c.CBIB17 = "直接入库"
+  </select>
   <select id="selectSumSaleOut" resultMap="BaseResultMap">
     SELECT
     sum(c.CBIB13)

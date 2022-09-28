@@ -402,7 +402,6 @@ FROM
     LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
     LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
     LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
-    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
     where sd.CBSD07 = 0
     <if test="saleOrderNo != null and saleOrderNo != ''">
       AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')
@@ -413,7 +412,7 @@ FROM
     </if>
 
     <if test="customerId != null and customerId != ''">
-      AND ca.CBCA01 = #{customerId}
+      AND oa.CBOA09 = #{customerId}
     </if>
 
     <if test="startTime != null">
