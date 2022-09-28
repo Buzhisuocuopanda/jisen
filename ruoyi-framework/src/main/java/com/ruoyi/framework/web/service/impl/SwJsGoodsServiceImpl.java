@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.dto.CbpbDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
      * @return 结果
      */
     @Override
-    public int insertSwJsGoodsClassify(CbpbDo cbpbDo) {
+    public IdVo insertSwJsGoodsClassify(CbpbDo cbpbDo) {
         Long userid = SecurityUtils.getUserId();
         //upc唯一
         CbpbCriteria example = new CbpbCriteria();
@@ -107,7 +108,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         example1.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
                 .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbpb> cbpbss = cbpbMapper.selectByExample(example1);
-         return cbpbss.get(0).getCbpb01();
+        IdVo idVo = new IdVo();
+        idVo.setId(cbpbss.get(0).getCbpb01());
+        return idVo;
     }
     /**
      * 修改商品
@@ -243,16 +246,28 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
 
     @Override
-    public int insertSwJsGoodsClassifys(CbpfDo cbpfDo) {
+    public int insertSwJsGoodsClassifys(List <Cbpf> cbpf) {
         Long userid = SecurityUtils.getUserId();
-        Cbpf cbpf = BeanCopyUtils.coypToClass(cbpfDo, Cbpf.class, null);
+//        Cbpf cbpf = BeanCopyUtils.coypToClass(cbpf, Cbpf.class, null);
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpfMapper mapper = session.getMapper(CbpfMapper.class);
         Date date = new Date();
-        cbpf.setCbpf02(cbpfDo.getCbpf02());
-        cbpf.setCbpf03(cbpfDo.getCbpf03());
-        cbpf.setCbpf04(cbpfDo.getCbpf04());
-        cbpf.setCbpf05(cbpfDo.getCbpf05());
-        cbpf.setCbpf07(date);
-        return cbpfMapper.insertSelective(cbpf);
+        for (int i = 0; i < cbpf.size(); i++) {
+//        cbpf.setCbpf02(cbpfDo.getCbpf02());
+//        cbpf.setCbpf03(cbpfDo.getCbpf03());
+//        cbpf.setCbpf04(cbpfDo.getCbpf04());
+//        cbpf.setCbpf05(cbpfDo.getCbpf05());
+            cbpf.get(i).setCbpf07(date);
+             mapper.insertSelective(cbpf.get(i));
+
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
     }
 
     @Override

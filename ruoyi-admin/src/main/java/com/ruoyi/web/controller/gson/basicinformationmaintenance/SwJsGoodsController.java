@@ -20,6 +20,7 @@ import com.ruoyi.system.domain.dto.CbpbDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.CbpbVo;
+import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsCustomerService;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import io.swagger.annotations.Api;
@@ -65,10 +66,12 @@ public class SwJsGoodsController extends BaseController {
     )
     @PostMapping("/SwJsGoodsadd")
     @PreAuthorize("@ss.hasPermi('system:goods:add')")
-    public AjaxResult swJsGoodsadd(@Valid @RequestBody CbpbDo cbpbDo, BindingResult bindingResult) {
+    public AjaxResult<IdVo> swJsGoodsadd(@Valid @RequestBody CbpbDo cbpbDo, BindingResult bindingResult) {
+        IdVo res=null;
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsGoodsService.insertSwJsGoodsClassify(cbpbDo));
+            res=swJsGoodsService.insertSwJsGoodsClassify(cbpbDo);
+            return AjaxResult.success(res);
 
 
         }catch (SwException e) {
@@ -93,22 +96,22 @@ public class SwJsGoodsController extends BaseController {
             notes = "新增商品信息维护关联表"
     )
     @PostMapping("/SwJsGoodsadds")
-    public AjaxResult swJsGoodsadds(@Valid @RequestBody CbpfDo cbpfDo, BindingResult bindingResult) {
+    public AjaxResult swJsGoodsadds(@Valid @RequestBody List<Cbpf> cbpf, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swJsGoodsService.insertSwJsGoodsClassifys(cbpfDo));
+            return toAjax(swJsGoodsService.insertSwJsGoodsClassifys(cbpf));
 
 
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
-            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpfDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpf), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpfDo), ExceptionUtils.getStackTrace(e));
+            log.error("【新增商品信息维护关联表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpf), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
