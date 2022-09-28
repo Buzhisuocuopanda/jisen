@@ -103,25 +103,37 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             if(fnGoodsSkuVo.getBrand()!=null){
                 fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
             }
-
-            /*if(fnGoodsSkuVo.getSClass()!=null){
+            if(fnGoodsSkuVo.getGoodsId()!=null){
+                String supplierNames ="";
+                List<Map> mapList= gsGoodsSkuMapper.fnSkuListSupplier(fnGoodsSkuVo.getGoodsId());
+                for (Map map: mapList) {
+                    if(map!=null&&map.size()>0&&map.get("supplierName")!=null){
+                        if(supplierNames.indexOf(map.get("supplierName")+",")<0){
+                            supplierNames+=map.get("supplierName")+",";
+                        }
+                    }
+                }
+                if(supplierNames.length()>2){
+                    fnGoodsSkuVo.setSupplieName(supplierNames.substring(0,supplierNames.length()-1));
+                }
+            }
+            if(fnGoodsSkuVo.getSClass()!=null){
                 Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
                 if(cbpa!=null){
                     fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+                    if(cbpa.getCbpa09()!=null){
+                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                        if(cbpa2!=null){
+                            fnGoodsSkuVo.setBClass(cbpa2.getCbpa07());
+                        }
+                    }
                 }
             }
-            if(fnGoodsSkuVo.getBClass()!=null){
-                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getBClass()));
-                if(cbpa!=null){
-                    fnGoodsSkuVo.setBClass(cbpa.getCbpa07());
-                }
-            }*/
 
-
-            //期初入库 查台账期初入库的
-            CbibCriteria ibex=new CbibCriteria();
-            //zgl  添加非null判断
             if(fnGoodsSkuVo.getGoodsId()!=null&&fnGoodsSkuVo.getWhId()!=null){
+                //期初入库 查台账期初入库的
+                CbibCriteria ibex=new CbibCriteria();
+
                 ibex.createCriteria()
                         .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
                         .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
@@ -131,23 +143,21 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 if(cbibs.size()>0){
                     fnGoodsSkuVo.setFirstQty(cbibs.get(0).getCbib16());
                 }
-            }
 
+                //生产入库
+                CbibCriteria mkibex=new CbibCriteria();
+                mkibex.createCriteria()
+                        .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
+                        .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
+                        .andCbib17EqualTo("直接入库");
+                ibex.setOrderByClause("CBIB04 DESC");
+                Integer count = cbibMapper.selectCountZjrk2(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
 
-
-            //生产入库
-//            CbibCriteria mkibex=new CbibCriteria();
-//            mkibex.createCriteria()
-//                    .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
-//                    .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
-//                    .andCbib17EqualTo("直接入库");
-//            ibex.setOrderByClause("CBIB04 DESC");
-            Integer count = cbibMapper.selectCountZjrk(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
-            //zgl  修改count为null时报错的bug
-            if(count!=null){
-                fnGoodsSkuVo.setFirstQty(Double.valueOf(count));
-            }else {
-                fnGoodsSkuVo.setFirstQty(0d);
+                if(count!=null){
+                    fnGoodsSkuVo.setMakeQty(Double.valueOf(count));
+                }else {
+                    fnGoodsSkuVo.setMakeQty(0d);
+                }
             }
 
 
