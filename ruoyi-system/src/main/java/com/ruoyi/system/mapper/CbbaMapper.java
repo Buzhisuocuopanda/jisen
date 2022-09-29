@@ -33,9 +33,9 @@ public interface CbbaMapper {
 
     List<Cbba> selectLowPriority(Cbba cbba);
 
-    List<Cbba> selectByPriorityDureH2low(Integer goodsId, String newPriority, String oldPriority);
+    List<Cbba> selectByPriorityDureH2low(Integer goodsId, String newPriority, String oldPriority,Integer cbba01);
 
-    List<Cbba> selectByPriorityDurelow2H(Integer goodsId, String cbba15, String oldPriority);
+    List<Cbba> selectByPriorityDurelow2H(Integer goodsId, String newPriority, String oldPriority,Integer cbba01);
 
 
     List<Cbba> selectByGoodsId(@Param("goodsId") Integer goodsId);

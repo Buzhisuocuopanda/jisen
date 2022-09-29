@@ -414,6 +414,22 @@ ORDER BY
 	cb.CBBA15 DESC
   </select>
 
+  <select id="selectByPriorityDureH2low" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	`CBBA` cb
+WHERE
+	cb.CBBA06 = 0
+	AND cb.CBBA12 = 0
+	AND cb.CBBA08 = #{goodsId}
+	AND cb.CBBA15  &lt;= #{oldPriority}
+	AND cb.CBBA15 &gt;=#{newPriority}
+	AND cb.CBBA01 != #{cbba01}
+ORDER BY
+	cb.CBBA15 DESC
+  </select>
+
   <select id="selectByGoodsId" resultMap="BaseResultMap">
 SELECT
 	*
@@ -423,7 +439,7 @@ WHERE
 	c.CBBA08 = #{goodsId}
 	AND c.CBBA06 =0
 	AND c.CBBA12= 0
-	order by c.CBBA15
+	order by c.CBBA15 DESC
   </select>
 
 <!--  获取生产总订单列表-->

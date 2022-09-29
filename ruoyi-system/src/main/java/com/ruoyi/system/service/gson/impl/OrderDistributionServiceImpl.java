@@ -371,7 +371,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         }
         Double needNum = cbba.getCbba09() - cbba.getCbba11() - makeNum;
         Integer goodsId = cbba.getCbba08();
-        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, cbba.getCbba15(), oldPriority);
+        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
         for (Cbba res : list) {
             //可拿去的分配数量
             Double getNum = res.getCbba13();
@@ -422,7 +422,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             return cbba;
         }
         Integer goodsId = cbba.getCbba08();
-        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, cbba.getCbba15(), oldPriority);
+        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
         for (Cbba res : list) {
             if (!cbba.getCbba07().equals(res.getCbba07())) {
                 //未发货数量
