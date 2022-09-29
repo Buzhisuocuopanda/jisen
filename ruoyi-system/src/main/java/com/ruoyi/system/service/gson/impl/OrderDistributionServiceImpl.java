@@ -224,10 +224,12 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
                     if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
-                        giveOrderPriority(cbba, orderDistributionDo.getOldPriority());
+                        getOrderPriority(cbba, orderDistributionDo.getOldPriority());
+
                     } else {
                         //优先级由低到高
-                        getOrderPriority(cbba, orderDistributionDo.getOldPriority());
+                        giveOrderPriority(cbba, orderDistributionDo.getOldPriority());
+
                     }
 
 
@@ -278,12 +280,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //        Double useNum = cbba.getCbba14();
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
-            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
-            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
-                    .andOrderNoEqualTo(cbba.getCbba07());
-            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
             useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
-
 
         }
         if (orderNum < useNum) {
@@ -300,8 +298,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         }
 
         Double givenNum = makeNum - orderNum;
-
-        List<Cbba> res = cbbaMapper.selectLowPriority(cbba);
+        cbba.setCbba13(cbba.getCbba13() - givenNum);
+        List<Cbba> res = cbbaMapper.selectLowPriority(cbba.getCbba08(),Integer.valueOf(cbba.getCbba15()),cbba.getCbba01() );
         for (Cbba re : res) {
             //订单所需数量为 订单数量减去 分配数量减去发货数量
             Double needNum = re.getCbba09() - re.getCbba11() - re.getCbba13();
@@ -319,13 +317,14 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
 
             re.setCbba04(new Date());
+
             cbbaMapper.updateByPrimaryKey(re);
             if (givenNum == 0) {
                 break;
             }
 
         }
-        cbba.setCbba13(cbba.getCbba13() - givenNum);
+
 
         if (givenNum > 0) {
             //存到未分配列表里
@@ -354,46 +353,52 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
     //优先级由低到高
     private Cbba getOrderPriority(Cbba cbba, String oldPriority) {
-        Double useNum = 0.0;
-        if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
-            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
-            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
-                    .andOrderNoEqualTo(cbba.getCbba07());
-            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
-            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 
 
-        }
-        Double makeNum = cbba.getCbba13() - useNum;
+//        Double makeNum = cbba.getCbba13() - useNum;
 
-        if (makeNum.equals(cbba.getCbba09() - cbba.getCbba11())) {
-            return cbba;
-        }
-        Double needNum = cbba.getCbba09() - cbba.getCbba11() - makeNum;
+//        if (makeNum.equals(cbba.getCbba09() - cbba.getCbba11())) {
+//            return cbba;
+//        }
+        Double needNumOr = cbba.getCbba09() - cbba.getCbba11() ;
+        Double needNum = cbba.getCbba09() - cbba.getCbba11() ;
         Integer goodsId = cbba.getCbba08();
-        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
+        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         for (Cbba res : list) {
+            Double useNum = 0.0;
+            if (!res.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
+
+//            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
+//            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
+//                    .andOrderNoEqualTo(cbba.getCbba07());
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(res.getCbba08(),res.getCbba07());
+                useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+
+
+            }
             //可拿去的分配数量
-            Double getNum = res.getCbba13();
+            Double getNum = res.getCbba13()-useNum;
             if (getNum <= 0) {
                 continue;
             }
 
             if (getNum >= needNum) {
                 res.setCbba13(res.getCbba13() - needNum);
-                needNum = needNum - needNum;
+                needNum = 0.0;
                 res.setCbba04(new Date());
                 cbbaMapper.updateByPrimaryKey(res);
                 break;
 
             } else {
-                res.setCbba13(9.0);
+                res.setCbba13(0.0);
                 needNum = needNum - getNum;
                 res.setCbba04(new Date());
                 cbbaMapper.updateByPrimaryKey(res);
                 continue;
             }
         }
+       Double num= needNumOr-needNum;
+        cbba.setCbba13(cbba.getCbba13()+num);
         return cbba;
 
     }
@@ -407,12 +412,14 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
-            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
-            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
-                    .andOrderNoEqualTo(cbba.getCbba07());
-            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
-            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+//            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
+//            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
+//                    .andOrderNoEqualTo(cbba.getCbba07());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+//            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
+            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 
         }
 
@@ -422,7 +429,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             return cbba;
         }
         Integer goodsId = cbba.getCbba08();
-        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
+        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         for (Cbba res : list) {
             if (!cbba.getCbba07().equals(res.getCbba07())) {
                 //未发货数量
@@ -496,7 +503,12 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         cbba.setCbba13(makeNum + unNum);
         gsAllocationBalance.setUpdateTime(new Date());
         gsAllocationBalance.setQty(gsAllocationBalance.getQty() - unNum.intValue());
-        gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+        if(gsAllocationBalance.getQty()==0){
+            gsAllocationBalanceMapper.deleteByPrimaryKey(gsAllocationBalance.getId());
+        }else {
+            gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+        }
+
         return cbba;
 
 
@@ -507,7 +519,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             return null;
         }
 
-        List<Cbba> res = cbbaMapper.selectLowPriority(cbba);
+        List<Cbba> res = cbbaMapper.selectLowPriorityGet(cbba.getCbba08(),Integer.valueOf(cbba.getCbba15()),cbba.getCbba01() );
         //先从优先级最低的取
         //未发货数量
         Double orderNum = cbba.getCbba09() - cbba.getCbba11();
@@ -525,10 +537,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         for (Cbba re : res) {
             Double useNum = 0.0;
             if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
-                GsGoodsUseCriteria example = new GsGoodsUseCriteria();
-                example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
-                        .andOrderNoEqualTo(cbba.getCbba07());
-                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
                 useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 
 

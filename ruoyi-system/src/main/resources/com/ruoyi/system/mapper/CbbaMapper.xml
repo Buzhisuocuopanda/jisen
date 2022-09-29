@@ -376,8 +376,23 @@ FROM
 WHERE
 	cb.CBBA06 = 0
 	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{cbba08}
-	AND cb.CBBA15 &gt;= #{cbba15}
+	AND cb.CBBA08 = #{goodsId}
+	AND cb.CBBA15 &lt;= #{poritiry}
+	AND cb.CBBA01 != #{cbba01}
+ORDER BY
+	cb.CBBA15 DESC
+  </select>
+
+  <select id="selectLowPriorityGet" resultMap="BaseResultMap">
+    SELECT
+	*
+FROM
+	`CBBA` cb
+WHERE
+	cb.CBBA06 = 0
+	AND cb.CBBA12 = 0
+	AND cb.CBBA08 = #{goodsId}
+	AND cb.CBBA15 &lt;= #{poritiry}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
 	cb.CBBA15
@@ -396,7 +411,7 @@ WHERE
 	AND cb.CBBA15 &lt;= #{oldPriority}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15
+	cb.CBBA15 DESC
   </select>
   <select id="selectByPriorityDurelow2H" resultMap="BaseResultMap">
 SELECT
