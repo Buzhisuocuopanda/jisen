@@ -198,9 +198,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         Cbba cbba =null;
         try {
             //总订单重新分配 需要先判断其他订单有没有进行分配
-            lockTotalOrder();
+//            lockTotalOrder();
             //判断是否有其他操作总订单的业务
-            ifHasOthOrder();
+//            ifHasOthOrder();
 
             //是修改生产订单还是创建生产订单
             //查未分配订单的数量
