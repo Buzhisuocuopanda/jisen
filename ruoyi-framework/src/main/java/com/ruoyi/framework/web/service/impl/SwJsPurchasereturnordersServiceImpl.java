@@ -27,6 +27,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -203,12 +204,16 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         if (cbphs.size() == 0) {
             throw new SwException("采购退货单明细为空");
         }
+        List<Integer> goodsids = cbphs.stream().map(Cbph::getCbph08).collect(Collectors.toList());
+        Set<Integer> uio = new HashSet<>(goodsids);
+/*
         Set<Integer> uio = null;
-        for (int i = 0; i < cbphs.size(); i++) {
+*/
+    /*    for (int i = 0; i < cbphs.size(); i++) {
             Integer cbph08 = cbphs.get(i).getCbph08();
             uio = new HashSet<>();
             uio.add(cbph08);
-        }
+        }*/
         Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(0).getCbpg01());
         if (cbpg == null) {
             throw new SwException("采购退货单主表为空");

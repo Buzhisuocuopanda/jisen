@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -322,11 +323,21 @@ if(cbob==null){
         if(cbsds.size()==0){
             throw new SwException("销售出库单扫描记录未查到");
 
-        }}
+        }
+        if(   cbsds.get(i).getCbsd10()==null){
+            throw new SwException("销售出库单库位未查到");
+
+        }
+        }
 
         Double num = (double) cbsds.size();
         for(int l=0;l<cbsds.size();l++) {
+
     GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+    if(cbsds.get(l).getCbsd10()==null){
+        throw new SwException("销售出库单库位未查到");
+    }
+    gsGoodsSkuDo.setLocationId(cbsds.get(l).getCbsd10());
     //获取仓库id
     gsGoodsSkuDo.setWhId(cbsb1.getCbsb10());
     //获取商品id
@@ -492,12 +503,14 @@ if(cbob==null){
         if (cbphs.size() == 0) {
             throw new SwException("销售出库单明细为空");
         }
-        Set<Integer> uio = null;
+        List<Integer> goodsids = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+        Set<Integer> uio = new HashSet<>(goodsids);
+     /*   Set<Integer> uio = null;
         for (int i = 0; i < cbphs.size(); i++) {
             Integer cbph08 = cbphs.get(i).getCbsc08();
             uio = new HashSet<>();
             uio.add(cbph08);
-        }
+        }*/
 
 
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
