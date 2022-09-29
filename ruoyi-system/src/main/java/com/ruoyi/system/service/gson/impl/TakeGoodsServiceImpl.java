@@ -342,6 +342,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
+                good.setUpc(cbpb.getCbpb15());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
@@ -443,7 +444,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
             }
 
-
+            sugest.setUpc(takeOrderGoodsVo.getUpc());
             sugest.setNumber(cbpm.getCbpm02());
 
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());

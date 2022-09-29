@@ -63,4 +63,6 @@ public class TakeOrderGoodsVo {
     //后台使用 前端无需显示
     private String goodClass;
 
+    private String upc;
+
 }
