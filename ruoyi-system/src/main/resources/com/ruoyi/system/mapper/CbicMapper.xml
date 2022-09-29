@@ -433,6 +433,7 @@ where
     where
       a.CBIC06=0
     <if test="cbic02 != null  and cbic02 != ''"> and a.CBIC02 like concat('%', #{cbic02}, '%')</if>
+    <if test="cbic10 != null  and cbic10 != ''"> and a.CBIC10 like concat('%', #{cbic10}, '%')</if>
 
     <if test="cbpb12 != null  and cbpb12 != ''"> and b.CBPB12 like concat('%', #{cbpb12}, '%')</if>
 

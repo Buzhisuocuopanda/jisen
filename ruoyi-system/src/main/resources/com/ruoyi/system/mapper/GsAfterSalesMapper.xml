@@ -386,5 +386,13 @@
       and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
   </select>
+  <select id="selecttest" resultType="com.ruoyi.system.domain.Do.CbibDo">
+    SELECT DISTINCT
+      a.CBIB02,a.CBIB08,a.CBIB15,a.CBIB04
+    FROM
+      CBIB a
+    GROUP BY
+      a.CBIB08
+  </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.GsAfterSalesCriteria;
 import java.util.List;
@@ -32,4 +33,7 @@ public interface GsAfterSalesMapper {
     int updateByPrimaryKey(GsAfterSales record);
 
     List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo);
+
+
+    List<CbibDo> selecttest(CbibDo cbibDo);
 }

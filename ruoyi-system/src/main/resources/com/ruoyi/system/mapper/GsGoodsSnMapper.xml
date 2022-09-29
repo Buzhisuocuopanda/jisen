@@ -377,6 +377,7 @@ SELECT
 WHERE
 	sn.goods_id = #{goodsId}
 	AND sn.wh_id = #{whId}
+	AND sn.status=1
 ORDER BY
 	sn.create_time
 	LIMIT #{lockQty}

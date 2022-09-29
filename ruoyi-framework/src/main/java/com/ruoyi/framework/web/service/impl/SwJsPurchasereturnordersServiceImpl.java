@@ -229,7 +229,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             if (cbla == null) {
                 throw new SwException("库位不存在");
             }
-            if (!cbla.getCbla03().equals(storeid)) {
+            if (!cbla.getCbla10().equals(storeid)) {
                 throw new SwException("库位不属于该仓库");
             }
             String sn = itemList.get(i).getCbpi09();
@@ -300,6 +300,13 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
             }*/
+            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+            example.createCriteria().andSnEqualTo(itemList.get(i).getCbpi09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+            if (gsGoodsSns.size() >=1 && gsGoodsSns.get(0).getStatus().equals(GoodsType.yck.getCode())) {
+                throw new SwException("该sn已出库");
+            }
+
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());
@@ -830,6 +837,9 @@ for(int i=0;i<cbphs.size();i++) {
 
                     Integer goodsid = cbpi.getCbpi08();
                     //库位id
+                    if(cbpi.getCbpi10()==null){
+                        throw new SwException("库位id不能为空");
+                    }
                     Integer cbpi10 = cbpi.getCbpi10();
                     //sn
 //                    String sn = cbpi.getCbpi09();
@@ -847,7 +857,8 @@ for(int i=0;i<cbphs.size();i++) {
                    // Cbpg cbpg = cbpgMapper.selectByPrimaryKey(itemList.get(i).getCbpg01());
                     GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
                     //获取仓库id
-                    gsGoodsSkuDo.setWhId(cbpg.getCbpg10());
+                    gsGoodsSkuDo.setWhId(storeid);
+                    gsGoodsSkuDo.setLocationId(cbpi10);
                     //获取商品id
                     gsGoodsSkuDo.setGoodsId(goodsid);
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());

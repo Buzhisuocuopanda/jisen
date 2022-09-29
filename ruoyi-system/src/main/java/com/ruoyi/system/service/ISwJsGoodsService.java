@@ -61,4 +61,6 @@ public interface ISwJsGoodsService {
      * @return
      */
     List<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
+
+    List<Cbpf> selectcbpfList(Cbpf cbpf);
 }

@@ -123,7 +123,17 @@ public class TakeGoodsOrderDetailVo {
     @ApiModelProperty("扫码记录")
     private List<TakeOrderSugestVo> scans=new ArrayList<>();
 
+    //合计数量
+//    private Double sumQtyMsg;
+    //合计金额
+    @ApiModelProperty("合计金额")
+    private Double sumPrice;
+    //大写
+    @ApiModelProperty("大写")
+    private String CapPrice;
+
     private String auditUserName;
+    @ApiModelProperty("合计数量")
 
     private Double sumQty;
 

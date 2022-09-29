@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
@@ -20,4 +21,6 @@ public interface AftersalesService {
     List<GsAfterSalesVo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo);
 
     GsAfterSales saleOderDetail(Integer orderId);
+
+    List<CbibDo> test(CbibDo cbibDo);
 }

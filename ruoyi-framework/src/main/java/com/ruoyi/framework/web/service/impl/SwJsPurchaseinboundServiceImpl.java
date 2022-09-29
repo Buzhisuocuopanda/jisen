@@ -21,13 +21,16 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -71,7 +74,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
 
    @Resource
    private CbpbMapper cbpbMapper;
-
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
 
 @Resource
@@ -187,6 +191,14 @@ private NumberGenerate numberGenerate;
                 throw new SwException("库位不属于该仓库");
             }
 
+            while (!this.redisTemplate.opsForValue().setIfAbsent("lock", itemList.get(i).getCbpe09(),3, TimeUnit.SECONDS)) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace(); }
+            }
+
+
 
             //校验sn码
             String sn = itemList.get(i).getCbpe09();
@@ -246,7 +258,12 @@ private NumberGenerate numberGenerate;
 
              }*/
 
-
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSns.size()>0){
+                throw new SwException("该sn已存在库存sn表里");
+            }
 
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
@@ -257,6 +274,9 @@ private NumberGenerate numberGenerate;
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
+
+            this.redisTemplate.delete("lock");
+
             mapper.insertSelective(itemList.get(i));
 
             if (i % 10 == 9) {//每10条提交一次
@@ -276,7 +296,8 @@ private NumberGenerate numberGenerate;
     @Transactional
     @Override
     public int insertSwJsStores(List<CbpcDto> itemList) {
-        if(itemList.size()==0){
+
+        if(CollectionUtils.isEmpty(itemList)){
             throw new SwException("导入数据为空");
         }
 
@@ -289,7 +310,7 @@ private NumberGenerate numberGenerate;
         CbwaCriteria cbwaCriteria = new CbwaCriteria();
         cbwaCriteria.createCriteria().andCbwa09EqualTo(storename);
         List<Cbwa> cbwas = cbwaMapper.selectByExample(cbwaCriteria);
-        if(cbwas.size()==0){
+        if(CollectionUtils.isEmpty(cbwas)){
             throw new SwException("仓库不存在");
         }
         if(Objects.isNull(itemList.get(0).getSuppierName())){
@@ -299,7 +320,7 @@ private NumberGenerate numberGenerate;
         CbsaCriteria cbsaCriteria = new CbsaCriteria();
         cbsaCriteria.createCriteria().andCbsa08EqualTo(itemList.get(0).getSuppierName());
         List<Cbsa> cbsas = cbsaMapper.selectByExample(cbsaCriteria);
-        if(cbsas.size()==0){
+        if(CollectionUtils.isEmpty(cbsas)){
             throw new SwException("供应商不存在");
         }
 
@@ -311,7 +332,7 @@ private NumberGenerate numberGenerate;
                 .andCala08EqualTo(itemList.get(0).getMoneytype())
                 .andCala10EqualTo("币种");
         List<Cala> calas = calaMapper.selectByExample(calaCriteria);
-            if(calas.size()==0){
+        if(CollectionUtils.isEmpty(calas)){
                 throw new SwException("货币类形不存在");
             }
 
@@ -673,6 +694,9 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
             for (int i = 0; i < cbpes.size(); i++) {
                 Integer goodsid = cbpes.get(i).getCbpe08();
+                if(cbpes.get(i).getCbpe10()==null){
+                    throw new SwException("库位id不能为空");
+                }
                 Integer cbpe10 = cbpes.get(i).getCbpe10();
                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
@@ -693,6 +717,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     gsGoodsSku.setGoodsId(goodsid);
                     gsGoodsSku.setWhId(cbpc1.getCbpc10());
                     gsGoodsSku.setQty(num);
+                    gsGoodsSku.setLocationId(cbpe10);
                     gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
                 } else {
@@ -703,6 +728,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                    gsGoodsSku.setId(id);
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                     gsGoodsSku.setUpdateTime(date);

@@ -439,6 +439,18 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     }
 
     @Override
+    public List<Cbpf> selectcbpfList(Cbpf cbpf) {
+        if(cbpf.getCbpf01()==null){
+            throw new SwException("结算货币id不能为空！");
+        }
+        CbpfCriteria example = new CbpfCriteria();
+        example.createCriteria().andCbpf06EqualTo(cbpf.getCbpf06());
+        List<Cbpf> cbpfs = cbpfMapper.selectByExample(example);
+        return cbpfs;
+
+    }
+
+    @Override
     public List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo) {
         return cbpbMapper.selectSwJsGoodsAll(cbpbVo);
     }

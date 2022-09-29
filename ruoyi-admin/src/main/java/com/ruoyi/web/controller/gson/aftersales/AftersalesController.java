@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
@@ -194,4 +195,33 @@ public class AftersalesController extends BaseController {
         }
 
     }
+
+
+    /**
+     * 台账加入库存
+     *
+     *
+     * @return
+     */
+    @ApiOperation(
+            value ="台账加入库存",
+            notes = "台账加入库存"
+    )
+    @GetMapping("/test")
+    public AjaxResult<CbibDo> test(CbibDo cbibDo) {
+        try {
+
+            List<CbibDo> list= aftersalesService.test(cbibDo);
+            return AjaxResult.success(list);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【台账加入库存】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(cbibDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
 }

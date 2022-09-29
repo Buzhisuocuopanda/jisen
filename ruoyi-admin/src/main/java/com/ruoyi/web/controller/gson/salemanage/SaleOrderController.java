@@ -834,7 +834,7 @@ public class SaleOrderController extends BaseController {
             value ="购物车列表list版",
             notes = "购物车列表list版"
     )
-    @GetMapping("/goodsShopListcas")
+    @PostMapping("/goodsShopListcas")
     public AjaxResult<GoodsDetailAndSkuVo> goodsShopLists(@RequestBody List<GoodsPriceAndSkuDto> itemList) {
         try {
 
