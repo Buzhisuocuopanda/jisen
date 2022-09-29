@@ -7,6 +7,7 @@ import java.util.List;
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpkVo;
+import com.ruoyi.system.domain.vo.GsGoodsSnVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,6 @@ public interface GsGoodsSnMapper {
     List<GsGoodsSn> selectOutByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId, @Param("lockQty") Integer lockQty);
 
     List<TakeGoodsOrderListVo> selectSwJsTaskGoodsRelLists(TakeGoodsOrderListDto takeGoodsOrderListDto);
+
+    List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId);
 }

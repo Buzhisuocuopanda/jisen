@@ -920,8 +920,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpmMapper.updateByPrimaryKey(cbpm);
         }
 
-
-
     }
 
     @Override
@@ -1081,9 +1079,24 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
         }
+    }
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/29 17:31
+     *根据商品id和仓库id查未被占用的sn商品
+     *
+     */
+    @Override
+    public List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(Integer whId, Integer goodsId) {
+        List<GsGoodsSnVo> gsGoodsSnVos = gsGoodsSnMapper.selectGoodsSnByWhIdAndGoodsId(whId,goodsId);
+        Map<Integer, String> integerStringMap = baseCheckService.brandMap();
+        for (GsGoodsSnVo gsGoodsSnVo:gsGoodsSnVos) {
+            if(gsGoodsSnVo.getCbpb10()!=null){
+                gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
+            }
+        }
 
-
-
+        return gsGoodsSnVos;
     }
 
 

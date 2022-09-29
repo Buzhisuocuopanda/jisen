@@ -51,6 +51,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单新增主表"
     )
     @PostMapping("/Warehousetransferordersadd")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:add')")
     public AjaxResult<IdVo> Warehousetransferordersadd(@Valid @RequestBody CbaaDo cbaaDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -191,6 +192,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单查询"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists( CbaaVo cbaaVo) {
         try {
             startPage();
@@ -221,6 +223,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbaasVo cbaasVo) {
         try {
             startPage();
@@ -251,6 +254,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单审核"
     )
     @PostMapping("/Selloutofwarehouseaddsh")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:sh')")
     public AjaxResult Selloutofwarehouseaddsh( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.insertSwJsSkuBarcodesh(cbaaDo));
@@ -281,6 +285,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单删除"
     )
     @PostMapping("/Selloutofwarehousedel")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:remove')")
     public AjaxResult Selloutofwarehousedel( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.Selloutofwarehousedel(cbaaDo));
@@ -311,6 +316,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单反审"
     )
     @PostMapping("/Selloutofwarehouseaddfs")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:fs')")
     public AjaxResult Selloutofwarehouseaddfs( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.insertSwJsSkuBarcodefs(cbaaDo));
@@ -341,6 +347,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单标记完成"
     )
     @PostMapping("/Selloutofwarehouseaddbjwc")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:bjwc')")
     public AjaxResult Selloutofwarehouseaddbjwc( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.insertSwJsSkuBarcodebjwc(cbaaDo));
@@ -372,6 +379,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单取消完成"
     )
     @PostMapping("/Selloutofwarehouseaddqxwc")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:qxwc')")
     public AjaxResult Selloutofwarehouseaddqxwc( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.insertSwJsSkuBarcodeqxwc(cbaaDo));
@@ -402,6 +410,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单修改"
     )
     @PostMapping("/Selloutofwarehouseaupdate")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:edit')")
     public AjaxResult Selloutofwarehouseaupdate( @RequestBody CbaaDo cbaaDo) {
         try {
             return toAjax(warehousetransferordersService.insertSwJsSkuBarcodeupdate(cbaaDo));
@@ -433,7 +442,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "导出仓库调拨单"
     )
     @PostMapping("/SwJsGoodsexport")
-   // @PreAuthorize("@ss.hasPermi('system:goods:export')")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:export')")
     public void swJsGoodsexport(HttpServletResponse response,CbaaVo cbaaVo) {
         List<CbaaVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelLists(cbaaVo);
         ExcelUtil<CbaaVo> util = new ExcelUtil<>(CbaaVo.class);

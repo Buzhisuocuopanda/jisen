@@ -869,7 +869,27 @@ public class TakeGoodsController extends BaseController {
 
     }
 
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/29 17:31
+     *根据商品id和仓库id查未被占用的sn商品
+     */
+    @GetMapping("selectGoodsSnByWhIdAndGoodsId")
+    public AjaxResult selectGoodsSnByWhIdAndGoodsId(@RequestParam("whId") Integer whId, @RequestParam("goodsId")Integer goodsId) {
+        try {
+            List<GsGoodsSnVo> gsGoodsSnVos =takeGoodsService.selectGoodsSnByWhIdAndGoodsId(whId,goodsId);
+            return AjaxResult.success(gsGoodsSnVos);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(whId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+
+    }
 
 
 }
