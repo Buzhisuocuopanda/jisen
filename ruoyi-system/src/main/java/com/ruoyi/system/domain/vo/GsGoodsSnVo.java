@@ -8,33 +8,18 @@ import java.util.Date;
 public class GsGoodsSnVo {
     private Integer id;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer createBy;
-
-    private Integer updateBy;
-
-    private Byte deleteFlag;
     //sn
     private String sn;
-
+    //商品id
     private Integer goodsId;
-
+    //库位id
     private Integer locationId;
 
-    private Byte status;
-
+    //仓库id
     private Integer whId;
-
-    private Date inTime;
-
-    private Date outTime;
 
     private Date prdDate;
 
-    private Byte groudStatus;
 
     //库位名称
     private String cbla09;

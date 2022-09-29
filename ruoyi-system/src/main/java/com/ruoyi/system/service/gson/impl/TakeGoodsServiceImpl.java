@@ -1099,5 +1099,100 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         return gsGoodsSnVos;
     }
 
+    @Override
+    @Transactional
+    public void mdfTakeSuggest2(CbpmDto cbpmDto) {
+        Date date = new Date();
+        CbpmCriteria cbpmCriteria =new CbpmCriteria();
+        //出货单中的扫码记录
+        List<Cbpm> cbpmList = cbpmMapper.selectByExample(cbpmCriteria);
+        //前端传过来的参数
+        List<CbpmDto.CbpmDtoItem> list = cbpmDto.getGoodsSnList();
+        //检查出库单中的商品是存在
+        for(Cbpm cbpm:cbpmList){
+            int index =0;
+
+            for (CbpmDto.CbpmDtoItem cbpmDtoItem : list) {
+                if(!cbpm.getCbpm09().equals(cbpmDtoItem.getSn())){
+                    index =1;
+                }
+
+            }
+            if(index == 0){
+                if(cbpm.getCbpm11() == 1){
+                    throw new SwException("您选择删除的Sn商品已扫码:" + cbpm.getCbpm09());
+                }
+                /*CbpmCriteria cbpmCriteria2 =new CbpmCriteria();
+                cbpmCriteria2.createCriteria()
+                        .andCbpm09EqualTo(cbpm.getCbpm09());*/
+                cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
+
+                GsGoodsSn gsGoodsSn3 = new GsGoodsSn();
+                gsGoodsSn3.setStatus((byte) 1L);
+                gsGoodsSn3.setGroudStatus((byte) 1L);
+                GsGoodsSnCriteria gsGoodsSnCriteria =new GsGoodsSnCriteria();
+                gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbpm.getCbpm09());
+
+
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn3,gsGoodsSnCriteria);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn3);
+            }
+
+        }
+
+        for (CbpmDto.CbpmDtoItem cbpmDtoItem : list) {
+            int index =0;
+            for(Cbpm cbpm:cbpmList){
+                if(cbpm.getCbpm09().equals(cbpmDtoItem.getSn())){
+                    index =1;
+                }
+            }
+            if(index == 0){
+                //检查修改的商品是否在建议出库单中存在
+                CbpmCriteria example=new CbpmCriteria();
+                example.createCriteria()
+                        .andCbpm09EqualTo(cbpmDtoItem.getSn());
+                List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+                if(cbpms.size()>0){
+                    throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + cbpmDtoItem.getSn());
+                }
+                Cbpm cbpm=new Cbpm();
+                cbpm.setCbpm07(0);
+                cbpm.setCbpm08(cbpmDtoItem.getGoodsId());
+                cbpm.setCbpm09(cbpmDtoItem.getSn());
+                cbpm.setCbpm10(cbpmDtoItem.getLocationId());
+                cbpm.setCbpm05(date);
+                cbpm.setCbpk01(cbpmDto.getCbpk01());
+                cbpm.setCbpm06(Integer.parseInt(SecurityUtils.getUserId()+""));
+                cbpmMapper.insertSelective(cbpm);
+
+                GsGoodsSn gsGoodsSn2 = new GsGoodsSn();
+                gsGoodsSn2.setId(cbpmDtoItem.getId());
+                gsGoodsSn2.setStatus((byte) 2L);
+                gsGoodsSn2.setGroudStatus((byte) 2L);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn2);
+            }
+
+           /* //检查修改的商品是否在建议出库单中存在
+            CbpmCriteria example=new CbpmCriteria();
+            example.createCriteria()
+                    .andCbpm09EqualTo(changeSuggestModel.getCbpm09());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+            if(cbpms.size()>0 && !cbpms.get(0).getCbpm01().equals(changeSuggestModel.getCbpm01())){
+                throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + changeSuggestModel.getCbpm09());
+            }
+
+            Cbpm cbpm=new Cbpm();
+            cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+            cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+            cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+            cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+            cbpm.setCbpm10(changeSuggestModel.getCbpm10());
+            cbpm.setCbpm05(date);
+            cbpm.setCbpm06(changeSuggestDto.getUserId());
+            cbpmMapper.updateByPrimaryKey(cbpm);*/
+        }
+
+    }
 
 }
