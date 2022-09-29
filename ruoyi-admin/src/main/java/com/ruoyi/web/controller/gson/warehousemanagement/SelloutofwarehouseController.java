@@ -27,6 +27,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +65,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单主表"
     )
     @PostMapping("/Selloutofwarehouseadd")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:add')")
     public AjaxResult<IdVo> Selloutofwarehouseadd(@Valid @RequestBody CbsbDo cbsbDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -182,6 +184,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "销售出库单审核"
     )
     @PostMapping("/Selloutofwarehouseaddsh")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:sh')")
     public AjaxResult Selloutofwarehouseaddsh( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodesh(cbsbDo));
@@ -212,6 +215,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单反审"
     )
     @PostMapping("/Selloutofwarehouseaddfs")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:fs')")
     public AjaxResult Selloutofwarehouseaddfs( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodesf(cbsbDo));
@@ -242,6 +246,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单标记完成"
     )
     @PostMapping("/Selloutofwarehouseaddshwc")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:bjwc')")
     public AjaxResult Selloutofwarehouseaddshwc( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodeshwc(cbsbDo));
@@ -272,6 +277,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单取消完成"
     )
     @PostMapping("/Selloutofwarehouseaddqxwc")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:qxwc')")
     public AjaxResult Selloutofwarehouseaddqxwc( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodeqxwc(cbsbDo));
@@ -302,6 +308,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单列表"
     )
     @GetMapping("/SwJsSkuBarcodelist")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:list')")
     public AjaxResult<TableDataInfo> swJsGoodslist(CbsbVo cbsbVo) {
         try {
             startPage();
@@ -334,6 +341,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单查询"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbsbVo cbsbVo) {
         try {
             startPage();
@@ -364,6 +372,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "销售出库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbsbsVo cbsbsVo) {
         try {
             startPage();
@@ -393,6 +402,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "销售出库单删除"
     )
     @PostMapping("/Selloutofwarehousedel")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:remove')")
     public AjaxResult Selloutofwarehousedel( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodel(cbsbDo));
@@ -421,6 +431,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库单修改"
     )
     @PostMapping("/Selloutofwarehousedeit")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:edit')")
     public AjaxResult Selloutofwarehousedeit( @RequestBody CbsbDo cbsbDo) {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodedit(cbsbDo));
@@ -626,6 +637,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "导出销售出货单详情"
     )
     @PostMapping("/saleoutOrderdetailsexport")
+
     public AjaxResult saleoutOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
         String excelPaht="";
         String pdfPath="";

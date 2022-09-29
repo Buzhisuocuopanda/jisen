@@ -557,7 +557,7 @@
     <if test="endTime !=null ">
       AND oa.CBOA02 &lt;=#{endTime}
     </if>
-
+    order by ob.CBOB03 desc
   </select>
 
   <select id="salesAnalysis2Item" resultType="Map">
