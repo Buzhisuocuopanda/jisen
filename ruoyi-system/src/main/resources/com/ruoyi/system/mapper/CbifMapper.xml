@@ -534,7 +534,7 @@ where
   </select>
 
   <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
-    select t.CBPB14,t.CBPB10,t.CBPB12,t.CBPB15,t.CBPB08,t.CBPB01,SUM(t.CBIB15) cbib15 from
+    select t.CBIB01, t.CBPB14,t.CBPB10,t.CBPB12,t.CBPB15,t.CBPB08,t.CBPB01,SUM(t.CBIB15) cbib15 from
     (SELECT
     ib.CBIB01,
     ib.CBIB02,

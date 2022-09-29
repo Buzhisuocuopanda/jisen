@@ -10,6 +10,7 @@ import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
+import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface ISwJsGoodsService {
      * @param cbpbDo 商品
      * @return 结果
      */
-    int insertSwJsGoodsClassify(CbpbDo cbpbDo);
+    IdVo insertSwJsGoodsClassify(CbpbDo cbpbDo);
     /**
      * 修改商品
      *
@@ -40,7 +41,7 @@ public interface ISwJsGoodsService {
 
     String importSwJsGoods(List<CbpbDto> swJsGoodsList, boolean updateSupport, String operName);
 
-    int insertSwJsGoodsClassifys(CbpfDo cbpfDo);
+    int insertSwJsGoodsClassifys(List<Cbpf> cbpf);
 
     String importSwJsCustomer(List<Cbpf> swJsCustomersList, boolean updateSupport, String operName);
 
@@ -61,4 +62,6 @@ public interface ISwJsGoodsService {
      * @return
      */
     List<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
+
+    List<Cbpf> selectcbpfList(Cbpf cbpf);
 }

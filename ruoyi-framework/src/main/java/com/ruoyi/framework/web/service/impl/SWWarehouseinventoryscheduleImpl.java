@@ -15,6 +15,7 @@ import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.CbsgMapper;
 import com.ruoyi.system.mapper.CbshMapper;
 import com.ruoyi.system.mapper.CbsjMapper;
+import com.ruoyi.system.mapper.GsGoodsSnMapper;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
@@ -47,6 +48,12 @@ private CbsjMapper cbbsjMapper;
 
     @Resource
     private BaseCheckService baseCheckService;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private CbsjMapper cbsjMapper;
     @Override
     public List<CbshVo> selectSwJsStoreList(CbshVo cbshVo) {
         return cbshMapper.selectstorelist(cbshVo);
@@ -94,6 +101,24 @@ private CbsjMapper cbbsjMapper;
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if( itemList.get(i).getCbsj09() == null){
+                throw new SwException("商品sn不能为空");
+            }
+
+            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+            example.createCriteria().andSnEqualTo(itemList.get(i).getCbsj09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+            if(gsGoodsSns.size() > 0){
+                throw new SwException("商品sn已存在");
+            }
+            CbsjCriteria example1 = new CbsjCriteria();
+            example1.createCriteria().andCbsj09EqualTo(itemList.get(i).getCbsj09());
+            List<Cbsj> cbsjs = cbsjMapper.selectByExample(example1);
+            if(cbsjs.size() > 0){
+                throw new SwException("商品sn已存在");
+            }
+
+
             itemList.get(i).setCbsj03(date);
             itemList.get(i).setCbsj04(Math.toIntExact(userid));
             itemList.get(i).setCbsj05(date);
@@ -215,6 +240,10 @@ private CbsjMapper cbbsjMapper;
             //通过仓库id和货物id判断是否存在
             List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
             if (gsGoodsSkus.size() == 0) {
+                if(cbsjs.get(i).getCbsj10()==null){
+                    throw new SwException("商品没有货位");
+                }
+
                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                 gsGoodsSkuDo1.setGoodsId(cbsjs.get(i).getCbsj08());
                 gsGoodsSkuDo1.setWhId(cbsh.getCbsh10());

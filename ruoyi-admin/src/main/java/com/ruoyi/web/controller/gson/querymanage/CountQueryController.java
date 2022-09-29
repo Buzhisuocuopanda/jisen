@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.gson.querymanage;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.Cbpa;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -18,6 +19,7 @@ import com.ruoyi.system.domain.dto.TotalOrderListDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.*;
 import com.ruoyi.system.service.gson.ApprovalService;
+import com.ruoyi.system.service.impl.SysUserServiceImpl;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +75,8 @@ public class CountQueryController  extends BaseController {
     @Resource
     private ISwJsSupplierService swJsSupplierService;
 
-
+    @Resource
+    private SysUserServiceImpl sysUserService;
 
 
     /**
@@ -549,6 +552,7 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
 
 
 }

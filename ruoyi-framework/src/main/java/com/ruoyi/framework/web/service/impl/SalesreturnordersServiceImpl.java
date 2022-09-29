@@ -261,6 +261,10 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         for(int i=0;i<cbsgs.size();i++){
             double num = cbsgs.size();
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+            if(cbsgs.get(i).getCbsg10()==null){
+                throw new SwException("销售退库没有库位信息");
+            }
+            gsGoodsSkuDo.setLocationId(cbsgs.get(i).getCbsg10());
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbse.getCbse10());
             //获取商品id
@@ -382,11 +386,21 @@ if(cbsgss.size()>0){
     @Transactional
     @Override
     public int insertSwJsStoress(List<Cbsg> itemList) {
-
+        if (itemList.size() == 0) {
+            throw new SwException("请选择要扫的商品");
+        }
         Cbse cbse1 = cbseMapper.selectByPrimaryKey(itemList.get(0).getCbse01());
         if(!cbse1.getCbse11().equals(TaskStatus.sh.getCode())){
             throw new SwException("审核状态才能扫码");
         }
+
+        CbsfCriteria cas = new CbsfCriteria();
+        cas.createCriteria().andCbse01EqualTo(itemList.get(0).getCbse01());
+        List<Cbsf> cbphs = cbsfMapper.selectByExample(cas);
+        if (cbphs.size() == 0) {
+            throw new SwException("销售退库单明细为空");
+        }
+
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbsgMapper mapper = session.getMapper(CbsgMapper.class);
@@ -432,6 +446,8 @@ if(cbsgss.size()>0){
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
             }*/
+
+
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());

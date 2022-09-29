@@ -12,10 +12,7 @@ import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.domain.vo.DirectWarehousingVo;
-import com.ruoyi.system.mapper.CbicMapper;
-import com.ruoyi.system.mapper.CblaMapper;
-import com.ruoyi.system.mapper.CbpbMapper;
-import com.ruoyi.system.mapper.CbsaMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
@@ -46,6 +43,10 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private CbpbMapper cbbpbMapper;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
@@ -53,15 +54,29 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
             throw new SwException("upc没输入");
         }
 
-        CbpbCriteria example = new CbpbCriteria();
-        example.createCriteria().andCbpb15EqualTo(cbicDto.getUpc());
-        List<Cbpb> cbpbs = cbbpbMapper.selectByExample(example);
+        CbpbCriteria exampe = new CbpbCriteria();
+        exampe.createCriteria().andCbpb15EqualTo(cbicDto.getUpc());
+        List<Cbpb> cbpbs = cbbpbMapper.selectByExample(exampe);
         if(cbpbs.size()==0){
             throw new SwException("该upc没有对应商品");
 
         }
+
+        CbicCriteria example1 = new CbicCriteria();
+        example1.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
+        List<Cbic> cbicss = cbicMapper.selectByExample(example1);
+        if(cbicss.size()>0){
+            throw new SwException("该sn已经存在");
+        }
+
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(cbicDto.getCbic10());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+        if(gsGoodsSns.size()>0){
+            throw new SwException("该sn已经存在仓库中");
+        }
         // 检查供应商
-        baseCheckService.checksupplier(cbicDto.getCbic13());
+       // baseCheckService.checksupplier(cbicDto.getCbic13());
 
         //检查商品
        // Cbpb cbpb = baseCheckService.checkGoods(cbicDto.getCbic09());
@@ -145,14 +160,14 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
         List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
 
-        Integer cbic13 = cbicDto.getCbic13();
-        Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
+       // Integer cbic13 = cbicDto.getCbic13();
+      //  Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
 
         CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
         cbibDo.setCbib02(storeid);
         cbibDo.setCbib04(date);
         cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
-        cbibDo.setCbib06(cbsa1.getCbsa08());
+       // cbibDo.setCbib06(cbsa1.getCbsa08());
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
        // cbibDo.setCbib06(cbsa.getCbsa08());
 
