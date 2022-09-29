@@ -20,6 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "新增质检单"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:add')")
     public AjaxResult<IdVo> swJsPurchaseinboundadd(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -151,6 +153,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "删除质检单"
     )
     @PostMapping("/SwJsPurchaseinbounddelete")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:remove')")
     public AjaxResult SwJsPurchaseinbounddelete( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeselete(cbqaDo));
@@ -181,6 +184,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "审核质检单"
     )
     @PostMapping("/SwJsPurchaseinboundsh")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:sh')")
     public AjaxResult SwJsPurchaseinboundsh( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodesh(cbqaDo));
@@ -210,6 +214,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "反审质检单"
     )
     @PostMapping("/SwJsPurchaseinboundshs")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:fs')")
     public AjaxResult SwJsPurchaseinboundshs( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeshs(cbqaDo));
@@ -240,6 +245,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundbjwc")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:bjwc')")
     public AjaxResult SwJsPurchaseinboundbjwc( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodebjwc(cbqaDo));
@@ -270,6 +276,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单标记取消完成"
     )
     @PostMapping("/SwJsPurchaseinboundbqxwc")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:qxwc')")
     public AjaxResult SwJsPurchaseinboundbqxwc( @RequestBody CbqaDo cbqaDo) {
         try {
             return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeqxwc(cbqaDo));
@@ -300,6 +307,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单详情"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists( CbqaVo cbqaVo) {
         try {
             startPage();
@@ -360,6 +368,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "质检单查询"
     )
     @GetMapping("/SwJsSkuBarcodeselect")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:list')")
     public AjaxResult<TableDataInfo> swJsGoodslistss(CbqaVo cbqaVo) {
         try {
             startPage();

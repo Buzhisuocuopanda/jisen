@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘汇总新增主表"
     )
     @PostMapping("/SwJsStoreadd")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:add')")
     public AjaxResult<IdVo> swJsStoreadd(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -111,6 +113,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "删除仓库盘点汇总"
     )
     @PostMapping("/SwJsStoreremove")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:remove')")
     public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(swarehouseinventorysummaryService.deleteSwJsStoreById(cbshDo));
@@ -201,6 +204,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘点汇总详情"
     )
     @GetMapping("/SwJsStorelistsss")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:detail')")
     public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsisVo cbsisVo) {
         try {
             startPage();
@@ -231,6 +235,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘点汇总新查询"
     )
     @GetMapping("/SwJsStorelistss")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:list')")
     public AjaxResult<TableDataInfo> SwJsStorelistss(CbsiVo cbsiVo) {
         try {
             startPage();
@@ -261,6 +266,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库汇总盘点完成"
     )
     @PostMapping("/swJsStoreend")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:pdwc')")
     public AjaxResult swJsStoreend(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(swarehouseinventorysummaryService.swJsStoreend(cbshDo));
@@ -289,6 +295,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             notes = "仓库盘点汇总取消完成"
     )
     @PostMapping("/swJsStoreendd")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:qxwc')")
     public AjaxResult swJsStoreendd(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(swarehouseinventorysummaryService.swJsStoreendd(cbshDo));

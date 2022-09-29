@@ -24,6 +24,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "新增采购订单表"
     )
     @PostMapping("/SwJsPurchasereturnordersadd")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:add')")
     public AjaxResult<IdVo> swJsPurchasereturnordersadd(@Valid @RequestBody GsPurchaseOrderDo gsPurchaseOrderDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -86,6 +88,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "修改采购订单表"
     )
     @PostMapping("/SwJsPurchasereturnordersedit")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:edit')")
     public AjaxResult SwJsPurchasereturnordersedit(@Valid @RequestBody GsPurchaseOrderDo gsPurchaseOrderDo, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -145,6 +148,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "删除采购订单表"
     )
     @PostMapping("/SwJsPurchasereturnorderremove")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:remove')")
     public AjaxResult swJsPurchasereturnorderremove(@RequestBody GsPurchaseOrderDo gsPurchaseOrderDo) {
         try {
             return toAjax(purchaseordertableService.deleteSwJsSkuBarcodsById(gsPurchaseOrderDo));
@@ -173,6 +177,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "审核采购订单表"
     )
     @PostMapping("/SwJsPurchasereturnordersh")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:sh')")
     public AjaxResult swJsPurchasereturnordersh(@RequestBody GsPurchaseOrderDo gsPurchaseOrderDo) {
         try {
             return toAjax(purchaseordertableService.swJsPurchasereturnordersh(gsPurchaseOrderDo));
@@ -202,6 +207,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "反审采购订单表"
     )
     @PostMapping("/SwJsPurchasereturnorderfs")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:fs')")
     public AjaxResult swJsPurchasereturnorderfs(@RequestBody GsPurchaseOrderDo gsPurchaseOrderDo) {
         try {
             return toAjax(purchaseordertableService.swJsPurchasereturnorderfs(gsPurchaseOrderDo));
@@ -230,6 +236,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "采购订单表标记完成"
     )
     @PostMapping("/SwJsPurchasereturnorderbjwc")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:bjwc')")
     public AjaxResult swJsPurchasereturnorderbjwc(@RequestBody GsPurchaseOrderDo gsPurchaseOrderDo) {
         try {
             return toAjax(purchaseordertableService.swJsPurchasereturnorderbjwc(gsPurchaseOrderDo));
@@ -259,6 +266,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "采购订单表取消完成"
     )
     @PostMapping("/SwJsPurchasereturnorderqxwc")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:qxwc')")
     public AjaxResult swJsPurchasereturnorderqxwc( @RequestBody GsPurchaseOrderDo gsPurchaseOrderDo) {
         try {
             return toAjax(purchaseordertableService.swJsPurchasereturnorderqxwc(gsPurchaseOrderDo));
@@ -287,6 +295,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "采购订单查询"
     )
     @GetMapping("/SwJsSkuBarcodelist")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:list')")
     public AjaxResult<TableDataInfo> swJsGoodslist(GsPurchaseOrderVo gsPurchaseOrderVo) {
         try {
             startPage();
@@ -318,6 +327,7 @@ public class PurchaseordertableController extends BaseController {
             notes = "采购订单详情"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:purchaseordertable:detail')")
     public AjaxResult<TableDataInfo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
         try {
             startPage();

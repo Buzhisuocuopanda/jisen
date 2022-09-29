@@ -337,6 +337,6 @@ FROM
     <if test="orderNo !=null">
       and ad.sale_order_no like concat('%',  #{orderNo}, '%')
     </if>
-    order by ad.createTime DESC
+    order by ad.create_time DESC
   </select>
 </mapper>

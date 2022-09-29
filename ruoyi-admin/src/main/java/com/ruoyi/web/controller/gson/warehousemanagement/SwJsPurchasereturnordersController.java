@@ -58,6 +58,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "新增采购退货单主单"
     )
     @PostMapping("/SwJsPurchasereturnordersadd")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:add')")
     public AjaxResult<IdVo> swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -177,6 +178,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "删除采购退货单"
     )
     @PostMapping("/SwJsPurchasereturnorderremove")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:remove')")
     public AjaxResult swJsPurchasereturnorderremove(@RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.deleteSwJsSkuBarcodsById(cbpgDto));
@@ -205,6 +207,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "修改采购退货单"
     )
     @PostMapping("/SwJsPurchaseinboundedit")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:edit')")
     public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.updateSwJsSkuBarcodes(cbpgDto));
@@ -234,6 +237,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelist")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslist( CbpgVo cbpgVo) {
         try {
             startPage();
@@ -264,6 +268,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单列表"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbpgVo cbpgVo) {
         try {
             startPage();
@@ -293,6 +298,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单查询"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:list')")
     public AjaxResult<TableDataInfo> swJsGoodslistss(CbpgVo cbpgVo) {
         try {
             startPage();
@@ -323,6 +329,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单审核"
     )
     @PostMapping("/SwJsPurchaseinboundsho")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:sh')")
     public AjaxResult swJsPurchaseinboundsho( @RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodeshs(cbpgDto));
@@ -350,6 +357,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单反审"
     )
     @PostMapping("/SwJsPurchaseinboundsht")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:fs')")
     public AjaxResult swJsPurchaseinboundsht( @RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodesh(cbpgDto));
@@ -376,6 +384,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单取消完成"
     )
     @PostMapping("/SwJsPurchaseinboundshtt")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:qxwc')")
     public AjaxResult swJsPurchaseinboundshtt( @RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodeshss(cbpgDto));
@@ -403,6 +412,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "采购退库单标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundshf")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:bjwc')")
     public AjaxResult swJsPurchaseinboundshf( @RequestBody CbpgDto cbpgDto) {
         try {
             return toAjax(swJsPurchasereturnordersService.SwJsSkuBarcodes(cbpgDto));
@@ -430,7 +440,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "导入采购退库单"
     )
     @PostMapping("/importSwJsGoods")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:import')")
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {

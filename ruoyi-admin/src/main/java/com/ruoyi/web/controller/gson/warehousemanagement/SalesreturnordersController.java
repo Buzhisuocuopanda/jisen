@@ -20,6 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "新增销售退库单主表"
     )
     @PostMapping("/Selloutofwarehouseadd")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:add')")
     public AjaxResult<IdVo> Selloutofwarehouseadd(@Valid @RequestBody CbseDo cbseDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -171,6 +173,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单审核"
     )
     @PostMapping("/Selloutofwarehouseaddsh")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:sh')")
     public AjaxResult Selloutofwarehouseaddsh( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodesh(cbseDo));
@@ -201,6 +204,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单反审"
     )
     @PostMapping("/Selloutofwarehouseaddfs")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:fs')")
     public AjaxResult Selloutofwarehouseaddfs( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodesf(cbseDo));
@@ -232,6 +236,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单取消完成"
     )
     @PostMapping("/Selloutofwareehouseqxwc")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:qxwc')")
     public AjaxResult Selloutofwarehousesqxwc( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodeqxwc(cbseDo));
@@ -262,6 +267,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单标记完成"
     )
     @PostMapping("/Selloutofwarehouseqxwc")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:bjwc')")
     public AjaxResult Selloutofwarehousebjwc( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodebjwc(cbseDo));
@@ -292,6 +298,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单删除"
     )
     @PostMapping("/Selloutofwarehousedel")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:remove')")
     public AjaxResult Selloutofwarehousedel( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodel(cbseDo));
@@ -323,6 +330,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单查询"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbseVo cbsbVo) {
         try {
             startPage();
@@ -353,6 +361,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "销售退库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists( CbsesVo cbsesVo) {
         try {
             startPage();
@@ -385,6 +394,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "人工确认完成更新库存"
     )
     @PostMapping("/Selloutofwarehouseaddrgqr")
+    @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:labor')")
     public AjaxResult Selloutofwarehouseaddrgqr( @RequestBody CbseDo cbseDo) {
         try {
             return toAjax(salesreturnordersService.insertSwJsSkuBarcodergqr(cbseDo));
