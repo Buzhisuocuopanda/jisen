@@ -46,6 +46,9 @@ private GsGoodsSnMapper goodsSnMapper;
         if(gsGoodsSns.get(0).getStatus()==1){
             throw new SwException("SN已经上架");
         }
+        if(gsGoodsSns.get(0).getLocationId()!=null){
+            throw new SwException("该SN已经绑定库位");
+        }
 
 
         Long userid = SecurityUtils.getUserId();
