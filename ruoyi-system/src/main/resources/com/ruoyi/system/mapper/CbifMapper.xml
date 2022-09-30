@@ -565,7 +565,8 @@ where
   </select>
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
-        a.CBIG01,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15
+        a.CBIG01,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15,
+        sn.status,sn.groud_status as groudStatus
       FROM
         CBIG a
           LEFT JOIN
@@ -596,6 +597,7 @@ where
         CALA h
         ON
           h.CALA01=e.CBPB10
+      LEFT JOIN gs_goods_sn sn ON sn.sn=a.CBIG10
 
       WHERE
           a.CBIG07=0
@@ -621,6 +623,12 @@ where
 
       <if test="cbpb01 != null">
         and e.cbpb01 =#{cbpb01}
+      </if>
+      <if test="status != null">
+        and sn.status =#{status}
+      </if>
+      <if test="groudStatus != null">
+        and e.groud_status =#{groudStatus}
       </if>
         order by a.CBIG03 desc
 
