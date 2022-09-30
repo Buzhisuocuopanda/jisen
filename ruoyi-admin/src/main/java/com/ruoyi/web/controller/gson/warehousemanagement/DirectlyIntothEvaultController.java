@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             notes = "新增直接入库单"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
+    @PreAuthorize("@ss.hasPermi('system:directly:add')")
     public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody CbicDto cbicDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -75,6 +77,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             notes = "删除直接入库单"
     )
     @PostMapping("/SwJsPurchaseinboundremove")
+    @PreAuthorize("@ss.hasPermi('system:directly:remove')")
     public AjaxResult swJsPurchaseinboundremove(@RequestBody CbicDto cbicDto) {
         try {
             return toAjax(swDirectlyintothevaultService.deleteSwJsSkuBarcodsById(cbicDto));
@@ -101,6 +104,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             notes = "直接入库单列表"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:directly:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbicVo cbicVo) {
         try {
             startPage();
@@ -130,6 +134,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             notes = "直接入库单条件查询"
     )
     @GetMapping("/SwJsSkuBarcodelist")
+    @PreAuthorize("@ss.hasPermi('system:directly:list')")
     public AjaxResult<TableDataInfo> swJsGoodslist(CbicVo cbicVo) {
         try {
             startPage();

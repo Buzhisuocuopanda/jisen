@@ -21,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,6 +81,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细新增主表"
     )
     @PostMapping("/SwJsStoreadd")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:add')")
     public AjaxResult<IdVo> swJsStoreadd(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
         IdVo res=null;
         try {
@@ -139,6 +141,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "删除仓库盘点明细"
     )
     @PostMapping("/SwJsStoreremove")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:remove')")
     public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
         try {
             
@@ -168,6 +171,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细盘点完成"
     )
     @PostMapping("/swJsStoreend")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:pdwc')")
     public AjaxResult swJsStoreend(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(warehouseinventoryscheduleService.swJsStoreend(cbshDo));
@@ -196,6 +200,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细审核"
     )
     @PostMapping("/swJsStoreendsh")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:sh')")
     public AjaxResult swJsStoreendsh(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(warehouseinventoryscheduleService.swJsStoreendsh(cbshDo));
@@ -224,6 +229,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细反审"
     )
     @PostMapping("/swJsStoreendfs")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:fs')")
     public AjaxResult swJsStoreendfs(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(warehouseinventoryscheduleService.swJsStoreendfs(cbshDo));
@@ -252,6 +258,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细取消完成"
     )
     @PostMapping("/swJsStoreenddqxwc")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:qxwc')")
     public AjaxResult swJsStoreenddqxwc(@RequestBody  CbshDo cbshDo) {
         try {
             return toAjax(warehouseinventoryscheduleService.swJsStoreendd(cbshDo));
@@ -309,6 +316,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细详情"
     )
     @GetMapping("/SwJsStorelistdetail")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:detail')")
     public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsjVo cbsjVo) {
         try {
             startPage();
@@ -339,6 +347,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细新查询"
     )
     @GetMapping("/SwJsStorelistss")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:list')")
     public AjaxResult<TableDataInfo> SwJsStorelistss(CbshVo cbshVo) {
         try {
             startPage();

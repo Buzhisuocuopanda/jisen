@@ -116,6 +116,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "删除库存汇总初始化"
     )
     @PostMapping("/SwJsStoreremove")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:remove')")
     public AjaxResult swJsStoreremove(@RequestBody  CbieDo cbieDo) {
         try {
             return toAjax(swarehouseInventoryrollupService.deleteSwJsStoreById(cbieDo));
@@ -144,6 +145,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化审核"
     )
     @PostMapping("/swJsStoreendd")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:sh')")
     public AjaxResult swJsStoreendd(@RequestBody  CbieDo cbieDo ) {
         try {
             return toAjax(swarehouseInventoryrollupService.swJsStoreendd(cbieDo));
@@ -173,6 +175,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化反审"
     )
     @PostMapping("/swJsStoreendds")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:fs')")
     public AjaxResult swJsStoreendds(@RequestBody  CbieDo cbieDo ) {
         try {
             return toAjax(swarehouseInventoryrollupService.swJsStoreendds(cbieDo));
@@ -201,6 +204,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundshss")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:bjwc')")
     public AjaxResult swJsPurchaseinboundshss( @RequestBody CbifDo cbifDo ) {
         try {
             return toAjax(swarehouseInventoryrollupService.SwJsSkuBarcodeshsss(cbifDo));
@@ -229,6 +233,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化列表"
     )
     @GetMapping("/SwJsStorelists")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:list')")
     public AjaxResult<TableDataInfo> SwJsStorelists(CbieVo cbieVo) {
         try {
             startPage();
@@ -259,6 +264,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化查询"
     )
     @GetMapping("/SwJsStorelistss")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:list')")
     public AjaxResult<TableDataInfo> SwJsStorelistss(CbieVo cbieVo) {
         try {
             startPage();
@@ -289,6 +295,7 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "库存汇总初始化详情"
     )
     @GetMapping("/SwJsStorelist")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:detail')")
     public AjaxResult<TableDataInfo> swJsStorelist( CbifVo cbifVo) {
         try {
             startPage();
@@ -319,8 +326,8 @@ public class WarehouseInventoryrollupController extends BaseController {
             notes = "导入库存汇总初始化主表"
     )
     @PostMapping("/importSwJsGoods")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
     @ResponseBody
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:import')")
     public AjaxResult importWarehousedetailsinitialize(MultipartFile file, boolean updateSupport) {
         try {
             ExcelUtil<cbifsDo> util = new ExcelUtil<>(cbifsDo.class);

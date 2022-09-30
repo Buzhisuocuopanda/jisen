@@ -359,7 +359,7 @@
     <if test="endTime != null">
       and sku.create_time &lt;=#{endTime}
     </if>
-
+    order by sku.create_time desc
   </select>
 
 

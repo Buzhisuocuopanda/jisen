@@ -531,6 +531,7 @@ where
     </if>
     <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
     <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
+     order by ib.CBIB04 desc
   </select>
 
   <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
@@ -552,7 +553,7 @@ where
     LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
     LEFT JOIN CBWA wa ON wa.CBWA01 = ib.CBIB02
     WHERE
-    ib.CBIB01 IN ( SELECT max( tb.CBIB01 ) FROM CBIB tb GROUP BY tb.CBIB08, tb.CBIB02 )) t
+    ib.CBIB01 IN ( SELECT max( tb.CBIB01 ) FROM CBIB tb GROUP BY tb.CBIB08, tb.CBIB02 ) order by ib.CBIB04 desc) t
 
     GROUP BY t.CBIB08
     HAVING 1=1
@@ -621,7 +622,7 @@ where
       <if test="cbpb01 != null">
         and e.cbpb01 =#{cbpb01}
       </if>
-
+        order by a.CBIG03 desc
 
     </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
@@ -650,6 +651,7 @@ where
     <if test="endTime != null">
       and a.cbib04 &lt;=#{endTime}
     </if>
+    order by a.CBIB04 desc
     <!--<if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.cbib04,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
@@ -700,6 +702,7 @@ where a.CBOA06=0
     <if test="cbpb01 != null ">
    and   c.CBPB01=#{cbpb01}
     </if>
+    order by a.CBOA02 desc
   </select>
   <select id="selectInvntorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccuspancyVo">
     SELECT
@@ -748,6 +751,7 @@ where
     <if test="endTime != null">
       and a.CBOA08 &lt;=#{endTime}
     </if>
+    order by a.CBOA02 desc
    <!-- <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
@@ -798,6 +802,7 @@ where
     <if test="cbpb01 != null ">
       and   c.cbpb01=#{cbpb01}
     </if>
+    order by b.CBOF02 desc
   </select>
   <select id="selectInntoryummaryquery" resultType="com.ruoyi.system.domain.vo.SczddVo">
     SELECT
@@ -823,6 +828,7 @@ where
     <if test="cbpb01 != null ">
       and  b.cbpb01=#{cbpb01}
     </if>
+    order by a.CBBA02 desc
   </select>
 
 </mapper>

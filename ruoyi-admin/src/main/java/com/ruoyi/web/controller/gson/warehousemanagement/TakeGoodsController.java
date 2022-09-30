@@ -33,6 +33,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,7 @@ public class TakeGoodsController extends BaseController {
             notes = "提货单列表"
     )
     @PostMapping("/takeOrderList")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:list')")
     public AjaxResult<TableDataInfo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto){
         try {
             startPage();
@@ -97,6 +99,7 @@ public class TakeGoodsController extends BaseController {
             notes = "添加提货单"
     )
     @PostMapping("/addTakeGoodsOrder")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:add')")
     public AjaxResult addTakeGoodsOrder(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
         try {
             takeGoodsOrderAddDto.setUserId(getUserId().intValue());
@@ -123,7 +126,7 @@ public class TakeGoodsController extends BaseController {
     )
     @GetMapping("/takeOrderDetail")
     @ApiParam("提货单id")
-
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:detail')")
     public AjaxResult<TakeGoodsOrderDetailVo> takeOrderDetail(@RequestParam Integer id){
         try {
 
@@ -173,6 +176,7 @@ public class TakeGoodsController extends BaseController {
             notes = "提货单编辑"
     )
     @PostMapping("/mdfTakeGoodsOrder")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:edit')")
     public AjaxResult mdfTakeGoodsOrder(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
         try {
             if(takeGoodsOrderAddDto.getId()==null){
@@ -200,6 +204,7 @@ public class TakeGoodsController extends BaseController {
             value ="提货单删除",
             notes = "提货单删除")
     @PostMapping("/delTakeGoodsOrder")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:remove')")
     public AjaxResult delTakeGoodsOrder(@RequestParam Integer id){
         try {
 
@@ -224,6 +229,7 @@ public class TakeGoodsController extends BaseController {
             value ="提货单状态更改",
             notes = "提货单状态更改")
     @PostMapping("/auditTakeOrder")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:auditTakeOrder')")
     public AjaxResult auditTakeOrder(@RequestBody AuditTakeOrderDto auditTakeOrderDto){
         try {
 
@@ -863,7 +869,38 @@ public class TakeGoodsController extends BaseController {
 
     }
 
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/29 17:31
+     *根据商品id和仓库id查未被占用的sn商品
+     */
+    @GetMapping("selectGoodsSnByWhIdAndGoodsId")
+    public AjaxResult selectGoodsSnByWhIdAndGoodsId(@RequestParam("whId") Integer whId, @RequestParam("goodsId")Integer goodsId) {
+        try {
+            List<GsGoodsSnVo> gsGoodsSnVos =takeGoodsService.selectGoodsSnByWhIdAndGoodsId(whId,goodsId);
+            return AjaxResult.success(gsGoodsSnVos);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(whId), ExceptionUtils.getStackTrace(e));
 
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
+    @GetMapping("mdfTakeSuggest2")
+    public AjaxResult mdfTakeSuggest2(@RequestParam("cbpmDto")CbpmDto cbpmDto) {
+        try {
+            takeGoodsService.mdfTakeSuggest2(cbpmDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpmDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

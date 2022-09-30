@@ -2,10 +2,8 @@ package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbpm;
 import com.ruoyi.system.domain.dto.*;
-import com.ruoyi.system.domain.vo.GsOutStockAdivceVo;
-import com.ruoyi.system.domain.vo.TakeGoodsOrderDetailVo;
-import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
-import com.ruoyi.system.domain.vo.TakeOrderDetailVo;
+import com.ruoyi.system.domain.vo.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -37,4 +35,8 @@ public interface TakeGoodsService {
     List<GsOutStockAdivceVo> saleOrderSuggest(GsOutStockAdivceDto gsOutStockAdivceDto);
 
     void auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto);
+
+    List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(Integer whId,Integer goodsId);
+
+    void mdfTakeSuggest2(CbpmDto cbpmDto);
 }

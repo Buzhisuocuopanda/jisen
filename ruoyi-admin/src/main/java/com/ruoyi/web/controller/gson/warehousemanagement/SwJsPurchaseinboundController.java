@@ -58,6 +58,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "新增采购入库单主表"
     )
     @PostMapping("/SwJsPurchaseinboundadd")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
     public AjaxResult<IdVo> swJsPurchaseinboundadd(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
         IdVo res=null;
 
@@ -189,6 +190,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单审核"
     )
     @PostMapping("/SwJsPurchaseinboundsh")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:sh')")
     public AjaxResult swJsPurchaseinboundsh( @RequestBody CbpdDto cbpdDto) {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodeshs(cbpdDto));
@@ -216,6 +218,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库标记完成"
     )
     @PostMapping("/SwJsPurchaseinboundshss")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:bjwc')")
     public AjaxResult swJsPurchaseinboundshss( @RequestBody CbpdDto cbpdDto ) {
         try {
 
@@ -244,6 +247,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库取消完成"
     )
     @PostMapping("/SwJsPurchaseinbounds")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:qxwc')")
     public AjaxResult swJsPurchaseinbounds( @RequestBody CbpdDto cbpdDto) {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodesh(cbpdDto));
@@ -271,6 +275,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单反审"
     )
     @PostMapping("/SwJsPurchaseinboundshs")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:fs')")
     public AjaxResult swJsPurchaseinboundshs( @RequestBody CbpdDto cbpdDto) {
         try {
             return toAjax(swJsPurchaseinboundService.SwJsSkuBarcodeshss(cbpdDto));
@@ -298,6 +303,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "删除采购入库单"
     )
     @PostMapping("/SwJsPurchaseinboundremove")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:remove')")
     public AjaxResult swJsPurchaseinboundremove(@RequestBody CbpdDto cbpdDto) {
         try {
             return toAjax(swJsPurchaseinboundService.deleteSwJsSkuBarcodsById(cbpdDto));
@@ -326,6 +332,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "修改采购入库单"
     )
     @PostMapping("/SwJsPurchaseinboundedit")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:edit')")
     public AjaxResult swJsPurchaseinboundedit(@RequestBody CbpcDo cbpcDo) {
         try {
             return toAjax(swJsPurchaseinboundService.updateSwJsSkuBarcodes(cbpcDo));
@@ -355,6 +362,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单查询"
     )
     @GetMapping("/SwJsSkuBarcodelist")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:list')")
     public AjaxResult<TableDataInfo> swJsGoodslist(CbpcVo cbpcVo) {
         try {
             startPage();
@@ -384,6 +392,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单详情"
     )
     @GetMapping("/SwJsSkuBarcodelistss")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbpcVo cbpcVo) {
         try {
             startPage();
@@ -414,6 +423,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "采购入库单列表"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbpcVo cbpcVo) {
         try {
             startPage();
@@ -443,6 +453,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "导出采购入库单"
     )
     @PostMapping("/SwJsGoodsexport")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:export')")
     public void swJsGoodsexport(HttpServletResponse response, Cbpc cbpc) {
         List<Cbpc> list = swJsPurchaseinboundService.selectCBPCList(cbpc);
         ExcelUtil<Cbpc> util = new ExcelUtil<>(Cbpc.class);
@@ -456,7 +467,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             notes = "导入采购入库单"
     )
     @PostMapping("/importSwJsGoods")
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:import')")
     @ResponseBody
     public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
         try {
