@@ -37,4 +37,6 @@ public interface TakeGoodsService {
     void auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto);
 
     List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(Integer whId,Integer goodsId);
+
+    void mdfTakeSuggest2(CbpmDto cbpmDto);
 }

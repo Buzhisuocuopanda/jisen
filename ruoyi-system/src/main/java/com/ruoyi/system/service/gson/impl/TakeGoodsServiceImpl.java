@@ -1095,10 +1095,112 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
             }
+            if(("1").equals(gsGoodsSnVo.getScanStatus())){
+                gsGoodsSnVo.setScanStatus("已扫码");
+            }else{
+                gsGoodsSnVo.setScanStatus("未扫码");
+            }
         }
 
         return gsGoodsSnVos;
     }
 
+    @Override
+    @Transactional
+    public void mdfTakeSuggest2(CbpmDto cbpmDto) {
+
+        CbpmCriteria cbpmCriteria =new CbpmCriteria();
+        cbpmCriteria.createCriteria().andCbpk01EqualTo(cbpmDto.getCbpk01());
+        //出货单中的扫码记录
+        List<Cbpm> cbpmList = cbpmMapper.selectByExample(cbpmCriteria);
+        //前端传过来的参数
+        List<CbpmDto.CbpmDtoItem> canList = cbpmDto.getGoodsSnList();
+        //检查出库单中的商品是否存在，如果不存在，则说明在执行删除操作
+        //销售提货单主表关联的数据遍历
+        for(Cbpm cbpm:cbpmList){
+            int index =0;
+            //前端传来的商品遍历
+            for (CbpmDto.CbpmDtoItem cbpmDtoItem : canList) {
+                //商品在传来的前端传来的商品中
+                if(cbpm.getCbpm09().equals(cbpmDtoItem.getSn())){
+                    index =1;
+                }
+            }
+            //index为1则说明此商品未被前端删除，index为0则说明商品不在前端传来的商品集合中，已被前端删除
+            if(index == 0){
+                //判断商品是否已扫码
+                if(cbpm.getCbpm11() == 1){
+                    throw new SwException("您选择删除的Sn商品已扫码:" + cbpm.getCbpm09());
+                }
+           /*     CbpmCriteria cbpmCriteria2 =new CbpmCriteria();
+                cbpmCriteria2.createCriteria()
+                        .andCbpm09EqualTo(cbpm.getCbpm09());*/
+                //删除CBPM表中的数据
+                cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
+
+                GsGoodsSn gsGoodsSn3 = new GsGoodsSn();
+                gsGoodsSn3.setStatus((byte) 1L);
+                gsGoodsSn3.setGroudStatus((byte) 1L);
+                GsGoodsSnCriteria gsGoodsSnCriteria =new GsGoodsSnCriteria();
+                gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbpm.getCbpm09());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn3,gsGoodsSnCriteria);
+            }
+
+        }
+
+        for (CbpmDto.CbpmDtoItem cbpmDtoItem : canList) {
+            int index =0;
+            for(Cbpm cbpm:cbpmList){
+                if(cbpm.getCbpm09().equals(cbpmDtoItem.getSn())){
+                    index =1;
+                }
+            }
+            if(index == 0){
+                //检查修改的商品是否在建议出库单中存在
+                CbpmCriteria example=new CbpmCriteria();
+                example.createCriteria()
+                        .andCbpm09EqualTo(cbpmDtoItem.getSn());
+                List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+                if(cbpms.size()>0){
+                    throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + cbpmDtoItem.getSn());
+                }
+                Cbpm cbpm=new Cbpm();
+                cbpm.setCbpm07(0);
+                cbpm.setCbpm08(cbpmDtoItem.getGoodsId());
+                cbpm.setCbpm09(cbpmDtoItem.getSn());
+                cbpm.setCbpm10(cbpmDtoItem.getLocationId());
+                cbpm.setCbpm05(new Date());
+                cbpm.setCbpk01(cbpmDto.getCbpk01());
+                cbpm.setCbpm06(Integer.parseInt(SecurityUtils.getUserId()+""));
+                cbpmMapper.insertSelective(cbpm);
+
+                GsGoodsSn gsGoodsSn2 = new GsGoodsSn();
+                gsGoodsSn2.setId(cbpmDtoItem.getId());
+                gsGoodsSn2.setStatus((byte) 2L);
+                gsGoodsSn2.setGroudStatus((byte) 2L);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn2);
+            }
+
+           /* //检查修改的商品是否在建议出库单中存在
+            CbpmCriteria example=new CbpmCriteria();
+            example.createCriteria()
+                    .andCbpm09EqualTo(changeSuggestModel.getCbpm09());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+            if(cbpms.size()>0 && !cbpms.get(0).getCbpm01().equals(changeSuggestModel.getCbpm01())){
+                throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + changeSuggestModel.getCbpm09());
+            }
+
+            Cbpm cbpm=new Cbpm();
+            cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+            cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+            cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+            cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+            cbpm.setCbpm10(changeSuggestModel.getCbpm10());
+            cbpm.setCbpm05(date);
+            cbpm.setCbpm06(changeSuggestDto.getUserId());
+            cbpmMapper.updateByPrimaryKey(cbpm);*/
+        }
+
+    }
 
 }

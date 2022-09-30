@@ -388,7 +388,7 @@ ORDER BY
   <select id="selectGoodsSnByWhIdAndGoodsId" resultType="com.ruoyi.system.domain.vo.GsGoodsSnVo">
 
     SELECT
-     sn.id, sn.sn,la.CBLA09,pb.CBPB10,pb.CBPB12,pb.CBPB08
+     sn.id,sn.goods_id,sn.location_id,sn.wh_id, sn.sn,la.CBLA09,pb.CBPB10,pb.CBPB12,pb.CBPB08,pb.CBPM11 as scanStatus
     FROM
     `gs_goods_sn` sn
     left join CBPB pb on pb.CBPB01 = sn.goods_id
