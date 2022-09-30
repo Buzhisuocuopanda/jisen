@@ -51,5 +51,7 @@ private String cny;
 
     private List<ScanVo> goods = new ArrayList<>();
 
+    private Integer saomanums;
 
+    private Double nums;
 }

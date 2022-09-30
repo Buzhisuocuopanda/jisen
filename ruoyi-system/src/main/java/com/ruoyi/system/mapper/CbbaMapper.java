@@ -31,11 +31,11 @@ public interface CbbaMapper {
 
     int updateByPrimaryKey(Cbba record);
 
-    List<Cbba> selectLowPriority(Cbba cbba);
+    List<Cbba> selectLowPriority(@Param("goodsId")Integer goodsId,@Param("poritiry") Integer poritiry,@Param("cbba01") Integer cbba01);
 
-    List<Cbba> selectByPriorityDureH2low(Integer goodsId, String newPriority, String oldPriority);
+    List<Cbba> selectByPriorityDureH2low(@Param("goodsId") Integer goodsId, @Param("newPriority")Integer newPriority, @Param("oldPriority")Integer oldPriority,@Param("cbba01")Integer cbba01);
 
-    List<Cbba> selectByPriorityDurelow2H(Integer goodsId, String cbba15, String oldPriority);
+    List<Cbba> selectByPriorityDurelow2H(@Param("goodsId")Integer goodsId, @Param("newPriority")Integer newPriority, @Param("oldPriority")Integer oldPriority,@Param("cbba01")Integer cbba01);
 
 
     List<Cbba> selectByGoodsId(@Param("goodsId") Integer goodsId);
@@ -43,5 +43,7 @@ public interface CbbaMapper {
     List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto);
 
     Cbba selectByPrimaryKeyForUpdate(@Param("id") Integer id);
+
+    List<Cbba> selectLowPriorityGet(@Param("goodsId")Integer goodsId,@Param("poritiry") Integer poritiry,@Param("cbba01") Integer cbba01);
 
 }

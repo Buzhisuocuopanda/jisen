@@ -135,4 +135,11 @@ public class CbpcVo  extends BaseEntity
 
     private Integer saoma;
 
+
+    private Integer cbpd09s;
+
+    private Integer saomanums;
+
+    private Double nums;
+
 }

@@ -75,4 +75,10 @@ public class CbsesVo extends BaseEntity {
     private String pinpai;
 
 
+
+
+
+    private Integer saomanums;
+
+    private Double nums;
 }

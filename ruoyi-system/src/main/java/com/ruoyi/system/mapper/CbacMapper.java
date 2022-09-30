@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.CbacCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.CbacVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbacMapper {
@@ -27,4 +29,8 @@ public interface CbacMapper {
     int updateByPrimaryKeySelective(Cbac record);
 
     int updateByPrimaryKey(Cbac record);
+
+    List<CbacVo> selectSwJsTaskGoodsRelListsss(CbacVo cbacVo);
+
+    List<CbacVo> swJsGoodslistsss(CbacVo cbacVo);
 }

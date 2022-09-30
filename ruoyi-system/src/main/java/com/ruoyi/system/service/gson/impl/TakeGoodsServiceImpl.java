@@ -342,6 +342,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
+                good.setUpc(cbpb.getCbpb15());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
@@ -443,7 +444,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
             }
 
-
+            sugest.setUpc(takeOrderGoodsVo.getUpc());
             sugest.setNumber(cbpm.getCbpm02());
 
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
@@ -959,7 +960,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
 
-
+            itemList.get(i).setCbpm05(date);
+            itemList.get(i).setCbpm06(Math.toIntExact(userid));
             itemList.get(i).setCbpm11(ScanStatusEnum.YISAOMA.getCode());
 
 
@@ -971,20 +973,30 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 throw new SwException("您选择的Sn商品不在货物SN表中" );
             }
             GsGoodsSn goodsSn = new GsGoodsSn();
+            goodsSn.setId(gsGoodsSns.get(i).getId());
+            goodsSn.setCreateTime(gsGoodsSns.get(i).getCreateTime());
+            goodsSn.setCreateBy(gsGoodsSns.get(i).getCreateBy());
+            goodsSn.setUpdateTime(date);
+            goodsSn.setUpdateBy(Math.toIntExact(userid));
+            goodsSn.setWhId(gsGoodsSns.get(i).getWhId());
+            goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
+            goodsSn.setSn(itemList.get(i).getCbpm09());
             goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
             goodsSn.setStatus(GoodsType.yck.getCode());
+            goodsSn.setLocationId(null);
+
             GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
             example2.createCriteria()
                     .andSnEqualTo(itemList.get(i).getCbpm09());
-            gsGoodsSnMapper.updateByExampleSelective(goodsSn, example2);
+            gsGoodsSnMapper.updateByExample(goodsSn, example2);
 
             mapper.updateByExampleSelective(itemList.get(i),example);
 
         }
-        Cbpk cbpk=new Cbpk();
-        cbpk.setCbpk01(itemList.get(0).getCbpk01());
-        cbpk.setCbpk11(TaskStatus.bjwc.getCode());
-        cbpkMapper.updateByPrimaryKeySelective(cbpk);
+      //  Cbpk cbpk=new Cbpk();
+      //  cbpk.setCbpk01(itemList.get(0).getCbpk01());
+        //cbpk.setCbpk11(TaskStatus.bjwc.getCode());
+      //  cbpkMapper.updateByPrimaryKeySelective(cbpk);
 //        CbpkCriteria example=new CbpkCriteria();
 //        example.createCriteria()
 //                .andCbpk01EqualTo(itemList.get(0).getCbpk01());

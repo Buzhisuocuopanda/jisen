@@ -364,14 +364,45 @@ if(cbob==null){
         //获取商品id
         gsGoodsSkuDo1.setGoodsId(cbsds.get(l).getCbsd08());
         gsGoodsSkuDo1.setLocationId(cbsds.get(l).getCbsd10());
-        if(num>qty){
-            throw new SwException("出库数量大于库存数量");
-
-        }
-        gsGoodsSkuDo1.setQty(qty - num);
+//        if(num>qty){
+//            throw new SwException("出库数量大于库存数量");
+//
+//        }
+        gsGoodsSkuDo1.setQty(qty - 1);
         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
     }
 }
+
+        //写台账
+
+        CbscCriteria example6 = new CbscCriteria();
+        example6.createCriteria()
+                .andCbsb01EqualTo(cbsb1.getCbsb01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbsc> cbscss = cbscMapper.selectByExample(example6);
+        if(cbscs.size()==0){
+            throw new SwException("销售出库单明细表为空");
+        }
+
+        for(int i=0;i<cbscs.size();i++){
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(cbsb1.getCbsb10());
+            cbibDo.setCbib03(cbsb1.getCbsb07());
+            cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbscss.get(i).getCbsc15());
+
+            cbibDo.setCbib06(cbsa.getCbsa08());
+            cbibDo.setCbib07(cbscss.get(i).getCbsc01());
+            cbibDo.setCbib08(cbscss.get(i).getCbsc08());
+            //本次入库数量
+            cbibDo.setCbib11((double) 0);
+            cbibDo.setCbib12((double) 0);
+            cbibDo.setCbib13(cbscss.get(i).getCbsc09());
+            cbibDo.setCbib14(cbscss.get(i).getCbsc11());
+            cbibDo.setCbib17(TaskType.xcckd.getMsg());
+            cbibDo.setCbib19(cbscss.get(i).getCbsc15());
+            taskService.InsertCBIB(cbibDo);
+        }
         return cbsbMapper.updateByExampleSelective(cbsb, example1);
 
     }
@@ -454,7 +485,11 @@ if(cbob==null){
         CbsdCriteria example3 = new CbsdCriteria();
         example3.createCriteria().andCbsb01EqualTo(cbsb01);
         List<Cbsd> cbsds = cbsdMapper.selectByExample(example3);
+        Double sum = 0.0;
+
         if(cbsds.size()>0) {
+            Integer saoma = 0;
+
             for (int i = 0; i < cbsbsVos.size(); i++) {
                 CbsdCriteria example2 = new CbsdCriteria();
                 example2.createCriteria().andCbsb01EqualTo(cbsb01)
@@ -474,9 +509,17 @@ if(cbob==null){
                     goods.add(scanVo);
                 }
                 cbsbsVos.get(i).setSaoma(size);
+                saoma +=cbsbsVos.get(i).getSaoma();
             }
+            cbsbsVos.get(0).setSaomanums(saoma);
+
             cbsbsVos.get(0).setGoods(goods);
         }
+        for(int i=0;i<cbsbsVos.size();i++){
+            sum+=cbsbsVos.get(i).getCbsc09();
+        }
+        cbsbsVos.get(0).setNums(sum);
+
         return cbsbsVos;
         }
 
@@ -616,7 +659,7 @@ if(gsGoodsSns.get(0).getLocationId()==null){
             }
         }
 
-        //写台账
+       /* //写台账
         Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
         if(cbsb==null){
             throw new SwException("没有该销售出库单");
@@ -648,7 +691,7 @@ if(gsGoodsSns.get(0).getLocationId()==null){
             cbibDo.setCbib17(TaskType.xcckd.getMsg());
             cbibDo.setCbib19(cbscs.get(i).getCbsc15());
             taskService.InsertCBIB(cbibDo);
-        }
+        }*/
         //状态设为标记完成，回写总订单
 
         CbsbDo cbsbDo = new CbsbDo();

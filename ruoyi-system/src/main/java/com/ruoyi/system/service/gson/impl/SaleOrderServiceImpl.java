@@ -322,16 +322,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cbbaMapper.updateByPrimaryKey(cbba);
 
             } else {
-                baseCheckService.checkGoods(totalOrderAddDto.getGoodsId(), null);
-                GsGoodsUseCriteria example = new GsGoodsUseCriteria();
-                example.createCriteria()
-                        .andOrderNoEqualTo(cbba.getCbba07())
-                        .andGoodsIdEqualTo(cbba.getCbba08());
-                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
                 Double useNum = 0.0;
-                if (gsGoodsUses.size() > 0) {
-                    useNum = gsGoodsUses.get(0).getLockQty();
-                }
+                baseCheckService.checkGoods(totalOrderAddDto.getGoodsId(), null);
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
+                useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+
+
+//                if (gsGoodsUses.size() > 0) {
+//                    useNum = gsGoodsUses.get(0).getLockQty();
+//                }
 
                 if (cbba.getCbba11() != 0.0) {
                     throw new SwException("该订单已有发货数量，不能修改商品");
@@ -692,6 +691,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 good.setModel(cbpb.getCbpb12());
 
             }
+
             good.setCurrentPrice(cbob.getCbob11());
             good.setNormPrice(cbob.getCbob14());
             good.setRemark(cbob.getCbob13());
@@ -704,8 +704,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             CheckSkuDo checkDo = new CheckSkuDo();
             checkDo.setOrderClass(cboa.getCboa27());
             checkDo.setGoodsId(good.getGoodsId());
-            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkDo);
-            good.setCanUseSku(qtyMsgVo.getCanUseNum());
+//            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkDo);
+//            good.setCanUseSku(qtyMsgVo.getCanUseNum());
+//            GsGoodsUseCriteria guex=new GsGoodsUseCriteria();
+//            guex.createCriteria()
+//                    .andGoodsIdEqualTo(good.getGoodsId())
+//                    .andOrderNoEqualTo(cboa.getCboa07());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
+            good.setConfirmQty(cbob.getConfirmQty());
             res.getGoods().add(good);
 
 
@@ -982,9 +988,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     laex.createCriteria()
                             .andCala08EqualTo(saleOrderExcelDto.getCurrency());
                     List<Cala> calas = calaMapper.selectByExample(laex);
-                    if (calas.size() > 0) {
-                        currency = calas.get(0).getCala02();
+                    if("CNY".equals(saleOrderExcelDto.getCurrency())){
+                        currency="6";
+                    }else {
+                        currency="5";
                     }
+
+//                    if (calas.size() > 0) {
+//                        currency = calas.get(0).getCala02();
+//                    }
                 }
                 //查销售人员
                 SysUserCriteria suex = new SysUserCriteria();
@@ -1017,11 +1029,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cboa.setCboa18(cbca.getCbca15());
                 cboa.setCboa19(cbca.getCbca16());
                 cboa.setCboa22(cbca.getCbca24());
-                if (SaleOrderTypeEnum.XIAOSHOUDINGDAN.getMsg().equals(orderType)) {
+//                if (SaleOrderTypeEnum.XIAOSHOUDINGDAN.getMsg().equals(orderType)) {
                     cboa.setCboa24(SaleOrderTypeEnum.XIAOSHOUDINGDAN.getCode());
-                } else {
-                    cboa.setCboa24(SaleOrderTypeEnum.YUDINGDAN.getCode());
-                }
+//                } else {
+//                    cboa.setCboa24(SaleOrderTypeEnum.YUDINGDAN.getCode());
+//                }
 
 
                 cboa.setCboa27(OrderTypeEnum.GUOJIDINGDAN.getCode());
@@ -1082,6 +1094,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob17(cbba.getCbba01());
                     cbob.setCbob18(saleOrderExcelDto.getTotalOrderNo());
+                    cbob.setConfirmQty(0.0);
                     cbobMapper.insert(cbob);
                     //创建销售订单要锁住库存
                     GoodsOperationDo goodsOperationDo = new GoodsOperationDo();
@@ -2009,7 +2022,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         if (cbpb != null) {
 
             if (brandMap.get(cbpb.getCbpb10()) != null) {
-                res.setGoods(cbpb.getCbpb10() + "-" + cbpb.getCbpb12() + "-" + cbpb.getCbpb08());
+                res.setGoods(brandMap.get(cbpb.getCbpb10()) + "-" + cbpb.getCbpb12() + "-" + cbpb.getCbpb08());
 
             }
         }
@@ -2073,14 +2086,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 GsGoodsUse goodsUse = new GsGoodsUse();
                 goodsUse.setUpdateTime(date);
                 goodsUse.setLockQty(updateGjQtyDto.getQty());
-                goodsUse.setNoOutQty(updateGjQtyDto.getQty());
+                goodsUse.setNoOutQty(0.0);
                 goodsUse.setOrderQty(cbob.getCbob09());
                 goodsUse.setCreateBy(updateGjQtyDto.getUserId());
                 goodsUse.setCreateTime(date);
                 goodsUse.setGoodsId(updateGjQtyDto.getGoodsId());
                 goodsUse.setOrderNo(updateGjQtyDto.getSaleOrderNo());
                 goodsUse.setOrderType(new Byte("2"));
-                goodsUse.setWhId(Integer.valueOf(WareHouseType.GUOJIWAREHOUSE));
+                goodsUse.setWhId(WareHouseType.GQWWHID);
                 goodsUse.setUpdateBy(updateGjQtyDto.getUserId());
                 gsGoodsUseMapper.insert(goodsUse);
             }
@@ -2135,8 +2148,37 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("没有查到该销售订单");
         }
 
+
+
         if(confirmSkuDto.getOpearte()==1){
+            if(cboa.getConfirmSkuStatus()==1){
+                throw new SwException("该订单已确认过库存");
+            }
             cboa.setConfirmSkuStatus(new Byte("1"));
+
+            //生成调拨建议
+            CbobCriteria obex=new CbobCriteria();
+            obex.createCriteria()
+                    .andCboa01EqualTo(cboa.getCboa01());
+            List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+            Date date = new Date();
+
+            for (Cbob cbob : cbobs) {
+
+                GsOutStockAdivce gsOutStockAdivce=new GsOutStockAdivce();
+
+
+                gsOutStockAdivce.setCreateBy(confirmSkuDto.getUserId());
+                gsOutStockAdivce.setCreateTime(date);
+                gsOutStockAdivce.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                gsOutStockAdivce.setGoodsId(cbob.getCbob08());
+                gsOutStockAdivce.setQty(cbob.getConfirmQty());
+                gsOutStockAdivce.setSaleOrderNo(cboa.getCboa07());
+                gsOutStockAdivce.setStatus(new Byte("3"));
+                gsOutStockAdivce.setWhId(WareHouseType.GQWWHID);
+                gsOutStockAdivceMapper.insert(gsOutStockAdivce);
+            }
+
 
         }else {
             //没有下推提货单才能取消
@@ -2146,12 +2188,21 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             }
             cboa.setConfirmSkuStatus(new Byte("2"));
+            GsOutStockAdivceCriteria example=new GsOutStockAdivceCriteria();
+            example.createCriteria()
+                    .andSaleOrderNoEqualTo(cboa.getCboa07());
+            int i = gsOutStockAdivceMapper.deleteByExample(example);
+
 
         }
 
         cboa.setCboa04(new Date());
         cboa.setCboa05(confirmSkuDto.getUserId());
         cboaMapper.updateByPrimaryKey(cboa);
+
+
+
+
 
     }
 

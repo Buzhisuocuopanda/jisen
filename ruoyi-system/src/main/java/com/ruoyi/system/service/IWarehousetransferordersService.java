@@ -4,10 +4,7 @@ import com.ruoyi.system.domain.Cbab;
 import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Do.CbaaDo;
 import com.ruoyi.system.domain.Do.CbabDo;
-import com.ruoyi.system.domain.vo.CbaaVo;
-import com.ruoyi.system.domain.vo.CbaasVo;
-import com.ruoyi.system.domain.vo.CbsbVo;
-import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,4 +39,16 @@ public interface IWarehousetransferordersService {
     void Warehousetransferorderseditone(CbaaDo cbaaDo);
 
     int Selloutofwarehousedel(CbaaDo cbaaDo);
+
+    int transferordersout(List<Cbac> itemList);
+
+    int transferordersin(List<Cbac> itemList);
+
+    int transferordersoutbjwc(CbaaDo cbaaDo);
+
+    int transferordersinbjwc(CbaaDo cbaaDo);
+
+    List<CbacVo> selectSwJsTaskGoodsRelListsss(CbacVo cbacVo);
+
+    List<CbacVo> swJsGoodslistsss(CbacVo cbacVo);
 }

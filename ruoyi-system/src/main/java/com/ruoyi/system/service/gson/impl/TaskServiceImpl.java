@@ -154,7 +154,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Cbib InsertCBIB(CbibDo cbibDo) {
 
-
+       //上次
         Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
 
         Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
@@ -196,7 +196,8 @@ public class TaskServiceImpl implements TaskService {
 
                 //采购入库
              if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
-
+                 cbib.setCbib09(cbib1.getCbib15());
+                    cbib.setCbib10(cbib1.getCbib16());
                  cbib.setCbib13((double) 0);
                  cbib.setCbib14((double) 0);
                  cbib.setCbib15(cbib1.getCbib09()+cbibDo.getCbib11());

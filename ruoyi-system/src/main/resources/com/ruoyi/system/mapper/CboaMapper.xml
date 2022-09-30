@@ -592,6 +592,7 @@
     ob.CBOB01 AS id,
     oa.CBOA07 AS orderNo,
     ob.CBOB18 AS totalOrderNo,
+    ob.CBOB09 AS orderQty,
     ba.CBBA15 AS priority,
     ba.CBBA13 AS goodsNum,
     pb.CBPB10 AS brand,
@@ -614,7 +615,7 @@
     AND oa.CBOA11!=5
     AND oa.confirm_sku_status =2
     <if test="orderNo !=null">
-      and ba.CBOA07=#{orderNo}
+      and oa.CBOA07=#{orderNo}
     </if>
     <if test="totalOrderNo !=null">
       and ob.CBOB18=#{totalOrderNo}

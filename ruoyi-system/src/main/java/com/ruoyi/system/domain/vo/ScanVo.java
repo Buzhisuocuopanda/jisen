@@ -15,6 +15,9 @@ public class ScanVo {
 
     private String cbpb12;
 
+    private String cbpb15;
+
+
     private String cbpb08;
 
     private String sn;
@@ -23,5 +26,6 @@ public class ScanVo {
 
     private Date cbpe03;
 
+    private String upc;
 
 }
