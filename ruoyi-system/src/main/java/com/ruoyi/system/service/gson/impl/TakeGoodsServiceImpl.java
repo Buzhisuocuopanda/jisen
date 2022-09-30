@@ -1094,11 +1094,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
             }
-            if(("1").equals(gsGoodsSnVo.getScanStatus())){
-                gsGoodsSnVo.setScanStatus("已扫码");
-            }else{
-                gsGoodsSnVo.setScanStatus("未扫码");
-            }
         }
 
         return gsGoodsSnVos;

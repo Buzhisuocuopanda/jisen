@@ -603,7 +603,7 @@
 
     FROM
     `CBOB` AS ob
-    LEFT JOIN CBBA ba ON ba.CBBA01=ob.CBOB18
+    LEFT JOIN CBBA ba ON ba.CBBA01=ob.CBOB17
     LEFT JOIN CBOA oa on oa.CBOA01 = ob.CBOA01
     LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
 
