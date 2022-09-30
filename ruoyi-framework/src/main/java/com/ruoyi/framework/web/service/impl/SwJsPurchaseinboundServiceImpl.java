@@ -594,15 +594,22 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             throw new SwException("供应商不存在");
         }
 
+        //
+        CbwaCriteria exampse1 = new CbwaCriteria();
+        exampse1.createCriteria().andCbwa12EqualTo("数量管理");
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
+        List<Integer> goodsids = cbwas.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
+        Set<Integer> sio = new HashSet<>(goodsids);
+
+
+
         //判断是哪个仓库  数量仓库
-        if(cbpc1.getCbpc10().equals(WarehouseSelect.CBW.getCode()) ||
-                cbpc1.getCbpc10().equals(WarehouseSelect.GLW.getCode())){
+        if(sio.contains(cbpc1.getCbpc10())){
             //数量管理查找商品id和仓库id，没有就加入
-            CbpdCriteria example1=new CbpdCriteria();
-            example1.createCriteria()
-                    .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+            CbpdCriteria cbpdexample1=new CbpdCriteria();
+            cbpdexample1.createCriteria()
                     .andCbpc01EqualTo(cbpdDto.getCbpc01());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(cbpdexample1);
             //得到数量
             List<Double> collect2 = cbpds.stream().map(Cbpd::getCbpd09).collect(Collectors.toList());
             double[] doubles = collect2.stream().mapToDouble(Double::doubleValue).toArray();
@@ -655,27 +662,28 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 //调用台账方法，最后加
                 CbpdCriteria example3 = new CbpdCriteria();
                 example3.createCriteria()
-                        .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                         .andCbpc01EqualTo(cbpdDto.getCbpc01());
                 List<Cbpd> cbpds1 = cbpdMapper.selectByExample(example3);
+       for(int j=0;j<cbpds1.size();j++) {
+           CbibDo cbibDo = new CbibDo();
+           cbibDo.setCbib02(cbpc1.getCbpc10());
+           cbibDo.setCbib03(cbpc1.getCbpc07());
+           cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
+           cbibDo.setCbib06(cbsa.getCbsa07());
+           cbibDo.setCbib07(cbpc1.getCbpc01());
+            cbibDo.setCbib08(cbpds1.get(j).getCbpd08());
+    //本次入库数量
+          cbibDo.setCbib11(cbpds1.get(j).getCbpd09());
+           cbibDo.setCbib12(cbpds1.get(j).getCbpd12());
+          cbibDo.setCbib15(cbpds1.get(j).getCbpd09());
+         cbibDo.setCbib16(cbpds1.get(j).getCbpd12());
+          cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+          cbibDo.setCbib19(cbpc1.getCbpc09());
+          taskService.InsertCBIB(cbibDo);
+}
+            }
+            }
 
-                CbibDo cbibDo = new CbibDo();
-                cbibDo.setCbib02(cbpc1.getCbpc10());
-                cbibDo.setCbib03(cbpc1.getCbpc07());
-                cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
-                cbibDo.setCbib06(cbsa.getCbsa07());
-                cbibDo.setCbib07(cbpc1.getCbpc01());
-                cbibDo.setCbib08(cbpds1.get(i).getCbpd08());
-                //本次入库数量
-                cbibDo.setCbib11(cbpds1.get(i).getCbpd09());
-                cbibDo.setCbib12(cbpds1.get(i).getCbpd12());
-                cbibDo.setCbib15(cbpds1.get(i).getCbpd09());
-                cbibDo.setCbib16(cbpds1.get(i).getCbpd12());
-                cbibDo.setCbib17(TaskType.cgrkd.getMsg());
-                cbibDo.setCbib19(cbpc1.getCbpc09());
-                taskService.InsertCBIB(cbibDo);
-            }
-            }
         else {
 
 
@@ -730,6 +738,9 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                         gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
                     } else {
+
+                        Cbla cbla = cblaMapper.selectByPrimaryKey(cbpe10);
+                        Double cbla11 = cbla.getCbla11();
                         //更新数据
 //                    List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getId).collect(Collectors.toList());
 //                    int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
@@ -738,6 +749,10 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                         Integer id = gsGoodsSkus.get(0).getId();
                         GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                         gsGoodsSku.setId(id);
+                        if(gsGoodsSku.getQty()>=cbla11){
+                            throw new SwException("库位id为"+cbpe10+"的库位已满");
+
+                        }
                         gsGoodsSku.setQty(gsGoodsSku.getQty() + 1);
                         gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                         gsGoodsSku.setUpdateTime(date);
@@ -869,8 +884,8 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             CbpcCriteria example = new CbpcCriteria();
             example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                     .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-            return cbpcMapper.updateByExampleSelective(cbpc, example);
-
+             cbpcMapper.updateByExampleSelective(cbpc, example);
+        return 1;
     }
     /**
      * 采购入库单取消完成
@@ -881,6 +896,55 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
     @Transactional
     @Override
     public int SwJsSkuBarcodesh(CbpdDto cbpdDto) {
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+
+
+        if(cbpdDto.getCbpc01()==null){
+            throw new SwException("采购入库单id不能为空");
+        }
+//数量仓库
+        Cbpc cbpc2 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
+        if(cbpc2==null){
+            throw new SwException("采购入库单不存在");
+        }
+        if(cbpc2.getCbpc10()==null){
+            throw new SwException("采购入库单仓库不能为空");
+        }
+        Integer storeid = cbpc2.getCbpc10();
+        Cbwa cbwa = cbwaMapper.selectByPrimaryKey(storeid);
+        if(Objects.equals(cbwa.getCbwa12(), "数量管理")){
+
+            CbpdCriteria exawple = new CbpdCriteria();
+            exawple.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+            List<Cbpd> cbpds = cbpdMapper.selectByExample(exawple);
+            if(cbpds.size()>0){
+                for(int i=0;i< cbpds.size();i++){
+                    Integer goodsid = cbpds.get(i).getCbpd08();
+                    Double qty = cbpds.get(i).getCbpd09();
+                    //对库存进行更新操作
+                    GsGoodsSkuCriteria exoample = new GsGoodsSkuCriteria();
+                    exoample.createCriteria().andGoodsIdEqualTo(goodsid)
+                                               .andWhIdEqualTo(storeid);
+                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(exoample);
+                    if(gsGoodsSkus.size()>0){
+                        baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+
+                        Integer id = gsGoodsSkus.get(0).getId();
+                        GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                        if(gsGoodsSku.getQty()<qty){
+                            throw new SwException("仓库id为"+storeid+"商品id为"+goodsid+"的商品库存不足");
+                        }
+                        gsGoodsSku.setId(id);
+                        gsGoodsSku.setQty(gsGoodsSku.getQty() - qty);
+                        gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                        gsGoodsSku.setUpdateTime(date);
+                        gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+                    }
+                }
+            }
+        }
+
 
         CbpeCriteria example1 = new CbpeCriteria();
         example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
@@ -901,9 +965,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         if(!cbpc1.getCbpc11().equals(TaskStatus.bjwc.getCode())){
             throw new SwException("不是标记完成状态");
         }
-        Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
-        Date date = new Date();
 
         cbpc.setCbpc04(date);
         cbpc.setCbpc05(Math.toIntExact(userid));
@@ -913,7 +975,10 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         CbpcCriteria example = new CbpcCriteria();
         example.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01())
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbpcMapper.updateByExampleSelective(cbpc, example);
+
+
+         cbpcMapper.updateByExampleSelective(cbpc, example);
+        return 1;
     }
 
     @Override

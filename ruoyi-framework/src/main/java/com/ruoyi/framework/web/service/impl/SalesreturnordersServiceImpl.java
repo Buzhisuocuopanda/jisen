@@ -380,6 +380,7 @@ if(cbsgss.size()>0){
                     scanVo.setSn(cbsgs.get(j).getCbsg09());
                     scanVo.setKwm(cbsesVos.get(i).getCbla09());
                     scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
+                    scanVo.setUpc(cbsesVos.get(i).getCbpb15());
                     goods.add(scanVo);
                 }
 
