@@ -359,9 +359,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         CbsgCriteria example1 = new CbsgCriteria();
         example1.createCriteria().andCbse01EqualTo(cbse01);
         List<Cbsg> cbsgss = cbsgMapper.selectByExample(example1);
+        Double sum = 0.0;
 
 if(cbsgss.size()>0){
-        for(int i=0;i<cbsesVos.size();i++) {
+    Integer saoma = 0;
+
+    for(int i=0;i<cbsesVos.size();i++) {
             CbsgCriteria example = new CbsgCriteria();
             example.createCriteria().andCbse01EqualTo(cbse01)
                     .andCbsg08EqualTo(cbsesVos.get(i).getCbsf08());
@@ -381,10 +384,19 @@ if(cbsgss.size()>0){
                 }
 
                 cbsesVos.get(i).setSaoma(size);
+                saoma += cbsesVos.get(i).getSaoma();
+
 
             cbsesVos.get(0).setGoods(goods);
         }
-        }}
+        }
+    cbsesVos.get(0).setSaomanums(saoma);
+
+}
+        for(int i=0;i<cbsesVos.size();i++){
+            sum+=cbsesVos.get(i).getCbsf09();
+        }
+        cbsesVos.get(0).setNums(sum);
 
         return cbsesVos;
     }
