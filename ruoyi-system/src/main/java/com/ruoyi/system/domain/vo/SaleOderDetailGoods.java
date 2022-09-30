@@ -28,6 +28,10 @@ public class SaleOderDetailGoods {
 
     private String description;
 
+    @ApiModelProperty("分配的数量")
+
+    private Double fpQty;
+
     //数量
     @ApiModelProperty("数量")
 
@@ -67,7 +71,7 @@ public class SaleOderDetailGoods {
     }
 
     public String getGoodsMsg() {
-        return brand+"-'"+model+"-"+description;
+        return brand+"-"+model+"-"+description;
     }
 
     public Integer getGoodsId() {

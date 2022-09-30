@@ -555,7 +555,9 @@
     oa.CBOC19 as phone,
     oa.CBOC24 as orderType,
     oa.CBOC08 as orderDate,
-    oa.CBOC11 as status
+    oa.CBOC11 as status,
+    oa.CBOA20 as fcNumber,
+    oa.CBOA21 as other
 
 
     FROM

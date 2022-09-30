@@ -100,6 +100,7 @@ public class SaleOrderListVo {
     private String statusMsg;
 
 
+
     private Integer confirmSkuStatus;
 
     public Integer getConfirmSkuStatus() {

@@ -388,4 +388,20 @@ FROM
 WHERE
   ba.CBBA07 =#{totalOrderNo}
   </select>
+
+  <select id="selectByTotalOrderNo" resultMap="BaseResultMap">
+SELECT
+	gu.*
+FROM
+	gs_goods_use gu
+	INNER JOIN CBOA oa ON oa.CBOA07 = gu.order_no
+	INNER JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
+WHERE
+
+	ob.CBOB18 =1
+	and ob.CBOB08=#{goodsId}
+	and oa.CBOA06=#{totalOrderNo}
+
+  </select>
+
 </mapper>

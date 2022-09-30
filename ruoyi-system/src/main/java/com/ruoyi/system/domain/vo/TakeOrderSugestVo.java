@@ -40,6 +40,8 @@ public class TakeOrderSugestVo {
 
     private String goodsMsg;
 
+    private String upc;
+
     public String getGoodsMsg() {
 
         if(brand!=null){

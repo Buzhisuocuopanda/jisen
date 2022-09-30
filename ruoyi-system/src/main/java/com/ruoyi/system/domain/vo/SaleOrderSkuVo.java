@@ -51,6 +51,8 @@ public class SaleOrderSkuVo {
     //发货数量
     private Double shipmentQty;
 
+    private Double orderQty;
+
     private Double canUseQty;
 
     private Double confirmQty;
