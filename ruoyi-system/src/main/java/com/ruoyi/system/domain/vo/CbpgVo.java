@@ -90,4 +90,7 @@ public class CbpgVo  extends BaseEntity
     private Integer saoma;
     private List<ScanVo> goods = new ArrayList<>();
 
+    private Integer saomanums;
+    private Double nums;
+
 }

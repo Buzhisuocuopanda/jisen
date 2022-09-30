@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -60,6 +61,10 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Resource
     private BaseCheckService baseCheckService;
+
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
     /**
      * 新增销售退库单主表
      */
@@ -248,18 +253,18 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         }
 
         List<Cbsg> cbsgs=null;
-        for(int i=0;i<cbsfs.size();i++){
+        for(int j=0;j<cbsfs.size();j++){
         CbsgCriteria example2 = new CbsgCriteria();
              example2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
-                     .andCbsg08EqualTo(cbsfs.get(i).getCbsf08());
+                     .andCbsg08EqualTo(cbsfs.get(j).getCbsf08());
      cbsgs = cbsgMapper.selectByExample(example2);
         if(cbsgs.size()==0){
             throw new SwException("没有扫码记录");
 
         }
-}
-        for(int i=0;i<cbsgs.size();i++){
             double num = cbsgs.size();
+
+        for(int i=0;i<cbsgs.size();i++){
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             if(cbsgs.get(i).getCbsg10()==null){
                 throw new SwException("销售退库没有库位信息");
@@ -290,33 +295,33 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 //获取商品id
                 gsGoodsSkuDo1.setGoodsId(cbsgs.get(i).getCbsg08());
                 gsGoodsSkuDo1.setLocationId(cbsgs.get(i).getCbsg10());
-                if(num>qty){
+             /*   if(num>qty){
                     throw new SwException("退库数量大于库存数量");
-                }
-                gsGoodsSkuDo1.setQty(qty - num);
+                }*/
+                gsGoodsSkuDo1.setQty(qty - 1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
             }
 
-                CbibDo cbibDo = new CbibDo();
-                cbibDo.setCbib02(cbse.getCbse10());
-                cbibDo.setCbib03(cbse.getCbse07());
-                cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
-                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbsfs.get(i).getCbsf15());
-
-                cbibDo.setCbib06(cbsa.getCbsa08());
-                cbibDo.setCbib07(cbsfs.get(i).getCbsf01());
-                cbibDo.setCbib08(cbsgs.get(i).getCbsg08());
-                //本次入库数量
-                cbibDo.setCbib11((double) 0);
-                cbibDo.setCbib12((double) 0);
-                cbibDo.setCbib13(num);
-                cbibDo.setCbib14(num*cbsfs.get(0).getCbsf11());
-                cbibDo.setCbib17(TaskType.xstkd.getMsg());
-                cbibDo.setCbib19(cbsfs.get(i).getCbsf15());
-                taskService.InsertCBIB(cbibDo);
 
             }
+        CbibDo cbibDo = new CbibDo();
+        cbibDo.setCbib02(cbse.getCbse10());
+        cbibDo.setCbib03(cbse.getCbse07());
+        cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbsfs.get(j).getCbsf15());
 
+        cbibDo.setCbib06(cbsa.getCbsa08());
+        cbibDo.setCbib07(cbsfs.get(j).getCbsf01());
+        cbibDo.setCbib08(cbsgs.get(j).getCbsg08());
+        //本次入库数量
+        cbibDo.setCbib11((double) 0);
+        cbibDo.setCbib12((double) 0);
+        cbibDo.setCbib13(num);
+        cbibDo.setCbib14(num*cbsfs.get(0).getCbsf11());
+        cbibDo.setCbib17(TaskType.xstkd.getMsg());
+        cbibDo.setCbib19(cbsfs.get(j).getCbsf15());
+        taskService.InsertCBIB(cbibDo);
+        }
         return cbseMapper.updateByExampleSelective(cbse,example1);    }
 
     @Override
@@ -400,6 +405,9 @@ if(cbsgss.size()>0){
         if (cbphs.size() == 0) {
             throw new SwException("销售退库单明细为空");
         }
+        List<Integer> goodsids = cbphs.stream().map(Cbsf::getCbsf08).collect(Collectors.toList());
+        Set<Integer> uio = new HashSet<>(goodsids);
+
 
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -407,6 +415,20 @@ if(cbsgss.size()>0){
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if(itemList.get(i).getCbsg09()==null){
+                throw new SwException("商品sn不能为空");
+            }
+
+            GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
+            examples.createCriteria().andSnEqualTo( itemList.get(i).getCbsg09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);
+            if(gsGoodsSns.size()==0){
+                throw new SwException("该sn不存在与库存表");
+            }
+
+            if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
+                throw new SwException("该商品不在采购退货单明细中");
+            }
             itemList.get(i).setCbsg03(date);
             itemList.get(i).setCbsg04(Math.toIntExact(userid));
             itemList.get(i).setCbsg05(date);

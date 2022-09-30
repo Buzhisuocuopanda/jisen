@@ -43,9 +43,12 @@ private GsGoodsSnMapper goodsSnMapper;
         if(gsGoodsSns.size()==0){
             throw new SwException("SN不存在");
         }
-        if(gsGoodsSns.get(0).getStatus()==1){
-            throw new SwException("SN已经上架");
+        if(gsGoodsSns.get(0).getGroudStatus()!=null){
+            if(gsGoodsSns.get(0).getGroudStatus()==1){
+                throw new SwException("SN已经上架");
+            }
         }
+
         if(gsGoodsSns.get(0).getLocationId()!=null){
             throw new SwException("该SN已经绑定库位");
         }

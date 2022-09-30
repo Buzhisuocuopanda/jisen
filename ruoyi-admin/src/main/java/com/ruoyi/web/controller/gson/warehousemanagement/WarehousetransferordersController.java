@@ -152,6 +152,9 @@ public class WarehousetransferordersController extends BaseController {
         }
     }
 
+
+
+
     /**
      * 仓库调拨单列表
      */
@@ -439,4 +442,181 @@ public class WarehousetransferordersController extends BaseController {
         ExcelUtil<CbaaVo> util = new ExcelUtil<>(CbaaVo.class);
         util.exportExcel(response, list, "仓库调拨单");
     }
+
+    @ApiOperation(
+            value ="仓库调拨单调出扫码",
+            notes = "仓库调拨单调出扫码"
+    )
+    @PostMapping("/transferordersout")
+    public AjaxResult transferordersout(@Valid @RequestBody List<Cbac> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(warehousetransferordersService.transferordersout(itemList));
+        }catch (SwException e) {
+            log.error("【仓库调拨单调出扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调出扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调出扫码】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    @ApiOperation(
+            value ="仓库调拨单调入扫码",
+            notes = "仓库调拨单调入扫码"
+    )
+    @PostMapping("/transferordersin")
+    public AjaxResult transferordersin(@Valid @RequestBody List<Cbac> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(warehousetransferordersService.transferordersin(itemList));
+        }catch (SwException e) {
+            log.error("【仓库调拨单调入扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调入扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调入扫码】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 仓库调拨单调出标记完成
+     */
+    @ApiOperation(
+            value ="仓库调拨单调出标记完成",
+            notes = "仓库调拨单调出标记完成"
+    )
+    @PostMapping("/transferordersoutsbjwc")
+    public AjaxResult transferordersoutbjwc( @RequestBody CbaaDo cbaaDo) {
+        try {
+            return toAjax(warehousetransferordersService.transferordersoutbjwc(cbaaDo));
+
+
+        }catch (SwException e) {
+            log.error("【仓库调拨单调出标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调出标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调出标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 仓库调拨单调入标记完成
+     */
+    @ApiOperation(
+            value ="仓库调拨单调入标记完成",
+            notes = "仓库调拨单调入标记完成"
+    )
+    @PostMapping("/transferordersinbjwc")
+    public AjaxResult transferordersinbjwc( @RequestBody CbaaDo cbaaDo) {
+        try {
+            return toAjax(warehousetransferordersService.transferordersinbjwc(cbaaDo));
+
+
+        }catch (SwException e) {
+            log.error("【仓库调拨单调入标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调入标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调入标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 仓库调拨单调出列表
+     */
+    @ApiOperation(
+            value ="仓库调拨单调出列表",
+            notes = "仓库调拨单调出列表"
+    )
+    @GetMapping("/transferordersoutlist")
+    public AjaxResult<TableDataInfo> swJsGoodslistss( CbacVo cbacVo) {
+        try {
+            startPage();
+            List<CbacVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListsss(cbacVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【仓库调拨单调出列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbacVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调出列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbacVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调出列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbacVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 仓库调拨单调入列表
+     */
+    @ApiOperation(
+            value ="仓库调拨单调入列表",
+            notes = "仓库调拨单调入列表"
+    )
+    @GetMapping("/transferordersinlist")
+    public AjaxResult<TableDataInfo> swJsGoodslistsss( CbacVo cbacVo) {
+        try {
+            startPage();
+            List<CbacVo> list = warehousetransferordersService.swJsGoodslistsss(cbacVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【仓库调拨单调入列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbacVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库调拨单调入列表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbacVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库调拨单调入列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbacVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 }

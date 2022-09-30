@@ -617,7 +617,11 @@ for(int i=0;i<cbphs.size();i++) {
         CbpiCriteria example1 = new CbpiCriteria();
         example1.createCriteria().andCbpg01EqualTo(cbpg01);
         List<Cbpi> cbpiss = cbpiMapper.selectByExample(example1);
+        Double sum = 0.0;
+
         if(cbpiss.size()>0) {
+            Integer saoma = 0;
+
             for (int i = 0; i < infoss.size(); i++) {
 
                 CbpiCriteria example = new CbpiCriteria();
@@ -631,15 +635,25 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setPinpai(infoss.get(i).getPinpai());
                     scanVo.setCbpb08(infoss.get(i).getCbpb08());
                     scanVo.setCbpb12(infoss.get(i).getCbpb12());
+                    scanVo.setCbpb15(infoss.get(i).getCbpb15());
                     scanVo.setSn(infoss.get(j).getCbpi09());
                     scanVo.setKwm(infoss.get(i).getCbla09());
                     scanVo.setCbpe03(infoss.get(j).getCbpi03());
                     goods.add(scanVo);
                 }
                 infoss.get(i).setSaoma(size);
+                saoma += infoss.get(i).getSaoma();
             }
+            infoss.get(0).setSaomanums(saoma);
             infoss.get(0).setGoods(goods);
         }
+
+        for(int i = 0;i<infoss.size();i++){
+            sum+= infoss.get(i).getCbph09();
+        }
+
+        infoss.get(0).setNums(sum);
+
         return infoss;
     }
     /**
@@ -784,6 +798,9 @@ for(int i=0;i<cbphs.size();i++) {
     @Transactional
     @Override
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
+        if(cbpgDto.getCbpg01()==null){
+            throw new SwException("退货单id不能为空");
+        }
 
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())){}
@@ -815,7 +832,7 @@ for(int i=0;i<cbphs.size();i++) {
             //供应商id
             Integer vendorid = cbpg1.getCbpg09();
             //商品id
-            //Integer goodsid = cbph.getCbph08();
+            Integer goodid = cbph.getCbph08();
             //仓库id
             Integer storeid = cbpg1.getCbpg10();
             //数量
@@ -890,23 +907,23 @@ for(int i=0;i<cbphs.size();i++) {
                         gsGoodsSkuDo1.setQty(qty-1);
                         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-                    //台账操作
-                    CbibDo cbibDo = new CbibDo();
-                    cbibDo.setCbib02(storeid);
-                    cbibDo.setCbib03(number);
-                    cbibDo.setCbib05(String.valueOf(TaskType.cgtkd.getCode()));
-                    cbibDo.setCbib06(cbsa.getCbsa07());
-                    cbibDo.setCbib07(cbpgDto.getCbpg01());
-                    cbibDo.setCbib08(goodsid);
-                    cbibDo.setCbib13(num);
-                    cbibDo.setCbib14(money);
-                    cbibDo.setCbib15(num);
-                    cbibDo.setCbib16(money);
-                    cbibDo.setCbib17(TaskType.cgrkd.getMsg());
-                    cbibDo.setCbib19(vendorid);
-                    taskService.InsertCBIB(cbibDo);
-                }}
 
+                }}
+            //台账操作
+            CbibDo cbibDo = new CbibDo();
+            cbibDo.setCbib02(storeid);
+            cbibDo.setCbib03(number);
+            cbibDo.setCbib05(String.valueOf(TaskType.cgtkd.getCode()));
+            cbibDo.setCbib06(cbsa.getCbsa07());
+            cbibDo.setCbib07(cbpgDto.getCbpg01());
+            cbibDo.setCbib08(goodid);
+            cbibDo.setCbib13(num);
+            cbibDo.setCbib14(money);
+            cbibDo.setCbib15(num);
+            cbibDo.setCbib16(money);
+            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+            cbibDo.setCbib19(vendorid);
+            taskService.InsertCBIB(cbibDo);
         }
         CbpgCriteria example = new CbpgCriteria();
         example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())

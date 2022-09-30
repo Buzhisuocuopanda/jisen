@@ -638,8 +638,8 @@ public class SelloutofwarehouseController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
-            // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
+           // File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
+             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
             genarateReportsss(wb, res, list);
@@ -792,8 +792,8 @@ public class SelloutofwarehouseController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            File is = new File("D:\\data\\销售出库建议表.xlsx");
-            // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
+           // File is = new File("D:\\data\\销售出库建议表.xlsx");
+             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANSERY_EXCEL);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
             genarateReports(wb, res, list);
@@ -911,8 +911,8 @@ public class SelloutofwarehouseController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            File is = new File("D:\\data\\销售出库扫码记录.xlsx");
-            // File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_SCAN_ORDER_DETAIL_EXCEL1);
+           // File is = new File("D:\\data\\销售出库扫码记录.xlsx");
+             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_SCAN_ORDER_DETAIL_EXCEL1);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
             genarateReport(wb, res, list);
