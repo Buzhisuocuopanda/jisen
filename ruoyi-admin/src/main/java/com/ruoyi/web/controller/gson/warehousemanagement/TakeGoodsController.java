@@ -889,5 +889,18 @@ public class TakeGoodsController extends BaseController {
         }
     }
 
+    @GetMapping("mdfTakeSuggest2")
+    public AjaxResult mdfTakeSuggest2(@RequestParam("cbpmDto")CbpmDto cbpmDto) {
+        try {
+            takeGoodsService.mdfTakeSuggest2(cbpmDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpmDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

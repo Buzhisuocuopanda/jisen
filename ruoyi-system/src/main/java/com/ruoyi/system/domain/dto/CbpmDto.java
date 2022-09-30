@@ -13,6 +13,7 @@ public class CbpmDto {
     private List<CbpmDtoItem> goodsSnList;
     @Data
     public class CbpmDtoItem{
+        //sn仓库id
         private Integer id;
         private Integer number;
 
@@ -25,7 +26,9 @@ public class CbpmDto {
         private String sku;
         private String scanStatus;
         private String goodsMsg;
+        //商品id
         private Integer goodsId;
+        //商品库位id
         private Integer locationId;
 
 
