@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
+import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbsdMapper {
@@ -39,4 +40,6 @@ public interface CbsdMapper {
 
     //zgl
     List<FnQueryAyntgesisVo> fnSynthesis3(FnQueryAynthesisDto fnQueryAynthesisDto);
+
+    List<UIOVo> selectBYID(UIOVo uioVo);
 }

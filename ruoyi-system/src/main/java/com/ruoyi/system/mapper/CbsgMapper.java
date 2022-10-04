@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbsg;
 import com.ruoyi.system.domain.CbsgCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbsgMapper {
@@ -27,4 +29,6 @@ public interface CbsgMapper {
     int updateByPrimaryKeySelective(Cbsg record);
 
     int updateByPrimaryKey(Cbsg record);
+
+    List<UIOVo> selectbyid(UIOVo uioVo);
 }

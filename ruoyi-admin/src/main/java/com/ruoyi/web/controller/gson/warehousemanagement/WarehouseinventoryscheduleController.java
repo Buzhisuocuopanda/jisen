@@ -132,6 +132,34 @@ public class WarehouseinventoryscheduleController extends BaseController {
     }
 
 
+    @ApiOperation(
+            value ="仓库盘点明细新增明细表",
+            notes = "仓库盘点明细新增明细表"
+    )
+    @PostMapping("/swJsStoreaddss")
+    public AjaxResult swJsStoreaddss(@Valid @RequestBody List<Cbsj> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(warehouseinventoryscheduleService.insertSwJsStoress(itemList));
+        }catch (SwException e) {
+            log.error("【仓库盘点明细新增明细表】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【仓库盘点明细新增明细表】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点明细新增明细表】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
 
     /**
      * 删除仓库盘点明细
@@ -144,7 +172,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:remove')")
     public AjaxResult swJsStoreremove(@RequestBody  CbshDo cbshDo) {
         try {
-            
+
             return toAjax(warehouseinventoryscheduleService.deleteSwJsStoreById(cbshDo));
         }catch (SwException e) {
             log.error("【删除仓库盘点明细】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));

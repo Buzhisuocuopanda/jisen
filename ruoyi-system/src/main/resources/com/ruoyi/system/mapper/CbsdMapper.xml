@@ -482,4 +482,14 @@ FROM
 
 
   </select>
+    <select id="selectBYID" resultType="com.ruoyi.system.domain.vo.UIOVo">
+      SELECT
+        COUNT(CBSD01) as nums,CBSD10 as storeskuid,CBSD08 as goodsId
+      FROM
+        CBSD
+      where
+        CBSB01= #{id,jdbcType=INTEGER}
+      GROUP BY
+        CBSD10,CBSD08
+    </select>
 </mapper>

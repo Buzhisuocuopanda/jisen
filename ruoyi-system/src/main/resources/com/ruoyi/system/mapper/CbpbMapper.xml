@@ -408,6 +408,7 @@
         <if test="cbpa07 != null ">and b.CBPA07 like concat('%', #{cbpa07}, '%')</if>
         <if test="cbpb12 != null ">and a.CBPB12 like concat('%', #{cbpb12}, '%')</if>
         <if test="cbpb15 != null ">and a.CBPB15 like concat('%', #{cbpb15}, '%')</if>
+        <if test="cbpb15 != null ">and a.CBPB15 =#{cbpb15,jdbcType=VARCHAR}</if>
 
         ORDER BY
         a.CBPB02 DESC
