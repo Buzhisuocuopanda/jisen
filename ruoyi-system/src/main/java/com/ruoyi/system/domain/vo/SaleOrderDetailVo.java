@@ -154,6 +154,12 @@ public class SaleOrderDetailVo {
 //        return currencyMsg;
     }
 
+    private String orderTypeMsg;
+
+    public String getOrderTypeMsg() {
+        return "销售订单";
+    }
+
     private List<BaseSelectVo> goodsSelects=new ArrayList<>();
 
     //仓库名称

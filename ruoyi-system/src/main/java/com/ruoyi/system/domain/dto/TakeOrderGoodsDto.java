@@ -48,7 +48,7 @@ public class TakeOrderGoodsDto {
     private String remark;
 
 
-
+    private Integer cbpc099;
 
 
 }

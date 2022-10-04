@@ -74,7 +74,7 @@ public class TakeGoodsController extends BaseController {
     )
     @PostMapping("/takeOrderList")
     @PreAuthorize("@ss.hasPermi('system:whmanagement:list')")
-    public AjaxResult<TableDataInfo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto){
+    public AjaxResult<TableDataInfo> takeOrderList(@RequestBody TakeGoodsOrderListDto takeGoodsOrderListDto){
         try {
             startPage();
             List<TakeGoodsOrderListVo> list= takeGoodsService.takeOrderList(takeGoodsOrderListDto);
@@ -385,7 +385,7 @@ public class TakeGoodsController extends BaseController {
         FormExcelUtil.setCellData(sheet1,res.getOrderDateMsg(),4,7);
         FormExcelUtil.setCellData(sheet1,res.getCustomerName(),5,2);
         FormExcelUtil.setCellData(sheet1,res.getWhName(),5,4);
-        FormExcelUtil.setCellData(sheet1,res.getSaleUserName(),5,6);
+        FormExcelUtil.setCellData(sheet1,res.getSaleUserName(),5,7);
         // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
         // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
         FormExcelUtil.setCellData(sheet1,res.getContacts(),6,2);

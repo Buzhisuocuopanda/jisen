@@ -612,7 +612,6 @@
     AND oa.CBOA27=1
     AND oa.CBOA11!=0
     AND oa.CBOA11!=6
-    AND oa.CBOA11!=5
     AND oa.confirm_sku_status =2
     <if test="orderNo !=null">
       and oa.CBOA07=#{orderNo}

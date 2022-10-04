@@ -556,8 +556,8 @@
     oa.CBOC24 as orderType,
     oa.CBOC08 as orderDate,
     oa.CBOC11 as status,
-    oa.CBOA20 as fcNumber,
-    oa.CBOA21 as other
+    oa.CBOC20 as fcNumber,
+    oa.CBOC21 as other
 
 
     FROM

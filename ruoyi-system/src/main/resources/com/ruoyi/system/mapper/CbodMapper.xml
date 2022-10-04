@@ -512,7 +512,7 @@
     ob.CBOB01 AS cbobId,
     la.CALA08 AS brand,
     pb.CBPB12 AS model,
-    pb.CBPB09 AS description
+    pb.CBPB08 AS description
     FROM
     CBOB ob
 

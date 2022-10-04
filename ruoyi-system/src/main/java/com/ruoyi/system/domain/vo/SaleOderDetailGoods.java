@@ -78,6 +78,7 @@ public class SaleOderDetailGoods {
         return id;
     }
 
+
     private BaseSelectVo goodsVo =new BaseSelectVo();
 
     public BaseSelectVo getGoodsVo() {
