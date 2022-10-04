@@ -410,30 +410,35 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbicVo">
     SELECT
-        a.CBIC01,a.CBIC03,
-      d.CBPA07,
-      c.CALA08,
-      b.CBPB12,b.CBPB08,
-      a.CBIC10,a.CBIC08,a.CBIC02
+    a.CBIC01,a.CBIC03,
+    d.CBPA07,
+    c.CALA08,
+    b.CBPB12,b.CBPB08,
+    a.CBIC10,a.CBIC08,a.CBIC02,e.CBLA09
     FROM
-      CBIC a
+    CBIC a
 
-        LEFT JOIN
-      CBPB b
-      on
-        a.CBIC09=b.CBPB01
-        LEFT JOIN
-      CALA c
-      on
-        c.CALA01=b.CBPB10
-        LEFT JOIN
-      CBPA d
-      on
-        d.CBPA01=b.CBPB14
+    LEFT JOIN
+    CBPB b
+    on
+    a.CBIC09=b.CBPB01
+    LEFT JOIN
+    CALA c
+    on
+    c.CALA01=b.CBPB10
+    LEFT JOIN
+    CBPA d
+    on
+    d.CBPA01=b.CBPB14
+    LEFT JOIN
+    CBLA e
+    ON
+    a.CBIC08=e.CBLA01
     where
-      a.CBIC06=0
+    a.CBIC06=0
     <if test="cbic02 != null  and cbic02 != ''"> and a.CBIC02 like concat('%', #{cbic02}, '%')</if>
     <if test="cbic10 != null  and cbic10 != ''"> and a.CBIC10 like concat('%', #{cbic10}, '%')</if>
+    <if test="cbic01 != null  and cbic01 != ''"> and a.CBIC01 like concat('%', #{cbic01}, '%')</if>
 
     <if test="cbpb12 != null  and cbpb12 != ''"> and b.CBPB12 like concat('%', #{cbpb12}, '%')</if>
 

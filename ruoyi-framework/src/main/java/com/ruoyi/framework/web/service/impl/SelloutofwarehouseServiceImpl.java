@@ -11,10 +11,7 @@ import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
-import com.ruoyi.system.service.gson.BaseCheckService;
-import com.ruoyi.system.service.gson.OrderDistributionService;
-import com.ruoyi.system.service.gson.SaleOrderService;
-import com.ruoyi.system.service.gson.TaskService;
+import com.ruoyi.system.service.gson.*;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
@@ -87,6 +84,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private CbpmMapper cbpmMapper;
 
+    @Resource
+    private TakeGoodsService takeGoodsService;
+
     /**
      * 新增销售出库主单
      *
@@ -119,12 +119,22 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb11(TaskStatus.mr.getCode());
         cbsb.setCbsb12(Math.toIntExact(userid));
         cbsb.setUserId(Math.toIntExact(userid));
+        if(cbsbDo.getTakeId()==null){
+            throw new SwException("提货单id不能为空");
+        }
+        cbsb.setCbsb20(cbsbDo.getTakeId());
         cbsbMapper.insertSelective(cbsb);
 
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb07EqualTo(sellofwarehouseNo)
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsb> cbsbss = cbsbMapper.selectByExample(example1);
+
+
+
+
+
+
 
         IdVo idVo = new IdVo();
         idVo.setId(cbsbss.get(0).getCbsb01());
@@ -529,6 +539,15 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
         CbsbsVo res = new CbsbsVo();
         List<ScanVo> goods = res.getGoods();
+         List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
+
+         if(cbsbsVos.get(0).getCbsb20()!=null){
+             TakeGoodsOrderDetailVo takeGoodsOrderDetailVo = takeGoodsService.takeOrderDetail(cbsbsVos.get(0).getCbsb20());
+             List<TakeOrderSugestVo> sugests = takeGoodsOrderDetailVo.getSugests();
+             outsuggestion.addAll(sugests);
+         }
+
+
 
         Integer cbsb01 = cbsbsVo.getCbsb01();
         if(cbsb01==null){
@@ -570,8 +589,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         for(int i=0;i<cbsbsVos.size();i++){
             sum+=cbsbsVos.get(i).getCbsc09();
         }
-        cbsbsVos.get(0).setNums(sum);
 
+        cbsbsVos.get(0).setNums(sum);
+        cbsbsVos.get(0).setOutsuggestion(outsuggestion);
         return cbsbsVos;
         }
 

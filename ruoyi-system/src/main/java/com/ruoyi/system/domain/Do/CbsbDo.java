@@ -86,4 +86,11 @@ public class CbsbDo {
 
     private List<Cbsc> goods=new ArrayList<>();
 
+    //提货单id
+    private Integer takeId;
+
+
+
+
+
 }
