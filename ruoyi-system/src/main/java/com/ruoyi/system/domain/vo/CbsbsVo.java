@@ -26,6 +26,7 @@ public class CbsbsVo extends BaseEntity {
     private String cala08;
     private Integer cbsb31;
     private String cbsb30;
+    private Integer cbsb20;
 
     private String cbsb21;
     private String cbsa08;
@@ -50,6 +51,10 @@ private String cny;
     private Integer saoma;
 
     private List<ScanVo> goods = new ArrayList<>();
+
+
+
+    private List<TakeOrderSugestVo> outsuggestion = new ArrayList<>();
 
     private Integer saomanums;
 
