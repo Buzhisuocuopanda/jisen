@@ -104,6 +104,16 @@ if(itemList.size()==0){
             itemList.get(i).setCbab06(Math.toIntExact(userid));
             itemList.get(i).setCbab07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            if(itemList.get(i).getCbab11()==null){
+                throw new SwException("商品单价不能为空");
+            }
+            itemList.get(i).setCbab11(itemList.get(i).getCbab11());
+            if(itemList.get(i).getCbab09()==null){
+                throw new SwException("商品数量不能为空");
+            }
+            itemList.get(i).setCbab09(itemList.get(i).getCbab09());
+            itemList.get(i).setCbab12(itemList.get(i).getCbab12());
+
 //            Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(i).getCbaa01());
 //            //调出仓库id
 //            Integer cbaa09 = cbaa.getCbaa09();
@@ -729,6 +739,9 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             throw new SwException("调拨单id不能为空");
         }
         Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(0).getCbaa01());
+        if (cbaa == null) {
+            throw new SwException("调拨单不存在");
+        }
         if( cbaa.getCbaa09()==null){
             throw new SwException("调拨单调出仓库为空");
         }
@@ -946,7 +959,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 throw new SwException("该仓库调拨单扫码记录不存在");
 
             }
-            Double num = (double) cbacs.size();
+           // Double num = (double) cbacs.size();
 
 
             for (int j = 0; j < cbacs.size(); j++) {
@@ -959,7 +972,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
                 }
                 //调出仓库
-                Integer outstore = cbaa.getCbaa09();
+                Integer outstore = cbaa1.getCbaa09();
 
                 GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
                 //获取调出仓库id
@@ -993,6 +1006,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             }
         }
 
+        Double num = (double) cbacs.size();
 
 //调入仓库
         Integer storeid = cbaa1.getCbaa10();
@@ -1030,8 +1044,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             cbibDo1.setCbib08(goodsid);
             cbibDo1.setCbib11((double) 0);
             cbibDo1.setCbib12((double) 0);
-            cbibDo1.setCbib13(cbabs.get(i).getCbab09());
-            cbibDo1.setCbib14(cbabs.get(i).getCbab12());
+            cbibDo1.setCbib13(num);
+            cbibDo1.setCbib14(cbabs.get(i).getCbab11()*num);
 
             cbibDo1.setCbib17(TaskType.zjd.getMsg());
             cbibDo1.setCbib19(cbabs.get(i).getCbab14());
@@ -1083,6 +1097,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
             }
         }
+        int num=cbacs.size();
         for(int j=0;j<cbacs.size();j++) {
             if(cbacs.get(j).getCbac08()==null){
                 throw new SwException("调拨单调入商品id为空");
@@ -1092,7 +1107,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 throw new SwException("调拨单调入库位为空");
 
             }
-            Integer instore = cbaa.getCbaa10();
+            Integer instore = cbaa1.getCbaa10();
 
 //调入仓库加
         GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
@@ -1141,6 +1156,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbab> cbabs = cbabMapper.selectByExample(example1);
+
         for (int i = 0; i < cbabs.size(); i++) {
             //供应商名称
             Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbabs.get(i).getCbab14());
@@ -1156,8 +1172,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             cbibDo.setCbib06(vendername);
             cbibDo.setCbib07(id);
             cbibDo.setCbib08(goodsid);
-            cbibDo.setCbib11(cbabs.get(i).getCbab09());
-            cbibDo.setCbib12(cbabs.get(i).getCbab12());
+            cbibDo.setCbib11((double) num);
+            cbibDo.setCbib12(cbabs.get(i).getCbab11()*num);
             cbibDo.setCbib13((double) 0);
             cbibDo.setCbib14((double) 0);
 
