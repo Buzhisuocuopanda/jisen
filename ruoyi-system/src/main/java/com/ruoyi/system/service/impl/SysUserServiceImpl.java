@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
@@ -71,7 +72,26 @@ public class SysUserServiceImpl implements ISysUserService
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user)
     {
-        return userMapper.selectUserList(user);
+        List<SysUser> userList = userMapper.selectUserList(user);
+        /*for (SysUser sysUser:userList) {
+            if(sysUser.getAuditPerm()!=null&&sysUser.getAuditPerm().length()>2){
+                String[] strs = sysUser.getAuditPerm().split(",");
+                Long[] is = new Long[strs.length];
+                for(int i=0;i<strs.length;i++){
+                    is[i] = Long.parseLong(strs[i].trim());
+                }
+                sysUser.setAuditPerms(is);
+            }
+            if(sysUser.getWarehousePerm()!=null&&sysUser.getWarehousePerm().length()>2){
+                String[] strs = sysUser.getWarehousePerm().split(",");
+                Long[] is = new Long[strs.length];
+                for(int i=0;i<strs.length;i++){
+                    is[i] = Long.parseLong(strs[i].trim());
+                }
+                sysUser.setWarehousePerms(is);
+            }
+        }*/
+        return userList;
     }
 
     /**
@@ -121,7 +141,24 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public SysUser selectUserById(Long userId)
     {
-        return userMapper.selectUserById(userId);
+        SysUser sysUser = userMapper.selectUserById(userId);
+        if(sysUser.getAuditPerm()!=null&&sysUser.getAuditPerm().length()>2){
+            String[] strs = sysUser.getAuditPerm().split(",");
+            Long[] is = new Long[strs.length];
+            for(int i=0;i<strs.length;i++){
+                is[i] = Long.parseLong(strs[i].trim());
+            }
+            sysUser.setAuditPerms(is);
+        }
+        if(sysUser.getWarehousePerm()!=null&&sysUser.getWarehousePerm().length()>2){
+            String[] strs = sysUser.getWarehousePerm().split(",");
+            Long[] is = new Long[strs.length];
+            for(int i=0;i<strs.length;i++){
+                is[i] = Long.parseLong(strs[i].trim());
+            }
+            sysUser.setWarehousePerms(is);
+        }
+        return sysUser;
     }
 
     /**
