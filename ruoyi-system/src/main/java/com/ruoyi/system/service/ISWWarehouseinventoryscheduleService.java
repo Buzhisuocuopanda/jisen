@@ -33,4 +33,6 @@ public interface ISWWarehouseinventoryscheduleService {
     int swJsStoreendsh(CbshDo cbshDo);
 
     int swJsStoreendfs(CbshDo cbshDo);
+
+    int insertSwJsStoress(List<Cbsj> itemList);
 }

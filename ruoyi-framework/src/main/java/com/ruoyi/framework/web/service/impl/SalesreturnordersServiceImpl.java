@@ -246,11 +246,55 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
         CbsfCriteria example3 = new CbsfCriteria();
-        example.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        example3.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
         List<Cbsf> cbsfs = cbsfMapper.selectByExample(example3);
         if(cbsfs.size()==0){
             throw new SwException("销售退货单明细表为空");
         }
+        //库存
+        UIOVo uioVo = new UIOVo();
+        uioVo.setId(cbseDo.getCbse01());
+        List<UIOVo> selectbyid = cbsgMapper.selectbyid(uioVo);
+        if(selectbyid.size()>0){
+            for(int k=0;k<selectbyid.size();k++){
+                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+              /*  if(selectbyid.get(k).getStoreskuid()==null){
+                    throw new SwException("销售退库没有库位信息");
+                }*/
+                gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
+                //获取仓库id
+                gsGoodsSkuDo.setWhId(cbses.get(0).getCbse10());
+                //获取商品id
+                gsGoodsSkuDo.setGoodsId(selectbyid.get(k).getGoodsId());
+                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                //通过仓库id和货物id判断是否存在
+                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                if(gsGoodsSkus.size()==0){
+                    throw new SwException("没有该库存信息");
+                }
+                //如果存在则更新库存数量
+                else {
+                    //加锁
+                    baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                    //查出
+                    Double qty = gsGoodsSkus.get(0).getQty();
+                    if (qty == 0) {
+                        throw new SwException("库存数量不足");
+                    }
+                    //获取仓库id
+                    gsGoodsSkuDo1.setWhId(cbses.get(0).getCbse10());
+                    //获取商品id
+                    gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
+                    gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
+                if(selectbyid.get(k).getNums()>qty){
+                    throw new SwException("退库数量大于库存数量");
+                }
+                    gsGoodsSkuDo1.setQty(qty - selectbyid.get(k).getNums());
+                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+                }
+            }}
+
 
         List<Cbsg> cbsgs=null;
         for(int j=0;j<cbsfs.size();j++){
@@ -263,7 +307,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
         }
             double num = cbsgs.size();
-
+//库存
+/*
         for(int i=0;i<cbsgs.size();i++){
             GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             if(cbsgs.get(i).getCbsg10()==null){
@@ -295,19 +340,24 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 //获取商品id
                 gsGoodsSkuDo1.setGoodsId(cbsgs.get(i).getCbsg08());
                 gsGoodsSkuDo1.setLocationId(cbsgs.get(i).getCbsg10());
-             /*   if(num>qty){
+             */
+/*   if(num>qty){
                     throw new SwException("退库数量大于库存数量");
-                }*/
+                }*//*
+
                 gsGoodsSkuDo1.setQty(qty - 1);
                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
             }
 
 
             }
+*/
+
+
         CbibDo cbibDo = new CbibDo();
-        cbibDo.setCbib02(cbse.getCbse10());
-        cbibDo.setCbib03(cbse.getCbse07());
-        cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
+        cbibDo.setCbib02(cbses.get(0).getCbse10());
+        cbibDo.setCbib03(cbses.get(0).getCbse07());
+        cbibDo.setCbib05(String.valueOf(TaskType.xstkd.getCode()));
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbsfs.get(j).getCbsf15());
 
         cbibDo.setCbib06(cbsa.getCbsa08());

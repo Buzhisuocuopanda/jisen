@@ -218,7 +218,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBPE`
     <set>
       <if test="record.cbpe01 != null">
@@ -350,5 +350,16 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBPE01 = #{cbpe01,jdbcType=INTEGER}
   </update>
+  <select id="selectbyid" resultType="com.ruoyi.system.domain.vo.UIOVo">
+    SELECT
+      COUNT(CBPE01) as nums,CBPE10 as storeskuid,CBPE08 as goodsId
+    FROM
+      CBPE
+    where
+      CBPC01=#{id,jdbcType=INTEGER}
+    GROUP BY
+      CBPE10,CBPE08
+
+  </select>
 
 </mapper>

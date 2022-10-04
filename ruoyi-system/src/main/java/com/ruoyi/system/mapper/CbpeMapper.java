@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbpe;
 import com.ruoyi.system.domain.CbpeCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbpeMapper {
@@ -27,4 +29,6 @@ public interface CbpeMapper {
     int updateByPrimaryKeySelective(Cbpe record);
 
     int updateByPrimaryKey(Cbpe record);
+
+    List<UIOVo> selectbyid(UIOVo uioVo);
 }

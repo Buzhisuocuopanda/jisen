@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBSG01, CBSG02, CBSG03, CBSG04, CBSG05, CBSG06, CBSG07, CBSG08, CBSG09, CBSG10, CBSG11, 
+    CBSG01, CBSG02, CBSG03, CBSG04, CBSG05, CBSG06, CBSG07, CBSG08, CBSG09, CBSG10, CBSG11,
     CBSG12, CBSE01, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbsgCriteria" resultMap="BaseResultMap">
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBSG`
     where CBSG01 = #{cbsg01,jdbcType=INTEGER}
@@ -110,15 +110,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsg">
-    insert into `CBSG` (CBSG01, CBSG02, CBSG03, 
-      CBSG04, CBSG05, CBSG06, 
-      CBSG07, CBSG08, CBSG09, 
-      CBSG10, CBSG11, CBSG12, 
+    insert into `CBSG` (CBSG01, CBSG02, CBSG03,
+      CBSG04, CBSG05, CBSG06,
+      CBSG07, CBSG08, CBSG09,
+      CBSG10, CBSG11, CBSG12,
       CBSE01, user_id)
-    values (#{cbsg01,jdbcType=INTEGER}, #{cbsg02,jdbcType=INTEGER}, #{cbsg03,jdbcType=TIMESTAMP}, 
-      #{cbsg04,jdbcType=INTEGER}, #{cbsg05,jdbcType=TIMESTAMP}, #{cbsg06,jdbcType=INTEGER}, 
-      #{cbsg07,jdbcType=INTEGER}, #{cbsg08,jdbcType=INTEGER}, #{cbsg09,jdbcType=VARCHAR}, 
-      #{cbsg10,jdbcType=INTEGER}, #{cbsg11,jdbcType=INTEGER}, #{cbsg12,jdbcType=VARCHAR}, 
+    values (#{cbsg01,jdbcType=INTEGER}, #{cbsg02,jdbcType=INTEGER}, #{cbsg03,jdbcType=TIMESTAMP},
+      #{cbsg04,jdbcType=INTEGER}, #{cbsg05,jdbcType=TIMESTAMP}, #{cbsg06,jdbcType=INTEGER},
+      #{cbsg07,jdbcType=INTEGER}, #{cbsg08,jdbcType=INTEGER}, #{cbsg09,jdbcType=VARCHAR},
+      #{cbsg10,jdbcType=INTEGER}, #{cbsg11,jdbcType=INTEGER}, #{cbsg12,jdbcType=VARCHAR},
       #{cbse01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsg">
@@ -218,7 +218,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBSG`
     <set>
       <if test="record.cbsg01 != null">
@@ -350,4 +350,16 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBSG01 = #{cbsg01,jdbcType=INTEGER}
   </update>
+
+  <select id="selectbyid" resultType="com.ruoyi.system.domain.vo.UIOVo">
+    SELECT
+      COUNT(CBSG01) as nums,CBSG10 as storeskuid,CBSG08 as goodsId
+    FROM
+      CBSG
+    where
+      CBSE01=#{id,jdbcType=INTEGER}
+    GROUP BY
+      CBSG10,CBSG08
+  </select>
+
 </mapper>
