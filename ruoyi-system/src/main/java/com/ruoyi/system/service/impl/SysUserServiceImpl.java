@@ -142,7 +142,7 @@ public class SysUserServiceImpl implements ISysUserService
     public SysUser selectUserById(Long userId)
     {
         SysUser sysUser = userMapper.selectUserById(userId);
-        if(sysUser.getAuditPerm()!=null&&sysUser.getAuditPerm().length()>2){
+        if(sysUser.getAuditPerm()!=null&&sysUser.getAuditPerm().length()>0){
             String[] strs = sysUser.getAuditPerm().split(",");
             Long[] is = new Long[strs.length];
             for(int i=0;i<strs.length;i++){
@@ -150,7 +150,7 @@ public class SysUserServiceImpl implements ISysUserService
             }
             sysUser.setAuditPerms(is);
         }
-        if(sysUser.getWarehousePerm()!=null&&sysUser.getWarehousePerm().length()>2){
+        if(sysUser.getWarehousePerm()!=null&&sysUser.getWarehousePerm().length()>0){
             String[] strs = sysUser.getWarehousePerm().split(",");
             Long[] is = new Long[strs.length];
             for(int i=0;i<strs.length;i++){
