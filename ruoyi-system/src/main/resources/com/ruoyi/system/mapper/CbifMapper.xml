@@ -565,26 +565,23 @@ where
   </select>
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
-        a.CBIG01,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,a.CBIG10,a.CBIG15,
+        sn.id,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB15,sn.sn,sn.in_time as inTime,
         sn.status,sn.groud_status as groudStatus
       FROM
-        CBIG a
-          LEFT JOIN
-        CBIE b
-        ON
-          a.CBIE01=b.CBIE01
+        gs_goods_sn sn
+
           LEFT JOIN
         CBWA c
         ON
-          b.CBIE09=c.CBWA01
+          sn.wh_id=c.CBWA01
           LEFT JOIN
         CBLA d
         ON
-          d.CBLA01=a.CBIG08
+          d.CBLA01=sn.location_id
           LEFT JOIN
         CBPB e
         ON
-          e.CBPB01=a.CBIG09
+          e.CBPB01=sn.goods_id
           LEFT JOIN
         CBPA f
         ON
@@ -597,10 +594,9 @@ where
         CALA h
         ON
           h.CALA01=e.CBPB10
-      LEFT JOIN gs_goods_sn sn ON sn.sn=a.CBIG10
 
       WHERE
-          a.CBIG07=0
+          sn.delete_flag =0
       <if test="cbwa09s != null">
         and c.CBWA09 in
         <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
@@ -615,10 +611,10 @@ where
       </if>
 
       <if test="cbig09 != null ">
-        and a.cbig09 =#{cbig09}
+        and sn.goods_id =#{cbig09}
       </if>
       <if test="cbig10 != null and cbig10 !=''">
-        and a.cbig10 like concat('%', #{cbig10}, '%')
+        and sn.sn like concat('%', #{cbig10}, '%')
       </if>
 
       <if test="cbpb01 != null">
@@ -628,9 +624,9 @@ where
         and sn.status =#{status}
       </if>
       <if test="groudStatus != null">
-        and e.groud_status =#{groudStatus}
+        and sn.groud_status =#{groudStatus}
       </if>
-        order by a.CBIG03 desc
+        order by sn.create_time desc
 
     </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">

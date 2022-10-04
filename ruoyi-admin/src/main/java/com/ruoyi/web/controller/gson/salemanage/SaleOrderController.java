@@ -35,6 +35,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.impl.common.IOUtil;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -144,6 +145,7 @@ public class SaleOrderController extends BaseController {
             notes = "获取生产总订单列表"
     )
     @GetMapping("/totalOrderList")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:list')")
     public AjaxResult<TableDataInfo> totalOrderList( TotalOrderListDto totalOrderListDto) {
         try {
             startPage();
@@ -171,6 +173,7 @@ public class SaleOrderController extends BaseController {
             notes = "添加生产总订单"
     )
     @PostMapping("/addTotalOrder")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:add')")
     public AjaxResult addTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -199,6 +202,7 @@ public class SaleOrderController extends BaseController {
             notes = "生产总订单详情"
     )
     @GetMapping("/totalOrderDetail")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:detail')")
     public AjaxResult totalOrderDetail(@RequestParam Integer id) {
         try {
             TotalOrderVo totalOrderVo = saleOrderService.totalOrderDetail(id);
@@ -226,6 +230,7 @@ public class SaleOrderController extends BaseController {
             notes = "修改生产总订单"
     )
     @PostMapping("/mdfTotalOrder")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:edit')")
     public AjaxResult mdfTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
             if(DeleteFlagEnum.DELETE.getCode().equals(totalOrderAddDto.getDelete())){
@@ -264,6 +269,7 @@ public class SaleOrderController extends BaseController {
     )
     @PostMapping("/importTotalOrder")
     @ResponseBody
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:import')")
     public AjaxResult importTotalOrder(MultipartFile file, boolean updateSupport) {
         try {
             ExcelUtil<TotalOrderExcelDto> util = new ExcelUtil<>(TotalOrderExcelDto.class);
@@ -289,6 +295,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出生产总订单"
     )
     @PostMapping("/totalOrderExcelList")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:export')")
     public void totalOrderExcelList( TotalOrderListDto totalOrderListDto, HttpServletResponse response) {
         List<TotalOrderListVo> totalOrderListVos = saleOrderService.totalOrderList(totalOrderListDto);
         ExcelUtil<TotalOrderListVo> util = new ExcelUtil<>(TotalOrderListVo.class);

@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class InwuqusVo {
 
-    private String cbig01;
+    private Integer id;
 
     @Excel(name = "仓库")
     private String cbwa09;
@@ -28,10 +28,10 @@ public class InwuqusVo {
     private String cbpb15;
 
     @Excel(name = "商品SN")
-    private String cbig10;
+    private String sn;
 
     @Excel(name = "入库日期",width = 30,dateFormat = "yyyy-MM-dd")
-    private Date cbig15;
+    private Date inTime;
     //上架状态 1：上架 2：已下架
     private Integer groudStatus;
     //商品状态 1：已入库 2：出库中 3：已出库
