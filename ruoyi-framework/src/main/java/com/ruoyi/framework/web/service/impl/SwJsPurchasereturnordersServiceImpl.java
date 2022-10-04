@@ -20,6 +20,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -85,6 +87,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
     @Resource
     private CbpbMapper cbpbMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 新增采购退货主单
@@ -191,6 +196,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpi> itemList) {
+        //id 商品id，库位id，
         if (itemList.size() == 0) {
             throw new SwException("请选择要扫描的商品");
         }
@@ -238,6 +244,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 throw new SwException("库位不属于该仓库");
             }
             String sn = itemList.get(i).getCbpi09();
+
+            while (!redisTemplate.opsForValue().setIfAbsent("lock1",sn, 3, TimeUnit.SECONDS)) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace(); }
+            }
+            String lock = redisTemplate.opsForValue().get("lock1");
+
             CbpiCriteria erd = new CbpiCriteria();
             erd.createCriteria().andCbpi09EqualTo(sn)
                     .andCbpi06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
@@ -314,6 +329,8 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
 
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setUpdateTime(date);
+            gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
             gsGoodsSnDo.setSn(itemList.get(i).getCbpi09());
             gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
             gsGoodsSnDo.setOutTime(date);
@@ -335,6 +352,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             cbibDo.setCbib19(cbpg.getCbpg09());
            taskService.InsertCBIB(cbibDo);*/
             mapper.insertSelective(itemList.get(i));
+            redisTemplate.delete("lock1");
 
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -611,7 +629,9 @@ for(int i=0;i<cbphs.size();i++) {
         CbpgVo res = new CbpgVo();
         List<ScanVo> goods = res.getGoods();
 
-
+       if(cbpgVo.getCbpg01()==null){
+       throw new SwException("采购退货单号不能为空");
+        }
 
         Integer cbpg01 = cbpgVo.getCbpg01();
         CbpiCriteria example1 = new CbpiCriteria();
@@ -647,13 +667,13 @@ for(int i=0;i<cbphs.size();i++) {
             infoss.get(0).setSaomanums(saoma);
             infoss.get(0).setGoods(goods);
         }
+if(infoss.size()>0) {
+    for (int i = 0; i < infoss.size(); i++) {
+        sum += infoss.get(i).getCbph09();
+    }
 
-        for(int i = 0;i<infoss.size();i++){
-            sum+= infoss.get(i).getCbph09();
-        }
-
-        infoss.get(0).setNums(sum);
-
+    infoss.get(0).setNums(sum);
+}
         return infoss;
     }
     /**
@@ -820,6 +840,47 @@ for(int i=0;i<cbphs.size();i++) {
         Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpg1.getCbpg09());
 
 
+        UIOVo uioVo = new UIOVo();
+        uioVo.setId(cbpgDto.getCbpg01());
+        List<UIOVo> selectbyid = cbpiMapper.selectbyid(uioVo);
+        if(selectbyid.size()>0){
+            for(int k=0;k<selectbyid.size();k++) {
+                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+                //获取仓库id
+                gsGoodsSkuDo.setWhId(cbpg1.getCbpg10());
+                gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
+                //获取商品id
+                gsGoodsSkuDo.setGoodsId(selectbyid.get(k).getGoodsId());
+                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                //通过仓库id和货物id判断是否存在
+                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                if(gsGoodsSkus.size()==0){
+                    throw new SwException("没有该库存信息");
+                }
+                //如果存在则更新库存数量
+                else {
+                    //加锁
+                    baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                    //查出
+                    Double qty = gsGoodsSkus.get(0).getQty();
+                    if(qty==0){
+                        throw new SwException("库存数量不足");
+                    }
+                    //获取仓库id
+                    gsGoodsSkuDo1.setWhId(cbpg1.getCbpg10());
+                    //获取商品id
+                    gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
+                    gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
+                    if(qty-selectbyid.get(k).getNums()<0){
+                        throw new SwException("库存数量不足");
+                    }
+                    gsGoodsSkuDo1.setQty(qty-selectbyid.get(k).getNums());
+                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+
+                }
+            }}
 
         //数量管理查找商品id和仓库id，没有就加入
         CbphCriteria example1=new CbphCriteria();
@@ -840,7 +901,7 @@ for(int i=0;i<cbphs.size();i++) {
             //编号
             String number = cbpg1.getCbpg07();
             //金额
-            Double money = cbph.getCbph11();
+            Double money = cbph.getCbph10();
 
             //判断是哪个仓库  数量仓库
 
@@ -855,6 +916,7 @@ for(int i=0;i<cbphs.size();i++) {
                     throw new SwException("没有该采购退库扫码信息");
                 }
             Double num= (double) cbpis.size();
+/*
                 for (Cbpi cbpi : cbpis) {
 
                     Integer goodsid = cbpi.getCbpi08();
@@ -900,7 +962,7 @@ for(int i=0;i<cbphs.size();i++) {
                             throw new SwException("库存数量不足");
                         }
                         //获取仓库id
-                        gsGoodsSkuDo1.setWhId(cbpg.getCbpg10());
+                        gsGoodsSkuDo1.setWhId(cbpg1.getCbpg10());
                         //获取商品id
                         gsGoodsSkuDo1.setGoodsId(goodsid);
                         gsGoodsSkuDo1.setLocationId(cbpi10);
@@ -909,6 +971,7 @@ for(int i=0;i<cbphs.size();i++) {
 
 
                 }}
+*/
             //台账操作
             CbibDo cbibDo = new CbibDo();
             cbibDo.setCbib02(storeid);
@@ -918,10 +981,8 @@ for(int i=0;i<cbphs.size();i++) {
             cbibDo.setCbib07(cbpgDto.getCbpg01());
             cbibDo.setCbib08(goodid);
             cbibDo.setCbib13(num);
-            cbibDo.setCbib14(money);
-            cbibDo.setCbib15(num);
-            cbibDo.setCbib16(money);
-            cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+            cbibDo.setCbib14(money*num);
+            cbibDo.setCbib17(TaskType.cgtkd.getMsg());
             cbibDo.setCbib19(vendorid);
             taskService.InsertCBIB(cbibDo);
         }

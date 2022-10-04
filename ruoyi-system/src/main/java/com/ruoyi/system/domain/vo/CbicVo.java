@@ -25,6 +25,8 @@ public class CbicVo extends BaseEntity {
 
 
     private String cbic10;
+    private String cbla09;
+
 
     @ApiParam(value = "开始时间", required = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

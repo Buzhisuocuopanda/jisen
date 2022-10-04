@@ -26,5 +26,6 @@ public class ScanVo {
 
     private Date cbpe03;
 
+    private String upc;
 
 }

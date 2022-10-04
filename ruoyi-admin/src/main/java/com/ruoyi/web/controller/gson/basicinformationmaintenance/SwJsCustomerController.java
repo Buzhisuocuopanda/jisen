@@ -271,6 +271,33 @@ public class SwJsCustomerController extends BaseController {
     }
 
     /**
+     * 客户信息选择框全部数据
+     */
+    @ApiOperation(
+            value ="客户信息选择框全部数据",
+            notes = "客户信息选择框全部数据"
+    )
+    @GetMapping("/SwJsCustomerlistAll")
+    public AjaxResult<TableDataInfo> SwJsCustomerlistAll(BaseSelectDto baseSelectDto) {
+        try{
+            List<BaseSelectVo> list = swJsCustomerService.SwJsCustomerlistSelect(baseSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【客户信息选择框】接口出现异常,参数${},异常${}$", JSON.toJSON(baseSelectDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【客户信息选择框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(baseSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 客户信息选择框
      */
     @ApiOperation(

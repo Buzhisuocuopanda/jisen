@@ -26,7 +26,7 @@ public class CbpfDo {
 
     private Integer cbpb01;
     @Excel(name = "货币id")
-    @NotNull(message = "货币id不能为空")
+   // @NotNull(message = "货币id不能为空")
     private Integer cbpf06;
 
     @Excel(name = "生效时间")

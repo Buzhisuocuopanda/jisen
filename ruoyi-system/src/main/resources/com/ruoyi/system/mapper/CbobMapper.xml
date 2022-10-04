@@ -544,7 +544,7 @@
       AND sa.CBSA01 = #{supplierId}
     </if>
     <if test="model !=null and model !='' ">
-      AND pb.CBPB12 = #{model}
+      AND pb.CBPB12  like concat('%',  #{model}, '%')
     </if>
     <if test="brand !=null and brand !='' ">
       AND pb.CBPB10 = #{brand}

@@ -747,8 +747,14 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         for (int i = 0; i < itemList.size(); i++) {
 
              if(itemList.get(i).getCbac09()==null){
-                throw new SwException("调拨单明细id不能为空");
+                throw new SwException("sn不能为空");
             }
+           CbacCriteria cbacCriteria = new CbacCriteria();
+            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+            List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
+            if(cbacs.size()>0){
+                throw new SwException("sn已存在");}
+
              //校验sn
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
             gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.get(i).getCbac09());
@@ -804,7 +810,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 session.clearCache();
             }
         }
-
+        session.commit();
+        session.clearCache();
             return 1;
     }
 //调拨单入库扫码
@@ -896,7 +903,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 session.clearCache();
             }
         }
-
+        session.commit();
+        session.clearCache();
         return 1;    }
 
     @Override
@@ -1202,7 +1210,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
         cbacVos.add(res);
         if(cbacVos.size()>1){
-            cbacVos.get(0).setSaoma(cbacVos.size());
+            cbacVos.get(0).setSaoma(cbacVos.size()-1);
             cbacVos.get(0).setNums(sum);
     }
 
@@ -1232,7 +1240,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
         cbacVos.add(res);
         if(cbacVos.size()>1){
-            cbacVos.get(0).setSaoma(cbacVos.size());
+            cbacVos.get(0).setSaoma(cbacVos.size()-1);
             cbacVos.get(0).setNums(sum);
         }
 

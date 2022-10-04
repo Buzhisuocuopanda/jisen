@@ -958,6 +958,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnss.size()>0){
                 throw new SwException("替换后sn已存在" );
             }*/
+          CbpmCriteria sfgu=new CbpmCriteria();
+            sfgu.createCriteria()
+                    .andCbpm09EqualTo(itemList.get(i).getCbpm09())
+                            .andCbpm11EqualTo(ScanStatusEnum.YISAOMA.getCode());
+            List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
+            if(cbpmss.size()>0){
+                throw new SwException("sn已扫码" );
+            }
 
 
 
@@ -973,6 +981,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSns.size()==0){
                 throw new SwException("您选择的Sn商品不在货物SN表中" );
             }
+
+            GsGoodsSnCriteria example6 = new GsGoodsSnCriteria();
+            example6.createCriteria()
+                    .andSnEqualTo(itemList.get(i).getCbpm09())
+            .andStatusEqualTo(GoodsType.yck.getCode());
+            List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(example6);
+            if(gsGoodsSnss.size()>0){
+                throw new SwException("您选择的Sn商品已经出库" );
+            }
+
             GsGoodsSn goodsSn = new GsGoodsSn();
             goodsSn.setId(gsGoodsSns.get(i).getId());
             goodsSn.setCreateTime(gsGoodsSns.get(i).getCreateTime());
@@ -1106,11 +1124,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         for (GsGoodsSnVo gsGoodsSnVo:gsGoodsSnVos) {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
-            }
-            if(("1").equals(gsGoodsSnVo.getScanStatus())){
-                gsGoodsSnVo.setScanStatus("已扫码");
-            }else{
-                gsGoodsSnVo.setScanStatus("未扫码");
             }
         }
 

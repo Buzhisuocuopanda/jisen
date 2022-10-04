@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPI01, CBPI02, CBPI03, CBPI04, CBPI05, CBPI06, CBPI07, CBPI08, CBPI09, CBPI10, CBPI11, 
+    CBPI01, CBPI02, CBPI03, CBPI04, CBPI05, CBPI06, CBPI07, CBPI08, CBPI09, CBPI10, CBPI11,
     CBPI12, CBPG01, user_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpiCriteria" resultMap="BaseResultMap">
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPI`
     where CBPI01 = #{cbpi01,jdbcType=INTEGER}
@@ -110,15 +110,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpi">
-    insert into `CBPI` (CBPI01, CBPI02, CBPI03, 
-      CBPI04, CBPI05, CBPI06, 
-      CBPI07, CBPI08, CBPI09, 
-      CBPI10, CBPI11, CBPI12, 
+    insert into `CBPI` (CBPI01, CBPI02, CBPI03,
+      CBPI04, CBPI05, CBPI06,
+      CBPI07, CBPI08, CBPI09,
+      CBPI10, CBPI11, CBPI12,
       CBPG01, user_id)
-    values (#{cbpi01,jdbcType=INTEGER}, #{cbpi02,jdbcType=INTEGER}, #{cbpi03,jdbcType=TIMESTAMP}, 
-      #{cbpi04,jdbcType=INTEGER}, #{cbpi05,jdbcType=TIMESTAMP}, #{cbpi06,jdbcType=INTEGER}, 
-      #{cbpi07,jdbcType=INTEGER}, #{cbpi08,jdbcType=INTEGER}, #{cbpi09,jdbcType=VARCHAR}, 
-      #{cbpi10,jdbcType=INTEGER}, #{cbpi11,jdbcType=INTEGER}, #{cbpi12,jdbcType=VARCHAR}, 
+    values (#{cbpi01,jdbcType=INTEGER}, #{cbpi02,jdbcType=INTEGER}, #{cbpi03,jdbcType=TIMESTAMP},
+      #{cbpi04,jdbcType=INTEGER}, #{cbpi05,jdbcType=TIMESTAMP}, #{cbpi06,jdbcType=INTEGER},
+      #{cbpi07,jdbcType=INTEGER}, #{cbpi08,jdbcType=INTEGER}, #{cbpi09,jdbcType=VARCHAR},
+      #{cbpi10,jdbcType=INTEGER}, #{cbpi11,jdbcType=INTEGER}, #{cbpi12,jdbcType=VARCHAR},
       #{cbpg01,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpi">
@@ -350,4 +350,18 @@
       user_id = #{userId,jdbcType=INTEGER}
     where CBPI01 = #{cbpi01,jdbcType=INTEGER}
   </update>
+
+  <select id="selectbyid" resultType="com.ruoyi.system.domain.vo.UIOVo">
+    SELECT
+      COUNT(CBPI01) as nums,CBPI10 as storeskuid,CBPI08 as goodsId
+    FROM
+      CBPI
+    where
+      CBPG01= #{id,jdbcType=INTEGER}
+    GROUP BY
+      CBPI10,CBPI08
+  </select>
+
+
+
 </mapper>

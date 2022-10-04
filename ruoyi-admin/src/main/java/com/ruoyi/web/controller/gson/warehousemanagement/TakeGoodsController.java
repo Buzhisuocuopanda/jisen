@@ -832,6 +832,7 @@ public class TakeGoodsController extends BaseController {
 
     //销售订单调拨建议
     @GetMapping("outStockAdviceList")
+    @PreAuthorize("@ss.hasPermi('system:outStockAdviceList:list')")
     public AjaxResult<TableDataInfo> outStockAdviceList(GsOutStockAdivceDto gsOutStockAdivceDto){
         try {
             startPage();
@@ -851,6 +852,7 @@ public class TakeGoodsController extends BaseController {
     }
 
     @GetMapping("auditOutStockEnd")
+    @PreAuthorize("@ss.hasPermi('system:outStockAdviceList:end')")
     public AjaxResult auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto){
         try {
             gsOutStockAdivceDto.setUserId(Integer.parseInt(SecurityUtils.getUserId()+""));
@@ -888,8 +890,12 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
-
-    @GetMapping("mdfTakeSuggest2")
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/30 8:52
+     *销售提货单主表添加保存销售提货单扫描记录数据
+     */
+    @PostMapping("mdfTakeSuggest2")
     public AjaxResult mdfTakeSuggest2(@RequestParam("cbpmDto")CbpmDto cbpmDto) {
         try {
             takeGoodsService.mdfTakeSuggest2(cbpmDto);

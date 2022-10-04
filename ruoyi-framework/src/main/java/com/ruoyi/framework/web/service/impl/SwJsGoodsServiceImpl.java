@@ -444,7 +444,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             gs=new BaseSelectVo();
             gs.setValue(vo.getCbpb01());
             if(vo.getCala08()!=null && vo.getCbpb12()!=null && vo.getCbpb08()!=null){
-                gs.setLabel(vo.getCala08()+"-"+ vo.getCbpb12()+"-"+vo.getCbpb08());
+                gs.setLabel(vo.getCala08()+"   -   "+ vo.getCbpb12()+"   -   "+vo.getCbpb08());
             }
             res.add(gs);
 
@@ -455,11 +455,11 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
     @Override
     public List<Cbpf> selectcbpfList(Cbpf cbpf) {
-        if(cbpf.getCbpf06()==null){
-            throw new SwException("结算货币id不能为空！");
+        if(cbpf.getCbpb01()==null){
+            throw new SwException("商品id不能为空！");
         }
         CbpfCriteria example = new CbpfCriteria();
-        example.createCriteria().andCbpf06EqualTo(cbpf.getCbpf06());
+        example.createCriteria().andCbpb01EqualTo(cbpf.getCbpb01());
         List<Cbpf> cbpfs = cbpfMapper.selectByExample(example);
         return cbpfs;
 
