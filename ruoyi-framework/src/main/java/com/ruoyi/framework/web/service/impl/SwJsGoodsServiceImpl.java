@@ -444,7 +444,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             gs=new BaseSelectVo();
             gs.setValue(vo.getCbpb01());
             if(vo.getCala08()!=null && vo.getCbpb12()!=null && vo.getCbpb08()!=null){
-                gs.setLabel(vo.getCala08()+"-"+ vo.getCbpb12()+"-"+vo.getCbpb08());
+                gs.setLabel(vo.getCala08()+"   -   "+ vo.getCbpb12()+"   -   "+vo.getCbpb08());
             }
             res.add(gs);
 

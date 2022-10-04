@@ -32,8 +32,5 @@ public class GsGoodsSnVo {
 
     //商品描述
     private String cbpb08;
-    //扫没扫码
-    private String scanStatus;
-
 
 }

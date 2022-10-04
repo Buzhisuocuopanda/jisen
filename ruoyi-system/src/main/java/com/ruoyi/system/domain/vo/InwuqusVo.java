@@ -32,6 +32,10 @@ public class InwuqusVo {
 
     @Excel(name = "入库日期",width = 30,dateFormat = "yyyy-MM-dd")
     private Date cbig15;
+    //上架状态 1：上架 2：已下架
+    private Integer groudStatus;
+    //商品状态 1：已入库 2：出库中 3：已出库
+    private Integer status;
 
 
 }

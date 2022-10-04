@@ -245,6 +245,29 @@ public class SwJsGoodsController extends BaseController {
     }
 
     /**
+     * 商品列表不分页选择框
+     */
+    @ApiOperation(
+            value ="商品列表不分页选择框",
+            notes = "商品列表不分页选择框"
+    )
+    @GetMapping("/swJsGoodslistBySelectAll")
+    public AjaxResult<BaseSelectVo> swJsGoodslistBySelectAll(GoodsSelectDto goodsSelectDto) {
+        try {
+            List<BaseSelectVo> list = swJsGoodsService.swJsGoodslistBySelect(goodsSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(goodsSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
      * 导入商品
      */
     @ApiOperation(

@@ -14,6 +14,10 @@ public class BaseSelectVo {
     private Integer value;
 
     private String label;
+    //型号
+    private String model;
+    //品牌
+    private String brand;
 
 
 

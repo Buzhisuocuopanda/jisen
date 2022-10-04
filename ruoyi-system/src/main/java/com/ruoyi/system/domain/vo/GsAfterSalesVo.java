@@ -38,4 +38,8 @@ public class GsAfterSalesVo extends BaseEntity {
     private String cbca08;
     private String cbsa08;
 
+    private Date startTime;
+
+    private Date endTime;
+
 }
