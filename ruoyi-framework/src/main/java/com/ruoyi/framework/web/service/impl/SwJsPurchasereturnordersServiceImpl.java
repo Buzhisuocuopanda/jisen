@@ -656,9 +656,9 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setCbpb08(infoss.get(i).getCbpb08());
                     scanVo.setCbpb12(infoss.get(i).getCbpb12());
                     scanVo.setCbpb15(infoss.get(i).getCbpb15());
-                    scanVo.setSn(infoss.get(j).getCbpi09());
+                    scanVo.setSn(cbpis.get(j).getCbpi09());
                     scanVo.setKwm(infoss.get(i).getCbla09());
-                    scanVo.setCbpe03(infoss.get(j).getCbpi03());
+                    scanVo.setCbpe03(cbpis.get(j).getCbpi03());
                     goods.add(scanVo);
                 }
                 infoss.get(i).setSaoma(size);
@@ -669,6 +669,10 @@ for(int i=0;i<cbphs.size();i++) {
         }
 if(infoss.size()>0) {
     for (int i = 0; i < infoss.size(); i++) {
+       if(infoss.get(i).getCbph09()==null){
+           throw new SwException("明细表数量为空");
+
+       }
         sum += infoss.get(i).getCbph09();
     }
 

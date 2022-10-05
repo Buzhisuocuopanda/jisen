@@ -936,6 +936,35 @@ public class SalesScheduledOrdersController extends BaseController {
 
 
     /**
+     * 查询预订单详情
+     *
+     * @param fgkVo
+     * @return
+     */
+    @ApiOperation(
+            value ="查询预订单变更单详情",
+            notes = "查询预订单变更单详情"
+    )
+    @GetMapping("/seleteSaleFgkVomary")
+    public AjaxResult <FgkVo> seleteSaleFgkVomary( FgkVo fgkVo) {
+        try {
+            startPage();
+         FgkVo res = salesScheduledOrdersService.seleteSaleFgkVomary(fgkVo);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            log.error("【查询预订单变更单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(fgkVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询预订单变更单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(fgkVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+    /**
      * 导入销售预购单
      */
     @ApiOperation(

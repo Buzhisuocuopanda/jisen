@@ -587,6 +587,10 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             cbsbsVos.get(0).setGoods(goods);
         }
         for(int i=0;i<cbsbsVos.size();i++){
+            if(cbsbsVos.get(i).getCbsc09()==null){
+                throw new SwException("明细表数量为空");
+
+            }
             sum+=cbsbsVos.get(i).getCbsc09();
         }
 

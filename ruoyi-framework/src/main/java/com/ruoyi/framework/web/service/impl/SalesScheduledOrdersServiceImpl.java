@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -73,6 +74,9 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
 
     @Resource
     private CbwaMapper cbwaMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
 
     /**
@@ -884,7 +888,37 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         return successMsg.toString();
     }
 
+    @Override
+    public FgkVo seleteSaleFgkVomary(FgkVo fgkVo) {
+        if(fgkVo.getId() == null){
+            throw new SwException("id不能为空");
+        }
+        GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(fgkVo.getId());
+        fgkVo.setId(gsSalesOrdersChange.getId());
+        fgkVo.setOrderNo(gsSalesOrdersChange.getOrderNo());
+        fgkVo.setOrderDate(gsSalesOrdersChange.getOrderDate());
+        fgkVo.setSupplierId(gsSalesOrdersChange.getSupplierId());
+        fgkVo.setSalerId(gsSalesOrdersChange.getSalerId());
+        fgkVo.setGoodsclassify(gsSalesOrdersChange.getGoodsclassify());
+        fgkVo.setQty(gsSalesOrdersChange.getQty());
+        fgkVo.setGsSalesOrders(gsSalesOrdersChange.getGsSalesOrders());
+        fgkVo.setStatus(gsSalesOrdersChange.getStatus());
+        fgkVo.setGoodsId(gsSalesOrdersChange.getGoodsId());
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(Long.valueOf(gsSalesOrdersChange.getSalerId()));
+        if(sysUser != null){
+            fgkVo.setSaleruser(sysUser.getUserName());
+        }
+        Cbsa cbsa = cbsaMapper.selectByPrimaryKey(gsSalesOrdersChange.getSupplierId());
+        if(cbsa != null){
+            fgkVo.setSaleruser(cbsa.getCbsa08());
+        }
+        Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsSalesOrdersChange.getGoodsId());
+        if(cbpb != null){
+            fgkVo.setGoodsclassify(cbpb.getCbpb12());
+        }
 
+        return fgkVo;
+    }
 
 
 }

@@ -1275,6 +1275,10 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
         if(infossss.size()>0) {
             for (int i = 0; i < infossss.size(); i++) {
+                if(infossss.get(i).getCbpd09()==null){
+                    throw new SwException("明细表数量为空");
+
+                }
                 sum += infossss.get(i).getCbpd09();
             }
             infossss.get(0).setNums(sum);

@@ -266,7 +266,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
             cbibDo.setCbib13((double) 0);
             cbibDo.setCbib14((double) 0);
 
-            cbibDo.setCbib17(TaskType.xstkd.getMsg());
+            cbibDo.setCbib17(TaskType.cgdd.getMsg());
             cbibDo.setCbib19(gsPurchaseOrder1.getSupplierId());
             taskService.InsertCBIB(cbibDo);
         }
@@ -332,12 +332,12 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
             throw new SwException("采购订单明细为空");
         }
 
-        Set<Long> uio = null;
+    /*    Set<Long> uio = null;
         for (int i = 0; i < gsPurchaseOrderDetails.size(); i++) {
             Long id = gsPurchaseOrderDetails.get(i).getId();
             uio = new HashSet<>();
             uio.add(id);
-        }
+        }*/
 
         GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
         for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
@@ -345,9 +345,9 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
             if(gsPurchaseOrderDetail1.getId()==null){
                 throw new SwException("采购订单明细不能为空");
             }
-            if(!uio.contains(gsPurchaseOrderDetail1.getId())){
+         /*   if(!uio.contains(gsPurchaseOrderDetail1.getId())){
                 throw new SwException("该商品不在采购订单明细中");
-            }
+            }*/
             gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
             gsPurchaseOrderDetail.setGoodsId(gsPurchaseOrderDetail1.getGoodsId());
             gsPurchaseOrderDetail.setQty(gsPurchaseOrderDetail1.getQty());
