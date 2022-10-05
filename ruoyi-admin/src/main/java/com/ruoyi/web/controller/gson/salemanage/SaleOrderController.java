@@ -91,6 +91,7 @@ public class SaleOrderController extends BaseController {
             notes = "国际订单下单后确认库存列表"
     )
     @GetMapping("/saleOrderSkuList")
+    @PreAuthorize("@ss.hasPermi('system:saleOrderSku:list')")
     public AjaxResult<List<TableDataInfo>> saleOrderSkuList( SaleOrderSkuDto saleOrderSkuDto) {
         try {
             startPage();
@@ -115,6 +116,7 @@ public class SaleOrderController extends BaseController {
             notes = "国际订单确认库存"
     )
     @PostMapping("/updateGjQty")
+    @PreAuthorize("@ss.hasPermi('system:updateGjQty:save')")
     public AjaxResult updateGjQty(@Valid @RequestBody UpdateGjQtyDto updateGjQtyDto,BindingResult bindingResult) {
         try {
 
@@ -694,6 +696,7 @@ public class SaleOrderController extends BaseController {
             notes = "财务复审列表"
     )
     @PostMapping("/finsaleOrderList")
+    @PreAuthorize("@ss.hasPermi('system:finsaleOrder:list')")
     public AjaxResult<List<TableDataInfo>> finsaleOrderList(@RequestBody SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
@@ -717,6 +720,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出财务复审列表"
     )
     @PostMapping("/exportfinsaleOrderList")
+    @PreAuthorize("@ss.hasPermi('system:finsaleOrder:export')")
     public void exportfinsaleOrderList( SaleOrderListDto saleOrderListDto ,HttpServletResponse response) {
         try {
             List<SaleOrderListVo> saleOrderListVos = saleOrderService.finsaleOrderList(saleOrderListDto);
@@ -756,6 +760,7 @@ public class SaleOrderController extends BaseController {
             notes = "财务复审"
     )
     @PostMapping("/auditFinSaleOrder")
+    @PreAuthorize("@ss.hasPermi('system:finsaleOrder:fs')")
     public AjaxResult auditSaauditFinSaleOrderleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -895,6 +900,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售变更单列表"
     )
     @PostMapping("/saleChangeList")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:list')")
     public AjaxResult<TableDataInfo> saleChangeList(@RequestBody SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
@@ -920,6 +926,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出销售变更单列表"
     )
     @PostMapping("/exportSaleChangeList")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:export')")
     public void exportSaleChangeList( SaleOrderListDto saleOrderListDto,HttpServletResponse response) {
         try {
 
@@ -956,6 +963,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售变更单创建"
     )
     @PostMapping("/addSaleOrderChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:add')")
     public AjaxResult addSaleOrderChange(@RequestBody SaleOrderChangeDto saleOrderChangeDto) {
         try {
             saleOrderChangeDto.setUserId(getUserId().intValue());
@@ -1058,6 +1066,7 @@ public class SaleOrderController extends BaseController {
     )
     @GetMapping("/orderChangeDetail")
     @ApiParam("变更单id")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:detail')")
     public AjaxResult<OrderChangeDetailVo> orderChangeDetail(@RequestParam Integer orderId) {
         try {
 
@@ -1083,6 +1092,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单变更单修改"
     )
     @PostMapping("/mdfSaleOrderChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:edit')")
     public AjaxResult mdfSaleOrderChange(@RequestBody SaleOrderChangeDto saleOrderChangeDto) {
         try {
             saleOrderChangeDto.setUserId(getUserId().intValue());
@@ -1108,6 +1118,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单变更单审核"
     )
     @PostMapping("/auditSaleChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:sh')")
     public AjaxResult auditSaleChange(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -1133,6 +1144,7 @@ public class SaleOrderController extends BaseController {
             notes = "删除销售变更"
     )
     @PostMapping("/delSaleChange")
+    @PreAuthorize("@ss.hasPermi('system:saleChange:remove')")
     public AjaxResult delSaleChange(@Valid @RequestBody DelSaleChangeDto delSaleChangeDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -1156,6 +1168,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出销售订单详情2"
     )
     @PostMapping("/saleOrderdetailsexport")
+
     public AjaxResult saleOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
 
         try {
@@ -1198,6 +1211,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出销售变更单详情"
     )
     @PostMapping("/saleOrderchangedetailsexport1")
+
     public AjaxResult saleOrderchangedetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
         String excelPaht="";
 

@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,7 @@ public class ApprovalController extends BaseController {
             notes = "代办事宜"
     )
     @GetMapping("/Approvalrecordsdb")
+    @PreAuthorize("@ss.hasPermi('approval:approvalrecordsdb:list')")
     public AjaxResult<TableDataInfo> Approvalrecordsdb(ApprovalVo approvalVo) {
         try{
             startPage();
@@ -80,6 +82,7 @@ public class ApprovalController extends BaseController {
             notes = "查询审批记录"
     )
     @GetMapping("/Approvalrecords")
+    @PreAuthorize("@ss.hasPermi('approval:approvalrecords:list')")
     public AjaxResult<TableDataInfo> Approvalrecords(ApprovalVo approvalVo) {
         try{
             startPage();
@@ -109,6 +112,7 @@ public class ApprovalController extends BaseController {
             notes = "查询未完单据"
     )
     @GetMapping("/Unfinisheddocuments")
+    @PreAuthorize("@ss.hasPermi('approval:unfinisheddocuments:list')")
     public AjaxResult<TableDataInfo> Unfinisheddocuments(UnfinishedentsVo unfinishedentsVo) {
         try{
             startPage();
