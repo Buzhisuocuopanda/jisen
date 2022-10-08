@@ -244,8 +244,10 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     public SysUser checkUserTask(Long userId, String auditPerm) {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         String auditPerm1 = sysUser.getAuditPerm();
+        if(auditPerm1==null){
+            throw new SwException("您没有审核权限");
+        }
         String[] s1 = auditPerm.split(",");
-
         String[] split = auditPerm1.split(",");
         Set<String> set = new HashSet<String>(Arrays.asList(split));
        for (String s : s1) {

@@ -65,6 +65,8 @@ public class SaleOrderChangeDetailGoods {
     private String goodsMsg;
     private Double confirmQty;
 
+    private Integer cbob01;
+
     public Double getConfirmQty() {
         if(confirmQty==null){
             return 0.0;
@@ -73,7 +75,7 @@ public class SaleOrderChangeDetailGoods {
     }
 
     public String getGoodsMsg() {
-        return brand+"-'"+model+"-"+description;
+        return brand+"-"+model+"-"+description;
     }
 
     public Integer getGoodsId() {

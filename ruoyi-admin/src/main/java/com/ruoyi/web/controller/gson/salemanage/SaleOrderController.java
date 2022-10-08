@@ -1565,7 +1565,7 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,format,4,7);
         FormExcelUtil.setCellData(sheet1,res.getCustomerName(),5,2);
         FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
-        FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
+        FormExcelUtil.setCellData(sheet1,res.getCurrencyMsg(),5,7);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
         FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,6);
         FormExcelUtil.setCellData(sheet1,res.getAddress(),7,2);
@@ -1728,7 +1728,7 @@ public class SaleOrderController extends BaseController {
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
 
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_ORDER_DETAIL_EXCEL2);
+            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
 
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);

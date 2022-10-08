@@ -449,6 +449,7 @@
 
 
     SELECT
+    ob.CBOB01 as cbobId
     ob.CBOB08 as goodsId,
     ob.CBOB14 as normalPrice,
     ob.CBOB12 as totalPrice,

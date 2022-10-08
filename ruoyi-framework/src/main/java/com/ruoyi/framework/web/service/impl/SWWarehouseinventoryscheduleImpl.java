@@ -343,9 +343,10 @@ private CbsjMapper cbbsjMapper;
 
 
             cbsjVos.get(0).setSaoma(cbsjss.size());
+            int size = cbsjs.size();
+            cbsjVos.get(0).setNums((double) size);
         }
-        int size = cbsjs.size();
-        cbsjVos.get(0).setNums((double) size);
+
 
         return cbsjVos;
     }

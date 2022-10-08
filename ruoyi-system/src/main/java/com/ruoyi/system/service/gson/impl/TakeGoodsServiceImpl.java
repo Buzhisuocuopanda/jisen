@@ -126,7 +126,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
         //只有该销售订单在此仓库最新一提货单质检完成之后才能再生成
        Cbpk old= cbpkMapper.selectLastBySaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
-        if(old!=null && TakeOrderCheckStatus.NOCHECK.equals(old.getCheckStatus())){
+        if(old!=null && TakeOrderCheckStatus.NOCHECK.getCode().equals(old.getCheckStatus())){
             throw new SwException("该销售订单的最新提货单需要质检完成之后才能提交新的提货单");
         }
 
@@ -210,6 +210,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpl.setCbpl10(0.0);
             cbpl.setCbpl11(good.getPrice());
             cbpl.setCbpl12(good.getTotalPrice());
+
 //            cbpl.setCbpl13();
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();
@@ -261,9 +262,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         res.setOrderDate(cbpk.getCbpk08());
         res.setPhone(cbpk.getCbpk19());
         res.setReceiveAdress(cbpk.getCbpk21());
-        //todo
-//        res.setReceiver();
-//        res.setReceivPhone();
+        res.setReceiver(cbpk.getCbpk18());
+        res.setReceivPhone(cbpk.getCbpk19());
         Cboa cboa=null;
         if(!StringUtils.isBlank(cbpk.getSaleOrderNo())){
             CboaCriteria oaex=new CboaCriteria();
@@ -465,9 +465,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setDescription(takeOrderGoodsVo.getDescription());
                 sugest.setModel(takeOrderGoodsVo.getModel());
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
+                sugest.setUpc(takeOrderGoodsVo.getUpc());
+
             }
 
-            sugest.setUpc(takeOrderGoodsVo.getUpc());
             sugest.setNumber(cbpm.getCbpm02());
 
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
@@ -1097,6 +1098,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             GsGoodsUse goodsUse = gsGoodsUses.get(0);
             goodsUse.setLockQty(goodsUse.getLockQty()+gsOutStockAdivce.getQty());
             goodsUse.setUpdateTime(date);
+            gsGoodsUseMapper.updateByPrimaryKey(goodsUse);
         }else {
             GsGoodsUse gsGoodsUse=new GsGoodsUse();
             gsGoodsUse.setLockQty(gsOutStockAdivce.getQty());

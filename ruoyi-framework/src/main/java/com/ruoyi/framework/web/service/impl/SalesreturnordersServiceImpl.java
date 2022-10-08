@@ -445,6 +445,10 @@ if(cbsgss.size()>0){
 
 }
         for(int i=0;i<cbsesVos.size();i++){
+            if(cbsesVos.get(i).getCbsf09()==null){
+                throw new SwException("明细表数量为空");
+
+            }
             sum+=cbsesVos.get(i).getCbsf09();
         }
         cbsesVos.get(0).setNums(sum);

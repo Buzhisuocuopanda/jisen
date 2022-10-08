@@ -98,7 +98,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
         CbsbCriteria cbsbCriteria = new CbsbCriteria();
-        cbsbCriteria.createCriteria().andCbsb18EqualTo(cbsbDo.getCbsb18());
+        cbsbCriteria.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07());
         List<Cbsb> cbsbList = cbsbMapper.selectByExample(cbsbCriteria);
         if (cbsbList.size() > 0) {
             throw new SwException("该订单已存在");
@@ -587,6 +587,10 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             cbsbsVos.get(0).setGoods(goods);
         }
         for(int i=0;i<cbsbsVos.size();i++){
+            if(cbsbsVos.get(i).getCbsc09()==null){
+                throw new SwException("明细表数量为空");
+
+            }
             sum+=cbsbsVos.get(i).getCbsc09();
         }
 

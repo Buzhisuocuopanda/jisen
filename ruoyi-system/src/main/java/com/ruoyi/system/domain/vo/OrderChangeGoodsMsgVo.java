@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class OrderChangeGoodsMsgVo {
 
+    private Integer cbobId;
+
     //商品id
     @ApiModelProperty("商品id")
     private Integer goodsId;

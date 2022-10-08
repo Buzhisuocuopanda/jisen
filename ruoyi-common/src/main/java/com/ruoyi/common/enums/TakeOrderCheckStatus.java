@@ -7,15 +7,15 @@ package com.ruoyi.common.enums;
  * Date 2022/8/13 12:04
  */
 public enum TakeOrderCheckStatus {
-    CHECK(new Integer("1"), "质检完成"),
-    NOCHECK(new Integer("2"), "未质检"),
+    CHECK(new Byte("1"), "质检完成"),
+    NOCHECK(new Byte("2"), "未质检"),
     ;
 
-    private Integer code;
+    private Byte code;
 
     private String msg;
 
-    public Integer getCode() {
+    public Byte getCode() {
         return code;
     }
 
@@ -23,7 +23,7 @@ public enum TakeOrderCheckStatus {
         return msg;
     }
 
-    TakeOrderCheckStatus(Integer code, String msg) {
+    TakeOrderCheckStatus(Byte code, String msg) {
         this.code = code;
         this.msg = msg;
     }
