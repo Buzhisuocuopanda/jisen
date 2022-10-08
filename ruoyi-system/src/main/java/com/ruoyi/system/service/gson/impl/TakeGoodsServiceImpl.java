@@ -1098,6 +1098,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             GsGoodsUse goodsUse = gsGoodsUses.get(0);
             goodsUse.setLockQty(goodsUse.getLockQty()+gsOutStockAdivce.getQty());
             goodsUse.setUpdateTime(date);
+            gsGoodsUseMapper.updateByPrimaryKey(goodsUse);
         }else {
             GsGoodsUse gsGoodsUse=new GsGoodsUse();
             gsGoodsUse.setLockQty(gsOutStockAdivce.getQty());
