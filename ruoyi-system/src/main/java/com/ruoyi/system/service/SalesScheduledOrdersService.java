@@ -19,6 +19,8 @@ public interface SalesScheduledOrdersService {
 
     List<GsSalesOrdersDetailsVo> saleOrderListdetail(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 
+    List<GsSalesOrdersDetailsVo> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
+
     void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto);
 
     void salesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto);

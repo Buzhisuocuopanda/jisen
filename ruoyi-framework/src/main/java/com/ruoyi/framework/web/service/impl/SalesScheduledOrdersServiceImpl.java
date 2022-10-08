@@ -236,6 +236,13 @@ return;
         return saleOrderListVos;
     }
 
+    //销售预订单变更单详情
+    @Override
+    public List<GsSalesOrdersDetailsVo> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
+        List<GsSalesOrdersDetailsVo> salesOrdersChangeVos = gsSalesOrdersMapper.saleOrderListdetails(gsSalesOrdersDetailsVo);
+        return salesOrdersChangeVos;
+    }
+
     @Override
     public void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());

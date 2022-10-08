@@ -23,11 +23,17 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
 
     private String orderNo;
 
-    private String supplier;
-
     private String saler;
 
+    private String salerMag;
+
+    private String supplier;
+
+    private String supplierMge;
+
     private String customer;
+
+    private String customerMag;
 
     private Date orderDate;
 
