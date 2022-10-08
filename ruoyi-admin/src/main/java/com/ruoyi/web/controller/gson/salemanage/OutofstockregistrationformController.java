@@ -21,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,6 +62,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "新增缺货登记表"
     )
     @PostMapping("/Selloutofwarehouseadd")
+    @PreAuthorize("@ss.hasPermi('system:outofstockregistrationform:add')")
     public AjaxResult Selloutofwarehouseadd(@Valid @RequestBody CboeDo cboeDo, BindingResult bindingResult) {
 
         try {
@@ -92,6 +94,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "修改缺货登记表"
     )
     @PostMapping("/Selloutofwarehouseedit")
+    @PreAuthorize("@ss.hasPermi('system:outofstockregistrationform:edit')")
     public AjaxResult Selloutofwarehouseedit(@Valid @RequestBody CboeDo cboeDo, BindingResult bindingResult) {
 
         try {
@@ -168,6 +171,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "缺货登记表查询"
     )
     @GetMapping("/SwJsSkuBarcodelists")
+    @PreAuthorize("@ss.hasPermi('system:outofstockregistrationform:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CboeVo cboeVo) {
         try {
             startPage();
@@ -225,6 +229,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "缺货登记表详情"
     )
     @GetMapping("/saleOderDetail")
+    @PreAuthorize("@ss.hasPermi('system:outofstockregistrationform:detail')")
     public AjaxResult<CbofVo> saleOderDetail(@RequestParam Integer orderId) {
         try {
 
@@ -251,6 +256,7 @@ public class OutofstockregistrationformController extends BaseController {
             notes = "删除缺货登记表"
     )
     @PostMapping("/SwJsPurchaseinboundremove")
+    @PreAuthorize("@ss.hasPermi('system:outofstockregistrationform:remove')")
     public AjaxResult swJsPurchaseinboundremove(@RequestBody CboeVo cboeDo) {
         try {
             return toAjax(outofstockregistrationformService.deleteSwJsSkuBarcodsById(cboeDo));
