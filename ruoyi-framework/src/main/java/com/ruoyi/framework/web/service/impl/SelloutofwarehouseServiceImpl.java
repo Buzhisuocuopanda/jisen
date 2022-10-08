@@ -98,7 +98,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
         CbsbCriteria cbsbCriteria = new CbsbCriteria();
-        cbsbCriteria.createCriteria().andCbsb18EqualTo(cbsbDo.getCbsb18());
+        cbsbCriteria.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07());
         List<Cbsb> cbsbList = cbsbMapper.selectByExample(cbsbCriteria);
         if (cbsbList.size() > 0) {
             throw new SwException("该订单已存在");
