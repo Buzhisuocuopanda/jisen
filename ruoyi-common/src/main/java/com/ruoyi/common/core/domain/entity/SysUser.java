@@ -98,6 +98,16 @@ public class SysUser extends BaseEntity
     private String auditPerm;
     private String userType;
 
+    private String isWarehouse;
+
+    private String warehousePerm;
+
+    private Long[] auditPerms;
+
+    private Long[] warehousePerms;
+
+
+
     public String getUserType() {
         return userType;
     }
@@ -113,6 +123,39 @@ public class SysUser extends BaseEntity
     public void setAuditPerm(String auditPerm) {
         this.auditPerm = auditPerm;
     }
+
+    public String getIsWarehouse() {
+        return isWarehouse;
+    }
+
+    public void setIsWarehouse(String isWarehouse) {
+        this.isWarehouse = isWarehouse;
+    }
+
+    public String getWarehousePerm() {
+        return warehousePerm;
+    }
+
+    public void setWarehousePerm(String warehousePerm) {
+        this.warehousePerm = warehousePerm;
+    }
+
+    public Long[] getAuditPerms() {
+        return auditPerms;
+    }
+
+    public void setAuditPerms(Long[] auditPerms) {
+        this.auditPerms = auditPerms;
+    }
+
+    public Long[] getWarehousePerms() {
+        return warehousePerms;
+    }
+
+    public void setWarehousePerms(Long[] warehousePerms) {
+        this.warehousePerms = warehousePerms;
+    }
+
     public SysUser()
     {
 

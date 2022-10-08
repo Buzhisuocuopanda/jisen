@@ -314,7 +314,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
         }
-
         CbplCriteria plex=new CbplCriteria();
         plex.createCriteria()
                 .andCbpk01EqualTo(cbpk.getCbpk01())
@@ -322,6 +321,23 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         plex.setOrderByClause("CBPL02 desc");
         List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
         List<TakeOrderGoodsVo> goods = res.getGoods();
+
+
+        //zhaoGuoLiang添加销售订单明细表id
+        CboaCriteria cboaCriteria = new CboaCriteria();
+        cboaCriteria.createCriteria().andCboa07EqualTo(cbpk.getSaleOrderNo())
+                .andCboa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        List<Cboa> cboaList = cboaMapper.selectByExample(cboaCriteria);
+        List<Cbob> cbobList = null;
+        if(cboaList!=null&&cboaList.size()>0){
+            CbobCriteria cbobCriteria = new CbobCriteria();
+            cbobCriteria.createCriteria().andCboa01EqualTo(cboaList.get(0).getCboa01())
+                    .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbobCriteria.setOrderByClause("CBOB03 desc");
+            cbobList = cbobMapper.selectByExample(cbobCriteria);
+        }
+
 //        CalaCriteria laexample = new CalaCriteria();
 //        laexample.createCriteria()
 //                .andCala10EqualTo("商品品牌");
@@ -337,8 +353,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         Double sunPrice=0.0;
 
         Map<Integer,TakeOrderGoodsVo> goodsMap=new HashMap<>();
+        int i = 0;
         for (Cbpl cbpl : cbpls) {
             good=new TakeOrderGoodsVo();
+            //zhaoGuoLiang添加销售订单明细表id
+            if(cbobList!=null&&cbobList.size()>i){
+                good.setCbob01(cbobList.get(i).getCbob01());
+            }
+
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
@@ -417,6 +439,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             res.getGoods().add(good);
 
             goodsMap.put(good.getGoodsId(),good);
+            i++;
 
         }
         res.setSumPrice(sunPrice);

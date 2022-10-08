@@ -88,6 +88,7 @@ public class QualityinspectionlistController  extends BaseController {
             notes = "修改质检单1"
     )
     @PostMapping("/SwJsPurchaseinboundeditone")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:edit')")
     public AjaxResult SwJsPurchaseinboundeditone(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
 
         try {

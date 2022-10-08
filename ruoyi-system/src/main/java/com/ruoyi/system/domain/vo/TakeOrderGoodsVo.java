@@ -64,5 +64,7 @@ public class TakeOrderGoodsVo {
     private String goodClass;
 
     private String upc;
+    //销售订单明细id
+    private Integer cbob01;
 
 }

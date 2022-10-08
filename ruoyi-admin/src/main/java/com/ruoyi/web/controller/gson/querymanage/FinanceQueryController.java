@@ -19,6 +19,7 @@ import com.ruoyi.system.service.gson.FinanceQueryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,7 @@ public class FinanceQueryController extends BaseController {
      * @return
      */
     @GetMapping("/fnSynthesis")
+    @PreAuthorize("@ss.hasPermi('query:fnSynthesis:list')")
     public AjaxResult<TableDataInfo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
         try {
             startPage();
@@ -77,6 +79,7 @@ public class FinanceQueryController extends BaseController {
             notes = "导出财务综合报表查询"
     )
     @PostMapping("/fnSynthesisExcelList")
+    @PreAuthorize("@ss.hasPermi('query:fnSynthesis:export')")
     public void fnSynthesisExcelList(FnQueryAynthesisDto fnQueryAynthesisDto, HttpServletResponse response) {
         List<FnQueryAyntgesisVo> list = financeQueryService.fnSynthesis(fnQueryAynthesisDto);
         ExcelUtil<FnQueryAyntgesisVo> util = new ExcelUtil<>(FnQueryAyntgesisVo.class);
@@ -89,6 +92,7 @@ public class FinanceQueryController extends BaseController {
      * @return
      */
     @GetMapping("/fnSkuList")
+    @PreAuthorize("@ss.hasPermi('query:fnSkuList:list')")
     public AjaxResult<TableDataInfo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
         try {
             startPage();
@@ -112,6 +116,7 @@ public class FinanceQueryController extends BaseController {
             notes = "导出库存情况报表查询"
     )
     @PostMapping("/fnSkuListExcelList")
+    @PreAuthorize("@ss.hasPermi('query:fnSkuList:export')")
     public void fnSkuListExcelList(FnGoodsSkuDto fnGoodsSkuDto, HttpServletResponse response) {
         List<FnGoodsSkuVo> list = financeQueryService.fnSkuList(fnGoodsSkuDto);
         ExcelUtil<FnGoodsSkuVo> util = new ExcelUtil<>(FnGoodsSkuVo.class);
@@ -126,6 +131,7 @@ public class FinanceQueryController extends BaseController {
             notes = "财务库存明细查询"
     )
     @GetMapping("/fnInventorysummaryquerys")
+    @PreAuthorize("@ss.hasPermi('query:fnInventorysummaryquery:list')")
     public AjaxResult<TableDataInfo> fnInventorysummaryquery(InwuqusDto inwuqusDto) {
         try {
             startPage();
@@ -147,6 +153,7 @@ public class FinanceQueryController extends BaseController {
             notes = "导出财务库存明细查询"
     )
     @PostMapping("/fnInventorysummaryquerysExcelList")
+    @PreAuthorize("@ss.hasPermi('query:fnInventorysummaryquery:export')")
     public void fnInventorysummaryquerysExcelList(InwuqusDto inwuqusDto, HttpServletResponse response) {
         List<InwuqusVo> list = countQueryService.selectInventorysummaryquerys(inwuqusDto);
         ExcelUtil<InwuqusVo> util = new ExcelUtil<>(InwuqusVo.class);
@@ -160,6 +167,7 @@ public class FinanceQueryController extends BaseController {
      * @return
      */
     @GetMapping("/salesAnalysis")
+    @PreAuthorize("@ss.hasPermi('query:salesAnalysis:list')")
     public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
         try {
             startPage();
@@ -179,6 +187,7 @@ public class FinanceQueryController extends BaseController {
             notes = "导出销售分析"
     )
     @PostMapping("/salesAnalysisExcelList")
+    @PreAuthorize("@ss.hasPermi('query:salesAnalysis:export')")
     public void salesAnalysisExcelList(FnsalesAnalysisDto fnsalesAnalysisDto, HttpServletResponse response) {
         List<SaleAnalysisVo> list = financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
         ExcelUtil<SaleAnalysisVo> util = new ExcelUtil<>(SaleAnalysisVo.class);

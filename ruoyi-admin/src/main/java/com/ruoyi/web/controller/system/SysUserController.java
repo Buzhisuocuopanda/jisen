@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -122,6 +123,8 @@ public class SysUserController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysUser user)
     {
+
+
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
         {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
@@ -136,6 +139,16 @@ public class SysUserController extends BaseController
         {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
+        Long[] i1= user.getAuditPerms();
+        Long[] i2 = user.getWarehousePerms();
+        if(i1!=null&&i1.length>0){
+            String str1 = Arrays.toString(i1);
+            user.setAuditPerm(str1.substring(1,str1.length()-1));
+        }
+        if(i2!=null&&i2.length>0){
+            String str2 = Arrays.toString(i2);
+            user.setWarehousePerm(str2.substring(1,str2.length()-1));
+        }
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         return toAjax(userService.insertUser(user));
@@ -149,6 +162,16 @@ public class SysUserController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysUser user)
     {
+        Long[] i1= user.getAuditPerms();
+        Long[] i2 = user.getWarehousePerms();
+        if(i1!=null&&i1.length>0){
+            String str1 = Arrays.toString(i1);
+            user.setAuditPerm(str1.substring(1,str1.length()-1));
+        }
+        if(i2!=null&&i2.length>0){
+            String str2 = Arrays.toString(i2);
+            user.setWarehousePerm(str2.substring(1,str2.length()-1));
+        }
         userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());
         if (StringUtils.isNotEmpty(user.getPhonenumber())
