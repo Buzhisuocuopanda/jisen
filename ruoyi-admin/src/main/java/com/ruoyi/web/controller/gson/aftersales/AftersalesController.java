@@ -21,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,7 @@ public class AftersalesController extends BaseController {
             notes = "新增售后单"
     )
     @PostMapping("/aftersalesadd")
+    @PreAuthorize("@ss.hasPermi('system:aftersales:add')")
     public AjaxResult aftersalesadd(@Valid @RequestBody GsAfterSalesDto gsAfterSalesDto, BindingResult bindingResult) {
 
         try {
@@ -86,6 +88,7 @@ public class AftersalesController extends BaseController {
             notes = "修改售后单"
     )
     @PostMapping("/aftersalesedit")
+    @PreAuthorize("@ss.hasPermi('system:aftersales:edit')")
     public AjaxResult aftersalesedit(@Valid @RequestBody GsAfterSalesDto gsAfterSalesDto, BindingResult bindingResult) {
 
         try {
@@ -119,6 +122,7 @@ public class AftersalesController extends BaseController {
             notes = "删除售后单"
     )
     @PostMapping("/aftersalesdelete")
+    @PreAuthorize("@ss.hasPermi('system:aftersales:remove')")
     public AjaxResult aftersalesdelete( @RequestBody GsAfterSalesDto gsAfterSalesDto) {
 
         try {
@@ -151,6 +155,7 @@ public class AftersalesController extends BaseController {
             notes = "查询售后单"
     )
     @GetMapping("/aftersaleslist")
+    @PreAuthorize("@ss.hasPermi('system:aftersales:list')")
     public AjaxResult<TableDataInfo> aftersaleslist(GsAfterSalesVo gsAfterSalesVo) {
         try {
             startPage();

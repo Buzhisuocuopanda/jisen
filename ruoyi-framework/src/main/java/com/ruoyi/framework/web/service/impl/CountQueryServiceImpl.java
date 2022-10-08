@@ -1,6 +1,8 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.entity.Cbpa;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.GsGoodsUse;
 import com.ruoyi.system.domain.GsGoodsUseCriteria;
 import com.ruoyi.system.domain.dto.InwuquDto;
@@ -13,6 +15,7 @@ import com.ruoyi.system.service.gson.BaseCheckService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +29,11 @@ public class CountQueryServiceImpl implements CountQueryService {
     private BaseCheckService baseCheckService;
 
     @Override
+    @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
+        inwuquDto.setDeptId(SecurityUtils.getDeptId());
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
+
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
@@ -131,7 +137,10 @@ public class CountQueryServiceImpl implements CountQueryService {
     }
 
     @Override
+    @DataScope(deptAlias = "u")
     public List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto) {
+        inwuqusDto.setDeptId(SecurityUtils.getDeptId());
+        inwuqusDto.setDeptId(SecurityUtils.getUserId());
         return cbifMapper.selectInventorysummaryquerys(inwuqusDto);
     }
 

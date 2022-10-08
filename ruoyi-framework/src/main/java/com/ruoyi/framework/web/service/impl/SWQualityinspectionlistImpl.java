@@ -298,6 +298,7 @@ private CbpmMapper cbpmMapper;
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundeditone(CbqaDo cbqaDo) {
         if(cbqaDo.getCbqa01()==null){
             throw new SwException("质检单id不能为空");

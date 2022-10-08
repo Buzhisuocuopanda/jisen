@@ -365,7 +365,7 @@
   </select>
   <select id="SwJsSkuBarcodeselect" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      a.CBQA07,a.CBQA08,a.CBQA09,a.CBQA01
+      a.CBQA07,a.CBQA08,a.CBQA09,a.CBQA01,a.CBQA11
     FROM
       CBQA a
      where

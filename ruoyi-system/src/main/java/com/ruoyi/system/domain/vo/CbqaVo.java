@@ -27,7 +27,7 @@ public class CbqaVo extends BaseEntity {
     private Date cbqa08;
 
     private Integer cbqa09;
-
+    private Date cbqa11;
     private String cbqb10;
 
     private Integer cbqb01;

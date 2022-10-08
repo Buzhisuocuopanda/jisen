@@ -309,7 +309,7 @@ public class QualityinspectionlistController  extends BaseController {
     )
     @GetMapping("/SwJsSkuBarcodelists")
     @PreAuthorize("@ss.hasPermi('system:qualityin:detail')")
-    public AjaxResult<TableDataInfo> swJsGoodslists( CbqaVo cbqaVo) {
+    public AjaxResult<TableDataInfo> swJsGoodslists(CbqaVo cbqaVo) {
         try {
             startPage();
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelListss(cbqaVo);

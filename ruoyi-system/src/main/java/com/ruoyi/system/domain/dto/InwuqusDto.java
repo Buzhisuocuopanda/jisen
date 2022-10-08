@@ -1,9 +1,10 @@
 package com.ruoyi.system.domain.dto;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
 @Data
-public class InwuqusDto {
+public class InwuqusDto extends BaseEntity {
     private String cbwa09;
     private String[] cbwa09s;
 
@@ -21,4 +22,8 @@ public class InwuqusDto {
     //商品状态 1：已入库 2：出库中 3：已出库
     private Integer status;
 
+
+    private Long deptId;
+
+    private Long userId;
 }

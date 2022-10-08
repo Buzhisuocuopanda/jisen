@@ -520,7 +520,6 @@ where
     CBIB ib
     LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
     LEFT JOIN CBWA wa ON wa.CBWA01 = ib.CBIB02
-
     WHERE
     ib.CBIB01 IN ( SELECT max( tb.CBIB01 ) FROM CBIB tb GROUP BY tb.CBIB08, tb.CBIB02 )
     <if test="cbwa09s != null">
@@ -531,7 +530,9 @@ where
     </if>
     <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
     <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
+
      order by ib.CBIB04 desc
+
   </select>
 
   <select id="selectInventorysummaryquery3"  resultType="com.ruoyi.system.domain.vo.InwuquVo">
@@ -594,7 +595,7 @@ where
         CALA h
         ON
           h.CALA01=e.CBPB10
-
+      LEFT JOIN sys_user u ON u.user_id = sn.create_by
       WHERE
           sn.delete_flag =0
       <if test="cbwa09s != null">
@@ -626,6 +627,7 @@ where
       <if test="groudStatus != null">
         and sn.groud_status =#{groudStatus}
       </if>
+      ${params.dataScope}
         order by sn.create_time desc
 
     </select>

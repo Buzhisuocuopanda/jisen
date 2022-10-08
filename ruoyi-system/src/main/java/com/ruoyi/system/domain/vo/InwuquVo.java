@@ -1,12 +1,13 @@
 package com.ruoyi.system.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class InwuquVo {
+public class InwuquVo extends BaseEntity {
     @Excel(name = "大类")
     private String totalclassify;
     @Excel(name = "分类名称")
