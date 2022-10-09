@@ -387,6 +387,8 @@ FROM
    INNER JOIN CBBA ba on ba.CBBA01=ob.CBOB17
 WHERE
   ba.CBBA07 =#{totalOrderNo}
+  AND ba.CBBA08 =#{goodsId}
+  AND ba.CBBA06 = 0
   </select>
 
   <select id="selectByTotalOrderNo" resultMap="BaseResultMap">

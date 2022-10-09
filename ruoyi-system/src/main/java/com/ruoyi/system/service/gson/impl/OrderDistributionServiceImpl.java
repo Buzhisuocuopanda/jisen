@@ -909,6 +909,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 res.getList().add(out);
 
                 //进行库存占用
+                if(out.getQty()==0){
+                    break;
+                }
                 GsGoodsUse goodsUse = new GsGoodsUse();
                 goodsUse.setCreateBy(goodsOperationDo.getUserId());
                 goodsUse.setCreateTime(new Date());

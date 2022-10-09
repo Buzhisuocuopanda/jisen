@@ -169,6 +169,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         int insert = cbpkMapper.insertWithId(cbpk);
         Cbpl cbpl=null;
         for (TakeOrderGoodsDto good : takeGoodsOrderAddDto.getGoods()) {
+
+
             if(good.getGoodsId()==null){
                 throw new SwException("提货货物不能为空");
             }
@@ -180,19 +182,19 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andWhIdEqualTo(takeGoodsOrderAddDto.getWhId());
             List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
             if(gsGoodsUses.size()==0){
-                throw new SwException("该商品没有在本仓库占用库存，商品:"+good.getGoodsMsg());
+                throw new SwException("该商品没有在本仓库占用库存，商品:");
             }
 
             GsGoodsUse goodsUse = gsGoodsUses.get(0);
             if(good.getQty()>goodsUse.getLockQty()){
-                throw new SwException("该商品的提货数量不能大于占用数量"+good.getGoodsMsg());
+                throw new SwException("该商品的提货数量不能大于占用数量");
 
             }
             //未出库数量
             Double noOutQty = goodsUse.getNoOutQty();
             Double lockQty = goodsUse.getLockQty();
             if(good.getQty()+noOutQty>lockQty){
-                throw new SwException("该商品未出库的提货单数量相加超过占用数量"+good.getGoodsMsg());
+                throw new SwException("该商品未出库的提货单数量相加超过占用数量");
 
             }
 
@@ -243,7 +245,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }
 
         TakeGoodsOrderDetailVo res=new TakeGoodsOrderDetailVo();
-        res.setContacts(cbpk.getCbpk07());
+        res.setContacts(cbpk.getCbpk18());
         res.setCurrency(cbpk.getCbpk16());
         res.setOrderNo(cbpk.getCbpk07());
         if(CurrencyEnum.CNY.getCode().equals(cbpk.getCbpk16())){
@@ -356,14 +358,20 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         int i = 0;
         for (Cbpl cbpl : cbpls) {
             good=new TakeOrderGoodsVo();
+//            CbpmCriteria pmex=new CbpmCriteria();
+//            pmex.createCriteria()
+//                    .andCbpk01EqualTo(cbpk.getCbpk01())
+//                    .andCb
+//            List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
             //zhaoGuoLiang添加销售订单明细表id
             if(cbobList!=null&&cbobList.size()>i){
                 good.setCbob01(cbobList.get(i).getCbob01());
             }
-
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
+
+//                good.setGoodsNum();
                 good.setUpc(cbpb.getCbpb15());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
