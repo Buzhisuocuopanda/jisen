@@ -21,6 +21,8 @@ public class SaleOrderSkuDto {
 
     private String totalOrderNo;
 
+    private Integer goodsId;
+
 
 //    private String goodsName;
 //

@@ -619,6 +619,9 @@
     <if test="totalOrderNo !=null">
       and ob.CBOB18=#{totalOrderNo}
     </if>
+    <if test="goodsId !=null">
+      and pb.CBPB01=#{goodsId}
+    </if>
     order by ob.CBOB03 DESC
   </select>
 

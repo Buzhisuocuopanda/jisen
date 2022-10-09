@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class CbofVo {
+    private Integer cbof01;
     private String makeUser;
 
     private Integer cboe01;
