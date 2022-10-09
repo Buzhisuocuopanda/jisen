@@ -267,6 +267,32 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             throw new SwException(" 审核状态才能标记完成");
         }
 
+
+        int sdw=0;
+        CbscCriteria ett = new CbscCriteria();
+        ett.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        List<Cbsc> yio = cbscMapper.selectByExample(ett);
+        if (yio.size() == 0) {
+            throw new SwException("没有明细不能标记完成");
+        }
+        for(Cbsc cbsc:yio){
+            Double cbsc09 = cbsc.getCbsc09();
+            sdw+=cbsc09;
+        }
+
+        CbsdCriteria tuo = new CbsdCriteria();
+        tuo.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        List<Cbsd> yio1 = cbsdMapper.selectByExample(tuo);
+        if(yio1.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能标记完成");
+        }
+
+
+
+
+
+
+
         //回写生产总总订单
         CbscCriteria example = new CbscCriteria();
         example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
@@ -575,7 +601,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     scanVo.setCbpb08(cbsbsVos.get(i).getCbpb08());
                     scanVo.setCbpb12(cbsbsVos.get(i).getCbpb12());
                     scanVo.setSn(cbpes.get(j).getCbsd09());
-                    scanVo.setKwm(cbsbsVos.get(i).getCbla09());
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbpes.get(j).getCbsd10());
+                    if(cbla==null){
+                        throw new SwException("没有改库位信息");
+                    }
+                    scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpes.get(j).getCbsd03());
                     goods.add(scanVo);
                 }

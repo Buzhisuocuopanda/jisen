@@ -18,6 +18,8 @@ public class GsOutStockAdivceDto {
     private Integer id;
     private Integer userId;
 
+    private Integer status;
+
 
 
 }

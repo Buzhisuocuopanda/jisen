@@ -71,8 +71,10 @@ public class CbpbDto extends Cbpf {
     @Excel(name = "标准销货价")
     private Double cbpf05;
 
-    @Excel(name = "货币id")
+    //@Excel(name = "货币id")
     private Integer cbpf06;
     @Excel(name = "生效时间")
     private Date cbpf07;
+    @Excel(name = "货币")
+    private String moneyType;
 }

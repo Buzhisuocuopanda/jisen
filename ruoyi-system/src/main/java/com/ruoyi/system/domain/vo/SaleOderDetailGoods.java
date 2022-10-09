@@ -74,9 +74,9 @@ public class SaleOderDetailGoods {
         return brand+"-"+model+"-"+description;
     }
 
-    public Integer getGoodsId() {
-        return id;
-    }
+//    public Integer getGoodsId() {
+//        return id;
+//    }
 
 
     private BaseSelectVo goodsVo =new BaseSelectVo();

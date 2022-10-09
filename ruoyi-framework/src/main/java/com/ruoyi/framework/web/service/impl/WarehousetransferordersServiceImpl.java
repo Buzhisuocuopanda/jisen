@@ -447,7 +447,7 @@ if(itemList.size()==0){
             throw new SwException("调拨单id不能为空");
         }
         CbacCriteria example2 = new CbacCriteria();
-        example2.createCriteria().andCbac02EqualTo(cbaa01);
+        example2.createCriteria().andCbaa01EqualTo(cbaa01);
         List<Cbac> cbacss = cbacMapper.selectByExample(example2);
 
 if(cbacss.size()>0) {
@@ -830,6 +830,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 //调拨单入库扫码
     @Override
     public int transferordersin(List<Cbac> itemList) {
+
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 
@@ -857,6 +859,17 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbacMapper mapper = session.getMapper(CbacMapper.class);
         for (int i = 0; i < itemList.size(); i++) {
+
+            CbacCriteria cbaceria = new CbacCriteria();
+            cbaceria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+            List<Cbac> cbacs = cbacMapper.selectByExample(cbaceria);
+            if(cbacs.size()==0){
+                throw new SwException("sn不存在");}
+
+            if(cbacs.get(0).getCbac14()!=1){
+                throw new SwException("该sn已调入，不能重复调入");
+            }
+
 
             if (itemList.get(i).getCbac10() == null) {
                 throw new SwException("库位id不能为空");
@@ -930,8 +943,29 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         if (cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())) {
         } else {
             throw new SwException("审核状态才能标记完成");
-
         }
+
+        int sdw=0;
+        CbabCriteria etur=new CbabCriteria();
+        etur.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+        List<Cbab> opi = cbabMapper.selectByExample(etur);
+        if(opi.size()==0){
+            throw new SwException("调拨单明细为空");
+        }
+             for(Cbab cbab:opi){
+                 Double cbab09 = cbab.getCbab09();
+                 sdw+=cbab09;
+             }
+         CbacCriteria etur1=new CbacCriteria();
+            etur1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+            List<Cbac> opi1 = cbacMapper.selectByExample(etur1);
+        if(opi1.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能调出标记完成");
+        }
+
+
+
+
         Long userId = SecurityUtils.getUserId();
 
         Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
@@ -943,6 +977,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
                 .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+
         CbabCriteria example2 = new CbabCriteria();
         example2.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
         List<Cbab> cbabs1 = cbabMapper.selectByExample(example2);
@@ -1068,6 +1104,32 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             throw new SwException("调出标记完成之后调入标记完成");
 
         }
+
+
+        int sdw=0;
+        CbabCriteria etur=new CbabCriteria();
+        etur.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+        List<Cbab> opi = cbabMapper.selectByExample(etur);
+        if(opi.size()==0){
+            throw new SwException("调拨单明细为空");
+        }
+        for(Cbab cbab:opi){
+            Double cbab09 = cbab.getCbab09();
+            sdw+=cbab09;
+        }
+        CbacCriteria etur1=new CbacCriteria();
+        etur1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
+                .andCbac14EqualTo(2);
+        List<Cbac> opi1 = cbacMapper.selectByExample(etur1);
+        if(opi1.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能调入标记完成");
+        }
+
+
+
+
+
+
         Long userId = SecurityUtils.getUserId();
 
         Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
@@ -1213,6 +1275,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         example.createCriteria().andCbaa01EqualTo(cbacVo.getCbaa01())
                 .andCbab07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbab> cbabs = cbabMapper.selectByExample(example);
+
         if(cbabs.size()==0){
             throw new SwException("调拨单明细为空");
         }
@@ -1224,7 +1287,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         List<CbacVo> cbacVos = cbacMapper.selectSwJsTaskGoodsRelListsss(cbacVo);
         res.setNums(sum);
 
-        cbacVos.add(res);
+       cbacVos.add(res);
         if(cbacVos.size()>1){
             cbacVos.get(0).setSaoma(cbacVos.size()-1);
             cbacVos.get(0).setNums(sum);

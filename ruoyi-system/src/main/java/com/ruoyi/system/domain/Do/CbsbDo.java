@@ -74,7 +74,7 @@ public class CbsbDo {
     private String cbsb28;
 
     private String cbsb29;
-    @NotBlank(message = "客户订单号不能为空")
+  //  @NotBlank(message = "客户订单号不能为空")
   //  @Length(min =1 , max = 20)
     private String cbsb30;
 

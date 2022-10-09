@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
@@ -13,18 +14,19 @@ import java.util.List;
 public class CbpcVo  extends BaseEntity
 {
     private Integer cbpc01;
+    @Excel(name = "日期")
     private Date cbpc08;
     private Integer cbpc09;
 
     private Integer cala01;
 
+    @Excel(name = "结算货币")
 
     private String cala08;
-
+    @Excel(name = "供应商")
     private String cbsa08;
-
+    @Excel(name = "仓库")
     private String cbwa09;
-
     private String cala08s;
 
     private String cbpb08;
@@ -55,7 +57,7 @@ public class CbpcVo  extends BaseEntity
     private Integer cbpc05;
 
     private Integer cbpc06;
-
+    @Excel(name = "编号")
     private String cbpc07;
 
 

@@ -454,9 +454,9 @@ public class SwJsPurchaseinboundController extends BaseController {
     )
     @PostMapping("/SwJsGoodsexport")
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:export')")
-    public void swJsGoodsexport(HttpServletResponse response, Cbpc cbpc) {
-        List<Cbpc> list = swJsPurchaseinboundService.selectCBPCList(cbpc);
-        ExcelUtil<Cbpc> util = new ExcelUtil<>(Cbpc.class);
+    public void swJsGoodsexport(HttpServletResponse response, CbpcVo cbpcVo) {
+        List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelLists(cbpcVo);
+        ExcelUtil<CbpcVo> util = new ExcelUtil<>(CbpcVo.class);
         util.exportExcel(response, list, "商品数据");
     }
     /**

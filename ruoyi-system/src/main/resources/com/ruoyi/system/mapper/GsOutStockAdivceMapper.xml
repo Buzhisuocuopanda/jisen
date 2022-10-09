@@ -327,12 +327,9 @@ FROM
 	<if test="whId!=null">
       and ad.wh_id =#{whId}
     </if>
-    <if test="whId!=null">
-      and ad.wh_id =#{whId}
-    </if>
 
-    <if test="whId!=null">
-      and ad.wh_id =#{whId}
+    <if test="status!=null">
+      and ad.status =#{status}
     </if>
     <if test="orderNo !=null">
       and ad.sale_order_no like concat('%',  #{orderNo}, '%')

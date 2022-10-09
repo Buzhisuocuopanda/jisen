@@ -323,7 +323,7 @@
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CboeVo">
     SELECT DISTINCT
       a.CBOE07,a.CBOE08,b.CBCA08
-         ,c.CAUA15,a.CBOE01,a.CBOE02,a.CBOE01 as id
+         ,c.nick_name as caua15,a.CBOE01,a.CBOE02,a.CBOE01 as id
     from
       CBOE a
         LEFT JOIN
@@ -331,9 +331,9 @@
       on
         a.CBOE09=b.CBCA01
         LEFT JOIN
-      CAUA c
+      sys_user c
       on
-        c.CAUA01=a.CBOE10
+        c.user_id=a.CBOE10
 where a.CBOE06=0
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(a.CBOE08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
@@ -343,13 +343,13 @@ where a.CBOE06=0
     </if>
     <if test="cboe07 != null "> and a.cboe07 = #{cboe07}</if>
     <if test="id != null "> and a.cboe01 = #{id}</if>
-
+    order by a.CBOE02 desc
 
 
   </select>
   <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbofVo">
     SELECT
-      a.CBOE07,a.CBOE08,c.CBCA08,d.CAUA15,f.CALA08,e.CBPB12,e.CBPB08,
+      a.CBOE07,a.CBOE08,c.CBCA08,d.nick_name as caua15,f.CALA08,e.CBPB12,e.CBPB08,
       b.CBOF09,b.CBOF13
     FROM
       CBOE a
@@ -362,9 +362,9 @@ where a.CBOE06=0
       ON
         c.CBCA01=a.CBOE09
         LEFT JOIN
-      CAUA d
+      sys_user d
       ON
-        d.CAUA01=a.CBOE10
+        d.user_id=a.CBOE10
         LEFT JOIN
       CBPB e
       ON

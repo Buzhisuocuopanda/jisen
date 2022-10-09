@@ -712,7 +712,7 @@ where a.CBOA06=0
   </select>
   <select id="selectInvntorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccuspancyVo">
     SELECT
-      a.CBOA07,a.CBOA08,c.CBCA08,d.CAUA17,f.CALA08,g.CBPA08,e.CBPB12,b.CBOB10,
+      a.CBOA07,a.CBOA08,c.CBCA08,d.nick_name as caua17,f.CALA08,g.CBPA08,e.CBPB12,b.CBOB10,
       (b.CBOB09-b.CBOB10)as num,b.CBOB11,b.CBOB12
     FROM
       CBOA a
@@ -725,9 +725,9 @@ where a.CBOA06=0
       ON
         c.CBCA01=a.CBOA09
         LEFT JOIN
-      CAUA d
+      sys_user d
       ON
-        d.CAUA01=a.CBOA10
+        d.user_id=a.CBOA10
         LEFT JOIN
       CBPB e
       ON
@@ -746,7 +746,7 @@ where
       and  c.CBCA08 = #{cbca08}
     </if>
     <if test="caua17 != null and caua17 != ''">
-      and d.CAUA17 =#{caua17}
+      and d.user_id =#{caua17}
     </if>
     <if test="cbpb01 != null ">
       and   e.cbpb01=#{cbpb01}

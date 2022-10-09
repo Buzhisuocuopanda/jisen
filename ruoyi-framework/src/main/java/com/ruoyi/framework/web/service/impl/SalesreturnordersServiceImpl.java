@@ -65,6 +65,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
     /**
      * 新增销售退库单主表
      */
@@ -235,6 +238,30 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         else{
             throw new SwException("审核状态才能标记完成");
         }
+
+
+        int sdw=0;
+        CbsfCriteria egh = new CbsfCriteria();
+            egh.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+            List<Cbsf> jho = cbsfMapper.selectByExample(egh);
+        if(jho.size()==0){
+            throw new SwException("没有明细不能标记完成");
+        }
+        for(Cbsf cbsf:jho){
+            Double cbsf09 = cbsf.getCbsf09();
+            sdw+=cbsf09;
+        }
+        CbsgCriteria wtw = new CbsgCriteria();
+        wtw.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        List<Cbsg> cbsg = cbsgMapper.selectByExample(wtw);
+        if(cbsg.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能标记完成");
+        }
+
+
+
+
+
         Long userid = SecurityUtils.getUserId();
         Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
         Date date = new Date();
@@ -428,7 +455,11 @@ if(cbsgss.size()>0){
                     scanVo.setCbpb08(cbsesVos.get(i).getCbpb08());
                     scanVo.setCbpb12(cbsesVos.get(i).getCbpb12());
                     scanVo.setSn(cbsgs.get(j).getCbsg09());
-                    scanVo.setKwm(cbsesVos.get(i).getCbla09());
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbsgs.get(j).getCbsg10());
+                    if(cbla==null){
+                        throw new SwException("没有改库位信息");
+                    }
+                    scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbsgs.get(j).getCbsg03());
                     scanVo.setUpc(cbsesVos.get(i).getCbpb15());
                     goods.add(scanVo);
@@ -485,6 +516,16 @@ if(cbsgss.size()>0){
             if(itemList.get(i).getCbsg09()==null){
                 throw new SwException("商品sn不能为空");
             }
+
+            CbsgCriteria example = new CbsgCriteria();
+            example.createCriteria()
+                    .andCbsg09EqualTo(itemList.get(i).getCbsg09());
+            List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
+            if(cbsgs.size()>0){
+                throw new SwException("该商品已经扫过");
+            }
+
+
 
             GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
             examples.createCriteria().andSnEqualTo( itemList.get(i).getCbsg09());

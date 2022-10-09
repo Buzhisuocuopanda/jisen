@@ -19,6 +19,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -184,9 +185,13 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
 
 
         res.setCboe08(cboe08);
-        res.setCbca08(cbca.getCbca08());
-        res.setCustomerId(cboe.getCboe10());
-        res.setCustomerName(cbca.getCbca08());
+        if(cbca!=null){
+            res.setCbca08(cbca.getCbca08());
+            res.setCustomerName(cbca.getCbca08());
+        }
+
+        res.setCustomerId(cboe.getCboe09());
+
         if(cboe.getCboe10()!=null){
             SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboe.getCboe10().longValue());
             if (saleUser != null) {
@@ -240,6 +245,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
     }
 
     @Override
+    @Transactional
     public void editOutofstockregistrationform(CboeDo cboeDo) {
         List<CbofDo> goods = cboeDo.getGoods();
         if(goods==null||goods.size()==0){

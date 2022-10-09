@@ -185,6 +185,7 @@ public class AftersalesController extends BaseController {
             notes = "售后单详情"
     )
     @GetMapping("/saleOderDetail")
+
     public AjaxResult<GsAfterSales> saleOderDetail(@RequestParam Integer orderId) {
         try {
 

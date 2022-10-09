@@ -329,6 +329,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单列表"
     )
     @GetMapping("/saleOrderList")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:list')")
     public AjaxResult<List<TableDataInfo>> saleOrderList( SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
@@ -357,6 +358,7 @@ public class SaleOrderController extends BaseController {
             notes = "添加销售订单"
     )
     @PostMapping("/addSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:add')")
     public AjaxResult addSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -386,6 +388,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单详情"
     )
     @GetMapping("/saleOderDetail")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:detail')")
     public AjaxResult<SaleOrderDetailVo> saleOderDetail(@RequestParam Integer orderId) {
         try {
 
@@ -414,6 +417,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单状态更改 包含指定结束"
     )
     @PostMapping("/auditSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:audit')")
     public AjaxResult auditSaleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -472,6 +476,7 @@ public class SaleOrderController extends BaseController {
             notes = "修改销售订单"
     )
     @PostMapping("/mdfSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:edit')")
     public AjaxResult mdfSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -505,6 +510,7 @@ public class SaleOrderController extends BaseController {
     )
 
     @PostMapping("/delSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:remove')")
     public AjaxResult delSaleOrder(@Valid @RequestBody DelSaleOrderDto delSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -539,6 +545,7 @@ public class SaleOrderController extends BaseController {
     )
 
     @PostMapping("/importySaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:import')")
     public AjaxResult importySaleOrder(MultipartFile file) {
         try {
             ExcelUtil<SaleOrderExcelDto> util = new ExcelUtil<>(SaleOrderExcelDto.class);
@@ -649,6 +656,7 @@ public class SaleOrderController extends BaseController {
             notes = "导出销售订单"
     )
     @PostMapping("/saleOrderExcelList")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:export')")
     public void saleOrderExcelList( SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
         SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
