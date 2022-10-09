@@ -303,7 +303,7 @@
     a.CBLA10=b.CBWA01
 where
     a.CBLA06=0
-  <if test="cbla09 != null ">  and a.CBLA09 like concat('%',  #{cbla09}, '%')</if>
+  <if test="cbla09 != null ">  and a.CBLA09 = #{cbla09,jdbcType=VARCHAR}</if>
       <if test="cbwa09 != null "> and  b.CBWA09 like concat('%',  #{cbwa09}, '%')</if>
 order by
     a.CBLA07 desc

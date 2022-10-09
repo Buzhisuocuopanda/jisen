@@ -230,13 +230,35 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
-            if (itemList.get(i).getCbpi08() == null) {
+
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.get(i).getCbpi09());
+            List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if (gsGoodsSnss.size() == 0) {
+                throw new SwException("商品条码不存在");
+            }
+
+            if(gsGoodsSnss.get(0).getGoodsId()==null){
+                throw new SwException("商品id不存在");
+            }
+            Integer goodsId = gsGoodsSnss.get(0).getGoodsId();
+            if(gsGoodsSnss.get(0).getLocationId()==null){
+                throw new SwException("库位id不存在");
+            }
+            Integer locationId = gsGoodsSnss.get(0).getLocationId();
+
+
+
+            if (goodsId == null) {
                 throw new SwException("商品id不能为空");
             }
-           if(!uio.contains(itemList.get(i).getCbpi08())){
+
+
+
+           if(!uio.contains(goodsId)){
                 throw new SwException("该商品不在采购退货单明细中");
             }
-            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpi10());
+            Cbla cbla = cblaMapper.selectByPrimaryKey(locationId);
             if (cbla == null) {
                 throw new SwException("库位不存在");
             }
@@ -245,13 +267,13 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             }
             String sn = itemList.get(i).getCbpi09();
 
-            while (!redisTemplate.opsForValue().setIfAbsent("lock1",sn, 3, TimeUnit.SECONDS)) {
+        /*    while (!redisTemplate.opsForValue().setIfAbsent("lock1",sn, 3, TimeUnit.SECONDS)) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace(); }
             }
-            String lock = redisTemplate.opsForValue().get("lock1");
+            String lock = redisTemplate.opsForValue().get("lock1");*/
 
             CbpiCriteria erd = new CbpiCriteria();
             erd.createCriteria().andCbpi09EqualTo(sn)
@@ -278,6 +300,10 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             itemList.get(i).setCbpi07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
             itemList.get(i).setCbpi11(ScanStatusEnum.YISAOMA.getCode());
+            itemList.get(i).setCbpi08(goodsId);
+            itemList.get(i).setCbpi10(locationId);
+            itemList.get(i).setCbpi09(itemList.get(i).getCbpi09());
+
             //   mapper.insertSelective(itemList.get(i));
 
             //查商品数量和单价
@@ -352,7 +378,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             cbibDo.setCbib19(cbpg.getCbpg09());
            taskService.InsertCBIB(cbibDo);*/
             mapper.insertSelective(itemList.get(i));
-            redisTemplate.delete("lock1");
+          //  redisTemplate.delete("lock1");
 
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -657,7 +683,11 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setCbpb12(infoss.get(i).getCbpb12());
                     scanVo.setCbpb15(infoss.get(i).getCbpb15());
                     scanVo.setSn(cbpis.get(j).getCbpi09());
-                    scanVo.setKwm(infoss.get(i).getCbla09());
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbpis.get(j).getCbpi10());
+                    if(cbla==null){
+                        throw new SwException("没有改库位信息");
+                    }
+                    scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpis.get(j).getCbpi03());
                     goods.add(scanVo);
                 }
@@ -831,6 +861,30 @@ if(infoss.size()>0) {
         else{
             throw new SwException("不是审核状态或反审状态");
         }
+
+
+        int sdw=0;
+        CbphCriteria hji = new CbphCriteria();
+        hji.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        List<Cbph> uio = cbphMapper.selectByExample(hji);
+        if(uio.size()==0){
+            throw new SwException("没有明细不能标记完成");
+        }
+        for(Cbph cbph:uio){
+            Double cbph09 = cbph.getCbph09();
+            sdw+=cbph09;
+        }
+        CbpiCriteria fgoi = new CbpiCriteria();
+        fgoi.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        List<Cbpi> uio1 = cbpiMapper.selectByExample(fgoi);
+        if(uio1.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能标记完成");
+        }
+
+
+
+
+
         Long userid = SecurityUtils.getUserId();
         Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
         Date date = new Date();

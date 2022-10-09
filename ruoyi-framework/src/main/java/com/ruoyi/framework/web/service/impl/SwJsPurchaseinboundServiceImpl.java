@@ -205,14 +205,14 @@ private NumberGenerate numberGenerate;
            String sn = itemList.get(i).getCbpe09();
            /*  boolean redisKeyBoolean = redisTemplate.opsForValue().setIfAbsent("lock",sn, 5, TimeUnit.SECONDS);
            String lock = redisTemplate.opsForValue().get("lock");*/
-
+/*
            while (!redisTemplate.opsForValue().setIfAbsent("lock",sn, 3, TimeUnit.SECONDS)) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace(); }
             }
-           String lock = redisTemplate.opsForValue().get("lock");
+           String lock = redisTemplate.opsForValue().get("lock");*/
 
            //校验sn码
            CbpeCriteria examples = new CbpeCriteria();
@@ -290,7 +290,7 @@ private NumberGenerate numberGenerate;
            // this.redisTemplate.delete("lock");
 
            mapper.insertSelective(itemList.get(i));
-           redisTemplate.delete("lock");
+         //  redisTemplate.delete("lock");
            if (i % 10 == 9) {//每10条提交一次
                session.commit();
                session.clearCache();
@@ -583,6 +583,29 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         else {
             throw new SwException("不是审核状态或反审状态不能标记完成");
         }
+
+
+/*        int sdw=0;
+        CbpdCriteria hji = new CbpdCriteria();
+        hji.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+        List<Cbpd> ser = cbpdMapper.selectByExample(hji);
+        if(ser.size()==0){
+            throw new SwException("没有明细不能标记完成");
+        }
+        for (Cbpd cbpd : ser) {
+            Double cbpd09 = cbpd.getCbpd09();
+            sdw+=cbpd09;
+        }
+     CbpeCriteria ehks = new CbpeCriteria();
+        ehks.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+        List<Cbpe> aoc = cbpeMapper.selectByExample(ehks);
+        if(aoc.size()<sdw){
+            throw new SwException("扫码数量小于任务数量不能标记完成");
+        }*/
+
+
+
+
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
         Date date = new Date();
@@ -691,6 +714,23 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
         else {
 
+            int sdw=0;
+            CbpdCriteria hji = new CbpdCriteria();
+            hji.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+            List<Cbpd> ser = cbpdMapper.selectByExample(hji);
+            if(ser.size()==0){
+                throw new SwException("没有明细不能标记完成");
+            }
+            for (Cbpd cbpd : ser) {
+                Double cbpd09 = cbpd.getCbpd09();
+                sdw+=cbpd09;
+            }
+            CbpeCriteria ehks = new CbpeCriteria();
+            ehks.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+            List<Cbpe> aoc = cbpeMapper.selectByExample(ehks);
+            if(aoc.size()<sdw){
+                throw new SwException("扫码数量小于任务数量不能标记完成");
+            }
 
             CbpdCriteria example2 = new CbpdCriteria();
             example2.createCriteria()
@@ -1254,7 +1294,11 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     scanVo.setCbpb08(infossss.get(i).getCbpb08());
                     scanVo.setCbpb12(infossss.get(i).getCbpb12());
                     scanVo.setSn(cbpes.get(j).getCbpe09());
-                    scanVo.setKwm(infossss.get(i).getCbla09());
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbpes.get(j).getCbpe10());
+                    if(cbla==null){
+                        throw new SwException("没有改库位信息");
+                    }
+                    scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpes.get(j).getCbpe03());
                     scanVo.setCbpb15(infossss.get(i).getCbpb15());
                     goods.add(scanVo);

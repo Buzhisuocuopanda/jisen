@@ -11,6 +11,8 @@ import java.util.List;
 public class CbsbsVo extends BaseEntity {
     private Integer cbsc01;
     private Date cbsd03;
+    private Integer cbsb10;
+    private Integer cbsb09;
 
     private String cbsb07;
     private String cbca09;
@@ -19,6 +21,7 @@ public class CbsbsVo extends BaseEntity {
     private String cbwa09;
     private String caua15;
     private String cbpb15;
+    private String cbsb17;
 
     private String cbsb18;
     private String cbsb19;

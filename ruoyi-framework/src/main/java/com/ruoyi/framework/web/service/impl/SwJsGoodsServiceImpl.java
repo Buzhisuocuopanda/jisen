@@ -52,6 +52,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     private CbcaMapper cbcaMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+
+    @Resource
+    private CalaMapper calaMapper;
 @Resource
    private  CbobMapper cbobMapper;
     /**
@@ -381,8 +384,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
         //商品描述
         if(itemList.get(0).getCbpb08()==null || itemList.get(0).getCbpb08().equals("")){
-            throw new SwException("upc不能为空！");
+            throw new SwException("商品描述不能为空！");
         }
+
         String cbpb08 = itemList.get(0).getCbpb08();
 
         CbpbCriteria example = new CbpbCriteria();
@@ -425,6 +429,16 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             if(itemList.get(i).getCbpf07()==null){
                 throw new SwException("生效时间不能为空！");
             }
+            if(itemList.get(i).getMoneyType()==null){
+                throw new SwException("货币类型不能为空！");
+            }
+            CalaCriteria calaCriteria = new CalaCriteria();
+            calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
+            List<Cala> calas = calaMapper.selectByExample(calaCriteria);
+            if(calas.size()==0){
+                throw new SwException("货币类型不存在！");
+            }
+            itemList.get(i).setCbpf06(calas.get(0).getCala01());
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();

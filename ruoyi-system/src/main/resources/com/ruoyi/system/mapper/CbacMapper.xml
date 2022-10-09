@@ -463,6 +463,8 @@ FROM
       on
         c.CBLA01=b.CBAC10
     WHERE
+      a.CBAA01 = #{cbaa01,jdbcType=INTEGER}
+      and
       b.CBAC14=2
   </select>
 
