@@ -468,7 +468,7 @@ where
   </select>
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CbaaVo">
     SELECT
-      a.CBAA01, a.CBAA07,a.CBAA08,b.CBWA09,c.CBWA10,d.CALA08,a.CBAA18,a.CBAA19,a.CBAA11
+      a.CBAA01, a.CBAA07,a.CBAA08,b.CBWA09,c.CBWA10,d.CALA08,a.CBAA18,a.CBAA19,a.CBAA11,a.CBAA08
 
     from
       CBAA a
@@ -512,6 +512,8 @@ where
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBAA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by
+      a.CBAA08 desc
   </select>
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbaasVo">
       SELECT

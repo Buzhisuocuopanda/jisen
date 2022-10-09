@@ -26,7 +26,7 @@ public class GsSalesOrdersDto {
     private Long updateBy;
 
     private Byte deleteFlag;
-   @NotBlank(message = "订单号不能为空")
+  // @NotBlank(message = "订单号不能为空")
     private String orderNo;
 
     @NotNull(message = "供应商id不能为空")

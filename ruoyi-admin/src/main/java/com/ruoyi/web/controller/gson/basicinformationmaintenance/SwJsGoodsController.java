@@ -321,11 +321,11 @@ public class SwJsGoodsController extends BaseController {
             String message = swJsGoodsService.importSwJsCustomer(swJsCustomersList, updateSupport, operName);
             return AjaxResult.success(message);
         }catch (SwException e) {
-            log.error("【导入客户信息列表】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file),e.getMessage());
+            log.error("【结算货币导入】接口参数校验出现异常，参数${}$,异常${}$", JSON.toJSON(file),e.getMessage());
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入客户信息列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
+            log.error("【结算货币导入】接口出现异常,参数${}$,异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
