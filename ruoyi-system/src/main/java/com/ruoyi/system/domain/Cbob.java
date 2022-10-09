@@ -44,6 +44,8 @@ public class Cbob implements Serializable {
 
     private Double confirmQty;
 
+    private Double takeQty;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbob01() {
@@ -206,6 +208,14 @@ public class Cbob implements Serializable {
         this.confirmQty = confirmQty;
     }
 
+    public Double getTakeQty() {
+        return takeQty;
+    }
+
+    public void setTakeQty(Double takeQty) {
+        this.takeQty = takeQty;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -237,7 +247,8 @@ public class Cbob implements Serializable {
             && (this.getCbob16() == null ? other.getCbob16() == null : this.getCbob16().equals(other.getCbob16()))
             && (this.getCbob17() == null ? other.getCbob17() == null : this.getCbob17().equals(other.getCbob17()))
             && (this.getCbob18() == null ? other.getCbob18() == null : this.getCbob18().equals(other.getCbob18()))
-            && (this.getConfirmQty() == null ? other.getConfirmQty() == null : this.getConfirmQty().equals(other.getConfirmQty()));
+            && (this.getConfirmQty() == null ? other.getConfirmQty() == null : this.getConfirmQty().equals(other.getConfirmQty()))
+            && (this.getTakeQty() == null ? other.getTakeQty() == null : this.getTakeQty().equals(other.getTakeQty()));
     }
 
     @Override
@@ -264,6 +275,7 @@ public class Cbob implements Serializable {
         result = prime * result + ((getCbob17() == null) ? 0 : getCbob17().hashCode());
         result = prime * result + ((getCbob18() == null) ? 0 : getCbob18().hashCode());
         result = prime * result + ((getConfirmQty() == null) ? 0 : getConfirmQty().hashCode());
+        result = prime * result + ((getTakeQty() == null) ? 0 : getTakeQty().hashCode());
         return result;
     }
 
@@ -293,6 +305,7 @@ public class Cbob implements Serializable {
         sb.append(", cbob17=").append(cbob17);
         sb.append(", cbob18=").append(cbob18);
         sb.append(", confirmQty=").append(confirmQty);
+        sb.append(", takeQty=").append(takeQty);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

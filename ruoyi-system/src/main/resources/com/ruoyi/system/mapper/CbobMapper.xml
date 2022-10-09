@@ -22,6 +22,7 @@
     <result column="CBOB17" jdbcType="INTEGER" property="cbob17" />
     <result column="CBOB18" jdbcType="VARCHAR" property="cbob18" />
     <result column="confirm_qty" jdbcType="DOUBLE" property="confirmQty" />
+    <result column="take_qty" jdbcType="DOUBLE" property="takeQty" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -256,6 +257,9 @@
       <if test="confirmQty != null">
         #{confirmQty,jdbcType=DOUBLE},
       </if>
+      <if test="takeQty != null">
+        #{takeQty,jdbcType=DOUBLE},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.CbobCriteria" resultType="java.lang.Long">
@@ -327,6 +331,9 @@
       <if test="record.confirmQty != null">
         confirm_qty = #{record.confirmQty,jdbcType=DOUBLE},
       </if>
+      <if test="record.takeQty != null">
+        take_qty = #{record.takeQty,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -353,7 +360,8 @@
       CBOB16 = #{record.cbob16,jdbcType=INTEGER},
       CBOB17 = #{record.cbob17,jdbcType=INTEGER},
       CBOB18 = #{record.cbob18,jdbcType=VARCHAR},
-      confirm_qty = #{record.confirmQty,jdbcType=DOUBLE}
+      confirm_qty = #{record.confirmQty,jdbcType=DOUBLE},
+      take_qty = #{record.takeQty,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -418,6 +426,9 @@
       <if test="confirmQty != null">
         confirm_qty = #{confirmQty,jdbcType=DOUBLE},
       </if>
+      <if test="takeQty != null">
+        take_qty = #{takeQty,jdbcType=DOUBLE},
+      </if>
     </set>
     where CBOB01 = #{cbob01,jdbcType=INTEGER}
   </update>
@@ -441,7 +452,8 @@
       CBOB16 = #{cbob16,jdbcType=INTEGER},
       CBOB17 = #{cbob17,jdbcType=INTEGER},
       CBOB18 = #{cbob18,jdbcType=VARCHAR},
-      confirm_qty = #{confirmQty,jdbcType=DOUBLE}
+      confirm_qty = #{confirmQty,jdbcType=DOUBLE},
+      take_qty = #{takeQty,jdbcType=DOUBLE}
     where CBOB01 = #{cbob01,jdbcType=INTEGER}
   </update>
 
