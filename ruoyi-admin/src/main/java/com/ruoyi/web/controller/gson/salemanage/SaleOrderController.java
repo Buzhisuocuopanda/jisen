@@ -346,6 +346,34 @@ public class SaleOrderController extends BaseController {
 
     }
 
+    /**
+     * 销售订单列表国际
+     *
+     * @param saleOrderListDto
+     * @return
+     */
+    @ApiOperation(
+            value ="销售订单列表国际",
+            notes = "销售订单列表国际"
+    )
+    @GetMapping("/saleOrderListGj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:list')")
+    public AjaxResult<List<TableDataInfo>> saleOrderListGj( SaleOrderListDto saleOrderListDto) {
+        try {
+            startPage();
+            List<SaleOrderListVo> list = saleOrderService.saleOrderList(saleOrderListDto);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单列表】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(saleOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
 
     /**
      * 添加销售订单
@@ -406,6 +434,34 @@ public class SaleOrderController extends BaseController {
     }
 
     /**
+     * 销售订单详情国际
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(
+            value ="销售订单详情国际",
+            notes = "销售订单详情国际"
+    )
+    @GetMapping("/saleOderDetailGj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:detail')")
+    public AjaxResult<SaleOrderDetailVo> saleOderDetailGj(@RequestParam Integer orderId) {
+        try {
+
+            SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单详情国际】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+    /**
      * 销售订单状态更改 包含指定结束
      *
      * @param auditSaleOrderDto
@@ -435,6 +491,34 @@ public class SaleOrderController extends BaseController {
     }
 
 
+    /**
+     * 销售订单状态更改 包含指定结束国际
+     *
+     * @param auditSaleOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(
+            value ="销售订单状态更改 包含指定结束国际",
+            notes = "销售订单状态更改 包含指定结束国际"
+    )
+    @PostMapping("/auditSaleOrderGj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:audit')")
+    public AjaxResult auditSaleOrderGj(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            auditSaleOrderDto.setUserId(getUserId().intValue());
+            saleOrderService.auditSaleOrder(auditSaleOrderDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单状态更改 包含指定结束国际】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(auditSaleOrderDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 确认库存操作
@@ -448,6 +532,7 @@ public class SaleOrderController extends BaseController {
             notes = "确认或取消库存操作"
     )
     @PostMapping("/confirmSkuSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:confirm')")
     public AjaxResult confirmSkuSaleOrder(@Valid @RequestBody ConfirmSkuDto confirmSkuDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -530,7 +615,39 @@ public class SaleOrderController extends BaseController {
         }
 
     }
+    /**
+     * 删除销售订单国际
+     *
+     * @param delSaleOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(
+            value ="删除销售订单国际",
+            notes = "删除销售订单国际"
+    )
 
+    @PostMapping("/delSaleOrderGj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:remove')")
+    public AjaxResult delSaleOrderGj(@Valid @RequestBody DelSaleOrderDto delSaleOrderDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            if (delSaleOrderDto.getOrderId() == null) {
+                throw new SwException("请选择要修改的销售订单");
+            }
+            delSaleOrderDto.setUserId(getUserId().intValue());
+            saleOrderService.delSaleOrder(delSaleOrderDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【删除销售订单国际】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(delSaleOrderDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
 
     /**
      * 国际订单导入
@@ -603,6 +720,7 @@ public class SaleOrderController extends BaseController {
 
     @PostMapping("/reAddSaleOrder")
     @ApiParam("销售订单id")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:submit')")
     public AjaxResult reAddSaleOrder(@RequestParam Integer orderId) {
         try {
 
@@ -675,7 +793,32 @@ public class SaleOrderController extends BaseController {
         util.exportExcel(response, saleOrderListVos, "销售订单数据");
     }
 
+    /**
+     * 导出销售订单国际
+     */
+    @ApiOperation(
+            value ="导出销售订单国际",
+            notes = "导出销售订单国际"
+    )
+    @PostMapping("/saleOrderExcelListGj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:export')")
+    public void saleOrderExcelListGj( SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<SaleOrderListVo> saleOrderListVos = saleOrderService.saleOrderList(saleOrderListDto);
+        for (SaleOrderListVo saleOrderListVo : saleOrderListVos) {
+            if(saleOrderListVo.getOrderDate()!=null){
+                saleOrderListVo.setOrderDateExcel(sd.format(saleOrderListVo.getOrderDate()));
+            }
 
+            if(saleOrderListVo.getCreateTime()!=null){
+                saleOrderListVo.setCreateTimeExcel(sdate.format(saleOrderListVo.getCreateTime()));
+            }
+        }
+
+        ExcelUtil<SaleOrderListVo> util = new ExcelUtil<>(SaleOrderListVo.class);
+        util.exportExcel(response, saleOrderListVos, "销售订单数据");
+    }
     /**
      * 导出销售订单模板
      */

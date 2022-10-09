@@ -520,7 +520,7 @@
 
     SELECT  ca.CBCA08 AS customerName,
     oa.CBOA02 AS createTime,
-    ua.CAUA09 AS saleUser,
+    ua.nick_name AS saleUser,
     oa.CBOA07 AS saleOrderNo,
     pb.CBPB12 AS model,
     pb.CBPB10 AS brand,
@@ -531,7 +531,7 @@
     CBOB ob
     LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
     LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
-    LEFT JOIN CAUA ua ON ua.CAUA01 = oa.CBOA10
+    LEFT JOIN sys_user ua ON ua.user_id = oa.CBOA10
     LEFT JOIN CBPB pb ON pb.CBPB01 = ob.CBOB08
     LEFT JOIN CBSC sc ON sc.CBSC14 = ob.CBOB01
     WHERE
