@@ -724,8 +724,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             //判断是否在提货单里
             CbpkCriteria example = new CbpkCriteria();
             example.createCriteria().andCbpk09EqualTo(cbsb.getCbsb09())
-                    .andCbpk30EqualTo(cbsb.getCbsb30())
-                    .andCheckStatusEqualTo(checkstatusEnum.ZJWC.getCode());
+                    .andCbpk30EqualTo(cbsb.getCbsb30());
+//                    .andCheckStatusEqualTo(checkstatusEnum.ZJWC.getCode());
             List<Cbpk> cbpkList = cbpkMapper.selectByExample(example);
             if(cbpkList.size()==0){
                 throw new SwException("该商品不在提货单里");

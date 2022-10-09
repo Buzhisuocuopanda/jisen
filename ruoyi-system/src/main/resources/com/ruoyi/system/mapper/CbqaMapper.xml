@@ -382,24 +382,28 @@ a.CBQA06=0
   </select>
   <select id="SwJsSkuBarcodeselects" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      CONCAT_WS ('-', b.CALA08, a.CBPB12,a.CBPB08,c.CBPM09) f
+    CONCAT_WS ('-', b.CALA08, a.CBPB12,a.CBPB08,c.CBPM09) f,
+    c.CBPM09
     from
-      CBPB a
-        LEFT JOIN
-      CALA  b
-      ON
-        a.CBPB10=b.CALA01
-        LEFT JOIN
-      CBPM c
-      on
-        c.CBPM08=a.CBPB01
-where
+    CBPB a
+    LEFT JOIN
+    CALA  b
+    ON
+    a.CBPB10=b.CALA01
+    LEFT JOIN
+    CBPM c
+    on
+    c.CBPM08=a.CBPB01
+    LEFT JOIN
+    CBPK d
+    ON
+    d.CBPK01=c.CBPK01
+
+    where
     a.CBPB06=0
-    <if test='cala08 != null and cala08 != ""'> and b.CALA08  like concat('%', #{cala08}, '%')</if>
-    <if test='cbpb08 != null and cbpb08 != ""'> or a.CBPB08  like concat('%', #{cbpb08}, '%')</if>
-    <if test='cbpb12 != null and cbpb12 != ""'> or a.CBPB12  like concat('%', #{cbpb12}, '%')</if>
-    <if test='cbpm09 != null and cbpm09 != ""'> or c.CBPM09  like concat('%', #{cbpm09}, '%')</if>
-    LIMIT 10
-  </select>
+    <if test='cbpk01 != null and cbpk01 != ""'> and d.CBPK01 =#{cbpk01}</if>
+    order by d.CBPK08 desc
+
+</select>
 
 </mapper>
