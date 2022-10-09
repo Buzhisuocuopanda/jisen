@@ -1324,6 +1324,66 @@ public class CbobCriteria {
             addCriterion("confirm_qty not between", value1, value2, "confirmQty");
             return (Criteria) this;
         }
+
+        public Criteria andTakeQtyIsNull() {
+            addCriterion("take_qty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyIsNotNull() {
+            addCriterion("take_qty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyEqualTo(Double value) {
+            addCriterion("take_qty =", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyNotEqualTo(Double value) {
+            addCriterion("take_qty <>", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyGreaterThan(Double value) {
+            addCriterion("take_qty >", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyGreaterThanOrEqualTo(Double value) {
+            addCriterion("take_qty >=", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyLessThan(Double value) {
+            addCriterion("take_qty <", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyLessThanOrEqualTo(Double value) {
+            addCriterion("take_qty <=", value, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyIn(List<Double> values) {
+            addCriterion("take_qty in", values, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyNotIn(List<Double> values) {
+            addCriterion("take_qty not in", values, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyBetween(Double value1, Double value2) {
+            addCriterion("take_qty between", value1, value2, "takeQty");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeQtyNotBetween(Double value1, Double value2) {
+            addCriterion("take_qty not between", value1, value2, "takeQty");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

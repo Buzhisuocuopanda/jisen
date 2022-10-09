@@ -28,7 +28,7 @@ public class CbsbDo {
     private String cbsb07;
 
     private Date cbsb08;
-   @NotNull(message = "客户id不能未空")
+  // @NotNull(message = "客户id不能未空")
     private Integer cbsb09;
     @NotNull(message = "仓库id不能未空")
     private Integer cbsb10;
@@ -50,7 +50,7 @@ public class CbsbDo {
     @NotBlank(message = "联系人不能为空")
   //  @Length(min =1 , max = 10)
     private String cbsb18;
-    @NotBlank(message = "电话不能为空")
+  //  @NotBlank(message = "电话不能为空")
   //  @Length(min =1 , max = 20)
     private String cbsb19;
 

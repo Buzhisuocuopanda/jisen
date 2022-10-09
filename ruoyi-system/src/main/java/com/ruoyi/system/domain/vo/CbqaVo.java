@@ -47,4 +47,6 @@ public class CbqaVo extends BaseEntity {
 
     private String f;
 
+    private Integer cbpk01;
+
 }

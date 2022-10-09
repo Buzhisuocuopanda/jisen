@@ -5,10 +5,8 @@ import com.ruoyi.system.domain.CbobCriteria;
 import java.util.List;
 import java.util.Map;
 
-import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
 import com.ruoyi.system.domain.dto.OrderChangeGoodsMsgDto;
-import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.OrderChangeGoodsMsgVo;
 import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import org.apache.ibatis.annotations.Param;
@@ -35,7 +33,6 @@ public interface CbobMapper {
     int updateByPrimaryKeySelective(Cbob record);
 
     int updateByPrimaryKey(Cbob record);
-
 
     List<OrderChangeGoodsMsgVo> orderChangeGoodsMsg(OrderChangeGoodsMsgDto orderChangeGoodsMsgDto);
 

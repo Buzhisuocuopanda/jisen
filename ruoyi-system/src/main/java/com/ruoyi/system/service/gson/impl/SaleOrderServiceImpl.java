@@ -138,7 +138,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
             //查出该生产总订单的占用
-            List<GsGoodsUse> list = gsGoodsUseMapper.selectLockByTotalOrderNo(saleOrderSkuVo.getTotalOrderNo());
+            List<GsGoodsUse> list = gsGoodsUseMapper.selectLockByTotalOrderNo(saleOrderSkuVo.getTotalOrderNo(),saleOrderSkuVo.getGoodsId());
             saleOrderSkuVo.setGoodsUses(list);
             double sum = list.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
             saleOrderSkuVo.setLockQty(sum);
@@ -549,23 +549,26 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (saleOrderMakeDo.getPrompt() == 1 && saleOrderMakeDo.getPrompt() != null) {
                 GsOutStockAdivce advice = null;
                 for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
-                    advice = new GsOutStockAdivce();
-                    advice.setCreateBy(saleOrderAddDto.getUserId());
-                    advice.setCreateTime(date);
-                    advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
-                    advice.setGoodsId(outSuggestionsDo.getGoodsId());
-                    advice.setQty(outSuggestionsDo.getQty());
-                    advice.setSaleOrderNo(cboa.getCboa07());
-                    if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())){
-                        advice.setStatus(new Byte("3"));
-                    }else {
-                        advice.setStatus(new Byte("2"));
+                    if(outSuggestionsDo.getQty()!=0){
+                        advice = new GsOutStockAdivce();
+                        advice.setCreateBy(saleOrderAddDto.getUserId());
+                        advice.setCreateTime(date);
+                        advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                        advice.setGoodsId(outSuggestionsDo.getGoodsId());
+                        advice.setQty(outSuggestionsDo.getQty());
+                        advice.setSaleOrderNo(cboa.getCboa07());
+                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())){
+                            advice.setStatus(new Byte("3"));
+                        }else {
+                            advice.setStatus(new Byte("2"));
+                        }
+
+                        advice.setUpdateBy(saleOrderAddDto.getUserId());
+                        advice.setUpdateTime(date);
+                        advice.setWhId(outSuggestionsDo.getWhId());
+                        gsOutStockAdivceMapper.insert(advice);
                     }
 
-                    advice.setUpdateBy(saleOrderAddDto.getUserId());
-                    advice.setUpdateTime(date);
-                    advice.setWhId(outSuggestionsDo.getWhId());
-                    gsOutStockAdivceMapper.insert(advice);
 
 
                 }
@@ -700,6 +703,16 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             good.setTotalPrice(cbob.getCbob12());
             good.setTotalOrderNo(cbob.getCbob18());
             good.setConfirmQty(cbob.getConfirmQty());
+            GoodsPriceAndSkuDto goodsPriceAndSkuDto=new GoodsPriceAndSkuDto();
+            goodsPriceAndSkuDto.setGoodsId(cbob.getCbob08());
+            goodsPriceAndSkuDto.setCbobId(cbob.getCbob01());
+            goodsPriceAndSkuDto.setCustomerId(cboa.getCboa09());
+            GoodsPriceAndSkuVo goodsPriceAndSkuVo = goodsPriceAndSku(goodsPriceAndSkuDto);
+            if(goodsPriceAndSkuVo!=null){
+                good.setCanUseSku(goodsPriceAndSkuVo.getCanUseSku());
+                good.setNormPrice(goodsPriceAndSkuVo.getNormalPrice());
+            }
+
             sunPrice = sunPrice + cbob.getCbob12();
             sumQty = sumQty + cbob.getCbob09();
             CheckSkuDo checkDo = new CheckSkuDo();
@@ -1164,23 +1177,26 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 if (saleOrderMakeDo.getPrompt() == 1) {
                     GsOutStockAdivce advice = null;
                     for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
-                        advice=new GsOutStockAdivce();
-                        advice.setCreateBy(userId.intValue());
-                        advice.setCreateTime(date);
-                        advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
-                        advice.setGoodsId(outSuggestionsDo.getGoodsId());
-                        advice.setQty(outSuggestionsDo.getQty());
-                        advice.setSaleOrderNo(cboa.getCboa07());
-                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())){
-                            advice.setStatus(new Byte("3"));
-                        }else {
-                            advice.setStatus(new Byte("2"));
-                        }                        advice.setUpdateBy(userId.intValue());
-                        advice.setUpdateTime(date);
-                        advice.setWhId(outSuggestionsDo.getWhId());
-                        gsOutStockAdivceMapper.insert(advice);
+                        if(outSuggestionsDo.getQty()!=0) {
 
+                            advice = new GsOutStockAdivce();
+                            advice.setCreateBy(userId.intValue());
+                            advice.setCreateTime(date);
+                            advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                            advice.setGoodsId(outSuggestionsDo.getGoodsId());
+                            advice.setQty(outSuggestionsDo.getQty());
+                            advice.setSaleOrderNo(cboa.getCboa07());
+                            if (WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())) {
+                                advice.setStatus(new Byte("3"));
+                            } else {
+                                advice.setStatus(new Byte("2"));
+                            }
+                            advice.setUpdateBy(userId.intValue());
+                            advice.setUpdateTime(date);
+                            advice.setWhId(outSuggestionsDo.getWhId());
+                            gsOutStockAdivceMapper.insert(advice);
 
+                        }
                     }
                 }
 
@@ -1189,7 +1205,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             goodsWorkInstanceDo.setOrderType((byte) 2);
             goodsWorkInstanceDo.setOrderClose(OrdercloseEnum.WEIJIESHU.getCode());
             goodsWorkInstanceDo.setOrderStatus(OrderstatusEnum.DAISHENPI.getCode());
-            taskService.editGsWorkInstance(goodsWorkInstanceDo);
+            goodsWorkInstanceDo.setOrderNo(cboa.getCboa07());
+//            taskService.editGsWorkInstance(goodsWorkInstanceDo);
         }
 
         //更改销售订单状态
@@ -2070,7 +2087,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         if(cbba==null){
             throw new SwException("没有查到该生产总订单");
         }
-        List<GsGoodsUse> list = gsGoodsUseMapper.selectLockByTotalOrderNo(cbob.getCbob18());
+        List<GsGoodsUse> list = gsGoodsUseMapper.selectLockByTotalOrderNo(cbob.getCbob18(),cbob.getCbob08());
         double lockQty = list.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
         double canUse=cbba.getCbba13()-lockQty;
 
@@ -2126,7 +2143,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                  //增加占用
                  mdfqty=qty-confirmQty;
                 goodsUse.setLockQty(goodsUse.getLockQty() +mdfqty);
-
+                if(mdfqty>canUse){
+                    throw new SwException("确认库存数量超出可用库存数量");
+                }
 
 
              }else {
@@ -2135,9 +2154,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 goodsUse.setLockQty(goodsUse.getLockQty() -mdfqty);
              }
 
-            if(mdfqty>canUse){
-                throw new SwException("确认库存数量超出可用库存数量");
-            }
+
 
             goodsUse.setUpdateTime(date);
             gsGoodsUseMapper.updateByPrimaryKey(goodsUse);
