@@ -441,6 +441,13 @@ return;
         return gsSalesOrdersInVos;
     }
 
+    //销售预订单入库单详情
+    @Override
+    public List<GsSalesOrdersInVo> selectSalesReceiptList(GsSalesOrdersInVo gsSalesOrdersInVo) {
+        List<GsSalesOrdersInVo> gsSalesOrdersInVos = gsSalesOrdersInMapper.selectSalesReceiptList(gsSalesOrdersInVo);
+        return gsSalesOrdersInVos;
+    }
+
     @Override
     public void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());

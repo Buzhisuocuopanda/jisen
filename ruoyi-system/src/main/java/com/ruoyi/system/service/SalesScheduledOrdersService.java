@@ -19,6 +19,7 @@ public interface SalesScheduledOrdersService {
 
     List<GsSalesOrdersDetailsVo> saleOrderListdetail(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 
+    //销售预订单变更单
     List<GsSalesOrdersDetailsVo> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 
     void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto);
@@ -36,6 +37,9 @@ public interface SalesScheduledOrdersService {
     void deleteSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto);
 
     List<GsSalesOrdersInVo> seleteSubscribetotheinventoryslip(GsSalesOrdersInVo gsSalesOrdersInVo);
+
+    //销售预订单入库单详情
+    List<GsSalesOrdersInVo> selectSalesReceiptList(GsSalesOrdersInVo gsSalesOrdersInVo);
 
     void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto);
 

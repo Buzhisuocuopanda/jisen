@@ -31,4 +31,6 @@ public interface GsSalesOrdersInMapper {
     int updateByPrimaryKey(GsSalesOrdersIn record);
 
     List<GsSalesOrdersInVo> seleteSubscribetotheinventoryslip(GsSalesOrdersInVo gsSalesOrdersInVo);
+
+    List<GsSalesOrdersInVo> selectSalesReceiptList(GsSalesOrdersInVo gsSalesOrdersInVo);
 }
