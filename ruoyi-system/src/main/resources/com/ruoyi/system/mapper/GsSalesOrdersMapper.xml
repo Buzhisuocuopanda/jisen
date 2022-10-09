@@ -547,7 +547,14 @@ where
     b.CAUA15 as salerMag,
     b.CAUA01 as salerId,
     gs.customer_id as customer,
-    cb.CBCA08 as customerMag
+    cb.CBCA08 as customerMag,
+    a.goods_id as goodsId,
+    pb.CBPB08 as cbpb08,
+    pb.CBPB10 as cbpb10,
+    pb.CBPB12 as cbpb12,
+    ca.CALA08 as cala08,
+    gs.wh_id as whId,
+    wa.CBWA09 as wh
     FROM
     `gs_ Sales_orders_change` a
     LEFT JOIN
@@ -566,6 +573,18 @@ where
      CBCA cb
      on
      cb.CBCA01 = gs.customer_id
+    LEFT JOIN
+     CBPB pb
+     on
+     pb.CBPB01 = a.goods_id
+     LEFT JOIN
+     CALA ca
+     on
+     pb.CBPB10 = ca.CALA01
+     LEFT JOIN
+     CBWA wa
+     on
+     gs.wh_id = wa.CBWA01
     WHERE
     a.delete_flag=0
     <if test="orderNo != null and orderNo !=''">
