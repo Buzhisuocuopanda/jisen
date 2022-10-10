@@ -176,10 +176,31 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib16(cbibDo.getCbib12());
 
             }
+           //调拨单调出
+            if(cbibDo.getCbib17().equals(TaskType.zjd.getMsg())){
+                cbib.setCbib09((double) 0);
+                cbib.setCbib10((double) 0);
+                cbib.setCbib11((double) 0);
+                cbib.setCbib12((double) 0);
+                cbib.setCbib15(cbib.getCbib09()-cbibDo.getCbib13());
+                cbib.setCbib16(cbib.getCbib10()-cbibDo.getCbib14());
+
+            }
+           //调拨单调入
+            if(cbibDo.getCbib17().equals(TaskType.xsthd.getMsg())){
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbibDo.getCbib11());
+                cbib.setCbib16(cbibDo.getCbib12());
+            }
+
+
+
             cbib.setCbib09((double) 0);
             cbib.setCbib10((double) 0);
             cbib.setCbib18(1);
-        }else {
+        }
+        else {
             //上次结存数量和价格
             cbib.setCbib09(cbib1.getCbib15());
             cbib.setCbib10(cbib1.getCbib16());

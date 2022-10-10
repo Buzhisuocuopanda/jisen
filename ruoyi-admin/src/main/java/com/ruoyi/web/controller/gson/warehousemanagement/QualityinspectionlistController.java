@@ -424,6 +424,33 @@ public class QualityinspectionlistController  extends BaseController {
         }
     }
 
+    /**
+     * 质检单新增使用的查询列表1
+     */
+    @ApiOperation(
+            value ="质检单新增使用的查询列表1",
+            notes = "质检单新增使用的查询列表1"
+    )
+    @GetMapping("/SwJsSkuBarcodeselectsss")
+    public AjaxResult<CbqaVo> swJsGoodslistsssy(CbqaVo cbqaVo) {
+        try {
+            List<CbqaVo> list = swQualityinspectionlistService.swJsGoodslistsssy(cbqaVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【质检单新增使用的查询列表1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
 
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【质检单新增使用的查询列表1】接口出现异常,参数${},异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【质检单新增使用的查询列表1】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 }

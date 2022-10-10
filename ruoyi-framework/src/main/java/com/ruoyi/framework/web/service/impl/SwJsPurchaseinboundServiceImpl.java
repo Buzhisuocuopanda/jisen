@@ -296,10 +296,7 @@ private NumberGenerate numberGenerate;
                session.clearCache();
            }
        }
-       //标记审核完成
-    /*    CbpdDto cbpdDto = new CbpdDto();
-        cbpdDto.setCbpc01(itemList.get(0).getCbpc01());
-        this.SwJsSkuBarcodeshsss(cbpdDto);*/
+
        session.commit();
        session.clearCache();
        return 1;
@@ -680,6 +677,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                    gsGoodsSku.setId(id);
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + num);
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                     gsGoodsSku.setUpdateTime(date);

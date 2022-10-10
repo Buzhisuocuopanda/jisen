@@ -103,25 +103,38 @@ private CbpmMapper cbpmMapper;
             itemList.get(i).setCbqb07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
-            Cbpm cbpm = cbpmMapper.selectByPrimaryKey( itemList.get(i).getCbqb08());
+           if( itemList.get(i).getCbqb09()==null){
+               throw new SwException("可替换sn为空");
+           }
+           CbpmCriteria rtj = new CbpmCriteria();
+              rtj.createCriteria().andCbpm09EqualTo(itemList.get(i).getCbqb09());
+                List<Cbpm> cbpms = cbpmMapper.selectByExample(rtj);
+                if(cbpms.size()==0){
+                    throw new SwException("销售提货单可替换sn不存在");
+                }
+                if(cbpms.get(0).getCbpm01()==null){
+                    throw new SwException("销售提货单扫码id为空");
+                }
+            itemList.get(i).setCbqb08(cbpms.get(0).getCbpm01());
+
+
+            Cbpm cbpm = cbpmMapper.selectByPrimaryKey( cbpms.get(0).getCbpm01());
             if(cbpm ==null){
                 throw new SwException("无此销售提货单扫描记录");
 
             }
             Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbpm.getCbpk01());
             //校验质检完成状态和审核状态
-            if(cbpk.getCheckStatus()==null && cbpk.getCbpk11()==null) {
-                throw new SwException("质检状态不能为空");
+            if( cbpk.getCbpk11()==null) {
+                throw new SwException("质检单状态不能为空");
             }
-            if (cbpk.getCheckStatus().equals(checkstatusEnum.WZJ.getCode()) &&
-                    cbpk.getCbpk11().equals(TaskStatus.bjwc.getCode())) {}
-            else {
-                throw new SwException("审核状态错误");
+            if (!cbpk.getCbpk11().equals(TaskStatus.bjwc.getCode())) {
+                throw new SwException("替换sn审核状态未完成");
             }
+
             //校验原商品sn，使其下架
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
-            example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10())
-                    .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+            example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
             if (gsGoodsSns.size() > 0) {
                 //不是下架就更新下架
@@ -131,12 +144,11 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
                 }
             } else {
-                throw new SwException("原商品sn不存在或已删除");
+                throw new SwException("原商品sn不存在");
             }
             //校验替换商品sn
             GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
-            example1.createCriteria().andSnEqualTo(  itemList.get(i).getCbqb09())
-                    .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+            example1.createCriteria().andSnEqualTo(  itemList.get(i).getCbqb09());
             List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
             Integer goodsId;
             Integer locationId;
@@ -225,8 +237,40 @@ private CbpmMapper cbpmMapper;
 
         Cbqa cbqa1 = cbqaMapper.selectByPrimaryKey(cbqaDo.getCbqa01());
         if(!cbqa1.getCbqa09().equals(TaskStatus.sh.getCode())){
-            throw new SwException("未审核状态才能审核");
+            throw new SwException("审核状态才能审核");
         }
+
+        CbqbCriteria example = new CbqbCriteria();
+        example.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01());
+        List<Cbqb> cbqbs = cbqbMapper.selectByExample(example);
+        if(cbqbs.size()==0){
+            throw new SwException("质检单明细为空");
+        }
+        if(cbqbs.get(0).getCbqb09()==null){
+            throw new SwException("质检单明细替换商品sn为空");
+        }
+        String cbqb09 = cbqbs.get(0).getCbqb09();
+
+        CbpmCriteria example2 = new CbpmCriteria();
+        example2.createCriteria().andCbpm01EqualTo(cbqbs.get(0).getCbqb08());
+        List<Cbpm> cbpms = cbpmMapper.selectByExample(example2);
+        if(cbpms.size()==0){
+            throw new SwException("提货单扫码记录sn不存在");
+        }
+        if(cbpms.get(0).getCbpk01()==null){
+            throw new SwException("提货单id为空");
+        }
+        Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbpms.get(0).getCbpk01());
+        if(cbpk==null){
+            throw new SwException("提货单不存在");
+        }
+        if(cbpk.getCbpk11()==null){
+            throw new SwException("提货单状态为空");
+        }
+        if(cbpk.getCbpk11().equals(TaskStatus.bjwc.getCode())){
+            throw new SwException("提货单已标记完成，不能反审");
+        }
+
 
         Long userid = SecurityUtils.getUserId();
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
@@ -356,5 +400,10 @@ private CbpmMapper cbpmMapper;
 
         }
 
+    }
+
+    @Override
+    public List<CbqaVo> swJsGoodslistsssy(CbqaVo cbqaVo) {
+        return cbqaMapper.SwJsSkuBarcodeselectss(cbqaVo);
     }
 }

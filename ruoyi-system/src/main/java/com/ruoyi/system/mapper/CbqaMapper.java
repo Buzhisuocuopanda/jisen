@@ -38,4 +38,6 @@ public interface CbqaMapper {
     List<CbqaVo> SwJsSkuBarcodeselect(CbqaVo cbqaVo);
 
     List<CbqaVo> SwJsSkuBarcodeselects(CbqaVo cbqaVo);
+
+    List<CbqaVo> SwJsSkuBarcodeselectss(CbqaVo cbqaVo);
 }
