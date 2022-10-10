@@ -298,7 +298,7 @@ public class SwJsCustomerController extends BaseController {
     }
 
     /**
-     * 客户信息选择框
+     * 用户信息选择框
      */
     @ApiOperation(
             value ="获取用户信息选择框",
@@ -308,6 +308,33 @@ public class SwJsCustomerController extends BaseController {
     public AjaxResult<TableDataInfo> systemUserSelect(BaseSelectDto baseSelectDto) {
         try{
             startPage();
+            List<BaseSelectVo> list = swJsCustomerService.systemUserSelect(baseSelectDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【获取用户信息选择框】接口出现异常,参数${},异常${}$", JSON.toJSON(baseSelectDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【获取用户信息选择框】接口出现异常,参数${}$,异常${}$", JSON.toJSON(baseSelectDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 用户信息下拉框（不分页）
+     */
+    @ApiOperation(
+            value ="用户信息下拉框（不分页）",
+            notes = "用户信息下拉框（不分页）"
+    )
+    @GetMapping("/systemUserSelectAll")
+    public AjaxResult<TableDataInfo> systemUserSelectAll(BaseSelectDto baseSelectDto) {
+        try{
             List<BaseSelectVo> list = swJsCustomerService.systemUserSelect(baseSelectDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

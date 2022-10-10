@@ -195,6 +195,52 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="saleOrderListCountquery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
+    SELECT
+      so.id AS id,
+      so.order_no AS orderNo,
+      so.order_date AS orderDate,
+      a.CBSA08 AS supplier,
+      u.nick_name AS saler,
+      c.CBCA08 AS customer,
+      d.cbwa09 AS wh,
+      ss.goods_id AS goodsId,
+      ss.price AS price,
+      ss.qty AS qty,
+      ss.remark AS remark,
+      ss.id AS detailId,
+      pb.CBPB08,pb.CBPB10,
+      ss.create_time as createTime
+    FROM
+    gs_Sales_orders_details ss
+        LEFT JOIN `gs_ Sales_orders`  so ON so.id=ss.gs_Sales_orders
+        LEFT JOIN CBSA a on a.CBSA01=so.supplier_id
+        LEFT JOIN CBCA c ON c.CBCA01=so.customer_id
+        LEFT JOIN CBWA d ON d.CBWA01=so.wh_id
+        LEFT JOIN CBPB pb ON pb.CBPB01 = ss.goods_id
+        LEFT JOIN sys_user u ON u.user_id = so.saler_id
+where
+     (ss.delete_flag = 0 or ss.delete_flag is null)
+    <if test="customerId != null ">
+      and so.customer_id =#{customerId}
+    </if>
+    <if test="supplierId != null ">
+      and so.supplier_id =#{supplierId}
+    </if>
+    <if test="salerId != null ">
+      and so.saler_id =#{salerId}
+    </if>
+    <if test="startTime != null">
+      and ss.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and ss.create_time &lt;=#{endTime}
+    </if>
+
+     order by ss.create_time desc
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update `gs_Sales_orders_details`
     <set>

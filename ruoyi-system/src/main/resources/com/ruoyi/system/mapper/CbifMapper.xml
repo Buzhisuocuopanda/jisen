@@ -597,7 +597,7 @@ where
           h.CALA01=e.CBPB10
       LEFT JOIN sys_user u ON u.user_id = sn.create_by
       WHERE
-          sn.delete_flag =0
+          (sn.delete_flag =0 or sn.delete_flag is null)
       <if test="cbwa09s != null">
         and c.CBWA09 in
         <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">

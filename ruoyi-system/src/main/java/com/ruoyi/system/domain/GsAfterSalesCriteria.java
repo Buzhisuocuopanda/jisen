@@ -285,6 +285,68 @@ public class GsAfterSalesCriteria {
             return (Criteria) this;
         }
 
+
+        public Criteria andFeedbackTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+
         public Criteria andCreateByIsNull() {
             addCriterion("create_by is null");
             return (Criteria) this;
@@ -464,6 +526,68 @@ public class GsAfterSalesCriteria {
             addCriterion("delete_flag not between", value1, value2, "deleteFlag");
             return (Criteria) this;
         }
+
+        //
+        public Criteria andSalerIdIsNull() {
+            addCriterion("saler_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdIsNotNull() {
+            addCriterion("saler_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdEqualTo(Byte value) {
+            addCriterion("saler_id =", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdNotEqualTo(Byte value) {
+            addCriterion("saler_id <>", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdGreaterThan(Byte value) {
+            addCriterion("saler_id >", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdGreaterThanOrEqualTo(Byte value) {
+            addCriterion("saler_id >=", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdLessThan(Byte value) {
+            addCriterion("saler_id <", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdLessThanOrEqualTo(Byte value) {
+            addCriterion("saler_id <=", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdIn(List<Byte> values) {
+            addCriterion("saler_id in", values, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdNotIn(List<Byte> values) {
+            addCriterion("saler_id not in", values, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdBetween(Byte value1, Byte value2) {
+            addCriterion("saler_id between", value1, value2, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalerIdNotBetween(Byte value1, Byte value2) {
+            addCriterion("saler_id not between", value1, value2, "deleteFlag");
+            return (Criteria) this;
+        }
+
 
         public Criteria andCustomerIdIsNull() {
             addCriterion("customer_id is null");
