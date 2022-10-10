@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
+import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto2;
 import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
@@ -22,4 +24,6 @@ public interface CountQueryService {
     List<OutofstockregistrationVo> selectInntorysummaryquery(OutofstockregistrationVo outofstockregistrationVo);
 
     List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo);
+
+    List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto);
 }

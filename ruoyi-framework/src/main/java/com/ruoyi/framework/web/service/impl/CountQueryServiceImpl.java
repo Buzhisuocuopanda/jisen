@@ -5,11 +5,15 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.GsGoodsUse;
 import com.ruoyi.system.domain.GsGoodsUseCriteria;
+import com.ruoyi.system.domain.GsSalesOrdersDetails;
+import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
+import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto2;
 import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.CbifMapper;
 import com.ruoyi.system.mapper.GsGoodsUseMapper;
+import com.ruoyi.system.mapper.GsSalesOrdersDetailsMapper;
 import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,8 @@ public class CountQueryServiceImpl implements CountQueryService {
     private GsGoodsUseMapper gsGoodsUseMapper;
     @Resource
     private BaseCheckService baseCheckService;
+    @Resource
+    private GsSalesOrdersDetailsMapper gsSalesOrdersDetailsMapper;
 
     @Override
     @DataScope(deptAlias = "u")
@@ -56,7 +62,7 @@ public class CountQueryServiceImpl implements CountQueryService {
                     }
                 }
                 if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
-                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId2(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
+                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
                     Double sum =0d;
                     for(int j=0;j<gsGoodsUses.size();j++){
                         if(gsGoodsUses.get(j).getLockQty()!=null){
@@ -81,6 +87,18 @@ public class CountQueryServiceImpl implements CountQueryService {
         return inwuquVos;
     }
 
+
+    @Override
+    public List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
+        List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo: gsSalesOrdersDetailsVos) {
+            if(gsSalesOrdersDetailsVo.getCbpb10()!=null){
+                gsSalesOrdersDetailsVo.setCbpb10(brandMap.get(Integer.parseInt(gsSalesOrdersDetailsVo.getCbpb10())));
+            }
+        }
+        return gsSalesOrdersDetailsVos;
+    }
 
     @Override
     public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {

@@ -238,7 +238,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             list.get(i).setSupplier(supplier);
             if(mapList.size()>0){
                 if(mapList.get(0)!=null){
-                    list.get(i).setCost((String)mapList.get(0).get("cost"));
+                    list.get(i).setCost(mapList.get(0).get("cost")+"");
                 }
 
             }

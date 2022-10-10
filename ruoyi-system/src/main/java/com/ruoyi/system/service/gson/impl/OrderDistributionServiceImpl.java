@@ -592,9 +592,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             //
             //分配给总订单
             List<Cbba> list = cbbaMapper.selectByGoodsId(directWarehousingDto.getGoodsId());
+            Boolean give=false;
             for (Cbba cbba : list) {
                 Double needQty = cbba.getCbba09() - cbba.getCbba11() - cbba.getCbba13();
                 if (needQty > 0) {
+                    give=true;
 
                     if(TotalOrderConstants.GUONEIORDER.equals(cbba.getCbba07())){
                         res.setOrderType(2);
@@ -609,6 +611,26 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 }
             }
+            if(!give){
+                GsAllocationBalanceCriteria baex=new GsAllocationBalanceCriteria();
+                baex.createCriteria()
+                        .andGoodsIdEqualTo(directWarehousingDto.getGoodsId());
+                List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(baex);
+                if(gsAllocationBalances.size()>0){
+                    GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()+1);
+                    gsAllocationBalance.setUpdateTime(new Date());
+                    gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+                }else {
+                    GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+                    gsAllocationBalance.setCreateTime(new Date());
+                    gsAllocationBalance.setQty(new Double(1));
+                    gsAllocationBalance.setUpdateTime(new Date());
+                    gsAllocationBalanceMapper.insert(gsAllocationBalance);
+                }
+
+            }
+
             return res;
 
 

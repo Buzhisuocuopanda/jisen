@@ -12,10 +12,7 @@ import com.ruoyi.system.domain.Cala;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.Cbwa;
-import com.ruoyi.system.domain.dto.GoodsUseDto;
-import com.ruoyi.system.domain.dto.InwuquDto;
-import com.ruoyi.system.domain.dto.InwuqusDto;
-import com.ruoyi.system.domain.dto.TotalOrderListDto;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.*;
 import com.ruoyi.system.service.gson.ApprovalService;
@@ -39,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -116,6 +114,47 @@ public class CountQueryController  extends BaseController {
         ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
         util.exportExcel(response, list, "库存汇总查询数据");
     }
+
+    /**
+     * 销售预订单汇总
+     */
+    @ApiOperation(
+            value ="销售预订单汇总",
+            notes = "销售预订单汇总"
+    )
+    @GetMapping("/saleOrderListCountquery")
+    @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:list')")
+    public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
+        try {
+            startPage();
+            List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto);
+            TableDataInfo t = getDataTable(list);
+            return AjaxResult.success(t);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (ServiceException e) {
+            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
+            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    @ApiOperation(
+            value ="导出销售预订单汇总",
+            notes = "导出销售预订单汇总"
+    )
+    @PostMapping("/saleOrderListCountqueryExcel")
+    @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:export')")
+    public void saleOrderListCountqueryExcel(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto2, HttpServletResponse response) {
+        gsSalesOrdersDetailsDto2.setEndTime(new Date(gsSalesOrdersDetailsDto2.getEndTime().getTime()+24*60*60-1));
+        List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto2);
+        ExcelUtil<GsSalesOrdersDetailsVo> util = new ExcelUtil<>(GsSalesOrdersDetailsVo.class);
+        util.exportExcel(response, list, "销售预订单汇总数据");
+    }
+
 
     /**
      * 库存明细查询

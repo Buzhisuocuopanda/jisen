@@ -36,4 +36,6 @@ public class GoodsPriceAndSkuVo {
 
     private Double qty;
 
+    private String goodsMsg;
+
 }
