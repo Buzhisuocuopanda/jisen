@@ -90,6 +90,9 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<GsPurchaseOrderDetail> itemList) {
+        if(itemList.size()==0){
+            throw new SwException("明细不能为空");
+        }
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         GsPurchaseOrderDetailMapper mapper = session.getMapper(GsPurchaseOrderDetailMapper.class);
         Date date = new Date();

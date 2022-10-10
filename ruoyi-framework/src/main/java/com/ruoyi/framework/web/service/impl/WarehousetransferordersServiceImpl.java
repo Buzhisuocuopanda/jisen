@@ -221,8 +221,8 @@ if(itemList.size()==0){
         if(cbaa1==null){
             throw new SwException("该仓库调拨单不存在");
         }
-        if (cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())){}
-        else {
+        if (!cbaa1.getCbaa11().equals(TaskStatus.sh.getCode())){
+
             throw new SwException("审核状态才能标记完成");
 
         }
@@ -835,6 +835,10 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     public int transferordersin(List<Cbac> itemList) {
 
 
+
+
+
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 
@@ -913,20 +917,61 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
 
-            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+          /*  GsGoodsSn gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
             gsGoodsSn.setStatus((byte) 1);
             gsGoodsSn.setInTime(date);
             gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
             gsGoodsSn.setWhId(instoreid);
             gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
+*/
+
+            Integer cbaa01 = itemList.get(0).getCbaa01();
+            if(cbaa01==null){
+                throw new SwException("调拨单id不能为空");
+            }
+            //调出数量仓库
+            CbwaCriteria exampse1 = new CbwaCriteria();
+            exampse1.createCriteria().andCbwa12EqualTo("数量管理");
+            List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
+            List<Integer> gyuygy = cbwas.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
+            Set<Integer> fhji = new HashSet<>(gyuygy);
+            Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
+            if(fhji.contains(cbaa1.getCbaa09()) ){
+                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                gsGoodsSn.setCreateTime(date);
+                gsGoodsSn.setUpdateTime(date);
+                gsGoodsSn.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
+                gsGoodsSn.setStatus((byte) 1);
+                gsGoodsSn.setInTime(date);
+                gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSn.setWhId(instoreid);
+                gsGoodsSn.setGroudStatus((byte) 1);
+                gsGoodsSnMapper.insertSelective(gsGoodsSn);
+
+            }
+else {
+
+                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
+                gsGoodsSn.setStatus((byte) 1);
+                gsGoodsSn.setInTime(date);
+                gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSn.setWhId(instoreid);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
 
 
 
-           CbacCriteria cbacCriteria = new CbacCriteria();
-            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
-            mapper.updateByExampleSelective(itemList.get(i),cbacCriteria);
+                CbacCriteria cbacCriteria = new CbacCriteria();
+                cbacCriteria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+
+                mapper.updateByExampleSelective(itemList.get(i), cbacCriteria);
+            }
+
             if (i % 10 == 9) {//每10条提交一次防止内存溢出
                 session.commit();
                 session.clearCache();
@@ -1185,7 +1230,7 @@ else {
         }
         return 1;
     }
-
+    //仓库调拨单调入标记完成
     @Override
     public int transferordersinbjwc(CbaaDo cbaaDo) {
         Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaaDo.getCbaa01());
@@ -1208,13 +1253,18 @@ else {
         List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
         List<Integer> goodsids = cbwas.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
         Set<Integer> sio = new HashSet<>(goodsids);
+
+        //调出是扫码情况
+        CbwaCriteria exartjr = new CbwaCriteria();
+        exartjr.createCriteria().andCbwa12EqualTo("条码管理");
+        List<Cbwa> cbwas1 = cbwaMapper.selectByExample(exartjr);
+        List<Integer> goodsidss = cbwas1.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
+        Set<Integer> icu = new HashSet<>(goodsidss);
+        //调出是扫码情况
+
         if (sio.contains(cbaa1.getCbaa10())) {
 
-            //调出是扫码情况
 
-
-
-            //调出是扫码情况
 
             CbabCriteria cbabCriteria = new CbabCriteria();
             cbabCriteria.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
@@ -1222,6 +1272,28 @@ else {
             if (cbabs.size() == 0) {
                 throw new SwException("调拨单明细为空");
             }
+
+            //调出扫码
+            if(icu.contains(cbaa1.getCbaa09())){
+                Double kio= 0.0;
+                CbacCriteria cbacCriteria = new CbacCriteria();
+                cbacCriteria.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+                List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
+                int size = cbacs.size();
+                for(int s=0;s<cbabs.size();s++){
+             if(cbabs.get(s).getCbab09()==0){
+                 throw new SwException("调拨数量不能为空");
+             }
+             kio+=cbabs.get(s).getCbab09();
+          }
+           if(size<kio){
+               throw new SwException("调拨数量小于任务数量");
+
+            }
+            }
+            //调出扫码
+
+
             for (int i = 0; i < cbabs.size(); i++) {
                 if (cbabs.get(i).getCbab09() == null) {
                     throw new SwException("调拨数量不能为空");
@@ -1306,6 +1378,9 @@ else {
 //扫码仓库出库
 
         else {
+
+//调出是数量，调入是扫码
+
 
 
             int sdw = 0;

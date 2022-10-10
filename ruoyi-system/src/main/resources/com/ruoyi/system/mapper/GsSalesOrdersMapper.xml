@@ -435,7 +435,11 @@ WHERE so.delete_flag=0
       ss.price AS price,
       ss.qty AS qty,
       ss.remark AS remark,
-      ss.id AS detailId
+      ss.id AS detailId,
+      d.CBWA09,
+      cc.CBPB12,
+      ty.CALA08
+
     FROM
       `gs_ Sales_orders` AS so
 
@@ -460,7 +464,16 @@ WHERE so.delete_flag=0
       CBWA d
       ON
         d.CBWA01=so.wh_id
-where
+        LEFT JOIN
+      CBPB  cc
+      ON
+        cc.CBPB01=ss.goods_id
+        LEFT JOIN
+      CALA ty
+      ON
+        ty.CALA01=cc.CBPB10
+
+    where
       so.id= #{id}
   </select>
     <select id="seleteSalesbookingsummary" resultType="com.ruoyi.system.domain.vo.GsSalesOrderssVo">

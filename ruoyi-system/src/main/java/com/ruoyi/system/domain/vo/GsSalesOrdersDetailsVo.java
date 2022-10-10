@@ -56,5 +56,8 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cbpb12;
 
     //
+    private String cbwa09;
+
+
 
 }
