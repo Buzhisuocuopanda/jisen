@@ -379,11 +379,12 @@ a.CBQA06=0
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBQA08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by a.CBQA08 desc
   </select>
   <select id="SwJsSkuBarcodeselects" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
     CONCAT_WS ('-', b.CALA08, a.CBPB12,a.CBPB08,c.CBPM09) f,
-    c.CBPM09
+    c.CBPM09,c.CBPM08
     from
     CBPB a
     LEFT JOIN
@@ -402,8 +403,20 @@ a.CBQA06=0
     where
     a.CBPB06=0
     <if test='cbpk01 != null and cbpk01 != ""'> and d.CBPK01 =#{cbpk01}</if>
+    <if test='cbpm09 != null and cbpm09 != ""'> and c.CBPM09 = #{cbpm09}</if>
     order by d.CBPK08 desc
 
 </select>
+  <select id="SwJsSkuBarcodeselectss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      c.CBPM09
+    from
+
+      CBPM c
+    where
+    c.CBPM08= #{cbpm08}
+    limit 50
+
+  </select>
 
 </mapper>
