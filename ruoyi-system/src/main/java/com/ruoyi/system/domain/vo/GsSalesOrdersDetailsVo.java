@@ -23,16 +23,38 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
 
     private String orderNo;
 
-    private String supplier;
-
     private String saler;
 
+    private String salerMag;
+
+    private String supplier;
+
+    private String supplierMge;
+
     private String customer;
+
+    private String customerMag;
 
     private Date orderDate;
 
     private Byte status;
 
     private String wh;
+
+    private Integer whId;
+
+    //商品描述
+    private String cbpb08;
+
+    //商品品牌id
+    private String cbpb10;
+
+    //商品品牌名称
+    private String cala08;
+
+    //商品型号
+    private String cbpb12;
+
+    //
 
 }

@@ -240,6 +240,13 @@ return;
         return saleOrderListVos;
     }
 
+    //销售预订单变更单详情
+    @Override
+    public List<GsSalesOrdersDetailsVo> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
+        List<GsSalesOrdersDetailsVo> salesOrdersChangeVos = gsSalesOrdersMapper.saleOrderListdetails(gsSalesOrdersDetailsVo);
+        return salesOrdersChangeVos;
+    }
+
     @Override
     public void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
@@ -435,6 +442,13 @@ return;
     @Override
     public List<GsSalesOrdersInVo> seleteSubscribetotheinventoryslip(GsSalesOrdersInVo gsSalesOrdersInVo) {
         List<GsSalesOrdersInVo> gsSalesOrdersInVos = gsSalesOrdersInMapper.seleteSubscribetotheinventoryslip(gsSalesOrdersInVo);
+        return gsSalesOrdersInVos;
+    }
+
+    //销售预订单入库单详情
+    @Override
+    public List<GsSalesOrdersInVo> selectSalesReceiptList(GsSalesOrdersInVo gsSalesOrdersInVo) {
+        List<GsSalesOrdersInVo> gsSalesOrdersInVos = gsSalesOrdersInMapper.selectSalesReceiptList(gsSalesOrdersInVo);
         return gsSalesOrdersInVos;
     }
 
