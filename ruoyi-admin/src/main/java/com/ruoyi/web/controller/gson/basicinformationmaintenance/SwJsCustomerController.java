@@ -353,4 +353,33 @@ public class SwJsCustomerController extends BaseController {
         }
     }
 
+
+    /**
+     * 客户信息详情
+     */
+    @ApiOperation(
+            value ="客户信息详情购物车",
+            notes = "客户信息详情购物车"
+    )
+    @GetMapping("/customerDetailShop")
+    public AjaxResult<CbcaDto> customerDetailShop(CbcaDto cbcaDto) {
+        try{
+            CbcaDto res = swJsCustomerService.customerDetailShop(cbcaDto);
+
+            return AjaxResult.success(res);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【客户信息详情购物车】接口出现异常,参数${},异常${}$", JSON.toJSON(cbcaDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【客户信息详情购物车】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbcaDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 }

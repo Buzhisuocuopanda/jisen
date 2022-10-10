@@ -2101,8 +2101,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("只有在未提交状态下才能删除");
         }
 
+        cboc.setCboc06(DeleteFlagEnum.DELETE.getCode());
+        cbocMapper.updateByPrimaryKey(cboc);
         Cbod cbod = new Cbod();
-        cbod.setCbod06(DeleteFlagEnum.DELETE.getCode());
+        cbod.setCbod07(DeleteFlagEnum.DELETE.getCode());
 
         CbodCriteria example = new CbodCriteria();
         example.createCriteria()

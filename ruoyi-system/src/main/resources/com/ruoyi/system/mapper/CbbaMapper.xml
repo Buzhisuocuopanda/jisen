@@ -393,7 +393,9 @@ WHERE
 	AND cb.CBBA12 = 0
 	AND cb.CBBA08 = #{goodsId}
 	AND cb.CBBA15 &lt;= #{poritiry}
+	<if test="cbba01 !=null and cbba01 !=''">
 	AND cb.CBBA01 != #{cbba01}
+    </if>
 ORDER BY
 	cb.CBBA15
   </select>
