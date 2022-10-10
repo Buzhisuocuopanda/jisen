@@ -2303,6 +2303,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             gsGoodsShop.setUpdateBy(Math.toIntExact(userid));
             gsGoodsShop.setUserId(Math.toIntExact(userid));
             gsGoodsShop.setGoodsId(goodsId);
+            gsGoodsShop.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+
 
             gsSaleShoppingMapper.insertSelective(gsGoodsShop);
         }

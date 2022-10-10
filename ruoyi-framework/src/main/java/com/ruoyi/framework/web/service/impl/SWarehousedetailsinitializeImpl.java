@@ -18,6 +18,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWarehousedetailsinitializeService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -100,6 +101,15 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         Long userid = SecurityUtils.getUserId();
 
         for (int i = 0; i < itemList.size(); i++) {
+
+            if(itemList.get(i).getCbig08()==null){
+                throw new SwException("库位id为空");
+            }
+            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbig08());
+            if(cbla==null){
+                throw new SwException("库位不存在");
+            }
+
 
             itemList.get(i).setCbig03(date);
             itemList.get(i).setCbig04(Math.toIntExact(userid));
@@ -235,6 +245,24 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
      @Transactional
      @Override
     public int swJsStoreendd(CbieDo cbieDo) {
+         Date date = new Date();
+         Cbie uio = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+
+         CbigCriteria dsfs = new CbigCriteria();
+        dsfs.createCriteria().andCbie01EqualTo(cbieDo.getCbie01());
+        List<Cbig> cbigs = cbigMapper.selectByExample(dsfs);
+        for(int i=0;i<cbigs.size();i++){
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(cbigs.get(i).getCbig10());
+            gsGoodsSnDo.setGoodsId(cbigs.get(i).getCbig09());
+            gsGoodsSnDo.setWhId(uio.getCbie09());
+            gsGoodsSnDo.setLocationId(cbigs.get(i).getCbig08());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+            gsGoodsSnDo.setInTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+            taskService.addGsGoodsSns(gsGoodsSnDo);        }
+
+
 
 
         Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
@@ -245,7 +273,6 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
         Long userId = SecurityUtils.getUserId();
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
-        Date date = new Date();
 
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
