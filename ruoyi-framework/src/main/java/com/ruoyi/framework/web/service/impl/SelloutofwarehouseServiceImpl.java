@@ -705,7 +705,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 throw new SwException("商品id不能为空");
             }
             if(!uio.contains(cbpms.get(0).getCbpm08())){
-                throw new SwException("该商品不在采购退货单明细中");
+                throw new SwException("该商品不在销售出库单明细中");
             }
 
 
@@ -718,6 +718,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             itemList.get(i).setCbsd07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setCbsd11(ScanStatusEnum.YISAOMA.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setCbsb01(itemList.get(0).getCbsb01());
 
             //如果查不到添加信息到库存表
             Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.get(i).getCbsb01());
@@ -778,44 +779,6 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             }
         }
 
-       /* //写台账
-        Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
-        if(cbsb==null){
-            throw new SwException("没有该销售出库单");
-        }
-        CbscCriteria example = new CbscCriteria();
-        example.createCriteria()
-                .andCbsb01EqualTo(cbsb.getCbsb01())
-                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbsc> cbscs = cbscMapper.selectByExample(example);
-        if(cbscs.size()==0){
-            throw new SwException("销售出库单明细表为空");
-        }
-
-        for(int i=0;i<cbscs.size();i++){
-            CbibDo cbibDo = new CbibDo();
-            cbibDo.setCbib02(cbsb.getCbsb10());
-            cbibDo.setCbib03(cbsb.getCbsb07());
-            cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
-            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbscs.get(i).getCbsc15());
-
-            cbibDo.setCbib06(cbsa.getCbsa08());
-            cbibDo.setCbib07(cbscs.get(i).getCbsc01());
-            cbibDo.setCbib08(cbscs.get(i).getCbsc08());
-            //本次入库数量
-            cbibDo.setCbib11((double) 0);
-            cbibDo.setCbib12((double) 0);
-            cbibDo.setCbib13(cbscs.get(i).getCbsc09());
-            cbibDo.setCbib14(cbscs.get(i).getCbsc11());
-            cbibDo.setCbib17(TaskType.xcckd.getMsg());
-            cbibDo.setCbib19(cbscs.get(i).getCbsc15());
-            taskService.InsertCBIB(cbibDo);
-        }*/
-        //状态设为标记完成，回写总订单
-
-//        CbsbDo cbsbDo = new CbsbDo();
-//        cbsbDo.setCbsb01(itemList.get(0).getCbsb01());
-//       this.insertSwJsSkuBarcodeshwc(cbsbDo);
         session.commit();
         session.clearCache();
         return 1;

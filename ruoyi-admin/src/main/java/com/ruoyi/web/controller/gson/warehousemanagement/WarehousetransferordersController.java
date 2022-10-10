@@ -518,7 +518,6 @@ public class WarehousetransferordersController extends BaseController {
         try {
             return toAjax(warehousetransferordersService.transferordersoutbjwc(cbaaDo));
 
-
         }catch (SwException e) {
             log.error("【仓库调拨单调出标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
 

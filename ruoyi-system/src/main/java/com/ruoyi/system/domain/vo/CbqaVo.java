@@ -39,6 +39,7 @@ public class CbqaVo extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
+    private Integer cbpm08;
 
     private String cbpm09;
 
