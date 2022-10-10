@@ -29,9 +29,9 @@ public class GsAfterSalesVo extends BaseEntity {
 
     private Integer suplierId;
 
-    private String answerMsg;
+    private Integer answerMsg;
 
-    private String process;
+    private Integer process;
     private String cbpb08;
     private String cbpb15;
 
@@ -42,4 +42,10 @@ public class GsAfterSalesVo extends BaseEntity {
 
     private Date endTime;
 
+
+    private String salerId;
+    //销售人员名称
+    private String salerName;
+    //反馈时间
+    private Date feedbackTime;
 }

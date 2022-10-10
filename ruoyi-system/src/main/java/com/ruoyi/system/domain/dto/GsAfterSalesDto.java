@@ -31,9 +31,15 @@ public class GsAfterSalesDto {
     private String sn;
    // @NotNull(message = "供料单位不能为空")
     private Integer suplierId;
-    @NotBlank(message = "处理结果不能为空")
-    private String answerMsg;
-    @NotBlank(message = "进度不能为空")
-    private String process;
+    @NotNull(message = "处理结果不能为空")
+    private Integer answerMsg;
+    @NotNull(message = "进度不能为空")
+    private Integer process;
+
+    private Integer salerId;
+    //销售人员名称
+    private String salerName;
+    //反馈时间
+    private Date feedbackTime;
 
 }

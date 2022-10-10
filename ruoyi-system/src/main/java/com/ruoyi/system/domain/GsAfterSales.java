@@ -32,6 +32,11 @@ public class GsAfterSales implements Serializable {
 
     private String process;
 
+    //销售人员名称
+    private Integer salerId;
+    //反馈时间
+    private Date feedbackTime;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -146,6 +151,22 @@ public class GsAfterSales implements Serializable {
         this.process = process == null ? null : process.trim();
     }
 
+    public Integer getSalerId() {
+        return salerId;
+    }
+
+    public void setSalerId(Integer salerId) {
+        this.salerId = salerId;
+    }
+
+    public Date getFeedbackTime() {
+        return feedbackTime;
+    }
+
+    public void setFeedbackTime(Date feedbackTime) {
+        this.feedbackTime = feedbackTime;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -171,7 +192,10 @@ public class GsAfterSales implements Serializable {
             && (this.getSn() == null ? other.getSn() == null : this.getSn().equals(other.getSn()))
             && (this.getSuplierId() == null ? other.getSuplierId() == null : this.getSuplierId().equals(other.getSuplierId()))
             && (this.getAnswerMsg() == null ? other.getAnswerMsg() == null : this.getAnswerMsg().equals(other.getAnswerMsg()))
-            && (this.getProcess() == null ? other.getProcess() == null : this.getProcess().equals(other.getProcess()));
+            && (this.getProcess() == null ? other.getProcess() == null : this.getProcess().equals(other.getProcess()))
+                && (this.getFeedbackTime() == null ? other.getFeedbackTime() == null : this.getFeedbackTime().equals(other.getFeedbackTime()))
+                && (this.getSalerId() == null ? other.getSalerId() == null : this.getSalerId().equals(other.getSalerId()));
+
     }
 
     @Override
@@ -192,6 +216,8 @@ public class GsAfterSales implements Serializable {
         result = prime * result + ((getSuplierId() == null) ? 0 : getSuplierId().hashCode());
         result = prime * result + ((getAnswerMsg() == null) ? 0 : getAnswerMsg().hashCode());
         result = prime * result + ((getProcess() == null) ? 0 : getProcess().hashCode());
+        result = prime * result + ((getSalerId() == null) ? 0 : getSalerId().hashCode());
+        result = prime * result + ((getFeedbackTime() == null) ? 0 : getFeedbackTime().hashCode());
         return result;
     }
 

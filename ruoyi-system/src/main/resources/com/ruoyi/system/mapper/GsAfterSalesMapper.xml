@@ -14,8 +14,10 @@
     <result column="question" jdbcType="VARCHAR" property="question" />
     <result column="sn" jdbcType="VARCHAR" property="sn" />
     <result column="suplier_id" jdbcType="INTEGER" property="suplierId" />
-    <result column="answer_msg" jdbcType="VARCHAR" property="answerMsg" />
-    <result column="process" jdbcType="VARCHAR" property="process" />
+    <result column="answer_msg" jdbcType="INTEGER" property="answerMsg" />
+    <result column="process" jdbcType="INTEGER" property="process" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="saler_id" jdbcType="INTEGER" property="salerId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, customer_id, sale_order_no,
-    goods_id, question, sn, suplier_id, answer_msg, `process`
+    goods_id, question, sn, suplier_id, answer_msg, `process`,saler_id ,feedback_time
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria" resultMap="BaseResultMap">
     select
@@ -114,12 +116,12 @@
       create_by, update_by, delete_flag,
       customer_id, sale_order_no, goods_id,
       question, sn, suplier_id,
-      answer_msg, `process`)
+      answer_msg, `process`,feedback_time,saler_id,feedback_time,saler_id)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
       #{customerId,jdbcType=INTEGER}, #{saleOrderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER},
       #{question,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{suplierId,jdbcType=INTEGER},
-      #{answerMsg,jdbcType=VARCHAR}, #{process,jdbcType=VARCHAR})
+      #{answerMsg,jdbcType=INTEGER}, #{process,jdbcType=INTEGER}, #{feedbackTime,jdbcType=TIMESTAMP}, #{salerId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsAfterSales">
     insert into `gs_after_sales`
@@ -166,6 +168,12 @@
       <if test="process != null">
         `process`,
       </if>
+      <if test="feedbackTime != null">
+        `feedback_time`,
+      </if>
+      <if test="salerId != null">
+        `saler_id`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -205,10 +213,16 @@
         #{suplierId,jdbcType=INTEGER},
       </if>
       <if test="answerMsg != null">
-        #{answerMsg,jdbcType=VARCHAR},
+        #{answerMsg,jdbcType=INTEGER},
       </if>
       <if test="process != null">
-        #{process,jdbcType=VARCHAR},
+        #{process,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackTime != null">
+        #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="salerId != null">
+        #{salerId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -258,11 +272,18 @@
         suplier_id = #{record.suplierId,jdbcType=INTEGER},
       </if>
       <if test="record.answerMsg != null">
-        answer_msg = #{record.answerMsg,jdbcType=VARCHAR},
+        answer_msg = #{record.answerMsg,jdbcType=INTEGER},
       </if>
       <if test="record.process != null">
-        `process` = #{record.process,jdbcType=VARCHAR},
+        `process` = #{record.process,jdbcType=INTEGER},
       </if>
+      <if test="record.feedbackTime != null">
+        feedback_time = #{record.feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.salerId != null">
+        saler_id = #{record.salerId,jdbcType=INTEGER},
+      </if>
+
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -282,8 +303,10 @@
       question = #{record.question,jdbcType=VARCHAR},
       sn = #{record.sn,jdbcType=VARCHAR},
       suplier_id = #{record.suplierId,jdbcType=INTEGER},
-      answer_msg = #{record.answerMsg,jdbcType=VARCHAR},
-      `process` = #{record.process,jdbcType=VARCHAR}
+      answer_msg = #{record.answerMsg,jdbcType=INTEGER},
+      `process` = #{record.process,jdbcType=INTEGER},
+    feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+    saler_id = #{salerId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -325,10 +348,17 @@
         suplier_id = #{suplierId,jdbcType=INTEGER},
       </if>
       <if test="answerMsg != null">
-        answer_msg = #{answerMsg,jdbcType=VARCHAR},
+        answer_msg = #{answerMsg,jdbcType=INTEGER},
       </if>
       <if test="process != null">
-        `process` = #{process,jdbcType=VARCHAR},
+        `process` = #{process,jdbcType=INTEGER},
+      </if>
+
+      <if test="feedbackTime != null">
+        feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="salerId != null">
+        saler_id = #{salerId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -346,8 +376,10 @@
       question = #{question,jdbcType=VARCHAR},
       sn = #{sn,jdbcType=VARCHAR},
       suplier_id = #{suplierId,jdbcType=INTEGER},
-      answer_msg = #{answerMsg,jdbcType=VARCHAR},
-      `process` = #{process,jdbcType=VARCHAR}
+      answer_msg = #{answerMsg,jdbcType=INTEGER},
+      `process` = #{process,jdbcType=INTEGER},
+       feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      saler_id = #{salerId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -359,7 +391,9 @@
       d.CBSA08,a.create_time as createTime,
       b.CBPB15 as cbpb15,
       a.answer_msg as answerMsg,
-      a.question as question
+      a.question as question,
+      u.nick_name as aslerName,
+      a.feedback_time as feedbackTime
     FROM
       gs_after_sales a
         LEFT JOIN
@@ -374,16 +408,17 @@
       CBSA d
       ON
         d.CBSA01=a.suplier_id
+        LEFT JOIN sys_user u on u.user_id = a.saler_id
             where
             a.delete_flag=0
     <if test="saleOrderNo != null "> and a.sale_order_no like concat('%',  #{saleOrderNo}, '%')</if>
     <if test="id != null "> and a.id like concat('%',  #{id}, '%')</if>
 
     <if test="startTime != null">
-      and a.create_time &gt;= #{startTime}
+      and a.feedback_time &gt;= #{startTime}
     </if>
     <if test="endTime != null">
-      and a.create_time &lt;=#{endTime}
+      and a.feedback_time &lt;=#{endTime}
     </if>
 
   </select>
