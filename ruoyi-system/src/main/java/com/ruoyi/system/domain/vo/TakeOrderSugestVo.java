@@ -32,6 +32,8 @@ public class TakeOrderSugestVo {
     //SN
     private String sn;
 
+    private String bfSn;
+
     //库位
     private String sku;
 

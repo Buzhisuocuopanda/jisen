@@ -163,6 +163,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //        cbpk.setCbpk28();
 //        cbpk.setCbpk29();
         cbpk.setCbpk30(takeGoodsOrderAddDto.getCustomerNo());
+
         cbpk.setCbpk31(TakeOrderConstants.WEIWANCHENG);
         cbpk.setCheckStatus(TakeOrderCheckStatus.NOCHECK.getCode().byteValue());
         cbpk.setSaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
@@ -212,15 +213,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpl.setCbpl10(0.0);
             cbpl.setCbpl11(good.getPrice());
             cbpl.setCbpl12(good.getTotalPrice());
-
+            cbpl.setGoodProductQty(good.getQty());
 //            cbpl.setCbpl13();
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();
 //            cbpl.setCbpl16();
             cbpl.setGoodProductQty(0.0);
             cbplMapper.insert(cbpl);
-
-
 
 //            List<Cbpl> list=cbplMapper.selectBySaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
 
@@ -363,6 +362,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //                    .andCbpk01EqualTo(cbpk.getCbpk01())
 //                    .andCb
 //            List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+
+//            CbpmCriteria pmex=new CbpmCriteria();
+//                 pmex.createCriteria()
+//                .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                .andCbpm08EqualTo(good.getGoodsId())
+//                .andCbpk01EqualTo(cbpk.getCbpk01());
+//                List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+//                good.setGoodsNum(Double.valueOf(cbpms.size()));
+
+
             //zhaoGuoLiang添加销售订单明细表id
             if(cbobList!=null&&cbobList.size()>i){
                 good.setCbob01(cbobList.get(i).getCbob01());
@@ -433,6 +442,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbpk01EqualTo(cbpk.getCbpk01());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
             good.setScanQty(cbpms.size());
+            good.setGoodsNum(Double.valueOf(cbpms.size()));
             //todo
 //            good.setRemark();
             good.setQty(cbpl.getCbpl09());
@@ -475,12 +485,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
                 sugest.setUpc(takeOrderGoodsVo.getUpc());
 
+
             }
 
             sugest.setNumber(cbpm.getCbpm02());
 
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
-
+            sugest.setBfSn(cbpm.getCbpm12());
             sugest.setSku(cbpm.getSku());
             sugest.setSn(cbpm.getCbpm09());
             res.getSugests().add(sugest);
@@ -876,7 +887,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpk.setCbpk11(SaleOrderStatusEnums.YITIJIAO.getCode());
             for (Cbpm cbpm : cbpms) {
                 if(cbpm.getCbpm11()==1){
-                                    throw new SwException("已有扫码的商品，不能反审");
+                   throw new SwException("已有扫码的商品，不能反审");
 
                 }
                 cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
@@ -900,6 +911,34 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YIWANCHENG.getCode());
+            CboaCriteria orderex=new CboaCriteria();
+            orderex.createCriteria()
+                    .andCboa07EqualTo(cbpk.getSaleOrderNo());
+            List<Cboa> cboas = cboaMapper.selectByExample(orderex);
+            if(cboas.size()>0){
+                Cboa cboa = cboas.get(0);
+                CbobCriteria obex=new CbobCriteria();
+                obex.createCriteria()
+                        .andCboa01EqualTo(cboa.getCboa01());
+                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+
+                for (Cbob cbob : cbobs) {
+                    CbplCriteria plex=new CbplCriteria();
+                    plex.createCriteria()
+                            .andCbpk01EqualTo(cbpk.getCbpk01())
+                            .andCbpl08EqualTo(cbob.getCbob08())
+                            .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+                    if(cbpls.size()>0){
+                        cbob.setTakeQty(cbpls.get(0).getGoodProductQty());
+                    }
+
+                }
+
+
+            }
+
+
         }else if(auditTakeOrderDto.getOpType().equals(5)){
             //取消完成
 

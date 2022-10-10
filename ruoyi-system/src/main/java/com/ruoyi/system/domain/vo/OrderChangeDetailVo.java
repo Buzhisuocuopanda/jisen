@@ -23,6 +23,9 @@ public class OrderChangeDetailVo {
     @ApiModelProperty("id")
     private Integer id;
 
+
+    private Integer orderId;
+
     //销售订单编号
     @ApiModelProperty("销售订单编号")
 

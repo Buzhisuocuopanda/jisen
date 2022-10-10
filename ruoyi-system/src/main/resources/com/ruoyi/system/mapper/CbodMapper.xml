@@ -524,9 +524,9 @@
     <if test="selectMsg != null  and selectMsg !=''  ">
       AND
       (
-      la.CALA08 like concat('%', #{goodsMsg}, '%')
-      OR pb.CBPB12 like concat('%', #{goodsMsg}, '%')
-      OR pb.CBPB08 like concat('%', #{goodsMsg}, '%')
+      la.CALA08 like concat('%', #{selectMsg}, '%')
+      OR pb.CBPB12 like concat('%', #{selectMsg}, '%')
+      OR pb.CBPB08 like concat('%', #{selectMsg}, '%')
       )
 
 
