@@ -939,11 +939,11 @@ public class SaleOrderController extends BaseController {
             notes = "购物车列表"
     )
     @GetMapping("/goodsShopList")
-    public AjaxResult goodsShopList() {
+    public AjaxResult<TableDataInfo> goodsShopList() {
         try {
-
+            startPage();
             List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(getUserId().intValue());
-            return AjaxResult.success(goodsShopVos);
+            return AjaxResult.success(getDataTable(goodsShopVos));
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 

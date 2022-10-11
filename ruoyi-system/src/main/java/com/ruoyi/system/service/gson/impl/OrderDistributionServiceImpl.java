@@ -623,6 +623,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
                 }else {
                     GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+                    gsAllocationBalance.setGoodsId(directWarehousingDto.getGoodsId());
                     gsAllocationBalance.setCreateTime(new Date());
                     gsAllocationBalance.setQty(new Double(1));
                     gsAllocationBalance.setUpdateTime(new Date());

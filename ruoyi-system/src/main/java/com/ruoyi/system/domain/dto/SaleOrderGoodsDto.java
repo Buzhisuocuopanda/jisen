@@ -45,7 +45,7 @@ public class SaleOrderGoodsDto {
 
     private Integer id;
 
-    public Integer getGoodsId() {
-        return id;
-    }
+//    public Integer getGoodsId() {
+//        return id;
+//    }
 }
