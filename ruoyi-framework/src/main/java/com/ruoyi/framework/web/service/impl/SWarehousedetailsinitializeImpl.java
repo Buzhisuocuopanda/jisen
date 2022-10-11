@@ -313,7 +313,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
                      GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                      gsGoodsSku.setId(id);
                      if(gsGoodsSku.getQty() + selectbyid.get(k).getNums()>=cbla11){
-                         throw new SwException("入库数量为"+gsGoodsSku.getQty()+"所在库位数量"+gsGoodsSku.getQty()
+                         throw new SwException("入库数量为"+selectbyid.get(k).getNums()+"所在库位数量"+gsGoodsSku.getQty()
                                  +"大于库位最大容量"+cbla11);
                      }
                      gsGoodsSku.setQty(gsGoodsSku.getQty() + selectbyid.get(k).getNums());

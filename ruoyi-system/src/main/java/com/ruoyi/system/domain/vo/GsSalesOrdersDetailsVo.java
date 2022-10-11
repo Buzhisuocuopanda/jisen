@@ -41,4 +41,16 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cbpb10;
     @Excel(name = "创建时间")
     private Date createTime;
+
+
+    private String cala08;
+
+    private String cbwa09;
+
+    private String cbpb12;
+
+
+
+
+
 }
