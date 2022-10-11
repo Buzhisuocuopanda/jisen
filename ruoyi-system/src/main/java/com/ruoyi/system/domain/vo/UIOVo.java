@@ -14,4 +14,6 @@ public class UIOVo {
 
     private int nums;
 
+   private Double price;
+
 }

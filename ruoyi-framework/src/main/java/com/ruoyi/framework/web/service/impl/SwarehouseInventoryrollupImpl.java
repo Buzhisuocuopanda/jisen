@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.vo.CbifVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwarehouseInventoryrollupService;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,14 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
     @Resource
     private CbpbMapper cbpbMapper;
 
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
+    @Resource
+    private CblaMapper cblaMapper;
+
+    @Resource
+    private BaseCheckService baseCheckService;
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
@@ -138,15 +147,65 @@ public class SwarehouseInventoryrollupImpl implements ISwarehouseInventoryrollup
     @Transactional
     @Override
     public int swJsStoreendd(CbieDo cbieDo) {
+        Date date = new Date();
+        Long userId = SecurityUtils.getUserId();
 
         Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
         if (!cbie1.getCbie10().equals(TaskStatus.mr.getCode()) && cbie1.getCbie06().equals(DeleteFlagEnum.NOT_DELETE.getCode())) {
             throw new SwException("未审核才能审核");
         }
 
-        Long userId = SecurityUtils.getUserId();
+CbifCriteria rty = new CbifCriteria();
+        rty.createCriteria().andCbie01EqualTo(cbieDo.getCbie01());
+        List<Cbif> selectbyid = cbifMapper.selectByExample(rty);
+        if(selectbyid.size()==0){
+            throw new SwException("库存汇总明细为空");
+        }
+        for(int k=0;k<selectbyid.size();k++) {
+            GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+            example.createCriteria()
+                    .andGoodsIdEqualTo(selectbyid.get(k).getCbif08())
+                    .andWhIdEqualTo(cbie1.getCbie09());
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+            // double num = doubles[i];
+            //对库存表的操作
+            if (gsGoodsSkus.size() == 0) {
+                //新增数据
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userId));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userId));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(selectbyid.get(k).getCbif08());
+                gsGoodsSku.setWhId(cbie1.getCbie09());
+                gsGoodsSku.setQty((double) selectbyid.get(k).getCbif09());
+                gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+            } else {
+
+
+                //更新数据
+//                    List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getId).collect(Collectors.toList());
+//                    int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
+//                    int id = ints1[0];
+
+                Integer id = gsGoodsSkus.get(0).getId();
+                GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                gsGoodsSku.setId(id);
+
+                gsGoodsSku.setQty(gsGoodsSku.getQty() + selectbyid.get(k).getCbif09());
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userId));
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }
+        }
+
+
+
+
+
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
-        Date date = new Date();
 
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));

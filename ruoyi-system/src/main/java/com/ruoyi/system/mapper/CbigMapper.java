@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbig;
 import com.ruoyi.system.domain.CbigCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbigMapper {
@@ -29,4 +31,6 @@ public interface CbigMapper {
     int updateByPrimaryKey(Cbig record);
 
     int insertByBatch(List<Cbig> itemList);
+
+    List<UIOVo> wegsele(Integer cbie01);
 }
