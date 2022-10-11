@@ -48,4 +48,7 @@ public class GsAfterSalesVo extends BaseEntity {
     private String salerName;
     //反馈时间
     private Date feedbackTime;
+
+    //解决方案
+    private String solution;
 }

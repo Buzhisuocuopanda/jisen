@@ -431,7 +431,22 @@ ORDER BY
     ORDER BY
     s.create_time desc
   </select>
+  <select id="selectGoodsSnSelect3" resultType="com.ruoyi.system.domain.vo.GsGoodsSnVo">
 
+    SELECT
+    s.id,s.goods_id,s.location_id,s.wh_id, s.sn,la.CBLA09,pb.CBPB10,pb.CBPB12,pb.CBPB08
+    FROM
+    `gs_goods_sn` s
+    left join CBPB pb on pb.CBPB01 = s.goods_id
+    left join CBLA la on la.CBLA01 = s.location_id
+    WHERE
+    (s.delete_flag =0 or s.delete_flag is null)
+    <if test="sn != null">
+      and s.sn like concat('%', #{sn}, '%')
+    </if>
+    ORDER BY
+    s.create_time desc
+  </select>
 
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.TakeGoodsOrderListVo">
     SELECT
