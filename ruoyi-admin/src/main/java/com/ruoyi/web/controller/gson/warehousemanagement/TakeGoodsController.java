@@ -72,9 +72,9 @@ public class TakeGoodsController extends BaseController {
             value ="提货单列表",
             notes = "提货单列表"
     )
-    @PostMapping("/takeOrderList")
+    @GetMapping("/takeOrderList")
     @PreAuthorize("@ss.hasPermi('system:whmanagement:list')")
-    public AjaxResult<TableDataInfo> takeOrderList(@RequestBody TakeGoodsOrderListDto takeGoodsOrderListDto){
+    public AjaxResult<TableDataInfo> takeOrderList( TakeGoodsOrderListDto takeGoodsOrderListDto){
         try {
             startPage();
             List<TakeGoodsOrderListVo> list= takeGoodsService.takeOrderList(takeGoodsOrderListDto);

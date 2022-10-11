@@ -435,7 +435,15 @@ WHERE so.delete_flag=0
       ss.price AS price,
       ss.qty AS qty,
       ss.remark AS remark,
-      ss.id AS detailId
+      ss.id AS detailId,
+      d.CBWA09,d.CBWA01,
+      cc.CBPB12,cc.CBPB08,cc.CBPB15,
+      ty.CALA08,
+      so.supplier_id as supplierId,
+        so.saler_id as salerId,
+        so.customer_id as customerId
+
+
     FROM
       `gs_ Sales_orders` AS so
 
@@ -460,7 +468,16 @@ WHERE so.delete_flag=0
       CBWA d
       ON
         d.CBWA01=so.wh_id
-where
+        LEFT JOIN
+      CBPB  cc
+      ON
+        cc.CBPB01=ss.goods_id
+        LEFT JOIN
+      CALA ty
+      ON
+        ty.CALA01=cc.CBPB10
+
+    where
       so.id= #{id}
   </select>
     <select id="seleteSalesbookingsummary" resultType="com.ruoyi.system.domain.vo.GsSalesOrderssVo">
@@ -531,4 +548,80 @@ where
       </if>
     </select>
 
+
+ <select id="saleOrderListdetails" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
+    SELECT DISTINCT
+    a.order_no as orderNo,a.order_date as orderDate,
+    b.CAUA17 as caua17,c.CBSA08 as cbsa08,
+    a.goodsclassify as goodsclassify,
+    a.gs_Sales_orders as gsSalesOrders,
+    a.qty as qty,
+    a.id as id,
+    a.status as status,
+    a.supplier_id as supplier,
+    a.saler_id as saler,
+    c.CBSA08 as supplierMge,
+    b.CAUA15 as salerMag,
+    b.CAUA01 as salerId,
+    gs.customer_id as customer,
+    cb.CBCA08 as customerMag,
+    a.goods_id as goodsId,
+    pb.CBPB08 as cbpb08,
+    pb.CBPB10 as cbpb10,
+    pb.CBPB12 as cbpb12,
+    ca.CALA08 as cala08,
+    gs.wh_id as whId,
+    wa.CBWA09 as wh
+    FROM
+    `gs_ Sales_orders_change` a
+    LEFT JOIN
+    CAUA b
+    ON
+    a.saler_id=b.CAUA01
+    LEFT JOIN
+    CBSA c
+    on
+    c.CBSA01=a.supplier_id
+    LEFT JOIN
+    `gs_ Sales_orders` gs
+    on
+    gs.id = a.gs_Sales_orders
+    LEFT JOIN
+     CBCA cb
+     on
+     cb.CBCA01 = gs.customer_id
+    LEFT JOIN
+     CBPB pb
+     on
+     pb.CBPB01 = a.goods_id
+     LEFT JOIN
+     CALA ca
+     on
+     pb.CBPB10 = ca.CALA01
+     LEFT JOIN
+     CBWA wa
+     on
+     gs.wh_id = wa.CBWA01
+    WHERE
+    a.delete_flag=0
+    <if test="orderNo != null and orderNo !=''">
+        and   a.order_no   like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="id != null and id !=''">
+        and   a.id = #{id}
+    </if>
+    <!--    <if test="startTime != null">-->
+    <!--      and a.order_date &gt;= #{startTime}-->
+    <!--    </if>-->
+    <!--    <if test="endTime != null">-->
+    <!--      and a.order_date &lt;=#{endTime}-->
+    <!--    </if>-->
+
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+        and date_format(a.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+        and date_format(a.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+</select>
 </mapper>

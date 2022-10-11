@@ -5,9 +5,11 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.dto.CbwaDto;
 import com.ruoyi.system.mapper.CbpcMapper;
 import com.ruoyi.system.mapper.CbwaMapper;
+import com.ruoyi.system.mapper.GsGoodsSnMapper;
 import com.ruoyi.system.mapper.GsSystemUseMapper;
 import com.ruoyi.system.service.ISwJsStoreSkuService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,9 @@ private GsSystemUseMapper gsSystemUseMapper;
 private CbwaMapper cbwaMapper;
 @Resource
 private CbpcMapper cbpcMapper;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
     @Override
     public int insertSwJsStoreSku(CbwaDto cbwaDto) {
         CbwaCriteria example = new CbwaCriteria();
@@ -65,6 +70,19 @@ private CbpcMapper cbpcMapper;
 
     @Override
     public int updateSwJsGoodsClassify(CbwaDto cbwaDto) {
+
+        if(cbwaDto.getCbwa01()==null){
+            throw new SwException("库位信息id不能为空");
+        }
+
+        GsGoodsSnCriteria ettr = new GsGoodsSnCriteria();
+        ettr.createCriteria().andWhIdEqualTo(cbwaDto.getCbwa01());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(ettr);
+        if(gsGoodsSns.size()>0){
+            throw new SwException("仓库已有sn商品，不能修改");
+        }
+
+
         if(cbwaDto.getCbwa09()!=null){
         CbwaCriteria example = new CbwaCriteria();
         example.createCriteria().andCbwa09EqualTo(cbwaDto.getCbwa09())

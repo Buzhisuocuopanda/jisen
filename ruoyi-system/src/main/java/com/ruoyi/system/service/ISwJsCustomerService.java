@@ -24,4 +24,6 @@ public interface ISwJsCustomerService {
     List<BaseSelectVo> systemUserSelect(BaseSelectDto baseSelectDto);
 
     CbcaDto customerDetail(CbcaDto cbcaDto);
+
+    CbcaDto customerDetailShop(CbcaDto cbcaDto);
 }

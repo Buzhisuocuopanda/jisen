@@ -1166,10 +1166,10 @@ public class SaleOrderController extends BaseController {
     @GetMapping("/orderChangeGoodsSelect")
     public AjaxResult<TableDataInfo> orderChangeGoodsSelect( @Valid BaseSelectDto baseSelectDto ,BindingResult bindingResult) {
         try {
-
+            startPage();
             ValidUtils.bindvaild(bindingResult);
             List<BaseSelectVo> res= saleOrderService.orderChangeGoodsSelect(baseSelectDto);
-            return AjaxResult.success(res);
+            return AjaxResult.success(getDataTable(res));
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 

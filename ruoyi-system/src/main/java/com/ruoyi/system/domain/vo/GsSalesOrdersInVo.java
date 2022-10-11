@@ -37,7 +37,49 @@ public class GsSalesOrdersInVo  implements Serializable {
 
     private Byte status;
 
+    //订单编号
+    private String orderNo;
+
+    //日期
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date orderDate;
+
+    //客户信息维护id
+    private Integer cbca01;
+
+    //客户信息维护名称
+    private String cbca08;
+
+   //供应商信息维护id
+    private Integer cbsa01;
+
+    //供应商信息维护名称
+    private String cbsa08;
+
+    //仓库信息维护id
+    private Integer cbwa01;
+
+    //仓库信息维护名称
+    private String cbwa09;
+
+    //用户管理id
+    private Integer caua01;
+
+    //用户管理名称
+    private String caua09;
+
+    //商品品牌id
+    private Integer cbpb10;
+
+    //商品型号
+    private String cbpb12;
+
+    //商品描述
     private String cbpb08;
+
+    //商品品牌名称
+    private String cala08;
+
     //单据开始时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;

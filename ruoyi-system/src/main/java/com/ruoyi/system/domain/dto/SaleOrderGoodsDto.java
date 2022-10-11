@@ -43,6 +43,9 @@ public class SaleOrderGoodsDto {
 
     private String totalOrderNo;
 
+    private Integer id;
 
-
+    public Integer getGoodsId() {
+        return id;
+    }
 }

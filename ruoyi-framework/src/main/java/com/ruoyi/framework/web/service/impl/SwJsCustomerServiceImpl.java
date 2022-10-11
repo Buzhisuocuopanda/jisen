@@ -12,9 +12,13 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.CbcaDto;
+import com.ruoyi.system.domain.dto.GoodsPriceAndSkuDto;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
+import com.ruoyi.system.domain.vo.GoodsPriceAndSkuVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsCustomerService;
+import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.SaleOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +27,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -38,6 +43,16 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SaleOrderService saleOrderService;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
+
+    @Resource
+    private BaseCheckService baseCheckService;
+
 
 
 
@@ -297,6 +312,35 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
             throw new SwException("没有查到该客户");
         }
         CbcaDto cbcaDto1 = BeanCopyUtils.coypToClass(cbca, CbcaDto.class,null);
+        return cbcaDto1;
+    }
+
+    @Override
+    public CbcaDto customerDetailShop(CbcaDto cbcaDto) {
+
+        if(cbcaDto.getCbca01()==null){
+            throw new SwException("请选择客户");
+        }
+        Cbca cbca = cbcaMapper.selectByPrimaryKey(cbcaDto.getCbca01());
+        if(cbca==null){
+            throw new SwException("没有查到该客户");
+        }
+        CbcaDto cbcaDto1 = BeanCopyUtils.coypToClass(cbca, CbcaDto.class,null);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (Integer goodsId : cbcaDto.getGoodsIds()) {
+            GoodsPriceAndSkuDto dto=new GoodsPriceAndSkuDto();
+            dto.setCustomerId(cbca.getCbca01());
+            dto.setGoodsId(goodsId);
+            dto.setOrderClass(2);
+            GoodsPriceAndSkuVo goodsPriceAndSkuVo = saleOrderService.goodsPriceAndSku(dto);
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(dto.getGoodsId());
+            if(cbpb!=null){
+                goodsPriceAndSkuVo.setGoodsMsg(brandMap.get(cbpb.getCbpb10())+"-"+cbpb.getCbpb12()+"-"+cbpb.getCbpb08());
+            }
+            cbcaDto1.getGoodsres().add(goodsPriceAndSkuVo);
+
+        }
+
         return cbcaDto1;
     }
 

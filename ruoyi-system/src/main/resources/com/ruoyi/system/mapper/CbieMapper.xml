@@ -504,6 +504,7 @@ where
         a.CBIE09=b.CBWA01
     where
       a.CBIE06=0
+    <if test='cbwa09 != null and cbwa09 != ""'> and b.CBWA09  like concat('%', #{cbwa09}, '%')</if>
 
     <if test='cbie07 != null and cbie07 != ""'> and a.CBIE07  like concat('%', #{cbie07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.CBIE02 <![CDATA[>=]]> #{startTime}</if>
@@ -515,6 +516,7 @@ where
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBIE02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+
   </select>
 
 </mapper>

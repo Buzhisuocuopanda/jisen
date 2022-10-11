@@ -241,7 +241,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBIG`
     <set>
       <if test="record.cbig01 != null">
@@ -407,5 +407,17 @@
 
     </foreach>
   </insert>
+  <select id="wegsele" resultType="com.ruoyi.system.domain.vo.UIOVo">
+    SELECT
+      COUNT(CBIG01) as nums,CBIG08 as storeskuid,CBIG09 as goodsId,
+      CBIG13 as price
+    FROM
+      CBIG
+    where
+      CBIE01=#{id,jdbcType=INTEGER}
+    GROUP BY
+      CBIG08,CBIG09
+
+  </select>
 
 </mapper>

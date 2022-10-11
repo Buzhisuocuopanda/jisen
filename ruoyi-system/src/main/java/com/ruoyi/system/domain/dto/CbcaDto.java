@@ -1,12 +1,16 @@
 package com.ruoyi.system.domain.dto;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.system.domain.vo.GoodsPriceAndSkuVo;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbcaDto {
     private Integer cbca01;
@@ -93,4 +97,8 @@ public class CbcaDto {
     @Excel(name = "客户等级")
     @NotNull(message = "客户等级不能为空")
     private Integer cbca28;
+
+    private List<Integer> goodsIds=new ArrayList<>();
+    private List<GoodsPriceAndSkuVo> goodsres=new ArrayList<>();
+
 }

@@ -35,7 +35,13 @@ public class GsSalesOrdersChangeVo  implements Serializable {
 
     private Integer salerId;
 
+    private String salerMag;
+
     private Integer supplierId;
+
+    private String supplierMge;
+
+    private String orderNoMag;
 
     private String goodsclassify;
 

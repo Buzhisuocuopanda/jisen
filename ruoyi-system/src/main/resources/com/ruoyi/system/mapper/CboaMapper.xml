@@ -755,6 +755,8 @@ FROM
 	`CBOA` oa
 WHERE
 	oa.CBOA06 =0
+    and oa.CBOA11=5
+
   <if test="selectMsg != null and selectMsg != ''">
     and oa.CBOA07 like concat('%', #{selectMsg}, '%')
 

@@ -335,4 +335,47 @@
       </if>
   </select>
 
+  <select id="selectSalesReceiptList" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersInVo">
+      select DISTINCT
+      gs.order_no as orderNo, gs.order_date as orderDate,
+      a.gs_sales_orders as gsSalesOrders,
+      a.goods_id as goodsId,
+      ca.CBCA01 as cbca01,ca.CBCA08 as cbca08,
+      sa.CBSA01 as cbsa01,sa.CBSA08 as cbsa08,
+      wa.CBWA01 as cbwa01,wa.CBWA09 as cbwa09,
+      ua.CAUA01 as caua01,ua.CAUA09 as caua09,
+      pb.CBPB10 as cbpb10,pb.CBPB12 as cbpb12,
+      pb.CBPB08 as cbpb08,la.CALA08 as cala08,
+      a.in_qty as  inQty,a.PONumber as ponumber,
+      a.id as id
+      from `gs_ Sales_orders_in` a
+      LEFT JOIN  `gs_ Sales_orders` gs on a.gs_sales_orders = gs.id
+      LEFT JOIN CBSA sa on gs.supplier_id = sa.CBSA01
+      LEFT JOIN CAUA ua on gs.saler_id = ua.CAUA01
+      LEFT JOIN CBCA ca on gs.customer_id = ca.CBCA01
+      LEFT JOIN CBWA wa on gs.wh_id = wa.CBWA01
+      LEFT JOIN CBPB pb on a.goods_id = pb.CBPB01
+      LEFT JOIN CALA la on la.CALA01 = pb.CBPB10
+      where a.`status` = 0
+      <if test="orderNo != null and orderNo !=''">
+          and   a.order_no   like concat('%', #{orderNo}, '%')
+      </if>
+      <if test="id != null and id !=''">
+          and   a.id = #{id}
+      </if>
+      <!--    <if test="startTime != null">-->
+      <!--      and a.order_date &gt;= #{startTime}-->
+      <!--    </if>-->
+      <!--    <if test="endTime != null">-->
+      <!--      and a.order_date &lt;=#{endTime}-->
+      <!--    </if>-->
+
+      <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+          and date_format(a.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+      </if>
+      <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+          and date_format(a.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+      </if>
+
+  </select>
 </mapper>

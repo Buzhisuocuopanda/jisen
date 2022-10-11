@@ -14,10 +14,13 @@ import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.CbieVo;
 import com.ruoyi.system.domain.vo.CbigVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.UIOVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWarehousedetailsinitializeService;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -62,6 +65,12 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
     @Resource
     private CalaMapper calaMapper;
 
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
+    @Resource
+    private BaseCheckService baseCheckService;
+
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
@@ -100,6 +109,15 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         Long userid = SecurityUtils.getUserId();
 
         for (int i = 0; i < itemList.size(); i++) {
+
+            if(itemList.get(i).getCbig08()==null){
+                throw new SwException("库位id为空");
+            }
+            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbig08());
+            if(cbla==null){
+                throw new SwException("库位不存在");
+            }
+
 
             itemList.get(i).setCbig03(date);
             itemList.get(i).setCbig04(Math.toIntExact(userid));
@@ -236,8 +254,96 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
      @Override
     public int swJsStoreendd(CbieDo cbieDo) {
 
+         Long userid = SecurityUtils.getUserId();
 
-        Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+         Date date = new Date();
+         Cbie uio = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
+
+         CbigCriteria dsfs = new CbigCriteria();
+        dsfs.createCriteria().andCbie01EqualTo(cbieDo.getCbie01());
+        List<Cbig> cbigs = cbigMapper.selectByExample(dsfs);
+        for(int i=0;i<cbigs.size();i++){
+            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setSn(cbigs.get(i).getCbig10());
+            gsGoodsSnDo.setGoodsId(cbigs.get(i).getCbig09());
+            gsGoodsSnDo.setWhId(uio.getCbie09());
+            gsGoodsSnDo.setLocationId(cbigs.get(i).getCbig08());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+            gsGoodsSnDo.setInTime(date);
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+            taskService.addGsGoodsSns(gsGoodsSnDo);
+        }
+
+         List<UIOVo> selectbyid = cbigMapper.wegsele(cbieDo.getCbie01());
+         if(selectbyid.size()>0){
+             for(int k=0;k<selectbyid.size();k++){
+                 GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+                 example.createCriteria()
+                         .andGoodsIdEqualTo(selectbyid.get(k).getGoodsId())
+                         .andWhIdEqualTo(uio.getCbie09())
+                         .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+                 List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+                 // double num = doubles[i];
+                 //对库存表的操作
+                 if (gsGoodsSkus.size() == 0) {
+                     //新增数据
+                     GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                     gsGoodsSku.setCreateTime(date);
+                     gsGoodsSku.setUpdateTime(date);
+                     gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                     gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                     gsGoodsSku.setGoodsId(selectbyid.get(k).getGoodsId());
+                     gsGoodsSku.setWhId(uio.getCbie09());
+                     gsGoodsSku.setQty((double) selectbyid.get(k).getNums());
+                     gsGoodsSku.setLocationId(selectbyid.get(k).getStoreskuid());
+                     gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+                 }
+                 else {
+
+                     Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
+                     Double cbla11 = cbla.getCbla11();
+                     //更新数据
+//                    List<Integer> collect1 = gsGoodsSkus.stream().map(GsGoodsSku::getId).collect(Collectors.toList());
+//                    int[] ints1 = collect1.stream().mapToInt(Integer::intValue).toArray();
+//                    int id = ints1[0];
+
+                     Integer id = gsGoodsSkus.get(0).getId();
+                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+                     gsGoodsSku.setId(id);
+                     if(gsGoodsSku.getQty() + selectbyid.get(k).getNums()>=cbla11){
+                         throw new SwException("入库数量为"+selectbyid.get(k).getNums()+"所在库位数量"+gsGoodsSku.getQty()
+                                 +"大于库位最大容量"+cbla11);
+                     }
+                     gsGoodsSku.setQty(gsGoodsSku.getQty() + selectbyid.get(k).getNums());
+                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                     gsGoodsSku.setUpdateTime(date);
+                     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+                 }
+
+                 CbibDo cbibDo = new CbibDo();
+                 cbibDo.setCbib02(uio.getCbie09());
+                 cbibDo.setCbib03(uio.getCbie07());
+                 cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
+                 cbibDo.setCbib07(uio.getCbie01());
+                 cbibDo.setCbib08(selectbyid.get(k).getGoodsId());
+                 //本次入库数量
+                 cbibDo.setCbib11((double) selectbyid.get(k).getNums());
+                 Double cbpd11 = selectbyid.get(k).getPrice();
+                 Double prices = cbpd11 *  selectbyid.get(k).getNums();
+                 cbibDo.setCbib12(prices);
+
+                 cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+                 //cbibDo.setCbib19(cbpc1.getCbpc09());
+                 taskService.InsertCBIB(cbibDo);
+             }
+         }
+
+
+
+
+         Cbie cbie1 = cbieMapper.selectByPrimaryKey(cbieDo.getCbie01());
        if(!cbie1.getCbie10().equals(TaskStatus.mr.getCode())&& cbie1.getCbie06().equals(DeleteFlagEnum.DELETE.getCode())){
            throw new SwException("审核状态才能反审");
 
@@ -245,7 +351,6 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
         Long userId = SecurityUtils.getUserId();
         Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
-        Date date = new Date();
 
         cbie.setCbie04(date);
         cbie.setCbie05(Math.toIntExact(userId));
@@ -256,6 +361,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
              cbieMapper.updateByExampleSelective(cbie, example);
              return 1;
+
+
     }
 
     @Transactional
