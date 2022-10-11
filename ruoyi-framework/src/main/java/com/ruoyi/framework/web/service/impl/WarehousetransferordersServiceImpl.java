@@ -952,7 +952,13 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setGroudStatus((byte) 1);
                 gsGoodsSnMapper.insertSelective(gsGoodsSn);
 
+                itemList.get(i).setCbac03(date);
+                itemList.get(i).setCbac04(Math.toIntExact(userid));
+                itemList.get(i).setCbaa01(cbaa.getCbaa01());
+                mapper.insertSelective(itemList.get(i));
             }
+
+
 else {
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();

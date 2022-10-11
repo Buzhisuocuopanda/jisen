@@ -436,9 +436,13 @@ WHERE so.delete_flag=0
       ss.qty AS qty,
       ss.remark AS remark,
       ss.id AS detailId,
-      d.CBWA09,
-      cc.CBPB12,
-      ty.CALA08
+      d.CBWA09,d.CBWA01,
+      cc.CBPB12,cc.CBPB08,cc.CBPB15,
+      ty.CALA08,
+      so.supplier_id as supplierId,
+        so.saler_id as salerId,
+        so.customer_id as customerId
+
 
     FROM
       `gs_ Sales_orders` AS so
