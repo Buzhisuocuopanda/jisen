@@ -33,4 +33,6 @@ public class GsGoodsSnVo {
     //商品描述
     private String cbpb08;
 
+    private String goodsMsg;
+
 }

@@ -8,13 +8,12 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
-import com.ruoyi.system.domain.vo.GsAfterSalesVo;
-import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.GsAfterSalesMapper;
 import com.ruoyi.system.mapper.GsGoodsSkuMapper;
+import com.ruoyi.system.mapper.GsGoodsSnMapper;
 import com.ruoyi.system.service.AftersalesService;
+import com.ruoyi.system.service.gson.BaseCheckService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +28,32 @@ public class AftersalesServiceImpl implements AftersalesService {
 
     @Resource
     private GsGoodsSkuMapper gsGoodsSkuMapper;
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private BaseCheckService baseCheckService;
+    @Override
+    public List<GsGoodsSnVo> selectGoodsSnSelect(GsGoodsSnVo gsGoodsSnVo){
+        List<GsGoodsSnVo> gsGoodsSnVos = gsGoodsSnMapper.selectGoodsSnSelect2(gsGoodsSnVo.getSn());
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        if(gsGoodsSnVos!=null&&gsGoodsSnVos.size()>0){
+            for (GsGoodsSnVo gsGoodsSnVo2: gsGoodsSnVos) {
+                if(gsGoodsSnVo2!=null){
+                    String msg = "";
+                    if(gsGoodsSnVo2.getCbpb10()!=null){
+                        msg+=brandMap.get(Integer.parseInt(gsGoodsSnVo2.getCbpb10()))+" - ";
+                    }
+                    msg += gsGoodsSnVo2.getCbpb12()+" - "+gsGoodsSnVo2.getCbpb08()+" - "+gsGoodsSnVo2.getSn();
+                    gsGoodsSnVo2.setGoodsMsg(msg);
+                }
+
+            }
+        }
+
+        return gsGoodsSnVos;
+    }
+
     @Override
     public int insertaftersales(GsAfterSalesDto gsAfterSalesDto) {
         GsAfterSalesCriteria gsAfterSalesCriteria = new GsAfterSalesCriteria();
@@ -96,9 +121,13 @@ public class AftersalesServiceImpl implements AftersalesService {
 
     @Override
     public GsAfterSales saleOderDetail(Integer orderId) {
-        GsAfterSalesVo res = new GsAfterSalesVo();
         GsAfterSales gsAfterSales = aftersalesMapper.selectByPrimaryKey(orderId);
-
+        GsGoodsSnVo gsGoodsSnVo = new GsGoodsSnVo();
+        gsGoodsSnVo.setSn(gsAfterSales.getSn());
+        List<GsGoodsSnVo> gsGoodsSnVos = selectGoodsSnSelect(gsGoodsSnVo);
+        if(gsGoodsSnVos!=null&&gsGoodsSnVos.size()>0){
+            gsAfterSales.setGoodsMsg(gsGoodsSnVos.get(0).getGoodsMsg());
+        }
         return gsAfterSales;
     }
 
@@ -134,7 +163,6 @@ public class AftersalesServiceImpl implements AftersalesService {
         }
         return selecttest;
     }
-
 
 }
 

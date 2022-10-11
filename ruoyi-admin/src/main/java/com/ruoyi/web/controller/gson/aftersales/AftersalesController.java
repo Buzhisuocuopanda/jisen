@@ -12,10 +12,7 @@ import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
-import com.ruoyi.system.domain.vo.CbpcVo;
-import com.ruoyi.system.domain.vo.GsAfterSalesVo;
-import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.domain.vo.SaleOrderDetailVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.AftersalesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +42,9 @@ public class AftersalesController extends BaseController {
 
     @Resource
     private AftersalesService aftersalesService;
+
+
+
 
     /**
      * 新增售后单
@@ -185,7 +185,6 @@ public class AftersalesController extends BaseController {
             notes = "售后单详情"
     )
     @GetMapping("/saleOderDetail")
-
     public AjaxResult<GsAfterSales> saleOderDetail(@RequestParam Integer orderId) {
         try {
 
@@ -228,6 +227,18 @@ public class AftersalesController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
 
+    }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/10 20:26
+     *获取sn下拉列表
+     */
+    @GetMapping("/selectGoodsSnSelect")
+    public AjaxResult<GsGoodsSnVo> selectGoodsSnSelect(GsGoodsSnVo gsGoodsSnVo){
+        startPage();
+        List<GsGoodsSnVo> gsGoodsSnVos = aftersalesService.selectGoodsSnSelect(gsGoodsSnVo);
+        return AjaxResult.success(gsGoodsSnVos);
     }
 
 }
