@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.GsAfterSales;
 import com.ruoyi.system.domain.dto.GsAfterSalesDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.GsAfterSalesVo;
+import com.ruoyi.system.domain.vo.GsGoodsSnVo;
 import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface AftersalesService {
     GsAfterSales saleOderDetail(Integer orderId);
 
     List<CbibDo> test(CbibDo cbibDo);
+
+    List<GsGoodsSnVo> selectGoodsSnSelect(GsGoodsSnVo gsGoodsSnVo);
 }

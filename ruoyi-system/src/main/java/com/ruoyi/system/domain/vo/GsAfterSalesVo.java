@@ -43,7 +43,7 @@ public class GsAfterSalesVo extends BaseEntity {
     private Date endTime;
 
 
-    private String salerId;
+    private Integer salerId;
     //销售人员名称
     private String salerName;
     //反馈时间

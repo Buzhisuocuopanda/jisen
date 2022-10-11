@@ -28,14 +28,16 @@ public class GsAfterSales implements Serializable {
 
     private Integer suplierId;
 
-    private String answerMsg;
+    private Integer answerMsg;
 
-    private String process;
+    private Integer process;
 
     //销售人员名称
     private Integer salerId;
     //反馈时间
     private Date feedbackTime;
+
+    private String goodsMsg;
 
     private static final long serialVersionUID = 1L;
 
@@ -135,20 +137,20 @@ public class GsAfterSales implements Serializable {
         this.suplierId = suplierId;
     }
 
-    public String getAnswerMsg() {
+    public Integer getAnswerMsg() {
         return answerMsg;
     }
 
-    public void setAnswerMsg(String answerMsg) {
-        this.answerMsg = answerMsg == null ? null : answerMsg.trim();
+    public void setAnswerMsg(Integer answerMsg) {
+        this.answerMsg = answerMsg;
     }
 
-    public String getProcess() {
+    public Integer getProcess() {
         return process;
     }
 
-    public void setProcess(String process) {
-        this.process = process == null ? null : process.trim();
+    public void setProcess(Integer process) {
+        this.process = process;
     }
 
     public Integer getSalerId() {
@@ -165,6 +167,14 @@ public class GsAfterSales implements Serializable {
 
     public void setFeedbackTime(Date feedbackTime) {
         this.feedbackTime = feedbackTime;
+    }
+
+    public String getGoodsMsg() {
+        return goodsMsg;
+    }
+
+    public void setGoodsMsg(String goodsMsg) {
+        this.goodsMsg = goodsMsg;
     }
 
     @Override
