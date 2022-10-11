@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 @Data
@@ -45,10 +46,23 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
 
     private String cala08;
 
+    private Integer cbwa01;
+
+
     private String cbwa09;
 
     private String cbpb12;
 
+
+
+    @NotNull(message = "供应商id不能为空")
+    private Integer supplierId;
+
+    @NotNull(message = "销售人员id不能为空")
+    private Integer salerId;
+
+    @NotNull(message = "客户id不能为空")
+    private Integer customerId;
 
 
 

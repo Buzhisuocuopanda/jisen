@@ -2500,7 +2500,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         GsSaleShoppingCriteria example=new GsSaleShoppingCriteria();
         example.createCriteria()
                 .andGoodsIdEqualTo(goodsId)
-                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+                .andUserIdEqualTo(Math.toIntExact(userid));
         List<GsSaleShopping> gsGoodsShops = gsSaleShoppingMapper.selectByExample(example);
         if(gsGoodsShops.size()==0){
             GsSaleShopping gsGoodsShop=new GsSaleShopping();

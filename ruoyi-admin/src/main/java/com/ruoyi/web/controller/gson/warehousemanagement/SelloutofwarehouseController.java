@@ -251,7 +251,6 @@ public class SelloutofwarehouseController extends BaseController {
         try {
             return toAjax(sellerofwarehouseService.insertSwJsSkuBarcodeshwc(cbsbDo));
 
-
         }catch (SwException e) {
             log.error("【新增销售出库单标记完成】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbDo), ExceptionUtils.getStackTrace(e));
 
