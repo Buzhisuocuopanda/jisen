@@ -341,6 +341,9 @@ where a.CBOE06=0
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBOE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+    <if test='startTime != null and startTime != ""'>and a.CBOE08 <![CDATA[>=]]> #{startTime}</if>
+    <if test='endTime != null and endTime != ""'>and a.CBOE08 <![CDATA[<=]]>#{endTime}</if>
+
     <if test="cboe07 != null "> and a.cboe07 = #{cboe07}</if>
     <if test="id != null "> and a.cboe01 = #{id}</if>
     order by a.CBOE02 desc
