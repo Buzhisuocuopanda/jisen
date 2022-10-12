@@ -18,6 +18,8 @@
     <result column="process" jdbcType="INTEGER" property="process" />
     <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
     <result column="saler_id" jdbcType="INTEGER" property="salerId" />
+    <result column="solution" jdbcType="VARCHAR" property="solution" />
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +81,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, customer_id, sale_order_no,
-    goods_id, question, sn, suplier_id, answer_msg, `process`,saler_id ,feedback_time
+    goods_id, question, sn, suplier_id, answer_msg, `process`,saler_id ,feedback_time,solution
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria" resultMap="BaseResultMap">
     select
@@ -116,12 +118,13 @@
       create_by, update_by, delete_flag,
       customer_id, sale_order_no, goods_id,
       question, sn, suplier_id,
-      answer_msg, `process`,feedback_time,saler_id,feedback_time,saler_id)
+      answer_msg, `process`,feedback_time,saler_id,feedback_time,saler_id,solution)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
       #{customerId,jdbcType=INTEGER}, #{saleOrderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER},
       #{question,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{suplierId,jdbcType=INTEGER},
-      #{answerMsg,jdbcType=INTEGER}, #{process,jdbcType=INTEGER}, #{feedbackTime,jdbcType=TIMESTAMP}, #{salerId,jdbcType=INTEGER})
+      #{answerMsg,jdbcType=INTEGER}, #{process,jdbcType=INTEGER}, #{feedbackTime,jdbcType=TIMESTAMP},
+       #{salerId,jdbcType=INTEGER}, #{solution,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsAfterSales">
     insert into `gs_after_sales`
@@ -174,6 +177,10 @@
       <if test="salerId != null">
         `saler_id`,
       </if>
+      <if test="solution != null">
+        `solution`,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -224,6 +231,10 @@
       <if test="salerId != null">
         #{salerId,jdbcType=INTEGER},
       </if>
+      <if test="solution != null">
+        #{solution,jdbcType=VARCHAR},
+      </if>
+
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.GsAfterSalesCriteria" resultType="java.lang.Long">
@@ -283,6 +294,10 @@
       <if test="record.salerId != null">
         saler_id = #{record.salerId,jdbcType=INTEGER},
       </if>
+      <if test="record.solution != null">
+        solution = #{record.solution,jdbcType=VARCHAR},
+      </if>
+
 
     </set>
     <if test="_parameter != null">
@@ -306,7 +321,8 @@
       answer_msg = #{record.answerMsg,jdbcType=INTEGER},
       `process` = #{record.process,jdbcType=INTEGER},
     feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
-    saler_id = #{salerId,jdbcType=INTEGER}
+    saler_id = #{salerId,jdbcType=INTEGER},
+    solution = #{record.solution,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +376,9 @@
       <if test="salerId != null">
         saler_id = #{salerId,jdbcType=INTEGER},
       </if>
+      <if test="solution != null">
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -379,7 +398,8 @@
       answer_msg = #{answerMsg,jdbcType=INTEGER},
       `process` = #{process,jdbcType=INTEGER},
        feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
-      saler_id = #{salerId,jdbcType=INTEGER}
+      saler_id = #{salerId,jdbcType=INTEGER},
+      solution = #{solution,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -393,7 +413,8 @@
       a.answer_msg as answerMsg,
       a.question as question,
       u.nick_name as salerName,
-      a.feedback_time as feedbackTime
+      a.feedback_time as feedbackTime,
+      a.solution
     FROM
       gs_after_sales a
         LEFT JOIN

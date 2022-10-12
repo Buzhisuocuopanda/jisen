@@ -35,11 +35,13 @@ public class GsAfterSalesDto {
     private Integer answerMsg;
     @NotNull(message = "进度不能为空")
     private Integer process;
-
+    @NotNull(message = "销售人员不能为空")
     private Integer salerId;
     //销售人员名称
     private String salerName;
     //反馈时间
     private Date feedbackTime;
+    //解决方案
+    private String solution;
 
 }

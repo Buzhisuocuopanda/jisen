@@ -39,6 +39,18 @@ public class GsAfterSales implements Serializable {
 
     private String goodsMsg;
 
+    //解决方案
+    private String solution;
+
+    //品牌
+    private String cbpb10;
+
+    //型号
+    private String cbpb12;
+
+    //商品描述
+    private String cbpb08;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -175,6 +187,38 @@ public class GsAfterSales implements Serializable {
 
     public void setGoodsMsg(String goodsMsg) {
         this.goodsMsg = goodsMsg;
+    }
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public String getCbpb10() {
+        return cbpb10;
+    }
+
+    public void setCbpb10(String cbpb10) {
+        this.cbpb10 = cbpb10;
+    }
+
+    public String getCbpb12() {
+        return cbpb12;
+    }
+
+    public void setCbpb12(String cbpb12) {
+        this.cbpb12 = cbpb12;
+    }
+
+    public String getCbpb08() {
+        return cbpb08;
+    }
+
+    public void setCbpb08(String cbpb08) {
+        this.cbpb08 = cbpb08;
     }
 
     @Override
