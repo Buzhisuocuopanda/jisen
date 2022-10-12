@@ -48,13 +48,13 @@ private CbpmMapper cbpmMapper;
     @Transactional
     @Override
     public IdVo insertSwJsSkuBarcodes(CbqaDo cbqaDo) {
-        CbqaCriteria example = new CbqaCriteria();
+  /*      CbqaCriteria example = new CbqaCriteria();
         example.createCriteria().andCbqa07EqualTo(cbqaDo.getCbqa07())
                 .andCbqa06EqualTo(cbqaDo.getCbqa06());
         List<Cbqa> cbqas = cbqaMapper.selectByExample(example);
         if(cbqas.size()>0){
             throw new SwException("编号不可重复");
-        }
+        }*/
         String qualityinspectionlistNo = numberGenerate.getQualityinspectionlistNo();
 
         Long userid = SecurityUtils.getUserId();
