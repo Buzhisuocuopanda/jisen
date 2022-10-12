@@ -959,5 +959,61 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         return fgkVo;
     }
 
+    @Override
+    public int editGsSalesOrdersChanges(List<GsSalesOrdersChange> gsSalesOrdersChangeDto) {
+
+
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        GsSalesOrdersChangeMapper mapper = session.getMapper(GsSalesOrdersChangeMapper.class);
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+//        GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
+//        BeanUtils.copyProperties(gsSalesOrdersChangeDto, gsSalesOrdersChange);
+        for (int i = 0; i < gsSalesOrdersChangeDto.size(); i++) {
+
+            gsSalesOrdersChangeDto.get(i).setUpdateTime(date);
+            gsSalesOrdersChangeDto.get(i).setUpdateBy(userid);
+            gsSalesOrdersChangeDto.get(i).setOrderDate(date);
+
+            GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
+            ssm.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
+                    .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetailss = gsSalesOrdersDetailsMapper.selectByExample(ssm);
+            if(gsSalesOrdersDetailss.size() == 0){
+                throw new SwException("没有查到该订单");
+            }
+            if(gsSalesOrdersDetailss.get(0).getQty()==null){
+                throw new SwException("销售预订单数量为空");
+            }
+            Double qty = gsSalesOrdersDetailss.get(0).getQty();
+            if(qty < gsSalesOrdersChangeDto.get(i).getQty()){
+                throw new SwException("修改数量不能大于原数量");
+            }
+
+            GsSalesOrdersDetails gsSalesOrdersDetails = new GsSalesOrdersDetails();
+            gsSalesOrdersDetails.setQty(gsSalesOrdersChangeDto.get(i).getQty());
+
+
+            GsSalesOrdersDetailsCriteria  sm= new GsSalesOrdersDetailsCriteria();
+            sm.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
+                    .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);
+
+
+
+
+            //gsSalesOrdersChangeDto.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
+            mapper.updateByPrimaryKeySelective(gsSalesOrdersChangeDto.get(i));
+            if (i % 10 == 9) {//每10条提交一次
+                session.commit();
+                session.clearCache();
+            }
+        }
+        session.commit();
+        session.clearCache();
+        return 1;    }
+
 
 }
