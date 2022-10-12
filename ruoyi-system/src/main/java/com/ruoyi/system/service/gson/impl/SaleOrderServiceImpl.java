@@ -304,7 +304,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     send.setPriority(cbba.getCbba15());
                     send.setType(TotalOrderOperateEnum.MDFPRIORITY.getCode());
                     cbba = orderDistributionService.reassign(send);
-                } else if (!oldPoririty.equals(totalOrderAddDto.getQty())) {
+                } else if (!oldQty.equals(totalOrderAddDto.getQty())) {
 
                     send.setNum(totalOrderAddDto.getQty());
                     send.setOldNum(oldQty);
@@ -1630,17 +1630,17 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         numberDo.setType(NumberGenerateEnum.SALEORDERCHANGE.getCode());
         cboc.setCboc07(numberGenerate.createOrderNo(numberDo).getOrderNo());
         cboc.setCboc08(date);
-        cboc.setCboc09(cboa.getCboa09());
-        cboc.setCboc10(cboa.getCboa10());
+        cboc.setCboc09(saleOrderChangeDto.getCustomerId());
+        cboc.setCboc10(saleOrderChangeDto.getSaleUserId());
         cboc.setCboc11(AuditStatusConstants.SO_COMMIT);
         cboc.setCboc13(date);
-        cboc.setCboc16(cboa.getCboa16());
-        cboc.setCboc17(cboa.getCboa17());
-        cboc.setCboc18(cboa.getCboa18());
-        cboc.setCboc19(cboa.getCboa19());
-        cboc.setCboc22(cboa.getCboa22());
-        cboc.setCboc24(cboa.getCboa24());
-        cboc.setCboc25(cboa.getCboa25());
+        cboc.setCboc16(saleOrderChangeDto.getCurrency());
+        cboc.setCboc17(saleOrderChangeDto.getReceiveName());
+        cboc.setCboc18(saleOrderChangeDto.getAddress());
+        cboc.setCboc19(saleOrderChangeDto.getReceivePhone());
+        cboc.setCboc22(saleOrderChangeDto.getInvoiceType());
+        cboc.setCboc24(10);
+        cboc.setCboc25(saleOrderChangeDto.getCustomerNo());
         cboc.setCboc26(cboa.getCboa01());
         cbocMapper.insertWithId(cboc);
         GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
@@ -1775,6 +1775,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         res.setOrderDate(cboc.getCboc08());
         res.setOrderChangeNo(cboc.getCboc07());
+        res.setCurrency(cboc.getCboc16());
 
         Cboa cboa = cboaMapper.selectByPrimaryKey(cboc.getCboc26());
         if (cboa != null) {
@@ -1841,6 +1842,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             good.setTotalPrice(cbod.getCbod12());
             good.setBfPrice(cbod.getBefPrice());
             good.setBfQty(cbod.getBefQty());
+            //查库存
+            CheckSkuDo chekDo = new CheckSkuDo();
+            chekDo.setGoodsId(good.getGoodsId());
+            chekDo.setOrderClass(cboa.getCboa27());
+            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(chekDo);
+            good.setCanUseSku(qtyMsgVo.getCanUseNum());
 
             sunPrice = sunPrice + cbod.getCbod12();
             sumQty = sumQty + cbod.getCbod09();
@@ -1925,7 +1932,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             obexample.createCriteria()
                     .andCbob08EqualTo(good.getGoodsId())
                     .andCboa01EqualTo(cboc.getCboc26())
-                    .andCbob06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbob> cbobs = cbobMapper.selectByExample(obexample);
             if (cbobs.size() == 0) {
                 throw new SwException("没有在原销售订单查到该商品:" + good.getGoodsId());
@@ -1957,6 +1964,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod01(saleOrderChangeDto.getId());
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
+            cbod.setCboc01(cboc.getCboc01());
             cbod.setBefQty(cbob.getCbob09());
             cbodMapper.insert(cbod);
 

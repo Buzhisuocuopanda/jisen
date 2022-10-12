@@ -79,7 +79,12 @@ public class SaleOrderChangeDetailGoods {
     }
 
     public Integer getGoodsId() {
-        return id;
+        if(goodsId==null){
+            return id;
+        }else {
+            return goodsId;
+        }
+
     }
 
     private BaseSelectVo goodsVo=new BaseSelectVo();
