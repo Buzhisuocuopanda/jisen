@@ -534,9 +534,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbibDo.setCbib03(orderNo);
         cbibDo.setCbib05(String.valueOf(TaskType.xsydd.getCode()));
         cbibDo.setCbib06(vendername);
-        cbibDo.setCbib07(gsSalesOrdersInDto.getId());
-        cbibDo.setCbib08(gsSalesOrdersInDto.getGoodsId());
-        cbibDo.setCbib11(gsSalesOrdersInDto.getInQty());
+        cbibDo.setCbib07(gsSalesOrdersIn.getId());
+        cbibDo.setCbib08(gsSalesOrdersIn.getGoodsId());
+        cbibDo.setCbib11(gsSalesOrdersIn.getInQty());
         cbibDo.setCbib12((double) 0);
         cbibDo.setCbib13((double) 0);
         cbibDo.setCbib14((double) 0);

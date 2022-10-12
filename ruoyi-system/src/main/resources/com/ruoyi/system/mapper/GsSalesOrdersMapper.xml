@@ -422,6 +422,66 @@ WHERE so.delete_flag=0
       and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
   </select>
+
+  <select id="saleOrdersListCountQuery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
+    SELECT
+    so.id AS id,
+    so.order_no AS orderNo,
+    so.order_date AS orderDate,
+    a.CBSA08 AS supplier,
+    b.CAUA17 AS saler,
+    c.CBCA08 AS customer,
+    d.cbwa09 AS wh,
+    so.status AS status,
+    so.*
+    FROM
+    `gs_ Sales_orders` AS so
+
+    LEFT JOIN
+    CBSA a
+    on
+    a.CBSA01=so.supplier_id
+    LEFT JOIN
+    CAUA b
+    on
+    b.CAUA01=so.saler_id
+    LEFT JOIN
+    CBCA c
+    ON
+    c.CBCA01=so.customer_id
+    LEFT JOIN
+    CBWA d
+    ON
+    d.CBWA01=so.wh_id
+    WHERE so.delete_flag=0
+    <if test="customerId != null ">
+      and so.customer_id =#{customerId}
+    </if>
+    <if test="supplierId != null ">
+      and so.supplier_id =#{supplierId}
+    </if>
+    <if test="salerId != null ">
+      and so.saler_id =#{salerId}
+    </if>
+
+    <if test="startTime != null">
+      and so.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and so.create_time &lt;=#{endTime}
+    </if>
+    <!--<if test="orderNo != null and orderNo !=''">
+      and  so.order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="wh != null and wh !=''">
+      and  d.cbwa09 like concat('%', #{wh}, '%')
+    </if>
+    <if test="supplier != null and supplier !=''">
+      and  a.CBSA08 like concat('%', #{supplier}, '%')
+    </if>-->
+    order by so.create_time desc
+  </select>
+
   <select id="saleOrderListdetail" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
     SELECT
       so.id AS id,
@@ -558,12 +618,12 @@ where
     a.qty as qty,
     gs.id as id,
     a.status as status,
-    a.supplier_id as supplier,
-    a.saler_id as saler,
+    a.supplier_id as supplierId,c.CBSA08 as supplier,
+    a.saler_id as salerId,b.CAUA17 as saler,
     c.CBSA08 as supplierMge,
     b.CAUA15 as salerMag,
-    b.CAUA01 as salerId,
-    gs.customer_id as customer,
+
+    gs.customer_id as customerId,cb.CBCA08 as customer,
     cb.CBCA08 as customerMag,
     a.goods_id as goodsId,
     pb.CBPB08 as cbpb08,

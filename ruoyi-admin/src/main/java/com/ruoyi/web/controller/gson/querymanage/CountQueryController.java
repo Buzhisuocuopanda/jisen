@@ -124,19 +124,22 @@ public class CountQueryController  extends BaseController {
     )
     @GetMapping("/saleOrderListCountquery")
     @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:list')")
-    public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
+    public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo) {
         try {
             startPage();
-            List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto);
-            TableDataInfo t = getDataTable(list);
+            if(gsSalesOrdersVo.getEndTime()!=null){
+                gsSalesOrdersVo.setEndTime(new Date(gsSalesOrdersVo.getEndTime().getTime()+24*60*60-1));
+            }
+
+            TableDataInfo t = countQueryService.saleOrderListCountquery(gsSalesOrdersVo);
             return AjaxResult.success(t);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
-            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersVo), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (Exception e) {
-            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersVo), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -148,9 +151,11 @@ public class CountQueryController  extends BaseController {
     )
     @PostMapping("/saleOrderListCountqueryExcel")
     @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:export')")
-    public void saleOrderListCountqueryExcel(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto2, HttpServletResponse response) {
-        gsSalesOrdersDetailsDto2.setEndTime(new Date(gsSalesOrdersDetailsDto2.getEndTime().getTime()+24*60*60-1));
-        List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto2);
+    public void saleOrderListCountqueryExcel(GsSalesOrdersVo gsSalesOrdersVo, HttpServletResponse response) {
+        if(gsSalesOrdersVo.getEndTime()!=null){
+            gsSalesOrdersVo.setEndTime(new Date(gsSalesOrdersVo.getEndTime().getTime()+24*60*60-1));
+        }
+        List<GsSalesOrdersDetailsVo> list = (List)countQueryService.saleOrderListCountquery(gsSalesOrdersVo).getRows();
         ExcelUtil<GsSalesOrdersDetailsVo> util = new ExcelUtil<>(GsSalesOrdersDetailsVo.class);
         util.exportExcel(response, list, "销售预订单汇总数据");
     }

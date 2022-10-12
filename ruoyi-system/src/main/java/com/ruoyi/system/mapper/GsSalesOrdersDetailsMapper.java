@@ -35,7 +35,14 @@ public interface GsSalesOrdersDetailsMapper {
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/10/10 9:20
-     *获取销售预订单汇总数据
+     *获取销售预订单汇总数据（废弃）
      */
     List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 record);
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/11 19:24
+     *根据主表id获取明细
+     */
+    List<GsSalesOrdersDetailsVo> saleOrderDetailsListCountquery(GsSalesOrdersDetailsVo record);
 }

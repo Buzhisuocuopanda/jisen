@@ -19,7 +19,7 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private Integer id;
 
     private Integer goodsId;
-    @Excel(name = "数量")
+//    @Excel(name = "数量")
     private Double qty;
 
     private BigDecimal price;
@@ -45,6 +45,7 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cbpb08;
     @Excel(name = "品牌")
     private String cbpb10;
+
     @Excel(name = "创建时间")
     private Date createTime;
 
@@ -52,12 +53,14 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cala08;
 
     private Integer cbwa01;
+    private Integer whId;
 
 
     private String cbwa09;
-
+    @Excel(name = "型号")
     private String cbpb12;
 
+    private String customerMag;
 
 
     @NotNull(message = "供应商id不能为空")
@@ -68,7 +71,14 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
 
     @NotNull(message = "客户id不能为空")
     private Integer customerId;
-
+    @Excel(name = "数量")
+    private Double num;
+    @Excel(name = "入库数量")
+    private Double enterNum;
+    @Excel(name = "变更数量")
+    private Double changeNum;
+    @Excel(name = "剩余数量")
+    private Double remainNum;
 
     private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 

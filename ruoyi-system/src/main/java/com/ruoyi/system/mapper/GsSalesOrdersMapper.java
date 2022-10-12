@@ -44,4 +44,6 @@ public interface GsSalesOrdersMapper {
 
     //销售预订单变更单详情
     List<GsSalesOrdersDetailsVo> saleOrderListdetails(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
+
+    List<GsSalesOrdersVo> saleOrdersListCountQuery(GsSalesOrdersVo gsSalesOrdersVo);
 }
