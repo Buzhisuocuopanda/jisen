@@ -242,7 +242,15 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        this.insertSwJsStores(swJsGoodsList);
+        //zgl添加限制导入条件 客户等级为1，2，3的允许导入
+        List<CbpbDto> swJsGoodsList2 = new ArrayList<>();
+        for (CbpbDto cbpbDto: swJsGoodsList) {
+            if(cbpbDto.getCbpf02()==1||cbpbDto.getCbpf02()==2||cbpbDto.getCbpf02()==3){
+                swJsGoodsList2.add(cbpbDto);
+            }
+        }
+
+        this.insertSwJsStores(swJsGoodsList2);
 
         if (failureNum > 0)
         {

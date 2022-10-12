@@ -1485,14 +1485,15 @@ else {
                     gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
                     gsGoodsSkuDo2.setQty(1.0);
                     taskService.addGsGoodsSku(gsGoodsSkuDo2);
-                } else {
+                }
+                else {
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus1.get(0).getId());
                     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
 
                     gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
                     gsGoodsSkuDo2.setWhId(instore);
-                    gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(j).getLocationId());
+                    gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(0).getLocationId());
                     //查出
                     Double qty = gsGoodsSkus1.get(0).getQty();
                     double v = qty + 1;
