@@ -609,7 +609,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         } else {
             Double cha = orderNum - makeNum;
             if (num.doubleValue() > cha) {
-                unNum = num.doubleValue() - cha;
+                unNum = cha;
             } else {
                 unNum = num.doubleValue();
             }
@@ -1075,7 +1075,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 //进行库存占用
                 if(out.getQty()==0){
-                    break;
+                    continue;
                 }
                 GsGoodsUse goodsUse = new GsGoodsUse();
                 goodsUse.setCreateBy(goodsOperationDo.getUserId());
