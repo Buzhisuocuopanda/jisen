@@ -16,7 +16,7 @@
     <result column="CBBA12" jdbcType="INTEGER" property="cbba12" />
     <result column="CBBA13" jdbcType="DOUBLE" property="cbba13" />
     <result column="CBBA14" jdbcType="DOUBLE" property="cbba14" />
-    <result column="CBBA15" jdbcType="VARCHAR" property="cbba15" />
+    <result column="CBBA15" jdbcType="INTEGER" property="cbba15" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -121,7 +121,7 @@
       #{cbba04,jdbcType=TIMESTAMP}, #{cbba05,jdbcType=INTEGER}, #{cbba06,jdbcType=INTEGER},
       #{cbba07,jdbcType=VARCHAR}, #{cbba08,jdbcType=INTEGER}, #{cbba09,jdbcType=DOUBLE},
       #{cbba10,jdbcType=INTEGER}, #{cbba11,jdbcType=DOUBLE}, #{cbba12,jdbcType=INTEGER},
-      #{cbba13,jdbcType=DOUBLE}, #{cbba14,jdbcType=DOUBLE}, #{cbba15,jdbcType=VARCHAR}
+      #{cbba13,jdbcType=DOUBLE}, #{cbba14,jdbcType=DOUBLE}, #{cbba15,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbba">
@@ -217,7 +217,7 @@
         #{cbba14,jdbcType=DOUBLE},
       </if>
       <if test="cbba15 != null">
-        #{cbba15,jdbcType=VARCHAR},
+        #{cbba15,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -273,7 +273,7 @@
         CBBA14 = #{record.cbba14,jdbcType=DOUBLE},
       </if>
       <if test="record.cbba15 != null">
-        CBBA15 = #{record.cbba15,jdbcType=VARCHAR},
+        CBBA15 = #{record.cbba15,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -296,7 +296,7 @@
       CBBA12 = #{record.cbba12,jdbcType=INTEGER},
       CBBA13 = #{record.cbba13,jdbcType=DOUBLE},
       CBBA14 = #{record.cbba14,jdbcType=DOUBLE},
-      CBBA15 = #{record.cbba15,jdbcType=VARCHAR}
+      CBBA15 = #{record.cbba15,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -344,7 +344,7 @@
         CBBA14 = #{cbba14,jdbcType=DOUBLE},
       </if>
       <if test="cbba15 != null">
-        CBBA15 = #{cbba15,jdbcType=VARCHAR},
+        CBBA15 = #{cbba15,jdbcType=INTEGER},
       </if>
     </set>
     where CBBA01 = #{cbba01,jdbcType=INTEGER}
@@ -364,9 +364,10 @@
       CBBA12 = #{cbba12,jdbcType=INTEGER},
       CBBA13 = #{cbba13,jdbcType=DOUBLE},
       CBBA14 = #{cbba14,jdbcType=DOUBLE},
-      CBBA15 = #{cbba15,jdbcType=VARCHAR}
+      CBBA15 = #{cbba15,jdbcType=INTEGER}
     where CBBA01 = #{cbba01,jdbcType=INTEGER}
   </update>
+
 
   <select id="selectLowPriority" resultMap="BaseResultMap">
     SELECT
@@ -385,19 +386,19 @@ ORDER BY
 
   <select id="selectLowPriorityGet" resultMap="BaseResultMap">
     SELECT
-	*
-FROM
-	`CBBA` cb
-WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15 &lt;= #{poritiry}
-	<if test="cbba01 !=null and cbba01 !=''">
-	AND cb.CBBA01 != #{cbba01}
+    *
+    FROM
+    `CBBA` cb
+    WHERE
+    cb.CBBA06 = 0
+    AND cb.CBBA12 = 0
+    AND cb.CBBA08 = #{goodsId}
+    AND cb.CBBA15 &lt;= #{poritiry}
+    <if test="cbba01 !=null and cbba01 !=''">
+      AND cb.CBBA01 != #{cbba01}
     </if>
-ORDER BY
-	cb.CBBA15
+    ORDER BY
+    cb.CBBA15  ASC
   </select>
 
   <select id="selectByPriorityDure" resultMap="BaseResultMap">
@@ -459,26 +460,26 @@ WHERE
 	order by c.CBBA15 DESC
   </select>
 
-<!--  获取生产总订单列表-->
+  <!--  获取生产总订单列表-->
   <select id="totalOrderList" resultType="com.ruoyi.system.domain.vo.TotalOrderListVo">
     SELECT
-	ba.CBBA15 as priority,
-	ba.CBBA01 as id,
-	ba.CBBA07 as orderNo,
-	pb.CBPB12 as model,
-	pb.CBPB08 as description,
-	ba.CBBA09 as orderQty,
-	ba.CBBA13 as makeQty,
-	ba.CBBA12 as status,
-	ba.CBBA10 as orderType,
+    ba.CBBA15 as priority,
+    ba.CBBA01 as id,
+    ba.CBBA07 as orderNo,
+    pb.CBPB12 as model,
+    pb.CBPB08 as description,
+    ba.CBBA09 as orderQty,
+    ba.CBBA13 as makeQty,
+    ba.CBBA12 as status,
+    ba.CBBA10 as orderType,
     ba.CBBA11 as ShippedQty,
     pb.CBPB01 as goodsId,
     pb.CBPB10 as brand
-FROM
-	`CBBA` ba
-	LEFT JOIN CBPB pb ON pb.CBPB01 = ba.CBBA08
-WHERE
-	ba.CBBA06 = 0
+    FROM
+    `CBBA` ba
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ba.CBBA08
+    WHERE
+    ba.CBBA06 = 0
     <if test="orderNo != null and orderNo != ''">
       AND  ba.CBBA07 like concat('%', #{orderNo}, '%')
     </if>
@@ -513,5 +514,4 @@ WHERE
 ORDER BY
 	cb.CBBA15 DESC
   </select>
-
 </mapper>

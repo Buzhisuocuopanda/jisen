@@ -24,9 +24,9 @@ public class OrderDistributionDo {
 
     private Cbba cbba;
 
-    private String priority;
+    private Integer priority;
 
-    private String oldPriority;
+    private Integer oldPriority;
 
     //1、创建 2、修改优先级 3、修改数量
     private Integer type;

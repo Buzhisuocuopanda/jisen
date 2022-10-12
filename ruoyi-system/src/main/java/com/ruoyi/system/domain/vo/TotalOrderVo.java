@@ -17,7 +17,7 @@ public class TotalOrderVo {
 
     @ApiModelProperty("优先级")
 
-    private String priority;
+    private Integer priority;
 
     @ApiModelProperty("订单号")
 
