@@ -46,4 +46,5 @@ public interface CbbaMapper {
 
     List<Cbba> selectLowPriorityGet(@Param("goodsId")Integer goodsId,@Param("poritiry") Integer poritiry,@Param("cbba01") Integer cbba01);
 
+    List<Cbba> selectByOther(@Param("goodsId")Integer goodsId,@Param("cbba01") Integer cbba01);
 }
