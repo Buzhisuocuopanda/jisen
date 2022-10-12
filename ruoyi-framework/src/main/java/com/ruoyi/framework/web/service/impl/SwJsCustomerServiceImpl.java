@@ -218,28 +218,31 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
                 CbcaDto swJsCustomer : swJsCustomersList)
         {
             try
-            {
-                // 验证是否存在这个用户
-                Cbca u = cbcaMapper.selectByPrimaryKey(swJsCustomer.getCbca03() );
-                log.info(swJsCustomer.getCbca03()+"");
-                if (StringUtils.isNull(u))
-                {
-                    swJsCustomer.setCbca08(swJsCustomer.getCbca08());
-                    this.insertSwJsCustomer(swJsCustomer);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("客户信息列表").append(swJsCustomer.getCbca08()).append(" 导入成功");
+            {   //限制导入客户等级为1，2，3的
+                if(swJsCustomer.getCbca28() == 1||swJsCustomer.getCbca28() == 2||swJsCustomer.getCbca28() == 3){
+                    // 验证是否存在这个用户
+                    Cbca u = cbcaMapper.selectByPrimaryKey(swJsCustomer.getCbca03() );
+                    log.info(swJsCustomer.getCbca03()+"");
+                    if (StringUtils.isNull(u))
+                    {
+                        swJsCustomer.setCbca08(swJsCustomer.getCbca08());
+                        this.insertSwJsCustomer(swJsCustomer);
+                        successNum++;
+                        successMsg.append("<br/>").append(successNum).append("客户信息列表").append(swJsCustomer.getCbca08()).append(" 导入成功");
+                    }
+                    else if (updateSupport)
+                    {
+                        this.updateSwJsCustomer(swJsCustomer);
+                        successNum++;
+                        successMsg.append("<br/>").append(successNum).append("客户信息列表 ").append(swJsCustomer.getCbca08()).append(" 更新成功");
+                    }
+                    else
+                    {
+                        failureNum++;
+                        failureMsg.append("<br/>").append(failureNum).append("客户信息列表").append(swJsCustomer.getCbca08()).append(" 已存在");
+                    }
                 }
-                else if (updateSupport)
-                {
-                    this.updateSwJsCustomer(swJsCustomer);
-                    successNum++;
-                    successMsg.append("<br/>").append(successNum).append("客户信息列表 ").append(swJsCustomer.getCbca08()).append(" 更新成功");
-                }
-                else
-                {
-                    failureNum++;
-                    failureMsg.append("<br/>").append(failureNum).append("客户信息列表").append(swJsCustomer.getCbca08()).append(" 已存在");
-                }
+
             }
             catch (Exception e)
             {

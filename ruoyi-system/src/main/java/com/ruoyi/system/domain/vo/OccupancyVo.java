@@ -48,5 +48,6 @@ public class OccupancyVo {
 //    @Excel(name = "商品id")
 //    @ApiModelProperty("商品id")
     private Integer cbpb01;
+    private Integer cboa01;
 
 }

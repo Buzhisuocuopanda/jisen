@@ -226,7 +226,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
                     if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
-                        getOrderPriority(cbba, orderDistributionDo.getOldPriority());
+                            getOrderPriority(cbba, orderDistributionDo.getOldPriority());
 
                     } else {
                         //优先级由低到高
@@ -362,8 +362,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //        if (makeNum.equals(cbba.getCbba09() - cbba.getCbba11())) {
 //            return cbba;
 //        }
-        Double needNumOr = cbba.getCbba09() - cbba.getCbba11() ;
-        Double needNum = cbba.getCbba09() - cbba.getCbba11() ;
+        Double needNumOr = cbba.getCbba09() - cbba.getCbba11()-cbba.getCbba13() ;
+        Double needNum = cbba.getCbba09() - cbba.getCbba11()-cbba.getCbba13() ;
         Integer goodsId = cbba.getCbba08();
         List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         for (Cbba res : list) {
@@ -432,6 +432,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         }
         Integer goodsId = cbba.getCbba08();
         List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
+
+        if(list.size()==0){
+
+        }
         for (Cbba res : list) {
             if (!cbba.getCbba07().equals(res.getCbba07())) {
                 //未发货数量
@@ -461,6 +465,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
         }
+
+
+
         cbba.setCbba13(makeNum);
         return cbba;
 

@@ -1615,6 +1615,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("已存在该销售订单的未审核的销售变更单");
 
         }
+        //判断操作人员是否是销售人员
+        if (!cboa.getCboa10().equals(saleOrderChangeDto.getUserId())) {
+            throw new SwException("必须为销售人员本人");
+        }
 
 
 
@@ -1629,11 +1633,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         NumberDo numberDo = new NumberDo();
         numberDo.setType(NumberGenerateEnum.SALEORDERCHANGE.getCode());
         cboc.setCboc07(numberGenerate.createOrderNo(numberDo).getOrderNo());
-        cboc.setCboc08(date);
+        cboc.setCboc08(saleOrderChangeDto.getOrderDate());
         cboc.setCboc09(saleOrderChangeDto.getCustomerId());
         cboc.setCboc10(saleOrderChangeDto.getSaleUserId());
         cboc.setCboc11(AuditStatusConstants.SO_COMMIT);
-        cboc.setCboc13(date);
+
         cboc.setCboc16(saleOrderChangeDto.getCurrency());
         cboc.setCboc17(saleOrderChangeDto.getReceiveName());
         cboc.setCboc18(saleOrderChangeDto.getAddress());
@@ -1651,7 +1655,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbod cbod = null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
-
+            if(good.getGoodsId()==null){
+                continue;
+            }
             //查出原先旧数据
 //            CbobCriteria obexample = new CbobCriteria();
 //            obexample.createCriteria()
@@ -1799,6 +1805,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboc.getCboc10().longValue());
         if (saleUser != null) {
             res.setSaleUser(saleUser.getNickName());
+            res.setSaleUserId(saleUser.getUserId().intValue());
         }
 
 
@@ -1909,10 +1916,31 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("必须为销售人员本人");
         }
 
+        Date date = new Date();
+
+        cboc.setCboc04(date);
+        cboc.setCboc05(saleOrderChangeDto.getUserId());
+        cboc.setCboc06(DeleteFlagEnum.NOT_DELETE.getCode());
+
+
+        cboc.setCboc08(saleOrderChangeDto.getOrderDate());
+        cboc.setCboc09(saleOrderChangeDto.getCustomerId());
+        cboc.setCboc10(saleOrderChangeDto.getSaleUserId());
+        cboc.setCboc11(AuditStatusConstants.SO_COMMIT);
+
+        cboc.setCboc16(saleOrderChangeDto.getCurrency());
+        cboc.setCboc17(saleOrderChangeDto.getReceiveName());
+        cboc.setCboc18(saleOrderChangeDto.getAddress());
+        cboc.setCboc19(saleOrderChangeDto.getReceivePhone());
+        cboc.setCboc22(saleOrderChangeDto.getInvoiceType());
+        cboc.setCboc24(10);
+        cboc.setCboc25(saleOrderChangeDto.getCustomerNo());
+        cboc.setCboc26(cboa.getCboa01());
+        cbocMapper.updateByPrimaryKey(cboc);
 
         //创建销售订单主表
 
-        Date date = new Date();
+
 //
 //        cboc.setCboc04(date);
 //        cboc.setCboc05(saleOrderChangeDto.getUserId());
@@ -2015,6 +2043,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             baseCheckService.checkUserTask(auditSaleOrderDto.getUserId().longValue(), new String("12"));
 
             cboc.setCboc11(SaleOrderStatusEnums.YISHENHE.getCode());
+            cboc.setCboc13(new Date());
             cbocMapper.updateByPrimaryKey(cboc);
             Cboa cboa = cboaMapper.selectByPrimaryKey(cboc.getCboc26());
             if (cboa == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cboa.getCboa06())) {
