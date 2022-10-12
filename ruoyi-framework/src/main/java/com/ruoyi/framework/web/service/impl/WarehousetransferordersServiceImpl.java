@@ -194,6 +194,15 @@ if(itemList.size()==0){
             throw new SwException("审核状态才能反审");
 
         }
+        CbacCriteria example2 = new CbacCriteria();
+        example2.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
+        List<Cbac> cbacs = cbacMapper.selectByExample(example2);
+        if (cbacs.size() > 0) {
+            throw new SwException("已扫码不能反审");
+
+        }
+
+
         Long userId = SecurityUtils.getUserId();
 
         Cbaa cbaa = BeanCopyUtils.coypToClass(cbaaDo, Cbaa.class, null);
@@ -989,6 +998,8 @@ else {
 
     @Override
     public int transferordersoutbjwc(CbaaDo cbaaDo) {
+
+
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
 
@@ -1239,6 +1250,10 @@ else {
     //仓库调拨单调入标记完成
     @Override
     public int transferordersinbjwc(CbaaDo cbaaDo) {
+
+        //调出标记完成
+        transferordersoutbjwc(cbaaDo);
+
         Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaaDo.getCbaa01());
 
         if (cbaa1 == null) {

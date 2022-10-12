@@ -19,5 +19,8 @@ public class SaleOrderExitDo {
 
     private String totalOrderNo;
 
+    private Integer cbobId;
+
+    private Integer orderClass;
 
 }

@@ -87,6 +87,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private TakeGoodsService takeGoodsService;
 
+    @Resource
+    private CboaMapper cboaMapper;
     /**
      * 新增销售出库主单
      *
@@ -103,6 +105,14 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if (cbsbList.size() > 0) {
             throw new SwException("该订单已存在");
         }
+
+        CbsbCriteria sdg=new CbsbCriteria();
+        sdg.createCriteria().andCbsb20EqualTo(cbsbDo.getCbsb20());
+        List<Cbsb> cbsbs = cbsbMapper.selectByExample(sdg);
+        if(cbsbs.size()>0){
+            throw new SwException("关联提货单重复");
+        }
+
 
         Long userid = SecurityUtils.getUserId();
         Cbsb cbsb = BeanCopyUtils.coypToClass(cbsbDo, Cbsb.class, null);
@@ -301,12 +311,16 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 //        List<Cbob> cbobs = cbobMapper.selectByExample(example2);
 //        String cbob18 = cbobs.get(0).getCbob18();
+        Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbsb1.getCbsb20());
+        Cboa cboa = cboaMapper.selectByPrimaryKey(Integer.valueOf(cbpk.getSaleOrderNo()));
         if (cbscs.size() > 0) {
             for (int i = 0; i < cbscs.size(); i++) {
                 SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
-                saleOrderExitDo.setOrderNo(cbsb1.getCbsb07());
+                saleOrderExitDo.setOrderNo(cboa.getCboa07());
                 saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
                 saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
+                saleOrderExitDo.setCbobId(cbscs.get(i).getCbsc14());
+                saleOrderExitDo.setOrderClass(cboa.getCboa27());
                 if(cbscs.get(i).getCbsc14()!=null) {
                     Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
                     if (cbob == null) {
@@ -725,7 +739,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             //判断是否在提货单里
             CbpkCriteria example = new CbpkCriteria();
             example.createCriteria().andCbpk09EqualTo(cbsb.getCbsb09())
-                    .andCbpk30EqualTo(cbsb.getCbsb30());
+                    .andCbpk01EqualTo(cbsb.getCbsb20());
 //                    .andCheckStatusEqualTo(checkstatusEnum.ZJWC.getCode());
             List<Cbpk> cbpkList = cbpkMapper.selectByExample(example);
             if(cbpkList.size()==0){
