@@ -20,4 +20,9 @@ public class SaleOrderExitDo {
     private String totalOrderNo;
 
 
+    private Integer cbobId;
+
+    //1:国际 2国内
+    private Integer orderClass;
+
 }

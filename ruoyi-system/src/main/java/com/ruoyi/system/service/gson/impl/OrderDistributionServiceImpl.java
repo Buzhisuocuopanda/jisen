@@ -59,6 +59,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     @Resource
     private GsGoodsSkuMapper gsGoodsSkuMapper;
 
+    @Resource
+    private CbobMapper cbobMapper;
 
 
     /**
@@ -658,35 +660,59 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         try {
          //   lockTotalOrder();
             List<Cbba> cbbas = null;
-            if (saleOrderExitDo.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+            if (saleOrderExitDo.getOrderClass()==2) {
                 //国内订单根据优先级来
                 cbbas = cbbaMapper.selectByGoodsId(saleOrderExitDo.getGoodsId());
 
             } else {
                 //国际订单可根据订单号查总订单
-                CbbaCriteria baex = new CbbaCriteria();
-                baex.createCriteria()
-                        .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
-                        .andCbba07EqualTo(saleOrderExitDo.getOrderNo())
-                        .andCbba12EqualTo(TotalOrderConstants.NO);
-                cbbas = cbbaMapper.selectByExample(baex);
+//                CbbaCriteria baex = new CbbaCriteria();
+//                baex.createCriteria()
+//                        .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                        .andCbba07EqualTo(saleOrderExitDo.getOrderNo())
+//                        .andCbba12EqualTo(TotalOrderConstants.NO);
+//                cbbas = cbbaMapper.selectByExample(baex);
+                Cbob cbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
+                if(cbob==null ){
+                    throw new SwException("没有查到该出库单的销售订单明细");
+                }
+
+                if(cbob.getCbob17()==null){
+                    throw new SwException("没有查到该出库单的生产总订单");
+
+                }
+                Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+                if(cbba==null){
+                    throw new SwException("没有查到该出库单的生产总订单");
+
+                }
+                cbbas.add(cbba);
+
 
             }
             Double num = saleOrderExitDo.getQty();
-            Double subNum=0.0;
+//            Double subNum=0.0;
             for (Cbba cbba : cbbas) {
                 //减去分配数量 增加发货数量
+                Double subNum=0.0;
                 Double makNum = cbba.getCbba13();
                 if(makNum>num){
                     cbba.setCbba13(makNum-num);
                     cbba.setCbba11(cbba.getCbba11()+num);
                     num=0.0;
+
                 }else {
 
                     cbba.setCbba13(0.0);
                     cbba.setCbba11(cbba.getCbba11()+makNum);
                     num=num-makNum;
+
                 }
+
+                if(cbba.getCbba11().equals(cbba.getCbba09())){
+                    cbba.setCbba12(4);
+                }
+
 
                 //扣除占用数量
 
@@ -696,7 +722,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
                 for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-                    gsGoodsUs.setLockQty(subNum);
+                    gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
                     gsGoodsUs.setUpdateTime(new Date());
                     gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
                 }

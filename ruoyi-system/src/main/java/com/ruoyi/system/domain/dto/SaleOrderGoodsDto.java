@@ -45,7 +45,10 @@ public class SaleOrderGoodsDto {
 
     private Integer id;
 
-//    public Integer getGoodsId() {
-//        return id;
-//    }
+    public Integer getGoodsId() {
+        if(goodsId==null){
+            return id;
+        }
+        return goodsId;
+    }
 }

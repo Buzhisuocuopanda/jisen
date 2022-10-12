@@ -261,6 +261,35 @@ public class SaleOrderController extends BaseController {
 
     }
 
+    /**
+     * 更改生产总订单状态
+     *
+     * @param totalOrderAddDto
+     * @return
+     */
+    @ApiOperation(
+            value ="更改生产总订单状态",
+            notes = "更改生产总订单状态"
+    )
+    @PostMapping("/auditTotalOrder")
+    public AjaxResult auditTotalOrder(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
+        try {
+            if(totalOrderAddDto.getStatus()==null){
+                throw new SwException("状态不能为空");
+            }
+            Cbba cbba = saleOrderService.auditTotalOrder(totalOrderAddDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【修改生产总订单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(totalOrderAddDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
 
     /**
      * 导入生产总订单
@@ -800,7 +829,7 @@ public class SaleOrderController extends BaseController {
             value ="导出销售订单国际",
             notes = "导出销售订单国际"
     )
-    @PostMapping("/saleOrderExcelListGj")
+    @GetMapping("/saleOrderExcelListGj")
     @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:export')")
     public void saleOrderExcelListGj( SaleOrderListDto saleOrderListDto, HttpServletResponse response) {
         SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
@@ -846,9 +875,9 @@ public class SaleOrderController extends BaseController {
             value ="财务复审列表",
             notes = "财务复审列表"
     )
-    @PostMapping("/finsaleOrderList")
+    @GetMapping("/finsaleOrderList")
     @PreAuthorize("@ss.hasPermi('system:finsaleOrder:list')")
-    public AjaxResult<List<TableDataInfo>> finsaleOrderList(@RequestBody SaleOrderListDto saleOrderListDto) {
+    public AjaxResult<List<TableDataInfo>> finsaleOrderList( SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
             List<SaleOrderListVo> list = saleOrderService.finsaleOrderList(saleOrderListDto);
@@ -1050,9 +1079,9 @@ public class SaleOrderController extends BaseController {
             value ="销售变更单列表",
             notes = "销售变更单列表"
     )
-    @PostMapping("/saleChangeList")
+    @GetMapping("/saleChangeList")
     @PreAuthorize("@ss.hasPermi('system:saleChange:list')")
-    public AjaxResult<TableDataInfo> saleChangeList(@RequestBody SaleOrderListDto saleOrderListDto) {
+    public AjaxResult<TableDataInfo> saleChangeList( SaleOrderListDto saleOrderListDto) {
         try {
             startPage();
             List<SaleOrderListVo> list= saleOrderService.saleChangeList(saleOrderListDto);
