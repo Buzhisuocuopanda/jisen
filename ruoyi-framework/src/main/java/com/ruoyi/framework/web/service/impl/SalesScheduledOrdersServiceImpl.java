@@ -310,7 +310,7 @@ return;
         if(gsSalesOrdersDetails.size() == 0){
             throw new SwException("没有查到该订单明细");
         }
-        //仓库id
+   /*     //仓库id
         Integer whId = gsSalesOrders.getWhId();
         //编号
         String orderNo = gsSalesOrders.getOrderNo();
@@ -346,7 +346,7 @@ return;
             cbibDo.setCbib17(TaskType.xsydd.getMsg());
             cbibDo.setCbib19(supplierId);
             taskService.InsertCBIB(cbibDo);
-        }
+        }*/
 
         int i = gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
     }
@@ -585,11 +585,36 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
             gsSalesOrdersChangeDto.get(i).setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
             gsSalesOrdersChangeDto.get(i).setOrderDate(date);
-//            gsSalesOrdersChangeDto.get(i).setSalerId(gsSalesOrdersChangeDto.getSalerId());
-//            gsSalesOrdersChangeDto.setSupplierId(gsSalesOrdersChangeDto.getSupplierId());
-//            gsSalesOrdersChangeDto.setGoodsclassify(gsSalesOrdersChangeDto.getGoodsclassify());
-//            gsSalesOrdersChangeDto.setQty(gsSalesOrdersChangeDto.getQty());
-//            gsSalesOrdersChangeDto.setGsSalesOrders(gsSalesOrdersChangeDto.getGsSalesOrders());
+
+            GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
+            ssm.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
+                    .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetailss = gsSalesOrdersDetailsMapper.selectByExample(ssm);
+            if(gsSalesOrdersDetailss.size() == 0){
+                throw new SwException("没有查到该订单");
+            }
+            if(gsSalesOrdersDetailss.get(0).getQty()==null){
+                throw new SwException("销售预订单数量为空");
+            }
+            Double qty = gsSalesOrdersDetailss.get(0).getQty();
+            if(qty < gsSalesOrdersChangeDto.get(i).getQty()){
+                throw new SwException("修改数量不能大于原数量");
+            }
+
+            GsSalesOrdersDetails gsSalesOrdersDetails = new GsSalesOrdersDetails();
+            gsSalesOrdersDetails.setQty(gsSalesOrdersChangeDto.get(i).getQty());
+
+
+            GsSalesOrdersDetailsCriteria  sm= new GsSalesOrdersDetailsCriteria();
+            sm.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
+                            .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);
+
+
+
+
             gsSalesOrdersChangeDto.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
             mapper.insertSelective(gsSalesOrdersChangeDto.get(i));
             if (i % 10 == 9) {//每10条提交一次
