@@ -1,9 +1,7 @@
 package com.ruoyi.system.service;
 
-import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
-import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto2;
-import com.ruoyi.system.domain.dto.InwuquDto;
-import com.ruoyi.system.domain.dto.InwuqusDto;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,5 +23,5 @@ public interface CountQueryService {
 
     List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo);
 
-    List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto);
+    TableDataInfo saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo);
 }

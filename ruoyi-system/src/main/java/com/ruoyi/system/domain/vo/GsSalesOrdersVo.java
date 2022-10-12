@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -62,6 +63,16 @@ public class GsSalesOrdersVo  implements Serializable {
 
 
     private Integer whId;
+
+    private Double num;
+
+    private Double enterNum;
+
+    private Double changeNum;
+
+    private Double remainNum;
+
+    List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos;
 
     /** 请求参数 */
     private Map<String, Object> params;

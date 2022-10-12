@@ -210,7 +210,7 @@
       ss.qty AS qty,
       ss.remark AS remark,
       ss.id AS detailId,
-      pb.CBPB08,pb.CBPB10,
+      pb.CBPB08,pb.CBPB10,pb.CBPB12,
       ss.create_time as createTime
     FROM
     gs_Sales_orders_details ss
@@ -231,14 +231,37 @@ where
     <if test="salerId != null ">
       and so.saler_id =#{salerId}
     </if>
+    <if test="cbpb12 != null ">
+      and pb.CBPB12 =#{cbpb12}
+    </if>
     <if test="startTime != null">
       and ss.create_time &gt;= #{startTime}
     </if>
     <if test="endTime != null">
       and ss.create_time &lt;=#{endTime}
     </if>
+    group by ss.gs_Sales_orders
 
-     order by ss.create_time desc
+  </select>
+
+  <select id="saleOrderDetailsListCountquery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
+    SELECT
+    ss.goods_id AS goodsId,
+    ss.price AS price,
+    ss.qty AS qty,
+    ss.remark AS remark,
+    ss.id AS detailId,
+    pb.CBPB08,pb.CBPB10,pb.CBPB12,
+    ss.create_time as createTime
+    FROM
+    gs_Sales_orders_details ss
+    LEFT JOIN CBPB pb ON pb.CBPB01 = ss.goods_id
+    where
+    (ss.delete_flag = 0 or ss.delete_flag is null)
+    <if test="gsSalesOrders != null ">
+      and ss.gs_Sales_orders =#{gsSalesOrders}
+    </if>
+    order by ss.create_time desc
   </select>
 
   <update id="updateByExampleSelective" parameterType="map">

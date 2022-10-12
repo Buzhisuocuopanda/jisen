@@ -1,19 +1,20 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.GsGoodsUse;
 import com.ruoyi.system.domain.GsGoodsUseCriteria;
 import com.ruoyi.system.domain.GsSalesOrdersDetails;
-import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
-import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto2;
-import com.ruoyi.system.domain.dto.InwuquDto;
-import com.ruoyi.system.domain.dto.InwuqusDto;
+import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.CbifMapper;
 import com.ruoyi.system.mapper.GsGoodsUseMapper;
 import com.ruoyi.system.mapper.GsSalesOrdersDetailsMapper;
+import com.ruoyi.system.mapper.GsSalesOrdersMapper;
 import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class CountQueryServiceImpl implements CountQueryService {
     private BaseCheckService baseCheckService;
     @Resource
     private GsSalesOrdersDetailsMapper gsSalesOrdersDetailsMapper;
-
+    @Resource
+    private GsSalesOrdersMapper gsSalesOrdersMapper;
     @Override
     @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
@@ -89,15 +91,74 @@ public class CountQueryServiceImpl implements CountQueryService {
 
 
     @Override
-    public List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
-        List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
+    public TableDataInfo saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo) {
+       /* List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo: gsSalesOrdersDetailsVos) {
             if(gsSalesOrdersDetailsVo.getCbpb10()!=null){
                 gsSalesOrdersDetailsVo.setCbpb10(brandMap.get(Integer.parseInt(gsSalesOrdersDetailsVo.getCbpb10())));
             }
         }
-        return gsSalesOrdersDetailsVos;
+        return null;*/
+        List<GsSalesOrdersVo> gsSalesOrdersVos = gsSalesOrdersMapper.saleOrdersListCountQuery(gsSalesOrdersVo);
+        TableDataInfo t = getDataTable(gsSalesOrdersVos);
+        List<GsSalesOrdersDetailsVo> result = new ArrayList<>();
+
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+
+        for (GsSalesOrdersVo item:gsSalesOrdersVos) {
+            GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo = new GsSalesOrdersDetailsVo();
+            gsSalesOrdersDetailsVo.setGsSalesOrders(item.getId()+"");
+            List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderDetailsListCountquery(gsSalesOrdersDetailsVo);
+            Double num = 0d;
+            for (GsSalesOrdersDetailsVo vo:gsSalesOrdersDetailsVos) {
+                if(vo.getCbpb10()!=null){
+                    vo.setCbpb10(brandMap.get(Integer.parseInt(vo.getCbpb10())));
+                }
+                if(vo!=null&&vo.getQty()!=null){
+                    num+=vo.getQty();
+                }
+            }
+            item.setGsSalesOrdersDetailsVos(gsSalesOrdersDetailsVos);
+            item.setNum(num);
+            if(item.getStatus() == 4){
+                item.setEnterNum(num);
+            }else {
+                item.setEnterNum(0d);
+            }
+            if(item.getChangeNum()==null){
+                item.setChangeNum(0d);
+            }
+            item.setRemainNum(item.getNum()-item.getEnterNum());
+            if(gsSalesOrdersDetailsVos!=null&&gsSalesOrdersDetailsVos.size()>0){
+                for (GsSalesOrdersDetailsVo vo:gsSalesOrdersDetailsVos) {
+                    vo.setNum(item.getNum());
+                    vo.setEnterNum(item.getEnterNum());
+                    vo.setChangeNum(item.getChangeNum());
+                    vo.setRemainNum(item.getRemainNum());
+                    vo.setSupplier(item.getSupplier());
+                    vo.setCustomer(item.getCustomer());
+                    vo.setOrderNo(item.getOrderNo());
+                    vo.setId(item.getId());
+                    result.add(vo);
+                }
+            }else {
+                GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo2= new  GsSalesOrdersDetailsVo();
+                gsSalesOrdersDetailsVo2.setNum(item.getNum());
+                gsSalesOrdersDetailsVo2.setEnterNum(item.getEnterNum());
+                gsSalesOrdersDetailsVo2.setChangeNum(item.getChangeNum());
+                gsSalesOrdersDetailsVo2.setRemainNum(item.getRemainNum());
+                gsSalesOrdersDetailsVo2.setSupplier(item.getSupplier());
+                gsSalesOrdersDetailsVo2.setCustomer(item.getCustomer());
+                gsSalesOrdersDetailsVo2.setOrderNo(item.getOrderNo());
+                gsSalesOrdersDetailsVo2.setId(item.getId());
+                result.add(gsSalesOrdersDetailsVo2);
+            }
+
+        }
+        TableDataInfo t2 = getDataTable(result);
+        t2.setTotal(t.getTotal());
+        return t2;
     }
 
     @Override
@@ -185,6 +246,20 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Override
     public List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo) {
         return cbifMapper.selectInntoryummaryquery(sczddVo);
+    }
+
+    /**
+     * 响应请求分页数据
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected TableDataInfo getDataTable(List<?> list)
+    {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(list);
+        rspData.setTotal(new PageInfo(list).getTotal());
+        return rspData;
     }
 }
 
