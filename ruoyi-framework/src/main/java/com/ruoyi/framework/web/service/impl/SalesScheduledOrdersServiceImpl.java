@@ -177,12 +177,12 @@ return;
         if(gsSalesOrdersDetails1.size()==0){
             throw new SwException("没有查到该销售预订单明细");
         }
-        Set<Integer> uio = null;
+       /* Set<Integer> uio = null;
         for (int i = 0; i < gsSalesOrdersDetails1.size(); i++) {
             int id = gsSalesOrdersDetails1.get(i).getId();
             uio = new HashSet<>();
             uio.add(id);
-        }
+        }*/
 
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
         for (GsSalesOrdersDetailsDto good : goods) {
@@ -190,9 +190,9 @@ return;
             if(good.getId()==null){
                 throw new SwException("销售预订单明细id不能为空");
             }
-            if(!uio.contains(good.getId())){
+            /*if(!uio.contains(good.getId())){
                 throw new SwException("该商品不在采购订单明细中");
-            }
+            }*/
             gsSalesOrdersDetails.setId(good.getId());
             gsSalesOrdersDetails.setUpdateTime(date);
             gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
