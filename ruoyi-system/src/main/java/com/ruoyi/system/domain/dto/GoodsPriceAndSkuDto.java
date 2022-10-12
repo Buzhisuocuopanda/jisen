@@ -30,7 +30,7 @@ public class GoodsPriceAndSkuDto {
     private Integer cbobId;
 
     @NotNull(message = "请选择货币类型")
-    private Integer calaId;
+    private Integer currency;
 
 
 

@@ -175,6 +175,19 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(good.getGoodsId()==null){
                 throw new SwException("提货货物不能为空");
             }
+
+            //判断是否全部提货完
+            CbobCriteria cbobex=new CbobCriteria();
+            cbobex.createCriteria()
+                    .andCboa01EqualTo(cboa.getCboa01())
+                    .andCbob08EqualTo(good.getGoodsId());
+            List<Cbob> cbobs = cbobMapper.selectByExample(cbobex);
+            for (Cbob cbob : cbobs) {
+                if(cbob.getTakeQty()!=null && cbob.getTakeQty()>=cbob.getCbob09()){
+                    throw new SwException("提货数量不能超过订单数量");
+                }
+            }
+
             //检查是否已占用了库存 并且提货数量不能大于占用数量 以及历史提货数量减去良品数量
             GsGoodsUseCriteria guex=new GsGoodsUseCriteria();
             guex.createCriteria()
@@ -446,6 +459,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             //todo
 //            good.setRemark();
             good.setQty(cbpl.getCbpl09());
+            good.setGoodsNum(cbpl.getGoodProductQty());
             //TODO
 //            good.setSupplierId();
             good.setTotalPrice(cbpl.getCbpl12());
@@ -909,6 +923,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 throw new SwException("必须在已审核状态下才能标记完成");
             }
 
+            if(cbpk.getCheckStatus()!=1){
+                throw new SwException("必须在质检完成状态下才能标记完成");
+            }
+
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YIWANCHENG.getCode());
             CboaCriteria orderex=new CboaCriteria();
@@ -930,7 +948,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                             .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
                     List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
                     if(cbpls.size()>0){
-                        cbob.setTakeQty(cbpls.get(0).getGoodProductQty());
+                        cbob.setTakeQty(cbob.getTakeQty()+cbpls.get(0).getGoodProductQty());
                     }
 
                 }
@@ -947,6 +965,33 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             cbpk.setCbpk11(SaleOrderStatusEnums.YISHENHE.getCode());
+            CboaCriteria orderex=new CboaCriteria();
+            orderex.createCriteria()
+                    .andCboa07EqualTo(cbpk.getSaleOrderNo());
+            List<Cboa> cboas = cboaMapper.selectByExample(orderex);
+            if(cboas.size()>0){
+                Cboa cboa = cboas.get(0);
+                CbobCriteria obex=new CbobCriteria();
+                obex.createCriteria()
+                        .andCboa01EqualTo(cboa.getCboa01());
+                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+
+                for (Cbob cbob : cbobs) {
+                    CbplCriteria plex=new CbplCriteria();
+                    plex.createCriteria()
+                            .andCbpk01EqualTo(cbpk.getCbpk01())
+                            .andCbpl08EqualTo(cbob.getCbob08())
+                            .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+                    if(cbpls.size()>0){
+                        cbob.setTakeQty(cbob.getTakeQty()-cbpls.get(0).getGoodProductQty());
+                    }
+
+                }
+
+
+            }
+
         }else if(auditTakeOrderDto.getOpType().equals(6)){
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();

@@ -41,6 +41,8 @@ public class TotalOrderAddDto {
 
     private Integer delete;
 
+    private Integer status;
+
 
 
 
