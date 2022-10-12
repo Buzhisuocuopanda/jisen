@@ -24,4 +24,6 @@ public class GsSalesOrdersDetailsDto2 {
 
     //销售人员id
     private Integer salerId;
+    //型号
+    private String cbpb12;
 }
