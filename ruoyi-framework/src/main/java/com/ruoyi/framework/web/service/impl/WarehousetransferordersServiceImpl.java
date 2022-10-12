@@ -812,7 +812,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setCbac08(gsGoodsSnList.get(i).getGoodsId());
             itemList.get(i).setCbac09(itemList.get(i).getCbac09());
-            itemList.get(i).setCbac10(gsGoodsSnList.get(i).getLocationId());
+            itemList.get(i).setCbac11(gsGoodsSnList.get(i).getLocationId());
             itemList.get(i).setCbaa01(itemList.get(i).getCbaa01());
             itemList.get(i).setCbac14(1);
             itemList.get(i).setUserId(Math.toIntExact(userid));
@@ -1174,13 +1174,13 @@ else {
                     gsGoodsSkuDo.setWhId(outstore);
                     //获取商品id
                     gsGoodsSkuDo.setGoodsId(cbacs.get(j).getCbac08());
-                    gsGoodsSkuDo.setLocationId(cbacs.get(j).getCbac10());
+                    gsGoodsSkuDo.setLocationId(cbacs.get(j).getCbac11());
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     //通过仓库id和货物id判断是否存在
                     // 调出仓库
                     List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                     if (gsGoodsSkus.size() == 0) {
-                        throw new SwException("调出仓库没有该货物");
+                        throw new SwException("调出仓库库位没有该货物");
                     } else {
                         //加锁
                         baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
