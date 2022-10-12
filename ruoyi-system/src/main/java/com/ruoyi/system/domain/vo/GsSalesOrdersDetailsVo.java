@@ -53,12 +53,14 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cala08;
 
     private Integer cbwa01;
+    private Integer whId;
 
 
     private String cbwa09;
     @Excel(name = "型号")
     private String cbpb12;
 
+    private String customerMag;
 
 
     @NotNull(message = "供应商id不能为空")

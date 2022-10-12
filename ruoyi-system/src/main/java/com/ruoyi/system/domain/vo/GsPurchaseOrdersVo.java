@@ -45,5 +45,6 @@ public class GsPurchaseOrdersVo {
     private String cbpb15;
 
     private String cbpb08;
+    private String cala08;
 
 }

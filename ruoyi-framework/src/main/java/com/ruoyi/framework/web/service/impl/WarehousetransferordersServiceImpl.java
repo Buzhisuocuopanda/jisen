@@ -1095,7 +1095,7 @@ if(gsGoodsSkus.get(j).getLocationId()==null) {
 
             }
 
-            cbaa1.setCbaa11(TaskStatus.bjwc.getCode());
+           // cbaa1.setCbaa11(TaskStatus.bjwc.getCode());
             cbaaMapper.updateByPrimaryKeySelective(cbaa1);
 
 
@@ -1259,11 +1259,11 @@ else {
         if (cbaa1 == null) {
             throw new SwException("该仓库调拨单不存在");
         }
-        if (!cbaa1.getCbaa11().equals(TaskStatus.bjwc.getCode())) {
-        } else {
+   /*     if (!cbaa1.getCbaa11().equals(TaskStatus.bjwc.getCode())) {
+
             throw new SwException("调出标记完成之后调入标记完成");
 
-        }
+        }*/
         Date date = new Date();
         Long userId = SecurityUtils.getUserId();
 
@@ -1394,7 +1394,12 @@ else {
 
         }
 
+
+
 //数量仓库出库
+
+
+
 
 //扫码仓库出库
 
@@ -1480,14 +1485,15 @@ else {
                     gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
                     gsGoodsSkuDo2.setQty(1.0);
                     taskService.addGsGoodsSku(gsGoodsSkuDo2);
-                } else {
+                }
+                else {
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus1.get(0).getId());
                     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
 
                     gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
                     gsGoodsSkuDo2.setWhId(instore);
-                    gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(j).getLocationId());
+                    gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(0).getLocationId());
                     //查出
                     Double qty = gsGoodsSkus1.get(0).getQty();
                     double v = qty + 1;

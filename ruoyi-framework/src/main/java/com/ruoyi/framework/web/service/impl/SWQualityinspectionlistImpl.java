@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SWQualityinspectionlistImpl implements ISWQualityinspectionlistService {
@@ -106,6 +103,10 @@ private CbpmMapper cbpmMapper;
            if( itemList.get(i).getCbqb09()==null){
                throw new SwException("可替换sn为空");
            }
+           if(Objects.equals(itemList.get(i).getCbqb09(), itemList.get(i).getCbqb10())){
+               throw new SwException("原sn和替换sn不能相同");
+           }
+
            CbpmCriteria rtj = new CbpmCriteria();
               rtj.createCriteria().andCbpm09EqualTo(itemList.get(i).getCbqb09());
                 List<Cbpm> cbpms = cbpmMapper.selectByExample(rtj);

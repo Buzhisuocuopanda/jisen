@@ -948,7 +948,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                             .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
                     List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
                     if(cbpls.size()>0){
-                        cbob.setTakeQty(cbob.getTakeQty()+cbpls.get(0).getGoodProductQty());
+                        if(cbob.getTakeQty()==null){
+                            cbob.setTakeQty(cbpls.get(0).getGoodProductQty());
+
+                        }else {
+                            cbob.setTakeQty(cbob.getTakeQty()+cbpls.get(0).getGoodProductQty());
+
+                        }
                     }
 
                 }
