@@ -23,9 +23,6 @@ public class SaleOrderExitDo {
 
     private Integer orderClass;
 
-    private Integer cbobId;
 
-    //1:国际 2国内
-    private Integer orderClass;
 
 }
