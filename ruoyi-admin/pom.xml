@@ -91,6 +91,10 @@
                 <scope>system</scope>
                 <systemPath>${project.basedir}/src/main/resources/lib/aspose-words-18.10-jdk16.jar</systemPath>
             </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
 
     </dependencies>
 
