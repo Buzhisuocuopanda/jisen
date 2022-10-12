@@ -99,13 +99,19 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Override
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
+//if(cbsbDo.getCbsb30()==null){
+//    throw new SwException("客户订单号不能为空");
+//
+//}
         CbsbCriteria cbsbCriteria = new CbsbCriteria();
         cbsbCriteria.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07());
         List<Cbsb> cbsbList = cbsbMapper.selectByExample(cbsbCriteria);
         if (cbsbList.size() > 0) {
             throw new SwException("该订单已存在");
         }
-
+if(cbsbDo.getCbsb20()==null){
+    throw new SwException("提货单主表id不能为空");
+}
         CbsbCriteria sdg=new CbsbCriteria();
         sdg.createCriteria().andCbsb20EqualTo(cbsbDo.getCbsb20());
         List<Cbsb> cbsbs = cbsbMapper.selectByExample(sdg);
@@ -133,6 +139,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             throw new SwException("提货单id不能为空");
         }
         cbsb.setCbsb20(cbsbDo.getTakeId());
+
+
         cbsbMapper.insertSelective(cbsb);
 
         CbsbCriteria example1 = new CbsbCriteria();
