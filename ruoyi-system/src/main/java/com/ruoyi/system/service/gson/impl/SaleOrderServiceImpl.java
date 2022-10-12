@@ -278,7 +278,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 send.setOldNum(cbba.getCbba09());
 
                 send.setPriority(cbba.getCbba15());
-                send.setType(TotalOrderOperateEnum.MDFQTY.getCode());
+                send.setType(TotalOrderOperateEnum.DELETE.getCode());
                 cbba = orderDistributionService.reassign(send);
 
             }
@@ -1655,9 +1655,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbod cbod = null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
-            if(good.getGoodsId()==null){
-                continue;
-            }
+//            if(good.getGoodsId()==null){
+//                continue;
+//            }
             //查出原先旧数据
 //            CbobCriteria obexample = new CbobCriteria();
 //            obexample.createCriteria()
@@ -1703,7 +1703,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod11(good.getCurrentPrice());
             cbod.setCbod12(good.getCurrentPrice() * good.getQty());
             cbod.setCbod13(good.getRemark());
-            cbod.setCbod01(cboc.getCboc01());
+            cbod.setCboc01(cboc.getCboc01());
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
             cbod.setBefQty(cbob.getCbob09());
@@ -2120,6 +2120,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 }
                 //更改cbob的数量
 
+                cbob.setCbob12(cbod.getCbod12());
                 cbob.setCbob05(date);
                 cbob.setCbob06(auditSaleOrderDto.getUserId());
                 cbob.setCbob09(cbod.getCbod09());

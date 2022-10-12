@@ -219,7 +219,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
 
-            } else {
+            } else if(TotalOrderOperateEnum.DELETE.getCode().equals(orderDistributionDo.getType())){
+                delgiveOrderPriority(cbba, orderDistributionDo.getOldPriority());
+            }else {
                 //此处修改分两种情况
                 //1、修改优先级
                 //2、修改数量
@@ -433,6 +435,90 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         Integer goodsId = cbba.getCbba08();
         List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
 
+        for (Cbba res : list) {
+            if (!cbba.getCbba07().equals(res.getCbba07())) {
+                //未发货数量
+                Double orderNum = res.getCbba09() - res.getCbba11();
+                Double resmakeNum = res.getCbba13();
+                if (resmakeNum.equals(orderNum)) {
+                    continue;
+                }
+                Double resneedNum = orderNum - resmakeNum;
+                if (resneedNum < 0) {
+                    continue;
+                }
+
+                if (resneedNum >= makeNum) {
+                    res.setCbba13(res.getCbba13() + makeNum);
+                    makeNum = 0.0;
+                } else {
+                    res.setCbba13(res.getCbba13() + resneedNum);
+                    makeNum = makeNum - resneedNum;
+                }
+                res.setCbba04(new Date());
+                cbbaMapper.updateByPrimaryKey(res);
+
+                if (makeNum == 0) {
+                    break;
+                }
+
+            }
+        }
+        if(makeNum!=0.0){
+            GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
+            aex.createCriteria()
+                    .andGoodsIdEqualTo(goodsId);
+            List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
+            if(gsAllocationBalances.size()>0){
+                GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+                gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum);
+                gsAllocationBalance.setUpdateTime(new Date());
+                gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+            }else {
+                GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+                gsAllocationBalance.setUpdateTime(new Date());
+                gsAllocationBalance.setQty(makeNum);
+                gsAllocationBalance.setGoodsId(goodsId);
+                gsAllocationBalance.setCreateTime(new Date());
+                gsAllocationBalanceMapper.insert(gsAllocationBalance);
+            }
+
+        }
+
+
+
+
+
+        cbba.setCbba13(makeNum);
+        return cbba;
+
+
+    }
+
+    private Cbba delgiveOrderPriority(Cbba cbba, String oldPriority) {
+        // 国际订单可能会出现占用数量大于分配数量
+        Double useNum = 0.0;
+        if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
+//            GsGoodsUseCriteria example = new GsGoodsUseCriteria();
+//            example.createCriteria().andGoodsIdEqualTo(cbba.getCbba08())
+//                    .andOrderNoEqualTo(cbba.getCbba07());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+//            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
+            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+
+        }
+
+        //可以分给其他订单的数量分配数量减去占用数量
+        Double makeNum = cbba.getCbba13() - useNum;
+        if (makeNum == 0) {
+            return cbba;
+        }
+        Integer goodsId = cbba.getCbba08();
+//        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
+        List<Cbba> list = cbbaMapper.selectByOther(goodsId,cbba.getCbba01());
+
         if(list.size()==0){
 
         }
@@ -466,6 +552,26 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
         }
 
+        if(makeNum!=0.0){
+            GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
+            aex.createCriteria()
+                    .andGoodsIdEqualTo(goodsId);
+            List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
+            if(gsAllocationBalances.size()>0){
+                GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+                gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum);
+                gsAllocationBalance.setUpdateTime(new Date());
+                gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+            }else {
+                GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+                gsAllocationBalance.setUpdateTime(new Date());
+                gsAllocationBalance.setQty(makeNum);
+                gsAllocationBalance.setGoodsId(goodsId);
+                gsAllocationBalance.setCreateTime(new Date());
+                gsAllocationBalanceMapper.insert(gsAllocationBalance);
+            }
+
+        }
 
 
         cbba.setCbba13(makeNum);
@@ -560,6 +666,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //如果可以使用的数量大于需要分配订单的所需数量
                 realMakeNum = realMakeNum + needMakeNum;
                 re.setCbba13(canuseNum - needMakeNum);
+                needMakeNum=0.0;
             } else {
                 realMakeNum = realMakeNum + canuseNum;
                 needMakeNum = needMakeNum - canuseNum;

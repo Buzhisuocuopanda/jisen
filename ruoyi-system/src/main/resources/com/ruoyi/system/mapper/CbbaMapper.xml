@@ -499,4 +499,19 @@ WHERE
     where CBBA01 = #{id,jdbcType=INTEGER} for update
   </select>
 
+
+  <select id="selectByOther" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	`CBBA` cb
+WHERE
+	cb.CBBA06 = 0
+	AND cb.CBBA12 = 0
+	AND cb.CBBA08 = #{goodsId}
+	AND cb.CBBA01 != #{cbba01}
+ORDER BY
+	cb.CBBA15 DESC
+  </select>
+
 </mapper>

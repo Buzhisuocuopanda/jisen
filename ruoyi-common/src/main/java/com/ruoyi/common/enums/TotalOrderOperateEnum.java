@@ -12,6 +12,7 @@ public enum TotalOrderOperateEnum {
     MAKEORDER(new Integer("1"), "创建生产订单"),
     MDFPRIORITY(new Integer("2"), "修改优先级"),
     MDFQTY(new Integer("3"), "修改数量"),
+    DELETE(new Integer("4"), "删除"),
     ;
 
     private Integer code;
