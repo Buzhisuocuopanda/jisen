@@ -90,6 +90,9 @@ public interface SaleOrderService {
 
     void initSn();
 
+    Cbba auditTotalOrder(TotalOrderAddDto totalOrderAddDto);
+
+
 
 //    GsWorkInstance createTask();
 

@@ -2,13 +2,18 @@ package com.ruoyi.system.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class GsSalesOrdersDetailsVo extends BaseEntity {
+    private Integer ids;
 
     private Integer detailId;
     private Integer id;
@@ -73,6 +78,7 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     @Excel(name = "剩余数量")
     private Double remainNum;
 
+    private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 
 
 }

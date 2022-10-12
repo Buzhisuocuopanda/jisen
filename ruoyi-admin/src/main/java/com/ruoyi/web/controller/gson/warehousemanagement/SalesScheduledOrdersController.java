@@ -134,7 +134,7 @@ public class SalesScheduledOrdersController extends BaseController {
         try {
             ValidUtils.bindvaild(bindingResult);
             if (deleteSaleOrderDto.getOrderId() == null) {
-                throw new SwException("请选择要修改的销售预订单");
+                throw new SwException("请选择要删除的销售预订单");
             }
             deleteSaleOrderDto.setUserId(getUserId().intValue());
 

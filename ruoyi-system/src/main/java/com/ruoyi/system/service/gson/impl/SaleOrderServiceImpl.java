@@ -304,7 +304,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     send.setPriority(cbba.getCbba15());
                     send.setType(TotalOrderOperateEnum.MDFPRIORITY.getCode());
                     cbba = orderDistributionService.reassign(send);
-                } else if (!oldPoririty.equals(totalOrderAddDto.getQty())) {
+                } else if (!oldQty.equals(totalOrderAddDto.getQty())) {
 
                     send.setNum(totalOrderAddDto.getQty());
                     send.setOldNum(oldQty);
@@ -373,6 +373,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return cbba;
 
     }
+
+
+
 
     @Override
     public List<SaleOrderListVo> saleOrderList(SaleOrderListDto saleOrderListDto) {
@@ -508,6 +511,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         Cbob cbob = null;
         //创建销售订单明细表
         for (SaleOrderGoodsDto good : goods) {
+            if(good.getGoodsId()!=null){
+                good.setId(good.getGoodsId());
+            }else {
+                good.setGoodsId(good.getId());
+            }
 
             if(good.getQty()==null || good.getQty()==0){
                 throw new SwException("请输入商品数量");
@@ -677,12 +685,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         laexample.createCriteria()
                 .andCala10EqualTo("商品品牌");
         List<Cala> calas = calaMapper.selectByExample(laexample);
-        Map<Integer, String> brandMap = new HashMap<>();
-        for (Cala cala : calas) {
-            brandMap.put(cala.getCala01(), cala.getCala08());
-        }
+//        Map<Integer, String> brandMap = new HashMap<>();
+//        for (Cala cala : calas) {
+//            brandMap.put(cala.getCala01(), cala.getCala08());
+//        }
 
-
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (Cbob cbob : cbobs) {
             good = new SaleOderDetailGoods();
 
@@ -707,7 +715,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             goodsPriceAndSkuDto.setGoodsId(cbob.getCbob08());
             goodsPriceAndSkuDto.setCbobId(cbob.getCbob01());
             goodsPriceAndSkuDto.setCustomerId(cboa.getCboa09());
-            goodsPriceAndSkuDto.setCalaId(cboa.getCboa16());
+            goodsPriceAndSkuDto.setCurrency(cboa.getCboa16());
             GoodsPriceAndSkuVo goodsPriceAndSkuVo = goodsPriceAndSku(goodsPriceAndSkuDto);
             if(goodsPriceAndSkuVo!=null){
                 good.setCanUseSku(goodsPriceAndSkuVo.getCanUseSku());
@@ -1235,7 +1243,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
         CbpfCriteria pfex = new CbpfCriteria();
-        if(goodsPriceAndSkuDto.getCalaId()==null){
+        if(goodsPriceAndSkuDto.getCurrency()==null){
             pfex.createCriteria()
                     .andCbpf02EqualTo(cbca.getCbca28())
                     .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
@@ -1243,7 +1251,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }else {
             pfex.createCriteria()
                     .andCbpf02EqualTo(cbca.getCbca28())
-                    .andCbpf06EqualTo(goodsPriceAndSkuDto.getCalaId())
+                    .andCbpf06EqualTo(goodsPriceAndSkuDto.getCurrency())
                     .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
             pfex.setOrderByClause("CBPF07 desc");
         }
@@ -1622,17 +1630,17 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         numberDo.setType(NumberGenerateEnum.SALEORDERCHANGE.getCode());
         cboc.setCboc07(numberGenerate.createOrderNo(numberDo).getOrderNo());
         cboc.setCboc08(date);
-        cboc.setCboc09(cboa.getCboa09());
-        cboc.setCboc10(cboa.getCboa10());
+        cboc.setCboc09(saleOrderChangeDto.getCustomerId());
+        cboc.setCboc10(saleOrderChangeDto.getSaleUserId());
         cboc.setCboc11(AuditStatusConstants.SO_COMMIT);
         cboc.setCboc13(date);
-        cboc.setCboc16(cboa.getCboa16());
-        cboc.setCboc17(cboa.getCboa17());
-        cboc.setCboc18(cboa.getCboa18());
-        cboc.setCboc19(cboa.getCboa19());
-        cboc.setCboc22(cboa.getCboa22());
-        cboc.setCboc24(cboa.getCboa24());
-        cboc.setCboc25(cboa.getCboa25());
+        cboc.setCboc16(saleOrderChangeDto.getCurrency());
+        cboc.setCboc17(saleOrderChangeDto.getReceiveName());
+        cboc.setCboc18(saleOrderChangeDto.getAddress());
+        cboc.setCboc19(saleOrderChangeDto.getReceivePhone());
+        cboc.setCboc22(saleOrderChangeDto.getInvoiceType());
+        cboc.setCboc24(10);
+        cboc.setCboc25(saleOrderChangeDto.getCustomerNo());
         cboc.setCboc26(cboa.getCboa01());
         cbocMapper.insertWithId(cboc);
         GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
@@ -1658,7 +1666,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("没有在原销售订单查到该商品:" + good.getGoodsId());
             }
             good.setGoodsId(cbob.getCbob08());
-            if(good.getQty()<cbob.getTakeQty()){
+
+            if(cbob.getTakeQty()!=null &&  good.getQty()<cbob.getTakeQty()){
                 throw new SwException("修改的数量不能小于提货数量");
 
             }
@@ -1766,6 +1775,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         res.setOrderDate(cboc.getCboc08());
         res.setOrderChangeNo(cboc.getCboc07());
+        res.setCurrency(cboc.getCboc16());
 
         Cboa cboa = cboaMapper.selectByPrimaryKey(cboc.getCboc26());
         if (cboa != null) {
@@ -1832,6 +1842,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             good.setTotalPrice(cbod.getCbod12());
             good.setBfPrice(cbod.getBefPrice());
             good.setBfQty(cbod.getBefQty());
+            //查库存
+            CheckSkuDo chekDo = new CheckSkuDo();
+            chekDo.setGoodsId(good.getGoodsId());
+            chekDo.setOrderClass(cboa.getCboa27());
+            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(chekDo);
+            good.setCanUseSku(qtyMsgVo.getCanUseNum());
 
             sunPrice = sunPrice + cbod.getCbod12();
             sumQty = sumQty + cbod.getCbod09();
@@ -1916,7 +1932,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             obexample.createCriteria()
                     .andCbob08EqualTo(good.getGoodsId())
                     .andCboa01EqualTo(cboc.getCboc26())
-                    .andCbob06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbob> cbobs = cbobMapper.selectByExample(obexample);
             if (cbobs.size() == 0) {
                 throw new SwException("没有在原销售订单查到该商品:" + good.getGoodsId());
@@ -1948,6 +1964,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod01(saleOrderChangeDto.getId());
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
+            cbod.setCboc01(cboc.getCboc01());
             cbod.setBefQty(cbob.getCbob09());
             cbodMapper.insert(cbod);
 
@@ -2616,6 +2633,16 @@ Date date=new Date();
             gs.setLocationId(cbda.getCbda10());
             gsGoodsSnMapper.insert(gs);
         }
+    }
+
+    @Override
+    public Cbba auditTotalOrder(TotalOrderAddDto totalOrderAddDto) {
+//        Cbba cbba = cbbaMapper.selectByPrimaryKey(totalOrderAddDto.getId());
+//        if(cbba==null){
+//            throw new SwException("没有查该生产总订单");
+//        }
+        return null;
+
     }
 
 

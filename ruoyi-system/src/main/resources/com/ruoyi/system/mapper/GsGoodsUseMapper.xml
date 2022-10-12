@@ -383,7 +383,7 @@ WHERE
 FROM
    `gs_goods_use` g
    INNER JOIN CBOA oa on oa.CBOA07=g.order_no
-   INNER JOIN CBOB ob on ob.CBOA01=oa.CBOA01
+   INNER JOIN CBOB ob on ob.CBOA01=oa.CBOA01 and g.goods_id = ob.CBOB08
    INNER JOIN CBBA ba on ba.CBBA01=ob.CBOB17
 WHERE
   ba.CBBA07 =#{totalOrderNo}
