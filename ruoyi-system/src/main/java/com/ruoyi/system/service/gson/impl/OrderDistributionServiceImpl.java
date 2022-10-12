@@ -356,7 +356,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     }
 
     //优先级由低到高
-    private Cbba getOrderPriority(Cbba cbba, String oldPriority) {
+    private Cbba getOrderPriority(Cbba cbba, Integer oldPriority) {
 
 
 //        Double makeNum = cbba.getCbba13() - useNum;
@@ -412,7 +412,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      *
      * @param cbba
      */
-    private Cbba giveOrderPriority(Cbba cbba, String oldPriority) {
+    private Cbba giveOrderPriority(Cbba cbba, Integer oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -495,7 +495,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
     }
 
-    private Cbba delgiveOrderPriority(Cbba cbba, String oldPriority) {
+    private Cbba delgiveOrderPriority(Cbba cbba, Integer oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {

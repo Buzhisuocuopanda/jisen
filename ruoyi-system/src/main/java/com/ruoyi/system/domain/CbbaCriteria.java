@@ -965,62 +965,52 @@ public class CbbaCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCbba15EqualTo(String value) {
+        public Criteria andCbba15EqualTo(Integer value) {
             addCriterion("CBBA15 =", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotEqualTo(String value) {
+        public Criteria andCbba15NotEqualTo(Integer value) {
             addCriterion("CBBA15 <>", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15GreaterThan(String value) {
+        public Criteria andCbba15GreaterThan(Integer value) {
             addCriterion("CBBA15 >", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15GreaterThanOrEqualTo(String value) {
+        public Criteria andCbba15GreaterThanOrEqualTo(Integer value) {
             addCriterion("CBBA15 >=", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15LessThan(String value) {
+        public Criteria andCbba15LessThan(Integer value) {
             addCriterion("CBBA15 <", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15LessThanOrEqualTo(String value) {
+        public Criteria andCbba15LessThanOrEqualTo(Integer value) {
             addCriterion("CBBA15 <=", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15Like(String value) {
-            addCriterion("CBBA15 like", value, "cbba15");
-            return (Criteria) this;
-        }
-
-        public Criteria andCbba15NotLike(String value) {
-            addCriterion("CBBA15 not like", value, "cbba15");
-            return (Criteria) this;
-        }
-
-        public Criteria andCbba15In(List<String> values) {
+        public Criteria andCbba15In(List<Integer> values) {
             addCriterion("CBBA15 in", values, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotIn(List<String> values) {
+        public Criteria andCbba15NotIn(List<Integer> values) {
             addCriterion("CBBA15 not in", values, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15Between(String value1, String value2) {
+        public Criteria andCbba15Between(Integer value1, Integer value2) {
             addCriterion("CBBA15 between", value1, value2, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotBetween(String value1, String value2) {
+        public Criteria andCbba15NotBetween(Integer value1, Integer value2) {
             addCriterion("CBBA15 not between", value1, value2, "cbba15");
             return (Criteria) this;
         }

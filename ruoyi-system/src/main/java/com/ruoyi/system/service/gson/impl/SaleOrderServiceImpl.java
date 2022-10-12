@@ -291,7 +291,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             //是否是修改商品
             Integer oldgoodsId = cbba.getCbba08();
             if (oldgoodsId.equals(totalOrderAddDto.getGoodsId())) {
-                String oldPoririty = cbba.getCbba15();
+                Integer oldPoririty = cbba.getCbba15();
 
                 Double oldQty = cbba.getCbba09();
                 cbba.setCbba15(totalOrderAddDto.getPriority());
@@ -414,7 +414,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         TotalOrderAddDto totalOrderAddDto = null;
         for (TotalOrderExcelDto totalOrderExcelDto : list) {
 
-            if (StringUtils.isBlank(totalOrderExcelDto.getPriority())) {
+            if (totalOrderExcelDto.getPriority()==null) {
                 throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());
             }
 

@@ -15,10 +15,10 @@ import javax.validation.constraints.NotNull;
 @Data
 public class TotalOrderAddDto {
 
-    @NotBlank(message = "优先级不能为空")
+    @NotNull(message = "优先级不能为空")
     @ApiModelProperty("优先级")
 
-    private String priority;
+    private Integer priority;
 
     @NotBlank(message = "订单号不能为空")
     @ApiModelProperty("订单号")
