@@ -113,7 +113,8 @@ if(cbsbDo.getCbsb20()==null){
     throw new SwException("提货单主表id不能为空");
 }
         CbsbCriteria sdg=new CbsbCriteria();
-        sdg.createCriteria().andCbsb20EqualTo(cbsbDo.getCbsb20());
+        sdg.createCriteria().andCbsb20EqualTo(cbsbDo.getCbsb20())
+                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsb> cbsbs = cbsbMapper.selectByExample(sdg);
         if(cbsbs.size()>0){
             throw new SwException("关联提货单重复");
