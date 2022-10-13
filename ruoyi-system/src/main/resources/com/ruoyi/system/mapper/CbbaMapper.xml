@@ -442,7 +442,6 @@ WHERE
 	AND cb.CBBA12 = 0
 	AND cb.CBBA08 = #{goodsId}
 	AND cb.CBBA15  &lt;= #{oldPriority}
-	AND cb.CBBA15 &gt;=#{newPriority}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
 	cb.CBBA15 DESC
