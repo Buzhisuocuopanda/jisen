@@ -367,6 +367,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         Double needNumOr = cbba.getCbba09() - cbba.getCbba11()-cbba.getCbba13() ;
         Double needNum = cbba.getCbba09() - cbba.getCbba11()-cbba.getCbba13() ;
         Integer goodsId = cbba.getCbba08();
+//        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         for (Cbba res : list) {
             Double useNum = 0.0;
