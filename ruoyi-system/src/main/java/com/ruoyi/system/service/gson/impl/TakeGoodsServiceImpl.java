@@ -183,7 +183,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbob08EqualTo(good.getGoodsId());
             List<Cbob> cbobs = cbobMapper.selectByExample(cbobex);
             for (Cbob cbob : cbobs) {
-                if(cbob.getTakeQty()!=null && cbob.getTakeQty()>=cbob.getCbob09()){
+                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
                     throw new SwException("提货数量不能超过订单数量");
                 }
             }
