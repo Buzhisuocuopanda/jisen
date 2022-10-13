@@ -893,18 +893,6 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
 
-                //扣除占用数量
-
-                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
-                usex.createCriteria()
-                        .andGoodsIdEqualTo(cbba.getCbba08())
-                        .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
-                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
-                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-                    gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
-                    gsGoodsUs.setUpdateTime(new Date());
-                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
-                }
 
                 cbbaMapper.updateByPrimaryKey(cbba);
                 if(num==0.0){
@@ -913,6 +901,25 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
 
+
+
+            //扣除占用数量
+
+            GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+            usex.createCriteria()
+                    .andGoodsIdEqualTo(saleOrderExitDo.getGoodsId())
+                    .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+            for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
+                gsGoodsUs.setUpdateTime(new Date());
+                if(gsGoodsUs.getLockQty()==0.0){
+                    gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+                }else {
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }
+
+            }
 
 
         } finally {
