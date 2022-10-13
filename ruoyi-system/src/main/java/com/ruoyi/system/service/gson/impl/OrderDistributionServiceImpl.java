@@ -434,6 +434,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
         //可以分给其他订单的数量分配数量减去占用数量
         Double makeNum = cbba.getCbba13() - useNum;
+        Double zjmakeNum = 0.0;
         if (makeNum == 0) {
             return cbba;
         }
@@ -441,6 +442,34 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
 
         for (Cbba res : list) {
+            if(res.getCbba01().equals(cbba.getCbba01())){
+
+                Double orderNum = cbba.getCbba09() - res.getCbba11();
+                Double resmakeNum = 0.0;
+                if (resmakeNum.equals(orderNum)) {
+                    continue;
+                }
+                Double resneedNum = orderNum - resmakeNum;
+                if (resneedNum < 0) {
+                    continue;
+                }
+
+                if (resneedNum >= makeNum) {
+                    zjmakeNum=cbba.getCbba13() + makeNum;
+                    makeNum = 0.0;
+                } else {
+                    zjmakeNum=0 + resneedNum;
+                    makeNum = makeNum - resneedNum;
+                }
+                res.setCbba04(new Date());
+
+//                cbbaMapper.updateByPrimaryKey(res);
+
+                if (makeNum == 0) {
+                    break;
+                }
+                continue;
+            }
             if (!cbba.getCbba07().equals(res.getCbba07())) {
                 //未发货数量
                 Double orderNum = res.getCbba09() - res.getCbba11();
@@ -524,7 +553,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
 
-
+        cbba.setCbba13(cbba.getCbba13()+zjmakeNum);
 
         return cbba;
 
