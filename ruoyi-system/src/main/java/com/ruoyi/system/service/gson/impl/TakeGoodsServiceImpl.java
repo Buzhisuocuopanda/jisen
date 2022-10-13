@@ -498,7 +498,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setModel(takeOrderGoodsVo.getModel());
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
                 sugest.setUpc(takeOrderGoodsVo.getUpc());
-
+                sugest.setCbpm01(takeOrderGoodsVo.getCbplId());
 
             }
 
@@ -1247,6 +1247,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
             }
+            gsGoodsSnVo.setGoodsMsg(gsGoodsSnVo.getSn()+" - "+gsGoodsSnVo.getCbla09()+" - "+gsGoodsSnVo.getCbpb10()+" - "+gsGoodsSnVo.getCbpb12()+" - "+gsGoodsSnVo.getSn());
         }
 
         return gsGoodsSnVos;
