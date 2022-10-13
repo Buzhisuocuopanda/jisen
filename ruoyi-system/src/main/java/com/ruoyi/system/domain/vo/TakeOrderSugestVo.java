@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class TakeOrderSugestVo {
 
-
+    private Integer cbpm01;
     //序号
     @ApiModelProperty("序号")
     private Integer number;

@@ -498,7 +498,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setModel(takeOrderGoodsVo.getModel());
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
                 sugest.setUpc(takeOrderGoodsVo.getUpc());
-
+                sugest.setCbpm01(takeOrderGoodsVo.getCbplId());
 
             }
 
@@ -1118,6 +1118,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setCreateBy(gsGoodsSns.get(i).getCreateBy());
             goodsSn.setUpdateTime(date);
             goodsSn.setUpdateBy(Math.toIntExact(userid));
+            goodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
             goodsSn.setWhId(gsGoodsSns.get(i).getWhId());
             goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
             goodsSn.setSn(itemList.get(i).getCbpm09());
@@ -1247,6 +1248,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
             }
+            gsGoodsSnVo.setGoodsMsg(gsGoodsSnVo.getSn()+" - "+gsGoodsSnVo.getCbla09()+" - "+gsGoodsSnVo.getCbpb10()+" - "+gsGoodsSnVo.getCbpb12()+" - "+gsGoodsSnVo.getSn());
         }
 
         return gsGoodsSnVos;
