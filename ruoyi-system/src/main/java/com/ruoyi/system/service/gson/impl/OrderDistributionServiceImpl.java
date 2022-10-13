@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -434,6 +435,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
         //可以分给其他订单的数量分配数量减去占用数量
         Double makeNum = cbba.getCbba13() - useNum;
+        Double zjmakeNum = 0.0;
         if (makeNum == 0) {
             return cbba;
         }
@@ -441,6 +443,34 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
 
         for (Cbba res : list) {
+            if(res.getCbba01().equals(cbba.getCbba01())){
+
+                Double orderNum = cbba.getCbba09() - res.getCbba11();
+                Double resmakeNum = 0.0;
+                if (resmakeNum.equals(orderNum)) {
+                    continue;
+                }
+                Double resneedNum = orderNum - resmakeNum;
+                if (resneedNum < 0) {
+                    continue;
+                }
+
+                if (resneedNum >= makeNum) {
+                    zjmakeNum=cbba.getCbba13() + makeNum;
+                    makeNum = 0.0;
+                } else {
+                    zjmakeNum=0 + resneedNum;
+                    makeNum = makeNum - resneedNum;
+                }
+                res.setCbba04(new Date());
+
+//                cbbaMapper.updateByPrimaryKey(res);
+
+                if (makeNum == 0) {
+                    break;
+                }
+                continue;
+            }
             if (!cbba.getCbba07().equals(res.getCbba07())) {
                 //未发货数量
                 Double orderNum = res.getCbba09() - res.getCbba11();
@@ -524,7 +554,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
 
-
+        cbba.setCbba13(cbba.getCbba13()+zjmakeNum);
 
         return cbba;
 
@@ -808,7 +838,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         SaleOrderExitVo saleOrderExitVo=new SaleOrderExitVo();
         try {
          //   lockTotalOrder();
-            List<Cbba> cbbas = null;
+            List<Cbba> cbbas = new ArrayList<>();
             if (saleOrderExitDo.getOrderClass()==2) {
                 //国内订单根据优先级来
                 cbbas = cbbaMapper.selectByGoodsId(saleOrderExitDo.getGoodsId());
@@ -863,18 +893,6 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
 
-                //扣除占用数量
-
-                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
-                usex.createCriteria()
-                        .andGoodsIdEqualTo(cbba.getCbba08())
-                        .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
-                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
-                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-                    gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
-                    gsGoodsUs.setUpdateTime(new Date());
-                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
-                }
 
                 cbbaMapper.updateByPrimaryKey(cbba);
                 if(num==0.0){
@@ -883,6 +901,25 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
 
+
+
+            //扣除占用数量
+
+            GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+            usex.createCriteria()
+                    .andGoodsIdEqualTo(saleOrderExitDo.getGoodsId())
+                    .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+            for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
+                gsGoodsUs.setUpdateTime(new Date());
+                if(gsGoodsUs.getLockQty()==0.0){
+                    gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+                }else {
+                    gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+                }
+
+            }
 
 
         } finally {

@@ -1118,6 +1118,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setCreateBy(gsGoodsSns.get(i).getCreateBy());
             goodsSn.setUpdateTime(date);
             goodsSn.setUpdateBy(Math.toIntExact(userid));
+            goodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
             goodsSn.setWhId(gsGoodsSns.get(i).getWhId());
             goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
             goodsSn.setSn(itemList.get(i).getCbpm09());

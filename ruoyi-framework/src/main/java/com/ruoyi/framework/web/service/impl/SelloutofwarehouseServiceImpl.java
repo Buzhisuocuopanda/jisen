@@ -321,7 +321,11 @@ if(cbsbDo.getCbsb20()==null){
 //        List<Cbob> cbobs = cbobMapper.selectByExample(example2);
 //        String cbob18 = cbobs.get(0).getCbob18();
         Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbsb1.getCbsb20());
-        Cboa cboa = cboaMapper.selectByPrimaryKey(Integer.valueOf(cbpk.getSaleOrderNo()));
+
+                CboaCriteria afd = new CboaCriteria();
+        afd.createCriteria().andCboa07EqualTo(cbpk.getSaleOrderNo());
+        List<Cboa> cboas = cboaMapper.selectByExample(afd);
+        Cboa cboa = cboas.get(0);
         if (cbscs.size() > 0) {
             for (int i = 0; i < cbscs.size(); i++) {
                 SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
@@ -593,6 +597,19 @@ if(cbsbDo.getCbsb20()==null){
          if(cbsbsVos.get(0).getCbsb20()!=null){
              TakeGoodsOrderDetailVo takeGoodsOrderDetailVo = takeGoodsService.takeOrderDetail(cbsbsVos.get(0).getCbsb20());
              List<TakeOrderSugestVo> sugests = takeGoodsOrderDetailVo.getSugests();
+             for(int y=0;y<sugests.size();y++){
+
+                 CbsdCriteria eyer = new CbsdCriteria();
+                 eyer.createCriteria().andCbsd09EqualTo(sugests.get(y).getSn());
+                    List<Cbsd> cbsds = cbsdMapper.selectByExample(eyer);
+                       if(cbsds.size()==0){
+                           sugests.get(y).setScanStatus(ScanStatusEnum.WEISAOMA.getMsg());
+                       }else{
+                           sugests.get(y).setScanStatus(ScanStatusEnum.YISAOMA.getMsg());
+                       }
+
+             }
+
              outsuggestion.addAll(sugests);
          }
 
