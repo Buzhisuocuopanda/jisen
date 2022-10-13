@@ -421,6 +421,7 @@ WHERE so.delete_flag=0
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by so.order_date desc
   </select>
 
   <select id="saleOrdersListCountQuery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
@@ -616,7 +617,7 @@ where
     a.goodsclassify as goodsclassify,
     a.gs_Sales_orders as gsSalesOrders,
     a.qty as qty,
-    gs.id as id,
+    a.id as id,
     a.status as status,
     a.supplier_id as supplierId,c.CBSA08 as supplier,
     a.saler_id as salerId,b.CAUA17 as saler,
@@ -663,8 +664,13 @@ where
      on
      gs.wh_id = wa.CBWA01
     WHERE
-
-   gs.id = #{ids}
+   gs.delete_flag=0
+   <if test="ids != null and ids !=''">
+  and gs.id = #{ids}
+   </if>
+   <if test="id != null and id !=''">
+   and  a.id = #{id}
+   </if>
     <if test="orderNo != null and orderNo !=''">
         and   a.order_no   like concat('%', #{orderNo}, '%')
     </if>

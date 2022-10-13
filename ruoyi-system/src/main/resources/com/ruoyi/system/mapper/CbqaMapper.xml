@@ -403,7 +403,7 @@ order by a.CBQA08 desc
     where
     a.CBPB06=0
     <if test='cbpk01 != null and cbpk01 != ""'> and d.CBPK01 =#{cbpk01}</if>
-    <if test='cbpm09 != null and cbpm09 != ""'> and c.CBPM09 = #{cbpm09}</if>
+    <if test='cbpm09 != null and cbpm09 != ""'> and c.CBPM09 like concat('%',  #{cbpm09}, '%') </if>
     order by d.CBPK08 desc
 
 </select>
@@ -414,7 +414,11 @@ order by a.CBQA08 desc
 
       CBPM c
     where
-    c.CBPM08= #{cbpm08}
+    c.CBPM07 = 0
+    <if test="cbpm09!=null">
+      and c.CBPM09 like concat('%',  #{cbpm09}, '%')
+    </if>
+    order by c.CBPM09 desc
     limit 50
 
   </select>

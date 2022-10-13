@@ -419,6 +419,7 @@ where
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.cbsh08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by a.CBSH08 desc
   </select>
 
 </mapper>

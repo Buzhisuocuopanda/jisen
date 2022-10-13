@@ -369,9 +369,10 @@ private CbpmMapper cbpmMapper;
             throw new SwException("质检单明细为空");
         }
         Set<Integer> uio = null;
+        uio = new HashSet<>();
         for (int i = 0; i < cbqbs.size(); i++) {
             Integer id = cbqbs.get(i).getCbqb01();
-            uio = new HashSet<>();
+
             uio.add(id);
         }
 

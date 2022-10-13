@@ -436,6 +436,7 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBIE02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by a.CBIE02 desc
   </select>
   <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CbigVo">
     SELECT
@@ -516,7 +517,7 @@ where
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBIE02,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-
+order by a.CBIE02 desc
   </select>
 
 </mapper>

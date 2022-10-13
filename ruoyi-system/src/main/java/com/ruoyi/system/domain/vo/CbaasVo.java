@@ -65,6 +65,8 @@ public class CbaasVo {
     private Integer saoma;
     private List<ScanVo> goods = new ArrayList<>();
 
+    private String orderClass;
+
 
 
 }

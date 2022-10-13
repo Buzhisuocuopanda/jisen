@@ -544,6 +544,13 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbibDo.setCbib19(supplierId);
         taskService.InsertCBIB(cbibDo);
 
+        GsSalesOrders gsSalesOrders1 = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersIn.getGsSalesOrders());
+        gsSalesOrders1.setStatus(TaskStatus.bjwc.getCode().byteValue());
+        gsSalesOrders1.setId(gsSalesOrdersIn.getGsSalesOrders());
+        gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders1);
+
+
+
         gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
     }
 
@@ -970,6 +977,11 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 //        GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
 //        BeanUtils.copyProperties(gsSalesOrdersChangeDto, gsSalesOrdersChange);
         for (int i = 0; i < gsSalesOrdersChangeDto.size(); i++) {
+            if(gsSalesOrdersChangeDto.get(i).getId()==null){
+                throw new SwException("变更单id不能为空");
+
+            }
+
 
             gsSalesOrdersChangeDto.get(i).setUpdateTime(date);
             gsSalesOrdersChangeDto.get(i).setUpdateBy(userid);
