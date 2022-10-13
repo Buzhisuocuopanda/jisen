@@ -588,9 +588,8 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             gsSalesOrdersChangeDto.get(i).setUpdateTime(date);
             gsSalesOrdersChangeDto.get(i).setUpdateBy(userid);
             gsSalesOrdersChangeDto.get(i).setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
-            NumberDo numberDo = new NumberDo();
-            numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
-            gsSalesOrdersChangeDto.get(i).setOrderNo(numberGenerate.createOrderNo(numberDo).getOrderNo());
+            String qualityinspectionlistNos = numberGenerate.getQualityinspectionlistNos();
+            gsSalesOrdersChangeDto.get(i).setOrderNo(qualityinspectionlistNos);
             gsSalesOrdersChangeDto.get(i).setOrderDate(date);
 
             GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();

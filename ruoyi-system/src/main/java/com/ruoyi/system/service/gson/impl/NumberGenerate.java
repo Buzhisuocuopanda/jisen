@@ -58,6 +58,9 @@ public class NumberGenerate {
     private  CbaaMapper cbaaMapper;
 
     @Resource
+    private GsSalesOrdersChangeMapper gsSalesOrdersChangeMapper;
+
+    @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
 @Resource
 private CbieMapper cbieMapper;
@@ -411,6 +414,36 @@ private CbieMapper cbieMapper;
 
     }
 
+    //预订单变更单编号
+    public synchronized String getQualityinspectionlistNos() {
+        //拼接规则 PO202208040017 PO +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo="SK"+format;
+        GsSalesOrdersChangeCriteria example=new GsSalesOrdersChangeCriteria();
+        example.createCriteria()
+                .andOrderNoLike(orderNo+"%");
+        List<GsSalesOrdersChange> cbpks = gsSalesOrdersChangeMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+
+            Integer num=0;
+            for (GsSalesOrdersChange res : cbpks) {
+                Integer no = getNum(res.getOrderNo(),10);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
+
+
      //仓库初始化单编号
     public synchronized String getWarehouseinitializationNo(int storeId) {
         //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增
@@ -494,6 +527,9 @@ private CbieMapper cbieMapper;
         }
 
     }
+
+
+
 
     //库存初始化单编号
     public synchronized String getBinitinitializationNo(int storeId) {
