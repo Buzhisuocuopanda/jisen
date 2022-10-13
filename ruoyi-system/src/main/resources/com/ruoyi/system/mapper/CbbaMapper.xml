@@ -429,7 +429,7 @@ WHERE
 	AND cb.CBBA15 &gt;=#{oldPriority}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 DESC
+	cb.CBBA15
   </select>
 
   <select id="selectByPriorityDureH2low" resultMap="BaseResultMap">

@@ -464,26 +464,26 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
         }
-        if(makeNum!=0.0){
-            GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
-            aex.createCriteria()
-                    .andGoodsIdEqualTo(goodsId);
-            List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
-            if(gsAllocationBalances.size()>0){
-                GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
-                gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum);
-                gsAllocationBalance.setUpdateTime(new Date());
-                gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
-            }else {
-                GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
-                gsAllocationBalance.setUpdateTime(new Date());
-                gsAllocationBalance.setQty(makeNum);
-                gsAllocationBalance.setGoodsId(goodsId);
-                gsAllocationBalance.setCreateTime(new Date());
-                gsAllocationBalanceMapper.insert(gsAllocationBalance);
-            }
-
-        }
+//        if(makeNum!=0.0){
+//            GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
+//            aex.createCriteria()
+//                    .andGoodsIdEqualTo(goodsId);
+//            List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
+//            if(gsAllocationBalances.size()>0){
+//                GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+//                gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum);
+//                gsAllocationBalance.setUpdateTime(new Date());
+//                gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+//            }else {
+//                GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+//                gsAllocationBalance.setUpdateTime(new Date());
+//                gsAllocationBalance.setQty(makeNum);
+//                gsAllocationBalance.setGoodsId(goodsId);
+//                gsAllocationBalance.setCreateTime(new Date());
+//                gsAllocationBalanceMapper.insert(gsAllocationBalance);
+//            }
+//
+//        }
 
 
 
@@ -625,7 +625,6 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         }
 
         return cbba;
-
 
     }
 

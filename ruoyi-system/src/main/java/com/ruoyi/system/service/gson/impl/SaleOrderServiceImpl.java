@@ -1603,7 +1603,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("销售订单必须为已复审才能变更");
         }
 
-        //TODO 加判断不能小于提货数量
+
 
         //不能存在重复的销售变更单
         CbocCriteria ocex=new CbocCriteria();
@@ -1673,10 +1673,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
             good.setGoodsId(cbob.getCbob08());
 
-            if(cbob.getTakeQty()!=null &&  good.getQty()<cbob.getTakeQty()){
-                throw new SwException("修改的数量不能小于提货数量");
-
-            }
+//            if(cbob.getTakeQty()!=null &&  good.getQty()<cbob.getTakeQty()){
+//                throw new SwException("修改的数量不能小于提货数量");
+//
+//            }
 
             //数量只能减少不能增加 不能小于发货数量
 //            Cbob cbob = cbobs.get(0);
