@@ -333,11 +333,12 @@
       <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
           and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
+order by a.create_time desc
   </select>
 
   <select id="selectSalesReceiptList" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersInVo">
       select DISTINCT
-      gs.order_no as orderNo, gs.order_date as orderDate,
+      gs.order_no as orderNo, gs.order_date as orderDate,a.create_time,
       a.gs_sales_orders as gsSalesOrders,
       a.goods_id as goodsId,
       ca.CBCA01 as cbca01,ca.CBCA08 as cbca08,
@@ -358,7 +359,7 @@
       LEFT JOIN CALA la on la.CALA01 = pb.CBPB10
       where a.`status` = 0
       <if test="orderNo != null and orderNo !=''">
-          and   a.order_no   like concat('%', #{orderNo}, '%')
+          and   gs.order_no    like concat('%', #{orderNo}, '%')
       </if>
       <if test="id != null and id !=''">
           and   a.id = #{id}
@@ -371,10 +372,10 @@
       <!--    </if>-->
 
       <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-          and date_format(a.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+          and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
       </if>
       <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-          and date_format(a.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+          and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
 
   </select>

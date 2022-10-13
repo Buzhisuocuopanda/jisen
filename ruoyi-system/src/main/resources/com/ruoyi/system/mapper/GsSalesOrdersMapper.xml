@@ -421,6 +421,7 @@ WHERE so.delete_flag=0
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
+order by so.order_date desc
   </select>
 
   <select id="saleOrdersListCountQuery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
