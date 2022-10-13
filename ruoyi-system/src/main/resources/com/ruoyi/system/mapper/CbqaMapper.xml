@@ -414,7 +414,7 @@ order by a.CBQA08 desc
 
       CBPM c
     where
-    c.CBPM08= #{cbpm08}
+    c.CBPM09= #{cbpm09}
     limit 50
 
   </select>
