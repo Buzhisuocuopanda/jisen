@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -837,7 +838,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         SaleOrderExitVo saleOrderExitVo=new SaleOrderExitVo();
         try {
          //   lockTotalOrder();
-            List<Cbba> cbbas = null;
+            List<Cbba> cbbas = new ArrayList<>();
             if (saleOrderExitDo.getOrderClass()==2) {
                 //国内订单根据优先级来
                 cbbas = cbbaMapper.selectByGoodsId(saleOrderExitDo.getGoodsId());
