@@ -228,7 +228,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
                     if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
+                        getUnDistributionGoods(cbba, ungoods);
+                        if (!cbba.getCbba13().equals(cbba.getCbba09() - cbba.getCbba11())) {
                             getOrderPriority(cbba, orderDistributionDo.getOldPriority());
+                        }
+
 
                     } else {
                         //优先级由低到高
@@ -465,7 +469,37 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
         }
-//        if(makeNum!=0.0){
+
+
+//        if(oldPriority>cbba.getCbba15()){
+            //优先级从低到高
+            if(makeNum-cbba.getCbba09()>0.0){
+                GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
+                aex.createCriteria()
+                        .andGoodsIdEqualTo(goodsId);
+                List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
+                if(gsAllocationBalances.size()>0){
+                    GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum-cbba.getCbba09());
+                    gsAllocationBalance.setUpdateTime(new Date());
+                    gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+                }else {
+                    GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+                    gsAllocationBalance.setUpdateTime(new Date());
+                    gsAllocationBalance.setQty(makeNum-cbba.getCbba09());
+                    gsAllocationBalance.setGoodsId(goodsId);
+                    gsAllocationBalance.setCreateTime(new Date());
+                    gsAllocationBalanceMapper.insert(gsAllocationBalance);
+                }
+                cbba.setCbba13(cbba.getCbba09());
+            }else {
+                cbba.setCbba13(makeNum);
+            }
+
+
+//        }else {
+
+            //        if(makeNum!=0.0){
 //            GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
 //            aex.createCriteria()
 //                    .andGoodsIdEqualTo(goodsId);
@@ -486,11 +520,12 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //
 //        }
 
+//        }
 
 
 
 
-        cbba.setCbba13(makeNum);
+
         return cbba;
 
 
