@@ -544,6 +544,13 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbibDo.setCbib19(supplierId);
         taskService.InsertCBIB(cbibDo);
 
+        GsSalesOrders gsSalesOrders1 = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersIn.getGsSalesOrders());
+        gsSalesOrders1.setStatus(TaskStatus.bjwc.getCode().byteValue());
+        gsSalesOrders1.setId(gsSalesOrdersIn.getGsSalesOrders());
+        gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders1);
+
+
+
         gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
     }
 
