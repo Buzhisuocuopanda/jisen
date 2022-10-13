@@ -10,6 +10,7 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
@@ -740,9 +741,9 @@ public class SalesScheduledOrdersController extends BaseController {
     )
     @PostMapping("/editGsSalesOrdersChange")
     @PreAuthorize("@ss.hasPermi('system:saleChange:edit')")
-    public AjaxResult editGsSalesOrdersChange( @RequestBody GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public AjaxResult editGsSalesOrdersChange(@RequestBody  List<GsSalesOrdersChange>  gsSalesOrdersChangeDto) {
         try {
-            salesScheduledOrdersService.editGsSalesOrdersChange(gsSalesOrdersChangeDto);
+            salesScheduledOrdersService.editGsSalesOrdersChanges(gsSalesOrdersChangeDto);
             return AjaxResult.success();
         } catch (SwException e) {
             log.error("【修改预订单变更单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersChangeDto), ExceptionUtils.getStackTrace(e));

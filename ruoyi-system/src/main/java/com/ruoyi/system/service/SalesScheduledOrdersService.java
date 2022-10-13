@@ -74,4 +74,6 @@ public interface SalesScheduledOrdersService {
     String importSwJsGoods(List<GsSalesOrdersdrDto> swJsGoodsList, boolean updateSupport, String operName);
 
  FgkVo seleteSaleFgkVomary(FgkVo fgkVo);
+
+    int editGsSalesOrdersChanges(List<GsSalesOrdersChange> gsSalesOrdersChangeDto);
 }
