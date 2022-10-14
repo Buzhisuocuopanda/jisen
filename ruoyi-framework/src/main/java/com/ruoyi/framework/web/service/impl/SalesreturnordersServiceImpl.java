@@ -306,18 +306,18 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                     //查出
                     Double qty = gsGoodsSkus.get(0).getQty();
-                    if (qty == 0) {
+                 /*   if (qty == 0) {
                         throw new SwException("库存数量不足");
-                    }
+                    }*/
                     //获取仓库id
                     gsGoodsSkuDo1.setWhId(cbses.get(0).getCbse10());
                     //获取商品id
                     gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
                     gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
-                if(selectbyid.get(k).getNums()>qty){
+              /*  if(selectbyid.get(k).getNums()>qty){
                     throw new SwException("退库数量大于库存数量");
-                }
-                    gsGoodsSkuDo1.setQty(qty - selectbyid.get(k).getNums());
+                }*/
+                    gsGoodsSkuDo1.setQty(qty + selectbyid.get(k).getNums());
                     taskService.updateGsGoodsSku(gsGoodsSkuDo1);
                 }
             }}

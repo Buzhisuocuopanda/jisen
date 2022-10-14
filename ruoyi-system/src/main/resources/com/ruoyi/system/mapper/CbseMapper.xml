@@ -475,7 +475,7 @@
     <if test="cbse11 != null "> and  a.CBSE11 like concat('%',  #{cbse11}, '%')</if>
 
 
-
+order by a.CBSE08 desc
   </select>
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsesVo">
       SELECT
