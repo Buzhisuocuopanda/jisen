@@ -875,7 +875,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                         gsGoodsSn.setStatus(new Byte("2"));
                         gsGoodsSn.setUpdateTime(date);
 
-                        gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+                        gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
 
                     }
