@@ -37,7 +37,7 @@ public class TakeGoodsOrderListDto extends BaseEntity {
     private Integer status;
 
     @ApiModelProperty("仓库名称")
-    private Integer whName;
+    private String whName;
 
     //销售订单订单号
     @ApiModelProperty("销售订单订单号")

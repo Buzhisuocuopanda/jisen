@@ -339,6 +339,7 @@ if(cbsbDo.getCbsb20()==null){
                 saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
                 saleOrderExitDo.setCbobId(cbscs.get(i).getCbsc14());
                 saleOrderExitDo.setOrderClass(cboa.getCboa27());
+                saleOrderExitDo.setWhId(cbsb1.getCbsb10());
                 if(cbscs.get(i).getCbsc14()!=null) {
                     Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
                     if (cbob == null) {
