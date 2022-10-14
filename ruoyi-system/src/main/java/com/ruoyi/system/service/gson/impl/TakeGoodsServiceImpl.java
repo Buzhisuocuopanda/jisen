@@ -1043,6 +1043,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     }
 
     @Override
+    @Transactional
     public void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto) {
         Date date = new Date();
         List<ChangeSuggestModel> list = changeSuggestDto.getList();
@@ -1069,7 +1070,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setUpdateTime(date);
-                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
                 GsGoodsSnCriteria snex2=new GsGoodsSnCriteria();
                 snex2.createCriteria()
@@ -1085,7 +1086,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 gsGoodsSn2.setStatus(new Byte("1"));
                 gsGoodsSn2.setUpdateTime(date);
-                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn2);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn2);
 //                gsGoodsSn.set
 //
                 cbpm.setCbpm01(changeSuggestModel.getCbpm01());
@@ -1099,7 +1100,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 cbpm.setCbpm09(changeSuggestModel.getCbpm09());
                 cbpm.setCbpm08(changeSuggestModel.getCbpm08());
                 cbpm.setCbpm10(changeSuggestModel.getCbpm10());
-                cbpmMapper.updateByPrimaryKey(cbpm);
+                cbpmMapper.updateByPrimaryKeySelective(cbpm);
             }
 //            CbpmCriteria example=new CbpmCriteria();
 //            example.createCriteria()
