@@ -1024,23 +1024,49 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         List<ChangeSuggestModel> list = changeSuggestDto.getList();
         for (ChangeSuggestModel changeSuggestModel : list) {
             //检查修改的商品是否在建议出库单中存在
-            CbpmCriteria example=new CbpmCriteria();
-            example.createCriteria()
-                    .andCbpm09EqualTo(changeSuggestModel.getCbpm09());
-            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
-            if(cbpms.size()>0 && !cbpms.get(0).getCbpm01().equals(changeSuggestModel.getCbpm01())){
-                throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + changeSuggestModel.getCbpm09());
-            }
 
-            Cbpm cbpm=new Cbpm();
-            cbpm.setCbpm01(changeSuggestModel.getCbpm01());
-            cbpm.setCbpm07(changeSuggestModel.getCbpm07());
-            cbpm.setCbpm08(changeSuggestModel.getCbpm08());
-            cbpm.setCbpm09(changeSuggestModel.getCbpm09());
-            cbpm.setCbpm10(changeSuggestModel.getCbpm10());
-            cbpm.setCbpm05(date);
-            cbpm.setCbpm06(changeSuggestDto.getUserId());
-            cbpmMapper.updateByPrimaryKey(cbpm);
+            Cbpm cbpm = cbpmMapper.selectByPrimaryKey(changeSuggestModel.getCbpm01());
+            if(cbpm==null){
+                throw new SwException("没有查到该提货建议");
+            }
+            if(!cbpm.getCbpm09().equals(changeSuggestModel.getCbpm09())){
+                GsGoodsSnCriteria snex=new GsGoodsSnCriteria();
+                snex.createCriteria()
+                        .andSnEqualTo(changeSuggestModel.getCbpm09())
+                        .andDeleteFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(snex);
+                if(gsGoodsSns.size()==0){
+                    throw new SwException("该SN不存在");
+                }
+                GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
+                if(!gsGoodsSn.getStatus().equals(1)){
+                    throw new SwException("该Sn不是入库状态");
+                }
+
+//                gsGoodsSn
+//
+//                cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+//                cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+//                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+//                cbpm.getCbpm12(cbpm.getCbpm09());
+//                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+
+                cbpm.setCbpm05(date);
+                cbpm.setCbpm06(changeSuggestDto.getUserId());
+                cbpmMapper.updateByPrimaryKey(cbpm);
+            }
+//            CbpmCriteria example=new CbpmCriteria();
+//            example.createCriteria()
+//                    .andCbpm09EqualTo(changeSuggestModel.getCbpm09());
+//            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+//            if(cbpms.size()>0 && !cbpms.get(0).getCbpm01().equals(changeSuggestModel.getCbpm01())){
+//                throw new SwException("您选择的Sn商品已经在别的出库单中存在:" + changeSuggestModel.getCbpm09());
+//            }
+
+
+
+//            gsGoodsSnMapper.selectByExample()
+
         }
 
     }

@@ -911,7 +911,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
             List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
             for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-                gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-num);
+                gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()- saleOrderExitDo.getQty());
                 gsGoodsUs.setUpdateTime(new Date());
                 if(gsGoodsUs.getLockQty()==0.0){
                     gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
