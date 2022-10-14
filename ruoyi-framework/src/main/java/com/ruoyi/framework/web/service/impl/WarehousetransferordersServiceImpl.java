@@ -884,6 +884,40 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         CbacMapper mapper = session.getMapper(CbacMapper.class);
         for (int i = 0; i < itemList.size(); i++) {
 
+
+            Integer cbaa01 = itemList.get(0).getCbaa01();
+            if(cbaa01==null){
+                throw new SwException("调拨单id不能为空");
+            }
+            //调出数量仓库
+            CbwaCriteria exampse1 = new CbwaCriteria();
+            exampse1.createCriteria().andCbwa12EqualTo("数量管理");
+            List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
+            List<Integer> gyuygy = cbwas.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
+            Set<Integer> fhji = new HashSet<>(gyuygy);
+            Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
+            if(fhji.contains(cbaa1.getCbaa09()) ){
+                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                gsGoodsSn.setCreateTime(date);
+                gsGoodsSn.setUpdateTime(date);
+                gsGoodsSn.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSn.setSn(itemList.get(i).getCbac09());
+                gsGoodsSn.setStatus((byte) 1);
+                gsGoodsSn.setInTime(date);
+                gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSn.setWhId(instoreid);
+                gsGoodsSn.setGroudStatus((byte) 1);
+                gsGoodsSnMapper.insertSelective(gsGoodsSn);
+
+                itemList.get(i).setCbac03(date);
+                itemList.get(i).setCbac04(Math.toIntExact(userid));
+                itemList.get(i).setCbaa01(cbaa.getCbaa01());
+                mapper.insertSelective(itemList.get(i));
+            }
+            else{
+
             CbacCriteria cbaceria = new CbacCriteria();
             cbaceria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbaceria);
@@ -943,11 +977,11 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 */
 
-            Integer cbaa01 = itemList.get(0).getCbaa01();
+         /*   Integer cbaa01 = itemList.get(0).getCbaa01();
             if(cbaa01==null){
                 throw new SwException("调拨单id不能为空");
-            }
-            //调出数量仓库
+            }*/
+            /*//调出数量仓库
             CbwaCriteria exampse1 = new CbwaCriteria();
             exampse1.createCriteria().andCbwa12EqualTo("数量管理");
             List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
@@ -973,10 +1007,10 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 itemList.get(i).setCbac04(Math.toIntExact(userid));
                 itemList.get(i).setCbaa01(cbaa.getCbaa01());
                 mapper.insertSelective(itemList.get(i));
-            }
+            }*/
 
 
-else {
+
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
