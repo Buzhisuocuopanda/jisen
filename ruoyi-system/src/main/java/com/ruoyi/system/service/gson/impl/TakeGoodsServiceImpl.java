@@ -83,6 +83,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     private CbpaMapper cbpaMapper;
 
     @Resource
+    private CblaMapper cblaMapper;
+
+    @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
 
     @Resource
@@ -507,6 +510,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             sugest.setCbpm01(cbpm.getCbpm01());
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
             sugest.setBfSn(cbpm.getCbpm12());
+            if(cbpm.getCbpm10()!=null){
+                Cbla cbla = cblaMapper.selectByPrimaryKey(cbpm.getCbpm10());
+                if(cbla!=null){
+                    sugest.setCbla09(cbla.getCbla09());
+                }
+            }
+
             sugest.setSku(cbpm.getSku());
             sugest.setSn(cbpm.getCbpm09());
             res.getSugests().add(sugest);
@@ -1056,6 +1066,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 cbpm.setCbpm06(changeSuggestDto.getUserId());
                 cbpm.setCbpm09(changeSuggestModel.getCbpm09());
                 cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+                cbpm.setCbpm10(changeSuggestModel.getCbpm10());
                 cbpmMapper.updateByPrimaryKey(cbpm);
             }
 //            CbpmCriteria example=new CbpmCriteria();

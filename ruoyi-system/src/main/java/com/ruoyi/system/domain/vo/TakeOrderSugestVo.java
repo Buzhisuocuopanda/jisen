@@ -39,6 +39,9 @@ public class TakeOrderSugestVo {
     //库位
     private String sku;
 
+    //库位
+    private String cbla09;
+
     //扫码状态
     private String scanStatus;
 
