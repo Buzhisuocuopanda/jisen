@@ -28,7 +28,8 @@ public class OccuspancyVo extends BaseEntity {
 
     @Excel(name = "型号")
     private String cbpb12;
-
+    @Excel(name = "数量")
+    private Double cbob09;
     @Excel(name = "已发货数量")
     private Double cbob10;
 
