@@ -30,7 +30,7 @@ public class ChangeSuggestModel {
     private Integer cbpm10;
 
     //提货单主表id
-//    private Integer cbpk01;
+    private Integer cbpk01;
 
     //商品SN
 
