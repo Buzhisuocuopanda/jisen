@@ -305,11 +305,16 @@ if(cbsbDo.getCbsb20()==null){
         if(yio1.size()<sdw){
             throw new SwException("扫码数量小于任务数量不能标记完成");
         }
+        List<String> collect = yio1.stream().map(Cbsd::getCbsd09).collect(Collectors.toList());
 
+        for(int m=0;m<collect.size();m++){
+            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+            gsGoodsSn.setStatus(GoodsType.yck.getCode());
+            GsGoodsSnCriteria gssn = new GsGoodsSnCriteria();
+            gssn.createCriteria().andSnEqualTo(collect.get(m));
+            gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gssn);
 
-
-
-
+        }
 
 
         //回写生产总总订单
@@ -774,7 +779,7 @@ if(cbsbDo.getCbsb20()==null){
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsd09());
-            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);

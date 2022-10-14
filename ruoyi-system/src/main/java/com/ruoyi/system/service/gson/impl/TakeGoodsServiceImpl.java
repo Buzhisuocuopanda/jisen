@@ -83,6 +83,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     private CbpaMapper cbpaMapper;
 
     @Resource
+    private CblaMapper cblaMapper;
+
+    @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
 
     @Resource
@@ -511,6 +514,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             sugest.setCbpm01(cbpm.getCbpm01());
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
             sugest.setBfSn(cbpm.getCbpm12());
+            if(cbpm.getCbpm10()!=null){
+                Cbla cbla = cblaMapper.selectByPrimaryKey(cbpm.getCbpm10());
+                if(cbla!=null){
+                    sugest.setCbla09(cbla.getCbla09());
+                }
+            }
+
             sugest.setSku(cbpm.getSku());
             sugest.setSn(cbpm.getCbpm09());
             res.getSugests().add(sugest);
@@ -1034,6 +1044,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     }
 
     @Override
+    @Transactional
     public void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto) {
         Date date = new Date();
         List<ChangeSuggestModel> list = changeSuggestDto.getList();
@@ -1060,7 +1071,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setUpdateTime(date);
-                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
                 GsGoodsSnCriteria snex2=new GsGoodsSnCriteria();
                 snex2.createCriteria()
@@ -1076,7 +1087,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 gsGoodsSn2.setStatus(new Byte("1"));
                 gsGoodsSn2.setUpdateTime(date);
-                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn2);
+                gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn2);
 //                gsGoodsSn.set
 //
                 cbpm.setCbpm01(changeSuggestModel.getCbpm01());
@@ -1089,7 +1100,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 cbpm.setCbpm06(changeSuggestDto.getUserId());
                 cbpm.setCbpm09(changeSuggestModel.getCbpm09());
                 cbpm.setCbpm08(changeSuggestModel.getCbpm08());
-                cbpmMapper.updateByPrimaryKey(cbpm);
+                cbpm.setCbpm10(changeSuggestModel.getCbpm10());
+                cbpmMapper.updateByPrimaryKeySelective(cbpm);
             }
 //            CbpmCriteria example=new CbpmCriteria();
 //            example.createCriteria()
@@ -1185,7 +1197,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
             goodsSn.setSn(itemList.get(i).getCbpm09());
             goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
-            goodsSn.setStatus(GoodsType.yck.getCode());
+            goodsSn.setStatus(GoodsType.ckz.getCode());
             goodsSn.setLocationId(null);
 
             GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();

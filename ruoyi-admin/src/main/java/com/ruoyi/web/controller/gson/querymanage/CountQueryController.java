@@ -436,6 +436,7 @@ public class CountQueryController  extends BaseController {
      */
     public AjaxResult<List<CbpbVo>> swJsGoodsAll(CbpbVo cbpbVo) {
         try {
+            startPage();
             List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsAll(cbpbVo);
             return AjaxResult.success(list);
         }catch (SwException e) {
