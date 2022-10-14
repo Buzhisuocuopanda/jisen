@@ -444,7 +444,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             //良品数量
-            good.setGoodsNum(cbpl.getGoodProductQty());
+
+                good.setGoodsNum(cbpl.getGoodProductQty());
+
+
 
             good.setPrice(cbpl.getCbpl11());
 
@@ -490,6 +493,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         TakeOrderSugestVo sugest=null;
         Map<Integer,Integer> scanMap=new HashMap<>();
         for (CbpmTakeOrderDo cbpm : cbpms) {
+
             sugest=new TakeOrderSugestVo();
             TakeOrderGoodsVo takeOrderGoodsVo = goodsMap.get(cbpm.getCbpm08());
             if(takeOrderGoodsVo!=null){
@@ -530,6 +534,12 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
         }
+        List<TakeOrderGoodsVo> goods1 = res.getGoods();
+        for (TakeOrderGoodsVo takeOrderGoodsVo : goods1) {
+            takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
+        }
+
+
 
 
         if(res.getOrderDate()!=null){
@@ -840,7 +850,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
 
                 if(gsGoodsUses.size()>0){
-                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUses.get(0).getLockQty().intValue());
+                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),cbpl.getCbpl09().intValue());
 
                     for (int i=0;i< list.size() ;i++) {
                         GsGoodsSn gsGoodsSn = list.get(i);

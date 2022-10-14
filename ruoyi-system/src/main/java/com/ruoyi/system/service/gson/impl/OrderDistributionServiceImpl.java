@@ -456,7 +456,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
                 if (resneedNum >= makeNum) {
-                    zjmakeNum=cbba.getCbba13() + makeNum;
+                    zjmakeNum= makeNum;
                     makeNum = 0.0;
                 } else {
                     zjmakeNum=0 + resneedNum;
@@ -503,28 +503,58 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 //        if(oldPriority>cbba.getCbba15()){
             //优先级从低到高
-            if(makeNum-cbba.getCbba09()>0.0){
+
+        if(zjmakeNum>0.0){
+
+            if(makeNum>0.0){
                 GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
                 aex.createCriteria()
                         .andGoodsIdEqualTo(goodsId);
                 List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
                 if(gsAllocationBalances.size()>0){
                     GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
-                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum-cbba.getCbba09());
+                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum);
                     gsAllocationBalance.setUpdateTime(new Date());
                     gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
                 }else {
                     GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
                     gsAllocationBalance.setUpdateTime(new Date());
-                    gsAllocationBalance.setQty(makeNum-cbba.getCbba09());
+                    gsAllocationBalance.setQty(makeNum);
                     gsAllocationBalance.setGoodsId(goodsId);
                     gsAllocationBalance.setCreateTime(new Date());
                     gsAllocationBalanceMapper.insert(gsAllocationBalance);
                 }
-                cbba.setCbba13(cbba.getCbba09());
-            }else {
-                cbba.setCbba13(makeNum);
             }
+
+            cbba.setCbba13(zjmakeNum);
+
+        }else {
+            cbba.setCbba13(makeNum);
+        }
+
+//            if(makeNum-cbba.getCbba09()>0.0){
+//                GsAllocationBalanceCriteria aex=new GsAllocationBalanceCriteria();
+//                aex.createCriteria()
+//                        .andGoodsIdEqualTo(goodsId);
+//                List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(aex);
+//                if(gsAllocationBalances.size()>0){
+//                    GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+//                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()+makeNum-cbba.getCbba09());
+//                    gsAllocationBalance.setUpdateTime(new Date());
+//                    gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+//                }else {
+//                    GsAllocationBalance gsAllocationBalance = new GsAllocationBalance();
+//                    gsAllocationBalance.setUpdateTime(new Date());
+//                    gsAllocationBalance.setQty(makeNum-cbba.getCbba09());
+//                    gsAllocationBalance.setGoodsId(goodsId);
+//                    gsAllocationBalance.setCreateTime(new Date());
+//                    gsAllocationBalanceMapper.insert(gsAllocationBalance);
+//                }
+//                cbba.setCbba13(cbba.getCbba09());
+//            }else {
+//
+//                             cbba.setCbba13(makeNum);
+//            }
 
 
 //        }else {
@@ -554,7 +584,6 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
 
-        cbba.setCbba13(cbba.getCbba13()+zjmakeNum);
 
         return cbba;
 
