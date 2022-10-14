@@ -574,12 +574,13 @@ return;
     @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(CbpgDto cbpgDto) {
+
         //标记完成不可删除
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(cbpg1.getCbpg11().equals(TaskStatus.bjwc.getCode()) ||
                 cbpg1.getCbpg11().equals(TaskStatus.qxwc.getCode()) ||
                 cbpg1.getCbpg11().equals(TaskStatus.sh.getCode())  ){
-            throw new SwException("非反审或默认不可删除");
+            throw new SwException("默认状态才能删除");
         }
         Integer storeid = cbpg1.getCbpg10();
         CbphCriteria example1=new CbphCriteria();
@@ -591,7 +592,7 @@ for(int i=0;i<cbphs.size();i++) {
     Integer cbph08 = cbphs.get(i).getCbph08();
 
     //检查是否有库存
-    baseCheckService.checkGoodsSku(cbph08, storeid);
+  // baseCheckService.checkGoodsSku(cbph08, storeid);
 }
         }
         Long userid = SecurityUtils.getUserId();
