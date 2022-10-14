@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.DeleteFlagEnum1;
+import com.ruoyi.common.enums.GoodsType;
 import com.ruoyi.common.enums.Groudstatus;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -104,6 +105,7 @@ CbpmCriteria cbpmCriteria = new CbpmCriteria();
         Long userid = SecurityUtils.getUserId();
         GsGoodsSn goodsSn = BeanCopyUtils.coypToClass(goodsSnDo, GsGoodsSn.class, null);
         Date date = new Date();
+        goodsSn.setStatus(GoodsType.yrk.getCode());
         goodsSn.setUpdateTime(date);
         goodsSn.setUpdateBy(Math.toIntExact(userid));
         goodsSn.setGroudStatus(Groudstatus.SJ.getCode());

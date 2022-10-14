@@ -1195,7 +1195,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
             goodsSn.setSn(itemList.get(i).getCbpm09());
             goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
-            goodsSn.setStatus(GoodsType.yck.getCode());
+            goodsSn.setStatus(GoodsType.ckz.getCode());
             goodsSn.setLocationId(null);
 
             GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
