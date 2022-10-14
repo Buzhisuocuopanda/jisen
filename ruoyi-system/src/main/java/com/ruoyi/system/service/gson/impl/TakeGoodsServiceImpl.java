@@ -1043,13 +1043,32 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     throw new SwException("该Sn不是入库状态");
                 }
 
-//                gsGoodsSn
+                gsGoodsSn.setStatus(new Byte("2"));
+                gsGoodsSn.setUpdateTime(date);
+                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+
+                GsGoodsSnCriteria snex2=new GsGoodsSnCriteria();
+                snex2.createCriteria()
+                        .andSnEqualTo(cbpm.getCbpm09())
+                        .andDeleteFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                List<GsGoodsSn> gsGoodsSns2 = gsGoodsSnMapper.selectByExample(snex2);
+                if(gsGoodsSns2.size()==0){
+                    throw new SwException("该SN不存在");
+                }
+
+                GsGoodsSn gsGoodsSn2 = gsGoodsSns2.get(0);
+
+
+                gsGoodsSn2.setStatus(new Byte("1"));
+                gsGoodsSn2.setUpdateTime(date);
+                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn2);
+//                gsGoodsSn.set
 //
-//                cbpm.setCbpm01(changeSuggestModel.getCbpm01());
-//                cbpm.setCbpm07(changeSuggestModel.getCbpm07());
-//                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
-//                cbpm.getCbpm12(cbpm.getCbpm09());
-//                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+                cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+                cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+                cbpm.setCbpm12(cbpm.getCbpm09());
+                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
 
                 cbpm.setCbpm05(date);
                 cbpm.setCbpm06(changeSuggestDto.getUserId());
