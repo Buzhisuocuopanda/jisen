@@ -942,6 +942,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
             usex.createCriteria()
                     .andGoodsIdEqualTo(saleOrderExitDo.getGoodsId())
+                    .andWhIdEqualTo(saleOrderExitDo.getWhId())
                     .andOrderNoEqualTo(saleOrderExitDo.getOrderNo());
             List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
             for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
