@@ -409,19 +409,20 @@ order by a.CBQA08 desc
 </select>
   <select id="SwJsSkuBarcodeselectss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      c.CBPM09
+      c.sn as cbpm09
     from
 
-      CBPM c
+      gs_goods_sn c
     where
-    c.CBPM07 = 0
+    c.delete_flag = 0
+      and c.status=1
     <if test="cbpm09!=null">
-      and c.CBPM09 like concat('%',  #{cbpm09}, '%')
+      and c.sn like concat('%',  #{cbpm09}, '%')
     </if>
     <if test="cbpm08!=null and cbpm08!=''">
-      and c.CBPM08 = #{cbpm08}
+      and c.goods_id = #{cbpm08}
     </if>
-    order by c.CBPM09 desc
+    order by c.create_time desc
     limit 50
 
   </select>

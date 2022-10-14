@@ -44,4 +44,10 @@ public class TakeGoodsOrderListDto extends BaseEntity {
     private String saleOrderNo;
 
 
+    //销售订单订单号
+    @ApiModelProperty("质检状态")
+    private String checkStatus;
+
+
+
 }

@@ -895,18 +895,18 @@ public class TakeGoodsController extends BaseController {
      *@date: Create in 2022/9/30 8:52
      *销售提货单主表添加保存销售提货单扫描记录数据
      */
-    @PostMapping("mdfTakeSuggest2")
-    public AjaxResult mdfTakeSuggest2(@RequestParam("cbpmDto")CbpmDto cbpmDto) {
-        try {
-            takeGoodsService.mdfTakeSuggest2(cbpmDto);
-            return AjaxResult.success();
-        } catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
-
-        } catch (Exception e) {
-            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpmDto), ExceptionUtils.getStackTrace(e));
-
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-    }
+//    @PostMapping("mdfTakeSuggest2")
+//    public AjaxResult mdfTakeSuggest2(@RequestParam("cbpmDto")CbpmDto cbpmDto) {
+//        try {
+//            takeGoodsService.mdfTakeSuggest2(cbpmDto);
+//            return AjaxResult.success();
+//        } catch (SwException e) {
+//            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+//
+//        } catch (Exception e) {
+//            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpmDto), ExceptionUtils.getStackTrace(e));
+//
+//            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+//        }
+//    }
 }

@@ -447,7 +447,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             //良品数量
-            good.setGoodsNum(cbpl.getGoodProductQty());
+
+                good.setGoodsNum(cbpl.getGoodProductQty());
+
+
 
             good.setPrice(cbpl.getCbpl11());
 
@@ -493,6 +496,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         TakeOrderSugestVo sugest=null;
         Map<Integer,Integer> scanMap=new HashMap<>();
         for (CbpmTakeOrderDo cbpm : cbpms) {
+
             sugest=new TakeOrderSugestVo();
             TakeOrderGoodsVo takeOrderGoodsVo = goodsMap.get(cbpm.getCbpm08());
             if(takeOrderGoodsVo!=null){
@@ -541,6 +545,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
         }
+        List<TakeOrderGoodsVo> goods1 = res.getGoods();
+        for (TakeOrderGoodsVo takeOrderGoodsVo : goods1) {
+            if(scanMap.get(takeOrderGoodsVo.getGoodsId())!=null){
+                takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
+
+            }
+        }
+
+
 
 
         if(res.getOrderDate()!=null){
@@ -851,7 +864,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
 
                 if(gsGoodsUses.size()>0){
-                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),gsGoodsUses.get(0).getLockQty().intValue());
+                    List<GsGoodsSn> list=gsGoodsSnMapper.selectOutByWhIdAndGoodsId(cbpk.getCbpk10(),cbpl.getCbpl08(),cbpl.getCbpl09().intValue());
 
                     for (int i=0;i< list.size() ;i++) {
                         GsGoodsSn gsGoodsSn = list.get(i);
@@ -872,7 +885,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                         gsGoodsSn.setStatus(new Byte("2"));
                         gsGoodsSn.setUpdateTime(date);
 
-                        gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+                        gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
 
                     }
@@ -1054,13 +1067,32 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     throw new SwException("该Sn不是入库状态");
                 }
 
-//                gsGoodsSn
+                gsGoodsSn.setStatus(new Byte("2"));
+                gsGoodsSn.setUpdateTime(date);
+                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn);
+
+                GsGoodsSnCriteria snex2=new GsGoodsSnCriteria();
+                snex2.createCriteria()
+                        .andSnEqualTo(cbpm.getCbpm09())
+                        .andDeleteFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+                List<GsGoodsSn> gsGoodsSns2 = gsGoodsSnMapper.selectByExample(snex2);
+                if(gsGoodsSns2.size()==0){
+                    throw new SwException("该SN不存在");
+                }
+
+                GsGoodsSn gsGoodsSn2 = gsGoodsSns2.get(0);
+
+
+                gsGoodsSn2.setStatus(new Byte("1"));
+                gsGoodsSn2.setUpdateTime(date);
+                gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSn2);
+//                gsGoodsSn.set
 //
-//                cbpm.setCbpm01(changeSuggestModel.getCbpm01());
-//                cbpm.setCbpm07(changeSuggestModel.getCbpm07());
-//                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
-//                cbpm.getCbpm12(cbpm.getCbpm09());
-//                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+                cbpm.setCbpm01(changeSuggestModel.getCbpm01());
+                cbpm.setCbpm07(changeSuggestModel.getCbpm07());
+                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
+                cbpm.setCbpm12(cbpm.getCbpm09());
+                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
 
                 cbpm.setCbpm05(date);
                 cbpm.setCbpm06(changeSuggestDto.getUserId());
