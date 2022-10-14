@@ -537,7 +537,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }
         List<TakeOrderGoodsVo> goods1 = res.getGoods();
         for (TakeOrderGoodsVo takeOrderGoodsVo : goods1) {
-            takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
+            if(scanMap.get(takeOrderGoodsVo.getGoodsId())!=null){
+                takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
+
+            }
         }
 
 
