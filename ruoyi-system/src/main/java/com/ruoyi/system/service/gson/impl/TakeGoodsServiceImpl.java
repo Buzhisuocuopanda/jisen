@@ -871,6 +871,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                         cbpm.setCbpm09(gsGoodsSn.getSn());
                         cbpm.setCbpm10(gsGoodsSn.getLocationId());
                         cbpm.setCbpm11(0);
+
                         cbpmMapper.insert(cbpm);
                         gsGoodsSn.setStatus(new Byte("2"));
                         gsGoodsSn.setUpdateTime(date);

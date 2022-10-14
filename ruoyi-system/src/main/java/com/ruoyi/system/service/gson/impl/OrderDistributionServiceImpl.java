@@ -2,10 +2,7 @@ package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.constant.TotalOrderConstants;
 import com.ruoyi.common.constant.WareHouseType;
-import com.ruoyi.common.enums.DeleteFlagEnum;
-import com.ruoyi.common.enums.OrderTypeEnum;
-import com.ruoyi.common.enums.TotalOrderOperateEnum;
-import com.ruoyi.common.enums.UseFlagEnum;
+import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.system.domain.*;
@@ -62,6 +59,9 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
     @Resource
     private CbobMapper cbobMapper;
+
+    @Resource
+    private CboaMapper cboaMapper;
 
 
     /**
@@ -816,6 +816,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     cbba.setCbba13(cbba.getCbba13() + 1);
                     cbba.setCbba04(new Date());
                     cbba.setCbba05(directWarehousingDto.getUserId());
+
+
                     cbbaMapper.updateByPrimaryKey(cbba);
                     break;
 
@@ -841,6 +843,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
             }
+
+
 
             return res;
 
@@ -932,6 +936,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
 
+
             //扣除占用数量
 
             GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
@@ -950,6 +955,39 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
             }
 
+            CboaCriteria oaex=new CboaCriteria();
+            oaex.createCriteria()
+                    .andCboa07EqualTo(saleOrderExitDo.getOrderNo());
+
+            List<Cboa> cboas = cboaMapper.selectByExample(oaex);
+            Integer sendNum=0;
+            if(cboas.size()>0){
+                Cboa cboa = cboas.get(0);
+                CbobCriteria obex=new CbobCriteria();
+                obex.createCriteria()
+                        .andCboa01EqualTo(cboa.getCboa01());
+                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+                for (Cbob cbob : cbobs) {
+                    if(cbob.getCbob09().equals(cbob.getCbob10())){
+                        sendNum=sendNum+1;
+                        continue;
+                    }
+                    if(cbob.getCbob08().equals(saleOrderExitDo.getGoodsId())){
+                        if(cbob.getCbob09().equals(saleOrderExitDo.getQty())){
+                            cbob.setCbob10(saleOrderExitDo.getQty());
+                            cbobMapper.updateByPrimaryKey(cbob);
+                            sendNum=sendNum+1;
+                        }
+                    }
+
+                }
+
+                if(sendNum.equals(cboas)){
+                    cboa.setCboa04(new Date());
+                    cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
+                    cboaMapper.updateByPrimaryKey(cboa);
+                }
+            }
 
         } finally {
            // unLockOtherOrder();
