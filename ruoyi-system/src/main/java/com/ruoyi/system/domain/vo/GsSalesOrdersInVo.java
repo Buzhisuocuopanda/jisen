@@ -3,6 +3,7 @@ package com.ruoyi.system.domain.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.apache.poi.hpsf.Decimal;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,6 +31,8 @@ public class GsSalesOrdersInVo  implements Serializable {
     private String ponumber;
 
     private Integer goodsId;
+
+    private Double price;
 
     private Double inQty;
 

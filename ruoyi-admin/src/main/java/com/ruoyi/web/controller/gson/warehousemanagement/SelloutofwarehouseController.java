@@ -864,23 +864,23 @@ public class SelloutofwarehouseController extends BaseController {
 //        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
         FormExcelUtil.setCellData(sheet1,res.getCbca08(),2,2);
 
+        List<TakeOrderSugestVo> outsuggestion = goods.get(0).getOutsuggestion();
 
-
-       // List<SaleOderDetailGoods> goods = res.getGoods();
+        // List<SaleOderDetailGoods> goods = res.getGoods();
 
         List<List<Object>> data1=new ArrayList<>();
-        for (int i=0;i<goods.size();i++) {
+        for (int i=0;i<outsuggestion.size();i++) {
             List<Object> rlist=new ArrayList<>();
 //        SaleOrderSkuVo res=new SaleOrderSkuVo();
 //        res.setGoodsName("aa");
             rlist.add(i+1);
-            rlist.add(goods.get(i).getCbpa07());
-            rlist.add(goods.get(i).getCala08());
-            rlist.add(goods.get(i).getCbpb12());
-            rlist.add(goods.get(i).getCbpb08());
-            rlist.add(goods.get(i).getCbsd09());
-            rlist.add(goods.get(i).getCbla09());
-            boolean b = goods.get(i).getCbsd11() == 1 ? rlist.add("已扫码") : rlist.add("未扫码");
+            rlist.add(outsuggestion.get(i).getGoodClass());
+            rlist.add(outsuggestion.get(i).getBrand());
+            rlist.add(outsuggestion.get(i).getModel());
+            rlist.add(outsuggestion.get(i).getDescription());
+            rlist.add(outsuggestion.get(i).getSn());
+            rlist.add(outsuggestion.get(i).getSku());
+            rlist.add(outsuggestion.get(i).getScanStatus());
            // rlist.add(goods.get(i).getCbsd11());
             data1.add(rlist);
         }
@@ -984,22 +984,22 @@ public class SelloutofwarehouseController extends BaseController {
 //        FormExcelUtil.insertRowsStyleBatch(sheet1, 4+addRows, 21, 4, 1, 4);
        // FormExcelUtil.setCellData(sheet1,"扫码入库",1,1);
 
-
+        List<ScanVo> goods1 = goods.get(0).getGoods();
 
         // List<SaleOderDetailGoods> goods = res.getGoods();
 
         List<List<Object>> data1=new ArrayList<>();
-        for (int i=0;i<goods.size();i++) {
+        for (int i=0;i<goods1.size();i++) {
             List<Object> rlist=new ArrayList<>();
 //        SaleOrderSkuVo res=new SaleOrderSkuVo();
 //        res.setGoodsName("aa");
             rlist.add(i+1);
-            rlist.add(goods.get(i).getCbpa07());
-            rlist.add(goods.get(i).getCala08());
-            rlist.add(goods.get(i).getCbpb12());
-            rlist.add(goods.get(i).getCbpb08());
-            rlist.add(goods.get(i).getCbsd09());
-            rlist.add(goods.get(i).getCbla09());
+            rlist.add(goods1.get(i).getLx());
+            rlist.add(goods1.get(i).getPinpai());
+            rlist.add(goods1.get(i).getCbpb12());
+            rlist.add(goods1.get(i).getCbpb08());
+            rlist.add(goods1.get(i).getSn());
+            rlist.add(goods1.get(i).getKwm());
            // boolean b = goods.get(i).getCbsd11() == 1 ? rlist.add("已扫码") : rlist.add("未扫码");
             // rlist.add(goods.get(i).getCbsd11());
             data1.add(rlist);

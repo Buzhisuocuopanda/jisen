@@ -338,7 +338,7 @@ order by a.create_time desc
 
   <select id="selectSalesReceiptList" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersInVo">
       select DISTINCT
-      gs.order_no as orderNo, gs.order_date as orderDate,a.create_time,
+      gs.order_no as orderNo, gs.order_date as orderDate,a.create_time,sj.price as price,
       a.gs_sales_orders as gsSalesOrders,
       a.goods_id as goodsId,
       ca.CBCA01 as cbca01,ca.CBCA08 as cbca08,
@@ -357,7 +357,9 @@ order by a.create_time desc
       LEFT JOIN CBWA wa on gs.wh_id = wa.CBWA01
       LEFT JOIN CBPB pb on a.goods_id = pb.CBPB01
       LEFT JOIN CALA la on la.CALA01 = pb.CBPB10
-      where a.`status` = 0
+      LEFT JOIN  gs_Sales_orders_details sj on sj.gs_Sales_orders=gs.id
+
+    where a.`status` = 0
       <if test="orderNo != null and orderNo !=''">
           and   gs.order_no    like concat('%', #{orderNo}, '%')
       </if>
