@@ -368,18 +368,18 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectOutByWhIdAndGoodsId" resultType="com.ruoyi.system.domain.GsGoodsSn">
+  <select id="selectOutByWhIdAndGoodsId" resultMap="BaseResultMap">
 
 SELECT
     <include refid="Base_Column_List" />
     FROM
-	`gs_goods_sn` sn
+	`gs_goods_sn`
 WHERE
-	sn.goods_id = #{goodsId}
-	AND sn.wh_id = #{whId}
-	AND sn.status=1
+	goods_id = #{goodsId}
+	AND wh_id = #{whId}
+	AND status=1
 ORDER BY
-	sn.create_time
+	create_time
 	LIMIT #{lockQty}
 
 
