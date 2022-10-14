@@ -498,12 +498,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 sugest.setModel(takeOrderGoodsVo.getModel());
                 sugest.setGoodClass(takeOrderGoodsVo.getGoodClass());
                 sugest.setUpc(takeOrderGoodsVo.getUpc());
-                sugest.setCbpm01(takeOrderGoodsVo.getCbplId());
+
+//                sugest.setCbpm01(takeOrderGoodsVo.getCbplId());
 
             }
-
+            sugest.setGoodsId(cbpm.getCbpm08());
             sugest.setNumber(cbpm.getCbpm02());
-
+            sugest.setCbpm01(cbpm.getCbpm01());
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
             sugest.setBfSn(cbpm.getCbpm12());
             sugest.setSku(cbpm.getSku());
@@ -1039,7 +1040,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     throw new SwException("该SN不存在");
                 }
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
-                if(!gsGoodsSn.getStatus().equals(1)){
+                if(gsGoodsSn.getStatus()!=1){
                     throw new SwException("该Sn不是入库状态");
                 }
 
@@ -1053,6 +1054,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 cbpm.setCbpm05(date);
                 cbpm.setCbpm06(changeSuggestDto.getUserId());
+                cbpm.setCbpm09(changeSuggestModel.getCbpm09());
+                cbpm.setCbpm08(changeSuggestModel.getCbpm08());
                 cbpmMapper.updateByPrimaryKey(cbpm);
             }
 //            CbpmCriteria example=new CbpmCriteria();
@@ -1274,7 +1277,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             if(gsGoodsSnVo.getCbpb10()!=null){
                 gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
             }
-            gsGoodsSnVo.setGoodsMsg(gsGoodsSnVo.getSn()+" - "+gsGoodsSnVo.getCbla09()+" - "+gsGoodsSnVo.getCbpb10()+" - "+gsGoodsSnVo.getCbpb12()+" - "+gsGoodsSnVo.getSn());
+            gsGoodsSnVo.setGoodsMsg(gsGoodsSnVo.getSn()+" - "+gsGoodsSnVo.getCbla09()+" - "+gsGoodsSnVo.getCbpb10()+" - "+gsGoodsSnVo.getCbpb12()+" - "+gsGoodsSnVo.getCbpb08());
         }
 
         return gsGoodsSnVos;

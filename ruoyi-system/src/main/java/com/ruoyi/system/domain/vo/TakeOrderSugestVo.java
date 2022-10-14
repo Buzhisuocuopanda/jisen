@@ -28,6 +28,8 @@ public class TakeOrderSugestVo {
 
     //描述
     private String description;
+    //商品id
+    private Integer goodsId;
 
     //SN
     private String sn;
