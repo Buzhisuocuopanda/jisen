@@ -25,4 +25,21 @@ public class RyTask
     {
         System.out.println("执行无参方法");
     }
+
+    public void deleteBYMenuFile()
+    {
+        String cmd ="rm -f /data/ruoyidata/";
+        try{
+            Process process = Runtime.getRuntime().exec(cmd);
+            System.out.println("执行删除Linux目录下文件");
+            process.waitFor();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("删除失败");
+        }
+
+
+    }
+
 }
