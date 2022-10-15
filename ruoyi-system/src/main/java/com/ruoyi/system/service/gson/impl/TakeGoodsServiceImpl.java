@@ -495,8 +495,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         //查提货建议表
         TakeOrderSugestVo sugest=null;
         Map<Integer,Integer> scanMap=new HashMap<>();
-        for (CbpmTakeOrderDo cbpm : cbpms) {
-
+        for (int x=1;x<=cbpms.size();x++) {
+            CbpmTakeOrderDo cbpm = cbpms.get(0);
             sugest=new TakeOrderSugestVo();
             TakeOrderGoodsVo takeOrderGoodsVo = goodsMap.get(cbpm.getCbpm08());
             if(takeOrderGoodsVo!=null){
@@ -510,7 +510,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             }
             sugest.setGoodsId(cbpm.getCbpm08());
-            sugest.setNumber(cbpm.getCbpm02());
+            sugest.setNumber(x);
             sugest.setCbpm01(cbpm.getCbpm01());
             sugest.setScanStatus(ScanStatusEnum.findByKey(cbpm.getCbpm11()).getMsg());
             sugest.setBfSn(cbpm.getCbpm12());
