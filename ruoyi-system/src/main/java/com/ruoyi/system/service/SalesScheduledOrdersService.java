@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Do.GsSalesChangeDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
@@ -76,4 +77,16 @@ public interface SalesScheduledOrdersService {
  FgkVo seleteSaleFgkVomary(FgkVo fgkVo);
 
     int editGsSalesOrdersChanges(List<GsSalesOrdersChange> gsSalesOrdersChangeDto);
+
+    void SwJsPurchaseinboundeditone(GsSalesChangeDo cbpdDto);
+
+    void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto);
+
+    void SwJsPurchaseinboundedgdxgsh(GsSalesChangeDo cbpdDto);
+
+    void SwJsPurchaseinboundbgdxgdelete(GsSalesChangeDo cbpdDto);
+
+    List<GsSalesOrdersVo> saleOrderLists(GsSalesOrdersDo gsSalesOrdersDo);
+
+    List<GsSalesOrdersDetailsVo> saleOrderListdetails(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 }

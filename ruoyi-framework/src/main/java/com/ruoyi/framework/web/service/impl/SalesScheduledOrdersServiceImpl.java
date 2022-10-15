@@ -12,10 +12,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbibDo;
-import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
-import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
-import com.ruoyi.system.domain.Do.NumberDo;
+import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
@@ -78,7 +75,8 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
     @Resource
     private SysUserMapper sysUserMapper;
 
-
+    @Resource
+    private GsSalesChangeMapper gsSalesChangeMapper;
     /**
      * 添加销售预订单
      *
@@ -600,34 +598,6 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             gsSalesOrdersChangeDto.get(i).setOrderNo(qualityinspectionlistNos);
             gsSalesOrdersChangeDto.get(i).setOrderDate(date);
 
-      /*      GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
-            ssm.createCriteria()
-                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
-                    .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
-            List<GsSalesOrdersDetails> gsSalesOrdersDetailss = gsSalesOrdersDetailsMapper.selectByExample(ssm);
-            if(gsSalesOrdersDetailss.size() == 0){
-                throw new SwException("没有查到该订单");
-            }
-            if(gsSalesOrdersDetailss.get(0).getQty()==null){
-                throw new SwException("销售预订单数量为空");
-            }
-            Double qty = gsSalesOrdersDetailss.get(0).getQty();
-            if(qty < gsSalesOrdersChangeDto.get(i).getQty()){
-                throw new SwException("修改数量不能大于原数量");
-            }
-
-            GsSalesOrdersDetails gsSalesOrdersDetails = new GsSalesOrdersDetails();
-            gsSalesOrdersDetails.setQty(gsSalesOrdersChangeDto.get(i).getQty());
-
-
-            GsSalesOrdersDetailsCriteria  sm= new GsSalesOrdersDetailsCriteria();
-            sm.createCriteria()
-                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
-                            .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
-            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);*/
-
-
-
 
             gsSalesOrdersChangeDto.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
             mapper.insertSelective(gsSalesOrdersChangeDto.get(i));
@@ -1109,6 +1079,151 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         session.commit();
         session.clearCache();
         return 1;    }
+
+    @Override
+    public void SwJsPurchaseinboundeditone(GsSalesChangeDo cbpdDto) {
+
+        List<GsSalesOrdersChange> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);
+        cbpc.setCreateTime(date);
+        cbpc.setCreateBy(userid);
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        String qualityinspectionlistNos = numberGenerate.getQualityinspectionlistNos();
+        cbpc.setOrderNo(qualityinspectionlistNos);
+       if(cbpc.getGsid()==null) {
+           throw new SwException("预订单主表id不能为空");
+       }
+
+        gsSalesChangeMapper.insertSelective(cbpc);
+        GsSalesChangeCriteria gsSalesChangeCriteria = new GsSalesChangeCriteria();
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(qualityinspectionlistNos);
+        List<GsSalesChange> gsSalesChanges = gsSalesChangeMapper.selectByExample(gsSalesChangeCriteria);
+        Integer id = gsSalesChanges.get(0).getId();
+        GsSalesOrdersChange cbpd = null;
+        for(GsSalesOrdersChange good:goods){
+            cbpd = new GsSalesOrdersChange();
+            cbpd.setCreateTime(date);
+            cbpd.setCreateBy(userid);
+            cbpd.setUpdateTime(date);
+            cbpd.setUpdateBy(userid);
+            cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            cbpd.setGoodsId(good.getGoodsId());
+            cbpd.setQty(good.getQty());
+            cbpd.setChangeid(id);
+
+            gsSalesOrdersChangeMapper.insertSelective(cbpd);
+        }
+
+
+
+    }
+
+    @Override
+    public void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto) {
+
+            List<GsSalesOrdersChange> goods = cbpdDto.getGoods();
+            if(goods==null||goods.size()==0){
+                throw new SwException("请至少添加一件货物");
+            }
+
+            Long userid = SecurityUtils.getUserId();
+            Date date = new Date();
+            GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);
+        cbpc.setId(cbpdDto.getId());
+            cbpc.setUpdateTime(date);
+            cbpc.setUpdateBy(userid);
+            cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            if(cbpc.getGsid()==null) {
+                throw new SwException("预订单主表id不能为空");
+            }
+
+            gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
+
+
+            GsSalesOrdersChange cbpd = null;
+            for(GsSalesOrdersChange good:goods){
+                cbpd = new GsSalesOrdersChange();
+
+                cbpd.setUpdateTime(date);
+                cbpd.setUpdateBy(userid);
+                cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                cbpd.setGoodsId(good.getGoodsId());
+                cbpd.setQty(good.getQty());
+
+                GsSalesOrdersChangeCriteria gsSalesOrdersChange = new GsSalesOrdersChangeCriteria();
+                gsSalesOrdersChange.createCriteria().andChangeidEqualTo(cbpdDto.getId());
+                gsSalesOrdersChangeMapper.updateByExampleSelective(cbpd,gsSalesOrdersChange);
+            }
+    }
+
+    @Override
+    public void SwJsPurchaseinboundedgdxgsh(GsSalesChangeDo cbpdDto) {
+
+
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);
+        cbpc.setId(cbpdDto.getId());
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        if(cbpc.getGsid()==null) {
+            throw new SwException("预订单主表id不能为空");
+        }
+        cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
+
+        GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
+
+        GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesChange.getGsid());
+
+        GsSalesOrdersChangeDto gsSalesOrdersChangeDto = new GsSalesOrdersChangeDto();
+        gsSalesOrdersChangeDto.setId(gsSalesOrders.getId());
+        gsSalesOrdersChangesh( gsSalesOrdersChangeDto);
+
+
+        gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
+
+
+
+    }
+
+    @Override
+    public void SwJsPurchaseinboundbgdxgdelete(GsSalesChangeDo cbpdDto) {
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);
+        cbpc.setId(cbpdDto.getId());
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
+        if(cbpc.getGsid()==null) {
+            throw new SwException("预订单主表id不能为空");
+        }
+        gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
+
+    }
+
+    @Override
+    public List<GsSalesOrdersVo> saleOrderLists(GsSalesOrdersDo gsSalesOrdersDo) {
+        List<GsSalesOrdersVo> saleOrderListVos = gsSalesOrdersMapper.saleOrderLists(gsSalesOrdersDo);
+
+
+        return saleOrderListVos;
+
+    }
+
+    @Override
+    public List<GsSalesOrdersDetailsVo> saleOrderListdetails(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
+        return null;
+    }
 
 
 }

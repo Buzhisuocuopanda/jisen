@@ -45,4 +45,6 @@ public interface GsSalesOrdersMapper {
     List<GsSalesOrdersDetailsVo> saleOrderListdetails(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
 
     List<GsSalesOrdersVo> saleOrdersListCountQuery(GsSalesOrdersVo gsSalesOrdersVo);
+
+    List<GsSalesOrdersVo> saleOrderLists(GsSalesOrdersDo gsSalesOrdersDo);
 }

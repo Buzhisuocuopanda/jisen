@@ -712,4 +712,65 @@ where
         and date_format(a.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
 </select>
+  <select id="saleOrderLists" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersVo">
+    SELECT
+--       so.id AS id,
+so.order_no AS orderNo,
+so.order_date AS orderDate,
+a.CBSA08 AS supplier,
+b.CAUA17 AS saler,
+c.CBCA08 AS customer,
+d.cbwa09 AS wh,
+so.status AS status,
+
+so.*
+    FROM
+      `gs_Sales_change` AS so
+
+        LEFT JOIN
+      CBSA a
+      on
+        a.CBSA01=so.supplier_id
+        LEFT JOIN
+      CAUA b
+      on
+        b.CAUA01=so.saler_id
+        LEFT JOIN
+      CBCA c
+      ON
+        c.CBCA01=so.customer_id
+        LEFT JOIN
+      CBWA d
+      ON
+        d.CBWA01=so.wh_id
+    WHERE so.delete_flag=0
+    <if test="orderNo != null and orderNo !=''">
+      and  so.order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="wh != null and wh !=''">
+      and  d.cbwa09 like concat('%', #{wh}, '%')
+    </if>
+    <if test="supplier != null and supplier !=''">
+      and  a.CBSA08 like concat('%', #{supplier}, '%')
+    </if>
+
+
+    <!--    &lt;if test="startTime != null"&gt;-->
+    <!--      and so.order_date &amp;gt;= #{startTime}-->
+    <!--    &lt;/if&gt;-->
+    <!--    &lt;if test="endTime != null"&gt;-->
+    <!--      and so.order_date &amp;lt;=#{endTime}-->
+    <!--    &lt;/if&gt;-->
+    <!--    &lt;if test="endTime != null"&gt;-->
+    <!--      and so.order_date &amp;lt;=#{endTime}-->
+    <!--    &lt;/if&gt;-->
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(so.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(so.order_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+    </if>
+    order by so.order_date desc
+
+  </select>
 </mapper>

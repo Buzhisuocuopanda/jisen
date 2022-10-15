@@ -1,10 +1,15 @@
 package com.ruoyi.system.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@Data
 public class Cbsf implements Serializable {
     private Integer cbsf01;
+
+    private Integer goodsId;
+
 
     private Integer cbsf02;
 
