@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CbqaVo extends BaseEntity {
@@ -49,5 +50,7 @@ public class CbqaVo extends BaseEntity {
     private String f;
 
     private Integer cbpk01;
+
+    private List snList;
 
 }
