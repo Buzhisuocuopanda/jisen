@@ -82,5 +82,6 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
 
     private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 
+    private Integer icu;
 
 }

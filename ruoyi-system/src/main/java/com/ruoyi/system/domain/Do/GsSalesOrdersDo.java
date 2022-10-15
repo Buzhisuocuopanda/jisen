@@ -32,5 +32,7 @@ public class GsSalesOrdersDo extends BaseEntity {
     private String wh;
     private String supplier;
 
+    private Integer  statuss;
+    ;
 
 }

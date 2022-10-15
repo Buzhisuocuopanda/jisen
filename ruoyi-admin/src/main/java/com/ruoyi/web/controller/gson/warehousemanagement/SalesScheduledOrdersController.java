@@ -1234,27 +1234,7 @@ public class SalesScheduledOrdersController extends BaseController {
     }
 
 
-    @ApiOperation(
-            value ="销售预订单变更单详情",
-            notes = "销售预订单变更单详情"
-    )
-    @PostMapping("/saleOrderListdetails")
-    @PreAuthorize("@ss.hasPermi('system:saleOrder:detail')")
-    public AjaxResult<List<TableDataInfo>> saleOrderListdetails( GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
-        try {
-            startPage();
-            List<GsSalesOrdersDetailsVo> list = salesScheduledOrdersService.saleOrderListdetails(gsSalesOrdersDetailsVo);
-            return AjaxResult.success(getDataTable(list));
-        } catch (SwException e) {
-            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
-        } catch (Exception e) {
-            log.error("【销售预订单变更单详情】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(gsSalesOrdersDetailsVo), ExceptionUtils.getStackTrace(e));
-
-            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
-        }
-
-    }
 
 
 }

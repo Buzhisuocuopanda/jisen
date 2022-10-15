@@ -691,6 +691,10 @@ where
    gs_Sales_orders_details rt
    on
    rt.gs_Sales_orders=gs.id
+   LEFT JOIN
+   gs_Sales_change vf
+   ON
+   vf.id=a.changeid
    WHERE
    gs.delete_flag=0
    <if test="ids != null and ids !=''">
@@ -698,6 +702,10 @@ where
    </if>
    <if test="id != null and id !=''">
    and  a.id = #{id}
+   </if>
+
+   <if test="icu != null and icu !=''">
+     and vf.id = #{icu}
    </if>
     <if test="orderNo != null and orderNo !=''">
         and   a.order_no   like concat('%', #{orderNo}, '%')
