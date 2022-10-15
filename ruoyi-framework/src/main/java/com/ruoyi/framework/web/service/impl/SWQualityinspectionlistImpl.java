@@ -172,10 +172,10 @@ private CbpmMapper cbpmMapper;
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
             if (gsGoodsSns.size() > 0) {
                 //不是下架就更新下架
-                if (!Groudstatus.SJ.getCode().equals(gsGoodsSns.get(0).getGroudStatus())) {
+                if (!Groudstatus.XJ.getCode().equals(gsGoodsSns.get(0).getGroudStatus())) {
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSn.setStatus(new Byte("1"));
-                    gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                    gsGoodsSn.setStatus(new Byte("2"));
+                    gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
                 }
             } else {
