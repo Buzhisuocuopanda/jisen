@@ -587,6 +587,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         Long userid = SecurityUtils.getUserId();
 //        GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
 //        BeanUtils.copyProperties(gsSalesOrdersChangeDto, gsSalesOrdersChange);
+
+
+
         for (int i = 0; i < gsSalesOrdersChangeDto.size(); i++) {
             gsSalesOrdersChangeDto.get(i).setCreateTime(date);
             gsSalesOrdersChangeDto.get(i).setCreateBy(userid);
@@ -633,6 +636,18 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
                 session.clearCache();
             }
         }
+
+        if(gsSalesOrdersChangeDto.get(0).getGsSalesOrders()==null){
+            throw new SwException("没有该预订单");
+        }
+        GsSalesOrders gsSalesOrders = new GsSalesOrders();
+        gsSalesOrders.setStatuss((int) TaskStatus.mr.getCode().byteValue());
+        GsSalesOrdersCriteria gsSalesOrdersCriteria = new GsSalesOrdersCriteria();
+        gsSalesOrdersCriteria.createCriteria()
+                .andIdEqualTo(gsSalesOrdersChangeDto.get(0).getGsSalesOrders());
+        gsSalesOrdersMapper.updateByExampleSelective(gsSalesOrders,gsSalesOrdersCriteria);
+
+
         session.commit();
         session.clearCache();
         return 1;

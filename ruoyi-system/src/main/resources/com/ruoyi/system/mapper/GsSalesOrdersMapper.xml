@@ -394,7 +394,9 @@
       c.CBCA08 AS customer,
       d.cbwa09 AS wh,
       so.status AS status,
-      so.*
+      so.statuss AS statuss,
+
+    so.*
     FROM
       `gs_ Sales_orders` AS so
 
@@ -424,6 +426,10 @@ WHERE so.delete_flag=0
     <if test="supplier != null and supplier !=''">
       and  a.CBSA08 like concat('%', #{supplier}, '%')
     </if>
+    <if test="statuss != null and statuss !=''">
+      and     so.statuss = #{statuss}
+    </if>
+
 <!--    &lt;if test="startTime != null"&gt;-->
 <!--      and so.order_date &amp;gt;= #{startTime}-->
 <!--    &lt;/if&gt;-->

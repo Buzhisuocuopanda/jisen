@@ -40,6 +40,9 @@ public class GsSalesOrdersVo  implements Serializable {
 
     private Byte status;
 
+    private Integer statuss;
+
+
     private String wh;
 
     private Integer userId;
