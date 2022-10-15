@@ -13,6 +13,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.FormExcelUtil;
 import com.ruoyi.common.utils.PdfUtil;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -21,6 +22,7 @@ import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.web.utils.Excel2PdfUtil;
 import io.swagger.annotations.Api;
@@ -49,6 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -75,6 +78,9 @@ public class SaleOrderController extends BaseController {
 
     @Resource
     private RuoYiConfig ruoYiConfig;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     /**
      * 国际订单下单后确认库存列表
@@ -1721,6 +1727,7 @@ public class SaleOrderController extends BaseController {
     }
     //导入模板2
     private static void genarateReports(XSSFWorkbook wb, SaleOrderDetailVo res) {
+        Long userId = SecurityUtils.getUserId();
         XSSFSheet sheet1 = wb.getSheetAt(0);
 //        XSSFSheet sheet2 = wb.getSheetAt(1);
         // 设置公式自动读取，没有这行代码，excel模板中的公式不会自动计算
@@ -1753,13 +1760,15 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,res.getFcNumber(),8,2);
         FormExcelUtil.setCellData(sheet1,res.getOther(),8,4);
 
+
         Double sumQty = res.getSumQty()==null?0:res.getSumQty();
         FormExcelUtil.setCellData(sheet1,sumQty,11,4);
         Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
         FormExcelUtil.setCellData(sheet1,sumPrice,11,6);
        // FormExcelUtil.setCellData(sheet1,res.getSumPrice(),11,6);
         FormExcelUtil.setCellData(sheet1,res.getCapPrice(),12,2);
-        FormExcelUtil.setCellData(sheet1,"制单:",16,1);
+        FormExcelUtil.setCellData(sheet1,"制单:"+res.getMakeUser(),16,1);
+       // FormExcelUtil.setCellData(sheet1,res.getMakeUser(),16,3);
 
         List<SaleOderDetailGoods> goods = res.getGoods();
 
@@ -1780,7 +1789,17 @@ public class SaleOrderController extends BaseController {
 
         FormExcelUtil.insertRowsStyleBatch(sheet1, 10, data1.size(), 4, 1, 7);
 
+      /* // Double sumQty = res.getSumQty()==null?0:res.getSumQty();
+        FormExcelUtil.setCellData(sheet1,sumQty,11,4);
+       // Double sumPrice = res.getSumPrice()==null?0:res.getSumPrice();
+        FormExcelUtil.setCellData(sheet1,sumPrice,11,6);
+        // FormExcelUtil.setCellData(sheet1,res.getSumPrice(),11,6);
+        FormExcelUtil.setCellData(sheet1,res.getCapPrice(),13,2);
+        FormExcelUtil.setCellData(sheet1,"制单:",16,1);
+        FormExcelUtil.setCellData(sheet1,userid,16,2);*/
+
         FormExcelUtil.setTableData(sheet1, data1, 10, 1);
+
 //        addRows += data1.size()-2;
         /***第二个表格*********************************/
 //        List<List<Object>> data2 = ea.getData2();
@@ -1905,10 +1924,13 @@ public class SaleOrderController extends BaseController {
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
 
 
-//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+      // in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
 
+            File sg = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
 
             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+
+            copyFileUsingFileChannels(sg,is);
 
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
@@ -1935,6 +1957,8 @@ public class SaleOrderController extends BaseController {
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".pdf");
             FileUtils.writeBytes(pdfPath, response.getOutputStream());
+            boolean delete = is.delete();
+            System.out.println(delete);
 
 
 
@@ -1967,7 +1991,18 @@ public class SaleOrderController extends BaseController {
     }
 
 
-
+    private static void copyFileUsingFileChannels(File source, File dest) throws IOException {
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
+        try {
+            inputChannel = new FileInputStream(source).getChannel();
+            outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+        } finally {
+            inputChannel.close();
+            outputChannel.close();
+        }
+    }
 
 
     @PostMapping("/getPdf")

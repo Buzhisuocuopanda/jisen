@@ -35,5 +35,6 @@ public class PathConstant {
 
     public static final String TAKE_ORDER_SCUIOEWASTYY_EXCEL = "导出销售订单详情2.xlsx";
 
+    public static final String TAKE_ORDER_SCUIOEWASTYY_EXCELs = "导出销售订单详情22.xlsx";
 
 }

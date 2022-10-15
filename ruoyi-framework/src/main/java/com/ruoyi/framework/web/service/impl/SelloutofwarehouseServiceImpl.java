@@ -680,6 +680,19 @@ if(cbsbDo.getCbsb20()==null){
     @Override
     public int insertSwJsStoress(List<Cbsd> itemList) {
 //id,sn
+
+        CbsbsVo cbsbsVo = new CbsbsVo();
+        cbsbsVo.setCbsb01(itemList.get(0).getCbsb01());
+        List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
+
+        if(cbsbsVos.get(0).getSaoma()!=null){
+            double v = cbsbsVos.get(0).getSaoma().doubleValue();
+
+            if( v==cbsbsVos.get(0).getNums()){
+            throw new SwException("该销售出库单已扫描完成");
+        }
+        }
+
         if(itemList.size()==0){
             throw new SwException("请扫描商品");
         }
