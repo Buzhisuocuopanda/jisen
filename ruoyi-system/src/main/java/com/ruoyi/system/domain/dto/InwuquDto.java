@@ -42,4 +42,5 @@ public class InwuquDto extends BaseEntity {
 
     private Long deptId;
 
+    private Integer shopping;
 }
