@@ -65,7 +65,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
-
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private CblaMapper cblaMapper;
     /**
@@ -203,10 +204,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         if(cbpes.size()>0 ){
             int size = cbpes.size();
             for(int i=0;i<size;i++){
+                if (cbpes.get(i).getCbsg11() != null) {
+
                 if(cbpes.get(i).getCbsg11().equals(ScanStatusEnum.YISAOMA.getCode())) {
 
                     throw new SwException("已扫码不能取消完成");
-                }
+                }}
             }
         }
         //校验审核状态
@@ -298,8 +301,17 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 //通过仓库id和货物id判断是否存在
                 List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                 if(gsGoodsSkus.size()==0){
-                    throw new SwException("没有该库存信息");
-                }
+                    //新增数据
+                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                    gsGoodsSku.setCreateTime(date);
+                    gsGoodsSku.setUpdateTime(date);
+                    gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                    gsGoodsSku.setGoodsId(selectbyid.get(k).getGoodsId());
+                    gsGoodsSku.setWhId(cbses.get(0).getCbse10());
+                    gsGoodsSku.setQty(Double.valueOf(selectbyid.get(k).getNums()));
+                    gsGoodsSkuMapper.insertSelective(gsGoodsSku);                }
                 //如果存在则更新库存数量
                 else {
                     //加锁
@@ -387,8 +399,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbibDo.setCbib03(cbses.get(0).getCbse07());
         cbibDo.setCbib05(String.valueOf(TaskType.xstkd.getCode()));
         Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbsfs.get(j).getCbsf15());
-
-        cbibDo.setCbib06(cbsa.getCbsa08());
+       if(cbsa!=null){
+        cbibDo.setCbib06(cbsa.getCbsa08());}
         cbibDo.setCbib07(cbsfs.get(j).getCbsf01());
         cbibDo.setCbib08(cbsgs.get(j).getCbsg08());
         //本次入库数量
@@ -544,7 +556,7 @@ if(cbsgss.size()>0){
             itemList.get(i).setCbsg06(Math.toIntExact(userid));
             itemList.get(i).setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
-
+            itemList.get(i).setCbsg11(ScanStatusEnum.YISAOMA.getCode());
             //如果查不到添加信息到库存表
             Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(i).getCbse01());
    /*         GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
@@ -582,9 +594,9 @@ if(cbsgss.size()>0){
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
-            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setOutTime(date);
-            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
 
             mapper.insertSelective(itemList.get(i));
@@ -655,6 +667,7 @@ if(cbsgss.size()>0){
 
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbse.getCbse10());
+          //  gsGoodsSkuDo.setLocationId(cbsfs.get(i).getCbsf11());
             //获取商品id
             gsGoodsSkuDo.setGoodsId(cbsfs.get(i).getCbsf08());
             gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
