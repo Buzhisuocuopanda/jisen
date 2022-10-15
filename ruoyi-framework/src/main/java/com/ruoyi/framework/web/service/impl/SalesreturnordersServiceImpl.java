@@ -594,9 +594,9 @@ if(cbsgss.size()>0){
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
-            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+            gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setOutTime(date);
-            gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+            gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
 
             mapper.insertSelective(itemList.get(i));
