@@ -496,7 +496,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         TakeOrderSugestVo sugest=null;
         Map<Integer,Integer> scanMap=new HashMap<>();
         for (int x=1;x<=cbpms.size();x++) {
-            CbpmTakeOrderDo cbpm = cbpms.get(0);
+            CbpmTakeOrderDo cbpm = cbpms.get(x);
             sugest=new TakeOrderSugestVo();
             TakeOrderGoodsVo takeOrderGoodsVo = goodsMap.get(cbpm.getCbpm08());
             if(takeOrderGoodsVo!=null){
