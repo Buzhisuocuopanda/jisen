@@ -687,8 +687,11 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
                     .andGsSalesOrdersEqualTo(gsSalesOrdersChangeDto.getId())
                     .andGoodsIdEqualTo(gsSalesOrdersDetailss.get(j).getGoodsId());
             List<GsSalesOrdersChange> gsSalesOrdersChanges = gsSalesOrdersChangeMapper.selectByExample(gsSalesOrdersChangeCriteria);
-
+            if(gsSalesOrdersChanges.size()==0){
+                throw new SwException("没有查到该变更单");
+            }
             Double qty = gsSalesOrdersDetailss.get(j).getQty();
+
             if(qty < gsSalesOrdersChanges.get(0).getQty()){
                 throw new SwException("修改数量不能大于原数量");
             }
