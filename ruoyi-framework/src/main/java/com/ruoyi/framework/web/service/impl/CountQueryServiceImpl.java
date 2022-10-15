@@ -5,7 +5,9 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.OrderTypeEnum;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.Do.CheckSkuDo;
 import com.ruoyi.system.domain.GsGoodsUse;
 import com.ruoyi.system.domain.GsGoodsUseCriteria;
 import com.ruoyi.system.domain.GsSalesOrdersDetails;
@@ -17,10 +19,13 @@ import com.ruoyi.system.mapper.GsSalesOrdersDetailsMapper;
 import com.ruoyi.system.mapper.GsSalesOrdersMapper;
 import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.OrderDistributionService;
+import com.ruoyi.system.service.gson.SaleOrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +41,11 @@ public class CountQueryServiceImpl implements CountQueryService {
     private GsSalesOrdersDetailsMapper gsSalesOrdersDetailsMapper;
     @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
+    @Resource
+    private OrderDistributionService orderDistributionService;
+    @Resource
+    private SaleOrderService saleOrderService;
+
     @Override
     @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
@@ -168,9 +178,19 @@ public class CountQueryServiceImpl implements CountQueryService {
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         //商品分类的map
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
+        List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(Integer.parseInt(SecurityUtils.getUserId()+""));
+//        Map<Integer,GoodsShopVo> shops=new HashMap<>();
+        List<Integer> shops=new ArrayList<>();
+        for (GoodsShopVo goodsShopVo:goodsShopVos) {
+            shops.add(goodsShopVo.getGoodsId());
+        }
 
         for(int i=0;i<inwuquVos.size();i++){
-
+            if(shops.contains(inwuquVos.get(i).getCbpb01())){
+                inwuquVos.get(i).setShopping(1);
+            }else {
+                inwuquVos.get(i).setShopping(0);
+            }
             if(inwuquVos.get(i)!=null){
                 if(inwuquVos.get(i).getCbpb10()!=null){
                     inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
@@ -188,7 +208,18 @@ public class CountQueryServiceImpl implements CountQueryService {
                         }
                     }
                 }
-                //查询对应商品和仓库的货物占用记录，并
+
+                if(inwuquVos.get(i).getCbpb01()!=null){
+                    CheckSkuDo checkSkuDo = new CheckSkuDo();
+                    checkSkuDo.setGoodsId(inwuquVos.get(i).getCbpb01());
+                    checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+                    if(qtyMsgVo!=null){
+                        inwuquVos.get(i).setLockQty(qtyMsgVo.getCanUseNum());
+                    }
+                }
+
+                /*//查询对应商品和仓库的货物占用记录，并
                 if(inwuquVos.get(i).getCbib08()!=null){
                     List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByGoodsId2(inwuquVos.get(i).getCbib02());
                     Double sum =0d;
@@ -204,7 +235,7 @@ public class CountQueryServiceImpl implements CountQueryService {
                     if(inwuquVos.get(i).getCbib15()!=null){
                         inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
                     }
-                }
+                }*/
             }else {
                 InwuquVo inwuquVo =new InwuquVo();
                 inwuquVo.setCbib01(-1);
