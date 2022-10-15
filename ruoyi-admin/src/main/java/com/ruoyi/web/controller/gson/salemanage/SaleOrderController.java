@@ -1358,7 +1358,7 @@ public class SaleOrderController extends BaseController {
             InputStream in = null;
             XSSFWorkbook wb = null;
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            String excelPaht = RuoYiConfig.getSwprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
+            String excelPaht = RuoYiConfig.getSwdataprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
             //File is = new File("D:\\data\\模板.xlsx");
 
             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
@@ -1404,7 +1404,7 @@ public class SaleOrderController extends BaseController {
        // in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\销售订单变更单.xlsx");
             //File is = new File("D:\\data\\销售订单变更单.xlsx");
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANSEWTYY_EXCEL);
+            File is = new File(RuoYiConfig.getSwdataprofile()+ PathConstant.TAKE_ORDER_SCANSEWTYY_EXCEL);
             wb = new XSSFWorkbook(is);
             genarateReportss(wb, res);
             String orderNo = res.getOrderNo();
@@ -1462,7 +1462,7 @@ public class SaleOrderController extends BaseController {
             genarateReportss(wb, res);
             String orderNo = res.getOrderNo();
             //name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
-            excelPaht=   RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
+            excelPaht=   RuoYiConfig.getSwdataprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
 
             File file = new File("text.java");
 

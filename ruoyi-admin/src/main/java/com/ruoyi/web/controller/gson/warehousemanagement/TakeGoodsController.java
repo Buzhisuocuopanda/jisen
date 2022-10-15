@@ -558,7 +558,7 @@ public class TakeGoodsController extends BaseController {
             excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_出库建议表_" + res.getOrderNo() + time + ".xlsx";
 
 
-            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL),new File(excelPaht2));
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwdataprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL),new File(excelPaht2));
 //            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL);
             File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
@@ -705,7 +705,7 @@ public class TakeGoodsController extends BaseController {
             excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_扫描记录表" + res.getOrderNo() + time + ".xlsx";
 
 
-            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL),new File(excelPaht2));
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwdataprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL),new File(excelPaht2));
 //            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANLOG_EXCEL);
             File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);

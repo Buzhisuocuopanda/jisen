@@ -28,6 +28,7 @@ public class RuoYiConfig
     /** 上传路径 */
     private static String profile;
     private static String swprofile;
+    private static String swdataprofile;
 
     public  void setSwprofile(String swprofile) {
         RuoYiConfig.swprofile = swprofile;
@@ -145,5 +146,13 @@ public class RuoYiConfig
     public static String getSwprofile()
     {
         return swprofile;
+    }
+
+    public  void setSwdataprofile(String swdataprofile) {
+        RuoYiConfig.swdataprofile = swdataprofile;
+    }
+    public static String getSwdataprofile()
+    {
+        return swdataprofile;
     }
 }
