@@ -982,7 +982,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         continue;
                     }
                     if(cbob.getCbob08().equals(saleOrderExitDo.getGoodsId())){
-                        if(cbob.getCbob09().equals(saleOrderExitDo.getQty())){
+                        if(cbob.getCbob09().equals(cbob.getCbob09()+saleOrderExitDo.getQty())){
                             cbob.setCbob10(cbob.getCbob10()+saleOrderExitDo.getQty());
                             cbobMapper.updateByPrimaryKey(cbob);
                             sendNum=sendNum+1;
