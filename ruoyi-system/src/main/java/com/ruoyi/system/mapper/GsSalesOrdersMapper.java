@@ -5,7 +5,6 @@ import com.ruoyi.system.domain.GsSalesOrders;
 import com.ruoyi.system.domain.GsSalesOrdersCriteria;
 import java.util.List;
 
-import com.ruoyi.system.domain.dto.GsSalesOrdersDto;
 import com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo;
 import com.ruoyi.system.domain.vo.GsSalesOrdersVo;
 import com.ruoyi.system.domain.vo.GsSalesOrderssVo;

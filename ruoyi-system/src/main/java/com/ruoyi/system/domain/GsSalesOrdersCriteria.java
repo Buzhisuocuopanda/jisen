@@ -981,6 +981,66 @@ public class GsSalesOrdersCriteria {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
+
+        public Criteria andStatussIsNull() {
+            addCriterion("statuss is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussIsNotNull() {
+            addCriterion("statuss is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussEqualTo(Integer value) {
+            addCriterion("statuss =", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussNotEqualTo(Integer value) {
+            addCriterion("statuss <>", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussGreaterThan(Integer value) {
+            addCriterion("statuss >", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussGreaterThanOrEqualTo(Integer value) {
+            addCriterion("statuss >=", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussLessThan(Integer value) {
+            addCriterion("statuss <", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussLessThanOrEqualTo(Integer value) {
+            addCriterion("statuss <=", value, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussIn(List<Integer> values) {
+            addCriterion("statuss in", values, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussNotIn(List<Integer> values) {
+            addCriterion("statuss not in", values, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussBetween(Integer value1, Integer value2) {
+            addCriterion("statuss between", value1, value2, "statuss");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatussNotBetween(Integer value1, Integer value2) {
+            addCriterion("statuss not between", value1, value2, "statuss");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

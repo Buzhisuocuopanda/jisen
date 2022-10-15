@@ -691,7 +691,7 @@
     <if test="checkStatus != null">
       and pk.check_status =#{checkStatus}
     </if>
-    <if test="whName != null  ">
+    <if test="whName != null and whName !='' ">
       and wa.CBWA01 = #{whName}
     </if>
     <if test="orderNo != null and orderNo != ''" >

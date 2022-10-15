@@ -21,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -441,6 +438,17 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         }
         Integer goodsId = cbba.getCbba08();
         List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
+
+        for (Cbba res : list) {
+            if(res.getCbba01().equals(cbba.getCbba01())){
+                res.setCbba15(cbba.getCbba15());
+            }
+
+            }
+
+
+        list=list.stream().sorted(Comparator.comparing(Cbba::getCbba15).reversed()).collect(Collectors.toList());
+
 
         for (Cbba res : list) {
             if(res.getCbba01().equals(cbba.getCbba01())){
@@ -974,8 +982,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         continue;
                     }
                     if(cbob.getCbob08().equals(saleOrderExitDo.getGoodsId())){
-                        if(cbob.getCbob09().equals(saleOrderExitDo.getQty())){
-                            cbob.setCbob10(saleOrderExitDo.getQty());
+                        if(cbob.getCbob09().equals(cbob.getCbob09()+saleOrderExitDo.getQty())){
+                            cbob.setCbob10(cbob.getCbob10()+saleOrderExitDo.getQty());
                             cbobMapper.updateByPrimaryKey(cbob);
                             sendNum=sendNum+1;
                         }
