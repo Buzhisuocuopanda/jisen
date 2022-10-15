@@ -113,7 +113,8 @@ private CbpmMapper cbpmMapper;
                         cbpl.setCbpl01(cbpls.get(0).getCbpl01());
                         if(cbpls.get(0).getGoodProductQty()!=null){
                             cbpl.setGoodProductQty(cbpls.get(0).getGoodProductQty()-1);
-                            cbplMapper.updateByPrimaryKeySelective(cbpl);
+                            int a =cbplMapper.updateByPrimaryKeySelective(cbpl);
+                            System.out.println(a);
                         }
                     }
                 }
@@ -174,7 +175,7 @@ private CbpmMapper cbpmMapper;
                 //不是下架就更新下架
                 if (!Groudstatus.XJ.getCode().equals(gsGoodsSns.get(0).getGroudStatus())) {
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSn.setStatus(new Byte("2"));
+//                    gsGoodsSn.setStatus(new Byte("2"));
                     gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
                 }
