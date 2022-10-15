@@ -148,12 +148,29 @@ private NumberGenerate numberGenerate;
    @Transactional
     @Override
     public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
+
+
+
        if (itemList.size() == 0) {
            throw new SwException("请选择要扫的商品");
        }
        if (itemList.get(0).getCbpc01() == null) {
            throw new SwException("采购订单主单id不能为空");
        }
+       CbpcVo cbpcVo = new CbpcVo();
+       cbpcVo.setCbpc01(itemList.get(0).getCbpc01());
+       List<CbpcVo> cbpcVos = selectSwJsTaskGoodsRelListsss(cbpcVo);
+
+       if(  cbpcVos.get(0).getSaoma()!=null){
+           double v = cbpcVos.get(0).getSaoma().doubleValue();
+
+           if( v==cbpcVos.get(0).getNums()){
+               throw new SwException("该销售出库单已扫描完成");
+           }
+       }
+
+
+
        Cbpc cbpcs = cbpcMapper.selectByPrimaryKey(itemList.get(0).getCbpc01());
        Integer storeid = cbpcs.getCbpc10();
 

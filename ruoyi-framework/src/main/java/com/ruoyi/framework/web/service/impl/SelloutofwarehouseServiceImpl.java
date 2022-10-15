@@ -684,9 +684,13 @@ if(cbsbDo.getCbsb20()==null){
         CbsbsVo cbsbsVo = new CbsbsVo();
         cbsbsVo.setCbsb01(itemList.get(0).getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
-        double v = cbsbsVos.get(0).getSaoma().doubleValue();
-        if( v==cbsbsVos.get(0).getNums()){
+
+        if(cbsbsVos.get(0).getSaoma()!=null){
+            double v = cbsbsVos.get(0).getSaoma().doubleValue();
+
+            if( v==cbsbsVos.get(0).getNums()){
             throw new SwException("该销售出库单已扫描完成");
+        }
         }
 
         if(itemList.size()==0){

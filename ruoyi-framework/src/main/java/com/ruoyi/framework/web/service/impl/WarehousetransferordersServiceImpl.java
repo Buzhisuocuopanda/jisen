@@ -899,6 +899,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             Set<Integer> fhji = new HashSet<>(gyuygy);
             Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
             if(fhji.contains(cbaa1.getCbaa09()) ){
+
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setCreateTime(date);
                 gsGoodsSn.setUpdateTime(date);
@@ -908,6 +909,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setSn(itemList.get(i).getCbac09());
                 gsGoodsSn.setStatus((byte) 1);
                 gsGoodsSn.setInTime(date);
+                gsGoodsSn.setGoodsId(cbphs.get(0).getCbab08());
                 gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
                 gsGoodsSn.setWhId(instoreid);
                 gsGoodsSn.setGroudStatus((byte) 1);
@@ -921,6 +923,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
                 itemList.get(i).setCbac10(itemList.get(i).getCbac10());
                 itemList.get(i).setCbac09(itemList.get(i).getCbac09());
+                itemList.get(i).setCbac08(cbphs.get(0).getCbab08());
 
                 itemList.get(i).setCbaa01(itemList.get(i).getCbaa01());
                 itemList.get(i).setCbac14(2);
@@ -1246,7 +1249,7 @@ else {
                         }
                         gsGoodsSkuDo1.setGoodsId(cbacs.get(j).getCbac08());
                         gsGoodsSkuDo1.setWhId(outstore);
-                        gsGoodsSkuDo1.setLocationId(cbacs.get(j).getCbac10());
+                        gsGoodsSkuDo1.setLocationId(cbacs.get(j).getCbac11());
                         gsGoodsSkuDo1.setQty(qty - 1);
                         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 

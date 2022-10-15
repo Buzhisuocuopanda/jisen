@@ -597,7 +597,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             gsSalesOrdersChangeDto.get(i).setOrderNo(qualityinspectionlistNos);
             gsSalesOrdersChangeDto.get(i).setOrderDate(date);
 
-            GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
+      /*      GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
             ssm.createCriteria()
                     .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
                     .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
@@ -621,7 +621,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             sm.createCriteria()
                     .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.get(i).getGsSalesOrders()))
                             .andGoodsIdEqualTo(gsSalesOrdersChangeDto.get(i).getGoodsId());
-            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);*/
 
 
 
@@ -678,20 +678,84 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
     @Override
     public void gsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
-        GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
-        if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
+
+//id预订单id
+
+
+        GsSalesOrdersDetailsCriteria  ssm= new GsSalesOrdersDetailsCriteria();
+        ssm.createCriteria()
+                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.getId()));
+        //.andGoodsIdEqualTo(gsSalesOrdersChangeDto.getGoodsId());
+        List<GsSalesOrdersDetails> gsSalesOrdersDetailss = gsSalesOrdersDetailsMapper.selectByExample(ssm);
+        if(gsSalesOrdersDetailss.size() == 0){
             throw new SwException("没有查到该订单");
         }
-
-        if(!TaskStatus.mr.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
-            throw new SwException("未审核状态才能审核");
+        if(gsSalesOrdersDetailss.get(0).getQty()==null){
+            throw new SwException("销售预订单数量为空");
         }
-        Long userid = SecurityUtils.getUserId();
+
+        for(int j=0;j<gsSalesOrdersDetailss.size();j++){
+
+
+            GsSalesOrdersChangeCriteria gsSalesOrdersChangeCriteria = new GsSalesOrdersChangeCriteria();
+            gsSalesOrdersChangeCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(gsSalesOrdersChangeDto.getId())
+                    .andGoodsIdEqualTo(gsSalesOrdersDetailss.get(j).getGoodsId());
+            List<GsSalesOrdersChange> gsSalesOrdersChanges = gsSalesOrdersChangeMapper.selectByExample(gsSalesOrdersChangeCriteria);
+
+            Double qty = gsSalesOrdersDetailss.get(j).getQty();
+            if(qty < gsSalesOrdersChanges.get(0).getQty()){
+                throw new SwException("修改数量不能大于原数量");
+            }
+
+
+            GsSalesOrdersDetails gsSalesOrdersDetails = new GsSalesOrdersDetails();
+            gsSalesOrdersDetails.setQty(gsSalesOrdersChanges.get(0).getQty());
+
+
+            GsSalesOrdersDetailsCriteria  sm= new GsSalesOrdersDetailsCriteria();
+            sm.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.getId()))
+                    .andGoodsIdEqualTo(gsSalesOrdersDetailss.get(j).getGoodsId());
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);
+
+
+            if(!TaskStatus.mr.getCode().equals(gsSalesOrdersChangeDto.getStatus().intValue())){
+                throw new SwException("未审核状态才能审核");
+            }
+
+            Long userid = SecurityUtils.getUserId();
+            Date date = new Date();
+            GsSalesOrdersChange gsSalesOrdersChange = new GsSalesOrdersChange();
+            gsSalesOrdersChange.setUpdateTime(date);
+            gsSalesOrdersChange.setUpdateBy(userid);
+            gsSalesOrdersChange.setStatus(TaskStatus.sh.getCode().byteValue());
+
+            GsSalesOrdersChangeCriteria gsSalesOrdersChangeCriteria1 = new GsSalesOrdersChangeCriteria();
+            gsSalesOrdersChangeCriteria1.createCriteria()
+                    .andGsSalesOrdersEqualTo(gsSalesOrdersChangeDto.getId())
+                    .andGoodsIdEqualTo(gsSalesOrdersDetailss.get(j).getGoodsId());
+            gsSalesOrdersChangeMapper.updateByExampleSelective(gsSalesOrdersChange,gsSalesOrdersChangeCriteria1);
+
+        }
+
+
+
+
+  /*      GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
+        if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
+            throw new SwException("没有查到该订单");
+        }*/
+
+
+     /*   Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrdersChange.setUpdateTime(date);
         gsSalesOrdersChange.setUpdateBy(userid);
         gsSalesOrdersChange.setStatus(TaskStatus.sh.getCode().byteValue());
-        gsSalesOrdersChangeMapper.updateByPrimaryKeySelective(gsSalesOrdersChange);
+
+
+        gsSalesOrdersChangeMapper.updateByPrimaryKeySelective(gsSalesOrdersChange);*/
     }
 
     @Override
