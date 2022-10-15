@@ -23,6 +23,8 @@ public class SaleOrderExitDo {
 
     private Integer orderClass;
 
+    private Integer whId;
+
 
 
 }

@@ -565,7 +565,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         advice.setGoodsId(outSuggestionsDo.getGoodsId());
                         advice.setQty(outSuggestionsDo.getQty());
                         advice.setSaleOrderNo(cboa.getCboa07());
-                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId())){
+                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId()) || WareHouseType.GQWWHID.equals(outSuggestionsDo.getWhId())){
                             advice.setStatus(new Byte("3"));
                         }else {
                             advice.setStatus(new Byte("2"));
