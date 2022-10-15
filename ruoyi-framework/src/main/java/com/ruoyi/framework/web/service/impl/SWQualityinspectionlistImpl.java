@@ -100,7 +100,7 @@ private CbpmMapper cbpmMapper;
             //判断替换sn为null,就使对应的提货单良品数量减一
             if(cbqb.getCbqb09()==null||("").equals(cbqb.getCbqb09())){
                 CbpmCriteria cbpmCriteria2 = new CbpmCriteria();
-                cbpmCriteria2.createCriteria().andCbpm09EqualTo(cbqb.getCbqb09());
+                cbpmCriteria2.createCriteria().andCbpm09EqualTo(cbqb.getCbqb10());
 
                 List<Cbpm> cbpmList2 =cbpmMapper.selectByExample(cbpmCriteria2);
                 for(Cbpm cbpm: cbpmList2){
@@ -134,9 +134,9 @@ private CbpmMapper cbpmMapper;
             itemList.get(i).setCbqb07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
 
-           if( itemList.get(i).getCbqb09()==null){
+          /* if( itemList.get(i).getCbqb09()==null){
                throw new SwException("可替换sn为空");
-           }
+           }*/
            if(Objects.equals(itemList.get(i).getCbqb09(), itemList.get(i).getCbqb10())){
                throw new SwException("原sn和替换sn不能相同");
            }
@@ -181,18 +181,21 @@ private CbpmMapper cbpmMapper;
                 throw new SwException("原商品sn不存在");
             }
             //校验替换商品sn
-            GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
-            example1.createCriteria().andSnEqualTo(  itemList.get(i).getCbqb09());
-            List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
-            Integer goodsId;
-            Integer locationId;
-            if (gsGoodsSns1.size() > 0) {
-                goodsId = gsGoodsSns1.get(0).getGoodsId();
-                locationId = gsGoodsSns1.get(0).getLocationId();
-            } else {
-                throw new SwException("替换商品sn不存在或已删除");
+            if(itemList.get(i).getCbqb09()!=null){
+                GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+                example1.createCriteria().andSnEqualTo(itemList.get(i).getCbqb09());
+                List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
+                Integer goodsId;
+                Integer locationId;
+                if (gsGoodsSns1.size() > 0) {
+                    goodsId = gsGoodsSns1.get(0).getGoodsId();
+                    locationId = gsGoodsSns1.get(0).getLocationId();
+                } else {
+                    throw new SwException("替换商品sn不存在或已删除");
 
+                }
             }
+
 
 //////////////////zgl
             CbpmCriteria cbpmCriteria = new CbpmCriteria();
