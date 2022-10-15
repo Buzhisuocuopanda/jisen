@@ -3,7 +3,7 @@ package com.ruoyi.system.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-public class GsSalesOrdersChange implements Serializable {
+public class GsSalesChange implements Serializable {
     private Integer id;
 
     private Date createTime;
@@ -18,23 +18,21 @@ public class GsSalesOrdersChange implements Serializable {
 
     private String orderNo;
 
-    private Date orderDate;
+    private Integer supplierId;
 
     private Integer salerId;
 
-    private Integer supplierId;
+    private Integer customerId;
 
-    private String goodsclassify;
-
-    private Double qty;
-
-    private Integer gsSalesOrders;
+    private Date orderDate;
 
     private Byte status;
 
-    private Integer goodsId;
+    private Integer whId;
 
-    private Integer changeid;
+    private Integer userId;
+
+    private Integer gsid;
 
     private static final long serialVersionUID = 1L;
 
@@ -94,12 +92,12 @@ public class GsSalesOrdersChange implements Serializable {
         this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Integer getSalerId() {
@@ -110,36 +108,20 @@ public class GsSalesOrdersChange implements Serializable {
         this.salerId = salerId;
     }
 
-    public Integer getSupplierId() {
-        return supplierId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public String getGoodsclassify() {
-        return goodsclassify;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setGoodsclassify(String goodsclassify) {
-        this.goodsclassify = goodsclassify == null ? null : goodsclassify.trim();
-    }
-
-    public Double getQty() {
-        return qty;
-    }
-
-    public void setQty(Double qty) {
-        this.qty = qty;
-    }
-
-    public Integer getGsSalesOrders() {
-        return gsSalesOrders;
-    }
-
-    public void setGsSalesOrders(Integer gsSalesOrders) {
-        this.gsSalesOrders = gsSalesOrders;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
     public Byte getStatus() {
@@ -150,20 +132,28 @@ public class GsSalesOrdersChange implements Serializable {
         this.status = status;
     }
 
-    public Integer getGoodsId() {
-        return goodsId;
+    public Integer getWhId() {
+        return whId;
     }
 
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
+    public void setWhId(Integer whId) {
+        this.whId = whId;
     }
 
-    public Integer getChangeid() {
-        return changeid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setChangeid(Integer changeid) {
-        this.changeid = changeid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getGsid() {
+        return gsid;
+    }
+
+    public void setGsid(Integer gsid) {
+        this.gsid = gsid;
     }
 
     @Override
@@ -177,7 +167,7 @@ public class GsSalesOrdersChange implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        GsSalesOrdersChange other = (GsSalesOrdersChange) that;
+        GsSalesChange other = (GsSalesChange) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
@@ -185,15 +175,14 @@ public class GsSalesOrdersChange implements Serializable {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()))
             && (this.getOrderNo() == null ? other.getOrderNo() == null : this.getOrderNo().equals(other.getOrderNo()))
-            && (this.getOrderDate() == null ? other.getOrderDate() == null : this.getOrderDate().equals(other.getOrderDate()))
-            && (this.getSalerId() == null ? other.getSalerId() == null : this.getSalerId().equals(other.getSalerId()))
             && (this.getSupplierId() == null ? other.getSupplierId() == null : this.getSupplierId().equals(other.getSupplierId()))
-            && (this.getGoodsclassify() == null ? other.getGoodsclassify() == null : this.getGoodsclassify().equals(other.getGoodsclassify()))
-            && (this.getQty() == null ? other.getQty() == null : this.getQty().equals(other.getQty()))
-            && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
+            && (this.getSalerId() == null ? other.getSalerId() == null : this.getSalerId().equals(other.getSalerId()))
+            && (this.getCustomerId() == null ? other.getCustomerId() == null : this.getCustomerId().equals(other.getCustomerId()))
+            && (this.getOrderDate() == null ? other.getOrderDate() == null : this.getOrderDate().equals(other.getOrderDate()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
-            && (this.getChangeid() == null ? other.getChangeid() == null : this.getChangeid().equals(other.getChangeid()));
+            && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getGsid() == null ? other.getGsid() == null : this.getGsid().equals(other.getGsid()));
     }
 
     @Override
@@ -207,15 +196,14 @@ public class GsSalesOrdersChange implements Serializable {
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
         result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
         result = prime * result + ((getOrderNo() == null) ? 0 : getOrderNo().hashCode());
-        result = prime * result + ((getOrderDate() == null) ? 0 : getOrderDate().hashCode());
-        result = prime * result + ((getSalerId() == null) ? 0 : getSalerId().hashCode());
         result = prime * result + ((getSupplierId() == null) ? 0 : getSupplierId().hashCode());
-        result = prime * result + ((getGoodsclassify() == null) ? 0 : getGoodsclassify().hashCode());
-        result = prime * result + ((getQty() == null) ? 0 : getQty().hashCode());
-        result = prime * result + ((getGsSalesOrders() == null) ? 0 : getGsSalesOrders().hashCode());
+        result = prime * result + ((getSalerId() == null) ? 0 : getSalerId().hashCode());
+        result = prime * result + ((getCustomerId() == null) ? 0 : getCustomerId().hashCode());
+        result = prime * result + ((getOrderDate() == null) ? 0 : getOrderDate().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getGoodsId() == null) ? 0 : getGoodsId().hashCode());
-        result = prime * result + ((getChangeid() == null) ? 0 : getChangeid().hashCode());
+        result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getGsid() == null) ? 0 : getGsid().hashCode());
         return result;
     }
 
@@ -232,15 +220,14 @@ public class GsSalesOrdersChange implements Serializable {
         sb.append(", updateBy=").append(updateBy);
         sb.append(", deleteFlag=").append(deleteFlag);
         sb.append(", orderNo=").append(orderNo);
-        sb.append(", orderDate=").append(orderDate);
-        sb.append(", salerId=").append(salerId);
         sb.append(", supplierId=").append(supplierId);
-        sb.append(", goodsclassify=").append(goodsclassify);
-        sb.append(", qty=").append(qty);
-        sb.append(", gsSalesOrders=").append(gsSalesOrders);
+        sb.append(", salerId=").append(salerId);
+        sb.append(", customerId=").append(customerId);
+        sb.append(", orderDate=").append(orderDate);
         sb.append(", status=").append(status);
-        sb.append(", goodsId=").append(goodsId);
-        sb.append(", changeid=").append(changeid);
+        sb.append(", whId=").append(whId);
+        sb.append(", userId=").append(userId);
+        sb.append(", gsid=").append(gsid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

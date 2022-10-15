@@ -61,6 +61,9 @@ public class NumberGenerate {
     private GsSalesOrdersChangeMapper gsSalesOrdersChangeMapper;
 
     @Resource
+    private GsSalesChangeMapper gsSalesChangeMapper;
+
+    @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
 @Resource
 private CbieMapper cbieMapper;
@@ -420,16 +423,18 @@ private CbieMapper cbieMapper;
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
         String format = sd.format(new Date());
         String orderNo="SK"+format;
-        GsSalesOrdersChangeCriteria example=new GsSalesOrdersChangeCriteria();
+
+        GsSalesChangeCriteria example=new GsSalesChangeCriteria();
         example.createCriteria()
                 .andOrderNoLike(orderNo+"%");
-        List<GsSalesOrdersChange> cbpks = gsSalesOrdersChangeMapper.selectByExample(example);
+
+        List<   GsSalesChange> cbpks = gsSalesChangeMapper.selectByExample(example);
         if(cbpks.size()==0){
             return orderNo+"0001";
         }else {
 
             Integer num=0;
-            for (GsSalesOrdersChange res : cbpks) {
+            for (GsSalesChange res : cbpks) {
                 Integer no = getNum(res.getOrderNo(),10);
                 if(num<no){
                     num=no;

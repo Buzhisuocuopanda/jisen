@@ -5,7 +5,6 @@ import com.ruoyi.system.domain.GsSalesOrdersChangeCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo;
-import com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsSalesOrdersChangeMapper {
