@@ -167,12 +167,12 @@ private CbpmMapper cbpmMapper;
                 throw new SwException("替换sn审核状态未完成");
             }*/
 
-            //校验原商品sn，使其下架
+            //校验原商品sn，使其上架
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
             example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
             if (gsGoodsSns.size() > 0) {
-                //不是下架就更新下架
+                //不是上架就更新上架
                 if (!Groudstatus.SJ.getCode().equals(gsGoodsSns.get(0).getGroudStatus())) {
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setStatus(new Byte("1"));
@@ -197,7 +197,7 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
                     gsGoodsSn.setGoodsId(goodsId);
                     gsGoodsSn.setLocationId(locationId);
-                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example1);
                 } else {
                     throw new SwException("替换商品sn不存在或已删除");
 
