@@ -387,9 +387,7 @@
     SELECT DISTINCT
     a.order_no as orderNo,a.order_date as orderDate,
     b.CAUA17 as caua17,c.CBSA08 as cbsa08,
-    a.goodsclassify as goodsclassify,
-    a.gs_Sales_orders as gsSalesOrders,
-    a.qty as qty,
+    a.gsid as gsSalesOrders,
     a.id as id,
     a.status as status,
     a.supplier_id as supplierId,
@@ -398,7 +396,7 @@
     b.CAUA01 as salerId,
     gs.id as orderNoMag
     FROM
-    `gs_ Sales_orders_change` a
+    `gs_Sales_change` a
     LEFT JOIN
     CAUA b
     ON
@@ -408,9 +406,10 @@
     on
     c.CBSA01=a.supplier_id
     LEFT JOIN
-      `gs_ Sales_orders` gs
+    `gs_ Sales_orders` gs
     on
-    gs.id = a.gs_Sales_orders
+    gs.id = a.gsid
+
     WHERE
     a.delete_flag=0
     <if test="orderNo != null and orderNo !=''">
