@@ -593,6 +593,8 @@ if(cbsgss.size()>0){
 
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo.setLocationId(itemList.get(i).getCbsg10());
+            gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
             gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setOutTime(date);
