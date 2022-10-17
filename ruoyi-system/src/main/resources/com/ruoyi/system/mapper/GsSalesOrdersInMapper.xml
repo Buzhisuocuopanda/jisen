@@ -305,15 +305,19 @@
   </update>
   <select id="seleteSubscribetotheinventoryslip" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersInVo">
     SELECT
-      a.PONumber,b.CBPB08,a.in_qty,a.id,a.create_time,a.status
+    c.order_no as ponumber,b.CBPB08,a.in_qty,a.id,a.create_time,a.status
     FROM
-      `gs_ Sales_orders_in` a
-        LEFT JOIN
-      CBPB b
-      ON
-        a.goods_id=b.CBPB01
+    `gs_ Sales_orders_in` a
+    LEFT JOIN
+    CBPB b
+    ON
+    a.goods_id=b.CBPB01
+    LEFT JOIN
+    `gs_ Sales_orders`  as c
+    on
+    c.id=a.gs_sales_orders
     WHERE
-        a.delete_flag=0
+    a.delete_flag=0
     <if test="ponumber != null and ponumber !=''">
      and a.PONumber like concat('%', #{ponumber}, '%')
     </if>
