@@ -761,7 +761,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             String audit = "";
             if (auditUser != null) {
                 audit = auditUser.getNickName() == null ? "" : auditUser.getNickName();
-                res.setAuditUser(auditUser.getUserName());
+                res.setAuditUser(auditUser.getNickName());
             }
 
             saleOrderAudit.setDescription(createTime + " 由 " + audit + " 审核");
