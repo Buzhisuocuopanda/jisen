@@ -62,13 +62,28 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 list.get(i).setDescription(list2.get(0).getDescription());
                 list.get(i).setQty(list2.get(0).getQty());
             list.get(i).setSn(list2.get(0).getSn());
-                list.get(i).setUPrice(list2.get(0).getUPrice());
-                list.get(i).setRPrice(list2.get(0).getRPrice());
+            if(list2.get(0).getCurrency()!=null){
+                if(list2.get(0).getCurrency() == 5){//美元
+                    list.get(i).setUPrice(list2.get(0).getRPrice());
+                }else if(list2.get(0).getCurrency() == 6){//人民币
+                    list.get(i).setRPrice(list2.get(0).getRPrice());
+                }
+
+            }
+
                 list.get(i).setSuplierName(list2.get(0).getSuplierName());
                 list.get(i).setBrand(list2.get(0).getBrand());
                 list.get(i).setGc(list2.get(0).getGc());
-                list.get(i).setCgUprice(list2.get(0).getCgUprice());
-                list.get(i).setCgRprice(list2.get(0).getCgRprice());
+                if(list2.get(0).getCbpc16()!=null){
+                    if(list2.get(0).getCbpc16() == 5){//美元
+                        list.get(i).setCgUprice(list2.get(0).getCgRprice());
+                    }else if(list2.get(0).getCbpc16() == 6){//人民币
+                        list.get(i).setCgRprice(list2.get(0).getCgRprice());
+                    }
+
+                }
+
+
             }
 
 
