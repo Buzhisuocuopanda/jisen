@@ -7,9 +7,7 @@ import com.ruoyi.system.domain.Cbqb;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
-import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
-import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
-import com.ruoyi.system.domain.vo.SaleAnalysisVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +60,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 list.get(i).setModel(list2.get(0).getModel());
                 list.get(i).setDescription(list2.get(0).getDescription());
                 list.get(i).setQty(list2.get(0).getQty());
+                list.get(i).setTotalOrderNo(list2.get(0).getTotalOrderNo());
             list.get(i).setSn(list2.get(0).getSn());
             if(list2.get(0).getCurrency()!=null){
                 if(list2.get(0).getCurrency() == 5){//美元
@@ -262,4 +262,35 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         }
         return list;
     }
+
+
+    @Override
+    public List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo) {
+        return cbibMapper.monthlyStockInAndOut(cbibVo);
+    }
+
+    @Override
+    public List<CbibVo2> monthlySales(CbibVo2 cbibVo) {
+        List<CbibVo2> cbibVo2s = cbibMapper.monthlySales(cbibVo);
+        List<CbibVo2> cbibVo2s2 = cbibMapper.monthlySalesTotal(cbibVo);
+        Map<Integer,CbibVo2> map = new HashMap<>();
+        for(CbibVo2 cbibVo2:cbibVo2s2){
+            map.put(cbibVo2.getCbib19(),cbibVo2);
+        }
+        for(CbibVo2 cbibVo2:cbibVo2s){
+            if(cbibVo2.getCbib19()!=null){
+                CbibVo2 cbibVo22 = map.get(cbibVo2.getCbib19());
+                if(cbibVo22!=null){
+                    cbibVo2.setOutCountTotal(cbibVo22.getOutCountTotal());
+                    cbibVo2.setOutMoneyTotal(cbibVo22.getOutMoneyTotal());
+                }
+            }
+
+
+        }
+
+        return cbibVo2s;
+    }
+
+
 }

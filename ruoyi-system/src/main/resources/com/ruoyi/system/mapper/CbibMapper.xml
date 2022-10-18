@@ -431,4 +431,75 @@ ORDER BY
     c.CBIB04 DESC limit 1
   </select>
 
+  <select id="monthlyStockInAndOut" resultType="com.ruoyi.system.domain.vo.CbibVo">
+     SELECT
+			a.CBIB02,a.CBIB08,
+            c.CBPB08 as goodsName,b.CBWA09 as winName,c.CBPB12,
+      DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth, a.CBIB10,SUM(a.CBIB11) as inCount,a.CBIB12,SUM(a.CBIB13) as outCount
+    FROM CBIB a
+    LEFT JOIN CBWA b on a.CBIB02=b.CBWA01
+    LEFT JOIN CBPB c ON c.CBPB01=a.CBIB08
+    where a.CBIB04 is not null
+  GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+  <if test="cbpb12!=null and cbpb12!=''">
+    and c.CBPB12 like concat('%', #{cbpb12}, '%')
+  </if>
+    <if test="cbib02!=null and cbib02!=''">
+      and a.cbib02 = #{cbib02}
+    </if>
+    <if test="monthlys!=null">
+      and yearAndMonth in
+      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+        #{monthly}
+      </foreach>
+    </if>
+    order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc
+  </select>
+  <select id="monthlySales" resultType="com.ruoyi.system.domain.vo.CbibVo2">
+    SELECT
+    a.CBIB19,
+    ca.CBCA08 as customerName,DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+    SUM(a.CBIB13) as outCount,SUM(a.CBIB14) as outMoney
+    FROM CBIB a
+    left join CBCA ca on ca.CBCA01 = a.CBIB19
+    WHERE a.CBIB05 = 5 and a.CBIB19 is not null
+    GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+    <!--<if test="cbpb12!=null and cbpb12!=''">
+      and c.CBPB12 like concat('%', #{cbpb12}, '%')
+    </if>-->
+    <if test="customerId!=null">
+      and a.cbib19 = #{customerId}
+    </if>
+    <if test="monthlys!=null">
+      and yearAndMonth in
+      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+        #{monthly}
+      </foreach>
+    </if>
+    order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc
+  </select>
+
+  <select id="monthlySalesTotal" resultType="com.ruoyi.system.domain.vo.CbibVo2">
+    select ib.CBIB19,sum(ib.outCount) as outCountTotal,sum(ib.outMoney) as outMoneyTotal  from (SELECT
+    a.CBIB19,
+    ca.CBCA08 as customerName,DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+    SUM(a.CBIB13) as outCount,SUM(a.CBIB14) as outMoney
+    FROM CBIB a
+    left join CBCA ca on ca.CBCA01 = a.CBIB19
+    WHERE a.CBIB05 = 5
+    GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+    <!--<if test="cbpb12!=null and cbpb12!=''">
+      and c.CBPB12 like concat('%', #{cbpb12}, '%')
+    </if>-->
+    <if test="customerId!=null">
+      and a.cbib19 = #{customerId}
+    </if>
+    <if test="monthlys!=null">
+      and yearAndMonth in
+      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+        #{monthly}
+      </foreach>
+    </if>) as ib group by ib.CBIB19
+  </select>
+
 </mapper>
