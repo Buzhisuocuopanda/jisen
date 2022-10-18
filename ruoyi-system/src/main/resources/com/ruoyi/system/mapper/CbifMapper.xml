@@ -757,6 +757,9 @@ where
     <if test="endTime != null">
       and a.CBOA08 &lt;=#{endTime}
     </if>
+    <if test="cboa07 != null">
+      and a.CBOA07 like concat('%', #{cboa07}, '%')
+    </if>
     order by a.CBOA02 desc
    <!-- <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
       and date_format(a.CBOA08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

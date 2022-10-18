@@ -72,6 +72,7 @@ public class FnQueryAyntgesisVo {
     private Integer cbsb01;
     private String cbsd09;
 
+    private Integer cbpc16;
 //    private Double cgPrice;
 
 
