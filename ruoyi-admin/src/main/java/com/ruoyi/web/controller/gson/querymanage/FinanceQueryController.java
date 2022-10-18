@@ -195,5 +195,67 @@ public class FinanceQueryController extends BaseController {
     }
 
 
+    @ApiOperation(
+            value ="月度出入库统计查询",
+            notes = "月度出入库统计查询"
+    )
+    @GetMapping("/monthlyStockInAndOut")
+    @PreAuthorize("@ss.hasPermi('query:monthlyStockInAndOut:list')")
+    public AjaxResult<TableDataInfo> monthlyStockInAndOut(CbibVo cbibVo) {
+        try {
+            startPage();
+            List<CbibVo> list = financeQueryService.monthlyStockInAndOut(cbibVo);
+            return  AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【月度出入库统计查询】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(cbibVo), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
 
+    }
+
+    @ApiOperation(
+            value ="导出月度出入库统计",
+            notes = "导出月度出入库统计"
+    )
+    @PostMapping("/monthlyStockInAndOutExcel")
+    @PreAuthorize("@ss.hasPermi('query:monthlyStockInAndOut:export')")
+    public void monthlyStockInAndOutExcel(CbibVo cbibVo, HttpServletResponse response) {
+        List<CbibVo> list = financeQueryService.monthlyStockInAndOut(cbibVo);
+        ExcelUtil<CbibVo> util = new ExcelUtil<>(CbibVo.class);
+        util.exportExcel(response, list, "月度出入库统计数据");
+    }
+
+
+    @ApiOperation(
+            value ="月度销售数据",
+            notes = "月度销售数据"
+    )
+    @GetMapping("/monthlySales")
+    @PreAuthorize("@ss.hasPermi('query:monthlySales:list')")
+    public AjaxResult<TableDataInfo> monthlySales(CbibVo2 cbibVo) {
+        try {
+            startPage();
+            List<CbibVo2> list = financeQueryService.monthlySales(cbibVo);
+            return  AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【月度销售数据】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(cbibVo), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    @ApiOperation(
+            value ="导出月度销售数据",
+            notes = "导出月度销售数据"
+    )
+    @PostMapping("/monthlySalesExcel")
+    @PreAuthorize("@ss.hasPermi('query:monthlySales:export')")
+    public void monthlySalesExcel(CbibVo2 cbibVo, HttpServletResponse response) {
+        List<CbibVo2> list = financeQueryService.monthlySales(cbibVo);
+        ExcelUtil<CbibVo2> util = new ExcelUtil<>(CbibVo2.class);
+        util.exportExcel(response, list, "月度销售数据");
+    }
 }
