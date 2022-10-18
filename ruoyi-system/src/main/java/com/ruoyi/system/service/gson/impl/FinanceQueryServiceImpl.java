@@ -80,12 +80,8 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                     }else if(list2.get(0).getCbpc16() == 6){//人民币
                         list.get(i).setCgRprice(list2.get(0).getCgRprice());
                     }
-
                 }
-
-
             }
-
 
         }
         Map<Integer, String> integerStringMap = baseCheckService.brandMap();
