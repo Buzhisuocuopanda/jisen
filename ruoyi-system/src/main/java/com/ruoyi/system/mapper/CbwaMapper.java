@@ -35,6 +35,4 @@ public interface CbwaMapper {
     //查该商品的仓库台账
     List<Cbwa> selectCalculationOrderPriority();
     List<Cbwa> selectCalculationOrderPriorityNoGqw();
-
-
 }
