@@ -1367,7 +1367,15 @@ public class SaleOrderController extends BaseController {
             String excelPaht = RuoYiConfig.getSwdataprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
             //File is = new File("D:\\data\\模板.xlsx");
 
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+            File sg = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
+
             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+
+            copyFileUsingFileChannels(sg,is);
+
+
+
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             String orderNo = res.getOrderNo();
