@@ -499,7 +499,7 @@ ORDER BY
 
 
     <if test="whName != null and whName != ''" >
-      and e.CBLA09 like concat('%',  #{whName}, '%')
+      and   d.CBWA09 like concat('%',  #{whName}, '%')
     </if>
 order by a.update_time desc
   </select>
