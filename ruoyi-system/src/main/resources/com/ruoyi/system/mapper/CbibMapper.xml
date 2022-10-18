@@ -453,6 +453,7 @@ ORDER BY
         #{monthly}
       </foreach>
     </if>
+    order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc
   </select>
   <select id="monthlySales" resultType="com.ruoyi.system.domain.vo.CbibVo2">
     SELECT
@@ -475,6 +476,7 @@ ORDER BY
         #{monthly}
       </foreach>
     </if>
+    order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc
   </select>
 
   <select id="monthlySalesTotal" resultType="com.ruoyi.system.domain.vo.CbibVo2">

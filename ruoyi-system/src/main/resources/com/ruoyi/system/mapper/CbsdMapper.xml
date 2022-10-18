@@ -370,7 +370,7 @@ SELECT
 	pe.CBPE03 AS inWhTime,
     sa.CBSA08 AS gc,
 	pd.CBPD11 AS cgRprice,
-    pc.CBPC16
+    pc.CBPC16,ob.CBOB18 as totalOrderNo
 FROM
 	CBSD sd
     LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01 and  sc.CBSC08 = sd.CBSD08

@@ -60,6 +60,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 list.get(i).setModel(list2.get(0).getModel());
                 list.get(i).setDescription(list2.get(0).getDescription());
                 list.get(i).setQty(list2.get(0).getQty());
+                list.get(i).setTotalOrderNo(list2.get(0).getTotalOrderNo());
             list.get(i).setSn(list2.get(0).getSn());
             if(list2.get(0).getCurrency()!=null){
                 if(list2.get(0).getCurrency() == 5){//美元
