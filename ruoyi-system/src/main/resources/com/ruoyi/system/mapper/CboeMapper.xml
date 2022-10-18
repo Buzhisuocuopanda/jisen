@@ -403,7 +403,7 @@ where a.CBOE06=0
   <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbofVo">
     SELECT
       a.CBOE07,a.CBOE08,c.CBCA08,d.nick_name as caua15,f.CALA08,e.CBPB12,e.CBPB08,
-      b.CBOF09,b.CBOF13
+      b.CBOF09,b.CBOF13,b.thisprice,b.Standardprice,b.money
     FROM
       CBOE a
         left join

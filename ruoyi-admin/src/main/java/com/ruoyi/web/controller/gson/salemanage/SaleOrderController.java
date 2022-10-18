@@ -1385,6 +1385,8 @@ public class SaleOrderController extends BaseController {
             FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
             FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
+            boolean delete = is.delete();
+            System.out.println(delete);
         } catch (SwException e) {
             log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 
