@@ -28,6 +28,12 @@ public class Cboe implements Serializable {
 
     private Integer userId;
 
+    private Double standardprice;
+
+    private Double thisprice;
+
+    private Double money;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCboe01() {
@@ -126,6 +132,30 @@ public class Cboe implements Serializable {
         this.userId = userId;
     }
 
+    public Double getStandardprice() {
+        return standardprice;
+    }
+
+    public void setStandardprice(Double standardprice) {
+        this.standardprice = standardprice;
+    }
+
+    public Double getThisprice() {
+        return thisprice;
+    }
+
+    public void setThisprice(Double thisprice) {
+        this.thisprice = thisprice;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -149,7 +179,10 @@ public class Cboe implements Serializable {
             && (this.getCboe10() == null ? other.getCboe10() == null : this.getCboe10().equals(other.getCboe10()))
             && (this.getCboe21() == null ? other.getCboe21() == null : this.getCboe21().equals(other.getCboe21()))
             && (this.getCboe09() == null ? other.getCboe09() == null : this.getCboe09().equals(other.getCboe09()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getStandardprice() == null ? other.getStandardprice() == null : this.getStandardprice().equals(other.getStandardprice()))
+            && (this.getThisprice() == null ? other.getThisprice() == null : this.getThisprice().equals(other.getThisprice()))
+            && (this.getMoney() == null ? other.getMoney() == null : this.getMoney().equals(other.getMoney()));
     }
 
     @Override
@@ -168,6 +201,9 @@ public class Cboe implements Serializable {
         result = prime * result + ((getCboe21() == null) ? 0 : getCboe21().hashCode());
         result = prime * result + ((getCboe09() == null) ? 0 : getCboe09().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getStandardprice() == null) ? 0 : getStandardprice().hashCode());
+        result = prime * result + ((getThisprice() == null) ? 0 : getThisprice().hashCode());
+        result = prime * result + ((getMoney() == null) ? 0 : getMoney().hashCode());
         return result;
     }
 
@@ -189,6 +225,9 @@ public class Cboe implements Serializable {
         sb.append(", cboe21=").append(cboe21);
         sb.append(", cboe09=").append(cboe09);
         sb.append(", userId=").append(userId);
+        sb.append(", standardprice=").append(standardprice);
+        sb.append(", thisprice=").append(thisprice);
+        sb.append(", money=").append(money);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

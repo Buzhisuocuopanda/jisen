@@ -14,6 +14,9 @@
     <result column="CBOE21" jdbcType="VARCHAR" property="cboe21" />
     <result column="CBOE09" jdbcType="INTEGER" property="cboe09" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="Standardprice" jdbcType="DOUBLE" property="standardprice" />
+    <result column="thisprice" jdbcType="DOUBLE" property="thisprice" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBOE01, CBOE02, CBOE03, CBOE04, CBOE05, CBOE06, CBOE07, CBOE08, CBOE10, CBOE21, CBOE09,
-    user_id
+    user_id, Standardprice, thisprice, money
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CboeCriteria" resultMap="BaseResultMap">
     select
@@ -111,12 +114,14 @@
     insert into `CBOE` (CBOE01, CBOE02, CBOE03,
       CBOE04, CBOE05, CBOE06,
       CBOE07, CBOE08, CBOE10,
-      CBOE21, CBOE09, user_id
+      CBOE21, CBOE09, user_id,
+      Standardprice, thisprice, money
       )
     values (#{cboe01,jdbcType=INTEGER}, #{cboe02,jdbcType=TIMESTAMP}, #{cboe03,jdbcType=INTEGER},
       #{cboe04,jdbcType=TIMESTAMP}, #{cboe05,jdbcType=INTEGER}, #{cboe06,jdbcType=INTEGER},
       #{cboe07,jdbcType=VARCHAR}, #{cboe08,jdbcType=TIMESTAMP}, #{cboe10,jdbcType=INTEGER},
-      #{cboe21,jdbcType=VARCHAR}, #{cboe09,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+      #{cboe21,jdbcType=VARCHAR}, #{cboe09,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      #{standardprice,jdbcType=DOUBLE}, #{thisprice,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cboe">
@@ -158,6 +163,15 @@
       <if test="userId != null">
         user_id,
       </if>
+      <if test="standardprice != null">
+        Standardprice,
+      </if>
+      <if test="thisprice != null">
+        thisprice,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cboe01 != null">
@@ -196,6 +210,15 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="standardprice != null">
+        #{standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="thisprice != null">
+        #{thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.CboeCriteria" resultType="java.lang.Long">
@@ -204,7 +227,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map">
     update `CBOE`
     <set>
       <if test="record.cboe01 != null">
@@ -243,6 +266,15 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.standardprice != null">
+        Standardprice = #{record.standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.thisprice != null">
+        thisprice = #{record.thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,7 +293,10 @@
       CBOE10 = #{record.cboe10,jdbcType=INTEGER},
       CBOE21 = #{record.cboe21,jdbcType=VARCHAR},
       CBOE09 = #{record.cboe09,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER}
+      user_id = #{record.userId,jdbcType=INTEGER},
+      Standardprice = #{record.standardprice,jdbcType=DOUBLE},
+      thisprice = #{record.thisprice,jdbcType=DOUBLE},
+      money = #{record.money,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,6 +337,15 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="standardprice != null">
+        Standardprice = #{standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="thisprice != null">
+        thisprice = #{thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
     </set>
     where CBOE01 = #{cboe01,jdbcType=INTEGER}
   </update>
@@ -317,9 +361,15 @@
       CBOE10 = #{cboe10,jdbcType=INTEGER},
       CBOE21 = #{cboe21,jdbcType=VARCHAR},
       CBOE09 = #{cboe09,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER}
+      user_id = #{userId,jdbcType=INTEGER},
+      Standardprice = #{standardprice,jdbcType=DOUBLE},
+      thisprice = #{thisprice,jdbcType=DOUBLE},
+      money = #{money,jdbcType=DOUBLE}
     where CBOE01 = #{cboe01,jdbcType=INTEGER}
   </update>
+
+
+
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.CboeVo">
     SELECT DISTINCT
       a.CBOE07,a.CBOE08,b.CBCA08
@@ -341,8 +391,8 @@ where a.CBOE06=0
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBOE08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-    <if test='startTime != null and startTime != ""'>and a.CBOE08 <![CDATA[>=]]> #{startTime}</if>
-    <if test='endTime != null and endTime != ""'>and a.CBOE08 <![CDATA[<=]]>#{endTime}</if>
+    <if test="startTime != null and startTime != &quot;&quot;">and a.CBOE08 <![CDATA[>=]]> #{startTime}</if>
+    <if test="endTime != null and endTime != &quot;&quot;">and a.CBOE08 <![CDATA[<=]]>#{endTime}</if>
 
     <if test="cboe07 != null "> and a.cboe07 = #{cboe07}</if>
     <if test="id != null "> and a.cboe01 = #{id}</if>

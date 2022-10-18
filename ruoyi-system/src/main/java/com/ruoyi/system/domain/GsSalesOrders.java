@@ -34,6 +34,8 @@ public class GsSalesOrders implements Serializable {
 
     private Integer statuss;
 
+    private String ponumber;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -156,6 +158,14 @@ public class GsSalesOrders implements Serializable {
         this.statuss = statuss;
     }
 
+    public String getPonumber() {
+        return ponumber;
+    }
+
+    public void setPonumber(String ponumber) {
+        this.ponumber = ponumber == null ? null : ponumber.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -182,7 +192,8 @@ public class GsSalesOrders implements Serializable {
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getStatuss() == null ? other.getStatuss() == null : this.getStatuss().equals(other.getStatuss()));
+            && (this.getStatuss() == null ? other.getStatuss() == null : this.getStatuss().equals(other.getStatuss()))
+            && (this.getPonumber() == null ? other.getPonumber() == null : this.getPonumber().equals(other.getPonumber()));
     }
 
     @Override
@@ -204,6 +215,7 @@ public class GsSalesOrders implements Serializable {
         result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getStatuss() == null) ? 0 : getStatuss().hashCode());
+        result = prime * result + ((getPonumber() == null) ? 0 : getPonumber().hashCode());
         return result;
     }
 
@@ -228,6 +240,7 @@ public class GsSalesOrders implements Serializable {
         sb.append(", whId=").append(whId);
         sb.append(", userId=").append(userId);
         sb.append(", statuss=").append(statuss);
+        sb.append(", ponumber=").append(ponumber);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

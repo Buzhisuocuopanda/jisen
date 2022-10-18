@@ -449,30 +449,39 @@ ORDER BY
   </select>
 
   <select id="selectSwJsTaskGoodsRelLists" resultType="com.ruoyi.system.domain.vo.TakeGoodsOrderListVo">
-    SELECT
-    pk.CBPK01 as id,
-    pk.CBPK07 as orderNo,
-    pk.CBPK30 as customerNo,
-    ca.CBCA08 as customerName,
-    ca.CBCA28 as customerLevel,
-    pk.CBPK18 as contacts,
-    pk.CBPK19 as phone,
-    us.nick_name as saleUser,
-    wa.CBWA09 as whName,
-    pk.CBPK21 as address,
-    pk.CBPK08 as orderDate,
-    pk.CBPK11 as status,
-    pk.check_status as checkStatus
+    select
+    a.update_time as orderDate,
+    c.CALA08 as brand,
+    b.CBPB15 as upc,
+    b.CBPB08 as detail,
+    a.sn as sn,
+    d.CBWA09 as whName,
+    e.CBLA09 as locationName
 
-    FROM
-    `CBPK` pk
-    LEFT JOIN CBCA as ca on ca.CBCA01=pk.CBPK09
-    LEFT JOIN sys_user us on us.user_id=pk.CBPK17
-    LEFT JOIN CBWA wa on wa.CBWA01=pk.CBPK10
-    where pk.CBPK06=0
-      and pk.check_status=1
-    <if test="startTime != null">
-      and pk.CBPK07 like concat('%', #{orderNo}, '%')
+    from
+    gs_goods_sn a
+    LEFT JOIN
+    CBPB b
+    ON
+    b.CBPB01=a.goods_id
+    LEFT JOIN
+    CALA c
+    ON
+    c.CALA01=b.CBPB10
+    LEFT JOIN
+    CBWA d
+    ON
+    d.CBWA01=a.wh_id
+    LEFT JOIN
+    CBLA e
+    on
+    e.CBLA01=a.location_id
+    WHERE
+    a.groud_status=1
+    and
+    a.`status`=1
+    <if test="sn != null">
+      and a.sn like concat('%', #{sn}, '%')
     </if>
 <!--    <if test="startTime != null">-->
 <!--      and pk.CBPK08  &gt;= #{startTime}-->
@@ -481,25 +490,18 @@ ORDER BY
 <!--      and pk.CBPK08  &lt;=#{endTime}-->
 <!--    </if>-->
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-       and date_format(pk.CBPK08,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+       and date_format(a.update_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-      and date_format(pk.CBPK08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+      and date_format(a.update_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
 
-    <if test="customerName != null and customerName != ''" >
 
-      and ca.CBCA08 like concat('%', #{customerName}, '%')
-    </if>
-    <if test="status != null">
-      and pk.CBPK11 =#{status}
-    </if>
+
     <if test="whName != null and whName != ''" >
-      and wa.CBWA09 like concat('%',  #{whName}, '%')
+      and e.CBLA09 like concat('%',  #{whName}, '%')
     </if>
-    <if test="saleOrderNo != null and saleOrderNo != ''" >
-      and pk.sale_order_no like concat('%',  #{saleOrderNo}, '%')
-    </if>
+order by a.update_time desc
   </select>
 
 </mapper>

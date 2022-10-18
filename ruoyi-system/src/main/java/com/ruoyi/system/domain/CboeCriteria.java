@@ -844,6 +844,186 @@ public class CboeCriteria {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
+
+        public Criteria andStandardpriceIsNull() {
+            addCriterion("Standardprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceIsNotNull() {
+            addCriterion("Standardprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceEqualTo(Double value) {
+            addCriterion("Standardprice =", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceNotEqualTo(Double value) {
+            addCriterion("Standardprice <>", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceGreaterThan(Double value) {
+            addCriterion("Standardprice >", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("Standardprice >=", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceLessThan(Double value) {
+            addCriterion("Standardprice <", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceLessThanOrEqualTo(Double value) {
+            addCriterion("Standardprice <=", value, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceIn(List<Double> values) {
+            addCriterion("Standardprice in", values, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceNotIn(List<Double> values) {
+            addCriterion("Standardprice not in", values, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceBetween(Double value1, Double value2) {
+            addCriterion("Standardprice between", value1, value2, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardpriceNotBetween(Double value1, Double value2) {
+            addCriterion("Standardprice not between", value1, value2, "standardprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceIsNull() {
+            addCriterion("thisprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceIsNotNull() {
+            addCriterion("thisprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceEqualTo(Double value) {
+            addCriterion("thisprice =", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceNotEqualTo(Double value) {
+            addCriterion("thisprice <>", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceGreaterThan(Double value) {
+            addCriterion("thisprice >", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("thisprice >=", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceLessThan(Double value) {
+            addCriterion("thisprice <", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceLessThanOrEqualTo(Double value) {
+            addCriterion("thisprice <=", value, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceIn(List<Double> values) {
+            addCriterion("thisprice in", values, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceNotIn(List<Double> values) {
+            addCriterion("thisprice not in", values, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceBetween(Double value1, Double value2) {
+            addCriterion("thisprice between", value1, value2, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andThispriceNotBetween(Double value1, Double value2) {
+            addCriterion("thisprice not between", value1, value2, "thisprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyIsNull() {
+            addCriterion("money is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyIsNotNull() {
+            addCriterion("money is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyEqualTo(Double value) {
+            addCriterion("money =", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyNotEqualTo(Double value) {
+            addCriterion("money <>", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyGreaterThan(Double value) {
+            addCriterion("money >", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyGreaterThanOrEqualTo(Double value) {
+            addCriterion("money >=", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyLessThan(Double value) {
+            addCriterion("money <", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyLessThanOrEqualTo(Double value) {
+            addCriterion("money <=", value, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyIn(List<Double> values) {
+            addCriterion("money in", values, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyNotIn(List<Double> values) {
+            addCriterion("money not in", values, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyBetween(Double value1, Double value2) {
+            addCriterion("money between", value1, value2, "money");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoneyNotBetween(Double value1, Double value2) {
+            addCriterion("money not between", value1, value2, "money");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

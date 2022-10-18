@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.Do;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +28,7 @@ public class CboeDo {
     private Date cboe08;
 
     private Integer cboe10;
-
+    @NotBlank(message = "请选择订订单类型1国际2国内")
     private String cboe21;
 
     private Integer cboe09;

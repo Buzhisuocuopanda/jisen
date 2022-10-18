@@ -109,6 +109,7 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
         gsSalesOrders.setStatus(TaskStatus.mr.getCode().byteValue());
         gsSalesOrders.setWhId(gsSalesOrdersDto.getWhId());
         gsSalesOrders.setUserId(userid.intValue());
+        gsSalesOrders.setPonumber(gsSalesOrdersDto.getPonumber());
         gsSalesOrdersMapper.insertWithId(gsSalesOrders);
 
         GsSalesOrdersDetails gsSalesOrdersDetails = null;

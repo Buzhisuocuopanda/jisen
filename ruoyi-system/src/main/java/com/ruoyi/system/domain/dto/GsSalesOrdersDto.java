@@ -49,4 +49,6 @@ public class GsSalesOrdersDto {
     @Size(min = 1,message = "请至少添加一件货物")
     private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 
+    private String ponumber;
+
 }

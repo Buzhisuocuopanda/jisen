@@ -44,6 +44,11 @@ public class TakeGoodsOrderListVo {
     private String whName;
 
 
+    private String brand;
+    private String upc;
+    private String detail;
+    private String sn;
+    private String locationName;
 
     //结算货币 6:CNY
 //    private Integer settleCurrent;

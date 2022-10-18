@@ -42,6 +42,8 @@ public class Cbsc implements Serializable {
 
     private Integer userId;
 
+    private Integer takegoodsid;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbsc01() {
@@ -196,6 +198,14 @@ public class Cbsc implements Serializable {
         this.userId = userId;
     }
 
+    public Integer getTakegoodsid() {
+        return takegoodsid;
+    }
+
+    public void setTakegoodsid(Integer takegoodsid) {
+        this.takegoodsid = takegoodsid;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -226,7 +236,8 @@ public class Cbsc implements Serializable {
             && (this.getCbsc15() == null ? other.getCbsc15() == null : this.getCbsc15().equals(other.getCbsc15()))
             && (this.getCbsc16() == null ? other.getCbsc16() == null : this.getCbsc16().equals(other.getCbsc16()))
             && (this.getCbsc17() == null ? other.getCbsc17() == null : this.getCbsc17().equals(other.getCbsc17()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getTakegoodsid() == null ? other.getTakegoodsid() == null : this.getTakegoodsid().equals(other.getTakegoodsid()));
     }
 
     @Override
@@ -252,6 +263,7 @@ public class Cbsc implements Serializable {
         result = prime * result + ((getCbsc16() == null) ? 0 : getCbsc16().hashCode());
         result = prime * result + ((getCbsc17() == null) ? 0 : getCbsc17().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getTakegoodsid() == null) ? 0 : getTakegoodsid().hashCode());
         return result;
     }
 
@@ -280,6 +292,7 @@ public class Cbsc implements Serializable {
         sb.append(", cbsc16=").append(cbsc16);
         sb.append(", cbsc17=").append(cbsc17);
         sb.append(", userId=").append(userId);
+        sb.append(", takegoodsid=").append(takegoodsid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

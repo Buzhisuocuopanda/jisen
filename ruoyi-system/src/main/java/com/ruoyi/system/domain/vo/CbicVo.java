@@ -34,4 +34,8 @@ public class CbicVo extends BaseEntity {
     @ApiParam(value = "结束时间", required = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String endTime;
+
+
+    private String cbwa09;
+
 }
