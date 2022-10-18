@@ -1041,6 +1041,76 @@ public class GsSalesOrdersCriteria {
             addCriterion("statuss not between", value1, value2, "statuss");
             return (Criteria) this;
         }
+
+        public Criteria andPonumberIsNull() {
+            addCriterion("PONumber is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberIsNotNull() {
+            addCriterion("PONumber is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberEqualTo(String value) {
+            addCriterion("PONumber =", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberNotEqualTo(String value) {
+            addCriterion("PONumber <>", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberGreaterThan(String value) {
+            addCriterion("PONumber >", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberGreaterThanOrEqualTo(String value) {
+            addCriterion("PONumber >=", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberLessThan(String value) {
+            addCriterion("PONumber <", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberLessThanOrEqualTo(String value) {
+            addCriterion("PONumber <=", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberLike(String value) {
+            addCriterion("PONumber like", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberNotLike(String value) {
+            addCriterion("PONumber not like", value, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberIn(List<String> values) {
+            addCriterion("PONumber in", values, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberNotIn(List<String> values) {
+            addCriterion("PONumber not in", values, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberBetween(String value1, String value2) {
+            addCriterion("PONumber between", value1, value2, "ponumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPonumberNotBetween(String value1, String value2) {
+            addCriterion("PONumber not between", value1, value2, "ponumber");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

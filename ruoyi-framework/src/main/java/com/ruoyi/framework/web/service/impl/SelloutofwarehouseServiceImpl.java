@@ -169,6 +169,7 @@ if(cbsbDo.getCbsb20()==null){
     @Override
     public int insertSwJsStores(List<Cbsc> itemList) {
 
+
         if(itemList.size()==0){
             throw new SwException("销售出库明细不能为空");
         }
@@ -195,6 +196,8 @@ if(cbsbDo.getCbsb20()==null){
         CbscMapper mapper = session.getMapper(CbscMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
+        Set<Integer> skuIds1 = new HashSet<>();
+
         for (int i = 0; i < itemList.size(); i++) {
 
             if(itemList.get(i).getCbsc08()==null){
@@ -204,12 +207,25 @@ if(cbsbDo.getCbsb20()==null){
                 throw new SwException("仓库里没有该商品");
             }
 
+            if(itemList.get(i).getTakegoodsid()==null){
+                throw new SwException("提货单id不能为空");
+            }
+            Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getTakegoodsid());
+
+           /* skuIds1.add(cbpk.getCbpk09());
+            if(skuIds1.size()>1){
+                throw new SwException("客户id不一致");
+            }*/
+
+
+
             itemList.get(i).setCbsc03(date);
             itemList.get(i).setCbsc04(Math.toIntExact(userid));
             itemList.get(i).setCbsc05(date);
             itemList.get(i).setCbsc06(Math.toIntExact(userid));
             itemList.get(i).setCbsc07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.get(i).setTakegoodsid(itemList.get(i).getTakegoodsid());
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();

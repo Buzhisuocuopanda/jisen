@@ -26,6 +26,12 @@ public class Cbof implements Serializable {
 
     private Integer cboe01;
 
+    private Double standardprice;
+
+    private Double thisprice;
+
+    private Double money;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbof01() {
@@ -116,6 +122,30 @@ public class Cbof implements Serializable {
         this.cboe01 = cboe01;
     }
 
+    public Double getStandardprice() {
+        return standardprice;
+    }
+
+    public void setStandardprice(Double standardprice) {
+        this.standardprice = standardprice;
+    }
+
+    public Double getThisprice() {
+        return thisprice;
+    }
+
+    public void setThisprice(Double thisprice) {
+        this.thisprice = thisprice;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -138,7 +168,10 @@ public class Cbof implements Serializable {
             && (this.getCbof08() == null ? other.getCbof08() == null : this.getCbof08().equals(other.getCbof08()))
             && (this.getCbof09() == null ? other.getCbof09() == null : this.getCbof09().equals(other.getCbof09()))
             && (this.getCbof13() == null ? other.getCbof13() == null : this.getCbof13().equals(other.getCbof13()))
-            && (this.getCboe01() == null ? other.getCboe01() == null : this.getCboe01().equals(other.getCboe01()));
+            && (this.getCboe01() == null ? other.getCboe01() == null : this.getCboe01().equals(other.getCboe01()))
+            && (this.getStandardprice() == null ? other.getStandardprice() == null : this.getStandardprice().equals(other.getStandardprice()))
+            && (this.getThisprice() == null ? other.getThisprice() == null : this.getThisprice().equals(other.getThisprice()))
+            && (this.getMoney() == null ? other.getMoney() == null : this.getMoney().equals(other.getMoney()));
     }
 
     @Override
@@ -156,6 +189,9 @@ public class Cbof implements Serializable {
         result = prime * result + ((getCbof09() == null) ? 0 : getCbof09().hashCode());
         result = prime * result + ((getCbof13() == null) ? 0 : getCbof13().hashCode());
         result = prime * result + ((getCboe01() == null) ? 0 : getCboe01().hashCode());
+        result = prime * result + ((getStandardprice() == null) ? 0 : getStandardprice().hashCode());
+        result = prime * result + ((getThisprice() == null) ? 0 : getThisprice().hashCode());
+        result = prime * result + ((getMoney() == null) ? 0 : getMoney().hashCode());
         return result;
     }
 
@@ -176,6 +212,9 @@ public class Cbof implements Serializable {
         sb.append(", cbof09=").append(cbof09);
         sb.append(", cbof13=").append(cbof13);
         sb.append(", cboe01=").append(cboe01);
+        sb.append(", standardprice=").append(standardprice);
+        sb.append(", thisprice=").append(thisprice);
+        sb.append(", money=").append(money);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

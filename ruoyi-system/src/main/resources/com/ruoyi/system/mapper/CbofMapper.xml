@@ -13,6 +13,9 @@
     <result column="CBOF09" jdbcType="DOUBLE" property="cbof09" />
     <result column="CBOF13" jdbcType="VARCHAR" property="cbof13" />
     <result column="CBOE01" jdbcType="INTEGER" property="cboe01" />
+    <result column="Standardprice" jdbcType="DOUBLE" property="standardprice" />
+    <result column="thisprice" jdbcType="DOUBLE" property="thisprice" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBOF01, CBOF02, CBOF03, CBOF04, CBOF05, CBOF06, CBOF07, CBOF08, CBOF09, CBOF13, CBOE01
+    CBOF01, CBOF02, CBOF03, CBOF04, CBOF05, CBOF06, CBOF07, CBOF08, CBOF09, CBOF13, CBOE01,
+    Standardprice, thisprice, money
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbofCriteria" resultMap="BaseResultMap">
     select
@@ -90,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBOF`
     where CBOF01 = #{cbof01,jdbcType=INTEGER}
@@ -106,14 +110,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbof">
-    insert into `CBOF` (CBOF01, CBOF02, CBOF03, 
-      CBOF04, CBOF05, CBOF06, 
-      CBOF07, CBOF08, CBOF09, 
-      CBOF13, CBOE01)
-    values (#{cbof01,jdbcType=INTEGER}, #{cbof02,jdbcType=INTEGER}, #{cbof03,jdbcType=TIMESTAMP}, 
-      #{cbof04,jdbcType=INTEGER}, #{cbof05,jdbcType=TIMESTAMP}, #{cbof06,jdbcType=INTEGER}, 
-      #{cbof07,jdbcType=INTEGER}, #{cbof08,jdbcType=INTEGER}, #{cbof09,jdbcType=DOUBLE}, 
-      #{cbof13,jdbcType=VARCHAR}, #{cboe01,jdbcType=INTEGER})
+    insert into `CBOF` (CBOF01, CBOF02, CBOF03,
+      CBOF04, CBOF05, CBOF06,
+      CBOF07, CBOF08, CBOF09,
+      CBOF13, CBOE01, Standardprice,
+      thisprice, money)
+    values (#{cbof01,jdbcType=INTEGER}, #{cbof02,jdbcType=INTEGER}, #{cbof03,jdbcType=TIMESTAMP},
+      #{cbof04,jdbcType=INTEGER}, #{cbof05,jdbcType=TIMESTAMP}, #{cbof06,jdbcType=INTEGER},
+      #{cbof07,jdbcType=INTEGER}, #{cbof08,jdbcType=INTEGER}, #{cbof09,jdbcType=DOUBLE},
+      #{cbof13,jdbcType=VARCHAR}, #{cboe01,jdbcType=INTEGER}, #{standardprice,jdbcType=DOUBLE},
+      #{thisprice,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbof">
     insert into `CBOF`
@@ -151,6 +157,15 @@
       <if test="cboe01 != null">
         CBOE01,
       </if>
+      <if test="standardprice != null">
+        Standardprice,
+      </if>
+      <if test="thisprice != null">
+        thisprice,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbof01 != null">
@@ -185,6 +200,15 @@
       </if>
       <if test="cboe01 != null">
         #{cboe01,jdbcType=INTEGER},
+      </if>
+      <if test="standardprice != null">
+        #{standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="thisprice != null">
+        #{thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -230,6 +254,15 @@
       <if test="record.cboe01 != null">
         CBOE01 = #{record.cboe01,jdbcType=INTEGER},
       </if>
+      <if test="record.standardprice != null">
+        Standardprice = #{record.standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.thisprice != null">
+        thisprice = #{record.thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -247,7 +280,10 @@
       CBOF08 = #{record.cbof08,jdbcType=INTEGER},
       CBOF09 = #{record.cbof09,jdbcType=DOUBLE},
       CBOF13 = #{record.cbof13,jdbcType=VARCHAR},
-      CBOE01 = #{record.cboe01,jdbcType=INTEGER}
+      CBOE01 = #{record.cboe01,jdbcType=INTEGER},
+      Standardprice = #{record.standardprice,jdbcType=DOUBLE},
+      thisprice = #{record.thisprice,jdbcType=DOUBLE},
+      money = #{record.money,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -285,6 +321,15 @@
       <if test="cboe01 != null">
         CBOE01 = #{cboe01,jdbcType=INTEGER},
       </if>
+      <if test="standardprice != null">
+        Standardprice = #{standardprice,jdbcType=DOUBLE},
+      </if>
+      <if test="thisprice != null">
+        thisprice = #{thisprice,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
     </set>
     where CBOF01 = #{cbof01,jdbcType=INTEGER}
   </update>
@@ -299,7 +344,12 @@
       CBOF08 = #{cbof08,jdbcType=INTEGER},
       CBOF09 = #{cbof09,jdbcType=DOUBLE},
       CBOF13 = #{cbof13,jdbcType=VARCHAR},
-      CBOE01 = #{cboe01,jdbcType=INTEGER}
+      CBOE01 = #{cboe01,jdbcType=INTEGER},
+      Standardprice = #{standardprice,jdbcType=DOUBLE},
+      thisprice = #{thisprice,jdbcType=DOUBLE},
+      money = #{money,jdbcType=DOUBLE}
     where CBOF01 = #{cbof01,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

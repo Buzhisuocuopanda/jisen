@@ -3,9 +3,6 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.CbscCriteria;
 import java.util.List;
-
-import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
-import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbscMapper {
@@ -30,7 +27,4 @@ public interface CbscMapper {
     int updateByPrimaryKeySelective(Cbsc record);
 
     int updateByPrimaryKey(Cbsc record);
-    //zgl
-    /*List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);*/
-
 }

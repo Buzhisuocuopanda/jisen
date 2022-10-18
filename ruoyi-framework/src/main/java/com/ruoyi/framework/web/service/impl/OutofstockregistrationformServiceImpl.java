@@ -9,10 +9,12 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CboeDo;
 import com.ruoyi.system.domain.Do.CbofDo;
+import com.ruoyi.system.domain.dto.GoodsPriceAndSkuDto;
 import com.ruoyi.system.domain.dto.SaleOrderGoodsDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.OutofstockregistrationformService;
+import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -56,6 +58,9 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
     private CbpbMapper cbpbMapper;
 
     @Resource
+    private SaleOrderService saleOrderService;
+
+    @Resource
     private SysUserMapper sysUserMapper;
     @Override
     public void insertOutofstockregistrationform(CboeDo cboeDo) {
@@ -77,6 +82,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         cboe.setCboe09(cboeDo.getCustomerId());
         cboe.setCboe10(cboeDo.getSaleUserId());
         cboe.setUserId(Math.toIntExact(userid));
+        cboe.setCboe21(cboeDo.getCboe21());
         cboeMapper.insertSelective(cboe);
         CboeCriteria example1 = new CboeCriteria();
         example1.createCriteria().andCboe07EqualTo(takeOrderNos)
@@ -94,9 +100,29 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
                 cbof.setCbof06(Math.toIntExact(userid));
                 cbof.setCbof07(DeleteFlagEnum.NOT_DELETE.getCode());
                 cbof.setCbof08(good.getGoodsId());
+                if(good.getQty()==null){
+                    throw new SwException("数量不能为空");
+                }
                 cbof.setCbof09(good.getQty());
                 cbof.setCbof13(good.getRemark());
                 cbof.setCboe01(idVo.getId());
+            GoodsPriceAndSkuDto goodsPriceAndSkuDto=new GoodsPriceAndSkuDto();
+            goodsPriceAndSkuDto.setGoodsId(good.getGoodsId());
+            goodsPriceAndSkuDto.setCustomerId(cboeDo.getCustomerId());
+            goodsPriceAndSkuDto.setOrderClass(Integer.valueOf(cboeDo.getCboe21()));
+           if(Integer.parseInt(cboeDo.getCboe21())==2){
+               goodsPriceAndSkuDto.setCurrency(6);
+           }else {
+               goodsPriceAndSkuDto.setCurrency(5);
+
+           }
+            GoodsPriceAndSkuVo goodsPriceAndSkuVo = saleOrderService.goodsPriceAndSku(goodsPriceAndSkuDto);
+            cbof.setStandardprice(goodsPriceAndSkuVo.getNormalPrice());
+            if(good.getThisprice()==null){
+                throw new SwException("本次单价不能为空");
+            }
+            cbof.setThisprice(good.getThisprice());
+            cbof.setMoney(good.getQty()*good.getThisprice());
                 cbofMapper.insertSelective(cbof);
 
         }

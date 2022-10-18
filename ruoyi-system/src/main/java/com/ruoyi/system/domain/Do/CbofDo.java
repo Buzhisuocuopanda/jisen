@@ -37,5 +37,9 @@ public class CbofDo {
     private String remark;
 
 
+    private Double standardprice;
 
+    private Double thisprice;
+
+    private Double money;
 }

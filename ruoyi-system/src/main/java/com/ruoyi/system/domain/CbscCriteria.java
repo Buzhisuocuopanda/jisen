@@ -1254,6 +1254,66 @@ public class CbscCriteria {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
+
+        public Criteria andTakegoodsidIsNull() {
+            addCriterion("takegoodsid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidIsNotNull() {
+            addCriterion("takegoodsid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidEqualTo(Integer value) {
+            addCriterion("takegoodsid =", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidNotEqualTo(Integer value) {
+            addCriterion("takegoodsid <>", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidGreaterThan(Integer value) {
+            addCriterion("takegoodsid >", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("takegoodsid >=", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidLessThan(Integer value) {
+            addCriterion("takegoodsid <", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidLessThanOrEqualTo(Integer value) {
+            addCriterion("takegoodsid <=", value, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidIn(List<Integer> values) {
+            addCriterion("takegoodsid in", values, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidNotIn(List<Integer> values) {
+            addCriterion("takegoodsid not in", values, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidBetween(Integer value1, Integer value2) {
+            addCriterion("takegoodsid between", value1, value2, "takegoodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakegoodsidNotBetween(Integer value1, Integer value2) {
+            addCriterion("takegoodsid not between", value1, value2, "takegoodsid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

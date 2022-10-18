@@ -414,7 +414,7 @@ where
     d.CBPA07,
     c.CALA08,
     b.CBPB12,b.CBPB08,
-    a.CBIC10,a.CBIC08,a.CBIC02,e.CBLA09
+    a.CBIC10,a.CBIC08,a.CBIC02,e.CBLA09,f.CBWA09
     FROM
     CBIC a
 
@@ -434,6 +434,10 @@ where
     CBLA e
     ON
     a.CBIC08=e.CBLA01
+    LEFT JOIN
+    CBWA f
+    ON
+    f.CBWA01=e.CBLA10
     where
     a.CBIC06=0
     <if test="cbic02 != null  and cbic02 != ''"> and a.CBIC02 like concat('%', #{cbic02}, '%')</if>
@@ -441,6 +445,7 @@ where
     <if test="cbic01 != null  and cbic01 != ''"> and a.CBIC01 like concat('%', #{cbic01}, '%')</if>
 
     <if test="cbpb12 != null  and cbpb12 != ''"> and b.CBPB12 like concat('%', #{cbpb12}, '%')</if>
+    <if test="cbwa09 != null  and cbwa09 != ''"> and f.CBWA09 like concat('%', #{cbwa09}, '%')</if>
 
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(a.CBIC02,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
