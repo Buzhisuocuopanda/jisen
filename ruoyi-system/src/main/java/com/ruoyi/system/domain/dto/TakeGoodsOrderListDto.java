@@ -48,6 +48,7 @@ public class TakeGoodsOrderListDto extends BaseEntity {
     @ApiModelProperty("质检状态")
     private String checkStatus;
 
+    private String sn;
 
 
 }

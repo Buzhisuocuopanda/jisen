@@ -37,5 +37,11 @@ public class CbofVo {
     private List<SaleOderDetailGoods> goods = new ArrayList<>();
 
     private Double sumQty;
+    private Double thisprice;
+    private Double Standardprice;
+
+    private Double money;
+
+    private String cboe21;
 
 }

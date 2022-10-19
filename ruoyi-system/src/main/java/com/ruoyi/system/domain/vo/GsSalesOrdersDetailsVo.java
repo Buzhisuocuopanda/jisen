@@ -25,7 +25,7 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private BigDecimal price;
 
     private String remark;
-
+    private String PONumber;
     private String gsSalesOrders;
     @Excel(name = "订单编号")
     private String orderNo;

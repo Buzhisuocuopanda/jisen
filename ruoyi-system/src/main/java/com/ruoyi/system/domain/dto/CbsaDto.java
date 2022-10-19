@@ -31,15 +31,15 @@ public class CbsaDto {
  //   @NotBlank(message = "供应商名称大写字母不能为空")
     private String cbsa09;
 
-    @NotBlank(message = "开户行不能为空")
+   // @NotBlank(message = "开户行不能为空")
     @Excel(name = "开户行")
     private String cbsa10;
 
-    @NotBlank(message = "账号不能为空")
+   // @NotBlank(message = "账号不能为空")
     @Excel(name = "账号")
     private String cbsa11;
 
-    @NotBlank(message = "纳税人识别号不能为空")
+   // @NotBlank(message = "纳税人识别号不能为空")
     @Excel(name = "纳税人识别号")
     private String cbsa12;
 
@@ -51,17 +51,17 @@ public class CbsaDto {
     @Excel(name = "联系人")
     private String cbsa14;
 
-    @NotBlank(message = "联系电话不能为空")
+   // @NotBlank(message = "联系电话不能为空")
     @Excel(name = "联系电话")
     private String cbsa15;
-    @NotBlank(message = "发票地址不能为空")
+   // @NotBlank(message = "发票地址不能为空")
     @Excel(name = "发票地址")
     private String cbsa16;
 
-    @NotBlank(message = "发票电话不能为空")
+   // @NotBlank(message = "发票电话不能为空")
     @Excel(name = "发票电话")
     private String cbsa17;
 
-    @NotNull(message = "出库顺序不能为空")
+   // @NotNull(message = "出库顺序不能为空")
     private Integer cbsa18;
 }

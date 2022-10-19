@@ -59,8 +59,8 @@ public class FnQueryAyntgesisVo {
     private Double cgRprice;
 
     //不显示了
-//    @Excel(name = "生产总订单号")
-//    private String totalOrderNo;
+    @Excel(name = "生产总订单号")
+    private String totalOrderNo;
 
     private Integer cbsd01;
     private Integer goodsId;

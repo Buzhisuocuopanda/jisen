@@ -42,7 +42,7 @@ public class GsSalesOrdersVo  implements Serializable {
 
     private Integer statuss;
 
-
+    private String  ponumber;
     private String wh;
 
     private Integer userId;

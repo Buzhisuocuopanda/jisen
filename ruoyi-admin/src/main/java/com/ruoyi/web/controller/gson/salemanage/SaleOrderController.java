@@ -1439,7 +1439,15 @@ public class SaleOrderController extends BaseController {
             String excelPaht = RuoYiConfig.getSwdataprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
             //File is = new File("D:\\data\\模板.xlsx");
 
+//            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+            File sg = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
+
             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+
+            copyFileUsingFileChannels(sg,is);
+
+
+
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             String orderNo = res.getOrderNo();
@@ -1449,6 +1457,8 @@ public class SaleOrderController extends BaseController {
             FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
             FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
+            boolean delete = is.delete();
+            System.out.println(delete);
         } catch (SwException e) {
             log.error("【导出销售订单详情2】接口出现异常,参数${}$,异常${}$", JSON.toJSON(orderId), ExceptionUtils.getStackTrace(e));
 

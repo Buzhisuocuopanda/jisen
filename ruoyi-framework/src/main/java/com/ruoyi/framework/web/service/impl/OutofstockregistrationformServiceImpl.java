@@ -305,6 +305,9 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
             cbof.setCbof09(good.getCbof09());
             cbof.setCbof13(good.getCbof13());
             cbof.setCboe01(cboeDo.getCboe01());
+            cbof.setThisprice(good.getThisprice());
+            cbof.setStandardprice(good.getStandardprice());
+            cbof.setMoney(good.getMoney());
             if(good.getGoodsId()!=null){
                 cbof.setCbof08(good.getGoodsId());
             }

@@ -1054,6 +1054,66 @@ public class CbwaCriteria {
             addCriterion("CBWA15 not between", value1, value2, "cbwa15");
             return (Criteria) this;
         }
+
+        public Criteria andAllocationFlagIsNull() {
+            addCriterion("allocation_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagIsNotNull() {
+            addCriterion("allocation_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagEqualTo(Byte value) {
+            addCriterion("allocation_flag =", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagNotEqualTo(Byte value) {
+            addCriterion("allocation_flag <>", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagGreaterThan(Byte value) {
+            addCriterion("allocation_flag >", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagGreaterThanOrEqualTo(Byte value) {
+            addCriterion("allocation_flag >=", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagLessThan(Byte value) {
+            addCriterion("allocation_flag <", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagLessThanOrEqualTo(Byte value) {
+            addCriterion("allocation_flag <=", value, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagIn(List<Byte> values) {
+            addCriterion("allocation_flag in", values, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagNotIn(List<Byte> values) {
+            addCriterion("allocation_flag not in", values, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagBetween(Byte value1, Byte value2) {
+            addCriterion("allocation_flag between", value1, value2, "allocationFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllocationFlagNotBetween(Byte value1, Byte value2) {
+            addCriterion("allocation_flag not between", value1, value2, "allocationFlag");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
