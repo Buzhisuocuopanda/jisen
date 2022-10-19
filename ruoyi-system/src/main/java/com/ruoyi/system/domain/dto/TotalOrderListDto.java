@@ -26,4 +26,9 @@ public class TotalOrderListDto {
 
     //
     private Integer status;
+
+    private String sortKey;
+
+    private String sortType;
+
 }

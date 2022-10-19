@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName DelSaleOrderDto
@@ -19,5 +21,9 @@ public class DelSaleOrderDto {
     private Integer orderId;
 
     private Integer userId;
+
+
+    private List<Integer> orderIds=new ArrayList<>();
+
 
 }

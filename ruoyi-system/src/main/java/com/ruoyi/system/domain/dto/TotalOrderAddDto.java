@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName TotalOrderAddDto
@@ -42,6 +44,9 @@ public class TotalOrderAddDto {
     private Integer delete;
 
     private Integer status;
+
+    private List<Integer> ids=new ArrayList<>();
+
 
 
 

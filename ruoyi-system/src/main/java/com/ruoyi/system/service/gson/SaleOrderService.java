@@ -20,6 +20,7 @@ public interface SaleOrderService {
     List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto);
 
     Cbba addTotalOrder(TotalOrderAddDto totalOrderAddDto);
+    Cbba addTotalOrderPl(TotalOrderAddDto totalOrderAddDto);
 
     Cbba mdfTotalOrder(TotalOrderAddDto totalOrderAddDto);
 
@@ -92,6 +93,7 @@ public interface SaleOrderService {
 
     Cbba auditTotalOrder(TotalOrderAddDto totalOrderAddDto);
 
+    void pldelSaleOrder(DelSaleOrderDto delSaleOrderDto);
 
 
 //    GsWorkInstance createTask();
