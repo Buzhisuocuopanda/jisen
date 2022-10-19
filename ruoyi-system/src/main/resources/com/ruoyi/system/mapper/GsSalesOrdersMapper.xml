@@ -410,6 +410,7 @@
       d.cbwa09 AS wh,
       so.status AS status,
       so.statuss AS statuss,
+      so.PONumber AS ponumber,
 
     so.*
     FROM
