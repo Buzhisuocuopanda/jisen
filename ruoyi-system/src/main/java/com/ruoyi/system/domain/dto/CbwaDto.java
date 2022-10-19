@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 @Data
 public class CbwaDto {
+    private Byte allocationFlag;
 
     private Integer cbwa01;
 
