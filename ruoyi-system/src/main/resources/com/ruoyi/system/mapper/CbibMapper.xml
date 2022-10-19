@@ -486,7 +486,7 @@ ORDER BY
     SUM(a.CBIB13) as outCount,SUM(a.CBIB14) as outMoney
     FROM CBIB a
     left join CBCA ca on ca.CBCA01 = a.CBIB19
-    WHERE a.CBIB05 = 5
+    WHERE a.CBIB05 = 5 and a.CBIB19 is not null
     GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
     <!--<if test="cbpb12!=null and cbpb12!=''">
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
@@ -500,6 +500,17 @@ ORDER BY
         #{monthly}
       </foreach>
     </if>) as ib group by ib.CBIB19
+  </select>
+
+  <select id="monthlySalesTotal2" resultType="com.ruoyi.system.domain.vo.CbibVo2">
+    SELECT
+   DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+    SUM(a.CBIB13) as outCountTotal,SUM(a.CBIB14) as outMoneyTotal
+    FROM CBIB a
+    left join CBCA ca on ca.CBCA01 = a.CBIB19
+    WHERE a.CBIB05 = 5 and a.CBIB19 is not null
+    GROUP BY DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+
   </select>
 
 </mapper>
