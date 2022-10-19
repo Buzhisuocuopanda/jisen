@@ -670,7 +670,7 @@ where
   <select id="selectInventorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccupancyVo">
     select
     a.CBOA01,a.CBOA07,b.CBCA08,a.CBOA25,d.CBPA07,f.CALA08,c.CBPB12,g.lock_qty as lockQty,
-      e.CBOB09,e.CBOB10,e.CBOB15,c.CBPB01
+      e.CBOB09,e.CBOB10,e.CBOB15,c.CBPB01,e.cbob01
     from
       CBOA a
         LEFT JOIN
