@@ -42,5 +42,6 @@ public class CbofVo {
 
     private Double money;
 
+    private String cboe21;
 
 }
