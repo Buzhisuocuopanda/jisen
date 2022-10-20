@@ -18,10 +18,7 @@ public class SaleOrderExcelDto {
     @Excel(name = "客户")
     private String customerName;
 
-    @Excel(name = "销售人员")
-    private String saleUserName;
-    @Excel(name = "结算货币")
-    private String currency;
+
     @Excel(name = "订单类型")
     private String orderType;
 

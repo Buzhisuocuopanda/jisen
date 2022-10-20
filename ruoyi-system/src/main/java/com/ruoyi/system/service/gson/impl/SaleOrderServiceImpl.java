@@ -115,6 +115,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Resource
     private CblaMapper cblaMapper;
 
+    @Resource
+    private CbplMapper cbplMapper;
+
 
     @Override
     public List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto) {
@@ -253,12 +256,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             //走更新逻辑
             Double nqty=0.0;
-            if(totalOrderAddDto.getQty()<0.0){
-                //数量减少
-                nqty=  cbba.getCbba13()-totalOrderAddDto.getQty();
-            }else {
-                nqty=  cbba.getCbba13()+totalOrderAddDto.getQty();
-            }
+//            if(totalOrderAddDto.getQty()<0.0){
+//
+//                //数量减少
+//                nqty=  cbba.getCbba09()-totalOrderAddDto.getQty();
+//
+//            }else {
+                nqty=  cbba.getCbba09()+totalOrderAddDto.getQty();
+//            }
             totalOrderAddDto.setQty(nqty);
             totalOrderAddDto.setOrderNo(cbba.getCbba07());
             totalOrderAddDto.setId(cbba.getCbba01());
@@ -1116,9 +1121,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("SKU那一列有为空的数据");
             }
 
-            if (StringUtils.isBlank(saleOrderExcelDto.getSaleUserName())) {
-                throw new SwException("销售人员那一列有为空的数据");
-            }
+//            if (StringUtils.isBlank(saleOrderExcelDto.getSaleUserName())) {
+//                throw new SwException("销售人员那一列有为空的数据");
+//            }
 
 
             if (saleOrderExcelDto.getQty() == null) {
@@ -1171,17 +1176,17 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 Double normalPrice = 0.0;
                 if (saleOrderExcelDtos.size() > 0) {
                     SaleOrderExcelDto saleOrderExcelDto = saleOrderExcelDtos.get(0);
-                    saleUser = saleOrderExcelDto.getSaleUserName();
+//                    saleUser = saleOrderExcelDto.getSaleUserName();
                     orderType = saleOrderExcelDto.getOrderType();
-                    CalaCriteria laex = new CalaCriteria();
-                    laex.createCriteria()
-                            .andCala08EqualTo(saleOrderExcelDto.getCurrency());
-                    List<Cala> calas = calaMapper.selectByExample(laex);
-                    if("CNY".equals(saleOrderExcelDto.getCurrency())){
-                        currency="6";
-                    }else {
+//                    CalaCriteria laex = new CalaCriteria();
+//                    laex.createCriteria()
+//                            .andCala08EqualTo(saleOrderExcelDto.getCurrency());
+//                    List<Cala> calas = calaMapper.selectByExample(laex);
+//                    if("CNY".equals(saleOrderExcelDto.getCurrency())){
+//                        currency="6";
+//                    }else {
                         currency="5";
-                    }
+//                    }
 
 //                    if (calas.size() > 0) {
 //                        currency = calas.get(0).getCala02();
@@ -1204,6 +1209,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cboa.setCboa03(userId.intValue());
                 cboa.setCboa04(date);
                 cboa.setCboa05(userId.intValue());
+                cboa.setCboa10(userId.intValue());
                 cboa.setCboa06(DeleteFlagEnum.NOT_DELETE.getCode());
                 NumberDo numberDo = new NumberDo();
                 numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
@@ -1845,6 +1851,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (good.getQty() < cbob.getCbob10()) {
                 throw new SwException("修改后的数量不能小于发货数量");
             }
+
+            //查出提货数量
+            List<Cbpl> cbpls=cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(),good.getGoodsId());
+            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+            if (good.getQty() < collect) {
+                throw new SwException("修改后的数量不能小于提货数量");
+            }
+
 
             cbod = new Cbod();
             cbod.setCbobid(good.getCbobId());
@@ -2836,14 +2851,14 @@ Date date=new Date();
     @Override
     @Transactional
     public void pldelSaleOrder(DelSaleOrderDto delSaleOrderDto) {
-        List<Integer> orderIds = delSaleOrderDto.getOrderIds();
-        DelSaleOrderDto desSend=null;
-        for (Integer orderId : orderIds) {
-            desSend=new DelSaleOrderDto();
-            desSend.setOrderId(orderId);
-            desSend.setUserId(delSaleOrderDto.getUserId());
-            delSaleOrder(desSend);
-        }
+//        List<Integer> orderIds = delSaleOrderDto.getOrderIds();
+//        DelSaleOrderDto desSend=null;
+//        for (Integer orderId : orderIds) {
+//            desSend=new DelSaleOrderDto();
+//            desSend.setOrderId(orderId);
+//            desSend.setUserId(delSaleOrderDto.getUserId());
+//            saleOrddelSaleOrder(desSend);
+//        }
 
     }
 

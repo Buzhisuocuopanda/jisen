@@ -622,7 +622,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
         List<Cbba> list = cbbaMapper.selectByOther(goodsId,cbba.getCbba01());
 
-        if(list.size()==0){
+        if(list.size()==0 && makeNum==0.0){
+            return cbba;
 
         }
         for (Cbba res : list) {

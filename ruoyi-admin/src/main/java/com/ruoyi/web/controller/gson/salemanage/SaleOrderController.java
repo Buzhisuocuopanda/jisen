@@ -710,7 +710,16 @@ public class SaleOrderController extends BaseController {
                 throw new SwException("请选择要修改的销售订单");
             }
             delSaleOrderDto.setUserId(getUserId().intValue());
-            saleOrderService.pldelSaleOrder(delSaleOrderDto);
+            List<Integer> orderIds = delSaleOrderDto.getOrderIds();
+            DelSaleOrderDto desSend=null;
+            for (Integer orderId : orderIds) {
+                desSend=new DelSaleOrderDto();
+                desSend.setOrderId(orderId);
+                desSend.setUserId(delSaleOrderDto.getUserId());
+                saleOrderService. delSaleOrder(desSend);
+            }
+
+//            saleOrderService.pldelSaleOrder(delSaleOrderDto);
             return AjaxResult.success();
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

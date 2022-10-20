@@ -80,7 +80,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    CBPL01, CBPL02, CBPL03, CBPL04, CBPL05, CBPL06, CBPL07, CBPL08, CBPL09, CBPL10, CBPL11, 
+    CBPL01, CBPL02, CBPL03, CBPL04, CBPL05, CBPL06, CBPL07, CBPL08, CBPL09, CBPL10, CBPL11,
     CBPL12, CBPL13, CBPL14, CBPL15, CBPL16, CBPK01, good_product_qty
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbplCriteria" resultMap="BaseResultMap">
@@ -98,7 +98,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `CBPL`
     where CBPL01 = #{cbpl01,jdbcType=INTEGER}
@@ -114,18 +114,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpl">
-    insert into `CBPL` (CBPL01, CBPL02, CBPL03, 
-      CBPL04, CBPL05, CBPL06, 
-      CBPL07, CBPL08, CBPL09, 
-      CBPL10, CBPL11, CBPL12, 
-      CBPL13, CBPL14, CBPL15, 
+    insert into `CBPL` (CBPL01, CBPL02, CBPL03,
+      CBPL04, CBPL05, CBPL06,
+      CBPL07, CBPL08, CBPL09,
+      CBPL10, CBPL11, CBPL12,
+      CBPL13, CBPL14, CBPL15,
       CBPL16, CBPK01, good_product_qty
       )
-    values (#{cbpl01,jdbcType=INTEGER}, #{cbpl02,jdbcType=INTEGER}, #{cbpl03,jdbcType=TIMESTAMP}, 
-      #{cbpl04,jdbcType=INTEGER}, #{cbpl05,jdbcType=TIMESTAMP}, #{cbpl06,jdbcType=INTEGER}, 
-      #{cbpl07,jdbcType=INTEGER}, #{cbpl08,jdbcType=INTEGER}, #{cbpl09,jdbcType=DOUBLE}, 
-      #{cbpl10,jdbcType=DOUBLE}, #{cbpl11,jdbcType=DOUBLE}, #{cbpl12,jdbcType=DOUBLE}, 
-      #{cbpl13,jdbcType=VARCHAR}, #{cbpl14,jdbcType=INTEGER}, #{cbpl15,jdbcType=INTEGER}, 
+    values (#{cbpl01,jdbcType=INTEGER}, #{cbpl02,jdbcType=INTEGER}, #{cbpl03,jdbcType=TIMESTAMP},
+      #{cbpl04,jdbcType=INTEGER}, #{cbpl05,jdbcType=TIMESTAMP}, #{cbpl06,jdbcType=INTEGER},
+      #{cbpl07,jdbcType=INTEGER}, #{cbpl08,jdbcType=INTEGER}, #{cbpl09,jdbcType=DOUBLE},
+      #{cbpl10,jdbcType=DOUBLE}, #{cbpl11,jdbcType=DOUBLE}, #{cbpl12,jdbcType=DOUBLE},
+      #{cbpl13,jdbcType=VARCHAR}, #{cbpl14,jdbcType=INTEGER}, #{cbpl15,jdbcType=INTEGER},
       #{cbpl16,jdbcType=INTEGER}, #{cbpk01,jdbcType=INTEGER}, #{goodProductQty,jdbcType=DOUBLE}
       )
   </insert>
@@ -414,4 +414,18 @@
       good_product_qty = #{goodProductQty,jdbcType=DOUBLE}
     where CBPL01 = #{cbpl01,jdbcType=INTEGER}
   </update>
+  <select id="selectBySaleOrderNoAndGoodsId">
+
+    SELECT
+	cbpl.*
+FROM
+	CBPL cbpl
+	INNER JOIN CBPK cbpk on cbpk.CBPK01= cbpl.CBPK01
+	INNER JOIN CBOA cboa ON cboa.CBOA07=cbpk.sale_order_no
+	WHERE
+	 cbpk.check_status=1
+	 AND cbpl.CBPL08=#{goodsId}
+	 AND cbpk.sale_order_no=#{orderNo}
+  </select>
+
 </mapper>
