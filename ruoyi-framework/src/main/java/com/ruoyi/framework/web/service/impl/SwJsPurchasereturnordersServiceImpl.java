@@ -543,23 +543,31 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg05(Math.toIntExact(userid));
         cbpgMapper.updateByPrimaryKeySelective(cbpg);
 
+        CbphCriteria cbphCriteria = new CbphCriteria();
+cbphCriteria.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        int i = cbphMapper.deleteByExample(cbphCriteria);
+
         Cbph cbph = null;
         for(Cbph good:goods){
             cbph = new Cbph();
-            if(good.getCbph01()==null){
+           /* if(good.getCbph01()==null){
                 throw new SwException("采购退库单明细id不能为空");
-            }
-            cbph.setCbph01(good.getCbph01());
+            }*/
+           // cbph.setCbph01(good.getCbph01());
+            cbph.setCbph02(good.getCbph02());
+            cbph.setCbph03(date);
             cbph.setCbph04(Math.toIntExact(userid));
             cbph.setCbph05(date);
             cbph.setCbph06(Math.toIntExact(userid));
+            cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
             cbph.setCbph08(good.getCbph08());
             cbph.setCbph09(good.getCbph09());
             cbph.setCbph10(good.getCbph10());
             cbph.setCbph11(good.getCbph11());
             cbph.setCbph12(good.getCbph12());
             cbph.setCbph13(good.getCbph13());
-            cbphMapper.updateByPrimaryKeySelective(cbph);
+            cbph.setCbpg01(cbpgDto.getCbpg01());
+            cbphMapper.insertSelective(cbph);
         }
 return;
 

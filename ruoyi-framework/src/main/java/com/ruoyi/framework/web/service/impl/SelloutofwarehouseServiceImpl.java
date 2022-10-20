@@ -908,6 +908,11 @@ if(cbsbDo.getCbsb20()==null){
         cbsb.setCbsb05(Math.toIntExact(userid));
         cbsbMapper.updateByPrimaryKeySelective(cbsb);
 
+        CbscCriteria example1 = new CbscCriteria();
+        example1.createCriteria().andCbsc01EqualTo(cbsbDo.getCbsb01());
+        int i = cbscMapper.deleteByExample(example1);
+
+
         Cbsc cbsc = null;
         for (Cbsc good : goods) {
             cbsc = new Cbsc();
@@ -920,6 +925,7 @@ if(cbsbDo.getCbsb20()==null){
             cbsc.setCbsc04(good.getCbsc04());
             cbsc.setCbsc05(date);
             cbsc.setCbsc06(Math.toIntExact(userid));
+            cbsc.setCbsc07(DeleteFlagEnum.NOT_DELETE.getCode());
             cbsc.setCbsc08(good.getCbsc08());
             cbsc.setCbsc09(good.getCbsc09());
             cbsc.setCbsc10(good.getCbsc10());
@@ -932,7 +938,7 @@ if(cbsbDo.getCbsb20()==null){
 
             CbscCriteria example = new CbscCriteria();
             example.createCriteria().andCbsc01EqualTo(good.getCbsc01());
-            cbscMapper.updateByExampleSelective(cbsc,example);
+            cbscMapper.insertSelective(cbsc);
         }
         return;
     }

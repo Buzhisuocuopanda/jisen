@@ -177,12 +177,12 @@ return;
         if(gsSalesOrdersDetails1.size()==0){
             throw new SwException("没有查到该销售预订单明细");
         }
-       /* Set<Integer> uio = null;
-        for (int i = 0; i < gsSalesOrdersDetails1.size(); i++) {
-            int id = gsSalesOrdersDetails1.get(i).getId();
-            uio = new HashSet<>();
-            uio.add(id);
-        }*/
+
+        GsSalesOrdersDetailsCriteria shgui = new GsSalesOrdersDetailsCriteria();
+        shgui.createCriteria()
+                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersDto.getId()));
+        int i = gsSalesOrdersDetailsMapper.deleteByExample(shgui);
+
 
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
         for (GsSalesOrdersDetailsDto good : goods) {
@@ -194,18 +194,21 @@ return;
                 throw new SwException("该商品不在采购订单明细中");
             }*/
           //  gsSalesOrdersDetails.setId(good.getId());
+            gsSalesOrdersDetails.setCreateTime(date);
             gsSalesOrdersDetails.setUpdateTime(date);
+            gsSalesOrdersDetails.setCreateBy(String.valueOf(userid));
             gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+            gsSalesOrdersDetails.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
             gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
             gsSalesOrdersDetails.setQty(good.getQty());
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
             gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersDto.getId().toString());
-            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria1 = new GsSalesOrdersDetailsCriteria();
+            /*GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria1 = new GsSalesOrdersDetailsCriteria();
             gsSalesOrdersDetailsCriteria1.createCriteria()
                     .andGsSalesOrdersEqualTo(gsSalesOrdersDto.getId().toString())
-            .andGoodsIdEqualTo(good.getGoodsId());
-            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,gsSalesOrdersDetailsCriteria1);
+            .andGoodsIdEqualTo(good.getGoodsId());*/
+            gsSalesOrdersDetailsMapper.insertSelective(gsSalesOrdersDetails);
 
             return;
         }
