@@ -207,6 +207,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboe.getCboe09());
         res.setCboe01(cboe.getCboe01());
         res.setCboe07(cboe.getCboe07());
+        res.setCboe21(cboe.getCboe21());
         Date cboe08 = cboe.getCboe08();
 
 

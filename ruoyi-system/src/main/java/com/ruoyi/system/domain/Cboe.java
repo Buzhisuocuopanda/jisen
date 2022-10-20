@@ -34,6 +34,8 @@ public class Cboe implements Serializable {
 
     private Double money;
 
+    private Integer cboe22;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCboe01() {
@@ -154,6 +156,14 @@ public class Cboe implements Serializable {
 
     public void setMoney(Double money) {
         this.money = money;
+    }
+
+    public Integer getCboe22() {
+        return cboe22;
+    }
+
+    public void setCboe22(Integer cboe22) {
+        this.cboe22 = cboe22;
     }
 
     @Override
