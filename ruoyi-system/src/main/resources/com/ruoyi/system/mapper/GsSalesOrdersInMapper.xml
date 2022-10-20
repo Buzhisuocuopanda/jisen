@@ -13,6 +13,7 @@
     <result column="in_qty" jdbcType="DOUBLE" property="inQty" />
     <result column="gs_sales_orders" jdbcType="INTEGER" property="gsSalesOrders" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, PONumber, goods_id,
-    in_qty, gs_sales_orders, `status`
+    in_qty, gs_sales_orders, `status`, factory
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersInCriteria" resultMap="BaseResultMap">
     select
@@ -110,11 +111,13 @@
     insert into `gs_ Sales_orders_in` (id, create_time, update_time,
       create_by, update_by, delete_flag,
       PONumber, goods_id, in_qty,
-      gs_sales_orders, `status`)
+      gs_sales_orders, `status`, factory
+      )
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR},
       #{ponumber,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{inQty,jdbcType=DOUBLE},
-      #{gsSalesOrders,jdbcType=INTEGER}, #{status,jdbcType=TINYINT})
+      #{gsSalesOrders,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{factory,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrdersIn">
     insert into `gs_ Sales_orders_in`
@@ -152,6 +155,9 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -187,6 +193,9 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersInCriteria" resultType="java.lang.Long">
@@ -195,7 +204,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map">
     update `gs_ Sales_orders_in`
     <set>
       <if test="record.id != null">
@@ -231,6 +240,9 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=TINYINT},
       </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +260,8 @@
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       in_qty = #{record.inQty,jdbcType=DOUBLE},
       gs_sales_orders = #{record.gsSalesOrders,jdbcType=INTEGER},
-      `status` = #{record.status,jdbcType=TINYINT}
+      `status` = #{record.status,jdbcType=TINYINT},
+      factory = #{record.factory,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +299,9 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -300,9 +316,12 @@
       goods_id = #{goodsId,jdbcType=INTEGER},
       in_qty = #{inQty,jdbcType=DOUBLE},
       gs_sales_orders = #{gsSalesOrders,jdbcType=INTEGER},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      factory = #{factory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
   <select id="seleteSubscribetotheinventoryslip" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersInVo">
     SELECT
     c.order_no as ponumber,b.CBPB08,a.in_qty,a.id,a.create_time,a.status
@@ -324,12 +343,12 @@
     <if test="cbpb08 != null and cbpb08 !=''">
      and  b.cbpb08  like concat('%', #{cbpb08}, '%')
     </if>
-<!--    <if test="startTime != null">-->
-<!--      and a.create_time &gt;= #{startTime}-->
-<!--    </if>-->
-<!--    <if test="endTime != null">-->
-<!--      and a.create_time &lt;=#{endTime}-->
-<!--    </if>-->
+<!--    &lt;if test="startTime != null"&gt;-->
+<!--      and a.create_time &amp;gt;= #{startTime}-->
+<!--    &lt;/if&gt;-->
+<!--    &lt;if test="endTime != null"&gt;-->
+<!--      and a.create_time &amp;lt;=#{endTime}-->
+<!--    &lt;/if&gt;-->
 
       <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
           and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
@@ -370,12 +389,12 @@ order by a.create_time desc
       <if test="id != null and id !=''">
           and   a.id = #{id}
       </if>
-      <!--    <if test="startTime != null">-->
-      <!--      and a.order_date &gt;= #{startTime}-->
-      <!--    </if>-->
-      <!--    <if test="endTime != null">-->
-      <!--      and a.order_date &lt;=#{endTime}-->
-      <!--    </if>-->
+      <!--    &lt;if test="startTime != null"&gt;-->
+      <!--      and a.order_date &amp;gt;= #{startTime}-->
+      <!--    &lt;/if&gt;-->
+      <!--    &lt;if test="endTime != null"&gt;-->
+      <!--      and a.order_date &amp;lt;=#{endTime}-->
+      <!--    &lt;/if&gt;-->
 
       <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
           and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

@@ -26,6 +26,8 @@ public class GsSalesOrdersIn implements Serializable {
 
     private Byte status;
 
+    private String factory;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -116,6 +118,14 @@ public class GsSalesOrdersIn implements Serializable {
         this.status = status;
     }
 
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory == null ? null : factory.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -138,7 +148,8 @@ public class GsSalesOrdersIn implements Serializable {
             && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
             && (this.getInQty() == null ? other.getInQty() == null : this.getInQty().equals(other.getInQty()))
             && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()));
     }
 
     @Override
@@ -156,6 +167,7 @@ public class GsSalesOrdersIn implements Serializable {
         result = prime * result + ((getInQty() == null) ? 0 : getInQty().hashCode());
         result = prime * result + ((getGsSalesOrders() == null) ? 0 : getGsSalesOrders().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
         return result;
     }
 
@@ -176,6 +188,7 @@ public class GsSalesOrdersIn implements Serializable {
         sb.append(", inQty=").append(inQty);
         sb.append(", gsSalesOrders=").append(gsSalesOrders);
         sb.append(", status=").append(status);
+        sb.append(", factory=").append(factory);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
