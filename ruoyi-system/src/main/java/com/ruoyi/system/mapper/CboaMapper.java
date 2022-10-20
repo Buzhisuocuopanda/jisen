@@ -44,4 +44,6 @@ public interface CboaMapper {
     void insertWithId(Cboa cboa);
 
     List<BaseSelectVo> orderlistSelect(BaseSelectDto baseSelectDto);
+
+    List<SaleOrderListVo> saleOrderListPj(SaleOrderListDto saleOrderListDto);
 }

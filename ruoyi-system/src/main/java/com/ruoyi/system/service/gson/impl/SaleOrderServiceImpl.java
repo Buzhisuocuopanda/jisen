@@ -2862,6 +2862,12 @@ Date date=new Date();
 
     }
 
+    @Override
+    public List<SaleOrderListVo> saleOrderListPj(SaleOrderListDto saleOrderListDto) {
+
+        return cboaMapper.saleOrderListPj(saleOrderListDto);
+    }
+
 
 //    @Override
 //    public GsWorkInstance createTask() {

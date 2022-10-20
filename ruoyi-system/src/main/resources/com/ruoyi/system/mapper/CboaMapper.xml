@@ -766,4 +766,57 @@ WHERE
 
 
 </select>
+
+  <select id="saleOrderListPj" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+    SELECT
+    oa.CBOA01 as id,
+    oa.CBOA07 as orderNo,
+    oa.CBOA25 as customerNo,
+    oa.CBOA02 as createTime,
+    ca.CBCA08 as customerName,
+    u.nick_name as saleUser,
+    oa.CBOA16 AS settleCurrent,
+    oa.CBOA17 as receiver,
+    oa.CBOA18 as address,
+    oa.CBOA19 as phone,
+    oa.CBOA27 as orderClass,
+    oa.CBOA24 as orderType,
+    oa.CBOA08 as orderDate,
+    oa.CBOA11 as status,
+    oa.confirm_sku_status as confirmSkuStatus
+
+
+    FROM
+    `CBOA` oa
+    LEFT JOIN CBCA ca on oa.CBOA09 =ca.CBCA01
+    LEFT JOIN sys_user u ON u.user_id =oa.CBOA10
+    where oa.CBOA06=0
+    <if test="startTime != null">
+      and oa.CBOA08 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and oa.CBOA08 &lt;=#{endTime}
+    </if>
+    <if test="status != null and status !=-1">
+      and oa.CBOA11 =#{status}
+    </if>
+    <if test="status != null and status ==-1">
+      and (oa.CBOA11 =5 or oa.CBOA11 =2)
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      and oa.CBOA07 like concat('%', #{orderNo}, '%')
+    </if>
+
+    <if test="type != null ">
+      and oa.CBOA27 =#{type}
+    </if>
+    <if test="customer != null and customer !=''">
+
+
+      and ca.CBCA08 like concat('%', #{customer}, '%')
+    </if>
+    order by oa.CBOA02 DESC
+  </select>
+
+
 </mapper>

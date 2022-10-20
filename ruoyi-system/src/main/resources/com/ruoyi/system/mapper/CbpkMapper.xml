@@ -723,8 +723,10 @@
     LEFT JOIN sys_user us on us.user_id=pk.CBPK17
     LEFT JOIN CBWA wa on wa.CBWA01=pk.CBPK10
     LEFT JOIN CBSC cbsc on cbsc.takegoodsid=pk.CBPK01
-    LEFT JOIN CBSB cbsb on cbsb.CBSB01 = CBSB01
-    AND (cbsb.CBSB11=2 or cbsb.CBSB11=4)
+    LEFT JOIN CBSB cbsb on cbsb.CBSB01 =  cbsc.CBSB01
+    AND cbsb.CBSB06=0
+    AND cbsb.CBSB11=!2
+    AND cbsb.CBSB11!=4
     where pk.CBPK06=0
 
 
@@ -750,6 +752,7 @@
     <if test="orderNo != null and orderNo != ''" >
       and pk.CBPK07 like  concat('%', #{orderNo}, '%')
     </if>
+    GROUP BY pk.CBPK07
     order by pk.CBPK02 desc
   </select>
 
