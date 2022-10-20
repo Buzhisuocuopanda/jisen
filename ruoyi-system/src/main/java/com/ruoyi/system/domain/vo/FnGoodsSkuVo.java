@@ -20,17 +20,17 @@ public class FnGoodsSkuVo {
     @Excel(name = "仓库")
     private String cbwa09;
 
-    @Excel(name = "供应商")
+//    @Excel(name = "供应商")
     private String supplieName;
 
-
+    @Excel(name = "品牌")
+    private String brand;
     @Excel(name = "大类")
     private String bClass;
 
     @Excel(name = "小类")
     private String sClass;
-    @Excel(name = "品牌")
-    private String brand;
+
 
     @Excel(name = "型号")
     private String model;

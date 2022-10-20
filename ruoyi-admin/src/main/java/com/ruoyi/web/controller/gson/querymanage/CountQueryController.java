@@ -209,6 +209,9 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysmmaryquerys:list')")
     public AjaxResult<TableDataInfo> Inventorysmmaryquerys(LedgerVo ledgerVo) {
         try {
+            if(ledgerVo.getEndTime()!=null){
+                ledgerVo.setEndTime(new Date(ledgerVo.getEndTime().getTime()+24*60*60*1000-1));
+            }
             startPage();
             List<LedgerVo> list = countQueryService.selectInventorysmmaryquerys(ledgerVo);
             return AjaxResult.success(getDataTable(list));
@@ -230,6 +233,9 @@ public class CountQueryController  extends BaseController {
     @PostMapping("/InventorysmmaryquerysExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysmmaryquerys:export')")
     public void InventorysmmaryquerysExcelList(LedgerVo ledgerVo, HttpServletResponse response) {
+        if(ledgerVo.getEndTime()!=null){
+            ledgerVo.setEndTime(new Date(ledgerVo.getEndTime().getTime()+24*60*60*1000-1));
+        }
         List<LedgerVo> list = countQueryService.selectInventorysmmaryquerys(ledgerVo);
         ExcelUtil<LedgerVo> util = new ExcelUtil<>(LedgerVo.class);
         util.exportExcel(response, list, "库存台账查询数据");
@@ -293,6 +299,9 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysumsmaryquery:list')")
     public AjaxResult<TableDataInfo> Inventorysumsmaryquery(OccuspancyVo occuspancyVo) {
         try {
+            if(occuspancyVo.getEndTime()!=null){
+                occuspancyVo.setEndTime(new Date(occuspancyVo.getEndTime().getTime()+24*60*60*1000-1));
+            }
             startPage();
             List<OccuspancyVo> list = countQueryService.selectInvntorysmsmaryquerys(occuspancyVo);
             return AjaxResult.success(getDataTable(list));
@@ -313,6 +322,9 @@ public class CountQueryController  extends BaseController {
     @PostMapping("/InventorysmssmaryquerysExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysumsmaryquery:export')")
     public void InventorysmssmaryquerysExcelList(OccuspancyVo occuspancyVo, HttpServletResponse response) {
+        if(occuspancyVo.getEndTime()!=null){
+            occuspancyVo.setEndTime(new Date(occuspancyVo.getEndTime().getTime()+24*60*60*1000-1));
+        }
         List<OccuspancyVo> list = countQueryService.selectInvntorysmsmaryquerys(occuspancyVo);
         ExcelUtil<OccuspancyVo> util = new ExcelUtil<>(OccuspancyVo.class);
         util.exportExcel(response, list, "销售订单明细数据");

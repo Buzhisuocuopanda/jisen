@@ -23,9 +23,12 @@ public class SczddVo {
     @Excel(name="已发货数量")
     private Double cbba11;
 
-    @Excel(name="已生产数量")
+//    @Excel(name="已生产数量")
     private Double cbba13;
-
+    @Excel(name="已生产数量")
+    private Double producedNum;
+    @Excel(name="缺货数量")
+    private Double stockoutNum;
   /*  @Excel(name="缺货数量")*/
     private Double cbba14;
 

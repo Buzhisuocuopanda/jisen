@@ -73,9 +73,9 @@ public class CbibVo2 {
 
     private String[] monthlys;
 
-    @Excel(name = "出库总数量百分比")
+    @Excel(name = "出库总数量占比(%)")
     private String outCountTotal100;
-    @Excel(name = "出库总价值百分比")
+    @Excel(name = "出库总价值占比(%)")
     private String outMoneyTotal100;
 
 }
