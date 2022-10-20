@@ -399,6 +399,7 @@ return;
 //            gsSalesOrdersInDto.setInQty(gsSalesOrdersInDto.getInQty());
 //            gsSalesOrdersInDto.setGsSalesOrders(gsSalesOrdersInDto.getGsSalesOrders());
             itemList.get(i).setStatus(TaskStatus.mr.getCode().byteValue());
+            itemList.get(i).setFactory(itemList.get(i).getFactory());
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -412,9 +413,8 @@ return;
 
     @Override
     public void editSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
-
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
-       // int i = Integer.parseInt(gsSalesOrdersIn.getDeleteFlag());
+        // int i = Integer.parseInt(gsSalesOrdersIn.getDeleteFlag());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
         }
@@ -422,16 +422,38 @@ return;
         if(!TaskStatus.mr.getCode().equals(gsSalesOrdersIn.getStatus().intValue())){
             throw new SwException("未审核状态才能修改");
         }
+        List<GsSalesOrdersIn> goods = gsSalesOrdersInDto.getGoods();
+
+        gsSalesOrdersInDto.getGsSalesOrders();
+
+        GsSalesOrdersInCriteria gsSalesOrdersInCriteria = new GsSalesOrdersInCriteria();
+        gsSalesOrdersInCriteria.createCriteria().andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getGsSalesOrders());
+        int i = gsSalesOrdersInMapper.deleteByExample(gsSalesOrdersInCriteria);
+
+
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
-        gsSalesOrdersIn.setUpdateTime(date);
-        gsSalesOrdersIn.setUpdateBy(userid);
-        gsSalesOrdersIn.setPonumber(gsSalesOrdersInDto.getPonumber());
-        gsSalesOrdersIn.setGoodsId(gsSalesOrdersInDto.getGoodsId());
-        gsSalesOrdersIn.setInQty(gsSalesOrdersInDto.getInQty());
-        gsSalesOrdersIn.setGsSalesOrders(gsSalesOrdersInDto.getGsSalesOrders());
-        gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
-    }
+
+
+        GsSalesOrdersIn gsSalesOrdersDetails = null;
+        for (GsSalesOrdersIn good : goods) {
+            gsSalesOrdersDetails.setCreateTime(date);
+            gsSalesOrdersDetails.setCreateBy(userid);
+            gsSalesOrdersDetails.setUpdateTime(date);
+            gsSalesOrdersDetails.setUpdateBy(userid);
+            gsSalesOrdersDetails.setDeleteFlag(String.valueOf(DeleteFlagEnum.NOT_DELETE.getCode()));
+            gsSalesOrdersDetails.setPonumber(gsSalesOrdersInDto.getPonumber());
+            gsSalesOrdersDetails.setGoodsId(gsSalesOrdersInDto.getGoodsId());
+            gsSalesOrdersDetails.setInQty(gsSalesOrdersInDto.getInQty());
+            gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersInDto.getGsSalesOrders());
+            gsSalesOrdersDetails.setStatus(TaskStatus.mr.getCode().byteValue());
+            gsSalesOrdersDetails.setFactory(gsSalesOrdersInDto.getFactory());
+
+            gsSalesOrdersInMapper.insertSelective(gsSalesOrdersDetails);
+
+        }
+
+        }
 
     @Override
     public void deleteSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
