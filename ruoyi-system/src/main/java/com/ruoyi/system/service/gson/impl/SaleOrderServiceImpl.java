@@ -573,18 +573,18 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                throw new SwException("没有查到该型号的商品:" + totalOrderExcelDto.getModel());
             }else {
                 goodsMap.put(totalOrderExcelDto.getModel(),cbpbs.get(0).getCbpb01());
-                list2.add(totalOrderExcelDto);
+//                list2.add(totalOrderExcelDto);
             }
 
 
         }
-//        if(errors.size()>0){
-//
-//            throw new SwException("没有查到该型号的商品:" + errors.toString());
-//
-//        }
+        if(errors.size()>0){
 
-            for (TotalOrderExcelDto totalOrderExcelDto : list2) {
+            throw new SwException("没有查到该型号的商品:" + errors.toString());
+
+        }
+
+            for (TotalOrderExcelDto totalOrderExcelDto : list) {
 
 //            if (totalOrderExcelDto.getPriority()==null) {
 //                throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());

@@ -67,4 +67,7 @@ public class TakeOrderGoodsVo {
     //销售订单明细id
     private Integer cbob01;
 
+
+    private Integer takegoodsid;
+
 }

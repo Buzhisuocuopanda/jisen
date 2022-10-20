@@ -225,7 +225,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //2、修改数量
                 if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
-                    if (Integer.valueOf(orderDistributionDo.getPriority()) >Integer.valueOf( orderDistributionDo.getOldPriority())) {
+                    if (Integer.valueOf(orderDistributionDo.getPriority()) <Integer.valueOf( orderDistributionDo.getOldPriority())) {
                         getUnDistributionGoods(cbba, ungoods);
                         if (!cbba.getCbba13().equals(cbba.getCbba09() - cbba.getCbba11())) {
                             getOrderPriority(cbba, orderDistributionDo.getOldPriority());

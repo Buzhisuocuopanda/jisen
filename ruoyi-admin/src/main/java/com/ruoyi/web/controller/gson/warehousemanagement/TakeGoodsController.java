@@ -83,12 +83,38 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderListDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+
+    /**
+     * 提货单列表
+     * @return
+     */
+
+    @ApiOperation(
+            value ="出库使用基于提货单创建列表",
+            notes = "出库使用基于提货单创建列表"
+    )
+    @GetMapping("/takeOrderListCk")
+    @PreAuthorize("@ss.hasPermi('system:whmanagement:list')")
+    public AjaxResult<TableDataInfo> takeOrderListCk( TakeGoodsOrderListDto takeGoodsOrderListDto){
+        try {
+            startPage();
+            List<TakeGoodsOrderListVo> list= takeGoodsService.takeOrderListCk(takeGoodsOrderListDto);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 添加提货单
@@ -109,7 +135,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【添加提货单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【添加提货单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderAddDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -136,13 +162,37 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(id), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
+    /**
+     * 基于提货单详情创建销售出库单
+     * @return
+     */
+    @ApiOperation(
+            value ="基于提货单详情创建销售出库单",
+            notes = "基于提货单详情创建销售出库单"
+    )
+    @GetMapping("/takeOrderDetailIds")
+    @ApiParam("提货单id")
+//    @PreAuthorize("@ss.hasPermi('system:whmanagement:detail')")
+    public AjaxResult<TakeGoodsOrderDetailVo> takeOrderDetailIds(@RequestParam List<Integer> ids){
+        try {
 
+            TakeGoodsOrderDetailVo res= takeGoodsService.takeOrderDetailIds(ids);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(ids), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 根据销售订单id查出提货单信息
      */
@@ -160,7 +210,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【根据销售订单id查出提货单信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【根据销售订单id查出提货单信息】接口出现异常,参数${}$,异常${}$", JSON.toJSON(saleOrderId), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -189,7 +239,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单编辑】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单编辑】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderAddDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -215,7 +265,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单删除】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单删除】接口出现异常,参数${}$,异常${}$", JSON.toJSON(id), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -240,7 +290,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【提货单状态更改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【提货单状态更改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(auditTakeOrderDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -266,7 +316,7 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【更改提货建议表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+            log.error("【更改提货建议表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(changeSuggestDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
