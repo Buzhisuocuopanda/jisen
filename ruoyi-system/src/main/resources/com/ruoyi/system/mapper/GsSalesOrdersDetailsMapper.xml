@@ -13,6 +13,7 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="gs_Sales_orders" jdbcType="VARCHAR" property="gsSalesOrders" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, goods_id, qty, price, 
-    remark, gs_Sales_orders
+    id, create_time, update_time, create_by, update_by, delete_flag, goods_id, qty, price,
+    remark, gs_Sales_orders, factory
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetailsCriteria" resultMap="BaseResultMap">
     select
@@ -91,7 +92,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_Sales_orders_details`
     where id = #{id,jdbcType=INTEGER}
@@ -107,14 +108,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
-    insert into `gs_Sales_orders_details` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      goods_id, qty, price, 
-      remark, gs_Sales_orders)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR}, 
-      #{goodsId,jdbcType=INTEGER}, #{qty,jdbcType=DOUBLE}, #{price,jdbcType=DECIMAL}, 
-      #{remark,jdbcType=VARCHAR}, #{gsSalesOrders,jdbcType=VARCHAR})
+    insert into `gs_Sales_orders_details` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      goods_id, qty, price,
+      remark, gs_Sales_orders, factory
+      )
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR},
+      #{goodsId,jdbcType=INTEGER}, #{qty,jdbcType=DOUBLE}, #{price,jdbcType=DECIMAL},
+      #{remark,jdbcType=VARCHAR}, #{gsSalesOrders,jdbcType=VARCHAR}, #{factory,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
     insert into `gs_Sales_orders_details`
@@ -152,6 +155,9 @@
       <if test="gsSalesOrders != null">
         gs_Sales_orders,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -187,6 +193,9 @@
       <if test="gsSalesOrders != null">
         #{gsSalesOrders,jdbcType=VARCHAR},
       </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetailsCriteria" resultType="java.lang.Long">
@@ -195,6 +204,123 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `gs_Sales_orders_details`
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteFlag != null">
+        delete_flag = #{record.deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.qty != null">
+        qty = #{record.qty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gsSalesOrders != null">
+        gs_Sales_orders = #{record.gsSalesOrders,jdbcType=VARCHAR},
+      </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `gs_Sales_orders_details`
+    set id = #{record.id,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      delete_flag = #{record.deleteFlag,jdbcType=VARCHAR},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      qty = #{record.qty,jdbcType=DOUBLE},
+      price = #{record.price,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      gs_Sales_orders = #{record.gsSalesOrders,jdbcType=VARCHAR},
+      factory = #{record.factory,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
+    update `gs_Sales_orders_details`
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gsSalesOrders != null">
+        gs_Sales_orders = #{gsSalesOrders,jdbcType=VARCHAR},
+      </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
+    update `gs_Sales_orders_details`
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      delete_flag = #{deleteFlag,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      qty = #{qty,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      gs_Sales_orders = #{gsSalesOrders,jdbcType=VARCHAR},
+      factory = #{factory,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 
   <select id="saleOrderListCountquery" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
     SELECT
@@ -264,112 +390,5 @@ where
     order by ss.create_time desc
   </select>
 
-  <update id="updateByExampleSelective" parameterType="map">
-    update `gs_Sales_orders_details`
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.createBy != null">
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.updateBy != null">
-        update_by = #{record.updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.deleteFlag != null">
-        delete_flag = #{record.deleteFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="record.goodsId != null">
-        goods_id = #{record.goodsId,jdbcType=INTEGER},
-      </if>
-      <if test="record.qty != null">
-        qty = #{record.qty,jdbcType=DOUBLE},
-      </if>
-      <if test="record.price != null">
-        price = #{record.price,jdbcType=DECIMAL},
-      </if>
-      <if test="record.remark != null">
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gsSalesOrders != null">
-        gs_Sales_orders = #{record.gsSalesOrders,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update `gs_Sales_orders_details`
-    set id = #{record.id,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
-      update_by = #{record.updateBy,jdbcType=VARCHAR},
-      delete_flag = #{record.deleteFlag,jdbcType=VARCHAR},
-      goods_id = #{record.goodsId,jdbcType=INTEGER},
-      qty = #{record.qty,jdbcType=DOUBLE},
-      price = #{record.price,jdbcType=DECIMAL},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      gs_Sales_orders = #{record.gsSalesOrders,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
-    update `gs_Sales_orders_details`
-    <set>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="deleteFlag != null">
-        delete_flag = #{deleteFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=INTEGER},
-      </if>
-      <if test="qty != null">
-        qty = #{qty,jdbcType=DOUBLE},
-      </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="gsSalesOrders != null">
-        gs_Sales_orders = #{gsSalesOrders,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.GsSalesOrdersDetails">
-    update `gs_Sales_orders_details`
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      delete_flag = #{deleteFlag,jdbcType=VARCHAR},
-      goods_id = #{goodsId,jdbcType=INTEGER},
-      qty = #{qty,jdbcType=DOUBLE},
-      price = #{price,jdbcType=DECIMAL},
-      remark = #{remark,jdbcType=VARCHAR},
-      gs_Sales_orders = #{gsSalesOrders,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

@@ -10,7 +10,7 @@ public class GsSalesOrderssVo {
     private Integer id;
 
 
-
+    private String  factory;
     private String orderNo;
 
     private Date orderDate;

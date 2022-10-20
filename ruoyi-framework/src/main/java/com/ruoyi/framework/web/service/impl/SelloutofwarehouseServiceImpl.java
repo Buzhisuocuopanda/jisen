@@ -341,6 +341,7 @@ if(cbsbDo.getCbsb20()==null){
 
 //        List<Cbob> cbobs = cbobMapper.selectByExample(example2);
 //        String cbob18 = cbobs.get(0).getCbob18();
+        //在提货单id在明细表，for
         Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbsb1.getCbsb20());
 
                 CboaCriteria afd = new CboaCriteria();

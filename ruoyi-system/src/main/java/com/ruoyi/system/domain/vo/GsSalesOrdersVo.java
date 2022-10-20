@@ -26,7 +26,7 @@ public class GsSalesOrdersVo  implements Serializable {
     private Long updateBy;
 
     private Byte deleteFlag;
-
+    private String  factory;
     private String orderNo;
 
     private String supplier;

@@ -348,9 +348,9 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
         for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
             gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
-            if(gsPurchaseOrderDetail1.getId()==null){
+          /*  if(gsPurchaseOrderDetail1.getId()==null){
                 throw new SwException("采购订单明细不能为空");
-            }
+            }*/
          /*   if(!uio.contains(gsPurchaseOrderDetail1.getId())){
                 throw new SwException("该商品不在采购订单明细中");
             }*/

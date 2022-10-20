@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 public class GsSalesOrdersDto {
+    private String factory;
 
     private Integer id;
 

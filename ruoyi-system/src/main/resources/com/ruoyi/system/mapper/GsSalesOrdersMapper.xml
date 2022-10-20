@@ -18,6 +18,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="statuss" jdbcType="INTEGER" property="statuss" />
     <result column="PONumber" jdbcType="VARCHAR" property="ponumber" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id,
-    saler_id, customer_id, order_date, `status`, wh_id, user_id, statuss, PONumber
+    saler_id, customer_id, order_date, `status`, wh_id, user_id, statuss, PONumber, factory
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersCriteria" resultMap="BaseResultMap">
     select
@@ -117,13 +118,13 @@
       order_no, supplier_id, saler_id,
       customer_id, order_date, `status`,
       wh_id, user_id, statuss,
-      PONumber)
+      PONumber, factory)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
       #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
       #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
       #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{statuss,jdbcType=INTEGER},
-      #{ponumber,jdbcType=VARCHAR})
+      #{ponumber,jdbcType=VARCHAR}, #{factory,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrders">
     insert into `gs_ Sales_orders`
@@ -176,6 +177,9 @@
       <if test="ponumber != null">
         PONumber,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -225,6 +229,9 @@
       </if>
       <if test="ponumber != null">
         #{ponumber,jdbcType=VARCHAR},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -285,6 +292,9 @@
       <if test="record.ponumber != null">
         PONumber = #{record.ponumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +317,8 @@
       wh_id = #{record.whId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       statuss = #{record.statuss,jdbcType=INTEGER},
-      PONumber = #{record.ponumber,jdbcType=VARCHAR}
+      PONumber = #{record.ponumber,jdbcType=VARCHAR},
+      factory = #{record.factory,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +371,9 @@
       <if test="ponumber != null">
         PONumber = #{ponumber,jdbcType=VARCHAR},
       </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -379,9 +393,12 @@
       wh_id = #{whId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
       statuss = #{statuss,jdbcType=INTEGER},
-      PONumber = #{ponumber,jdbcType=VARCHAR}
+      PONumber = #{ponumber,jdbcType=VARCHAR},
+      factory = #{factory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 
 
 
@@ -411,6 +428,7 @@
       so.status AS status,
       so.statuss AS statuss,
       so.PONumber AS ponumber,
+      so.factory AS factory,
 
     so.*
     FROM
@@ -446,15 +464,15 @@ WHERE so.delete_flag=0
       and     so.statuss = #{statuss}
     </if>
 
-<!--    &amp;lt;if test="startTime != null"&amp;gt;-->
-<!--      and so.order_date &amp;amp;gt;= #{startTime}-->
-<!--    &amp;lt;/if&amp;gt;-->
-<!--    &amp;lt;if test="endTime != null"&amp;gt;-->
-<!--      and so.order_date &amp;amp;lt;=#{endTime}-->
-<!--    &amp;lt;/if&amp;gt;-->
-<!--    &amp;lt;if test="endTime != null"&amp;gt;-->
-<!--      and so.order_date &amp;amp;lt;=#{endTime}-->
-<!--    &amp;lt;/if&amp;gt;-->
+<!--    &amp;amp;lt;if test="startTime != null"&amp;amp;gt;-->
+<!--      and so.order_date &amp;amp;amp;gt;= #{startTime}-->
+<!--    &amp;amp;lt;/if&amp;amp;gt;-->
+<!--    &amp;amp;lt;if test="endTime != null"&amp;amp;gt;-->
+<!--      and so.order_date &amp;amp;amp;lt;=#{endTime}-->
+<!--    &amp;amp;lt;/if&amp;amp;gt;-->
+<!--    &amp;amp;lt;if test="endTime != null"&amp;amp;gt;-->
+<!--      and so.order_date &amp;amp;amp;lt;=#{endTime}-->
+<!--    &amp;amp;lt;/if&amp;amp;gt;-->
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(so.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>
@@ -511,15 +529,15 @@ order by so.order_date desc
     <if test="endTime != null">
       and so.create_time &lt;=#{endTime}
     </if>
-    <!--&amp;lt;if test="orderNo != null and orderNo !=''"&amp;gt;
+    <!--&amp;amp;lt;if test="orderNo != null and orderNo !=''"&amp;amp;gt;
       and  so.order_no like concat('%', #{orderNo}, '%')
-    &amp;lt;/if&amp;gt;
-    &amp;lt;if test="wh != null and wh !=''"&amp;gt;
+    &amp;amp;lt;/if&amp;amp;gt;
+    &amp;amp;lt;if test="wh != null and wh !=''"&amp;amp;gt;
       and  d.cbwa09 like concat('%', #{wh}, '%')
-    &amp;lt;/if&amp;gt;
-    &amp;lt;if test="supplier != null and supplier !=''"&amp;gt;
+    &amp;amp;lt;/if&amp;amp;gt;
+    &amp;amp;lt;if test="supplier != null and supplier !=''"&amp;amp;gt;
       and  a.CBSA08 like concat('%', #{supplier}, '%')
-    &amp;lt;/if&amp;gt;-->
+    &amp;amp;lt;/if&amp;amp;gt;-->
     order by so.create_time desc
   </select>
 
@@ -543,7 +561,8 @@ order by so.order_date desc
       so.supplier_id as supplierId,
         so.saler_id as salerId,
         so.customer_id as customerId,
-        so.PONumber as PONumber
+        so.PONumber as PONumber,
+        ss.factory as factory
 
 
     FROM
@@ -599,7 +618,8 @@ order by so.order_date desc
         f.qty AS qtys,
         g.CBPB08 AS cbpb08,
         h.CALA08 AS cala08,
-        g.CBPB12 AS cbpb12
+        g.CBPB12 AS cbpb12,
+        ss.factory AS factory
       FROM
         `gs_ Sales_orders` AS so
 
@@ -673,7 +693,8 @@ where
    pb.CBPB12 as cbpb12,
    ca.CALA08 as cala08,
    gs.wh_id as whId,
-   wa.CBWA09 as wh
+   wa.CBWA09 as wh,
+   a.factory as factory
    FROM
    `gs_ Sales_orders_change` a
    LEFT JOIN
@@ -780,15 +801,15 @@ so.*
     </if>
 
 
-    <!--    &amp;lt;if test="startTime != null"&amp;gt;-->
-    <!--      and so.order_date &amp;amp;gt;= #{startTime}-->
-    <!--    &amp;lt;/if&amp;gt;-->
-    <!--    &amp;lt;if test="endTime != null"&amp;gt;-->
-    <!--      and so.order_date &amp;amp;lt;=#{endTime}-->
-    <!--    &amp;lt;/if&amp;gt;-->
-    <!--    &amp;lt;if test="endTime != null"&amp;gt;-->
-    <!--      and so.order_date &amp;amp;lt;=#{endTime}-->
-    <!--    &amp;lt;/if&amp;gt;-->
+    <!--    &amp;amp;lt;if test="startTime != null"&amp;amp;gt;-->
+    <!--      and so.order_date &amp;amp;amp;gt;= #{startTime}-->
+    <!--    &amp;amp;lt;/if&amp;amp;gt;-->
+    <!--    &amp;amp;lt;if test="endTime != null"&amp;amp;gt;-->
+    <!--      and so.order_date &amp;amp;amp;lt;=#{endTime}-->
+    <!--    &amp;amp;lt;/if&amp;amp;gt;-->
+    <!--    &amp;amp;lt;if test="endTime != null"&amp;amp;gt;-->
+    <!--      and so.order_date &amp;amp;amp;lt;=#{endTime}-->
+    <!--    &amp;amp;lt;/if&amp;amp;gt;-->
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
       and date_format(so.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>

@@ -4,7 +4,6 @@ import com.ruoyi.system.domain.GsSalesOrdersDetails;
 import com.ruoyi.system.domain.GsSalesOrdersDetailsCriteria;
 import java.util.List;
 
-import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto;
 import com.ruoyi.system.domain.dto.GsSalesOrdersDetailsDto2;
 import com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo;
 import org.apache.ibatis.annotations.Param;

@@ -110,6 +110,7 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
         gsSalesOrders.setWhId(gsSalesOrdersDto.getWhId());
         gsSalesOrders.setUserId(userid.intValue());
         gsSalesOrders.setPonumber(gsSalesOrdersDto.getPonumber());
+        gsSalesOrders.setFactory(gsSalesOrdersDto.getFactory());
         gsSalesOrdersMapper.insertWithId(gsSalesOrders);
 
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
@@ -125,6 +126,7 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
             gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders.getId()));
+            gsSalesOrdersDetails.setFactory(good.getFactory());
             gsSalesOrdersDetailsMapper.insert(gsSalesOrdersDetails);
         }
 
@@ -166,6 +168,8 @@ return;
         gsSalesOrders.setOrderDate(date);
         gsSalesOrders.setWhId(gsSalesOrdersDto.getWhId());
         gsSalesOrders.setUserId(userid.intValue());
+        gsSalesOrders.setPonumber(gsSalesOrdersDto.getPonumber());
+        gsSalesOrders.setFactory(gsSalesOrdersDto.getFactory());
 
         gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
 
@@ -204,6 +208,7 @@ return;
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
             gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersDto.getId().toString());
+            gsSalesOrdersDetails.setFactory(good.getFactory());
             /*GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria1 = new GsSalesOrdersDetailsCriteria();
             gsSalesOrdersDetailsCriteria1.createCriteria()
                     .andGsSalesOrdersEqualTo(gsSalesOrdersDto.getId().toString())
@@ -1124,6 +1129,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         GsSalesOrdersChange cbpd = null;
         for(GsSalesOrdersChange good:goods){
             cbpd = new GsSalesOrdersChange();
+
             cbpd.setCreateTime(date);
             cbpd.setCreateBy(userid);
             cbpd.setUpdateTime(date);
@@ -1132,6 +1138,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpd.setGoodsId(good.getGoodsId());
             cbpd.setQty(good.getQty());
             cbpd.setChangeid(id);
+            cbpd.setFactory(good.getFactory());
 
             gsSalesOrdersChangeMapper.insertSelective(cbpd);
         }
@@ -1142,8 +1149,15 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
     @Override
     public void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto) {
+        GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
 
-            List<GsSalesOrdersChange> goods = cbpdDto.getGoods();
+        if(gsSalesChange==null){
+            throw new SwException("无此修改信息");
+        }
+        if(gsSalesChange.getGsid()==null){
+            throw new SwException("预订单id为空");
+        }
+        List<GsSalesOrdersChange> goods = cbpdDto.getGoods();
             if(goods==null||goods.size()==0){
                 throw new SwException("请至少添加一件货物");
             }
@@ -1161,20 +1175,42 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
             gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
 
+        GsSalesOrdersChangeCriteria gsSalesOrdersChangeCriteria = new GsSalesOrdersChangeCriteria();
+        gsSalesOrdersChangeCriteria.createCriteria().andChangeidEqualTo(cbpdDto.getId());
+        int i = gsSalesOrdersChangeMapper.deleteByExample(gsSalesOrdersChangeCriteria);
 
-            GsSalesOrdersChange cbpd = null;
-            for(GsSalesOrdersChange good:goods){
+    /*    GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
+        gsSalesOrdersDetailsCriteria.createCriteria().andGsSalesOrdersEqualTo(String.valueOf(gsSalesChange.getGsid()));
+        int i1 = gsSalesOrdersDetailsMapper.deleteByExample(gsSalesOrdersDetailsCriteria);*/
+
+        GsSalesOrdersChange cbpd = null;
+        GsSalesOrdersDetails gsSalesOrdersDetails = null;
+
+        for(GsSalesOrdersChange good:goods){
                 cbpd = new GsSalesOrdersChange();
-
+                cbpd.setCreateTime(date);
+                cbpd.setCreateBy(userid);
                 cbpd.setUpdateTime(date);
                 cbpd.setUpdateBy(userid);
                 cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                 cbpd.setGoodsId(good.getGoodsId());
                 cbpd.setQty(good.getQty());
+                cbpd.setChangeid(cbpdDto.getId());
+                cbpd.setFactory(good.getFactory());
+                cbpd.setChangeid(cbpdDto.getId());
+            cbpd.setFactory(good.getFactory());
 
-                GsSalesOrdersChangeCriteria gsSalesOrdersChange = new GsSalesOrdersChangeCriteria();
-                gsSalesOrdersChange.createCriteria().andChangeidEqualTo(cbpdDto.getId());
-                gsSalesOrdersChangeMapper.updateByExampleSelective(cbpd,gsSalesOrdersChange);
+                gsSalesOrdersChangeMapper.insertSelective(cbpd);
+
+            gsSalesOrdersDetails.setUpdateTime(date);
+            gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+            gsSalesOrdersDetails.setQty(good.getQty());
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesChange.getGsid()))
+                    .andGoodsIdEqualTo(good.getGoodsId());
+
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,gsSalesOrdersDetailsCriteria);
             }
     }
 

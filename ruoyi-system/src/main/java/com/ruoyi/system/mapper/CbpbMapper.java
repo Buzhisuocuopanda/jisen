@@ -40,4 +40,6 @@ public interface CbpbMapper {
     int insertCBPB(Cbpb cbpb);
 
     List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
+
+    Cbpb selectByPrimaryKeyForUpdate(Integer goodsId);
 }

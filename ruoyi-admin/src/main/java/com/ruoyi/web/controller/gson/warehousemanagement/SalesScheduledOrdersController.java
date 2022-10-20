@@ -664,7 +664,7 @@ public class SalesScheduledOrdersController extends BaseController {
     }
 
     /**
-     * 销售预订单详情
+     * 销售预订单变更单详情
      *
      * @param gsSalesOrdersDetailsVo
      * @return
@@ -997,7 +997,7 @@ public class SalesScheduledOrdersController extends BaseController {
 
 
     /**
-     * 查询预订单详情
+     * 查询预订单变更单详情
      *
      * @param fgkVo
      * @return
