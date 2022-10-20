@@ -1227,11 +1227,13 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         Map<Integer, String> brandMap = baseCheckService.brandMap();
 
         for (GsOutStockAdivceVo gsOutStockAdivceVo : list) {
-
-            if (brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())) != null) {
+            if(gsOutStockAdivceVo!=null&&gsOutStockAdivceVo.getBrand()!=null){
+                if (brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())) != null) {
 //                gsOutStockAdivceVo.setGoodsMsg((brandMap.get(gsOutStockAdivceVo.getBrand()) + "-" + gsOutStockAdivceVo.getModel() + "-" + gsOutStockAdivceVo.getDescription()));
-                gsOutStockAdivceVo.setBrand(brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())));
+                    gsOutStockAdivceVo.setBrand(brandMap.get(Integer.parseInt(gsOutStockAdivceVo.getBrand())));
+                }
             }
+
         }
 
         return list;

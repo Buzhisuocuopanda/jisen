@@ -14,6 +14,8 @@ import com.ruoyi.system.service.gson.FinanceQueryService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -272,7 +274,31 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     @Override
     public List<CbibVo2> monthlySales(CbibVo2 cbibVo) {
         List<CbibVo2> cbibVo2s = cbibMapper.monthlySales(cbibVo);
-        List<CbibVo2> cbibVo2s2 = cbibMapper.monthlySalesTotal(cbibVo);
+        List<CbibVo2> cbibVo2List = cbibMapper.monthlySalesTotal2();
+        // 设置转换格式
+        DecimalFormat df = new DecimalFormat("0.00%");
+        Map<String,CbibVo2> map = new HashMap<>();
+        for(CbibVo2 cbibVo2:cbibVo2List){
+            map.put(cbibVo2.getYearAndMonth(),cbibVo2);
+        }
+        for(CbibVo2 cbibVo2:cbibVo2s){
+            if(cbibVo2.getCbib19()!=null){
+                CbibVo2 cbibVo22 = map.get(cbibVo2.getYearAndMonth());
+                if(cbibVo22!=null){
+                    // 计算商
+                    double quotient = cbibVo2.getOutCount()/cbibVo22.getOutCountTotal();
+                    double quotient2 = cbibVo2.getOutMoney()/cbibVo22.getOutMoneyTotal();
+                    // 转换格式
+                    String result1 = df.format(quotient);
+                    String result2 =df.format(quotient2);
+                    cbibVo2.setOutCountTotal100(result1);
+                    cbibVo2.setOutMoneyTotal100(result2);
+                }
+            }
+        }
+        /*List<CbibVo2> cbibVo2s2 = cbibMapper.monthlySalesTotal(cbibVo);
+        // 设置转换格式
+        DecimalFormat df = new DecimalFormat("0.00%");
         Map<Integer,CbibVo2> map = new HashMap<>();
         for(CbibVo2 cbibVo2:cbibVo2s2){
             map.put(cbibVo2.getCbib19(),cbibVo2);
@@ -281,13 +307,17 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             if(cbibVo2.getCbib19()!=null){
                 CbibVo2 cbibVo22 = map.get(cbibVo2.getCbib19());
                 if(cbibVo22!=null){
-                    cbibVo2.setOutCountTotal(cbibVo22.getOutCountTotal());
-                    cbibVo2.setOutMoneyTotal(cbibVo22.getOutMoneyTotal());
+                    // 计算商
+                    double quotient = cbibVo2.getOutCount()/cbibVo22.getOutCountTotal();
+                    double quotient2 = cbibVo2.getOutMoney()/cbibVo22.getOutMoneyTotal();
+                    // 转换格式
+                    String result1 = df.format(quotient);
+                    String result2 =df.format(quotient2);
+                    cbibVo2.setOutCountTotal100(result1);
+                    cbibVo2.setOutMoneyTotal100(result2);
                 }
             }
-
-
-        }
+        }*/
 
         return cbibVo2s;
     }

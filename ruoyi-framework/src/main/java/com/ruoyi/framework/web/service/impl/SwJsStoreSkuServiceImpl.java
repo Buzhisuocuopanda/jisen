@@ -65,6 +65,7 @@ private CbpcMapper cbpcMapper;
         cbwa.setCbwa13(cbwaDto.getCbwa13());
         cbwa.setCbwa14(cbwaDto.getCbwa14());
         cbwa.setCbwa15(cbwaDto.getCbwa15());
+        cbwa.setAllocationFlag(cbwaDto.getAllocationFlag());
         return cbwaMapper.insertSelective(cbwa);
     }
 
@@ -106,6 +107,7 @@ private CbpcMapper cbpcMapper;
         cbwa.setCbwa13(cbwaDto.getCbwa13());
         cbwa.setCbwa14(cbwaDto.getCbwa14());
         cbwa.setCbwa15(cbwaDto.getCbwa15());
+        cbwa.setAllocationFlag(cbwaDto.getAllocationFlag());
         CbwaCriteria example1= new CbwaCriteria();
         example1.createCriteria().andCbwa01EqualTo(cbwaDto.getCbwa01())
                 .andCbwa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

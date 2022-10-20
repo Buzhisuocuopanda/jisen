@@ -49,5 +49,6 @@ public class OccupancyVo {
 //    @ApiModelProperty("商品id")
     private Integer cbpb01;
     private Integer cboa01;
+    private Integer cbob01;
 
 }

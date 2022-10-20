@@ -7,16 +7,11 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.OrderTypeEnum;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CheckSkuDo;
-import com.ruoyi.system.domain.GsGoodsUse;
-import com.ruoyi.system.domain.GsGoodsUseCriteria;
-import com.ruoyi.system.domain.GsSalesOrdersDetails;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
-import com.ruoyi.system.mapper.CbifMapper;
-import com.ruoyi.system.mapper.GsGoodsUseMapper;
-import com.ruoyi.system.mapper.GsSalesOrdersDetailsMapper;
-import com.ruoyi.system.mapper.GsSalesOrdersMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
@@ -45,6 +40,8 @@ public class CountQueryServiceImpl implements CountQueryService {
     private OrderDistributionService orderDistributionService;
     @Resource
     private SaleOrderService saleOrderService;
+    @Resource
+    private CbodMapper cbodMapper;
 
     @Override
     @DataScope(deptAlias = "u")
@@ -261,7 +258,20 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) {
-        return cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+        List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+        for (OccupancyVo occupancyVo2:occupancyVos) {
+            CbodCriteria cbodCriteria = new CbodCriteria();
+            cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
+            cbodCriteria.setOrderByClause("CBOD03 asc");
+            List<Cbod> cbodList = cbodMapper.selectByExample(cbodCriteria);
+            if(cbodList!=null&&cbodList.size()>0){
+                if(cbodList.get(0).getBefQty()!=null){
+                    occupancyVo2.setCbob15(cbodList.get(0).getBefQty()-occupancyVo2.getCbob09());
+                }
+
+            }
+        }
+        return occupancyVos;
     }
 
     @Override

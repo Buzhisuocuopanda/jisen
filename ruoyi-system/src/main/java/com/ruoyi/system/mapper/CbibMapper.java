@@ -56,8 +56,15 @@ public interface CbibMapper {
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/10/18 16:07
-     *月度销售数据查询总出库
+     *月度销售数据查询总出库(弃用)
      */
     List<CbibVo2> monthlySalesTotal(CbibVo2 cbibVo);
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/18 16:07
+     *月度销售数据查询总出库
+     */
+    List<CbibVo2> monthlySalesTotal2();
 
 }

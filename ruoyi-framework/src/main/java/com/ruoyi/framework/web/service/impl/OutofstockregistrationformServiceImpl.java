@@ -207,6 +207,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         Cbca cbca = cbcaMapper.selectByPrimaryKey(cboe.getCboe09());
         res.setCboe01(cboe.getCboe01());
         res.setCboe07(cboe.getCboe07());
+        res.setCboe21(cboe.getCboe21());
         Date cboe08 = cboe.getCboe08();
 
 
@@ -247,12 +248,16 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         for(Cbof cbof : cbofs){
             good = new SaleOderDetailGoods();
             good.setId(cbof.getCbof01());
+            good.setMoney(cbof.getMoney());
+            good.setThisprice(cbof.getThisprice());
+            good.setStandardprice(cbof.getStandardprice());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbof.getCbof08());
             if (cbpb != null) {
                 good.setGoodsId(cbpb.getCbpb01());
                 good.setBrand(brandMap.get(cbpb.getCbpb10()));
                 good.setDescription(cbpb.getCbpb08());
                 good.setModel(cbpb.getCbpb12());
+
 
             }
             good.setRemark(cbof.getCbof13());

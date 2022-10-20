@@ -14,7 +14,11 @@ public class SaleOderDetailGoods {
 
     private Integer id;
     private Integer goodsId;
+    private Double standardprice;
 
+    private Double thisprice;
+
+    private Double money;
     //品牌
     @ApiModelProperty("品牌")
 

@@ -125,6 +125,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
         Cbpa cbpa = BeanCopyUtils.coypToClass(cbpaDo, Cbpa.class, null);
         Date date = new Date();
+        cbpa.setCbpa01(cbpaDo.getCbpa01());
         cbpa.setCbpa03(date);
         cbpa.setCbpa05(Math.toIntExact(userid));
         cbpa.setCbpa07(cbpaDo.getCbpa07());
@@ -134,7 +135,10 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
 
         cbpa.setCbpa12(cbpaDo.getCbpa12());
         CbpaCriteria example3=new CbpaCriteria();
-       //判断是否在用
+        example3.createCriteria().
+                andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpa01EqualTo(cbpaDo.getCbpa01());
+     /*  //判断是否在用
         example3.createCriteria().
                 andCbpa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                 .andCbpa01EqualTo(cbpaDo.getCbpa01());
@@ -147,7 +151,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example4);
         if(cbpbs.size()>0){
             throw new SwException("商品编号已在用");
-        }
+        }*/
 
 
         return cbpaMapper.updateByExampleSelective(cbpa,example3);
