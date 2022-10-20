@@ -98,16 +98,16 @@ public class CountQueryServiceImpl implements CountQueryService {
 
 
     @Override
-    public TableDataInfo saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo) {
-       /* List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
+    public List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
+        List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo: gsSalesOrdersDetailsVos) {
             if(gsSalesOrdersDetailsVo.getCbpb10()!=null){
                 gsSalesOrdersDetailsVo.setCbpb10(brandMap.get(Integer.parseInt(gsSalesOrdersDetailsVo.getCbpb10())));
             }
         }
-        return null;*/
-        List<GsSalesOrdersVo> gsSalesOrdersVos = gsSalesOrdersMapper.saleOrdersListCountQuery(gsSalesOrdersVo);
+        return gsSalesOrdersDetailsVos;
+        /*List<GsSalesOrdersVo> gsSalesOrdersVos = gsSalesOrdersMapper.saleOrdersListCountQuery(gsSalesOrdersVo);
         TableDataInfo t = getDataTable(gsSalesOrdersVos);
         List<GsSalesOrdersDetailsVo> result = new ArrayList<>();
 
@@ -165,7 +165,7 @@ public class CountQueryServiceImpl implements CountQueryService {
         }
         TableDataInfo t2 = getDataTable(result);
         t2.setTotal(t.getTotal());
-        return t2;
+        return t2;*/
     }
 
     @Override

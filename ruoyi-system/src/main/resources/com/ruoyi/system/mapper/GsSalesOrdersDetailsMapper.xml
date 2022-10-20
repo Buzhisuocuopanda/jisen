@@ -366,7 +366,8 @@ where
     <if test="endTime != null">
       and ss.create_time &lt;=#{endTime}
     </if>
-    group by ss.gs_Sales_orders
+    order by ss.create_time desc
+   /* group by ss.gs_Sales_orders*/
 
   </select>
 
