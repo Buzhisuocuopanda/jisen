@@ -41,5 +41,5 @@ public class CboeDo {
 
     private Integer saleUserId;
 
-
+    private Integer cboe22;
 }

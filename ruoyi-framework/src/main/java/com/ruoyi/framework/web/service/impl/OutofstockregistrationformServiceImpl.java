@@ -208,6 +208,7 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         res.setCboe01(cboe.getCboe01());
         res.setCboe07(cboe.getCboe07());
         res.setCboe21(cboe.getCboe21());
+        res.setCboe22(cboe.getCboe22());
         Date cboe08 = cboe.getCboe08();
 
 
