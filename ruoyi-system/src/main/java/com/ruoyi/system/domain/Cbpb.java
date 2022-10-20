@@ -1,43 +1,40 @@
 package com.ruoyi.system.domain;
 
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
 
-public class Cbpb extends BaseEntity implements Serializable {
-    @Excel(name = "主键id")
+public class Cbpb implements Serializable {
     private Integer cbpb01;
-    @Excel(name = "创建时间")
+
     private Date cbpb02;
-    @Excel(name = "修改时间")
+
     private Date cbpb03;
-    @Excel(name = "创建人id")
+
     private Integer cbpb04;
-    @Excel(name = "修改人id")
+
     private Integer cbpb05;
-    @Excel(name = "是否删除")
-    private Integer cbpb06;
-    @Excel(name = "状态")
+
+    private Byte cbpb06;
+
     private String cbpb07;
-    @Excel(name = "商品分类")
+
     private String cbpb08;
 
     private String cbpb09;
-    @Excel(name = "是否启用")
+
     private Integer cbpb10;
 
     private Integer cbpb11;
-    @Excel(name = "型号")
 
     private String cbpb12;
 
     private Double cbpb13;
 
     private Integer cbpb14;
-    @Excel(name = "upc")
+
     private String cbpb15;
+
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
@@ -81,11 +78,11 @@ public class Cbpb extends BaseEntity implements Serializable {
         this.cbpb05 = cbpb05;
     }
 
-    public Integer getCbpb06() {
+    public Byte getCbpb06() {
         return cbpb06;
     }
 
-    public void setCbpb06(Integer cbpb06) {
+    public void setCbpb06(Byte cbpb06) {
         this.cbpb06 = cbpb06;
     }
 
@@ -161,6 +158,14 @@ public class Cbpb extends BaseEntity implements Serializable {
         this.cbpb15 = cbpb15 == null ? null : cbpb15.trim();
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -187,7 +192,8 @@ public class Cbpb extends BaseEntity implements Serializable {
             && (this.getCbpb12() == null ? other.getCbpb12() == null : this.getCbpb12().equals(other.getCbpb12()))
             && (this.getCbpb13() == null ? other.getCbpb13() == null : this.getCbpb13().equals(other.getCbpb13()))
             && (this.getCbpb14() == null ? other.getCbpb14() == null : this.getCbpb14().equals(other.getCbpb14()))
-            && (this.getCbpb15() == null ? other.getCbpb15() == null : this.getCbpb15().equals(other.getCbpb15()));
+            && (this.getCbpb15() == null ? other.getCbpb15() == null : this.getCbpb15().equals(other.getCbpb15()))
+            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()));
     }
 
     @Override
@@ -209,6 +215,7 @@ public class Cbpb extends BaseEntity implements Serializable {
         result = prime * result + ((getCbpb13() == null) ? 0 : getCbpb13().hashCode());
         result = prime * result + ((getCbpb14() == null) ? 0 : getCbpb14().hashCode());
         result = prime * result + ((getCbpb15() == null) ? 0 : getCbpb15().hashCode());
+        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         return result;
     }
 
@@ -233,6 +240,7 @@ public class Cbpb extends BaseEntity implements Serializable {
         sb.append(", cbpb13=").append(cbpb13);
         sb.append(", cbpb14=").append(cbpb14);
         sb.append(", cbpb15=").append(cbpb15);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

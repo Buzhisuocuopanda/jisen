@@ -115,6 +115,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Resource
     private CblaMapper cblaMapper;
 
+    @Resource
+    private CbplMapper cbplMapper;
+
 
     @Override
     public List<SaleOrderSkuVo> saleOrderSkuList(SaleOrderSkuDto saleOrderSkuDto) {
@@ -232,13 +235,89 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         send.setPriority(totalOrderAddDto.getPriority());
         send.setType(TotalOrderOperateEnum.MAKEORDER.getCode());
-        cbba = orderDistributionService.reassign(send);
+
+        //先查一下有没有其他商品
+        List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
+        if(cbbas.size()>0){
+            cbba = orderDistributionService.reassign(send);
+
+        }
+
         cbbaMapper.insert(cbba);
         return cbba;
 
 
     }
+    @Transactional
+    @Override
+    public Cbba addTotalOrderPl(TotalOrderAddDto totalOrderAddDto) {
+        Cbba cbba = baseCheckService.checkTotalExist(totalOrderAddDto.getGoodsId(), totalOrderAddDto.getOrderNo());
+        if (cbba != null) {
 
+            //走更新逻辑
+            Double nqty=0.0;
+//            if(totalOrderAddDto.getQty()<0.0){
+//
+//                //数量减少
+//                nqty=  cbba.getCbba09()-totalOrderAddDto.getQty();
+//
+//            }else {
+                nqty=  cbba.getCbba09()+totalOrderAddDto.getQty();
+//            }
+            totalOrderAddDto.setQty(nqty);
+            totalOrderAddDto.setOrderNo(cbba.getCbba07());
+            totalOrderAddDto.setId(cbba.getCbba01());
+            mdfTotalOrder(totalOrderAddDto);
+            return cbba;
+
+         }
+
+
+
+        //创建生产总订单
+        cbba = new Cbba();
+        Date date = new Date();
+        cbba.setCbba02(date);
+        cbba.setCbba03(totalOrderAddDto.getUserId());
+        cbba.setCbba04(date);
+        cbba.setCbba05(totalOrderAddDto.getUserId());
+        cbba.setCbba06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbba.setCbba07(totalOrderAddDto.getOrderNo());
+        cbba.setCbba08(totalOrderAddDto.getGoodsId());
+        cbba.setCbba09(totalOrderAddDto.getQty());
+        if (totalOrderAddDto.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+            cbba.setCbba10(OrderTypeEnum.GUONEIDINGDAN.getCode());
+        } else {
+            cbba.setCbba10(OrderTypeEnum.GUOJIDINGDAN.getCode());
+
+        }
+
+        cbba.setCbba11(0.0);
+        cbba.setCbba12(TotalOrderConstants.NO);
+        cbba.setCbba13(0.0);
+        cbba.setCbba14(0.0);
+        cbba.setCbba15(totalOrderAddDto.getPriority());
+
+        OrderDistributionDo send = new OrderDistributionDo();
+        send.setCbba(cbba);
+        send.setGoodsId(totalOrderAddDto.getGoodsId());
+        send.setNum(totalOrderAddDto.getQty());
+
+        send.setPriority(totalOrderAddDto.getPriority());
+        send.setType(TotalOrderOperateEnum.MAKEORDER.getCode());
+
+        //先查一下有没有其他商品
+        List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
+        if(cbbas.size()>0){
+            cbba = orderDistributionService.reassign(send);
+
+        }
+
+        cbbaMapper.insert(cbba);
+        return cbba;
+
+
+    }
     @Transactional
     @Override
     public Cbba mdfTotalOrder(TotalOrderAddDto totalOrderAddDto) {
@@ -406,12 +485,64 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return saleOrderListVos;
     }
 
+//    @Transactional
+//    @Override
+//    public String importTotalOrder(List<TotalOrderExcelDto> list, Long userId) {
+//
+//
+//        TotalOrderAddDto totalOrderAddDto = null;
+//        for (TotalOrderExcelDto totalOrderExcelDto : list) {
+//
+//            if (totalOrderExcelDto.getPriority()==null) {
+//                throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//            if (StringUtils.isBlank(totalOrderExcelDto.getOrderNo())) {
+//                throw new SwException("订单号不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//            if (totalOrderExcelDto.getOrderQty() == null) {
+//                throw new SwException("订单数量不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//
+//            if (StringUtils.isBlank(totalOrderExcelDto.getModel())) {
+//                throw new SwException("商品型号不能为空");
+//            }
+//
+//            totalOrderAddDto = new TotalOrderAddDto();
+//            totalOrderAddDto.setUserId(userId.intValue());
+//            totalOrderAddDto.setDelete(DeleteFlagEnum.NOT_DELETE.getCode());
+//            //根据型号
+//            CbpbCriteria example = new CbpbCriteria();
+//            example.createCriteria()
+//                    .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                    .andCbpb12EqualTo(totalOrderExcelDto.getModel());
+//            List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
+//            if (cbpbs.size() == 0) {
+//                throw new SwException("没有查到该型号的商品:" + totalOrderExcelDto.getModel());
+//            }
+//            totalOrderAddDto.setGoodsId(cbpbs.get(0).getCbpb01());
+//            totalOrderAddDto.setOrderNo(totalOrderExcelDto.getOrderNo());
+//            totalOrderAddDto.setPriority(totalOrderExcelDto.getPriority());
+//            totalOrderAddDto.setQty(totalOrderExcelDto.getOrderQty());
+//            addTotalOrder(totalOrderAddDto);
+//
+//        }
+//
+//        return "导入成功";
+//
+//
+//    }
     @Transactional
     @Override
     public String importTotalOrder(List<TotalOrderExcelDto> list, Long userId) {
 
 
         TotalOrderAddDto totalOrderAddDto = null;
+        List<String> errors=new ArrayList<>();
+        Map<String,Integer> goodsMap=new HashMap<>();
+        List<TotalOrderExcelDto> list2=new ArrayList<>();
         for (TotalOrderExcelDto totalOrderExcelDto : list) {
 
             if (totalOrderExcelDto.getPriority()==null) {
@@ -431,9 +562,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("商品型号不能为空");
             }
 
-            totalOrderAddDto = new TotalOrderAddDto();
-            totalOrderAddDto.setUserId(userId.intValue());
-            totalOrderAddDto.setDelete(DeleteFlagEnum.NOT_DELETE.getCode());
             //根据型号
             CbpbCriteria example = new CbpbCriteria();
             example.createCriteria()
@@ -441,13 +569,49 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     .andCbpb12EqualTo(totalOrderExcelDto.getModel());
             List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
             if (cbpbs.size() == 0) {
-                throw new SwException("没有查到该型号的商品:" + totalOrderExcelDto.getModel());
+                errors.add(totalOrderExcelDto.getModel());
+//                throw new SwException("没有查到该型号的商品:" + totalOrderExcelDto.getModel());
+            }else {
+                goodsMap.put(totalOrderExcelDto.getModel(),cbpbs.get(0).getCbpb01());
+                list2.add(totalOrderExcelDto);
             }
-            totalOrderAddDto.setGoodsId(cbpbs.get(0).getCbpb01());
+
+
+        }
+//        if(errors.size()>0){
+//
+//            throw new SwException("没有查到该型号的商品:" + errors.toString());
+//
+//        }
+
+            for (TotalOrderExcelDto totalOrderExcelDto : list2) {
+
+//            if (totalOrderExcelDto.getPriority()==null) {
+//                throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//            if (StringUtils.isBlank(totalOrderExcelDto.getOrderNo())) {
+//                throw new SwException("订单号不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//            if (totalOrderExcelDto.getOrderQty() == null) {
+//                throw new SwException("订单数量不能为空,商品：" + totalOrderExcelDto.getModel());
+//            }
+//
+//
+//            if (StringUtils.isBlank(totalOrderExcelDto.getModel())) {
+//                throw new SwException("商品型号不能为空");
+//            }
+
+            totalOrderAddDto = new TotalOrderAddDto();
+            totalOrderAddDto.setUserId(userId.intValue());
+            totalOrderAddDto.setDelete(DeleteFlagEnum.NOT_DELETE.getCode());
+
+            totalOrderAddDto.setGoodsId(goodsMap.get(totalOrderExcelDto.getModel()));
             totalOrderAddDto.setOrderNo(totalOrderExcelDto.getOrderNo());
             totalOrderAddDto.setPriority(totalOrderExcelDto.getPriority());
             totalOrderAddDto.setQty(totalOrderExcelDto.getOrderQty());
-            addTotalOrder(totalOrderAddDto);
+            addTotalOrderPl(totalOrderAddDto);
 
         }
 
@@ -455,7 +619,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
     }
-
     /**
      * 添加销售订单
      *
@@ -958,9 +1121,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("SKU那一列有为空的数据");
             }
 
-            if (StringUtils.isBlank(saleOrderExcelDto.getSaleUserName())) {
-                throw new SwException("销售人员那一列有为空的数据");
-            }
+//            if (StringUtils.isBlank(saleOrderExcelDto.getSaleUserName())) {
+//                throw new SwException("销售人员那一列有为空的数据");
+//            }
 
 
             if (saleOrderExcelDto.getQty() == null) {
@@ -1013,17 +1176,17 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 Double normalPrice = 0.0;
                 if (saleOrderExcelDtos.size() > 0) {
                     SaleOrderExcelDto saleOrderExcelDto = saleOrderExcelDtos.get(0);
-                    saleUser = saleOrderExcelDto.getSaleUserName();
+//                    saleUser = saleOrderExcelDto.getSaleUserName();
                     orderType = saleOrderExcelDto.getOrderType();
-                    CalaCriteria laex = new CalaCriteria();
-                    laex.createCriteria()
-                            .andCala08EqualTo(saleOrderExcelDto.getCurrency());
-                    List<Cala> calas = calaMapper.selectByExample(laex);
-                    if("CNY".equals(saleOrderExcelDto.getCurrency())){
-                        currency="6";
-                    }else {
+//                    CalaCriteria laex = new CalaCriteria();
+//                    laex.createCriteria()
+//                            .andCala08EqualTo(saleOrderExcelDto.getCurrency());
+//                    List<Cala> calas = calaMapper.selectByExample(laex);
+//                    if("CNY".equals(saleOrderExcelDto.getCurrency())){
+//                        currency="6";
+//                    }else {
                         currency="5";
-                    }
+//                    }
 
 //                    if (calas.size() > 0) {
 //                        currency = calas.get(0).getCala02();
@@ -1046,6 +1209,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cboa.setCboa03(userId.intValue());
                 cboa.setCboa04(date);
                 cboa.setCboa05(userId.intValue());
+                cboa.setCboa10(userId.intValue());
                 cboa.setCboa06(DeleteFlagEnum.NOT_DELETE.getCode());
                 NumberDo numberDo = new NumberDo();
                 numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
@@ -1687,6 +1851,15 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (good.getQty() < cbob.getCbob10()) {
                 throw new SwException("修改后的数量不能小于发货数量");
             }
+
+            //查出提货数量
+            List<Cbpl> cbpls=cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(),good.getGoodsId());
+            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+            if (good.getQty() < collect) {
+                throw new SwException("修改后的数量不能小于提货数量");
+            }
+
 
             cbod = new Cbod();
             cbod.setCbobid(good.getCbobId());
@@ -2672,6 +2845,20 @@ Date date=new Date();
 //            throw new SwException("没有查该生产总订单");
 //        }
         return null;
+
+    }
+
+    @Override
+    @Transactional
+    public void pldelSaleOrder(DelSaleOrderDto delSaleOrderDto) {
+//        List<Integer> orderIds = delSaleOrderDto.getOrderIds();
+//        DelSaleOrderDto desSend=null;
+//        for (Integer orderId : orderIds) {
+//            desSend=new DelSaleOrderDto();
+//            desSend.setOrderId(orderId);
+//            desSend.setUserId(delSaleOrderDto.getUserId());
+//            saleOrddelSaleOrder(desSend);
+//        }
 
     }
 

@@ -695,6 +695,8 @@ if(cbacss.size()>0) {
         cbaa.setCbaa05(Math.toIntExact(userid));
         cbaaMapper.updateByPrimaryKeySelective(cbaa);
 
+
+
         Cbab cbab = null;
         for (Cbab good : goods) {
             cbab = new Cbab();

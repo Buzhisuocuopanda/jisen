@@ -737,12 +737,17 @@ if(cbsgss.size()>0){
             throw new SwException("没有销售出库单明细表信息");
         }
 
+
         Set<Integer> uio = null;
         for (int i = 0; i < cbsfs1.size(); i++) {
             int id = cbsfs1.get(i).getCbsf01();
             uio = new HashSet<>();
             uio.add(id);
         }
+        CbsfCriteria cbsfCriteria = new CbsfCriteria();
+        cbsfCriteria.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+        int i = cbsfMapper.deleteByExample(cbsfCriteria);
+
         Cbsf cbsf = null;
         for(Cbsf good:goods){
          cbsf=new Cbsf();
@@ -755,6 +760,12 @@ if(cbsgss.size()>0){
                 throw new SwException("该商品不在销售出库单明细中");
             }
             cbsf.setCbsf01(good.getCbsf01());
+            cbsf.setCbsf02(good.getCbsf02());
+            cbsf.setCbsf03(date);
+            cbsf.setCbsf04(Math.toIntExact(userid));
+            cbsf.setCbsf05(date);
+            cbsf.setCbsf06(Math.toIntExact(userid));
+            cbsf.setCbsf07(DeleteFlagEnum.NOT_DELETE.getCode());
             cbsf.setCbsf08(good.getCbsf08());
             cbsf.setCbsf09(good.getCbsf09());
             cbsf.setCbsf10(good.getCbsf10());
@@ -766,7 +777,7 @@ if(cbsgss.size()>0){
             cbsf.setCbsf16(good.getCbsf16());
             CbsfCriteria example = new CbsfCriteria();
             example.createCriteria().andCbsf01EqualTo(good.getCbsf01());
-            cbsfMapper.updateByExampleSelective(cbsf, example);
+            cbsfMapper.insertSelective(cbsf);
         }
         return;
 

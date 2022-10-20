@@ -415,52 +415,52 @@ public class CbpbCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06EqualTo(Integer value) {
+        public Criteria andCbpb06EqualTo(Byte value) {
             addCriterion("CBPB06 =", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06NotEqualTo(Integer value) {
+        public Criteria andCbpb06NotEqualTo(Byte value) {
             addCriterion("CBPB06 <>", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06GreaterThan(Integer value) {
+        public Criteria andCbpb06GreaterThan(Byte value) {
             addCriterion("CBPB06 >", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06GreaterThanOrEqualTo(Integer value) {
+        public Criteria andCbpb06GreaterThanOrEqualTo(Byte value) {
             addCriterion("CBPB06 >=", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06LessThan(Integer value) {
+        public Criteria andCbpb06LessThan(Byte value) {
             addCriterion("CBPB06 <", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06LessThanOrEqualTo(Integer value) {
+        public Criteria andCbpb06LessThanOrEqualTo(Byte value) {
             addCriterion("CBPB06 <=", value, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06In(List<Integer> values) {
+        public Criteria andCbpb06In(List<Byte> values) {
             addCriterion("CBPB06 in", values, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06NotIn(List<Integer> values) {
+        public Criteria andCbpb06NotIn(List<Byte> values) {
             addCriterion("CBPB06 not in", values, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06Between(Integer value1, Integer value2) {
+        public Criteria andCbpb06Between(Byte value1, Byte value2) {
             addCriterion("CBPB06 between", value1, value2, "cbpb06");
             return (Criteria) this;
         }
 
-        public Criteria andCbpb06NotBetween(Integer value1, Integer value2) {
+        public Criteria andCbpb06NotBetween(Byte value1, Byte value2) {
             addCriterion("CBPB06 not between", value1, value2, "cbpb06");
             return (Criteria) this;
         }
@@ -1052,6 +1052,66 @@ public class CbpbCriteria {
 
         public Criteria andCbpb15NotBetween(String value1, String value2) {
             addCriterion("CBPB15 not between", value1, value2, "cbpb15");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("`type` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("`type` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("`type` =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("`type` <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("`type` >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`type` >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("`type` <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("`type` <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("`type` in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("`type` not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("`type` between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("`type` not between", value1, value2, "type");
             return (Criteria) this;
         }
     }

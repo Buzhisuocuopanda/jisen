@@ -267,6 +267,41 @@ public class SaleOrderController extends BaseController {
 
     }
 
+
+    /**
+     * 批量删除生产订单
+     *
+     * @param totalOrderAddDto
+     * @return
+     */
+    @ApiOperation(
+            value ="批量删除生产订单",
+            notes = "批量删除生产订单"
+    )
+    @PostMapping("/plDelete")
+    @PreAuthorize("@ss.hasPermi('system:totalOrder:edit')")
+    public AjaxResult plDelete(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
+        try {
+
+            for (Integer id : totalOrderAddDto.getIds()) {
+                totalOrderAddDto.setId(id);
+                totalOrderAddDto.setDelete(DeleteFlagEnum.DELETE.getCode());
+                Cbba cbba = saleOrderService.mdfTotalOrder(totalOrderAddDto);
+            }
+
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【修改生产总订单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(totalOrderAddDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+
     /**
      * 更改生产总订单状态
      *
@@ -315,10 +350,12 @@ public class SaleOrderController extends BaseController {
             String message = saleOrderService.importTotalOrder(list, getUserId());
             return AjaxResult.success(message);
         } catch (SwException e) {
+            log.error("【导入生产总订单】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【导入生产总订单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+            log.error("【导入生产总订单】接口出现异常,参数${}$,异常${}$",   ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -639,6 +676,50 @@ public class SaleOrderController extends BaseController {
             }
             delSaleOrderDto.setUserId(getUserId().intValue());
             saleOrderService.delSaleOrder(delSaleOrderDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【删除销售订单】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(delSaleOrderDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+
+    /**
+     * 批量删除销售订单
+     *
+     * @param delSaleOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(
+            value ="批量删除销售订单",
+            notes = "批量删除销售订单"
+    )
+
+    @PostMapping("/pldelSaleOrder")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:remove')")
+    public AjaxResult pldelSaleOrder(@Valid @RequestBody DelSaleOrderDto delSaleOrderDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            if (delSaleOrderDto.getOrderIds() .size()==0) {
+                throw new SwException("请选择要修改的销售订单");
+            }
+            delSaleOrderDto.setUserId(getUserId().intValue());
+            List<Integer> orderIds = delSaleOrderDto.getOrderIds();
+            DelSaleOrderDto desSend=null;
+            for (Integer orderId : orderIds) {
+                desSend=new DelSaleOrderDto();
+                desSend.setOrderId(orderId);
+                desSend.setUserId(delSaleOrderDto.getUserId());
+                saleOrderService. delSaleOrder(desSend);
+            }
+
+//            saleOrderService.pldelSaleOrder(delSaleOrderDto);
             return AjaxResult.success();
         } catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

@@ -167,6 +167,7 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib14((double) 0);
                 cbib.setCbib15(1.0);
                 cbib.setCbib16((double) 0);
+                cbib.setCbib18(1);
             }
             //采购入库
             if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
@@ -222,7 +223,9 @@ public class TaskServiceImpl implements TaskService {
             //上次结存数量和价格
             cbib.setCbib09(cbib1.getCbib15());
             cbib.setCbib10(cbib1.getCbib16());
-            if(cbib1.getCbib18()==null){ cbib.setCbib18(1);}else{
+            if(cbib1.getCbib18()==null){
+                cbib.setCbib18(1);
+            }else{
             cbib.setCbib18(cbib1.getCbib18()+1);}
             //采购入库
             if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){

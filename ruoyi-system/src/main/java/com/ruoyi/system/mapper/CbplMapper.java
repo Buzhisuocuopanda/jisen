@@ -27,4 +27,6 @@ public interface CbplMapper {
     int updateByPrimaryKeySelective(Cbpl record);
 
     int updateByPrimaryKey(Cbpl record);
+
+    List<Cbpl> selectBySaleOrderNoAndGoodsId(String orderNo, Integer goodsId);
 }

@@ -488,7 +488,27 @@ WHERE
       AND  ba.CBBA12 = #{status}
 
     </if>
-    order by ba.CBBA02 DESC
+    <if test="sortKey=='priority' and sortType=='descending'">
+      order by ba.CBBA15 DESC
+
+    </if>
+    <if test="sortKey=='priority' and sortType=='ascending'">
+      order by ba.CBBA15
+
+    </if>
+    <if test="sortKey=='orderQty' and sortType=='descending'">
+    order by ba.CBBA09 DESC
+
+  </if>
+    <if test="sortKey=='orderQty' and sortType=='ascending'">
+      order by ba.CBBA09
+
+    </if>
+
+    <if test="sortKey==null ">
+      order by ba.CBBA02 DESC
+
+    </if>
   </select>
 
   <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">

@@ -31,16 +31,13 @@ public interface CbpbMapper {
 
     int updateByPrimaryKey(Cbpb record);
 
-    List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
-
-    int insertCBPB(Cbpb cbpb);
-
-    int updateCBPB(Cbpb cbpb);
-
-    Cbpb selectByPrimaryKeyForUpdate(@Param("id") Integer id);
-
     List<CbpbVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto);
 
     List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo);
 
+    int updateCBPB(Cbpb cbpb);
+
+    int insertCBPB(Cbpb cbpb);
+
+    List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo);
 }
