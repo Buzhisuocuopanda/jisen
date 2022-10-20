@@ -18,6 +18,7 @@
     <result column="CBWA14" jdbcType="INTEGER" property="cbwa14" />
     <result column="CBWA15" jdbcType="INTEGER" property="cbwa15" />
     <result column="allocation_flag" jdbcType="TINYINT" property="allocationFlag" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11,
-    CBWA12, CBWA13, CBWA14, CBWA15, allocation_flag
+    CBWA12, CBWA13, CBWA14, CBWA15, allocation_flag, `type`
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbwaCriteria" resultMap="BaseResultMap">
     select
@@ -117,13 +118,13 @@
       CBWA07, CBWA08, CBWA09,
       CBWA10, CBWA11, CBWA12,
       CBWA13, CBWA14, CBWA15,
-      allocation_flag)
+      allocation_flag, `type`)
     values (#{cbwa01,jdbcType=INTEGER}, #{cbwa02,jdbcType=TIMESTAMP}, #{cbwa03,jdbcType=INTEGER},
       #{cbwa04,jdbcType=TIMESTAMP}, #{cbwa05,jdbcType=INTEGER}, #{cbwa06,jdbcType=INTEGER},
       #{cbwa07,jdbcType=INTEGER}, #{cbwa08,jdbcType=VARCHAR}, #{cbwa09,jdbcType=VARCHAR},
       #{cbwa10,jdbcType=VARCHAR}, #{cbwa11,jdbcType=VARCHAR}, #{cbwa12,jdbcType=VARCHAR},
       #{cbwa13,jdbcType=INTEGER}, #{cbwa14,jdbcType=INTEGER}, #{cbwa15,jdbcType=INTEGER},
-      #{allocationFlag,jdbcType=TINYINT})
+      #{allocationFlag,jdbcType=TINYINT}, #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbwa">
     insert into `CBWA`
@@ -176,6 +177,9 @@
       <if test="allocationFlag != null">
         allocation_flag,
       </if>
+      <if test="type != null">
+        `type`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbwa01 != null">
@@ -225,6 +229,9 @@
       </if>
       <if test="allocationFlag != null">
         #{allocationFlag,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -285,6 +292,9 @@
       <if test="record.allocationFlag != null">
         allocation_flag = #{record.allocationFlag,jdbcType=TINYINT},
       </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +317,8 @@
       CBWA13 = #{record.cbwa13,jdbcType=INTEGER},
       CBWA14 = #{record.cbwa14,jdbcType=INTEGER},
       CBWA15 = #{record.cbwa15,jdbcType=INTEGER},
-      allocation_flag = #{record.allocationFlag,jdbcType=TINYINT}
+      allocation_flag = #{record.allocationFlag,jdbcType=TINYINT},
+      `type` = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +371,9 @@
       <if test="allocationFlag != null">
         allocation_flag = #{allocationFlag,jdbcType=TINYINT},
       </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
     </set>
     where CBWA01 = #{cbwa01,jdbcType=INTEGER}
   </update>
@@ -379,9 +393,12 @@
       CBWA13 = #{cbwa13,jdbcType=INTEGER},
       CBWA14 = #{cbwa14,jdbcType=INTEGER},
       CBWA15 = #{cbwa15,jdbcType=INTEGER},
-      allocation_flag = #{allocationFlag,jdbcType=TINYINT}
+      allocation_flag = #{allocationFlag,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=INTEGER}
     where CBWA01 = #{cbwa01,jdbcType=INTEGER}
   </update>
+
+
 
   <resultMap id="CBWAResult" type="CBWA">
     <result column="CBWA01" property="cbwa01" />
@@ -399,10 +416,12 @@
     <result column="CBWA13" property="cbwa13" />
     <result column="CBWA14" property="cbwa14" />
     <result column="CBWA15" property="cbwa15" />
+    <result column="allocation_flag" property="allocationFlag" />
+    <result column="type" property="type" />
   </resultMap>
   <sql id="selectCBWAVo">
     select CBWA01, CBWA02, CBWA03, CBWA04, CBWA05, CBWA06, CBWA07, CBWA08, CBWA09, CBWA10, CBWA11, CBWA12, CBWA13, CBWA14, CBWA15
-    ,allocation_flag from CBWA
+    ,allocation_flag,type from CBWA
   </sql>
   <select id="selectCBWAList" parameterType="CBWA" resultMap="CBWAResult">
     <include refid="selectCBWAVo" />

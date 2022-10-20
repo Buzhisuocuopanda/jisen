@@ -1,363 +1,375 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CbpbMapper">
-    <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpb">
-        <id column="CBPB01" jdbcType="INTEGER" property="cbpb01"/>
-        <result column="CBPB02" jdbcType="TIMESTAMP" property="cbpb02"/>
-        <result column="CBPB03" jdbcType="TIMESTAMP" property="cbpb03"/>
-        <result column="CBPB04" jdbcType="INTEGER" property="cbpb04"/>
-        <result column="CBPB05" jdbcType="INTEGER" property="cbpb05"/>
-        <result column="CBPB06" jdbcType="INTEGER" property="cbpb06"/>
-        <result column="CBPB07" jdbcType="VARCHAR" property="cbpb07"/>
-        <result column="CBPB08" jdbcType="VARCHAR" property="cbpb08"/>
-        <result column="CBPB09" jdbcType="VARCHAR" property="cbpb09"/>
-        <result column="CBPB10" jdbcType="INTEGER" property="cbpb10"/>
-        <result column="CBPB11" jdbcType="INTEGER" property="cbpb11"/>
-        <result column="CBPB12" jdbcType="VARCHAR" property="cbpb12"/>
-        <result column="CBPB13" jdbcType="DOUBLE" property="cbpb13"/>
-        <result column="CBPB14" jdbcType="INTEGER" property="cbpb14"/>
-        <result column="CBPB15" jdbcType="VARCHAR" property="cbpb15"/>
-    </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+  <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbpb">
+    <id column="CBPB01" jdbcType="INTEGER" property="cbpb01" />
+    <result column="CBPB02" jdbcType="TIMESTAMP" property="cbpb02" />
+    <result column="CBPB03" jdbcType="TIMESTAMP" property="cbpb03" />
+    <result column="CBPB04" jdbcType="INTEGER" property="cbpb04" />
+    <result column="CBPB05" jdbcType="INTEGER" property="cbpb05" />
+    <result column="CBPB06" jdbcType="TINYINT" property="cbpb06" />
+    <result column="CBPB07" jdbcType="VARCHAR" property="cbpb07" />
+    <result column="CBPB08" jdbcType="VARCHAR" property="cbpb08" />
+    <result column="CBPB09" jdbcType="VARCHAR" property="cbpb09" />
+    <result column="CBPB10" jdbcType="INTEGER" property="cbpb10" />
+    <result column="CBPB11" jdbcType="INTEGER" property="cbpb11" />
+    <result column="CBPB12" jdbcType="VARCHAR" property="cbpb12" />
+    <result column="CBPB13" jdbcType="DOUBLE" property="cbpb13" />
+    <result column="CBPB14" jdbcType="INTEGER" property="cbpb14" />
+    <result column="CBPB15" jdbcType="VARCHAR" property="cbpb15" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-    <sql id="Base_Column_List">
-    CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11,
-    CBPB12, CBPB13, CBPB14, CBPB15
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
-    <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria" resultMap="BaseResultMap">
-        select
-        <if test="distinct">
-            distinct
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
         </if>
-        <include refid="Base_Column_List"/>
-        from `CBPB`
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from `CBPB`
-        where CBPB01 = #{cbpb01,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11,
+    CBPB12, CBPB13, CBPB14, CBPB15, `type`
+  </sql>
+  <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `CBPB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBPB`
+    where CBPB01 = #{cbpb01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `CBPB`
     where CBPB01 = #{cbpb01,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria">
-        delete from `CBPB`
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpb">
+  <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria">
+    delete from `CBPB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpb">
     insert into `CBPB` (CBPB01, CBPB02, CBPB03,
       CBPB04, CBPB05, CBPB06,
       CBPB07, CBPB08, CBPB09,
       CBPB10, CBPB11, CBPB12,
-      CBPB13, CBPB14, CBPB15
-      )
+      CBPB13, CBPB14, CBPB15,
+      `type`)
     values (#{cbpb01,jdbcType=INTEGER}, #{cbpb02,jdbcType=TIMESTAMP}, #{cbpb03,jdbcType=TIMESTAMP},
-      #{cbpb04,jdbcType=INTEGER}, #{cbpb05,jdbcType=INTEGER}, #{cbpb06,jdbcType=INTEGER},
+      #{cbpb04,jdbcType=INTEGER}, #{cbpb05,jdbcType=INTEGER}, #{cbpb06,jdbcType=TINYINT},
       #{cbpb07,jdbcType=VARCHAR}, #{cbpb08,jdbcType=VARCHAR}, #{cbpb09,jdbcType=VARCHAR},
       #{cbpb10,jdbcType=INTEGER}, #{cbpb11,jdbcType=INTEGER}, #{cbpb12,jdbcType=VARCHAR},
-      #{cbpb13,jdbcType=DOUBLE}, #{cbpb14,jdbcType=INTEGER}, #{cbpb15,jdbcType=VARCHAR}
-      )
+      #{cbpb13,jdbcType=DOUBLE}, #{cbpb14,jdbcType=INTEGER}, #{cbpb15,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER})
   </insert>
-    <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpb">
-        insert into `CBPB`
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="cbpb01 != null">
-                CBPB01,
-            </if>
-            <if test="cbpb02 != null">
-                CBPB02,
-            </if>
-            <if test="cbpb03 != null">
-                CBPB03,
-            </if>
-            <if test="cbpb04 != null">
-                CBPB04,
-            </if>
-            <if test="cbpb05 != null">
-                CBPB05,
-            </if>
-            <if test="cbpb06 != null">
-                CBPB06,
-            </if>
-            <if test="cbpb07 != null">
-                CBPB07,
-            </if>
-            <if test="cbpb08 != null">
-                CBPB08,
-            </if>
-            <if test="cbpb09 != null">
-                CBPB09,
-            </if>
-            <if test="cbpb10 != null">
-                CBPB10,
-            </if>
-            <if test="cbpb11 != null">
-                CBPB11,
-            </if>
-            <if test="cbpb12 != null">
-                CBPB12,
-            </if>
-            <if test="cbpb13 != null">
-                CBPB13,
-            </if>
-            <if test="cbpb14 != null">
-                CBPB14,
-            </if>
-            <if test="cbpb15 != null">
-                CBPB15,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="cbpb01 != null">
-                #{cbpb01,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb02 != null">
-                #{cbpb02,jdbcType=TIMESTAMP},
-            </if>
-            <if test="cbpb03 != null">
-                #{cbpb03,jdbcType=TIMESTAMP},
-            </if>
-            <if test="cbpb04 != null">
-                #{cbpb04,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb05 != null">
-                #{cbpb05,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb06 != null">
-                #{cbpb06,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb07 != null">
-                #{cbpb07,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb08 != null">
-                #{cbpb08,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb09 != null">
-                #{cbpb09,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb10 != null">
-                #{cbpb10,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb11 != null">
-                #{cbpb11,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb12 != null">
-                #{cbpb12,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb13 != null">
-                #{cbpb13,jdbcType=DOUBLE},
-            </if>
-            <if test="cbpb14 != null">
-                #{cbpb14,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb15 != null">
-                #{cbpb15,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria" resultType="java.lang.Long">
-        select count(*) from `CBPB`
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update `CBPB`
-        <set>
-            <if test="record.cbpb01 != null">
-                CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb02 != null">
-                CBPB02 = #{record.cbpb02,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.cbpb03 != null">
-                CBPB03 = #{record.cbpb03,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.cbpb04 != null">
-                CBPB04 = #{record.cbpb04,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb05 != null">
-                CBPB05 = #{record.cbpb05,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb06 != null">
-                CBPB06 = #{record.cbpb06,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb07 != null">
-                CBPB07 = #{record.cbpb07,jdbcType=VARCHAR},
-            </if>
-            <if test="record.cbpb08 != null">
-                CBPB08 = #{record.cbpb08,jdbcType=VARCHAR},
-            </if>
-            <if test="record.cbpb09 != null">
-                CBPB09 = #{record.cbpb09,jdbcType=VARCHAR},
-            </if>
-            <if test="record.cbpb10 != null">
-                CBPB10 = #{record.cbpb10,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb11 != null">
-                CBPB11 = #{record.cbpb11,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb12 != null">
-                CBPB12 = #{record.cbpb12,jdbcType=VARCHAR},
-            </if>
-            <if test="record.cbpb13 != null">
-                CBPB13 = #{record.cbpb13,jdbcType=DOUBLE},
-            </if>
-            <if test="record.cbpb14 != null">
-                CBPB14 = #{record.cbpb14,jdbcType=INTEGER},
-            </if>
-            <if test="record.cbpb15 != null">
-                CBPB15 = #{record.cbpb15,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update `CBPB`
-        set CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpb">
+    insert into `CBPB`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbpb01 != null">
+        CBPB01,
+      </if>
+      <if test="cbpb02 != null">
+        CBPB02,
+      </if>
+      <if test="cbpb03 != null">
+        CBPB03,
+      </if>
+      <if test="cbpb04 != null">
+        CBPB04,
+      </if>
+      <if test="cbpb05 != null">
+        CBPB05,
+      </if>
+      <if test="cbpb06 != null">
+        CBPB06,
+      </if>
+      <if test="cbpb07 != null">
+        CBPB07,
+      </if>
+      <if test="cbpb08 != null">
+        CBPB08,
+      </if>
+      <if test="cbpb09 != null">
+        CBPB09,
+      </if>
+      <if test="cbpb10 != null">
+        CBPB10,
+      </if>
+      <if test="cbpb11 != null">
+        CBPB11,
+      </if>
+      <if test="cbpb12 != null">
+        CBPB12,
+      </if>
+      <if test="cbpb13 != null">
+        CBPB13,
+      </if>
+      <if test="cbpb14 != null">
+        CBPB14,
+      </if>
+      <if test="cbpb15 != null">
+        CBPB15,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbpb01 != null">
+        #{cbpb01,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb02 != null">
+        #{cbpb02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpb03 != null">
+        #{cbpb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpb04 != null">
+        #{cbpb04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb05 != null">
+        #{cbpb05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb06 != null">
+        #{cbpb06,jdbcType=TINYINT},
+      </if>
+      <if test="cbpb07 != null">
+        #{cbpb07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb08 != null">
+        #{cbpb08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb09 != null">
+        #{cbpb09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb10 != null">
+        #{cbpb10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb11 != null">
+        #{cbpb11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb12 != null">
+        #{cbpb12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb13 != null">
+        #{cbpb13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpb14 != null">
+        #{cbpb14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb15 != null">
+        #{cbpb15,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ruoyi.system.domain.CbpbCriteria" resultType="java.lang.Long">
+    select count(*) from `CBPB`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `CBPB`
+    <set>
+      <if test="record.cbpb01 != null">
+        CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpb02 != null">
         CBPB02 = #{record.cbpb02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpb03 != null">
         CBPB03 = #{record.cbpb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cbpb04 != null">
         CBPB04 = #{record.cbpb04,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpb05 != null">
         CBPB05 = #{record.cbpb05,jdbcType=INTEGER},
-        CBPB06 = #{record.cbpb06,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpb06 != null">
+        CBPB06 = #{record.cbpb06,jdbcType=TINYINT},
+      </if>
+      <if test="record.cbpb07 != null">
         CBPB07 = #{record.cbpb07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpb08 != null">
         CBPB08 = #{record.cbpb08,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpb09 != null">
         CBPB09 = #{record.cbpb09,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpb10 != null">
         CBPB10 = #{record.cbpb10,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpb11 != null">
         CBPB11 = #{record.cbpb11,jdbcType=INTEGER},
+      </if>
+      <if test="record.cbpb12 != null">
         CBPB12 = #{record.cbpb12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbpb13 != null">
         CBPB13 = #{record.cbpb13,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cbpb14 != null">
         CBPB14 = #{record.cbpb14,jdbcType=INTEGER},
-        CBPB15 = #{record.cbpb15,jdbcType=VARCHAR}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpb">
-        update `CBPB`
-        <set>
-            <if test="cbpb02 != null">
-                CBPB02 = #{cbpb02,jdbcType=TIMESTAMP},
-            </if>
-            <if test="cbpb03 != null">
-                CBPB03 = #{cbpb03,jdbcType=TIMESTAMP},
-            </if>
-            <if test="cbpb04 != null">
-                CBPB04 = #{cbpb04,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb05 != null">
-                CBPB05 = #{cbpb05,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb06 != null">
-                CBPB06 = #{cbpb06,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb07 != null">
-                CBPB07 = #{cbpb07,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb08 != null">
-                CBPB08 = #{cbpb08,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb09 != null">
-                CBPB09 = #{cbpb09,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb10 != null">
-                CBPB10 = #{cbpb10,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb11 != null">
-                CBPB11 = #{cbpb11,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb12 != null">
-                CBPB12 = #{cbpb12,jdbcType=VARCHAR},
-            </if>
-            <if test="cbpb13 != null">
-                CBPB13 = #{cbpb13,jdbcType=DOUBLE},
-            </if>
-            <if test="cbpb14 != null">
-                CBPB14 = #{cbpb14,jdbcType=INTEGER},
-            </if>
-            <if test="cbpb15 != null">
-                CBPB15 = #{cbpb15,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where CBPB01 = #{cbpb01,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpb">
+      </if>
+      <if test="record.cbpb15 != null">
+        CBPB15 = #{record.cbpb15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `CBPB`
+    set CBPB01 = #{record.cbpb01,jdbcType=INTEGER},
+      CBPB02 = #{record.cbpb02,jdbcType=TIMESTAMP},
+      CBPB03 = #{record.cbpb03,jdbcType=TIMESTAMP},
+      CBPB04 = #{record.cbpb04,jdbcType=INTEGER},
+      CBPB05 = #{record.cbpb05,jdbcType=INTEGER},
+      CBPB06 = #{record.cbpb06,jdbcType=TINYINT},
+      CBPB07 = #{record.cbpb07,jdbcType=VARCHAR},
+      CBPB08 = #{record.cbpb08,jdbcType=VARCHAR},
+      CBPB09 = #{record.cbpb09,jdbcType=VARCHAR},
+      CBPB10 = #{record.cbpb10,jdbcType=INTEGER},
+      CBPB11 = #{record.cbpb11,jdbcType=INTEGER},
+      CBPB12 = #{record.cbpb12,jdbcType=VARCHAR},
+      CBPB13 = #{record.cbpb13,jdbcType=DOUBLE},
+      CBPB14 = #{record.cbpb14,jdbcType=INTEGER},
+      CBPB15 = #{record.cbpb15,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbpb">
+    update `CBPB`
+    <set>
+      <if test="cbpb02 != null">
+        CBPB02 = #{cbpb02,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpb03 != null">
+        CBPB03 = #{cbpb03,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbpb04 != null">
+        CBPB04 = #{cbpb04,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb05 != null">
+        CBPB05 = #{cbpb05,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb06 != null">
+        CBPB06 = #{cbpb06,jdbcType=TINYINT},
+      </if>
+      <if test="cbpb07 != null">
+        CBPB07 = #{cbpb07,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb08 != null">
+        CBPB08 = #{cbpb08,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb09 != null">
+        CBPB09 = #{cbpb09,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb10 != null">
+        CBPB10 = #{cbpb10,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb11 != null">
+        CBPB11 = #{cbpb11,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb12 != null">
+        CBPB12 = #{cbpb12,jdbcType=VARCHAR},
+      </if>
+      <if test="cbpb13 != null">
+        CBPB13 = #{cbpb13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbpb14 != null">
+        CBPB14 = #{cbpb14,jdbcType=INTEGER},
+      </if>
+      <if test="cbpb15 != null">
+        CBPB15 = #{cbpb15,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBPB01 = #{cbpb01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbpb">
     update `CBPB`
     set CBPB02 = #{cbpb02,jdbcType=TIMESTAMP},
       CBPB03 = #{cbpb03,jdbcType=TIMESTAMP},
       CBPB04 = #{cbpb04,jdbcType=INTEGER},
       CBPB05 = #{cbpb05,jdbcType=INTEGER},
-      CBPB06 = #{cbpb06,jdbcType=INTEGER},
+      CBPB06 = #{cbpb06,jdbcType=TINYINT},
       CBPB07 = #{cbpb07,jdbcType=VARCHAR},
       CBPB08 = #{cbpb08,jdbcType=VARCHAR},
       CBPB09 = #{cbpb09,jdbcType=VARCHAR},
@@ -366,25 +378,28 @@
       CBPB12 = #{cbpb12,jdbcType=VARCHAR},
       CBPB13 = #{cbpb13,jdbcType=DOUBLE},
       CBPB14 = #{cbpb14,jdbcType=INTEGER},
-      CBPB15 = #{cbpb15,jdbcType=VARCHAR}
+      CBPB15 = #{cbpb15,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER}
     where CBPB01 = #{cbpb01,jdbcType=INTEGER}
   </update>
-    <resultMap type="CBPB" id="CBPBResult">
-        <result property="cbpb01" column="CBPB01"/>
-        <result property="cbpb02" column="CBPB02"/>
-        <result property="cbpb03" column="CBPB03"/>
-        <result property="cbpb04" column="CBPB04"/>
-        <result property="cbpb05" column="CBPB05"/>
-        <result property="cbpb06" column="CBPB06"/>
-        <result property="cbpb07" column="CBPB07"/>
-        <result property="cbpb08" column="CBPB08"/>
-        <result property="cbpb09" column="CBPB09"/>
-        <result property="cbpb10" column="CBPB10"/>
-        <result property="cbpb11" column="CBPB11"/>
-        <result property="cbpb12" column="CBPB12"/>
-        <result property="cbpb13" column="CBPB13"/>
-        <result property="cbpb14" column="CBPB14"/>
-        <result property="cbpb15" column="CBPB15"/>
+
+
+    <resultMap id="CBPBResult" type="CBPB">
+        <result column="CBPB01" property="cbpb01" />
+        <result column="CBPB02" property="cbpb02" />
+        <result column="CBPB03" property="cbpb03" />
+        <result column="CBPB04" property="cbpb04" />
+        <result column="CBPB05" property="cbpb05" />
+        <result column="CBPB06" property="cbpb06" />
+        <result column="CBPB07" property="cbpb07" />
+        <result column="CBPB08" property="cbpb08" />
+        <result column="CBPB09" property="cbpb09" />
+        <result column="CBPB10" property="cbpb10" />
+        <result column="CBPB11" property="cbpb11" />
+        <result column="CBPB12" property="cbpb12" />
+        <result column="CBPB13" property="cbpb13" />
+        <result column="CBPB14" property="cbpb14" />
+        <result column="CBPB15" property="cbpb15" />
     </resultMap>
     <sql id="selectCBPBVo">
     select CBPB01, CBPB02, CBPB03, CBPB04, CBPB05, CBPB06, CBPB07, CBPB08, CBPB09, CBPB10, CBPB11, CBPB12, CBPB13,
@@ -392,7 +407,7 @@
   </sql>
     <select id="selectSwJsGoodsList" resultType="com.ruoyi.system.domain.vo.CbpbVo">
         SELECT
-        b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01,a.CBPB10,a.CBPB15,a.CBPB01
+        b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01,a.CBPB10,a.CBPB15,a.CBPB01,a.type
         FROM
         CBPB a
         LEFT JOIN
@@ -476,7 +491,7 @@
     <!--  加锁获取商品信息-->
     <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from `CBPB`
         where CBPB01 = #{id,jdbcType=INTEGER}
         for update

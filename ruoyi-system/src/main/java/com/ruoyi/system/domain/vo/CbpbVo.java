@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class CbpbVo {
+  private Integer type;
 
     //@Excel(name = "主键id")
     private Integer cbpb01;
