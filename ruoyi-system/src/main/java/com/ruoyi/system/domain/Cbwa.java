@@ -36,6 +36,8 @@ public class Cbwa implements Serializable {
 
     private Byte allocationFlag;
 
+    private Integer type;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbwa01() {
@@ -166,6 +168,14 @@ public class Cbwa implements Serializable {
         this.allocationFlag = allocationFlag;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -193,7 +203,8 @@ public class Cbwa implements Serializable {
             && (this.getCbwa13() == null ? other.getCbwa13() == null : this.getCbwa13().equals(other.getCbwa13()))
             && (this.getCbwa14() == null ? other.getCbwa14() == null : this.getCbwa14().equals(other.getCbwa14()))
             && (this.getCbwa15() == null ? other.getCbwa15() == null : this.getCbwa15().equals(other.getCbwa15()))
-            && (this.getAllocationFlag() == null ? other.getAllocationFlag() == null : this.getAllocationFlag().equals(other.getAllocationFlag()));
+            && (this.getAllocationFlag() == null ? other.getAllocationFlag() == null : this.getAllocationFlag().equals(other.getAllocationFlag()))
+            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()));
     }
 
     @Override
@@ -216,6 +227,7 @@ public class Cbwa implements Serializable {
         result = prime * result + ((getCbwa14() == null) ? 0 : getCbwa14().hashCode());
         result = prime * result + ((getCbwa15() == null) ? 0 : getCbwa15().hashCode());
         result = prime * result + ((getAllocationFlag() == null) ? 0 : getAllocationFlag().hashCode());
+        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         return result;
     }
 
@@ -241,6 +253,7 @@ public class Cbwa implements Serializable {
         sb.append(", cbwa14=").append(cbwa14);
         sb.append(", cbwa15=").append(cbwa15);
         sb.append(", allocationFlag=").append(allocationFlag);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -66,5 +66,6 @@ public class CbpbDo {
     private Integer cbpf06;
     @Excel(name = "生效时间")
     private Date cbpf07;
+    private Integer type;
 
 }

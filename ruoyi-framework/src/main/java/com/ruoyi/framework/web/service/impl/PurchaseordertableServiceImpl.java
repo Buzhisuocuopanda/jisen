@@ -317,6 +317,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
     @Override
     public void SwJsPurchasereturnordersedit(GsPurchaseOrderDo gsPurchaseOrderDo) {
+        Date date = new Date();
      if(gsPurchaseOrderDo.getId()==null){
          throw new SwException("id不能为空");
      }
@@ -338,30 +339,39 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
         if(gsPurchaseOrderDetails.size()==0){
             throw new SwException("采购订单明细为空");
         }
+        GsPurchaseOrderDetailCriteria example = new GsPurchaseOrderDetailCriteria();
+        example.createCriteria()
+                .andPurchaseOrderIdEqualTo(Math.toIntExact(gsPurchaseOrderDo.getId()));
+        int i = gsPurchaseOrderDetailMapper.deleteByExample(example);
 
-    /*    Set<Long> uio = null;
-        for (int i = 0; i < gsPurchaseOrderDetails.size(); i++) {
-            Long id = gsPurchaseOrderDetails.get(i).getId();
-            uio = new HashSet<>();
-            uio.add(id);
-        }*/
 
         GsPurchaseOrderDetail gsPurchaseOrderDetail = null;
         for(GsPurchaseOrderDetail gsPurchaseOrderDetail1:goods){
             gsPurchaseOrderDetail = new GsPurchaseOrderDetail();
-            if(gsPurchaseOrderDetail1.getId()==null){
+          /*  if(gsPurchaseOrderDetail1.getId()==null){
                 throw new SwException("采购订单明细不能为空");
-            }
+            }*/
          /*   if(!uio.contains(gsPurchaseOrderDetail1.getId())){
                 throw new SwException("该商品不在采购订单明细中");
             }*/
-            gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
+            //gsPurchaseOrderDetail.setId(gsPurchaseOrderDetail1.getId());
+            gsPurchaseOrderDetail.setCreateTime(date);
+            gsPurchaseOrderDetail.setUpdateTime(date);
+            gsPurchaseOrderDetail.setCreateBy(userid);
+            gsPurchaseOrderDetail.setUpdateBy(userid);
+            gsPurchaseOrderDetail.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+
             gsPurchaseOrderDetail.setGoodsId(gsPurchaseOrderDetail1.getGoodsId());
             gsPurchaseOrderDetail.setQty(gsPurchaseOrderDetail1.getQty());
             gsPurchaseOrderDetail.setPrice(gsPurchaseOrderDetail1.getPrice());
+            gsPurchaseOrderDetail.setRemark(gsPurchaseOrderDetail1.getRemark());
+            gsPurchaseOrderDetail.setInQty(gsPurchaseOrderDetail1.getInQty());
+            gsPurchaseOrderDetail.setChangeQty(gsPurchaseOrderDetail1.getChangeQty());
+            gsPurchaseOrderDetail.setSurplusQty(gsPurchaseOrderDetail1.getSurplusQty());
+            gsPurchaseOrderDetail.setPurchaseOrderId(gsPurchaseOrderDo.getId().intValue());
             gsPurchaseOrderDetail.setUpdateBy(userid);
             gsPurchaseOrderDetail.setUpdateTime(new Date());
-            gsPurchaseOrderDetailMapper.updateByPrimaryKeySelective(gsPurchaseOrderDetail);
+            gsPurchaseOrderDetailMapper.insertSelective(gsPurchaseOrderDetail);
         }
     }
 }

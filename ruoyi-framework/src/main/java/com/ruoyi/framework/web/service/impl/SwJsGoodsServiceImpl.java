@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
 
+import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -69,7 +70,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         //upc唯一
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
-                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0){
             throw new SwException("upc已存在");
@@ -93,7 +94,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb03(date);
         cbpb.setCbpb04(Math.toIntExact(userid));
         cbpb.setCbpb05(Math.toIntExact(userid));
-        cbpb.setCbpb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpb.setCbpb07(cbpbDo.getCbpb07());
         cbpb.setCbpb08(cbpbDo.getCbpb08());
         cbpb.setCbpb09(cbpbDo.getCbpb09());
@@ -102,6 +103,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb12(cbpbDo.getCbpb12());
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
+        cbpb.setType(cbpbDo.getType());
          cbpbMapper.insertSelective(cbpb);
         Cbpf cbpf=null;
         for (CbpfDo good : goods) {
@@ -117,7 +119,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
         CbpbCriteria example1 = new CbpbCriteria();
         example1.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
-                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbss = cbpbMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbpbss.get(0).getCbpb01());
@@ -137,7 +139,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         //upc唯一
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(cbpbDo.getCbpb15())
-                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0 && !cbpbs.get(0).getCbpb01().equals(cbpbDo.getCbpb01())){
             throw new SwException("upc已存在");
@@ -157,9 +159,10 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb13(cbpbDo.getCbpb13());
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
+        cbpb.setType(cbpbDo.getType());
         CbpbCriteria example1= new CbpbCriteria();
         example1.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01())
-                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
   cbpbMapper.updateByExampleSelective(cbpb,example1);
         List<CbpfDo> goods = cbpbDo.getGoods();
 
@@ -191,7 +194,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
      CbpbCriteria example3=new CbpbCriteria();
 
         example3.createCriteria().
-                andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode())
                 .andCbpb01EqualTo(cbpbDo.getCbpb01());
 //        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example3);
 //        List<String> collect = cbpbs.stream().map(Cbpb::getCbpb15).collect(Collectors.toList());
@@ -216,7 +219,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             throw new SwException("在用商品不可删除");
         }
 
-        cbpb.setCbpb06(DeleteFlagEnum.DELETE.getCode());
+        cbpb.setCbpb06(DeleteFlagEnum1.DELETE.getCode());
 
         return cbpbMapper.updateByExampleSelective(cbpb,example3);
     }
@@ -399,7 +402,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(cbpb15)
-                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0){
             throw new SwException("upc已存在");
@@ -409,12 +412,13 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb03(date);
         cbpb.setCbpb04(Math.toIntExact(userid));
         cbpb.setCbpb05(Math.toIntExact(userid));
-        cbpb.setCbpb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpb.setCbpb14(cbpb14);
         cbpb.setCbpb10(cbpb10);
         cbpb.setCbpb08(cbpb08);
         cbpb.setCbpb12(cbpb12);
         cbpb.setCbpb15(cbpb15);
+
         cbpbMapper.insertSelective(cbpb);
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);

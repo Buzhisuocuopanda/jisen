@@ -17,6 +17,7 @@
     <result column="wh_id" jdbcType="INTEGER" property="whId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="gsid" jdbcType="INTEGER" property="gsid" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id, 
-    saler_id, customer_id, order_date, `status`, wh_id, user_id, gsid
+    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id,
+    saler_id, customer_id, order_date, `status`, wh_id, user_id, gsid, factory
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesChangeCriteria" resultMap="BaseResultMap">
     select
@@ -95,7 +96,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_Sales_change`
     where id = #{id,jdbcType=INTEGER}
@@ -111,16 +112,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsSalesChange">
-    insert into `gs_Sales_change` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      order_no, supplier_id, saler_id, 
-      customer_id, order_date, `status`, 
-      wh_id, user_id, gsid)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER}, 
-      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT}, 
-      #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{gsid,jdbcType=INTEGER})
+    insert into `gs_Sales_change` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      order_no, supplier_id, saler_id,
+      customer_id, order_date, `status`,
+      wh_id, user_id, gsid,
+      factory)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+      #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{gsid,jdbcType=INTEGER},
+      #{factory,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesChange">
     insert into `gs_Sales_change`
@@ -170,6 +173,9 @@
       <if test="gsid != null">
         gsid,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -216,6 +222,9 @@
       </if>
       <if test="gsid != null">
         #{gsid,jdbcType=INTEGER},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -273,6 +282,9 @@
       <if test="record.gsid != null">
         gsid = #{record.gsid,jdbcType=INTEGER},
       </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -294,7 +306,8 @@
       `status` = #{record.status,jdbcType=TINYINT},
       wh_id = #{record.whId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      gsid = #{record.gsid,jdbcType=INTEGER}
+      gsid = #{record.gsid,jdbcType=INTEGER},
+      factory = #{record.factory,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -344,6 +357,9 @@
       <if test="gsid != null">
         gsid = #{gsid,jdbcType=INTEGER},
       </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -362,7 +378,10 @@
       `status` = #{status,jdbcType=TINYINT},
       wh_id = #{whId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
-      gsid = #{gsid,jdbcType=INTEGER}
+      gsid = #{gsid,jdbcType=INTEGER},
+      factory = #{factory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

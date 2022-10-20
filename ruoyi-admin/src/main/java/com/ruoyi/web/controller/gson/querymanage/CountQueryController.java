@@ -116,48 +116,48 @@ public class CountQueryController  extends BaseController {
     }
 
     /**
-     * 销售预订单汇总
+     * 销售预订单明细
      */
     @ApiOperation(
-            value ="销售预订单汇总",
-            notes = "销售预订单汇总"
+            value ="销售预订单明细",
+            notes = "销售预订单明细"
     )
     @GetMapping("/saleOrderListCountquery")
     @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:list')")
-    public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo) {
+    public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
         try {
             startPage();
-            if(gsSalesOrdersVo.getEndTime()!=null){
-                gsSalesOrdersVo.setEndTime(new Date(gsSalesOrdersVo.getEndTime().getTime()+24*60*60-1));
+            if(gsSalesOrdersDetailsDto.getEndTime()!=null){
+                gsSalesOrdersDetailsDto.setEndTime(new Date(gsSalesOrdersDetailsDto.getEndTime().getTime()+24*60*60*1000-1));
             }
+            List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto);
 
-            TableDataInfo t = countQueryService.saleOrderListCountquery(gsSalesOrdersVo);
-            return AjaxResult.success(t);
+            return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
-            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (Exception e) {
-            log.error("【销售预订单汇总】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
 
 
     @ApiOperation(
-            value ="导出销售预订单汇总",
-            notes = "导出销售预订单汇总"
+            value ="导出销售预订单明细",
+            notes = "导出销售预订单明细"
     )
     @PostMapping("/saleOrderListCountqueryExcel")
     @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:export')")
-    public void saleOrderListCountqueryExcel(GsSalesOrdersVo gsSalesOrdersVo, HttpServletResponse response) {
-        if(gsSalesOrdersVo.getEndTime()!=null){
-            gsSalesOrdersVo.setEndTime(new Date(gsSalesOrdersVo.getEndTime().getTime()+24*60*60-1));
+    public void saleOrderListCountqueryExcel(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto2, HttpServletResponse response) {
+        if(gsSalesOrdersDetailsDto2.getEndTime()!=null){
+            gsSalesOrdersDetailsDto2.setEndTime(new Date(gsSalesOrdersDetailsDto2.getEndTime().getTime()+24*60*60*1000-1));
         }
-        List<GsSalesOrdersDetailsVo> list = (List)countQueryService.saleOrderListCountquery(gsSalesOrdersVo).getRows();
+        List<GsSalesOrdersDetailsVo> list = countQueryService.saleOrderListCountquery(gsSalesOrdersDetailsDto2);
         ExcelUtil<GsSalesOrdersDetailsVo> util = new ExcelUtil<>(GsSalesOrdersDetailsVo.class);
-        util.exportExcel(response, list, "销售预订单汇总数据");
+        util.exportExcel(response, list, "销售预订单明细数据");
     }
 
 

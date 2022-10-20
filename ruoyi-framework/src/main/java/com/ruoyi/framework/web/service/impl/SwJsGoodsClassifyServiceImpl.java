@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.GSSystemUseEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -179,7 +180,7 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         CbpbCriteria example2=new CbpbCriteria();
 
         example2.createCriteria().
-                andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode())
                 .andCbpb14EqualTo(cbpaDo.getCbpa01());
 
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example2);

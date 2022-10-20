@@ -27,6 +27,8 @@ public class GsSalesOrdersDetails implements Serializable {
 
     private String gsSalesOrders;
 
+    private String factory;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -117,6 +119,14 @@ public class GsSalesOrdersDetails implements Serializable {
         this.gsSalesOrders = gsSalesOrders == null ? null : gsSalesOrders.trim();
     }
 
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory == null ? null : factory.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -139,7 +149,8 @@ public class GsSalesOrdersDetails implements Serializable {
             && (this.getQty() == null ? other.getQty() == null : this.getQty().equals(other.getQty()))
             && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
-            && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()));
+            && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()));
     }
 
     @Override
@@ -157,6 +168,7 @@ public class GsSalesOrdersDetails implements Serializable {
         result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getGsSalesOrders() == null) ? 0 : getGsSalesOrders().hashCode());
+        result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
         return result;
     }
 
@@ -177,6 +189,7 @@ public class GsSalesOrdersDetails implements Serializable {
         sb.append(", price=").append(price);
         sb.append(", remark=").append(remark);
         sb.append(", gsSalesOrders=").append(gsSalesOrders);
+        sb.append(", factory=").append(factory);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

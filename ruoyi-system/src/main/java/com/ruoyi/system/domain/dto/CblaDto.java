@@ -42,7 +42,7 @@ public class CblaDto {
     @Excel(name = "库位容量")
     private Double cbla11;
 
-    @NotBlank(message = "优选型号不能为空")
+   // @NotBlank(message = "优选型号不能为空")
   //  @Length(min =1 , max = 30, message = "优选型号长度不能超过30个字符")
     @Excel(name = "优先型号")
 

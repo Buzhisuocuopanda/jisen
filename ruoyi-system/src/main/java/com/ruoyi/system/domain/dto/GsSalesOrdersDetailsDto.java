@@ -29,4 +29,7 @@ public class GsSalesOrdersDetailsDto {
     private String remark;
 
     private String gsSalesOrders;
+
+    private String factory;
+
 }

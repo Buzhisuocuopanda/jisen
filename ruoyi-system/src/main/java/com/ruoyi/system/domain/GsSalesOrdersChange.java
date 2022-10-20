@@ -1,8 +1,10 @@
 package com.ruoyi.system.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@Data
 public class GsSalesOrdersChange implements Serializable {
     private Integer id;
 
@@ -17,6 +19,9 @@ public class GsSalesOrdersChange implements Serializable {
     private Byte deleteFlag;
 
     private String orderNo;
+
+    private String factory;
+
 
     private Date orderDate;
 

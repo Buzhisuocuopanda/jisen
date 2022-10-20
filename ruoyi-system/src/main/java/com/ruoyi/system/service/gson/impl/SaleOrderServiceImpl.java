@@ -565,7 +565,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             //根据型号
             CbpbCriteria example = new CbpbCriteria();
             example.createCriteria()
-                    .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode())
                     .andCbpb12EqualTo(totalOrderExcelDto.getModel());
             List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
             if (cbpbs.size() == 0) {
@@ -1240,7 +1240,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     pbex.createCriteria()
                             .andCbpb12EqualTo(saleOrderExcelDto.getSku())
                             .andCbpb07EqualTo("启用")
-                            .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                            .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
                     List<Cbpb> cbpbs = cbpbMapper.selectByExample(pbex);
 
 

@@ -34,6 +34,8 @@ public class GsSalesChange implements Serializable {
 
     private Integer gsid;
 
+    private String factory;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -156,6 +158,14 @@ public class GsSalesChange implements Serializable {
         this.gsid = gsid;
     }
 
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory == null ? null : factory.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -182,7 +192,8 @@ public class GsSalesChange implements Serializable {
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getWhId() == null ? other.getWhId() == null : this.getWhId().equals(other.getWhId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getGsid() == null ? other.getGsid() == null : this.getGsid().equals(other.getGsid()));
+            && (this.getGsid() == null ? other.getGsid() == null : this.getGsid().equals(other.getGsid()))
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()));
     }
 
     @Override
@@ -204,6 +215,7 @@ public class GsSalesChange implements Serializable {
         result = prime * result + ((getWhId() == null) ? 0 : getWhId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getGsid() == null) ? 0 : getGsid().hashCode());
+        result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
         return result;
     }
 
@@ -228,6 +240,7 @@ public class GsSalesChange implements Serializable {
         sb.append(", whId=").append(whId);
         sb.append(", userId=").append(userId);
         sb.append(", gsid=").append(gsid);
+        sb.append(", factory=").append(factory);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

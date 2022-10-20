@@ -23,8 +23,9 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private Double qty;
 
     private BigDecimal price;
-
     private String remark;
+
+    private String factory;
     private String PONumber;
     private String gsSalesOrders;
     @Excel(name = "订单编号")
@@ -83,5 +84,4 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 
     private Integer icu;
-
 }

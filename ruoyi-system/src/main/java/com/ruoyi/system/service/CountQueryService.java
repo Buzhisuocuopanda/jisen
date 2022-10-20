@@ -23,5 +23,5 @@ public interface CountQueryService {
 
     List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo);
 
-    TableDataInfo saleOrderListCountquery(GsSalesOrdersVo gsSalesOrdersVo);
+    List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto);
 }

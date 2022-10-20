@@ -4,7 +4,6 @@ import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.framework.web.service.ConcurrentUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
@@ -18,8 +17,8 @@ import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.TaskService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+@Slf4j
 @Service
 public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultService {
     @Resource
@@ -68,6 +67,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
         if(cbicDto.getUpc()==null){
             throw new SwException("upc没输入");
         }
+         log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
 
         CbpbCriteria exampe = new CbpbCriteria();
         exampe.createCriteria().andCbpb15EqualTo(cbicDto.getUpc());
