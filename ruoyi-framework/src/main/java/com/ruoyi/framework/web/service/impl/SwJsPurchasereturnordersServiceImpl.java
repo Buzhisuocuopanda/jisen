@@ -573,6 +573,8 @@ return;
 
     }
 
+
+
     /**
      * 删除采购退货单
      *
@@ -1060,5 +1062,8 @@ if(infoss.size()>0) {
         return cbpgMapper.updateByExampleSelective(cbpg, example);      }
 
 
-
+    @Override
+    public List<GsGoodsSnsVo> selectSwJsTaskGoodsRelListssS(GsGoodsSnsVo gsGoodsSnsVo) {
+        return  gsGoodsSnMapper.getInfosss(gsGoodsSnsVo);
+    }
 }

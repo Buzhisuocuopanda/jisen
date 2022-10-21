@@ -518,5 +518,12 @@ ORDER BY
     </if>
 order by a.update_time desc
   </select>
+    <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.GsGoodsSnsVo">
+      select
+          *
+from gs_goods_sn a
+where
+    a.repair_status=1
+    </select>
 
 </mapper>

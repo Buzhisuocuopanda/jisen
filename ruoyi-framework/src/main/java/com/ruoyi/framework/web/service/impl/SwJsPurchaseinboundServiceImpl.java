@@ -202,6 +202,10 @@ private NumberGenerate numberGenerate;
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
        for (int i = 0; i < itemList.size(); i++) {
+           if(  itemList.get(i).getCbpe09()==null){
+               throw new SwException("sn码不能为空");
+           }
+
            if (itemList.get(i).getCbpe08() == null) {
                throw new SwException("商品id不能为空");
            }
