@@ -694,7 +694,8 @@ where
    ca.CALA08 as cala08,
    gs.wh_id as whId,
    wa.CBWA09 as wh,
-   a.factory as factory
+   a.factory as factory,
+   vf.id as idss
    FROM
    `gs_ Sales_orders_change` a
    LEFT JOIN
@@ -732,7 +733,7 @@ where
    LEFT JOIN
    gs_Sales_change vf
    ON
-   vf.id=a.changeid
+   vf.gsid=gs.id
    WHERE
    gs.delete_flag=0
    <if test="ids != null and ids !=''">

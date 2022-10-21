@@ -203,7 +203,7 @@ private NumberGenerate numberGenerate;
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
        for (int i = 0; i < itemList.size(); i++) {
-           if(  itemList.get(i).getCbpe09()==null){
+           if (itemList.get(i).getCbpe09() == null) {
                throw new SwException("sn码不能为空");
            }
            String cbic10 = itemList.get(i).getCbpe09();
@@ -215,6 +215,7 @@ private NumberGenerate numberGenerate;
            String s = redisTemplate.opsForValue().get(cbic10);
 
 
+           GsGoodsSnDo gsGoodsSnDo;
            try {
                if (itemList.get(i).getCbpe08() == null) {
                    throw new SwException("商品id不能为空");
@@ -308,7 +309,7 @@ private NumberGenerate numberGenerate;
                    throw new SwException("该sn已存在库存sn表里");
                }
 
-               GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+               gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
                gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
                gsGoodsSnDo.setWhId(cbpc.getCbpc10());
@@ -316,9 +317,7 @@ private NumberGenerate numberGenerate;
                gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-               taskService.addGsGoodsSns(gsGoodsSnDo);
-           }
-           finally {
+           } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                        "then " +
@@ -326,15 +325,16 @@ private NumberGenerate numberGenerate;
                        "else " +
                        "return 0 " +
                        "end";
-               this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList("lock"), uuid);
+               this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
            }
 
            // this.redisTemplate.delete("lock");
 
            mapper.insertSelective(itemList.get(i));
+           taskService.addGsGoodsSns(gsGoodsSnDo);
 
 
-         //  redisTemplate.delete("lock");
+           //  redisTemplate.delete("lock");
            if (i % 10 == 9) {//每10条提交一次
                session.commit();
                session.clearCache();

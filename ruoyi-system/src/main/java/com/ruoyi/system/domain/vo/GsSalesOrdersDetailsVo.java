@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 public class GsSalesOrdersDetailsVo extends BaseEntity {
     private Integer ids;
+    private Integer idss;
 
     private Integer detailId;
     private Integer id;
