@@ -414,7 +414,7 @@
       good_product_qty = #{goodProductQty,jdbcType=DOUBLE}
     where CBPL01 = #{cbpl01,jdbcType=INTEGER}
   </update>
-  <select id="selectBySaleOrderNoAndGoodsId">
+  <select id="selectBySaleOrderNoAndGoodsId" resultMap="BaseResultMap">
 
     SELECT
 	cbpl.*
