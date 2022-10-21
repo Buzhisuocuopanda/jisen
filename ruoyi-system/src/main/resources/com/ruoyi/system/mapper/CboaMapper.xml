@@ -768,55 +768,49 @@ WHERE
 </select>
 
   <select id="saleOrderListPj" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
-    SELECT
-    oa.CBOA01 as id,
-    oa.CBOA07 as orderNo,
-    oa.CBOA25 as customerNo,
-    oa.CBOA02 as createTime,
-    ca.CBCA08 as customerName,
-    u.nick_name as saleUser,
-    oa.CBOA16 AS settleCurrent,
-    oa.CBOA17 as receiver,
-    oa.CBOA18 as address,
-    oa.CBOA19 as phone,
-    oa.CBOA27 as orderClass,
-    oa.CBOA24 as orderType,
-    oa.CBOA08 as orderDate,
-    oa.CBOA11 as status,
-    oa.confirm_sku_status as confirmSkuStatus
-
-
-    FROM
-    `CBOA` oa
-    LEFT JOIN CBCA ca on oa.CBOA09 =ca.CBCA01
-    LEFT JOIN sys_user u ON u.user_id =oa.CBOA10
-    where oa.CBOA06=0
-    <if test="startTime != null">
-      and oa.CBOA08 &gt;= #{startTime}
-    </if>
-    <if test="endTime != null">
-      and oa.CBOA08 &lt;=#{endTime}
-    </if>
-    <if test="status != null and status !=-1">
-      and oa.CBOA11 =#{status}
-    </if>
-    <if test="status != null and status ==-1">
-      and (oa.CBOA11 =5 or oa.CBOA11 =2)
-    </if>
-    <if test="orderNo != null and orderNo != ''">
-      and oa.CBOA07 like concat('%', #{orderNo}, '%')
-    </if>
-
-    <if test="type != null ">
-      and oa.CBOA27 =#{type}
-    </if>
-    <if test="customer != null and customer !=''">
-
-
-      and ca.CBCA08 like concat('%', #{customer}, '%')
-    </if>
-    order by oa.CBOA02 DESC
+SELECT
+    oa.CBOA01 AS id,
+	oa.CBOA07 AS orderNo,
+	oa.CBOA08 AS orderDate,
+	ca.CBCA08 AS customerName,
+	u.nick_name AS saleUser,
+	oa.CBOA02 AS createTime
+FROM
+	`CBOA` oa
+	LEFT JOIN CBCA ca ON oa.CBOA09 = ca.CBCA01
+	LEFT JOIN sys_user u ON u.user_id = oa.CBOA10
+	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
+	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+	AND pb.type=0
+WHERE
+	oa.CBOA06 = 0
+	AND oa.CBOA11 =5
+	GROUP BY oa.CBOA07
+	ORDER BY oa.CBOA02
   </select>
+
+  <select id="saleOrderListGoods" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+SELECT
+    oa.CBOA01 AS id,
+	oa.CBOA07 AS orderNo,
+	oa.CBOA08 AS orderDate,
+	ca.CBCA08 AS customerName,
+	u.nick_name AS saleUser,
+	oa.CBOA02 AS createTime
+FROM
+	`CBOA` oa
+	LEFT JOIN CBCA ca ON oa.CBOA09 = ca.CBCA01
+	LEFT JOIN sys_user u ON u.user_id = oa.CBOA10
+	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
+	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+	AND pb.type=1
+WHERE
+	oa.CBOA06 = 0
+	AND oa.CBOA11 =5
+	GROUP BY oa.CBOA07
+	ORDER BY oa.CBOA02
+  </select>
+
 
 
 </mapper>

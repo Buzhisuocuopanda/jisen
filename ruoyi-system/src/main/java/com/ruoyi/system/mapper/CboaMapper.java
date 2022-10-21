@@ -46,4 +46,6 @@ public interface CboaMapper {
     List<BaseSelectVo> orderlistSelect(BaseSelectDto baseSelectDto);
 
     List<SaleOrderListVo> saleOrderListPj(SaleOrderListDto saleOrderListDto);
+
+    List<SaleOrderListVo> saleOrderListGoods(SaleOrderListDto saleOrderListDto);
 }
