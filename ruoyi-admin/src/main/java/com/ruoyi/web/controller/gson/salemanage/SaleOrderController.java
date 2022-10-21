@@ -418,6 +418,63 @@ public class SaleOrderController extends BaseController {
 
     }
 
+
+    /**
+     * 销售出库基于配件销售订单列表
+     *
+     * @param saleOrderListDto
+     * @return
+     */
+    @ApiOperation(
+            value ="销售出库基于配件销售订单列表",
+            notes = "销售出库基于配件销售订单列表"
+    )
+    @GetMapping("/saleOrderListPj")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:list')")
+    public AjaxResult<List<TableDataInfo>> saleOrderListPj( SaleOrderListDto saleOrderListDto) {
+        try {
+            startPage();
+            List<SaleOrderListVo> list = saleOrderService.saleOrderListPj(saleOrderListDto);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单列表】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(saleOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
+    /**
+     * 提货单查询商品销售订单列表
+     *
+     * @param saleOrderListDto
+     * @return
+     */
+    @ApiOperation(
+            value ="销售出库基于配件销售订单列表",
+            notes = "销售出库基于配件销售订单列表"
+    )
+    @GetMapping("/saleOrderListGoods")
+    @PreAuthorize("@ss.hasPermi('sale:saleOrder:list')")
+    public AjaxResult<List<TableDataInfo>> saleOrderListGoods( SaleOrderListDto saleOrderListDto) {
+        try {
+            startPage();
+            List<SaleOrderListVo> list = saleOrderService.saleOrderListGoods(saleOrderListDto);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售出库基于配件销售订单列表】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(saleOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
+
     /**
      * 销售订单列表国际
      *

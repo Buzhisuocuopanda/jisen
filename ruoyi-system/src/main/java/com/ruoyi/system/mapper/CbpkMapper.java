@@ -43,4 +43,6 @@ public interface CbpkMapper {
     List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
 
     int insertWithId(Cbpk cbpk);
+
+    List<TakeGoodsOrderListVo> takeOrderListCk(TakeGoodsOrderListDto takeGoodsOrderListDto);
 }

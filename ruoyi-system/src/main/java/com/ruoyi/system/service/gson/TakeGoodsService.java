@@ -39,4 +39,8 @@ public interface TakeGoodsService {
     List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(Integer whId,Integer goodsId);
 
     void mdfTakeSuggest2(CbpmDto cbpmDto);
+
+    List<TakeGoodsOrderListVo> takeOrderListCk(TakeGoodsOrderListDto takeGoodsOrderListDto);
+
+    TakeGoodsOrderDetailVo takeOrderDetailIds(List<Integer> ids);
 }

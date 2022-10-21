@@ -766,4 +766,74 @@ WHERE
 
 
 </select>
+
+  <select id="saleOrderListPj" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+SELECT
+    oa.CBOA01 AS id,
+	oa.CBOA07 AS orderNo,
+	oa.CBOA08 AS orderDate,
+	ca.CBCA08 AS customerName,
+	u.nick_name AS saleUser,
+	oa.CBOA02 AS createTime
+FROM
+	`CBOA` oa
+	LEFT JOIN CBCA ca ON oa.CBOA09 = ca.CBCA01
+	LEFT JOIN sys_user u ON u.user_id = oa.CBOA10
+	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
+	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+    LEFT JOIN gs_out_stock_adivce out ON out.sale_order_no =oa.CBOA07
+    AND pb.type=0
+WHERE
+	oa.CBOA06 = 0
+	AND oa.CBOA11 =5
+    <if test="customerId != null ">
+
+
+      and ca.CBCA01 = #{customerId}
+    </if>
+
+    <if test="whId != null">
+
+      and out.wh_id = #{whId}
+    </if>
+	GROUP BY oa.CBOA07
+	ORDER BY oa.CBOA02
+  </select>
+
+  <select id="saleOrderListGoods" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">
+SELECT
+    oa.CBOA01 AS id,
+	oa.CBOA07 AS orderNo,
+	oa.CBOA08 AS orderDate,
+	ca.CBCA08 AS customerName,
+	u.nick_name AS saleUser,
+	oa.CBOA02 AS createTime
+FROM
+	`CBOA` oa
+	LEFT JOIN CBCA ca ON oa.CBOA09 = ca.CBCA01
+	LEFT JOIN sys_user u ON u.user_id = oa.CBOA10
+	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
+	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
+	AND pb.type=1
+	LEFT JOIN gs_out_stock_adivce out ON out.sale_order_no =oa.CBOA07
+
+WHERE
+	oa.CBOA06 = 0
+	AND oa.CBOA11 =5
+    <if test="customerId != null ">
+
+
+      and ca.CBCA01 = #{customerId}
+    </if>
+
+    <if test="whId != null">
+
+      and out.wh_id = #{whId}
+    </if>
+	GROUP BY oa.CBOA07
+	ORDER BY oa.CBOA02
+  </select>
+
+
+
 </mapper>

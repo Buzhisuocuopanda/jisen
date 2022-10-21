@@ -378,10 +378,10 @@ WHERE
 	cb.CBBA06 = 0
 	AND cb.CBBA12 = 0
 	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15 &lt;= #{poritiry}
+	AND cb.CBBA15 &gt;= #{poritiry}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 DESC
+	cb.CBBA15
   </select>
 
   <select id="selectLowPriorityGet" resultMap="BaseResultMap">
@@ -393,12 +393,12 @@ ORDER BY
     cb.CBBA06 = 0
     AND cb.CBBA12 = 0
     AND cb.CBBA08 = #{goodsId}
-    AND cb.CBBA15 &lt;= #{poritiry}
+    AND cb.CBBA15 &gt;= #{poritiry}
     <if test="cbba01 !=null and cbba01 !=''">
       AND cb.CBBA01 != #{cbba01}
     </if>
     ORDER BY
-    cb.CBBA15  ASC
+    cb.CBBA15  DESC
   </select>
 
   <select id="selectByPriorityDure" resultMap="BaseResultMap">
@@ -425,11 +425,11 @@ WHERE
 	cb.CBBA06 = 0
 	AND cb.CBBA12 = 0
 	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15  &lt;= #{newPriority}
+	AND cb.CBBA15  &gt;= #{newPriority}
 
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15
+	cb.CBBA15 DESC
   </select>
 
   <select id="selectByPriorityDureH2low" resultMap="BaseResultMap">
@@ -441,9 +441,9 @@ WHERE
 	cb.CBBA06 = 0
 	AND cb.CBBA12 = 0
 	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15  &lt;= #{oldPriority}
+	AND cb.CBBA15  &gt;= #{oldPriority}
 ORDER BY
-	cb.CBBA15 DESC
+	cb.CBBA15
   </select>
 
   <select id="selectByGoodsId" resultMap="BaseResultMap">
@@ -506,7 +506,7 @@ WHERE
     </if>
 
     <if test="sortKey==null ">
-      order by ba.CBBA02 DESC
+      order by ba.CBBA15
 
     </if>
   </select>
@@ -530,6 +530,6 @@ WHERE
 	AND cb.CBBA08 = #{goodsId}
 	AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 DESC
+	cb.CBBA15 ASC
   </select>
 </mapper>

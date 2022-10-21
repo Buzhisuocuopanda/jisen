@@ -28,10 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -1426,6 +1423,34 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpmMapper.updateByPrimaryKey(cbpm);*/
         }
 
+    }
+
+    @Override
+    public List<TakeGoodsOrderListVo> takeOrderListCk(TakeGoodsOrderListDto takeGoodsOrderListDto) {
+
+
+        return cbpkMapper.takeOrderListCk(takeGoodsOrderListDto);
+    }
+
+    @Override
+    public TakeGoodsOrderDetailVo takeOrderDetailIds(List<Integer> ids) {
+
+        TakeGoodsOrderDetailVo  takeGoodsOrderDetailVo=null;
+        String saleOrderNo="";
+        List<TakeOrderGoodsVo> goods=new ArrayList<>();
+        for (Integer id : ids) {
+             takeGoodsOrderDetailVo = takeOrderDetail(id);
+             if(takeGoodsOrderDetailVo.getSaleOrderNo()!=null){
+                 saleOrderNo=saleOrderNo+takeGoodsOrderDetailVo.getSaleOrderNo() ;
+             }
+            for (TakeOrderGoodsVo good : takeGoodsOrderDetailVo.getGoods()) {
+
+                good.setTakegoodsid(id);
+            }
+            goods.addAll(takeGoodsOrderDetailVo.getGoods());
+        }
+        takeGoodsOrderDetailVo.setGoods(goods);
+        return takeGoodsOrderDetailVo;
     }
 
 }

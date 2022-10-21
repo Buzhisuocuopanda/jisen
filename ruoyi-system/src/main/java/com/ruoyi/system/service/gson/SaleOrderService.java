@@ -95,6 +95,11 @@ public interface SaleOrderService {
 
     void pldelSaleOrder(DelSaleOrderDto delSaleOrderDto);
 
+    List<SaleOrderListVo> saleOrderListPj(SaleOrderListDto saleOrderListDto);
+
+    List<SaleOrderListVo> saleOrderListGoods(SaleOrderListDto saleOrderListDto);
+
+
 
 //    GsWorkInstance createTask();
 

@@ -51,4 +51,10 @@ public class TakeGoodsOrderListDto extends BaseEntity {
     private String sn;
 
 
+    private Integer whId;
+
+    private Integer customerId;
+
+
+
 }
