@@ -1490,13 +1490,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //            res.setUserId(user.getUserId().intValue());
 //            res.setUserName(user.getNickName());
 //        }
+            if(cboa.getCboa10()!=null){
+                SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
+                if(saleUser!=null){
+                    res.setSaleUserId(saleUser.getUserId().intValue());
+                    res.setSaleUserName(saleUser.getNickName());
 
-            SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
-            if(saleUser!=null){
-                res.setSaleUserId(saleUser.getUserId().intValue());
-                res.setSaleUserName(saleUser.getNickName());
-
+                }
             }
+
 
             Cbwa cbwa = cbwaMapper.selectByPrimaryKey(saleExitDetailByIdsDto.getWhId());
             if(cbwa!=null){
