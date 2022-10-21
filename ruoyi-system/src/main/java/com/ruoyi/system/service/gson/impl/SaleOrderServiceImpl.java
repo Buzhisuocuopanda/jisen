@@ -1194,14 +1194,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                    }
                 }
                 //查销售人员
-                SysUserCriteria suex = new SysUserCriteria();
-                suex.createCriteria()
-                        .andNickNameEqualTo(saleUser);
-                List<SysUser> sysUsers = sysUserMapper.selectByExample(suex);
-                Integer saleUserId = null;
-                if (sysUsers.size() > 0) {
-                    saleUserId = sysUsers.get(0).getUserId().intValue();
-                }
+//                SysUserCriteria suex = new SysUserCriteria();
+//                suex.createCriteria()
+//                        .andNickNameEqualTo(saleUser);
+//                List<SysUser> sysUsers = sysUserMapper.selectByExample(suex);
+//                Integer saleUserId = null;
+//                if (sysUsers.size() > 0) {
+//                    saleUserId = sysUsers.get(0).getUserId().intValue();
+//                }
 
                 //创建销售订单主表
                 Cboa cboa = new Cboa();
@@ -1217,7 +1217,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cboa.setCboa07(numberGenerate.createOrderNo(numberDo).getOrderNo());
                 cboa.setCboa08(date);
                 cboa.setCboa09(cbca.getCbca01());
-                cboa.setCboa10(saleUserId);
+                cboa.setCboa10(userId.intValue());
                 cboa.setCboa11(AuditStatusConstants.SO_COMMIT);
                 cboa.setCboa13(date);
                 cboa.setCboa16(Integer.valueOf(currency));
