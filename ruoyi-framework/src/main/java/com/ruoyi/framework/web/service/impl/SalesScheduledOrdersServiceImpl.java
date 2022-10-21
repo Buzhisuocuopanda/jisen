@@ -1408,7 +1408,18 @@ if(gsSalesOrders.get(0).getId()==null){
             gsSalesOrdersIn.setUpdateBy(userid);
             gsSalesOrdersIn.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
             gsSalesOrdersIn.setGsSalesOrders(gsSalesOrders.get(0).getId());
+            if(itemList.get(i).getInQty()==null){
+                throw new SwException("数量不能为空");}
             gsSalesOrdersIn.setInQty(itemList.get(i).getInQty());
+            gsSalesOrdersIn.setPonumber(itemList.get(i).getPonumber());
+            if(cbpbs.get(0).getCbpb01()==null){
+                throw new SwException("商品id不能为空");}
+            gsSalesOrdersIn.setGoodsId(cbpbs.get(0).getCbpb01());
+            gsSalesOrdersIn.setStatus(TaskStatus.mr.getCode().byteValue());
+
+            gsSalesOrdersInMapper.insertSelective(gsSalesOrdersIn);
+
+
     }
 
 
