@@ -22,6 +22,7 @@ public interface FinanceQueryService {
     List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto);
 
     List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto);
+    List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto);
 
     List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo);
 

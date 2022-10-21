@@ -187,7 +187,7 @@ public class FinanceQueryController extends BaseController {
                 fnsalesAnalysisDto.setEndTime(new Date(fnsalesAnalysisDto.getEndTime().getTime()+24*60*60*1000-1));
             }
             startPage();
-            List<SaleAnalysisVo> list=financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
+            List<SaleAnalysisVo> list=financeQueryService.salesAnalysis3(fnsalesAnalysisDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

@@ -60,4 +60,6 @@ public class LedgerVo extends BaseEntity {
 
     //商品id,加查询条件
     private Integer cbpb01;
+//    @Excel(name="仓库id")
+    private Integer cbwa01;
 }

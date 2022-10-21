@@ -50,5 +50,11 @@ public class SaleAnalysisVo {
 
 
 
+//    @Excel(name = "金额")
+    private Double money;
+
+    private String cbpb08;
+
+
 
 }

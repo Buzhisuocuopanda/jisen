@@ -232,7 +232,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/9/23 10:41
-     *查询销售分析展示数据
+     *查询销售分析展示数据(弃用)
      */
     @Override
     public List<SaleAnalysisVo> salesAnalysis2(FnsalesAnalysisDto fnsalesAnalysisDto) {
@@ -262,6 +262,20 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
             }
         }
+        return list;
+    }
+
+    @Override
+    public List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto) {
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbscMapper.salesAnalysis3(fnsalesAnalysisDto);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+        for (SaleAnalysisVo saleAnalysisVo : list) {
+            if(saleAnalysisVo.getBrand()!=null){
+                saleAnalysisVo.setBrandName(brandMap.get(saleAnalysisVo.getBrand()));
+            }
+        }
+
         return list;
     }
 

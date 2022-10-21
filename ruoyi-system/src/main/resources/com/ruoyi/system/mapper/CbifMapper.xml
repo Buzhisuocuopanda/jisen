@@ -644,10 +644,10 @@ where
     WHERE
     b.CBWA06=0
     <if test="cbib17 != null and cbib17 != ''">
-      AND ( a.CBIB17 like concat('%', #{cbib17}, '%')
+      AND  a.CBIB17 like concat('%', #{cbib17}, '%')
     </if>
-    <if test="cbwa09 != null and cbwa09 != ''">
-      or b.CBWA09 like concat('%', #{cbwa09}, '%'))
+    <if test="cbwa01 != null">
+      and b.CBWA01 = #{cbwa01}
     </if>
     <if test="cbpb01 != null">
       and a.CBIB08 = #{cbpb01}
