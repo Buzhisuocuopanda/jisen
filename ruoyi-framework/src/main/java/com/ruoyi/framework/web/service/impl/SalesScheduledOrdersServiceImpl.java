@@ -20,6 +20,7 @@ import com.ruoyi.system.service.SalesScheduledOrdersService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import com.ruoyi.system.service.gson.impl.TaskServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -27,8 +28,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1165,8 +1169,10 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
         String qualityinspectionlistNos = numberGenerate.getQualityinspectionlistNos();
         cbpc.setOrderNo(qualityinspectionlistNos);
+        cbpc.setOrderDate(date);
        if(cbpc.getGsid()==null) {
            throw new SwException("预订单主表id不能为空");
        }
@@ -1325,5 +1331,89 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         return null;
     }
 
+    @Override
+    public String importSwJsGoodss(List<GsSalesOrdersInDo> swJsGoodsList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        this.insertSwJsStoress(swJsGoodsList);
 
-}
+
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();    }
+
+    private void insertSwJsStoress(List<GsSalesOrdersInDo> itemList) {
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        if(CollectionUtils.isEmpty(itemList)){
+            throw new SwException("导入数据为空");
+        }
+      if(itemList.get(0).getPonumber()==null){
+          throw new SwException("getPonumber不能为空");}
+
+        if(itemList.get(0).getInQty()==null){
+            throw new SwException("数量不能为空");}
+
+        GsSalesOrdersCriteria salesOrdersCriteria=new GsSalesOrdersCriteria();
+         salesOrdersCriteria.createCriteria().andPonumberEqualTo(itemList.get(0).getPonumber());
+List<GsSalesOrders> gsSalesOrders = gsSalesOrdersMapper.selectByExample(salesOrdersCriteria);
+if(gsSalesOrders.size()==0){
+    throw new SwException("没有找到此明细");}
+if(gsSalesOrders.get(0).getId()==null){
+    throw new SwException("销售预订单id为空");}
+
+        GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria=new GsSalesOrdersDetailsCriteria();
+        gsSalesOrdersDetailsCriteria.createCriteria().andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrders.get(0).getId()));
+        List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+        if(gsSalesOrdersDetails.size()==0){
+            throw new SwException("没有找到此销售预订单明细");}
+
+        double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+        double sum1 = itemList.stream().mapToDouble(GsSalesOrdersInDo::getInQty).sum();
+        if(sum1>sum){
+            throw new SwException("导入数量大于预订单数量");}
+
+
+
+        for (int i = 0; i < itemList.size(); i++) {
+            //判断sku是否存在
+
+        if(itemList.get(i).getSku()==null){
+            throw new SwException("sku不能为空");}
+
+        CbpbCriteria cbpbCriteria = new CbpbCriteria();
+        cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getSku());
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+        if(cbpbs.size()==0){
+            throw new SwException("没有找到此sku");}
+
+        //新增
+            GsSalesOrdersIn gsSalesOrdersIn = new GsSalesOrdersIn();
+            gsSalesOrdersIn.setCreateTime(date);
+            gsSalesOrdersIn.setCreateBy(userid);
+            gsSalesOrdersIn.setUpdateTime(date);
+            gsSalesOrdersIn.setUpdateBy(userid);
+            gsSalesOrdersIn.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
+            gsSalesOrdersIn.setGsSalesOrders(gsSalesOrders.get(0).getId());
+            gsSalesOrdersIn.setInQty(itemList.get(i).getInQty());
+    }
+
+
+
+    }}
+
+
+

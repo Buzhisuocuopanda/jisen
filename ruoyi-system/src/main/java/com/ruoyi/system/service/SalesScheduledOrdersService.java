@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.Do.GsSalesChangeDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
+import com.ruoyi.system.domain.Do.GsSalesOrdersInDo;
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
 import com.ruoyi.system.domain.dto.*;
@@ -89,4 +90,9 @@ public interface SalesScheduledOrdersService {
     List<GsSalesOrdersVo> saleOrderLists(GsSalesOrdersDo gsSalesOrdersDo);
 
     List<GsSalesOrdersDetailsVo> saleOrderListdetails(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo);
+
+    String importSwJsGoodss(List<GsSalesOrdersInDo> swJsGoodsList, boolean updateSupport, String operName);
+
+
+
 }
