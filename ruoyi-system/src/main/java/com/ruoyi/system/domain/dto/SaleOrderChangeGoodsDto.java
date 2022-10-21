@@ -44,6 +44,12 @@ public class SaleOrderChangeGoodsDto {
 
     private Integer cbobId;
 
+    private Integer id;
 
-
+    public Integer getGoodsId() {
+        if(goodsId==null){
+            return id;
+        }
+        return goodsId;
+    }
 }

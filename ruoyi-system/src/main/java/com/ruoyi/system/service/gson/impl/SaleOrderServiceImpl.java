@@ -1820,9 +1820,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbod cbod = null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
-//            if(good.getGoodsId()==null){
-//                continue;
-//            }
+
+            if(good.getGoodsId()==null){
+                good.setGoodsId(good.getId());
+            }
             //查出原先旧数据
 //            CbobCriteria obexample = new CbobCriteria();
 //            obexample.createCriteria()
