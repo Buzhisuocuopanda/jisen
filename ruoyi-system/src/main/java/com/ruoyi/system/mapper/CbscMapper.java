@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.CbscCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
+import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbscMapper {
@@ -27,4 +30,10 @@ public interface CbscMapper {
     int updateByPrimaryKeySelective(Cbsc record);
 
     int updateByPrimaryKey(Cbsc record);
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/21 14:46
+     *销售分析查询
+     */
+    List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto);
 }

@@ -445,5 +445,32 @@
     where CBSC01 = #{cbsc01,jdbcType=INTEGER}
   </update>
 
+  <select id="salesAnalysis3" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
 
+    SELECT
+    sc.CBSC09 as qty,sc.CBSC11 as price, pb.CBPB10 AS brand,pb.CBPB12 AS model,pb.CBPB08,ca.CBCA08 AS customerName,
+    sc.CBSC12 as money
+    FROM
+    CBSC sc
+    LEFT JOIN CBSB sb ON sb.CBSB01 = sc.CBSB01
+    LEFT JOIN CBPB pb ON pb.CBPB01 = sc.CBSC08
+    LEFT JOIN CBCA ca ON ca.CBCA01 = sb.CBSB09
+    WHERE 1=1
+    <if test="customerId !=null ">
+      AND sb.CBSB09 = #{customerId}
+    </if>
+    <if test="model !=null and model !='' ">
+      AND pb.CBPB12  like concat('%',  #{model}, '%')
+    </if>
+    <if test="brand !=null and brand !='' ">
+      AND pb.CBPB10 = #{brand}
+    </if>
+    <if test="startTime !=null ">
+      AND sc.CBSC03  &gt;= #{startTime}
+    </if>
+    <if test="endTime !=null ">
+      AND sc.CBSC03 &lt;=#{endTime}
+    </if>
+    order by sc.CBSC03 desc
+  </select>
 </mapper>
