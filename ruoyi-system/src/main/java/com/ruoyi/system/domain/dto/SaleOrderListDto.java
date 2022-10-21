@@ -46,6 +46,12 @@ public class SaleOrderListDto {
 
     private String saleNo;
 
+    @ApiModelProperty("客户id")
+    private Integer customerId;
+
+    @ApiModelProperty("仓库id")
+    private Integer whId;
+
 
 
 

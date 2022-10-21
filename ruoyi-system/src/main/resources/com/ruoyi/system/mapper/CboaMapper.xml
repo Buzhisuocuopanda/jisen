@@ -781,10 +781,21 @@ FROM
 	LEFT JOIN sys_user u ON u.user_id = oa.CBOA10
 	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
 	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
-	AND pb.type=0
+    LEFT JOIN gs_out_stock_adivce out ON out.sale_order_no =oa.CBOA07
+    AND pb.type=0
 WHERE
 	oa.CBOA06 = 0
 	AND oa.CBOA11 =5
+    <if test="customerId != null ">
+
+
+      and ca.CBCA01 = #{customerId}
+    </if>
+
+    <if test="whId != null">
+
+      and out.wh_id = #{whId}
+    </if>
 	GROUP BY oa.CBOA07
 	ORDER BY oa.CBOA02
   </select>
@@ -804,9 +815,21 @@ FROM
 	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
 	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
 	AND pb.type=1
+	LEFT JOIN gs_out_stock_adivce out ON out.sale_order_no =oa.CBOA07
+
 WHERE
 	oa.CBOA06 = 0
 	AND oa.CBOA11 =5
+    <if test="customerId != null ">
+
+
+      and ca.CBCA01 = #{customerId}
+    </if>
+
+    <if test="whId != null">
+
+      and out.wh_id = #{whId}
+    </if>
 	GROUP BY oa.CBOA07
 	ORDER BY oa.CBOA02
   </select>
