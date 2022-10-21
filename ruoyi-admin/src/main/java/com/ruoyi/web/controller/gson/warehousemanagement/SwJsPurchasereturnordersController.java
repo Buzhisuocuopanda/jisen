@@ -494,7 +494,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             value ="不良品列表",
             notes = "不良品列表"
     )
-    @GetMapping("/SwJsSkuBarcodelists")
+    @GetMapping("/SwJsSkuBarcodelistssr")
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:list')")
     public AjaxResult<TableDataInfo> swJsGoodslists(GsGoodsSnsVo gsGoodsSnsVo) {
         try {

@@ -1258,7 +1258,7 @@ public class SalesScheduledOrdersController extends BaseController {
             value ="导入预订单入库单",
             notes = "导入预订单入库单"
     )
-    @PostMapping("/importSwJsGoodss")
+    @PostMapping("/importSwJsGoodssss")
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:import')")
     @ResponseBody
     public AjaxResult importSwJsGoodss(MultipartFile file, boolean updateSupport) {
