@@ -427,7 +427,7 @@ return;
 
     @Override
     public void editSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
-        GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
+        /*GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         // int i = Integer.parseInt(gsSalesOrdersIn.getDeleteFlag());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -438,8 +438,8 @@ return;
         }
         List<GsSalesOrdersIn> goods = gsSalesOrdersInDto.getGoods();
 
-        gsSalesOrdersInDto.getGsSalesOrders();
-
+        gsSalesOrdersInDto.getGsSalesOrders();*/
+        List<GsSalesOrdersIn> goods = gsSalesOrdersInDto.getGoods();
         GsSalesOrdersInCriteria gsSalesOrdersInCriteria = new GsSalesOrdersInCriteria();
         gsSalesOrdersInCriteria.createCriteria().andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getGsSalesOrders());
         int i = gsSalesOrdersInMapper.deleteByExample(gsSalesOrdersInCriteria);

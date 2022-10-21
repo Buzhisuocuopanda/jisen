@@ -186,16 +186,6 @@ private NumberGenerate numberGenerate;
 
 
 
-/*       Set<Integer> uio = null;
-       Integer cbph08 = null;
-       for (int i = 0; i < cbphs.size(); i++) {
-           cbph08 = cbphs.get(i).getCbpd08();
-           uio = new HashSet<>();
-        uio.add(cbph08);
-        sio.addAll(uio);
-       }
-
-       sio.add(cbph08);*/
 
 
        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -203,9 +193,11 @@ private NumberGenerate numberGenerate;
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
        for (int i = 0; i < itemList.size(); i++) {
-           if(  itemList.get(i).getCbpe09()==null){
+           if (itemList.get(i).getCbpe09() == null) {
                throw new SwException("sn码不能为空");
            }
+
+
            String cbic10 = itemList.get(i).getCbpe09();
            String uuid = UUID.randomUUID().toString();
            Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
@@ -215,6 +207,8 @@ private NumberGenerate numberGenerate;
            String s = redisTemplate.opsForValue().get(cbic10);
 
 
+
+           GsGoodsSnDo gsGoodsSnDo;
            try {
                if (itemList.get(i).getCbpe08() == null) {
                    throw new SwException("商品id不能为空");
@@ -267,39 +261,7 @@ private NumberGenerate numberGenerate;
                if (cbpc == null) {
                    throw new SwException("采购入库单不存在");
                }
-           /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-            //获取仓库id
-            gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
-            //获取商品id
-            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbpe08());
-            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            //通过仓库id和货物id判断是否存在
-            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-             if(gsGoodsSkus.size()==0){
-                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
-                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
-                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
-                 gsGoodsSkuDo1.setQty(1.0);
-                 taskService.addGsGoodsSku(gsGoodsSkuDo1);
-            }
-             //如果存在则更新库存数量
-             else {
-                 //加锁
-                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
-                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
-                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
-                 //查出
-                 Double qty = gsGoodsSkus.get(0).getQty();
-                 if(qty+1.0>cbla.getCbla11()){
-                     throw new SwException("库存数量达到库位上限");
-                 }
-                 gsGoodsSkuDo1.setQty(qty+1.0);
-                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-             }*/
 
                GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
                gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
@@ -308,7 +270,7 @@ private NumberGenerate numberGenerate;
                    throw new SwException("该sn已存在库存sn表里");
                }
 
-               GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+               gsGoodsSnDo = new GsGoodsSnDo();
                gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
                gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
                gsGoodsSnDo.setWhId(cbpc.getCbpc10());
@@ -316,9 +278,8 @@ private NumberGenerate numberGenerate;
                gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-               taskService.addGsGoodsSns(gsGoodsSnDo);
-           }
-           finally {
+               log.info("打印" + Thread.currentThread().getName() + "sn表");
+           } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                        "then " +
@@ -326,15 +287,16 @@ private NumberGenerate numberGenerate;
                        "else " +
                        "return 0 " +
                        "end";
-               this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList("lock"), uuid);
+               this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
            }
 
            // this.redisTemplate.delete("lock");
 
-           mapper.insertSelective(itemList.get(i));
+           cbpeMapper.insertSelective(itemList.get(i));
+           taskService.addGsGoodsSns(gsGoodsSnDo);
 
 
-         //  redisTemplate.delete("lock");
+           //  redisTemplate.delete("lock");
            if (i % 10 == 9) {//每10条提交一次
                session.commit();
                session.clearCache();

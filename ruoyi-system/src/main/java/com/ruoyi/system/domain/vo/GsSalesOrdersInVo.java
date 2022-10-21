@@ -31,6 +31,8 @@ public class GsSalesOrdersInVo  implements Serializable {
 
     private String ponumber;
 
+    private String factory;
+
     private Integer goodsId;
 
     private Double price;

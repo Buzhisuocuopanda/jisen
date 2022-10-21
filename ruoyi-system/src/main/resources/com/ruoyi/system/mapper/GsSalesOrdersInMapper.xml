@@ -371,7 +371,8 @@ order by a.create_time desc
       pb.CBPB10 as cbpb10,pb.CBPB12 as cbpb12,
       pb.CBPB08 as cbpb08,la.CALA08 as cala08,
       a.in_qty as  inQty,a.PONumber as ponumber,
-      a.id as id
+      a.id as id,
+      gs.factory as factory,
       from `gs_ Sales_orders_in` a
       LEFT JOIN  `gs_ Sales_orders` gs on a.gs_sales_orders = gs.id
       LEFT JOIN CBSA sa on gs.supplier_id = sa.CBSA01
@@ -382,8 +383,8 @@ order by a.create_time desc
       LEFT JOIN CALA la on la.CALA01 = pb.CBPB10
       LEFT JOIN  gs_Sales_orders_details sj on sj.gs_Sales_orders=gs.id
 
-    where a.`status` = 0
-      <if test="orderNo != null and orderNo !=''">
+    where gs.id = #{ids}
+    <!--  <if test="orderNo != null and orderNo !=''">
           and   gs.order_no    like concat('%', #{orderNo}, '%')
       </if>
       <if test="id != null and id !=''">
@@ -392,19 +393,19 @@ order by a.create_time desc
     <if test="ids != null and ids !=''">
       and   gs.id = #{ids}
     </if>
-      <!--    &lt;if test="startTime != null"&gt;-->
-      <!--      and a.order_date &amp;gt;= #{startTime}-->
-      <!--    &lt;/if&gt;-->
-      <!--    &lt;if test="endTime != null"&gt;-->
-      <!--      and a.order_date &amp;lt;=#{endTime}-->
-      <!--    &lt;/if&gt;-->
+      &lt;!&ndash;    &lt;if test="startTime != null"&gt;&ndash;&gt;
+      &lt;!&ndash;      and a.order_date &amp;gt;= #{startTime}&ndash;&gt;
+      &lt;!&ndash;    &lt;/if&gt;&ndash;&gt;
+      &lt;!&ndash;    &lt;if test="endTime != null"&gt;&ndash;&gt;
+      &lt;!&ndash;      and a.order_date &amp;lt;=#{endTime}&ndash;&gt;
+      &lt;!&ndash;    &lt;/if&gt;&ndash;&gt;
 
-      <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
           and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
       </if>
-      <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      <if test="params.endTime != null and params.endTime != ''">&lt;!&ndash; 结束时间检索 &ndash;&gt;
           and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-      </if>
+      </if>-->
 
   </select>
 </mapper>
