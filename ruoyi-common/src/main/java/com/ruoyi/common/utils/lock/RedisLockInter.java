@@ -1,7 +1,7 @@
 package com.ruoyi.common.utils.lock;
 
 /**
- * @Author: 朱军琳
+ * @Author:
  * @Description:
  * @CreateDate： 15:26 2019/4/8
  */
