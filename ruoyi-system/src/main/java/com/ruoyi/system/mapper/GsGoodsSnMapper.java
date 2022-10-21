@@ -40,4 +40,6 @@ public interface GsGoodsSnMapper {
     List<GsGoodsSnVo> selectGoodsSnSelect(GsGoodsSnVo gsGoodsSnVo);
     List<GsGoodsSnVo> selectGoodsSnSelect2(@Param("sn") String sn);
     List<GsGoodsSnVo> selectGoodsSnSelect3(@Param("sn") String sn);
+
+    List<GsGoodsSnsVo> getInfosss(GsGoodsSnsVo gsGoodsSnsVo);
 }

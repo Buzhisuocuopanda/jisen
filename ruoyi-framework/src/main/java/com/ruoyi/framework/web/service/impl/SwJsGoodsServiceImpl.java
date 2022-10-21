@@ -369,14 +369,14 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         }
 
         //分类编号
-        if(itemList.get(0).getCbpb14()==null){
+        if(itemList.get(0).getCbpb14()==null||itemList.get(0).getCbpb14().equals("")){
             throw new SwException("分类编号不能为空！");
         }
         Integer cbpb14 = itemList.get(0).getCbpb14();
 
 
         //品牌
-        if(itemList.get(0).getCbpb10()==null){
+        if(itemList.get(0).getCbpb10()==null||itemList.get(0).getCbpb10().equals("")){
             throw new SwException("品牌不能为空！");
         }
         Integer cbpb10 = itemList.get(0).getCbpb10();

@@ -19,6 +19,7 @@ import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
+import com.ruoyi.web.controller.tool.Resubmit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -127,6 +128,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             value ="新增采购入库单扫码",
             notes = "新增采购入库单扫码"
     )
+    @Resubmit(delaySeconds = 2)
     @PostMapping("/SwJsPurchaseinboundaddsm")
     public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody List<Cbpe> itemList, BindingResult bindingResult) {
         try {

@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 public class TotalOrderListVo {
-    @Excel(name = "优先级")
+    @Excel(name = "优先级", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("优先级")
 
     private Integer priority;
@@ -33,20 +33,20 @@ public class TotalOrderListVo {
 
     private String description;
 
-    @Excel(name = "订单数量")
+    @Excel(name = "订单数量", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("订单数量")
 
     private Double orderQty;
-    @Excel(name = "生产数量")
+    @Excel(name = "生产数量", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("生产数量")
 
     private Double makeQty;
-    @Excel(name = "已发货数量")
+    @Excel(name = "已发货数量", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("已发货数量")
 
     private Double shippedQty;
     @ApiModelProperty("现有订单数量")
-    @Excel(name = "现有订单数量")
+    @Excel(name = "现有订单数量", cellType = Excel.ColumnType.NUMERIC)
     private Double currentOrderQty;
 
     private Integer orderType;

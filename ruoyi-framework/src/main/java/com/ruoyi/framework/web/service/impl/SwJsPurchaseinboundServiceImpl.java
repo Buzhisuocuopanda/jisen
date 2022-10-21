@@ -22,6 +22,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -185,16 +186,6 @@ private NumberGenerate numberGenerate;
 
 
 
-/*       Set<Integer> uio = null;
-       Integer cbph08 = null;
-       for (int i = 0; i < cbphs.size(); i++) {
-           cbph08 = cbphs.get(i).getCbpd08();
-           uio = new HashSet<>();
-        uio.add(cbph08);
-        sio.addAll(uio);
-       }
-
-       sio.add(cbph08);*/
 
 
        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
@@ -202,24 +193,41 @@ private NumberGenerate numberGenerate;
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
        for (int i = 0; i < itemList.size(); i++) {
-           if (itemList.get(i).getCbpe08() == null) {
-               throw new SwException("商品id不能为空");
-           }
-           if (!sio.contains(itemList.get(i).getCbpe08())) {
-               throw new SwException("该商品不在采购入货单明细中");
+           if (itemList.get(i).getCbpe09() == null) {
+               throw new SwException("sn码不能为空");
            }
 
-           if (itemList.get(i).getCbpe10() == null) {
-               throw new SwException("库位id不能为空");
+
+           String cbic10 = itemList.get(i).getCbpe09();
+           String uuid = UUID.randomUUID().toString();
+           Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+           if (!lock) {
+               throw new SwException("sn重复，请勿重复提交");
            }
-           Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpe10());
-           if (cblas == null) {
-               throw new SwException("库位不存在");
-           }
-           if (!cblas.getCbla10().equals(storeid)) {
-               throw new SwException("库位不属于该仓库");
-           }
-           String sn = itemList.get(i).getCbpe09();
+           String s = redisTemplate.opsForValue().get(cbic10);
+
+
+
+           GsGoodsSnDo gsGoodsSnDo;
+           try {
+               if (itemList.get(i).getCbpe08() == null) {
+                   throw new SwException("商品id不能为空");
+               }
+               if (!sio.contains(itemList.get(i).getCbpe08())) {
+                   throw new SwException("该商品不在采购入货单明细中");
+               }
+
+               if (itemList.get(i).getCbpe10() == null) {
+                   throw new SwException("库位id不能为空");
+               }
+               Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpe10());
+               if (cblas == null) {
+                   throw new SwException("库位不存在");
+               }
+               if (!cblas.getCbla10().equals(storeid)) {
+                   throw new SwException("库位不属于该仓库");
+               }
+               String sn = itemList.get(i).getCbpe09();
            /*  boolean redisKeyBoolean = redisTemplate.opsForValue().setIfAbsent("lock",sn, 5, TimeUnit.SECONDS);
            String lock = redisTemplate.opsForValue().get("lock");*/
 /*
@@ -231,83 +239,64 @@ private NumberGenerate numberGenerate;
             }
            String lock = redisTemplate.opsForValue().get("lock");*/
 
-           //校验sn码
-           CbpeCriteria examples = new CbpeCriteria();
-           examples.createCriteria().andCbpe09EqualTo(sn);
-           List<Cbpe> cbpes = cbpeMapper.selectByExample(examples);
-           if (cbpes.size() > 0) {
-               throw new SwException("该sn已存在");
+               //校验sn码
+               CbpeCriteria examples = new CbpeCriteria();
+               examples.createCriteria().andCbpe09EqualTo(sn);
+               List<Cbpe> cbpes = cbpeMapper.selectByExample(examples);
+               if (cbpes.size() > 0) {
+                   throw new SwException("该sn已存在");
+               }
+               //校验库位
+               Cbla cbla = baseCheckService.checkStoresku(itemList.get(i).getCbpe10());
+
+               itemList.get(i).setCbpe03(date);
+               itemList.get(i).setCbpe04(Math.toIntExact(userid));
+               itemList.get(i).setCbpe05(date);
+               itemList.get(i).setCbpe06(Math.toIntExact(userid));
+               itemList.get(i).setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
+               itemList.get(i).setUserId(Math.toIntExact(userid));
+               itemList.get(i).setCbpe11(ScanStatusEnum.YISAOMA.getCode());
+               //如果查不到添加信息到库存表
+               Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
+               if (cbpc == null) {
+                   throw new SwException("采购入库单不存在");
+               }
+
+
+               GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+               gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
+               List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+               if (gsGoodsSns.size() > 0) {
+                   throw new SwException("该sn已存在库存sn表里");
+               }
+
+               gsGoodsSnDo = new GsGoodsSnDo();
+               gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
+               gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
+               gsGoodsSnDo.setWhId(cbpc.getCbpc10());
+               gsGoodsSnDo.setLocationId(itemList.get(i).getCbpe10());
+               gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+               gsGoodsSnDo.setInTime(date);
+               gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+               log.info("打印" + Thread.currentThread().getName() + "sn表");
+           } finally {
+
+               String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                       "then " +
+                       "return redis.call('del', KEYS[1]) " +
+                       "else " +
+                       "return 0 " +
+                       "end";
+               this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
            }
-           //校验库位
-           Cbla cbla = baseCheckService.checkStoresku(itemList.get(i).getCbpe10());
-
-           itemList.get(i).setCbpe03(date);
-           itemList.get(i).setCbpe04(Math.toIntExact(userid));
-           itemList.get(i).setCbpe05(date);
-           itemList.get(i).setCbpe06(Math.toIntExact(userid));
-           itemList.get(i).setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
-           itemList.get(i).setUserId(Math.toIntExact(userid));
-           itemList.get(i).setCbpe11(ScanStatusEnum.YISAOMA.getCode());
-           //如果查不到添加信息到库存表
-           Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
-           if (cbpc == null) {
-               throw new SwException("采购入库单不存在");
-           }
-           /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-            //获取仓库id
-            gsGoodsSkuDo.setWhId(cbpc.getCbpc10());
-            //获取商品id
-            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbpe08());
-            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            //通过仓库id和货物id判断是否存在
-            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-             if(gsGoodsSkus.size()==0){
-                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
-                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
-                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
-                 gsGoodsSkuDo1.setQty(1.0);
-                 taskService.addGsGoodsSku(gsGoodsSkuDo1);
-            }
-             //如果存在则更新库存数量
-             else {
-                 //加锁
-                 baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                 GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                 gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbpe08());
-                 gsGoodsSkuDo1.setWhId(cbpc.getCbpc10());
-                 gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbpe10());
-                 //查出
-                 Double qty = gsGoodsSkus.get(0).getQty();
-                 if(qty+1.0>cbla.getCbla11()){
-                     throw new SwException("库存数量达到库位上限");
-                 }
-                 gsGoodsSkuDo1.setQty(qty+1.0);
-                 taskService.updateGsGoodsSku(gsGoodsSkuDo1);
-
-             }*/
-
-           GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
-           gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
-           List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
-           if (gsGoodsSns.size() > 0) {
-               throw new SwException("该sn已存在库存sn表里");
-           }
-
-           GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
-           gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
-           gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
-           gsGoodsSnDo.setWhId(cbpc.getCbpc10());
-           gsGoodsSnDo.setLocationId(itemList.get(i).getCbpe10());
-           gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
-           gsGoodsSnDo.setInTime(date);
-           gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-           taskService.addGsGoodsSns(gsGoodsSnDo);
 
            // this.redisTemplate.delete("lock");
 
-           mapper.insertSelective(itemList.get(i));
-         //  redisTemplate.delete("lock");
+           cbpeMapper.insertSelective(itemList.get(i));
+           taskService.addGsGoodsSns(gsGoodsSnDo);
+
+
+           //  redisTemplate.delete("lock");
            if (i % 10 == 9) {//每10条提交一次
                session.commit();
                session.clearCache();
@@ -489,7 +478,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             if(good.getCbpd01()==null){
                 throw new SwException("采购订单明细id不能为空");
             }
-            cbpd.setCbpd01(good.getCbpd01());
+            cbpd.setCbpd01(null);
             cbpd.setCbpd05(date);
             cbpd.setCbpd06(Math.toIntExact(userid));
             cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());

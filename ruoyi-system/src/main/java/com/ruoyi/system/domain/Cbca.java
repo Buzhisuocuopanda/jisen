@@ -23,10 +23,10 @@ public class Cbca implements Serializable {
     @Excel(name = "名称")
 
     private String cbca08;
-    @Excel(name = "订单号")
+   // @Excel(name = "订单号")
 
     private String cbca09;
-    @Excel(name = "名称首字母")
+   // @Excel(name = "名称首字母")
 
     private String cbca10;
     @Excel(name = "开户行")

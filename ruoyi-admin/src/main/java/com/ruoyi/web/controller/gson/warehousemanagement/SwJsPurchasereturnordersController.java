@@ -18,7 +18,9 @@ import com.ruoyi.system.domain.Cbsf;
 import com.ruoyi.system.domain.Do.CbpgDo;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpgDto;
+import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpgVo;
+import com.ruoyi.system.domain.vo.GsGoodsSnsVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.service.ISwJsPurchasereturnordersService;
 import io.swagger.annotations.Api;
@@ -483,5 +485,38 @@ public class SwJsPurchasereturnordersController extends BaseController {
         ExcelUtil<CbpgDo> util = new ExcelUtil<CbpgDo>(CbpgDo.class);
         util.importTemplateExcel(response,"导入采购退库单下载模板");
     }
+
+
+    /**
+     * 不良品列表
+     */
+    @ApiOperation(
+            value ="不良品列表",
+            notes = "不良品列表"
+    )
+    @GetMapping("/SwJsSkuBarcodelistssr")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:list')")
+    public AjaxResult<TableDataInfo> swJsGoodslists(GsGoodsSnsVo gsGoodsSnsVo) {
+        try {
+            startPage();
+            List<GsGoodsSnsVo> list = swJsPurchasereturnordersService.selectSwJsTaskGoodsRelListssS(gsGoodsSnsVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【不良品列表】接口出现异常,参数${},异常${}$", JSON.toJSON(gsGoodsSnsVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【不良品列表】接口出现异常,参数${},异常${}$", JSON.toJSON(gsGoodsSnsVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【不良品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsGoodsSnsVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 }

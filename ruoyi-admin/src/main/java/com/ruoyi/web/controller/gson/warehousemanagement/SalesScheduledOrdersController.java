@@ -13,6 +13,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.Do.GsSalesChangeDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
+import com.ruoyi.system.domain.Do.GsSalesOrdersInDo;
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
 import com.ruoyi.system.domain.dto.*;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -1234,7 +1236,57 @@ public class SalesScheduledOrdersController extends BaseController {
     }
 
 
+    /**
+     * 导入预订单入库单下载模板
+     */
+    @ApiOperation(
+            value ="导入预订单入库单下载模板",
+            notes = "导入预订单入库单下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<GsSalesOrdersInDo> util = new ExcelUtil<GsSalesOrdersInDo>(GsSalesOrdersInDo.class);
+        util.importTemplateExcel(response,"导入预订单入库单下载模板");
+    }
 
+
+    /**
+     * 导入预订单入库单
+     */
+    @ApiOperation(
+            value ="导入预订单入库单",
+            notes = "导入预订单入库单"
+    )
+    @PostMapping("/importSwJsGoodssss")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:import')")
+    @ResponseBody
+    public AjaxResult importSwJsGoodss(MultipartFile file, boolean updateSupport) {
+        try {
+            ExcelUtil<GsSalesOrdersInDo> util = new ExcelUtil<>(GsSalesOrdersInDo.class);
+            List<GsSalesOrdersInDo> swJsGoodsList = util.importExcel(file.getInputStream());
+            //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+            String operName = SecurityUtils.getUsername();
+
+            //String operName = loginUser.getUsername();
+            String message = salesScheduledOrdersService.importSwJsGoodss(swJsGoodsList, updateSupport,operName);
+            return AjaxResult.success(message);
+        }catch (SwException e) {
+            log.error("【导入预订单入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【导入预订单入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【导入预订单入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 
 }

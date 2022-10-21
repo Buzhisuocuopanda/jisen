@@ -538,7 +538,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public String importTotalOrder(List<TotalOrderExcelDto> list, Long userId) {
 
-
+        StringBuilder sb=new StringBuilder();
         TotalOrderAddDto totalOrderAddDto = null;
         List<String> errors=new ArrayList<>();
         Map<String,Integer> goodsMap=new HashMap<>();
@@ -615,7 +615,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         }
 
-        return "导入成功";
+        return "导入成功，本次共导入成功"+list.size()+"条";
+
 
 
     }
@@ -1193,14 +1194,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                    }
                 }
                 //查销售人员
-                SysUserCriteria suex = new SysUserCriteria();
-                suex.createCriteria()
-                        .andNickNameEqualTo(saleUser);
-                List<SysUser> sysUsers = sysUserMapper.selectByExample(suex);
-                Integer saleUserId = null;
-                if (sysUsers.size() > 0) {
-                    saleUserId = sysUsers.get(0).getUserId().intValue();
-                }
+//                SysUserCriteria suex = new SysUserCriteria();
+//                suex.createCriteria()
+//                        .andNickNameEqualTo(saleUser);
+//                List<SysUser> sysUsers = sysUserMapper.selectByExample(suex);
+//                Integer saleUserId = null;
+//                if (sysUsers.size() > 0) {
+//                    saleUserId = sysUsers.get(0).getUserId().intValue();
+//                }
 
                 //创建销售订单主表
                 Cboa cboa = new Cboa();
@@ -1216,7 +1217,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cboa.setCboa07(numberGenerate.createOrderNo(numberDo).getOrderNo());
                 cboa.setCboa08(date);
                 cboa.setCboa09(cbca.getCbca01());
-                cboa.setCboa10(saleUserId);
+                cboa.setCboa10(userId.intValue());
                 cboa.setCboa11(AuditStatusConstants.SO_COMMIT);
                 cboa.setCboa13(date);
                 cboa.setCboa16(Integer.valueOf(currency));
@@ -1819,9 +1820,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         taskService.addGsWorkInstance(gsWorkInstanceDo);
         Cbod cbod = null;
         for (SaleOrderChangeGoodsDto good : saleOrderChangeDto.getGoods()) {
-//            if(good.getGoodsId()==null){
-//                continue;
-//            }
+
+            if(good.getGoodsId()==null){
+                good.setGoodsId(good.getId());
+            }
             //查出原先旧数据
 //            CbobCriteria obexample = new CbobCriteria();
 //            obexample.createCriteria()
