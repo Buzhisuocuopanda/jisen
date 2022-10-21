@@ -1453,4 +1453,135 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         return takeGoodsOrderDetailVo;
     }
 
+    @Override
+    public TakeGoodsOrderDetailVo saleExitDetailByIds(SaleExitDetailByIdsDto saleExitDetailByIdsDto) {
+        List<Integer> saleOrderIds = saleExitDetailByIdsDto.getSaleOrderIds();
+        TakeGoodsOrderDetailVo res=new TakeGoodsOrderDetailVo();
+        List<TakeOrderGoodsVo> goods=new ArrayList<>();
+        for (Integer saleOrderId : saleOrderIds) {
+            Cboa cboa = cboaMapper.selectByPrimaryKey(saleOrderId);
+
+            res.setContacts(cboa.getCboa17());
+            res.setCurrency(cboa.getCboa16());
+            if(CurrencyEnum.CNY.getCode().equals(cboa.getCboa16())){
+                res.setCurrencyMsg(CurrencyEnum.CNY.getMsg());
+            }else {
+                res.setCurrencyMsg(CurrencyEnum.USD.getMsg());
+            }
+            res.setCustomerId(cboa.getCboa09());
+            Cbca cbca = cbcaMapper.selectByPrimaryKey(res.getCustomerId());
+            if(cbca!=null){
+                res.setCustomerName(cbca.getCbca08());
+                res.setCustomerLevel(cbca.getCbca28());
+            }
+
+            res.setCustomerNo(cboa.getCboa25());
+            res.setOrderDate(cboa.getCboa08());
+            res.setPhone(cboa.getCboa19());
+            res.setReceiveAdress(cboa.getCboa18());
+
+            res.setReceiver(cboa.getCboa17());
+            res.setReceivPhone(cboa.getCboa19());
+            res.setSaleOrderId(cboa.getCboa01());
+
+            res.setSaleOrderNo(cboa.getCboa07());
+//        SysUser user = sysUserMapper.selectByPrimaryKey(cbpk.getCbpk03().longValue());
+//        if(user!=null){
+//            res.setUserId(user.getUserId().intValue());
+//            res.setUserName(user.getNickName());
+//        }
+
+            SysUser saleUser = sysUserMapper.selectByPrimaryKey(cboa.getCboa10().longValue());
+            if(saleUser!=null){
+                res.setSaleUserId(saleUser.getUserId().intValue());
+                res.setSaleUserName(saleUser.getNickName());
+
+            }
+
+            Cbwa cbwa = cbwaMapper.selectByPrimaryKey(saleExitDetailByIdsDto.getWhId());
+            if(cbwa!=null){
+                res.setWhName(cbwa.getCbwa09());
+                res.setWhId(cbwa.getCbwa01());
+
+            }
+//        if(cbpk.getCheckStatus()!=null){
+//            if(TakeOrderCheckStatus.NOCHECK.getCode().equals(cbpk.getCheckStatus())){
+//                res.setCheckStatus(TakeOrderCheckStatus.NOCHECK.getMsg());
+//            }else {
+//                res.setCheckStatus(TakeOrderCheckStatus.CHECK.getMsg());
+//            }
+//
+//
+//        }
+
+            CalaCriteria laexample = new CalaCriteria();
+            laexample.createCriteria()
+                    .andCala10EqualTo("商品品牌");
+            List<Cala> calas = calaMapper.selectByExample(laexample);
+            Map<Integer, String> brandMap = new HashMap<>();
+            for (Cala cala : calas) {
+                brandMap.put(cala.getCala01(), cala.getCala08());
+            }
+//        CbobCriteria obex=new CbobCriteria();
+//        obex.createCriteria()
+//                .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                .andCboa01EqualTo(cboa.getCboa01());
+//        List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+            TakeOrderGoodsVo good=null;
+            //查占用表
+            GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+            usex.createCriteria().andOrderNoEqualTo(cboa.getCboa07())
+                    .andWhIdEqualTo(saleExitDetailByIdsDto.getWhId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+            for (GsGoodsUse goodsUse : gsGoodsUses) {
+                good=new TakeOrderGoodsVo();
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(goodsUse.getGoodsId());
+                if (cbpb != null) {
+                    good.setGoodsId(cbpb.getCbpb01());
+                    good.setBrand(brandMap.get(cbpb.getCbpb10()));
+                    good.setDescription(cbpb.getCbpb08());
+                    good.setModel(cbpb.getCbpb12());
+                    Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                    if(cbpa!=null){
+                        good.setGoodClass(cbpa.getCbpa07());
+                    }
+                }
+                CbobCriteria obex=new CbobCriteria();
+                obex.createCriteria()
+                        .andCbob08EqualTo(goodsUse.getGoodsId())
+                        .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                        .andCboa01EqualTo(cboa.getCboa01());
+                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+                if(cbobs.size()>0){
+                    Cbob cbob=cbobs.get(0);
+                    good.setNoSendQty(cbob.getCbob09()-cbob.getCbob10());
+                    good.setPrice(cbob.getCbob11());
+                    //todo
+//            good.setRemark();
+                    good.setQty(goodsUse.getLockQty());
+                    good.setTotalPrice(cbob.getCbob12());
+                    good.setCbob01(cbob.getCbob01());
+                    //TODO
+//            good.setSupplierId();
+
+                }
+
+                good.setUseQty(goodsUse.getLockQty());
+
+
+                //良品数量
+                good.setGoodsNum(0.0);
+
+
+//                res.getGoods().add(good);
+                goods.add(good);
+
+            }
+
+        }
+        res.setGoods(goods);
+        return res;
+
+    }
+
 }

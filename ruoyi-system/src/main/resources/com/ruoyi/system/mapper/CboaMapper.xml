@@ -786,10 +786,10 @@ FROM
 WHERE
 	oa.CBOA06 = 0
 	AND oa.CBOA11 =5
-    <if test="customerId != null ">
+    <if test="customerName != null AND customerName != '' ">
 
 
-      and ca.CBCA01 = #{customerId}
+      and ca.CBCA08 = #{customerName}
     </if>
 
     <if test="whId != null">
@@ -824,6 +824,11 @@ WHERE
 
 
       and ca.CBCA01 = #{customerId}
+    </if>
+    <if test="customerName != null AND customerName != '' ">
+
+
+      and ca.CBCA08 = #{customerName}
     </if>
 
     <if test="whId != null">

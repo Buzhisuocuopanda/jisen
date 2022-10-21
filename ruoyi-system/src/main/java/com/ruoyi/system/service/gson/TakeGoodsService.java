@@ -43,4 +43,6 @@ public interface TakeGoodsService {
     List<TakeGoodsOrderListVo> takeOrderListCk(TakeGoodsOrderListDto takeGoodsOrderListDto);
 
     TakeGoodsOrderDetailVo takeOrderDetailIds(List<Integer> ids);
+
+    TakeGoodsOrderDetailVo saleExitDetailByIds(SaleExitDetailByIdsDto saleExitDetailByIdsDto);
 }

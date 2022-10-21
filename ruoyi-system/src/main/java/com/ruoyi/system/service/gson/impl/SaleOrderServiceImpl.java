@@ -538,7 +538,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public String importTotalOrder(List<TotalOrderExcelDto> list, Long userId) {
 
-
+        StringBuilder sb=new StringBuilder();
         TotalOrderAddDto totalOrderAddDto = null;
         List<String> errors=new ArrayList<>();
         Map<String,Integer> goodsMap=new HashMap<>();
@@ -615,7 +615,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         }
 
-        return "导入成功";
+        return "导入成功，本次共导入成功"+list.size()+"条";
+
 
 
     }

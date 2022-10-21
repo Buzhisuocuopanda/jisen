@@ -216,7 +216,28 @@ public class TakeGoodsController extends BaseController {
         }
     }
 
+    /**
+     * 根据配件售订单id集合获取销售订单详情
+     */
+    @ApiOperation(
+            value ="根据配件售订单id集合获取销售订单详情",
+            notes = "根据配件售订单id集合获取销售订单详情"
+    )
+    @GetMapping("/saleExitDetailByIds")
+    public AjaxResult<TakeGoodsOrderDetailVo> saleExitDetailByIds(SaleExitDetailByIdsDto saleExitDetailByIdsDto){
+        try {
 
+            TakeGoodsOrderDetailVo res= takeGoodsService.saleExitDetailByIds(saleExitDetailByIdsDto);
+            return AjaxResult.success(res);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【根据配件售订单id集合获取销售订单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(saleExitDetailByIdsDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 提货单编辑

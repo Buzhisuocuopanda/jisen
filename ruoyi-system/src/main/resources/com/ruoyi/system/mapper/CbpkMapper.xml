@@ -725,7 +725,7 @@
     LEFT JOIN CBSC cbsc on cbsc.takegoodsid=pk.CBPK01
     LEFT JOIN CBSB cbsb on cbsb.CBSB01 =  cbsc.CBSB01
     AND cbsb.CBSB06=0
-    AND cbsb.CBSB11=!2
+    AND cbsb.CBSB11!=2
     AND cbsb.CBSB11!=4
     where pk.CBPK06=0
 
@@ -738,8 +738,13 @@
     </if>
     <if test="customerName != null and customerName != ''" >
 
-      and ca.CBCA01 =#{customerId}
+      and ca.CBCA08 =#{customerName}
     </if>
+    <if test="whId != null and whId != ''" >
+
+      and pk.CBPK10 =#{whId}
+    </if>
+
     <if test="status != null">
       and pk.CBPK11 =#{status}
     </if>
