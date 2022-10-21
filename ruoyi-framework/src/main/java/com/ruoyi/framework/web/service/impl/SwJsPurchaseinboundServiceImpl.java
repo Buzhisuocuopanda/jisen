@@ -489,7 +489,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             if(good.getCbpd01()==null){
                 throw new SwException("采购订单明细id不能为空");
             }
-            cbpd.setCbpd01(good.getCbpd01());
+            cbpd.setCbpd01(null);
             cbpd.setCbpd05(date);
             cbpd.setCbpd06(Math.toIntExact(userid));
             cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());

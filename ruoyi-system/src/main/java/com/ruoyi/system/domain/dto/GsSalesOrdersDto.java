@@ -43,7 +43,7 @@ public class GsSalesOrdersDto {
     private Date orderDate;
 
     private Byte status;
-    @NotNull(message = "仓库id不能为空")
+   // @NotNull(message = "仓库id不能为空")
     private Integer whId;
 
     private Integer userId;

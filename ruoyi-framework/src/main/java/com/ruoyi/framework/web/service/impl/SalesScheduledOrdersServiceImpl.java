@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersService {
@@ -384,6 +385,15 @@ return;
     @Transactional
     @Override
     public int addSubscribetotheinventoryslip(List<GsSalesOrdersIn>  itemList) {
+        if(itemList.size() == 0){
+            throw new SwException("入库单明细不能为空");
+        }
+        GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(itemList.get(0).getGsSalesOrders());
+        gsSalesOrders.setId(itemList.get(0).getGsSalesOrders());
+        gsSalesOrders.setStatuss(1);
+        gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
+
+
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         GsSalesOrdersInMapper mapper = session.getMapper(GsSalesOrdersInMapper.class);
         Date date = new Date();
@@ -488,14 +498,32 @@ return;
 
     @Override
     public void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
-        GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
+       GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
         }
-
+/*
         if(!TaskStatus.mr.getCode().equals(gsSalesOrdersIn.getStatus().intValue())){
             throw new SwException("未审核状态才能审核");
+        }*/
+        gsSalesOrdersInDto.getGsSalesOrders();
+        GsSalesOrdersInCriteria gsSalesOrdersInCriteria = new GsSalesOrdersInCriteria();
+        gsSalesOrdersInCriteria.createCriteria()
+                .andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getGsSalesOrders());
+        List<GsSalesOrdersIn> gsSalesOrdersIns = gsSalesOrdersInMapper.selectByExample(gsSalesOrdersInCriteria);
+        double sum = gsSalesOrdersIns.stream().mapToDouble(GsSalesOrdersIn::getInQty).sum();
+
+        //预订单明细
+        GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
+        gsSalesOrdersDetailsCriteria.createCriteria()
+                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersInDto.getGsSalesOrders()));
+        List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+        double sum1 = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+
+         if(sum>sum1){
+            throw new SwException("入库数量不能大于预订单数量");
         }
+
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrdersIn.setUpdateTime(date);

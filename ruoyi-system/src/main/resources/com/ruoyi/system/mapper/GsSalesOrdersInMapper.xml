@@ -389,6 +389,9 @@ order by a.create_time desc
       <if test="id != null and id !=''">
           and   a.id = #{id}
       </if>
+    <if test="ids != null and ids !=''">
+      and   gs.id = #{ids}
+    </if>
       <!--    &lt;if test="startTime != null"&gt;-->
       <!--      and a.order_date &amp;gt;= #{startTime}-->
       <!--    &lt;/if&gt;-->

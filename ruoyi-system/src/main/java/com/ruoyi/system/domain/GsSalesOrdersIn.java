@@ -1,10 +1,13 @@
 package com.ruoyi.system.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
 public class GsSalesOrdersIn implements Serializable {
     private Integer id;
+
+
 
     private Date createTime;
 
@@ -27,6 +30,8 @@ public class GsSalesOrdersIn implements Serializable {
     private Byte status;
 
     private String factory;
+
+
 
     private static final long serialVersionUID = 1L;
 
