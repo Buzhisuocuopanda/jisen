@@ -34,6 +34,8 @@ public class GsGoodsSn implements Serializable {
 
     private Byte groudStatus;
 
+    private Integer repairStatus;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -154,6 +156,14 @@ public class GsGoodsSn implements Serializable {
 
     public void setGroudStatus(Byte groudStatus) {
         this.groudStatus = groudStatus;
+    }
+
+    public Integer getRepairStatus() {
+        return repairStatus;
+    }
+
+    public void setRepairStatus(Integer repairStatus) {
+        this.repairStatus = repairStatus;
     }
 
     @Override

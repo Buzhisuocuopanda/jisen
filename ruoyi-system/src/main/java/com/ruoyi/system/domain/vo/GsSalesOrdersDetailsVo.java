@@ -24,12 +24,14 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String remark;
 
     private String factory;
-    private String PONumber;
+
     private String gsSalesOrders;
     @Excel(name = "客户名称")
     private String customer;
     @Excel(name = "订单编号")
     private String orderNo;
+    @Excel(name = "PONumber")
+    private String PONumber;
     @Excel(name = "销售人员")
     private String saler;
     @Excel(name = "供应商")
@@ -49,8 +51,7 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private String cbpb12;
     @Excel(name = "商品描述")
     private String cbpb08;
-    @Excel(name = "数量")
-    private Double qty;
+
     @Excel(name = "创建时间",width = 30,dateFormat = "yyyy-MM-dd")
     private Date createTime;
 
@@ -81,10 +82,19 @@ public class GsSalesOrdersDetailsVo extends BaseEntity {
     private Double enterNum;
 //    @Excel(name = "变更数量")
     private Double changeNum;
-//    @Excel(name = "剩余数量")
-    private Double remainNum;
+    @Excel(name = "数量", cellType = Excel.ColumnType.NUMERIC)
+    private Double qty;
+    @Excel(name = "入库数量", cellType = Excel.ColumnType.NUMERIC)
+    private Double inQty;
 
+    @Excel(name = "变更数量", cellType = Excel.ColumnType.NUMERIC)
+    private Double changeQty;
+
+    @Excel(name = "剩余数量", cellType = Excel.ColumnType.NUMERIC)
+    private Double remainNum;
     private List<GsSalesOrdersDetailsDto> goods=new ArrayList<>();
 
     private Integer icu;
+
+    private String isFinish;
 }

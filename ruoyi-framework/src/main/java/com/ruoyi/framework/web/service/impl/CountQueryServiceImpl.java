@@ -102,6 +102,20 @@ public class CountQueryServiceImpl implements CountQueryService {
         List<GsSalesOrdersDetailsVo> gsSalesOrdersDetailsVos = gsSalesOrdersDetailsMapper.saleOrderListCountquery(gsSalesOrdersDetailsDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         for (GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo: gsSalesOrdersDetailsVos) {
+            double num =0d;
+            double inNum = 0d;
+            if(gsSalesOrdersDetailsVo.getQty()!=null){
+                num = gsSalesOrdersDetailsVo.getQty();
+            }
+            if(gsSalesOrdersDetailsVo.getInQty()!=null){
+                inNum = gsSalesOrdersDetailsVo.getInQty();
+            }
+            gsSalesOrdersDetailsVo.setRemainNum(num-inNum);
+            if(gsSalesOrdersDetailsVo.getRemainNum()!=null&&gsSalesOrdersDetailsVo.getRemainNum()==0){
+                gsSalesOrdersDetailsVo.setIsFinish("YES");
+            }else {
+                gsSalesOrdersDetailsVo.setIsFinish("NO");
+            }
             if(gsSalesOrdersDetailsVo.getCbpb10()!=null){
                 gsSalesOrdersDetailsVo.setCbpb10(brandMap.get(Integer.parseInt(gsSalesOrdersDetailsVo.getCbpb10())));
             }
