@@ -32,10 +32,13 @@ public class InwuqusVo {
 
     @Excel(name = "入库日期",width = 30,dateFormat = "yyyy-MM-dd")
     private Date inTime;
-    //上架状态 1：上架 2：已下架
-    private Integer groudStatus;
     //商品状态 1：已入库 2：出库中 3：已出库
+    @Excel(name = "商品状态", readConverterExp = "1=已入库,2=出库中,3=已出库")
     private Integer status;
+
+    //上架状态 1：上架 2：已下架
+    @Excel(name = "上架状态", readConverterExp = "1=上架,2=已下架")
+    private Integer groudStatus;
 
 
 }

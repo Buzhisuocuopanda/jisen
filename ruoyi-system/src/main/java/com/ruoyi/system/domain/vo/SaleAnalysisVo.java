@@ -21,7 +21,7 @@ public class SaleAnalysisVo {
     private String createTimeMsg;
     @Excel(name = "下单时间",dateFormat = "yyyy-MM-dd")
     private Date createTime;
-    @Excel(name = "供应商")
+//    @Excel(name = "供应商")
     private String supplier;
     @Excel(name = "销售人员")
     private String saleUser;

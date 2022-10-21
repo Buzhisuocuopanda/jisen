@@ -621,6 +621,9 @@ where
       <if test="cbpb01 != null">
         and e.cbpb01 =#{cbpb01}
       </if>
+      <if test="cbpb10 != null">
+        and e.cbpb10 =#{cbpb10}
+      </if>
       <if test="status != null">
         and sn.status =#{status}
       </if>
@@ -815,7 +818,8 @@ where
   </select>
   <select id="selectInntoryummaryquery" resultType="com.ruoyi.system.domain.vo.SczddVo">
     SELECT
-      a.CBBA07,c.CALA08,b.CBPB12,b.CBPB08,a.CBBA09,a.CBBA11,a.CBBA14,a.CBBA13,a.CBBA12
+      a.CBBA07,c.CALA08,b.CBPB12,b.CBPB08,a.CBBA09,a.CBBA11,a.CBBA14,a.CBBA13,a.CBBA12,
+      (a.CBBA11+a.CBBA13) as producedNum,(a.CBBA09-a.CBBA11-a.CBBA13) as stockoutNum
     FROM
       CBBA a
         LEFT JOIN

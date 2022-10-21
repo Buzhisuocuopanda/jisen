@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +58,9 @@ public class FinanceQueryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('query:fnSynthesis:list')")
     public AjaxResult<TableDataInfo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
         try {
+            if(fnQueryAynthesisDto.getEndTime()!=null){
+                fnQueryAynthesisDto.setEndTime(new Date(fnQueryAynthesisDto.getEndTime().getTime()+24*60*60*1000-1));
+            }
             startPage();
          List<FnQueryAyntgesisVo> list=financeQueryService.fnSynthesis(fnQueryAynthesisDto);
             TableDataInfo tableDataInfo = getDataTable(list);
@@ -81,6 +85,9 @@ public class FinanceQueryController extends BaseController {
     @PostMapping("/fnSynthesisExcelList")
     @PreAuthorize("@ss.hasPermi('query:fnSynthesis:export')")
     public void fnSynthesisExcelList(FnQueryAynthesisDto fnQueryAynthesisDto, HttpServletResponse response) {
+        if(fnQueryAynthesisDto.getEndTime()!=null){
+            fnQueryAynthesisDto.setEndTime(new Date(fnQueryAynthesisDto.getEndTime().getTime()+24*60*60*1000-1));
+        }
         List<FnQueryAyntgesisVo> list = financeQueryService.fnSynthesis(fnQueryAynthesisDto);
         ExcelUtil<FnQueryAyntgesisVo> util = new ExcelUtil<>(FnQueryAyntgesisVo.class);
         util.exportExcel(response, list, "财务综合报表查询数据");
@@ -95,6 +102,9 @@ public class FinanceQueryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('query:fnSkuList:list')")
     public AjaxResult<TableDataInfo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
         try {
+            if(fnGoodsSkuDto.getEndTime()!=null){
+                fnGoodsSkuDto.setEndTime(new Date(fnGoodsSkuDto.getEndTime().getTime()+24*60*60*1000-1));
+            }
             startPage();
             List<FnGoodsSkuVo> list=financeQueryService.fnSkuList(fnGoodsSkuDto);
             return AjaxResult.success(getDataTable(list));
@@ -118,6 +128,9 @@ public class FinanceQueryController extends BaseController {
     @PostMapping("/fnSkuListExcelList")
     @PreAuthorize("@ss.hasPermi('query:fnSkuList:export')")
     public void fnSkuListExcelList(FnGoodsSkuDto fnGoodsSkuDto, HttpServletResponse response) {
+        if(fnGoodsSkuDto.getEndTime()!=null){
+            fnGoodsSkuDto.setEndTime(new Date(fnGoodsSkuDto.getEndTime().getTime()+24*60*60*1000-1));
+        }
         List<FnGoodsSkuVo> list = financeQueryService.fnSkuList(fnGoodsSkuDto);
         ExcelUtil<FnGoodsSkuVo> util = new ExcelUtil<>(FnGoodsSkuVo.class);
         util.exportExcel(response, list, "库存情况报表查询数据");
@@ -170,6 +183,9 @@ public class FinanceQueryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('query:salesAnalysis:list')")
     public AjaxResult<TableDataInfo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto) {
         try {
+            if(fnsalesAnalysisDto.getEndTime()!=null){
+                fnsalesAnalysisDto.setEndTime(new Date(fnsalesAnalysisDto.getEndTime().getTime()+24*60*60*1000-1));
+            }
             startPage();
             List<SaleAnalysisVo> list=financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
             return AjaxResult.success(getDataTable(list));
@@ -189,6 +205,9 @@ public class FinanceQueryController extends BaseController {
     @PostMapping("/salesAnalysisExcelList")
     @PreAuthorize("@ss.hasPermi('query:salesAnalysis:export')")
     public void salesAnalysisExcelList(FnsalesAnalysisDto fnsalesAnalysisDto, HttpServletResponse response) {
+        if(fnsalesAnalysisDto.getEndTime()!=null){
+            fnsalesAnalysisDto.setEndTime(new Date(fnsalesAnalysisDto.getEndTime().getTime()+24*60*60*1000-1));
+        }
         List<SaleAnalysisVo> list = financeQueryService.salesAnalysis2(fnsalesAnalysisDto);
         ExcelUtil<SaleAnalysisVo> util = new ExcelUtil<>(SaleAnalysisVo.class);
         util.exportExcel(response, list, "销售分析数据");
