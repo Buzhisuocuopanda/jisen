@@ -224,8 +224,21 @@ private CbpmMapper cbpmMapper;
 
         //遍历新增的质检单明细
         for(Cbqb cbqb:cbqbList){
-            //判断替换sn为null,就使对应的提货单良品数量减一
+            //判断替换sn为null,就使其原商品对应的提货单良品数量减一
             if(cbqb.getCbqb09()==null||("").equals(cbqb.getCbqb09())){
+                //使原商品sn维修中
+                GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+                example.createCriteria().andSnEqualTo(cbqb.getCbqb10());
+                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+                if (gsGoodsSns.size() > 0) {
+                    //使其维修中
+                    GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                    gsGoodsSn.setRepairStatus(1);
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
+                } else {
+                    throw new SwException("原商品sn不存在");
+                }
+
                 CbpmCriteria cbpmCriteria2 = new CbpmCriteria();
                 cbpmCriteria2.createCriteria().andCbpm09EqualTo(cbqb.getCbqb10());
 
