@@ -695,15 +695,17 @@ if(cbacss.size()>0) {
         cbaa.setCbaa05(Math.toIntExact(userid));
         cbaaMapper.updateByPrimaryKeySelective(cbaa);
 
-
+        CbabCriteria cbabCriteria = new CbabCriteria();
+        cbabCriteria.createCriteria().andCbab01EqualTo(cbaaDo.getCbaa01());
+        int i = cbabMapper.deleteByExample(cbabCriteria);
 
         Cbab cbab = null;
         for (Cbab good : goods) {
             cbab = new Cbab();
-            if(good.getCbab01()==null){
+       /*     if(good.getCbab01()==null){
                 throw new SwException("调拨单明细id不能为空");
-            }
-            cbab.setCbab01(good.getCbab01());
+            }*/
+           // cbab.setCbab01(good.getCbab01());
 
             cbab.setCbab04(Math.toIntExact(userid));
             cbab.setCbab05(date);
@@ -719,7 +721,7 @@ if(cbacss.size()>0) {
             cbab.setCbab15(good.getCbab15());
             cbab.setCbab16(good.getCbab16());
             cbab.setCbab17(good.getCbab17());
-     cbabMapper.updateByPrimaryKeySelective(cbab);
+     cbabMapper.insertSelective(cbab);
 
         }
             return;

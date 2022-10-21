@@ -7,6 +7,7 @@ import com.ruoyi.system.domain.Do.CbpgDo;
 import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.CbpgDto;
 import com.ruoyi.system.domain.vo.CbpgVo;
+import com.ruoyi.system.domain.vo.GsGoodsSnsVo;
 import com.ruoyi.system.domain.vo.IdVo;
 
 import java.util.List;
@@ -44,4 +45,6 @@ public interface ISwJsPurchasereturnordersService {
     String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName);
 
     void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto);
+
+    List<GsGoodsSnsVo> selectSwJsTaskGoodsRelListssS(GsGoodsSnsVo gsGoodsSnsVo);
 }

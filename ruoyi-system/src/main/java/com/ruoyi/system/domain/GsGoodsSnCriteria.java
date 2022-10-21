@@ -1041,6 +1041,68 @@ public class GsGoodsSnCriteria {
             addCriterion("groud_status not between", value1, value2, "groudStatus");
             return (Criteria) this;
         }
+
+
+
+        public Criteria andRepairStatusIsNull() {
+            addCriterion("repair_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusIsNotNull() {
+            addCriterion("repair_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusEqualTo(Byte value) {
+            addCriterion("repair_status =", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusNotEqualTo(Byte value) {
+            addCriterion("repair_status <>", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusGreaterThan(Byte value) {
+            addCriterion("repair_status >", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("repair_status >=", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusLessThan(Byte value) {
+            addCriterion("repair_status <", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("repair_status <=", value, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusIn(List<Byte> values) {
+            addCriterion("repair_status in", values, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusNotIn(List<Byte> values) {
+            addCriterion("repair_status not in", values, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusBetween(Byte value1, Byte value2) {
+            addCriterion("repair_status between", value1, value2, "repairStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRepairStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("repair_status not between", value1, value2, "repairStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
