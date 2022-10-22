@@ -148,18 +148,18 @@ private NumberGenerate numberGenerate;
      */
    @Transactional
     @Override
-    public int insertSwJsSkuBarcodesm(List<Cbpe> itemList) {
+    public int insertSwJsSkuBarcodesm(Cbpe itemList) {
 
 
 
-       if (itemList.size() == 0) {
+       if (itemList == null) {
            throw new SwException("请选择要扫的商品");
        }
-       if (itemList.get(0).getCbpc01() == null) {
+       if (itemList.getCbpc01() == null) {
            throw new SwException("采购订单主单id不能为空");
        }
        CbpcVo cbpcVo = new CbpcVo();
-       cbpcVo.setCbpc01(itemList.get(0).getCbpc01());
+       cbpcVo.setCbpc01(itemList.getCbpc01());
        List<CbpcVo> cbpcVos = selectSwJsTaskGoodsRelListsss(cbpcVo);
 
        if(  cbpcVos.get(0).getSaoma()!=null){
@@ -172,11 +172,11 @@ private NumberGenerate numberGenerate;
 
 
 
-       Cbpc cbpcs = cbpcMapper.selectByPrimaryKey(itemList.get(0).getCbpc01());
+       Cbpc cbpcs = cbpcMapper.selectByPrimaryKey(itemList.getCbpc01());
        Integer storeid = cbpcs.getCbpc10();
 
        CbpdCriteria cas = new CbpdCriteria();
-       cas.createCriteria().andCbpc01EqualTo(itemList.get(0).getCbpc01());
+       cas.createCriteria().andCbpc01EqualTo(itemList.getCbpc01());
        List<Cbpd> cbphs = cbpdMapper.selectByExample(cas);
        if (cbphs.size() == 0) {
            throw new SwException("采购入库单明细为空");
@@ -192,13 +192,12 @@ private NumberGenerate numberGenerate;
        CbpeMapper mapper = session.getMapper(CbpeMapper.class);
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
-       for (int i = 0; i < itemList.size(); i++) {
-           if (itemList.get(i).getCbpe09() == null) {
+           if (itemList.getCbpe09() == null) {
                throw new SwException("sn码不能为空");
            }
 
 
-           String cbic10 = itemList.get(i).getCbpe09();
+           String cbic10 = itemList.getCbpe09();
            String uuid = UUID.randomUUID().toString();
            Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
            if (!lock) {
@@ -210,24 +209,24 @@ private NumberGenerate numberGenerate;
 
            GsGoodsSnDo gsGoodsSnDo;
            try {
-               if (itemList.get(i).getCbpe08() == null) {
+               if (itemList.getCbpe08() == null) {
                    throw new SwException("商品id不能为空");
                }
-               if (!sio.contains(itemList.get(i).getCbpe08())) {
+               if (!sio.contains(itemList.getCbpe08())) {
                    throw new SwException("该商品不在采购入货单明细中");
                }
 
-               if (itemList.get(i).getCbpe10() == null) {
+               if (itemList.getCbpe10() == null) {
                    throw new SwException("库位id不能为空");
                }
-               Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbpe10());
+               Cbla cblas = cblaMapper.selectByPrimaryKey(itemList.getCbpe10());
                if (cblas == null) {
                    throw new SwException("库位不存在");
                }
                if (!cblas.getCbla10().equals(storeid)) {
                    throw new SwException("库位不属于该仓库");
                }
-               String sn = itemList.get(i).getCbpe09();
+               String sn = itemList.getCbpe09();
            /*  boolean redisKeyBoolean = redisTemplate.opsForValue().setIfAbsent("lock",sn, 5, TimeUnit.SECONDS);
            String lock = redisTemplate.opsForValue().get("lock");*/
 /*
@@ -247,17 +246,17 @@ private NumberGenerate numberGenerate;
                    throw new SwException("该sn已存在");
                }
                //校验库位
-               Cbla cbla = baseCheckService.checkStoresku(itemList.get(i).getCbpe10());
+               Cbla cbla = baseCheckService.checkStoresku(itemList.getCbpe10());
 
-               itemList.get(i).setCbpe03(date);
-               itemList.get(i).setCbpe04(Math.toIntExact(userid));
-               itemList.get(i).setCbpe05(date);
-               itemList.get(i).setCbpe06(Math.toIntExact(userid));
-               itemList.get(i).setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
-               itemList.get(i).setUserId(Math.toIntExact(userid));
-               itemList.get(i).setCbpe11(ScanStatusEnum.YISAOMA.getCode());
+               itemList.setCbpe03(date);
+               itemList.setCbpe04(Math.toIntExact(userid));
+               itemList.setCbpe05(date);
+               itemList.setCbpe06(Math.toIntExact(userid));
+               itemList.setCbpe07(DeleteFlagEnum.NOT_DELETE.getCode());
+               itemList.setUserId(Math.toIntExact(userid));
+               itemList.setCbpe11(ScanStatusEnum.YISAOMA.getCode());
                //如果查不到添加信息到库存表
-               Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
+               Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.getCbpc01());
                if (cbpc == null) {
                    throw new SwException("采购入库单不存在");
                }
@@ -271,10 +270,10 @@ private NumberGenerate numberGenerate;
                }
 
                gsGoodsSnDo = new GsGoodsSnDo();
-               gsGoodsSnDo.setSn(itemList.get(i).getCbpe09());
-               gsGoodsSnDo.setGoodsId(itemList.get(i).getCbpe08());
+               gsGoodsSnDo.setSn(itemList.getCbpe09());
+               gsGoodsSnDo.setGoodsId(itemList.getCbpe08());
                gsGoodsSnDo.setWhId(cbpc.getCbpc10());
-               gsGoodsSnDo.setLocationId(itemList.get(i).getCbpe10());
+               gsGoodsSnDo.setLocationId(itemList.getCbpe10());
                gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
@@ -292,19 +291,14 @@ private NumberGenerate numberGenerate;
 
            // this.redisTemplate.delete("lock");
 
-           cbpeMapper.insertSelective(itemList.get(i));
+           cbpeMapper.insertSelective(itemList);
            taskService.addGsGoodsSns(gsGoodsSnDo);
 
 
            //  redisTemplate.delete("lock");
-           if (i % 10 == 9) {//每10条提交一次
-               session.commit();
-               session.clearCache();
-           }
-       }
 
-       session.commit();
-       session.clearCache();
+
+
        return 1;
    }
     //导入新增

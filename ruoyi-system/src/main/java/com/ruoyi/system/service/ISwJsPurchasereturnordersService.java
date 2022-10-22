@@ -36,7 +36,7 @@ public interface ISwJsPurchasereturnordersService {
 
     int insertSwJsSkuBarcodess(List<Cbph> itemList);
 
-    int insertSwJsSkuBarcodesm(List<Cbpi> itemList);
+    int insertSwJsSkuBarcodesm(Cbpi itemList);
 
 
     //导入新增方法

@@ -44,7 +44,7 @@ public interface ISwJsPurchaseinboundService {
 
     List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo);
 
-    int insertSwJsSkuBarcodesm(List<Cbpe> itemList);
+    int insertSwJsSkuBarcodesm(Cbpe itemList);
 
 
     int insertSwJsStores(List<CbpcDto> itemList);

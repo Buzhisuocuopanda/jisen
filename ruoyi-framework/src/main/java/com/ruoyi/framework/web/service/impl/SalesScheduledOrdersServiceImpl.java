@@ -451,6 +451,7 @@ return;
 
         GsSalesOrdersIn gsSalesOrdersDetails = null;
         for (GsSalesOrdersIn good : goods) {
+            gsSalesOrdersDetails = new GsSalesOrdersIn();
             gsSalesOrdersDetails.setCreateTime(date);
             gsSalesOrdersDetails.setCreateBy(userid);
             gsSalesOrdersDetails.setUpdateTime(date);

@@ -192,7 +192,8 @@ public class GsGoodsSn implements Serializable {
             && (this.getInTime() == null ? other.getInTime() == null : this.getInTime().equals(other.getInTime()))
             && (this.getOutTime() == null ? other.getOutTime() == null : this.getOutTime().equals(other.getOutTime()))
             && (this.getPrdDate() == null ? other.getPrdDate() == null : this.getPrdDate().equals(other.getPrdDate()))
-            && (this.getGroudStatus() == null ? other.getGroudStatus() == null : this.getGroudStatus().equals(other.getGroudStatus()));
+            && (this.getGroudStatus() == null ? other.getGroudStatus() == null : this.getGroudStatus().equals(other.getGroudStatus()))
+            && (this.getRepairStatus() == null ? other.getRepairStatus() == null : this.getRepairStatus().equals(other.getRepairStatus()));
     }
 
     @Override
@@ -214,6 +215,7 @@ public class GsGoodsSn implements Serializable {
         result = prime * result + ((getOutTime() == null) ? 0 : getOutTime().hashCode());
         result = prime * result + ((getPrdDate() == null) ? 0 : getPrdDate().hashCode());
         result = prime * result + ((getGroudStatus() == null) ? 0 : getGroudStatus().hashCode());
+        result = prime * result + ((getRepairStatus() == null) ? 0 : getRepairStatus().hashCode());
         return result;
     }
 
@@ -238,6 +240,7 @@ public class GsGoodsSn implements Serializable {
         sb.append(", outTime=").append(outTime);
         sb.append(", prdDate=").append(prdDate);
         sb.append(", groudStatus=").append(groudStatus);
+        sb.append(", repairStatus=").append(repairStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
