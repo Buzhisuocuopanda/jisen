@@ -323,7 +323,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     public Cbba mdfTotalOrder(TotalOrderAddDto totalOrderAddDto) {
         Cbba cbba = cbbaMapper.selectByPrimaryKeyForUpdate(totalOrderAddDto.getId());
 
-        if (cbba == null) {
+        if (cbba == null || DeleteFlagEnum.DELETE.getCode().equals( cbba.getCbba06())) {
             throw new SwException("没有查到该生产总订单");
         }
         OrderDistributionDo send = new OrderDistributionDo();
@@ -573,18 +573,18 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                throw new SwException("没有查到该型号的商品:" + totalOrderExcelDto.getModel());
             }else {
                 goodsMap.put(totalOrderExcelDto.getModel(),cbpbs.get(0).getCbpb01());
-//                list2.add(totalOrderExcelDto);
+                list2.add(totalOrderExcelDto);
             }
 
 
         }
-        if(errors.size()>0){
+//        if(errors.size()>0){
+//
+//            throw new SwException("没有查到该型号的商品:" + errors.toString());
+//
+//        }
 
-            throw new SwException("没有查到该型号的商品:" + errors.toString());
-
-        }
-
-            for (TotalOrderExcelDto totalOrderExcelDto : list) {
+            for (TotalOrderExcelDto totalOrderExcelDto : list2) {
 
 //            if (totalOrderExcelDto.getPriority()==null) {
 //                throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());
@@ -2874,6 +2874,56 @@ Date date=new Date();
     public List<SaleOrderListVo> saleOrderListGoods(SaleOrderListDto saleOrderListDto) {
 
         return cboaMapper.saleOrderListGoods(saleOrderListDto);
+    }
+
+    @Override
+    public DelTotalOrderDo getPlTotalOrderDeleIds(List<Integer> ids) {
+        DelTotalOrderDo delTotalOrderDo=new DelTotalOrderDo();
+        List<Integer> plIds=new ArrayList<>();
+        List<Integer> singids=new ArrayList<>();
+        for (Integer id : ids) {
+
+            Cbba cbba = cbbaMapper.selectByPrimaryKeyForUpdate(id);
+            if (cbba == null) {
+                throw new SwException("没有查到该生产总订单");
+            }
+            Double useNum = 0.0;
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
+            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+
+
+//            if (gsGoodsUses.size() > 0) {
+//                useNum = gsGoodsUses.get(0).getLockQty();
+//            }
+
+            if (cbba.getCbba11() != 0.0) {
+                throw new SwException("该订单已有发货数量，不能删除,订单号:"+cbba.getCbba07());
+            }
+
+            if (useNum != 0.0) {
+                throw new SwException("该订单已有占用数量，不能删除,订单号:"+cbba.getCbba07());
+            }
+            CbbaCriteria examp=new CbbaCriteria();
+            examp.createCriteria()
+                    .andCbba08EqualTo(cbba.getCbba08())
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbba01NotEqualTo(id);
+            List<Cbba> cbbas = cbbaMapper.selectByExample(examp);
+            if(cbbas.size()==0 && cbba.getCbba13() == 0.0) {
+                plIds.add(id);
+            }else {
+                singids.add(id);
+            }
+        }
+    delTotalOrderDo.setPlids(plIds);
+        delTotalOrderDo.setSingids(singids);
+        return delTotalOrderDo;
+
+
+
+
+
+
     }
 
 

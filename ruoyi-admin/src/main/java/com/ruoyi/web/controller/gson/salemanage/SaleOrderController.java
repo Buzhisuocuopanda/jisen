@@ -19,6 +19,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpd;
+import com.ruoyi.system.domain.Do.DelTotalOrderDo;
 import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
@@ -282,6 +283,9 @@ public class SaleOrderController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:totalOrder:edit')")
     public AjaxResult plDelete(@Valid @RequestBody TotalOrderAddDto totalOrderAddDto, BindingResult bindingResult) {
         try {
+
+            //封装集合
+//            DelTotalOrderDo delTotalOrderDo=saleOrderService.getPlTotalOrderDeleIds(totalOrderAddDto.getIds());
 
             for (Integer id : totalOrderAddDto.getIds()) {
                 totalOrderAddDto.setId(id);

@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbba;
+import com.ruoyi.system.domain.Do.DelTotalOrderDo;
 import com.ruoyi.system.domain.GsWorkInstance;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
@@ -99,6 +100,7 @@ public interface SaleOrderService {
 
     List<SaleOrderListVo> saleOrderListGoods(SaleOrderListDto saleOrderListDto);
 
+    DelTotalOrderDo getPlTotalOrderDeleIds(List<Integer> ids);
 
 
 //    GsWorkInstance createTask();

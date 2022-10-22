@@ -136,29 +136,13 @@ private CbpmMapper cbpmMapper;
             if (!cbpk.getCbpk11().equals(TaskStatus.bjwc.getCode())) {
                 throw new SwException("替换sn审核状态未完成");
             }*/
-
-            //校验原商品sn，使其上架
-            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
-            example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
-            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
-            if (gsGoodsSns.size() > 0) {
-                //不是上架就更新上架
-                if (!Groudstatus.SJ.getCode().equals(gsGoodsSns.get(0).getGroudStatus())) {
-                    GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSn.setStatus(new Byte("1"));
-                    gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
-                }
-            } else {
-                throw new SwException("原商品sn不存在");
-            }
+            Integer locationId = null;
             //校验替换商品sn,并下架货物
             if(itemList.get(i).getCbqb09()!=null){
                 GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
                 example1.createCriteria().andSnEqualTo(itemList.get(i).getCbqb09());
                 List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
                 Integer goodsId;
-                Integer locationId;
                 if (gsGoodsSns1.size() > 0) {
                     goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
@@ -173,6 +157,27 @@ private CbpmMapper cbpmMapper;
 
                 }
             }
+
+            //校验原商品sn，使其维修状态为1
+            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+            example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+            if (gsGoodsSns.size() > 0) {
+
+                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                //不是上架就更新上架（暂不上架）
+//                gsGoodsSn.setStatus(new Byte("1"));
+//                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                if(locationId!=null){
+                    gsGoodsSn.setLocationId(locationId);
+                }
+                gsGoodsSn.setInTime(new Date());
+                gsGoodsSn.setRepairStatus(1);
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
+            } else {
+                throw new SwException("原商品sn不存在");
+            }
+
 //////////////////zgl
             //zgl添加
             CbpmCriteria cbpmCriteria = new CbpmCriteria();
@@ -226,7 +231,7 @@ private CbpmMapper cbpmMapper;
         for(Cbqb cbqb:cbqbList){
             //判断替换sn为null,就使其原商品对应的提货单良品数量减一
             if(cbqb.getCbqb09()==null||("").equals(cbqb.getCbqb09())){
-                //使原商品sn维修中
+                /*//使原商品sn维修中
                 GsGoodsSnCriteria example = new GsGoodsSnCriteria();
                 example.createCriteria().andSnEqualTo(cbqb.getCbqb10());
                 List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
@@ -237,7 +242,7 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
                 } else {
                     throw new SwException("原商品sn不存在");
-                }
+                }*/
 
                 CbpmCriteria cbpmCriteria2 = new CbpmCriteria();
                 cbpmCriteria2.createCriteria().andCbpm09EqualTo(cbqb.getCbqb10());
