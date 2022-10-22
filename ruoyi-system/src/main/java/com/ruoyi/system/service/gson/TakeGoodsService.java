@@ -30,7 +30,7 @@ public interface TakeGoodsService {
 
     void mdfTakeSuggest(ChangeSuggestDto changeSuggestDto);
 
-    int TakeGoodsOrdersm(List<Cbpm> itemList);
+    int TakeGoodsOrdersm(Cbpm itemList);
 
     List<GsOutStockAdivceVo> saleOrderSuggest(GsOutStockAdivceDto gsOutStockAdivceDto);
 

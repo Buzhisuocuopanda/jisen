@@ -5,7 +5,9 @@ import com.ruoyi.system.domain.GsGoodsSnCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
-import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.domain.vo.GsGoodsSnVo;
+import com.ruoyi.system.domain.vo.GsGoodsSnsVo;
+import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsGoodsSnMapper {
@@ -42,4 +44,6 @@ public interface GsGoodsSnMapper {
     List<GsGoodsSnVo> selectGoodsSnSelect3(@Param("sn") String sn);
 
     List<GsGoodsSnsVo> getInfosss(GsGoodsSnsVo gsGoodsSnsVo);
+
+
 }

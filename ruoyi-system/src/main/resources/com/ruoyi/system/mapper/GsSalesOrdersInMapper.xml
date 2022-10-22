@@ -372,7 +372,7 @@ order by a.create_time desc
       pb.CBPB08 as cbpb08,la.CALA08 as cala08,
       a.in_qty as  inQty,a.PONumber as ponumber,
       a.id as id,
-      gs.factory as factory,
+      gs.factory as factory
       from `gs_ Sales_orders_in` a
       LEFT JOIN  `gs_ Sales_orders` gs on a.gs_sales_orders = gs.id
       LEFT JOIN CBSA sa on gs.supplier_id = sa.CBSA01

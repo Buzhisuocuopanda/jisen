@@ -151,7 +151,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
             notes = "新增采购退货单扫码"
     )
     @PostMapping("/SwJsPurchasereturnordersaddsm")
-    public AjaxResult swJsPurchasereturnordersaddsm(@Valid @RequestBody List<Cbpi> itemList, BindingResult bindingResult) {
+    public AjaxResult swJsPurchasereturnordersaddsm(@Valid @RequestBody Cbpi itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchasereturnordersService.insertSwJsSkuBarcodesm(itemList));

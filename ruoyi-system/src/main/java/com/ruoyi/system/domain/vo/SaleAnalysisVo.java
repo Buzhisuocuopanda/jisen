@@ -34,15 +34,17 @@ public class SaleAnalysisVo {
     private Integer brand;
     @Excel(name = "品牌")
     private String brandName;
+    @Excel(name = "商品")
+    private String cbpb08;
 
     @Excel(name = "数量")
     private Double qty;
 
 
-    @Excel(name = "金额")
+//    @Excel(name = "金额")
     private Double price;
 
-    @Excel(name = "成本")
+//    @Excel(name = "成本")
     private String cost;
 
     private Integer cbsb01;
@@ -50,10 +52,10 @@ public class SaleAnalysisVo {
 
 
 
-//    @Excel(name = "金额")
+    @Excel(name = "金额")
     private Double money;
 
-    private String cbpb08;
+
 
 
 

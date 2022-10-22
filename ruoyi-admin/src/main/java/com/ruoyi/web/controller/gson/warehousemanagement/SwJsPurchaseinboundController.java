@@ -130,7 +130,7 @@ public class SwJsPurchaseinboundController extends BaseController {
     )
     @Resubmit(delaySeconds = 2)
     @PostMapping("/SwJsPurchaseinboundaddsm")
-    public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody List<Cbpe> itemList, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody Cbpe itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swJsPurchaseinboundService.insertSwJsSkuBarcodesm(itemList));
