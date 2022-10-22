@@ -439,7 +439,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         }
         else
         {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
         }
         return successMsg.toString();    }
 
@@ -483,6 +483,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbwa01);
         cbie.setCbie07(warehouseinitializationNo);
         cbie.setCbie16(cala01);
+        cbie.setCbie10(TaskStatus.mr.getCode());
         cbieMapper.insertSelective(cbie);
 
         CbieCriteria cbieCriteria = new CbieCriteria();

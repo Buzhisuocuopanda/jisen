@@ -754,17 +754,15 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     }
 //调拨单调出接口
     @Override
-    public int transferordersout(List<Cbac> itemList) {
+    public int transferordersout(Cbac itemList) {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 
-        if (CollectionUtils.isEmpty(itemList)) {
-            throw new SwException("请至少添加一件货物");
-        }
-        if (itemList.get(0).getCbaa01() == null) {
+
+        if (itemList.getCbaa01() == null) {
             throw new SwException("调拨单id不能为空");
         }
-        Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(0).getCbaa01());
+        Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.getCbaa01());
         if (cbaa == null) {
             throw new SwException("调拨单不存在");
         }
@@ -774,66 +772,64 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         Integer outstoreid = cbaa.getCbaa09();
 
         CbabCriteria cbabCriteria = new CbabCriteria();
-        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.get(0).getCbaa01());
+        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
         List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
         List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
         Set<Integer> sio = new HashSet<>(goodsids);
 
 
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbacMapper mapper = session.getMapper(CbacMapper.class);
-        for (int i = 0; i < itemList.size(); i++) {
 
-             if(itemList.get(i).getCbac09()==null){
+
+             if(itemList.getCbac09()==null){
                 throw new SwException("sn不能为空");
             }
            CbacCriteria cbacCriteria = new CbacCriteria();
-            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
             if(cbacs.size()>0){
                 throw new SwException("sn已存在");}
 
              //校验sn
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
-            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.get(i).getCbac09());
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
             List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
             if (CollectionUtils.isEmpty(gsGoodsSnList)) {
                 throw new SwException("sn不存在");
             }
             //校验sn是否已经出库
-            if(gsGoodsSnList.get(i).getStatus()==3){
+            if(gsGoodsSnList.get(0).getStatus()==3){
                 throw new SwException("该sn已经出库");
             }
-            if(gsGoodsSnList.get(i).getLocationId()==null){
+            if(gsGoodsSnList.get(0).getLocationId()==null){
                 throw new SwException("sn库位id不饿为空");
             }
-            Cbla cbla = cblaMapper.selectByPrimaryKey(gsGoodsSnList.get(i).getLocationId());
+            Cbla cbla = cblaMapper.selectByPrimaryKey(gsGoodsSnList.get(0).getLocationId());
             if(!cbla.getCbla10().equals(outstoreid)){
                 throw new SwException("sn库位不在调出仓库");
             }
-            if(gsGoodsSnList.get(i).getGoodsId()==null){
+            if(gsGoodsSnList.get(0).getGoodsId()==null){
                 throw new SwException("sn商品id不能为空");
             }
-            if(!sio.contains(gsGoodsSnList.get(i).getGoodsId())){
+            if(!sio.contains(gsGoodsSnList.get(0).getGoodsId())){
                 throw new SwException("sn商品id不在调拨单明细中");
             }
 
-            itemList.get(i).setCbac03(date);
-            itemList.get(i).setCbac04(Math.toIntExact(userid));
-            itemList.get(i).setCbac05(date);
-            itemList.get(i).setCbac06(Math.toIntExact(userid));
-            itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
-            itemList.get(i).setCbac08(gsGoodsSnList.get(i).getGoodsId());
-            itemList.get(i).setCbac09(itemList.get(i).getCbac09());
-            itemList.get(i).setCbac11(gsGoodsSnList.get(i).getLocationId());
-            itemList.get(i).setCbaa01(itemList.get(i).getCbaa01());
-            itemList.get(i).setCbac14(1);
-            itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.setCbac03(date);
+            itemList.setCbac04(Math.toIntExact(userid));
+            itemList.setCbac05(date);
+            itemList.setCbac06(Math.toIntExact(userid));
+            itemList.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.setCbac08(gsGoodsSnList.get(0).getGoodsId());
+            itemList.setCbac09(itemList.getCbac09());
+            itemList.setCbac11(gsGoodsSnList.get(0).getLocationId());
+            itemList.setCbaa01(itemList.getCbaa01());
+            itemList.setCbac14(1);
+            itemList.setUserId(Math.toIntExact(userid));
 
 
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
-            gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
+            gsGoodsSn.setId(gsGoodsSnList.get(0).getId());
             gsGoodsSn.setStatus((byte) 3);
             gsGoodsSn.setOutTime(date);
             gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
@@ -843,19 +839,13 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
 
 
-            mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次防止内存溢出
-                session.commit();
-                session.clearCache();
-            }
-        }
-        session.commit();
-        session.clearCache();
+        cbacMapper.insertSelective(itemList);
+
             return 1;
     }
 //调拨单入库扫码
     @Override
-    public int transferordersin(List<Cbac> itemList) {
+    public int transferordersin(Cbac itemList) {
 
 
 
@@ -865,33 +855,28 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 
-        if (CollectionUtils.isEmpty(itemList)) {
-            throw new SwException("请至少添加一件货物");
-        }
-        if (itemList.get(0).getCbaa01() == null) {
+
+        if (itemList.getCbaa01() == null) {
             throw new SwException("调拨单id不能为空");
         }
 
-        Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.get(0).getCbaa01());
+        Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.getCbaa01());
         if( cbaa.getCbaa10()==null){
             throw new SwException("调拨单调入仓库为空");
         }
         Integer instoreid = cbaa.getCbaa10();
 
         CbabCriteria cbabCriteria = new CbabCriteria();
-        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.get(0).getCbaa01());
+        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
         List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
         List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
         Set<Integer> sio = new HashSet<>(goodsids);
 
 
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbacMapper mapper = session.getMapper(CbacMapper.class);
-        for (int i = 0; i < itemList.size(); i++) {
 
 
-            Integer cbaa01 = itemList.get(0).getCbaa01();
+            Integer cbaa01 = itemList.getCbaa01();
             if(cbaa01==null){
                 throw new SwException("调拨单id不能为空");
             }
@@ -910,34 +895,34 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setCreateBy(Math.toIntExact(userid));
                 gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
                 gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-                gsGoodsSn.setSn(itemList.get(i).getCbac09());
+                gsGoodsSn.setSn(itemList.getCbac09());
                 gsGoodsSn.setStatus((byte) 1);
                 gsGoodsSn.setInTime(date);
                 gsGoodsSn.setGoodsId(cbphs.get(0).getCbab08());
-                gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
                 gsGoodsSn.setGroudStatus((byte) 1);
                 gsGoodsSnMapper.insertSelective(gsGoodsSn);
 
-                itemList.get(i).setCbac03(date);
-                itemList.get(i).setCbac04(Math.toIntExact(userid));
-                itemList.get(i).setCbaa01(cbaa.getCbaa01());
-                itemList.get(i).setCbac05(date);
-                itemList.get(i).setCbac06(Math.toIntExact(userid));
-                itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
-                itemList.get(i).setCbac10(itemList.get(i).getCbac10());
-                itemList.get(i).setCbac09(itemList.get(i).getCbac09());
-                itemList.get(i).setCbac08(cbphs.get(0).getCbab08());
+                itemList.setCbac03(date);
+                itemList.setCbac04(Math.toIntExact(userid));
+                itemList.setCbaa01(cbaa.getCbaa01());
+                itemList.setCbac05(date);
+                itemList.setCbac06(Math.toIntExact(userid));
+                itemList.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
+                itemList.setCbac10(itemList.getCbac10());
+                itemList.setCbac09(itemList.getCbac09());
+                itemList.setCbac08(cbphs.get(0).getCbab08());
 
-                itemList.get(i).setCbaa01(itemList.get(i).getCbaa01());
-                itemList.get(i).setCbac14(2);
-                itemList.get(i).setUserId(Math.toIntExact(userid));
-                mapper.insertSelective(itemList.get(i));
+                itemList.setCbaa01(itemList.getCbaa01());
+                itemList.setCbac14(2);
+                itemList.setUserId(Math.toIntExact(userid));
+                cbacMapper.insertSelective(itemList);
             }
             else{
 
             CbacCriteria cbaceria = new CbacCriteria();
-            cbaceria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+            cbaceria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbaceria);
             if(cbacs.size()==0){
                 throw new SwException("sn不存在");}
@@ -947,20 +932,20 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             }
 
 
-            if (itemList.get(i).getCbac10() == null) {
+            if (itemList.getCbac10() == null) {
                 throw new SwException("库位id不能为空");
             }
-            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.get(i).getCbac10());
+            Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.getCbac10());
             if(!cbla.getCbla10().equals(instoreid)){
                 throw new SwException("输入的库位库位不在调入仓库");
             }
 
-            if(itemList.get(i).getCbac09()==null){
+            if(itemList.getCbac09()==null){
                 throw new SwException("sn不能为空");
             }
             //校验sn
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
-            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.get(i).getCbac09());
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
             List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
             if (CollectionUtils.isEmpty(gsGoodsSnList)) {
                 throw new SwException("sn不存在");
@@ -972,18 +957,18 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
 
 
-            if(!sio.contains(gsGoodsSnList.get(i).getGoodsId())){
+            if(!sio.contains(gsGoodsSnList.get(0).getGoodsId())){
                 throw new SwException("sn商品id不在调拨单明细中");
             }
 
 
-            itemList.get(i).setCbac05(date);
-            itemList.get(i).setCbac06(Math.toIntExact(userid));
-            itemList.get(i).setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
-            itemList.get(i).setCbac10(itemList.get(i).getCbac10());
-            itemList.get(i).setCbaa01(itemList.get(i).getCbaa01());
-            itemList.get(i).setCbac14(2);
-            itemList.get(i).setUserId(Math.toIntExact(userid));
+            itemList.setCbac05(date);
+            itemList.setCbac06(Math.toIntExact(userid));
+            itemList.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.setCbac10(itemList.getCbac10());
+            itemList.setCbaa01(itemList.getCbaa01());
+            itemList.setCbac14(2);
+            itemList.setUserId(Math.toIntExact(userid));
 
 
           /*  GsGoodsSn gsGoodsSn = new GsGoodsSn();
@@ -1031,10 +1016,10 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
+                gsGoodsSn.setId(gsGoodsSnList.get(0).getId());
                 gsGoodsSn.setStatus((byte) 1);
                 gsGoodsSn.setInTime(date);
-                gsGoodsSn.setLocationId(itemList.get(i).getCbac10());
+                gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
                 gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
@@ -1042,18 +1027,14 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
 
                 CbacCriteria cbacCriteria = new CbacCriteria();
-                cbacCriteria.createCriteria().andCbac09EqualTo(itemList.get(i).getCbac09());
+                cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
 
-                mapper.updateByExampleSelective(itemList.get(i), cbacCriteria);
+                cbacMapper.updateByExampleSelective(itemList, cbacCriteria);
             }
 
-            if (i % 10 == 9) {//每10条提交一次防止内存溢出
-                session.commit();
-                session.clearCache();
-            }
-        }
-        session.commit();
-        session.clearCache();
+
+
+
         return 1;    }
 
     //调出标记完成

@@ -110,7 +110,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
             notes = "仓库盘点明细新增明细表扫码"
     )
     @PostMapping("/SwJsStoreadds")
-    public AjaxResult swJsStoreadd(@Valid @RequestBody List<Cbsj> itemList, BindingResult bindingResult) {
+    public AjaxResult swJsStoreadd(@Valid @RequestBody Cbsj itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(warehouseinventoryscheduleService.insertSwJsStores(itemList));

@@ -1,8 +1,10 @@
 package com.ruoyi.system.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@Data
 public class GsSalesOrders implements Serializable {
     private Integer id;
 
@@ -37,6 +39,9 @@ public class GsSalesOrders implements Serializable {
     private String ponumber;
 
     private String factory;
+
+    private Integer cas;
+
 
     private static final long serialVersionUID = 1L;
 

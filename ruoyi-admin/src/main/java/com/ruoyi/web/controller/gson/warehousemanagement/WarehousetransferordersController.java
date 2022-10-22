@@ -457,7 +457,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单调出扫码"
     )
     @PostMapping("/transferordersout")
-    public AjaxResult transferordersout(@Valid @RequestBody List<Cbac> itemList, BindingResult bindingResult) {
+    public AjaxResult transferordersout(@Valid @RequestBody Cbac itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(warehousetransferordersService.transferordersout(itemList));
@@ -484,7 +484,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单调入扫码"
     )
     @PostMapping("/transferordersin")
-    public AjaxResult transferordersin(@Valid @RequestBody List<Cbac> itemList, BindingResult bindingResult) {
+    public AjaxResult transferordersin(@Valid @RequestBody Cbac itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(warehousetransferordersService.transferordersin(itemList));
