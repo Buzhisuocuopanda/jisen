@@ -501,17 +501,17 @@ if(cbsgss.size()>0){
     }
     @Transactional
     @Override
-    public int insertSwJsStoress(List<Cbsg> itemList) {
-        if (itemList.size() == 0) {
+    public int insertSwJsStoress(Cbsg itemList) {
+        if (itemList == null) {
             throw new SwException("请选择要扫的商品");
         }
-        Cbse cbse1 = cbseMapper.selectByPrimaryKey(itemList.get(0).getCbse01());
+        Cbse cbse1 = cbseMapper.selectByPrimaryKey(itemList.getCbse01());
         if(!cbse1.getCbse11().equals(TaskStatus.sh.getCode())){
             throw new SwException("审核状态才能扫码");
         }
 
         CbsfCriteria cas = new CbsfCriteria();
-        cas.createCriteria().andCbse01EqualTo(itemList.get(0).getCbse01());
+        cas.createCriteria().andCbse01EqualTo(itemList.getCbse01());
         List<Cbsf> cbphs = cbsfMapper.selectByExample(cas);
         if (cbphs.size() == 0) {
             throw new SwException("销售退库单明细为空");
@@ -521,18 +521,16 @@ if(cbsgss.size()>0){
 
 
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbsgMapper mapper = session.getMapper(CbsgMapper.class);
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
-        for (int i = 0; i < itemList.size(); i++) {
-            if(itemList.get(i).getCbsg09()==null){
+            if(itemList.getCbsg09()==null){
                 throw new SwException("商品sn不能为空");
             }
 
             CbsgCriteria example = new CbsgCriteria();
             example.createCriteria()
-                    .andCbsg09EqualTo(itemList.get(i).getCbsg09());
+                    .andCbsg09EqualTo(itemList.getCbsg09());
             List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
             if(cbsgs.size()>0){
                 throw new SwException("该商品已经扫过");
@@ -541,7 +539,7 @@ if(cbsgss.size()>0){
 
 
             GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-            examples.createCriteria().andSnEqualTo( itemList.get(i).getCbsg09());
+            examples.createCriteria().andSnEqualTo( itemList.getCbsg09());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);
             if(gsGoodsSns.size()==0){
                 throw new SwException("该sn不存在与库存表");
@@ -550,15 +548,15 @@ if(cbsgss.size()>0){
             if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
                 throw new SwException("该商品不在采购退货单明细中");
             }
-            itemList.get(i).setCbsg03(date);
-            itemList.get(i).setCbsg04(Math.toIntExact(userid));
-            itemList.get(i).setCbsg05(date);
-            itemList.get(i).setCbsg06(Math.toIntExact(userid));
-            itemList.get(i).setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
-            itemList.get(i).setUserId(Math.toIntExact(userid));
-            itemList.get(i).setCbsg11(ScanStatusEnum.YISAOMA.getCode());
+            itemList.setCbsg03(date);
+            itemList.setCbsg04(Math.toIntExact(userid));
+            itemList.setCbsg05(date);
+            itemList.setCbsg06(Math.toIntExact(userid));
+            itemList.setCbsg07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.setUserId(Math.toIntExact(userid));
+            itemList.setCbsg11(ScanStatusEnum.YISAOMA.getCode());
             //如果查不到添加信息到库存表
-            Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(i).getCbse01());
+            Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.getCbse01());
    /*         GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbse.getCbse10());
@@ -593,59 +591,17 @@ if(cbsgss.size()>0){
 
             //更新sn表
             GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
-            gsGoodsSnDo.setLocationId(itemList.get(i).getCbsg10());
+            gsGoodsSnDo.setLocationId(itemList.getCbsg10());
             gsGoodsSnDo.setInTime(date);
-            gsGoodsSnDo.setSn(itemList.get(i).getCbsg09());
+            gsGoodsSnDo.setSn(itemList.getCbsg09());
             gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.updateGsGoodsSn(gsGoodsSnDo);
 
-            mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次
-                session.commit();
-                session.clearCache();
-            }
-        }
-        //写台账
-        Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.get(0).getCbse01());
-        if(cbse==null){
-            throw new SwException("没有该销售退库单");
-        }
-        CbsfCriteria example = new CbsfCriteria();
-        example.createCriteria().andCbse01EqualTo(cbse.getCbse01())
-                .andCbsf07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbsf> cbscs = cbsfMapper.selectByExample(example);
-        if(cbscs.size()==0){
-            throw new SwException("没有该销售出库单明细表为空");
-        }
+        cbsgMapper.insertSelective(itemList);
 
-/*
-        for(int i=0;i<cbscs.size();i++){
-            CbibDo cbibDo = new CbibDo();
-            cbibDo.setCbib02(cbse.getCbse10());
-            cbibDo.setCbib03(cbse.getCbse07());
-            cbibDo.setCbib05(String.valueOf(TaskType.xcckd.getCode()));
-            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbscs.get(i).getCbsf15());
 
-            cbibDo.setCbib06(cbsa.getCbsa08());
-            cbibDo.setCbib07(cbscs.get(i).getCbsf01());
-            cbibDo.setCbib08(cbscs.get(i).getCbsf08());
-            //本次入库数量
-            cbibDo.setCbib11((double) 0);
-            cbibDo.setCbib12((double) 0);
-            cbibDo.setCbib13(cbscs.get(i).getCbsf09());
-            cbibDo.setCbib14(cbscs.get(i).getCbsf11());
-            cbibDo.setCbib17(TaskType.xstkd.getMsg());
-            cbibDo.setCbib19(cbscs.get(i).getCbsf15());
-            taskService.InsertCBIB(cbibDo);
-        }
-*/
-//        CbseDo cbseDo = new CbseDo();
-//        cbseDo.setCbse01(itemList.get(0).getCbse01());
-       // this.insertSwJsSkuBarcodebjwc(cbseDo);
-        session.commit();
-        session.clearCache();
         return 1;
     }
     @Transactional

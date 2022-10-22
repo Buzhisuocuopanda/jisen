@@ -143,7 +143,7 @@ public class SalesreturnordersController extends BaseController {
             notes = "新增销售退库单扫码"
     )
     @PostMapping("/Selloutofwarehouseaddss")
-    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody List<Cbsg> itemList, BindingResult bindingResult) {
+    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody Cbsg itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(salesreturnordersService.insertSwJsStoress(itemList));
