@@ -103,22 +103,22 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 //    throw new SwException("客户订单号不能为空");
 //
 //}
-        CbsbCriteria cbsbCriteria = new CbsbCriteria();
+       /* CbsbCriteria cbsbCriteria = new CbsbCriteria();
         cbsbCriteria.createCriteria().andCbsb07EqualTo(cbsbDo.getCbsb07());
         List<Cbsb> cbsbList = cbsbMapper.selectByExample(cbsbCriteria);
         if (cbsbList.size() > 0) {
             throw new SwException("该订单已存在");
-        }
-if(cbsbDo.getCbsb20()==null){
+        }*/
+/*if(cbsbDo.getCbsb20()==null){
     throw new SwException("提货单主表id不能为空");
-}
-        CbsbCriteria sdg=new CbsbCriteria();
+}*/
+     /*   CbsbCriteria sdg=new CbsbCriteria();
         sdg.createCriteria().andCbsb20EqualTo(cbsbDo.getCbsb20())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsb> cbsbs = cbsbMapper.selectByExample(sdg);
         if(cbsbs.size()>0){
             throw new SwException("关联提货单重复");
-        }
+        }*/
 
 
         Long userid = SecurityUtils.getUserId();
@@ -136,10 +136,11 @@ if(cbsbDo.getCbsb20()==null){
         cbsb.setCbsb11(TaskStatus.mr.getCode());
         cbsb.setCbsb12(Math.toIntExact(userid));
         cbsb.setUserId(Math.toIntExact(userid));
-        if(cbsbDo.getTakeId()==null){
+
+      /*  if(cbsbDo.getTakeId()==null){
             throw new SwException("提货单id不能为空");
         }
-        cbsb.setCbsb20(cbsbDo.getTakeId());
+        cbsb.setCbsb20(cbsbDo.getTakeId());*/
 
 
         cbsbMapper.insertSelective(cbsb);
@@ -201,15 +202,15 @@ if(cbsbDo.getCbsb20()==null){
         for (int i = 0; i < itemList.size(); i++) {
 
             if(itemList.get(i).getCbsc08()==null){
-                throw new SwException("采购退货单明细商品id不能为空");
+                throw new SwException("采购出货单明细商品id不能为空");
             }
             if(!skuIds.contains(itemList.get(i).getCbsc08())){
                 throw new SwException("仓库里没有该商品");
             }
 
-            if(itemList.get(i).getTakegoodsid()==null){
-                throw new SwException("提货单id不能为空");
-            }
+//            if(itemList.get(i).getTakegoodsid()==null){
+//                throw new SwException("提货单id不能为空");
+//            }
             Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getTakegoodsid());
 
            /* skuIds1.add(cbpk.getCbpk09());

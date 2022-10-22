@@ -16,7 +16,7 @@ public interface ISWWarehouseinventoryscheduleService {
 
     IdVo insertSwJsStore(CbshDo cbshDo);
 
-    int insertSwJsStores(List<Cbsj> itemList);
+    int insertSwJsStores(Cbsj itemList);
 
     int deleteSwJsStoreById(CbshDo cbshDo);
 

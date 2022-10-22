@@ -374,6 +374,9 @@
       <if test="factory != null">
         factory = #{factory,jdbcType=VARCHAR},
       </if>
+      <if test="cas != null">
+        cas = #{cas,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

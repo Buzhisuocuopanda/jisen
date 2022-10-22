@@ -40,9 +40,9 @@ public interface IWarehousetransferordersService {
 
     int Selloutofwarehousedel(CbaaDo cbaaDo);
 
-    int transferordersout(List<Cbac> itemList);
+    int transferordersout(Cbac itemList);
 
-    int transferordersin(List<Cbac> itemList);
+    int transferordersin(Cbac itemList);
 
     int transferordersoutbjwc(CbaaDo cbaaDo);
 

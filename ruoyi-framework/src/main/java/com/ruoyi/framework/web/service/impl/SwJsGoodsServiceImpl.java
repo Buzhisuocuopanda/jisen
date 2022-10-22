@@ -24,6 +24,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -164,6 +165,12 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         example1.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01())
                 .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
   cbpbMapper.updateByExampleSelective(cbpb,example1);
+
+
+        CbpfCriteria example2 = new CbpfCriteria();
+        example2.createCriteria().andCbpb01EqualTo(cbpbDo.getCbpb01());
+        int i = cbpfMapper.deleteByExample(example2);
+
         List<CbpfDo> goods = cbpbDo.getGoods();
 
         for (CbpfDo good : goods) {
@@ -262,7 +269,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         }
         else
         {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
         }
         return successMsg.toString();    }
 
@@ -361,6 +368,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     }
 
     @Override
+    @Transactional
     public int insertSwJsStores(List<CbpbDto> itemList) {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -435,12 +443,12 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             if(itemList.get(i).getCbpf05()==null){
                 throw new SwException("标准销货价不能为空！");
             }
-            if(itemList.get(i).getCbpf06()==null){
+          /*  if(itemList.get(i).getCbpf06()==null){
                 throw new SwException("货币id不能为空！");
-            }
-            if(itemList.get(i).getCbpf07()==null){
+            }*/
+           /* if(itemList.get(i).getCbpf07()==null){
                 throw new SwException("生效时间不能为空！");
-            }
+            }*/
             if(itemList.get(i).getMoneyType()==null){
                 throw new SwException("货币类型不能为空！");
             }

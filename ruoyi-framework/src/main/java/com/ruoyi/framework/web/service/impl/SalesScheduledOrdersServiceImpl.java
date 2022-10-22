@@ -503,38 +503,47 @@ return;
 
     @Override
     public void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
-       GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
-        if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
-            throw new SwException("没有查到该订单");
-        }
+Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
+
+        // GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
+//        if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
+//            throw new SwException("没有查到该订单");
+//        }
+
+        GsSalesOrdersIn gsSalesOrdersIn=new GsSalesOrdersIn();
 /*
         if(!TaskStatus.mr.getCode().equals(gsSalesOrdersIn.getStatus().intValue())){
             throw new SwException("未审核状态才能审核");
         }*/
-        gsSalesOrdersInDto.getGsSalesOrders();
+
         GsSalesOrdersInCriteria gsSalesOrdersInCriteria = new GsSalesOrdersInCriteria();
         gsSalesOrdersInCriteria.createCriteria()
-                .andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getGsSalesOrders());
+                .andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getId());
         List<GsSalesOrdersIn> gsSalesOrdersIns = gsSalesOrdersInMapper.selectByExample(gsSalesOrdersInCriteria);
         double sum = gsSalesOrdersIns.stream().mapToDouble(GsSalesOrdersIn::getInQty).sum();
 
         //预订单明细
         GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
         gsSalesOrdersDetailsCriteria.createCriteria()
-                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersInDto.getGsSalesOrders()));
+                .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersInDto.getId()));
         List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
         double sum1 = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
 
          if(sum>sum1){
             throw new SwException("入库数量不能大于预订单数量");
         }
+        gsSalesOrders.setId(gsSalesOrdersInDto.getId());
 
-        Long userid = SecurityUtils.getUserId();
-        Date date = new Date();
-        gsSalesOrdersIn.setUpdateTime(date);
-        gsSalesOrdersIn.setUpdateBy(userid);
-        gsSalesOrdersIn.setStatus(TaskStatus.sh.getCode().byteValue());
-        gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
+        gsSalesOrders.setCas(TaskStatus.sh.getCode());
+        gsSalesOrdersMapper.updateByPrimaryKeySelective(gsSalesOrders);
+//        Long userid = SecurityUtils.getUserId();
+//        Date date = new Date();
+//        gsSalesOrdersIn.setUpdateTime(date);
+//        gsSalesOrdersIn.setUpdateBy(userid);
+//        gsSalesOrdersIn.setStatus(TaskStatus.sh.getCode().byteValue());
+//        gsSalesOrdersInMapper.updateByPrimaryKeySelective(gsSalesOrdersIn);
     }
 
     @Override

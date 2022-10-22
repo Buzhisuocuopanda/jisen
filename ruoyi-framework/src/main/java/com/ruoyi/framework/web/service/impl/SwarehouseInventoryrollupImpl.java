@@ -410,6 +410,7 @@ CbifCriteria rty = new CbifCriteria();
         cbie.setCbie05(Math.toIntExact(userid));
         cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbie.setCbie09(cbwa01);
+        cbie.setCbie10(TaskStatus.mr.getCode());
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbwa01);
         cbie.setCbie07(warehouseinitializationNo);
         cbie.setCbie16(cala01);

@@ -89,8 +89,8 @@ private CbsjMapper cbbsjMapper;
 
     @Transactional
     @Override
-    public int insertSwJsStores(List<Cbsj> itemList) {
-        Cbsh cbsh1 = cbshMapper.selectByPrimaryKey(itemList.get(0).getCbsh01());
+    public int insertSwJsStores(Cbsj itemList) {
+        Cbsh cbsh1 = cbshMapper.selectByPrimaryKey(itemList.getCbsh01());
         if(!cbsh1.getCbsh09().equals(TaskStatus.sh.getCode())){
             throw new SwException("审核状态才能扫码");
         }
@@ -98,8 +98,7 @@ private CbsjMapper cbbsjMapper;
         CbsjMapper mapper = session.getMapper(CbsjMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
-        for (int i = 0; i < itemList.size(); i++) {
-            if( itemList.get(i).getCbsj09() == null){
+            if( itemList.getCbsj09() == null){
                 throw new SwException("商品sn不能为空");
             }
 
@@ -117,7 +116,7 @@ private CbsjMapper cbbsjMapper;
             }*/
             CbsjCriteria CAS = new CbsjCriteria();
             CAS.createCriteria()
-                    .andCbsj09EqualTo(itemList.get(i).getCbsj09())
+                    .andCbsj09EqualTo(itemList.getCbsj09())
                             .andCbsj11EqualTo(TaskStatus.sh.getCode());
             List<Cbsj> cbsjs = cbsjMapper.selectByExample(CAS);
             if(cbsjs.size() > 0){
@@ -125,7 +124,7 @@ private CbsjMapper cbbsjMapper;
             }
             CbsjCriteria tyui = new CbsjCriteria();
             tyui.createCriteria()
-                    .andCbsj09EqualTo(itemList.get(i).getCbsj09());
+                    .andCbsj09EqualTo(itemList.getCbsj09());
             List<Cbsj> cbsjs1 = cbsjMapper.selectByExample(tyui);
             if(cbsjs1.size()==0){
                 throw new SwException("商品sn不在仓库盘点明细里");
@@ -133,16 +132,16 @@ private CbsjMapper cbbsjMapper;
 
 
 
-            itemList.get(i).setCbsj03(date);
-            itemList.get(i).setCbsj04(Math.toIntExact(userid));
-            itemList.get(i).setCbsj05(date);
-            itemList.get(i).setCbsj06(Math.toIntExact(userid));
-            itemList.get(i).setCbsj07(DeleteFlagEnum.NOT_DELETE.getCode());
-            itemList.get(i).setUserId(Math.toIntExact(userid));
-            itemList.get(i).setCbsj11(TaskStatus.sh.getCode());
+            itemList.setCbsj03(date);
+            itemList.setCbsj04(Math.toIntExact(userid));
+            itemList.setCbsj05(date);
+            itemList.setCbsj06(Math.toIntExact(userid));
+            itemList.setCbsj07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.setUserId(Math.toIntExact(userid));
+            itemList.setCbsj11(TaskStatus.sh.getCode());
 
             //如果查不到添加信息到库存表
-            Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.get(i).getCbsh01());
+            Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.getCbsh01());
           /*  GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbsh.getCbsh10());
@@ -183,14 +182,11 @@ private CbsjMapper cbbsjMapper;
             taskService.addGsGoodsSn(gsGoodsSnDo);*/
 
             CbsjCriteria example2 = new CbsjCriteria();
-            example2.createCriteria().andCbsj09EqualTo(itemList.get(i).getCbsj09());
+            example2.createCriteria().andCbsj09EqualTo(itemList.getCbsj09());
 
-            mapper.updateByExampleSelective(itemList.get(i),example2);
-            if (i % 10 == 9) {//每10条提交一次
-                session.commit();
-                session.clearCache();
-            }
-        }
+            mapper.updateByExampleSelective(itemList,example2);
+
+
    /*     itemList.get(0).getCbsh01();
         CbshDo cbshDo = new CbshDo();
         cbshDo.setCbsh01(itemList.get(0).getCbsh01());
