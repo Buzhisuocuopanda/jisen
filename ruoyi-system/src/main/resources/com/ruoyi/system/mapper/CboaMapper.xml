@@ -641,7 +641,9 @@
     oa.CBOA24 as orderType,
     oa.CBOA08 as orderDate,
     oa.CBOA11 as status,
-    oa.confirm_sku_status as confirmSkuStatus
+    oa.confirm_sku_status as confirmSkuStatus,
+    oa.CBOA20 as fcNumber,
+    oa.CBOA21 as other
 
 
     FROM
@@ -835,6 +837,9 @@ WHERE
     <if test="whId != null">
 
       and outs.wh_id = #{whId}
+    </if>
+    <if test="saleNo != null and saleNo != ''">
+      and oa.CBOA07 like concat('%', #{saleNo}, '%')
     </if>
 	GROUP BY oa.CBOA07
 	ORDER BY oa.CBOA02

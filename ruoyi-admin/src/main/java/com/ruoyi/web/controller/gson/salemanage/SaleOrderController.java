@@ -458,8 +458,8 @@ public class SaleOrderController extends BaseController {
      * @return
      */
     @ApiOperation(
-            value ="销售出库基于配件销售订单列表",
-            notes = "销售出库基于配件销售订单列表"
+            value ="提货单查询商品销售订单列表",
+            notes = "提货单查询商品销售订单列表"
     )
     @GetMapping("/saleOrderListGoods")
     @PreAuthorize("@ss.hasPermi('sale:saleOrder:list')")

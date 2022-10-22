@@ -227,6 +227,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpl.setCbpl11(good.getPrice());
             cbpl.setCbpl12(good.getTotalPrice());
             cbpl.setGoodProductQty(good.getQty());
+            cbpl.setCbpl16(cboa.getCboa27());
 //            cbpl.setCbpl13();
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();

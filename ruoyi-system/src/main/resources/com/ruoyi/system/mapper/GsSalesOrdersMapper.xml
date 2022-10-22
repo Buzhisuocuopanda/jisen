@@ -430,6 +430,7 @@
       so.PONumber AS ponumber,
       so.factory AS factory,
 
+
     so.*
     FROM
       `gs_ Sales_orders` AS so
