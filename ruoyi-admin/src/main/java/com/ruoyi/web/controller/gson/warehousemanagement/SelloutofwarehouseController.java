@@ -154,7 +154,7 @@ public class SelloutofwarehouseController extends BaseController {
             notes = "新增销售出库扫码"
     )
     @PostMapping("/Selloutofwarehouseaddss")
-    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody List<Cbsd> itemList, BindingResult bindingResult) {
+    public AjaxResult Selloutofwarehouseaddss(@Valid @RequestBody Cbsd itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(sellerofwarehouseService.insertSwJsStoress(itemList));

@@ -29,7 +29,7 @@ public interface ISelloutofwarehouseService {
 
     List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
 
-    int insertSwJsStoress(List<Cbsd> itemList);
+    int insertSwJsStoress(Cbsd itemList);
 
     int insertSwJsSkuBarcodedit(CbsbDo cbsbDo);
 

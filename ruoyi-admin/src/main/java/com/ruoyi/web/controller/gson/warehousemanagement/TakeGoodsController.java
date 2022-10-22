@@ -351,7 +351,7 @@ public class TakeGoodsController extends BaseController {
             notes = "提货单扫码"
     )
     @PostMapping("/TakeGoodsOrdersm")
-    public AjaxResult TakeGoodsOrdersm(@Valid @RequestBody List<Cbpm> itemList, BindingResult bindingResult) {
+    public AjaxResult TakeGoodsOrdersm(@Valid @RequestBody Cbpm itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(takeGoodsService.TakeGoodsOrdersm(itemList));

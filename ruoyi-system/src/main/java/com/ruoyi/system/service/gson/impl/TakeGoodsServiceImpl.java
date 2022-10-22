@@ -1117,8 +1117,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     }
 
     @Override
-    public int TakeGoodsOrdersm(List<Cbpm> itemList) {
-        if(itemList.size()==0){
+    public int TakeGoodsOrdersm(Cbpm itemList) {
+        if(itemList==null){
             throw new SwException("请选择要扫码的商品");
         }
 
@@ -1128,15 +1128,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         CbpmMapper mapper = session.getMapper(CbpmMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
-        for (int i = 0; i < itemList.size(); i++) {
-            Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getCbpk01());
+            Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.getCbpk01());
             if(!cbpk.getCbpk11().equals(2)){
                 throw new SwException("审核状态才能扫码");
             }
             CbpmCriteria example=new CbpmCriteria();
                 example.createCriteria()
                         .andCbpk01EqualTo(cbpk.getCbpk01())
-                    .andCbpm09EqualTo(itemList.get(i).getCbpm09());
+                    .andCbpm09EqualTo(itemList.getCbpm09());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
             if(cbpms.size()==0){
                 throw new SwException("您选择的Sn商品不在出库建议表中" );
@@ -1152,7 +1151,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }*/
           CbpmCriteria sfgu=new CbpmCriteria();
             sfgu.createCriteria()
-                    .andCbpm09EqualTo(itemList.get(i).getCbpm09())
+                    .andCbpm09EqualTo(itemList.getCbpm09())
                             .andCbpm11EqualTo(ScanStatusEnum.YISAOMA.getCode());
             List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
             if(cbpmss.size()>0){
@@ -1161,14 +1160,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
 
-            itemList.get(i).setCbpm05(date);
-            itemList.get(i).setCbpm06(Math.toIntExact(userid));
-            itemList.get(i).setCbpm11(ScanStatusEnum.YISAOMA.getCode());
+            itemList.setCbpm05(date);
+            itemList.setCbpm06(Math.toIntExact(userid));
+            itemList.setCbpm11(ScanStatusEnum.YISAOMA.getCode());
 
 
             GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
             example1.createCriteria()
-                    .andSnEqualTo(itemList.get(i).getCbpm09());
+                    .andSnEqualTo(itemList.getCbpm09());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
             if(gsGoodsSns.size()==0){
                 throw new SwException("您选择的Sn商品不在货物SN表中" );
@@ -1176,7 +1175,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             GsGoodsSnCriteria example6 = new GsGoodsSnCriteria();
             example6.createCriteria()
-                    .andSnEqualTo(itemList.get(i).getCbpm09())
+                    .andSnEqualTo(itemList.getCbpm09())
             .andStatusEqualTo(GoodsType.yck.getCode());
             List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(example6);
             if(gsGoodsSnss.size()>0){
@@ -1184,37 +1183,28 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
             GsGoodsSn goodsSn = new GsGoodsSn();
-            goodsSn.setId(gsGoodsSns.get(i).getId());
-            goodsSn.setCreateTime(gsGoodsSns.get(i).getCreateTime());
-            goodsSn.setCreateBy(gsGoodsSns.get(i).getCreateBy());
+            goodsSn.setId(gsGoodsSns.get(0).getId());
+            goodsSn.setCreateTime(gsGoodsSns.get(0).getCreateTime());
+            goodsSn.setCreateBy(gsGoodsSns.get(0).getCreateBy());
             goodsSn.setUpdateTime(date);
             goodsSn.setUpdateBy(Math.toIntExact(userid));
             goodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            goodsSn.setWhId(gsGoodsSns.get(i).getWhId());
-            goodsSn.setGoodsId(gsGoodsSns.get(i).getGoodsId());
-            goodsSn.setSn(itemList.get(i).getCbpm09());
+            goodsSn.setWhId(gsGoodsSns.get(0).getWhId());
+            goodsSn.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+            goodsSn.setSn(itemList.getCbpm09());
             goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
             goodsSn.setStatus(GoodsType.ckz.getCode());
             goodsSn.setLocationId(null);
 
             GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
             example2.createCriteria()
-                    .andSnEqualTo(itemList.get(i).getCbpm09());
+                    .andSnEqualTo(itemList.getCbpm09());
             gsGoodsSnMapper.updateByExample(goodsSn, example2);
 
-            mapper.updateByExampleSelective(itemList.get(i),example);
+            mapper.updateByExampleSelective(itemList,example);
 
-        }
-      //  Cbpk cbpk=new Cbpk();
-      //  cbpk.setCbpk01(itemList.get(0).getCbpk01());
-        //cbpk.setCbpk11(TaskStatus.bjwc.getCode());
-      //  cbpkMapper.updateByPrimaryKeySelective(cbpk);
-//        CbpkCriteria example=new CbpkCriteria();
-//        example.createCriteria()
-//                .andCbpk01EqualTo(itemList.get(0).getCbpk01());
-//        cbpkMapper.updateByExampleSelective(cbpk,example);
-        session.commit();
-        session.clearCache();
+
+
         return 1;
     }
 

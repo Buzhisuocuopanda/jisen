@@ -774,7 +774,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
             GsSalesOrdersDetailsCriteria  sm= new GsSalesOrdersDetailsCriteria();
             sm.createCriteria()
-                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesOrdersChangeDto.getId()))
+                    .andGsSalesOrdersEqualTo(String.valueOf(gsSalesChange.getGsid()))
                     .andGoodsIdEqualTo(gsSalesOrdersDetailss.get(j).getGoodsId());
             gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,sm);
 
@@ -1171,8 +1171,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
-        String qualityinspectionlistNos = numberGenerate.getQualityinspectionlistNos();
-        cbpc.setOrderNo(qualityinspectionlistNos);
+        cbpc.setOrderNo(cbpdDto.getOrderNo());
         cbpc.setOrderDate(date);
        if(cbpc.getGsid()==null) {
            throw new SwException("预订单主表id不能为空");
@@ -1180,7 +1179,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
         gsSalesChangeMapper.insertSelective(cbpc);
         GsSalesChangeCriteria gsSalesChangeCriteria = new GsSalesChangeCriteria();
-        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(qualityinspectionlistNos);
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getOrderNo());
         List<GsSalesChange> gsSalesChanges = gsSalesChangeMapper.selectByExample(gsSalesChangeCriteria);
         Integer id = gsSalesChanges.get(0).getId();
         GsSalesOrdersChange cbpd = null;
@@ -1196,6 +1195,12 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpd.setQty(good.getQty());
             cbpd.setChangeid(id);
             cbpd.setFactory(good.getFactory());
+            cbpd.setSupplierId(good.getSupplierId());
+            cbpd.setGsSalesOrders(good.getGsSalesOrders());
+            cbpd.setSalerId(good.getSalerId());
+            cbpd.setOrderDate(date);
+            cbpd.setOrderNo(cbpdDto.getOrderNo());
+            cbpd.setGsSalesOrders(cbpc.getGsid());
 
             gsSalesOrdersChangeMapper.insertSelective(cbpd);
         }
