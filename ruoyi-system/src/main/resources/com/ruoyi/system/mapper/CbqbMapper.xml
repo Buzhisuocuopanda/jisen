@@ -323,7 +323,7 @@
 
   <select id="selectGoodsBad" resultMap="BaseResultMap">
 SELECT
-  *
+ distinct sn.sn
     FROM
 CBQB qb
 LEFT JOIN
