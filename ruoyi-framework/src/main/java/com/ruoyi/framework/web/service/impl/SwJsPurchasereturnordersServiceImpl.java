@@ -445,6 +445,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         }
         return successMsg.toString();    }
 
+        @Transactional
     @Override
     public void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto) {
         if(cbpgDto.getCbpg01()==null){

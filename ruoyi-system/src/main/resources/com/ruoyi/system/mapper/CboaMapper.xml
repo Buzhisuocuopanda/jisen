@@ -841,7 +841,7 @@ WHERE
       and oa.CBOA07 like concat('%', #{saleNo}, '%')
     </if>
 	GROUP BY oa.CBOA07
-	ORDER BY oa.CBOA02
+	ORDER BY oa.CBOA02 DESC
   </select>
 
 
