@@ -1057,7 +1057,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
             for (GoodsDto good : goods) {
-                Cbpl cbpl=new Cbpl();
+                Cbpl cbpl = cbplMapper.selectByPrimaryKey(good.getPlId());
                 if(good.getGoodQty()>cbpl.getCbpl09()){
                     throw new SwException("良品数量不能大于提货数量");
                 }
