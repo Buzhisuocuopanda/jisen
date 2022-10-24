@@ -159,7 +159,7 @@ private CbsaMapper cbsaMapper;
                 log.info(swJsSupplier.getCbsa07()+"");
                 if (StringUtils.isNull(u))
                 {
-                    swJsSupplier.setCbsa07(swJsSupplier.getCbsa08());
+                    swJsSupplier.setCbsa07("启用");
                     this.insertSwJsSupplier(swJsSupplier);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("供应商信息").append(swJsSupplier.getCbsa08()).append(" 导入成功");
