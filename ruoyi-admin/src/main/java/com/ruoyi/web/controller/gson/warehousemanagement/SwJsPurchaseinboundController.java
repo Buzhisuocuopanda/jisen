@@ -67,8 +67,6 @@ public class SwJsPurchaseinboundController extends BaseController {
             ValidUtils.bindvaild(bindingResult);
           res=swJsPurchaseinboundService.insertSwJsSkuBarcodes(cbpdDto);
             return AjaxResult.success(res);
-
-
         }catch (SwException e) {
             log.error("【新增采购入库单主表】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
 

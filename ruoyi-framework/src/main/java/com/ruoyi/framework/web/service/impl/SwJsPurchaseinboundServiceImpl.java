@@ -136,6 +136,14 @@ private NumberGenerate numberGenerate;
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbpcs1.get(0).getCbpc01());
+
+        List<Cbpd> goods = cbpdDto.getGoods();
+        for(Cbpd cbpd : goods){
+            cbpd.setCbpc01(idVo.getId());
+        }
+        this.insertSwJsSkuBarcsodesm(goods);
+
+
         return idVo;
 
 
