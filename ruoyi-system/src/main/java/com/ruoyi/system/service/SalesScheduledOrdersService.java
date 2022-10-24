@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.Do.GsOrdersInDo;
 import com.ruoyi.system.domain.Do.GsSalesChangeDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersInDo;
@@ -94,5 +95,7 @@ public interface SalesScheduledOrdersService {
     String importSwJsGoodss(List<GsSalesOrdersInDo> swJsGoodsList, boolean updateSupport, String operName);
 
 
+    void SwJsPurchaseinboundrkdxz(GsOrdersInDo cbpdDto);
 
+    void SwJsPurchaseinboundedirkdxg(GsOrdersInDo cbpdDto);
 }

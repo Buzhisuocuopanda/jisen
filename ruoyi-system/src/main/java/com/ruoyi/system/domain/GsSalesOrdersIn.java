@@ -1,13 +1,10 @@
 package com.ruoyi.system.domain;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+
 public class GsSalesOrdersIn implements Serializable {
     private Integer id;
-
-
 
     private Date createTime;
 
@@ -31,7 +28,7 @@ public class GsSalesOrdersIn implements Serializable {
 
     private String factory;
 
-
+    private Integer inid;
 
     private static final long serialVersionUID = 1L;
 
@@ -131,6 +128,14 @@ public class GsSalesOrdersIn implements Serializable {
         this.factory = factory == null ? null : factory.trim();
     }
 
+    public Integer getInid() {
+        return inid;
+    }
+
+    public void setInid(Integer inid) {
+        this.inid = inid;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -154,7 +159,8 @@ public class GsSalesOrdersIn implements Serializable {
             && (this.getInQty() == null ? other.getInQty() == null : this.getInQty().equals(other.getInQty()))
             && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()));
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()))
+            && (this.getInid() == null ? other.getInid() == null : this.getInid().equals(other.getInid()));
     }
 
     @Override
@@ -173,6 +179,7 @@ public class GsSalesOrdersIn implements Serializable {
         result = prime * result + ((getGsSalesOrders() == null) ? 0 : getGsSalesOrders().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
+        result = prime * result + ((getInid() == null) ? 0 : getInid().hashCode());
         return result;
     }
 
@@ -194,6 +201,7 @@ public class GsSalesOrdersIn implements Serializable {
         sb.append(", gsSalesOrders=").append(gsSalesOrders);
         sb.append(", status=").append(status);
         sb.append(", factory=").append(factory);
+        sb.append(", inid=").append(inid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
