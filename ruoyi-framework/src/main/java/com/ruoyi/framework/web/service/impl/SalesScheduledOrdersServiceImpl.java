@@ -1531,17 +1531,32 @@ if(gsSalesOrders.get(0).getId()==null){
         if(cbpc.getGsid()==null) {
             throw new SwException("预订单主表id不能为空");
         }
+        cbpc.setGsid(cbpdDto.getGsid());
 
         gsOrdersInMapper.insertSelective(cbpc);
+
         GsOrdersInCriteria gsSalesChangeCriteria = new GsOrdersInCriteria();
         gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getPonumber());
         List<GsOrdersIn> gsOrdersIns = gsOrdersInMapper.selectByExample(gsSalesChangeCriteria);
+
 
 
         Integer id = gsOrdersIns.get(0).getId();
 
         GsSalesOrdersIn cbpd = null;
         for(GsSalesOrdersIn good:goods){
+
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria=new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()))
+                    .andGoodsIdEqualTo(good.getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+            double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+            if(good.getInQty()>sum){
+                throw new SwException("入库数量大于预订单数量");
+            }
+
+
             cbpd = new GsSalesOrdersIn();
 
             if(good.getGoodsId()==null){
@@ -1566,6 +1581,8 @@ if(gsSalesOrders.get(0).getId()==null){
 
             gsSalesOrdersInMapper.insertSelective(cbpd);
         }
+
+
 
     }
 
@@ -1602,6 +1619,18 @@ if(gsSalesOrders.get(0).getId()==null){
 
         GsSalesOrdersIn cbpd = null;
         for(GsSalesOrdersIn good:goods){
+
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria=new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()))
+                    .andGoodsIdEqualTo(good.getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+            double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+            if(good.getInQty()>sum){
+                throw new SwException("入库数量大于预订单数量");
+            }
+
+
             cbpd = new GsSalesOrdersIn();
 
             if(good.getGoodsId()==null){
@@ -1630,6 +1659,24 @@ if(gsSalesOrders.get(0).getId()==null){
 
 
 
+    }
+
+    @Override
+    public void SwJsPurchaseinbounderkdsh(GsSalesChangeDo cbpdDto) {
+        GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能审核");
+        }
+
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        cbpc.setId(cbpdDto.getId());
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
+        gsOrdersInMapper.updateByPrimaryKey(cbpc);
     }
 
 
