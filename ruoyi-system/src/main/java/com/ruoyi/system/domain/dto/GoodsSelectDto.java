@@ -10,6 +10,8 @@ import lombok.Data;
  */
 @Data
 public class GoodsSelectDto {
+    private Integer cbpb01;
+    private Integer id;
 
     private String goodsMsg;
 }
