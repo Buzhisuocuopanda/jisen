@@ -205,12 +205,25 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             }
             //未出库数量
-            Double noOutQty = goodsUse.getNoOutQty();
-            Double lockQty = goodsUse.getLockQty();
-            if(good.getQty()+noOutQty>lockQty){
-                throw new SwException("该商品未出库的提货单数量相加超过占用数量");
+//            Double noOutQty = goodsUse.getNoOutQty();
+//            List<Cbpl> list=cbplMapper.selectByGoodsAndSaleOrderNo(good.getGoodsId(),cboa.getCboa07());
+//            Double takeQty=list.stream().mapToDouble(Cbpl::getGoodProductQty).sum();
+//            Double lockQty = goodsUse.getLockQty();
+//            if(good.getQty()+takeQty>lockQty){
+//                throw new SwException("该商品未出库的提货单数量相加超过占用数量");
+//
+//            }
 
+             Double lockQty = goodsUse.getLockQty();
+
+            //查出提货数量
+            List<Cbpl> cbpls=cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(),good.getGoodsId());
+            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+            if (good.getQty()+collect >lockQty) {
+                throw new SwException("提货数量总和不能大于该销售订单数量");
             }
+
 
             //生成明细表
             cbpl=new Cbpl();
@@ -1041,8 +1054,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }else if(auditTakeOrderDto.getOpType().equals(6)){
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();
+
+
             for (GoodsDto good : goods) {
                 Cbpl cbpl=new Cbpl();
+                if(good.getGoodQty()>cbpl.getCbpl09()){
+                    throw new SwException("良品数量不能大于提货数量");
+                }
+
                 cbpl.setCbpl01(good.getPlId());
                 cbpl.setGoodProductQty(good.getGoodQty());
                 cbplMapper.updateByPrimaryKeySelective(cbpl);

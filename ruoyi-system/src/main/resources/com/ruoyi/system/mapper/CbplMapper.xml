@@ -424,8 +424,14 @@ FROM
 	INNER JOIN CBOA cboa ON cboa.CBOA07=cbpk.sale_order_no
 	WHERE
 	 cbpk.check_status=1
+	 AND cbpk.CBPK06=0
 	 AND cbpl.CBPL08=#{goodsId}
 	 AND cbpk.sale_order_no=#{orderNo}
+  </select>
+
+
+  <select id="selectByGoodsAndSaleOrderNo" resultMap="BaseResultMap">
+
   </select>
 
 </mapper>
