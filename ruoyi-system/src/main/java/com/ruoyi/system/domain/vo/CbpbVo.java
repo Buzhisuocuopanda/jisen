@@ -38,6 +38,7 @@ public class CbpbVo {
 
     private Integer cbpb11;
 
+  private Integer id;
 
     private Double cbpb13;
 

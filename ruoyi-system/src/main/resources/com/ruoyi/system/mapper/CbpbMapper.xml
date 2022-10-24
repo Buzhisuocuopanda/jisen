@@ -515,6 +515,8 @@
         c.CALA01=a.CBPB10
         where
         a.CBPB06=0
+        <if test="id != null ">and a.CBPB01 =#{id,jdbcType=INTEGER}</if>
+
         <if test="goodsMsg != null  and goodsMsg !=''  ">
             AND
             (
@@ -522,8 +524,6 @@
             OR a.CBPB12 like concat('%', #{goodsMsg}, '%')
             OR a.CBPB08 like concat('%', #{goodsMsg}, '%')
             )
-
-
         </if>
 
 
