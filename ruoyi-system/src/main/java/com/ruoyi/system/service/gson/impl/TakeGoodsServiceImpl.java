@@ -1142,8 +1142,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbpmMapper mapper = session.getMapper(CbpmMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
             Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.getCbpk01());
@@ -1213,13 +1211,17 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
             goodsSn.setStatus(GoodsType.ckz.getCode());
             goodsSn.setLocationId(null);
+            if(gsGoodsSns.get(0).getInTime()!=null){
+                goodsSn.setInTime(gsGoodsSns.get(0).getInTime());}
+
+            goodsSn.setInTime(gsGoodsSns.get(0).getInTime());
 
             GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
             example2.createCriteria()
                     .andSnEqualTo(itemList.getCbpm09());
             gsGoodsSnMapper.updateByExample(goodsSn, example2);
 
-            mapper.updateByExampleSelective(itemList,example);
+        cbpmMapper.updateByExampleSelective(itemList,example);
 
 
 

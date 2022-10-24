@@ -192,7 +192,7 @@ public class ApprovalController extends BaseController {
         }
         int fromIndex =0;//
         int toIndex =0;//
-        if(pageNum != pageCount){
+        if(!pageNum.equals(pageCount)){
             fromIndex =(pageNum -1)* pageSize;
             toIndex = fromIndex + pageSize;
         }else{

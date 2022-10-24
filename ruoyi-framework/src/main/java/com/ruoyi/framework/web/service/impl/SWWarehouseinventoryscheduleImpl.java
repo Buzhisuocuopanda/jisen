@@ -22,12 +22,18 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class SWWarehouseinventoryscheduleImpl implements ISWWarehouseinventoryscheduleService {
 @Resource
@@ -49,7 +55,8 @@ private CbsjMapper cbbsjMapper;
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
-
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     @Resource
     private CbsjMapper cbsjMapper;
     @Override
@@ -102,6 +109,16 @@ private CbsjMapper cbbsjMapper;
                 throw new SwException("商品sn不能为空");
             }
 
+        String cbic10 = itemList.getCbsj09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
+        }
+        String s = redisTemplate.opsForValue().get(cbic10);
+
+
+        try {
       /*      GsGoodsSnCriteria example = new GsGoodsSnCriteria();
             example.createCriteria().andSnEqualTo(itemList.get(i).getCbsj09());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
@@ -131,7 +148,6 @@ private CbsjMapper cbbsjMapper;
             }
 
 
-
             itemList.setCbsj03(date);
             itemList.setCbsj04(Math.toIntExact(userid));
             itemList.setCbsj05(date);
@@ -139,6 +155,7 @@ private CbsjMapper cbbsjMapper;
             itemList.setCbsj07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.setUserId(Math.toIntExact(userid));
             itemList.setCbsj11(TaskStatus.sh.getCode());
+
 
             //如果查不到添加信息到库存表
             Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.getCbsh01());
@@ -180,19 +197,28 @@ private CbsjMapper cbbsjMapper;
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSn(gsGoodsSnDo);*/
+        } finally {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
 
-            CbsjCriteria example2 = new CbsjCriteria();
+        }
+
+        CbsjCriteria example2 = new CbsjCriteria();
             example2.createCriteria().andCbsj09EqualTo(itemList.getCbsj09());
 
-            mapper.updateByExampleSelective(itemList,example2);
+        cbsjMapper.updateByExampleSelective(itemList,example2);
 
 
    /*     itemList.get(0).getCbsh01();
         CbshDo cbshDo = new CbshDo();
         cbshDo.setCbsh01(itemList.get(0).getCbsh01());
         this.swJsStoreend(cbshDo);*/
-        session.commit();
-        session.clearCache();
+
         return 1;    }
 
     @Transactional

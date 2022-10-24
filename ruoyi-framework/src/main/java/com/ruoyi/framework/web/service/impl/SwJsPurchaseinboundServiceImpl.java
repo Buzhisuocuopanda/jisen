@@ -122,7 +122,7 @@ private NumberGenerate numberGenerate;
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc08(date);
             cbpc.setCbpc11(TaskStatus.mr.getCode());
-            cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpc.setCbpc06(DeleteFlagEnum.DELETE.getCode());
             String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
             cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setCbpc13(date);
@@ -136,6 +136,14 @@ private NumberGenerate numberGenerate;
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbpcs1.get(0).getCbpc01());
+
+        List<Cbpd> goods = cbpdDto.getGoods();
+        for(Cbpd cbpd : goods){
+            cbpd.setCbpc01(idVo.getId());
+        }
+        this.insertSwJsSkuBarcsodesm(goods);
+
+
         return idVo;
 
 
@@ -150,6 +158,7 @@ private NumberGenerate numberGenerate;
     @Override
     public int insertSwJsSkuBarcodesm(Cbpe itemList) {
 
+       log.info("打印" + Thread.currentThread().getName() + "sn表");
 
 
        if (itemList == null) {
@@ -188,8 +197,7 @@ private NumberGenerate numberGenerate;
 
 
 
-       SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-       CbpeMapper mapper = session.getMapper(CbpeMapper.class);
+
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
            if (itemList.getCbpe09() == null) {
@@ -277,7 +285,6 @@ private NumberGenerate numberGenerate;
                gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-               log.info("打印" + Thread.currentThread().getName() + "sn表");
            } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
@@ -287,6 +294,7 @@ private NumberGenerate numberGenerate;
                        "return 0 " +
                        "end";
                this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
            }
 
            // this.redisTemplate.delete("lock");
@@ -427,6 +435,19 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getCbpc01())){
+                throw new SwException("采购入库主表id不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd08())){
+                throw new SwException("商品不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd09())){
+                throw new SwException("数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd11())){
+                throw new SwException("单价不能为空");
+            }
+
             itemList.get(i).setCbpd03(date);
             itemList.get(i).setCbpd04(Math.toIntExact(userid));
             itemList.get(i).setCbpd05(date);
@@ -442,6 +463,14 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         }
         session.commit();
         session.clearCache();
+
+ Cbpc cbpc = new Cbpc();
+ if(itemList.get(0).getCbpc01()==null){
+     throw new SwException("采购入库主表id不能为空");
+ }
+        cbpc.setCbpc01(itemList.get(0).getCbpc01());
+        cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpcMapper.updateByPrimaryKeySelective(cbpc);
         return 1;
     }
 
@@ -450,6 +479,11 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         if(cbpdDto.getCbpc01()==null){
             throw new SwException("采购订单id不能为空");
         }
+        Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能修改");
+        }
+
         List<Cbpd> goods = cbpdDto.getGoods();
         if(goods==null||goods.size()==0){
             throw new SwException("请至少添加一件货物");

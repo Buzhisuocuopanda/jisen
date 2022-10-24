@@ -19,11 +19,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.tsv.TsvFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -87,6 +90,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private TakeGoodsService takeGoodsService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @Resource
     private CboaMapper cboaMapper;
     /**
@@ -128,7 +134,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb03(Math.toIntExact(userid));
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
-        cbsb.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsb.setCbsb06(DeleteFlagEnum.DELETE.getCode());
         cbsb.setCbsb10(cbsbDo.getCbsb10());
         String sellofwarehouseNo = numberGenerate.getSellofwarehouseNo(cbsbDo.getCbsb10());
         cbsb.setCbsb07(sellofwarehouseNo);
@@ -202,7 +208,16 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         for (int i = 0; i < itemList.size(); i++) {
 
             if(itemList.get(i).getCbsc08()==null){
-                throw new SwException("采购出货单明细商品id不能为空");
+                throw new SwException("销售出库单明细商品id不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsc09())){
+                throw new SwException("销售出库数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsc11())){
+                throw new SwException("销售出库单价不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsb01())){
+                throw new SwException("销售出库主表id不能为空");
             }
             if(!skuIds.contains(itemList.get(i).getCbsc08())){
                 throw new SwException("仓库里没有该商品");
@@ -235,6 +250,13 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         }
         session.commit();
         session.clearCache();
+
+
+        Cbsb cbsb1 = new Cbsb();
+        cbsb1.setCbsb01(itemList.get(0).getCbsb01());
+        cbsb1.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsbMapper.updateByPrimaryKeySelective(cbsb1);
+
         return 1;
     }
     /**
@@ -721,27 +743,37 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsb2s==null){
             throw new SwException("销售出库单主表不存在");
         }
-        Integer storeid = cbsb2s.getCbsb10();
-        CbscCriteria cas = new CbscCriteria();
-        cas.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
-                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbsc> cbphs = cbscMapper.selectByExample(cas);
-        if (cbphs.size() == 0) {
-            throw new SwException("销售出库单明细为空");
+//锁
+        String cbic10 = itemList.getCbsd09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
         }
-        List<Integer> goodsids = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
-        Set<Integer> uio = new HashSet<>(goodsids);
+        String s = redisTemplate.opsForValue().get(cbic10);
+
+        GsGoodsSnDo gsGoodsSnDo;
+        try {
+            Integer storeid = cbsb2s.getCbsb10();
+            CbscCriteria cas = new CbscCriteria();
+            cas.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                    .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbsc> cbphs = cbscMapper.selectByExample(cas);
+            if (cbphs.size() == 0) {
+                throw new SwException("销售出库单明细为空");
+            }
+            List<Integer> goodsids = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+            Set<Integer> uio = new HashSet<>(goodsids);
 
 
-
-        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
-        if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
-            throw new SwException(" 审核状态才能扫码");
-        }
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbsdMapper mapper = session.getMapper(CbsdMapper.class);
-        Date date = new Date();
-        Long userid = SecurityUtils.getUserId();
+            Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
+            if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
+                throw new SwException(" 审核状态才能扫码");
+            }
+            SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+            CbsdMapper mapper = session.getMapper(CbsdMapper.class);
+            Date date = new Date();
+            Long userid = SecurityUtils.getUserId();
             CbsdCriteria IOP = new CbsdCriteria();
             IOP.createCriteria().andCbsd09EqualTo(itemList.getCbsd09());
             List<Cbsd> cbsds = cbsdMapper.selectByExample(IOP);
@@ -803,12 +835,24 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 throw new SwException("该商品不在提货单里");
             }
             //更新sn表
-            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.getCbsd09());
             gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
-            taskService.updateGsGoodsSn(gsGoodsSnDo);
+        } finally {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
+        }
+
+
+        taskService.updateGsGoodsSn(gsGoodsSnDo);
 
           /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
@@ -884,6 +928,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsbDo.getCbsb01()==null){
             throw new SwException("销售出库单id不能为空");
         }
+        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
+        if(!cbsb1.getCbsb11().equals(TaskStatus.mr.getCode())){
+            throw new SwException(" 未审核状态才能编辑");
+        }
+
         List<Cbsc> goods = cbsbDo.getGoods();
         if(goods==null||goods.size()==0){
             throw new SwException("请至少添加一件货物");
@@ -925,8 +974,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             cbsc.setCbsc16(good.getCbsc16());
             cbsc.setCbsc17(good.getCbsc17());
 
-            CbscCriteria example = new CbscCriteria();
-            example.createCriteria().andCbsc01EqualTo(good.getCbsc01());
+      /*      CbscCriteria example = new CbscCriteria();
+            example.createCriteria().andCbsc01EqualTo(good.getCbsc01());*/
             cbscMapper.insertSelective(cbsc);
         }
         return;
