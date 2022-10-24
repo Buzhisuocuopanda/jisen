@@ -81,21 +81,24 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setCbse03(Math.toIntExact(userid));
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
-        cbse.setCbse06(DeleteFlagEnum.DELETE.getCode());
+        cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbse.setCbse07(salesreturnordersNo);
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
         cbse.setUserId(Math.toIntExact(userid));
-        cbseMapper.insertSelective(cbse);
+        int a = cbseMapper.insertSelective(cbse);
+        System.out.println(a);
         CbseCriteria example1 = new CbseCriteria();
         example1.createCriteria().andCbse07EqualTo(salesreturnordersNo)
-                .andCbse06EqualTo(DeleteFlagEnum.DELETE.getCode());
+                .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbse> cbsess = cbseMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
-        if(cbsess.size()>0){
-            idVo.setId(cbsess.get(0).getCbse01());
+        idVo.setId(cbsess.get(0).getCbse01());
+        List<Cbsf> cbsfList = cbseDo.getGoods();
+        for(Cbsf cbsf:cbsfList){
+            cbsf.setCbse01(cbsess.get(0).getCbse01());
         }
-       // idVo.setId(cbsess.get(0).getCbse01());
+        this.insertSwJsStores(cbsfList);
         return idVo;
     }
     /**
@@ -110,7 +113,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
             if(Objects.isNull(itemList.get(i).getGoodsId())){
-                throw new SwException("销售退库不能为空");
+                throw new SwException("销售退库商品不能为空");
             }
             if(Objects.isNull(itemList.get(i).getCbsf09())){
                 throw new SwException("销售退库数量不能为空");

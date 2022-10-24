@@ -1055,9 +1055,21 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();
 
+            //判断是否有未扫码的
+            CbpmCriteria pmex=new CbpmCriteria();
+            pmex.createCriteria()
+                    .andCbpk01EqualTo(cbpk.getCbpk01())
+                    .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+            for (Cbpm cbpm : cbpms) {
+                if(cbpm.getCbpm11()==0){
+                    throw new SwException("提货单存在未扫码的商品");
+                }
+
+            }
 
             for (GoodsDto good : goods) {
-                Cbpl cbpl=new Cbpl();
+                Cbpl cbpl = cbplMapper.selectByPrimaryKey(good.getPlId());
                 if(good.getGoodQty()>cbpl.getCbpl09()){
                     throw new SwException("良品数量不能大于提货数量");
                 }
