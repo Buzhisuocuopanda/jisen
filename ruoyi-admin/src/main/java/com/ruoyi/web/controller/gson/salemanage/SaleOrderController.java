@@ -2151,8 +2151,14 @@ public class SaleOrderController extends BaseController {
             outputChannel = new FileOutputStream(dest).getChannel();
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
         } finally {
-            inputChannel.close();
-            outputChannel.close();
+            if(inputChannel!=null){
+                inputChannel.close();
+            }
+            if(outputChannel!=null){
+                outputChannel.close();
+            }
+
+
         }
     }
 

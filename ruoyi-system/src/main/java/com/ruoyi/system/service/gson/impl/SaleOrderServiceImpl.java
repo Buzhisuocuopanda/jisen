@@ -686,7 +686,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
             if(good.getTotalPrice() ==null ){
-                throw new SwException("请输入商品总价");
+                throw new SwException("请输入商品金额");
             }
 
             //判断库存是否足够

@@ -73,6 +73,9 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
 
     @Resource
     private GsSalesChangeMapper gsSalesChangeMapper;
+
+    @Resource
+    private GsOrdersInMapper gsOrdersInMapper;
     /**
      * 添加销售预订单
      *
@@ -1435,6 +1438,7 @@ return ;
         }
         return successMsg.toString();    }
 
+
     private void insertSwJsStoress(List<GsSalesOrdersInDo> itemList) {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -1504,7 +1508,179 @@ if(gsSalesOrders.get(0).getId()==null){
 
 
 
-    }}
+    }
+
+    @Override
+    public void SwJsPurchaseinboundrkdxz(GsOrdersInDo cbpdDto) {
+        List<GsSalesOrdersIn> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        cbpc.setCreateTime(date);
+        cbpc.setCreateBy(userid);
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
+        cbpc.setOrderNo(cbpdDto.getOrderNo());
+        cbpc.setOrderDate(date);
+        cbpc.setPonumber(cbpdDto.getPonumber());
+        if(cbpc.getGsid()==null) {
+            throw new SwException("预订单主表id不能为空");
+        }
+        cbpc.setGsid(cbpdDto.getGsid());
+
+        gsOrdersInMapper.insertSelective(cbpc);
+
+        GsOrdersInCriteria gsSalesChangeCriteria = new GsOrdersInCriteria();
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getPonumber());
+        List<GsOrdersIn> gsOrdersIns = gsOrdersInMapper.selectByExample(gsSalesChangeCriteria);
+
+
+
+        Integer id = gsOrdersIns.get(0).getId();
+
+        GsSalesOrdersIn cbpd = null;
+        for(GsSalesOrdersIn good:goods){
+
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria=new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()))
+                    .andGoodsIdEqualTo(good.getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+            double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+            if(good.getInQty()>sum){
+                throw new SwException("入库数量大于预订单数量");
+            }
+
+
+            cbpd = new GsSalesOrdersIn();
+
+            if(good.getGoodsId()==null){
+                throw new SwException("货物id不能为空");
+            }
+            if(good.getInQty()==null){
+                throw new SwException("货物数量不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
+
+            cbpd.setCreateTime(date);
+            cbpd.setCreateBy(userid);
+            cbpd.setUpdateTime(date);
+            cbpd.setUpdateBy(userid);
+            cbpd.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
+            cbpd.setGoodsId(good.getGoodsId());
+            cbpd.setPonumber(good.getPonumber());
+            cbpd.setFactory(good.getFactory());
+            cbpd.setInid(id);
+
+            gsSalesOrdersInMapper.insertSelective(cbpd);
+        }
+
+
+
+    }
+
+    @Override
+    public void SwJsPurchaseinboundedirkdxg(GsOrdersInDo cbpdDto) {
+        GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能修改");
+        }
+
+        if(gsSalesChange==null){
+            throw new SwException("无此修改信息");
+        }
+        if(gsSalesChange.getGsid()==null){
+            throw new SwException("预订单id为空");
+        }
+        List<GsSalesOrdersIn> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        cbpc.setId(cbpdDto.getId());
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
+        gsOrdersInMapper.updateByPrimaryKey(cbpc);
+
+        GsSalesOrdersInCriteria gsSalesChangeCriteria = new GsSalesOrdersInCriteria();
+        gsSalesChangeCriteria.createCriteria().andInidEqualTo(cbpdDto.getId());
+        int i = gsSalesOrdersInMapper.deleteByExample(gsSalesChangeCriteria);
+
+        GsSalesOrdersIn cbpd = null;
+        for(GsSalesOrdersIn good:goods){
+
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria=new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()))
+                    .andGoodsIdEqualTo(good.getGoodsId());
+            List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+            double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+            if(good.getInQty()>sum){
+                throw new SwException("入库数量大于预订单数量");
+            }
+
+
+            cbpd = new GsSalesOrdersIn();
+
+            if(good.getGoodsId()==null){
+                throw new SwException("货物id不能为空");
+            }
+            if(good.getInQty()==null){
+                throw new SwException("货物数量不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
+
+            cbpd.setCreateTime(date);
+            cbpd.setCreateBy(userid);
+            cbpd.setUpdateTime(date);
+            cbpd.setUpdateBy(userid);
+            cbpd.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
+            cbpd.setGoodsId(good.getGoodsId());
+            cbpd.setPonumber(good.getPonumber());
+            cbpd.setFactory(good.getFactory());
+            cbpd.setInid(cbpdDto.getId());
+
+            gsSalesOrdersInMapper.insertSelective(cbpd);
+        }
+
+
+
+
+    }
+
+    @Override
+    public void SwJsPurchaseinbounderkdsh(GsSalesChangeDo cbpdDto) {
+        GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能审核");
+        }
+
+        Long userid = SecurityUtils.getUserId();
+        Date date = new Date();
+        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        cbpc.setId(cbpdDto.getId());
+        cbpc.setUpdateTime(date);
+        cbpc.setUpdateBy(userid);
+        cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
+        gsOrdersInMapper.updateByPrimaryKey(cbpc);
+    }
+
+
+}
 
 
 

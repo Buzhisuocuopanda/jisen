@@ -139,6 +139,62 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
                 CbicCriteria example2 = new CbicCriteria();
                 example2.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
                 cbicMapper.updateByExampleSelective(cbic,example2);
+
+                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+                //获取仓库id
+                gsGoodsSkuDo.setWhId(cbicDto.getCbic07());
+                //获取商品id
+                gsGoodsSkuDo.setGoodsId(cbpbs.get(0).getCbpb01());
+                //获取库位id
+                gsGoodsSkuDo.setLocationId(cbicDto.getCbic08());
+                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                //通过仓库id和货物id判断是否存在
+                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                if (gsGoodsSkus.size() == 0) {
+                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
+                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
+                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
+                    gsGoodsSkuDo1.setQty(1.0);
+                    taskService.addGsGoodsSku(gsGoodsSkuDo1);
+                }
+                //如果存在则更新库存数量
+                else {
+                    //加锁
+                    baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
+                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
+                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
+                    //查出
+                    Double qty = gsGoodsSkus.get(0).getQty();
+                    gsGoodsSkuDo1.setQty(qty + 1.0);
+                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+                }
+
+                CbicCriteria cbicCriteria = new CbicCriteria();
+                cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
+                List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
+
+                // Integer cbic13 = cbicDto.getCbic13();
+                //  Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
+
+                CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
+                cbibDo.setCbib02(storeid);
+                cbibDo.setCbib04(date);
+                cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+                // cbibDo.setCbib06(cbsa1.getCbsa08());
+                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
+                // cbibDo.setCbib06(cbsa.getCbsa08());
+
+                cbibDo.setCbib07(cbics.get(0).getCbic01());
+                cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
+
+                cbibDo.setCbib17(TaskType.zjrk.getMsg());
+                cbibDo.setCbib19(cbicDto.getCbic13());
+
+                taskService.InsertCBIB(cbibDo);
             }
             else{
                 //添加

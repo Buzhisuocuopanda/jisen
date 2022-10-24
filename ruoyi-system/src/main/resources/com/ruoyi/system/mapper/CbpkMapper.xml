@@ -781,7 +781,7 @@ ORDER BY
       a.CBSB08 as cbsb08,
       c.CBCA08 as cbca08,
       d.CBWA09 as cbwa09,
-      i.user_name as caua15,
+      i.nick_name as caua15,
       j.CBSD03 as cbsd03,
       a.CBSB17 as cbsb17,
       a.CBSB10 as cbsb10,

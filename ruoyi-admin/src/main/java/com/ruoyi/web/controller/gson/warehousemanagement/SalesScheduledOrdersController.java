@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbpd;
+import com.ruoyi.system.domain.Do.GsOrdersInDo;
 import com.ruoyi.system.domain.Do.GsSalesChangeDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersDo;
 import com.ruoyi.system.domain.Do.GsSalesOrdersInDo;
@@ -1104,6 +1105,7 @@ public class SalesScheduledOrdersController extends BaseController {
 
 
 
+
     /**
      * 变更单修改
      */
@@ -1296,6 +1298,119 @@ public class SalesScheduledOrdersController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 入库单新增
+     */
+    @ApiOperation(
+            value ="入库单新增",
+            notes = "入库单新增"
+    )
+    @PostMapping("/rkdxz")
+    public AjaxResult SwJsPurchaseinboundrkdxz(@Valid @RequestBody GsOrdersInDo cbpdDto, BindingResult bindingResult) {
+
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            salesScheduledOrdersService.SwJsPurchaseinboundrkdxz(cbpdDto);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【入库单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【入库单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【入库单新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+
+
+    /**
+     * 入库单修改
+     */
+    @ApiOperation(
+            value ="入库单修改",
+            notes = "入库单修改"
+    )
+    @PostMapping("/rkdxg")
+    public AjaxResult SwJsPurchaseinboundedirkdxg(@Valid @RequestBody GsOrdersInDo cbpdDto, BindingResult bindingResult) {
+
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            salesScheduledOrdersService.SwJsPurchaseinboundedirkdxg(cbpdDto);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【入库单修改】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【入库单修改】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【入库单修改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+    /**
+     * 入库单审核
+     */
+    @ApiOperation(
+            value ="入库单审核",
+            notes = "入库单审核"
+    )
+    @PostMapping("/rkdsh")
+    public AjaxResult SwJsPurchaseinbounderkdsh(@Valid @RequestBody GsSalesChangeDo cbpdDto, BindingResult bindingResult) {
+
+
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            salesScheduledOrdersService.SwJsPurchaseinbounderkdsh(cbpdDto);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【入库单审核】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【入库单审核】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【入库单审核】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+
 
 
 }
