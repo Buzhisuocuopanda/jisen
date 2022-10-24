@@ -95,6 +95,17 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private CboaMapper cboaMapper;
+
+    @Resource
+    private  CbpeMapper cbpeMapper;
+
+
+    @Resource
+    private  CalaMapper calaMapper;
+
+
+    @Resource
+    private  CbpbMapper cbpbMapper;
     /**
      * 新增销售出库主单
      *
@@ -153,7 +164,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb07EqualTo(sellofwarehouseNo)
-                .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbsb06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbsb> cbsbss = cbsbMapper.selectByExample(example1);
 
 
@@ -161,9 +172,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 
 
-
         IdVo idVo = new IdVo();
-        idVo.setId(cbsbss.get(0).getCbsb01());
+        if(cbsbDo.getCbsb30()!=null){
+            idVo.setId(cbsbss.get(0).getCbsb01());
+        }
+
         return idVo;
     }
     /**
@@ -673,19 +686,21 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsds.size()>0) {
             Integer saoma = 0;
 
-            for (int i = 0; i < cbsbsVos.size(); i++) {
+           // for (int i = 0; i < cbsbsVos.size(); i++) {
                 CbsdCriteria example2 = new CbsdCriteria();
-                example2.createCriteria().andCbsb01EqualTo(cbsb01)
-                        .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
+                example2.createCriteria().andCbsb01EqualTo(cbsb01);
                 List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
 
                 int size = cbpes.size();
                 for (int j = 0; j < size; j++) {
+                    Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpes.get(j).getCbsd08());
+                    Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
                     ScanVo scanVo = new ScanVo();
-                    scanVo.setLx(cbsbsVos.get(i).getCbpa07());
-                    scanVo.setPinpai(cbsbsVos.get(i).getCala08());
-                    scanVo.setCbpb08(cbsbsVos.get(i).getCbpb08());
-                    scanVo.setCbpb12(cbsbsVos.get(i).getCbpb12());
+
+                  //  scanVo.setLx(cbsbsVos.get(i).getCbpa07());
+                    scanVo.setPinpai(cala.getCala08());
+                    scanVo.setCbpb08(cbpb.getCbpb08());
+                    scanVo.setCbpb12(cbpb.getCbpb12());
                     scanVo.setSn(cbpes.get(j).getCbsd09());
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpes.get(j).getCbsd10());
                     if(cbla==null){
@@ -695,9 +710,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     scanVo.setCbpe03(cbpes.get(j).getCbsd03());
                     goods.add(scanVo);
                 }
-                cbsbsVos.get(i).setSaoma(size);
-                saoma +=cbsbsVos.get(i).getSaoma();
-            }
+                cbsbsVos.get(0).setSaoma(size);
+                saoma +=cbsbsVos.get(0).getSaoma();
+           // }
             cbsbsVos.get(0).setSaomanums(saoma);
 
             cbsbsVos.get(0).setGoods(goods);

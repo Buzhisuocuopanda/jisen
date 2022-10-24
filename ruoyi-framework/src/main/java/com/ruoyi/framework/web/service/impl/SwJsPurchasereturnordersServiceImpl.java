@@ -121,12 +121,15 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpgMapper.insertSelective(cbpg);
         CbpgCriteria example1 = new CbpgCriteria();
         example1.createCriteria().andCbpg07EqualTo(purchasereturnNo)
-                .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbpg06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbpg> cbpgs1 = cbpgMapper.selectByExample(example1);
 
 
         IdVo idVo = new IdVo();
-        idVo.setId(cbpgs1.get(0).getCbpg01());
+        if(cbpgs1.size()>0){
+            idVo.setId(cbpgs1.get(0).getCbpg01());
+        }
+       // idVo.setId(cbpgs1.get(0).getCbpg01());
         return idVo;
     }
     /**

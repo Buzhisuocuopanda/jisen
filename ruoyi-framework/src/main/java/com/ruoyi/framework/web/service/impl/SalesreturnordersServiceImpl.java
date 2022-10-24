@@ -89,10 +89,13 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbseMapper.insertSelective(cbse);
         CbseCriteria example1 = new CbseCriteria();
         example1.createCriteria().andCbse07EqualTo(salesreturnordersNo)
-                .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbse06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbse> cbsess = cbseMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
-        idVo.setId(cbsess.get(0).getCbse01());
+        if(cbsess.size()>0){
+            idVo.setId(cbsess.get(0).getCbse01());
+        }
+       // idVo.setId(cbsess.get(0).getCbse01());
         return idVo;
     }
     /**
