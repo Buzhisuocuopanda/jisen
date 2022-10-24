@@ -163,7 +163,7 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         cbca.setCbca04(date);
         cbca.setCbca05(Math.toIntExact(userid));
         cbca.setCbca06(DeleteFlagEnum.NOT_DELETE.getCode());
-        cbca.setCbca07(cbcaDto.getCbca07());
+        cbca.setCbca07("启用");
         cbca.setCbca08(cbcaDto.getCbca08());
         cbca.setCbca09(cbcaDto.getCbca09());
         cbca.setCbca10(cbcaDto.getCbca10());

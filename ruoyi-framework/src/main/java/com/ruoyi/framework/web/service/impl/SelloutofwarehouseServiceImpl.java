@@ -19,11 +19,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.tsv.TsvFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -86,6 +89,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private TakeGoodsService takeGoodsService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Resource
     private CboaMapper cboaMapper;
@@ -721,27 +727,37 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsb2s==null){
             throw new SwException("销售出库单主表不存在");
         }
-        Integer storeid = cbsb2s.getCbsb10();
-        CbscCriteria cas = new CbscCriteria();
-        cas.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
-                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbsc> cbphs = cbscMapper.selectByExample(cas);
-        if (cbphs.size() == 0) {
-            throw new SwException("销售出库单明细为空");
+//锁
+        String cbic10 = itemList.getCbsd09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
         }
-        List<Integer> goodsids = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
-        Set<Integer> uio = new HashSet<>(goodsids);
+        String s = redisTemplate.opsForValue().get(cbic10);
+
+        GsGoodsSnDo gsGoodsSnDo;
+        try {
+            Integer storeid = cbsb2s.getCbsb10();
+            CbscCriteria cas = new CbscCriteria();
+            cas.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                    .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbsc> cbphs = cbscMapper.selectByExample(cas);
+            if (cbphs.size() == 0) {
+                throw new SwException("销售出库单明细为空");
+            }
+            List<Integer> goodsids = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+            Set<Integer> uio = new HashSet<>(goodsids);
 
 
-
-        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
-        if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
-            throw new SwException(" 审核状态才能扫码");
-        }
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbsdMapper mapper = session.getMapper(CbsdMapper.class);
-        Date date = new Date();
-        Long userid = SecurityUtils.getUserId();
+            Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
+            if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
+                throw new SwException(" 审核状态才能扫码");
+            }
+            SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+            CbsdMapper mapper = session.getMapper(CbsdMapper.class);
+            Date date = new Date();
+            Long userid = SecurityUtils.getUserId();
             CbsdCriteria IOP = new CbsdCriteria();
             IOP.createCriteria().andCbsd09EqualTo(itemList.getCbsd09());
             List<Cbsd> cbsds = cbsdMapper.selectByExample(IOP);
@@ -803,12 +819,24 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                 throw new SwException("该商品不在提货单里");
             }
             //更新sn表
-            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.getCbsd09());
             gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
-            taskService.updateGsGoodsSn(gsGoodsSnDo);
+        } finally {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
+        }
+
+
+        taskService.updateGsGoodsSn(gsGoodsSnDo);
 
           /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id

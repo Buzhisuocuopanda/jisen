@@ -150,6 +150,7 @@ private NumberGenerate numberGenerate;
     @Override
     public int insertSwJsSkuBarcodesm(Cbpe itemList) {
 
+       log.info("打印" + Thread.currentThread().getName() + "sn表");
 
 
        if (itemList == null) {
@@ -188,8 +189,7 @@ private NumberGenerate numberGenerate;
 
 
 
-       SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-       CbpeMapper mapper = session.getMapper(CbpeMapper.class);
+
        Date date = new Date();
        Long userid = SecurityUtils.getUserId();
            if (itemList.getCbpe09() == null) {
@@ -277,7 +277,6 @@ private NumberGenerate numberGenerate;
                gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-               log.info("打印" + Thread.currentThread().getName() + "sn表");
            } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
@@ -287,6 +286,7 @@ private NumberGenerate numberGenerate;
                        "return 0 " +
                        "end";
                this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
            }
 
            // this.redisTemplate.delete("lock");

@@ -17,11 +17,14 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +61,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Resource
     private CbwaMapper cbwaMapper;
 
-
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
     @Transactional
@@ -769,28 +773,39 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         if( cbaa.getCbaa09()==null){
             throw new SwException("调拨单调出仓库为空");
         }
-        Integer outstoreid = cbaa.getCbaa09();
-
-        CbabCriteria cbabCriteria = new CbabCriteria();
-        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
-        List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
-        List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
-        Set<Integer> sio = new HashSet<>(goodsids);
-
-
-
+        //锁
+        String cbic10 = itemList.getCbac09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
+        }
+        String s = redisTemplate.opsForValue().get(cbic10);
 
 
-             if(itemList.getCbac09()==null){
-                throw new SwException("sn不能为空");
-            }
-           CbacCriteria cbacCriteria = new CbacCriteria();
+        GsGoodsSn gsGoodsSn;
+        try {
+            Integer outstoreid = cbaa.getCbaa09();
+
+            CbabCriteria cbabCriteria = new CbabCriteria();
+            cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
+            List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
+            List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
+            Set<Integer> sio = new HashSet<>(goodsids);
+
+
+            if(itemList.getCbac09()==null){
+               throw new SwException("sn不能为空");
+           }
+            CbacCriteria cbacCriteria = new CbacCriteria();
             cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
             if(cbacs.size()>0){
+
+
                 throw new SwException("sn已存在");}
 
-             //校验sn
+            //校验sn
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
             gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
             List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
@@ -828,16 +843,23 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             itemList.setUserId(Math.toIntExact(userid));
 
 
-            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+            gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setId(gsGoodsSnList.get(0).getId());
             gsGoodsSn.setStatus((byte) 3);
             gsGoodsSn.setOutTime(date);
-            gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
+        } finally {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
+        }
 
 
-
-
-
+        gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
 
         cbacMapper.insertSelective(itemList);
 
@@ -846,10 +868,6 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 //调拨单入库扫码
     @Override
     public int transferordersin(Cbac itemList) {
-
-
-
-
 
 
         Date date = new Date();
@@ -864,16 +882,24 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         if( cbaa.getCbaa10()==null){
             throw new SwException("调拨单调入仓库为空");
         }
-        Integer instoreid = cbaa.getCbaa10();
 
-        CbabCriteria cbabCriteria = new CbabCriteria();
-        cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
-        List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
-        List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
-        Set<Integer> sio = new HashSet<>(goodsids);
+        String cbic10 = itemList.getCbac09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
+        }
+        String s = redisTemplate.opsForValue().get(cbic10);
 
 
+        try {
+            Integer instoreid = cbaa.getCbaa10();
 
+            CbabCriteria cbabCriteria = new CbabCriteria();
+            cbabCriteria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
+            List<Cbab> cbphs = cbabMapper.selectByExample(cbabCriteria);
+            List<Integer> goodsids = cbphs.stream().map(Cbab::getCbab08).collect(Collectors.toList());
+            Set<Integer> sio = new HashSet<>(goodsids);
 
 
             Integer cbaa01 = itemList.getCbaa01();
@@ -970,7 +996,6 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             itemList.setCbac14(2);
             itemList.setUserId(Math.toIntExact(userid));
 
-
           /*  GsGoodsSn gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setId(gsGoodsSnList.get(i).getId());
             gsGoodsSn.setStatus((byte) 1);
@@ -1013,26 +1038,32 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             }*/
 
 
-
-
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setId(gsGoodsSnList.get(0).getId());
                 gsGoodsSn.setStatus((byte) 1);
                 gsGoodsSn.setInTime(date);
                 gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
+
+
                 gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
-
-
-
 
                 CbacCriteria cbacCriteria = new CbacCriteria();
                 cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
 
                 cbacMapper.updateByExampleSelective(itemList, cbacCriteria);
             }
+        } finally {
 
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
 
+        }
 
 
         return 1;    }

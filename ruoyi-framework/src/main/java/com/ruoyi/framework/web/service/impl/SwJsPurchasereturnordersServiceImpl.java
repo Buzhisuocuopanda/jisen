@@ -21,6 +21,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -217,10 +218,22 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         if (cbpg == null) {
             throw new SwException("采购退货单主表为空");
         }
-        Integer storeid = cbpg.getCbpg10();
+//锁
+        String cbic10 = itemList.getCbpi09();
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+        if (!lock) {
+            throw new SwException("sn重复，请勿重复提交");
+        }
+        String s = redisTemplate.opsForValue().get(cbic10);
 
-        Date date = new Date();
-        Long userid = SecurityUtils.getUserId();
+
+        GsGoodsSnDo gsGoodsSnDo;
+        try {
+            Integer storeid = cbpg.getCbpg10();
+
+            Date date = new Date();
+            Long userid = SecurityUtils.getUserId();
 
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
             gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbpi09());
@@ -239,16 +252,14 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             Integer locationId = gsGoodsSnss.get(0).getLocationId();
 
 
-
             if (goodsId == null) {
                 throw new SwException("商品id不能为空");
             }
 
 
-
-           if(!uio.contains(goodsId)){
-                throw new SwException("该商品不在采购退货单明细中");
-            }
+            if(!uio.contains(goodsId)){
+                 throw new SwException("该商品不在采购退货单明细中");
+             }
             Cbla cbla = cblaMapper.selectByPrimaryKey(locationId);
             if (cbla == null) {
                 throw new SwException("库位不存在");
@@ -257,7 +268,6 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
                 throw new SwException("库位不属于该仓库");
             }
             String sn = itemList.getCbpi09();
-
 
 
             CbpiCriteria erd = new CbpiCriteria();
@@ -298,14 +308,28 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             }
 
             //更新sn表
-            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+            gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setUpdateTime(date);
             gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
             gsGoodsSnDo.setSn(itemList.getCbpi09());
             gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
-            taskService.updateGsGoodsSn(gsGoodsSnDo);
+        }
+        finally {
+
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                    "then " +
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+            this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
+        }
+
+
+        taskService.updateGsGoodsSn(gsGoodsSnDo);
 
         cbpiMapper.insertSelective(itemList);
           //  redisTemplate.delete("lock1");

@@ -1125,8 +1125,6 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbpmMapper mapper = session.getMapper(CbpmMapper.class);
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
             Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.getCbpk01());
@@ -1202,7 +1200,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andSnEqualTo(itemList.getCbpm09());
             gsGoodsSnMapper.updateByExample(goodsSn, example2);
 
-            mapper.updateByExampleSelective(itemList,example);
+        cbpmMapper.updateByExampleSelective(itemList,example);
 
 
 
