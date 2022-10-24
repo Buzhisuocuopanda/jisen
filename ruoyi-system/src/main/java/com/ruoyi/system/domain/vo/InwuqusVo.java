@@ -39,6 +39,7 @@ public class InwuqusVo {
     //上架状态 1：上架 2：已下架
     @Excel(name = "上架状态", readConverterExp = "1=上架,2=已下架")
     private Integer groudStatus;
-
+    @Excel(name = "质量状态", readConverterExp = "0=正常,1=维修中")
+    private Integer repairStatus;
 
 }
