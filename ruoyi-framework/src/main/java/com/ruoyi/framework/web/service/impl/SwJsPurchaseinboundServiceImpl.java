@@ -471,6 +471,11 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         if(cbpdDto.getCbpc01()==null){
             throw new SwException("采购订单id不能为空");
         }
+        Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能修改");
+        }
+
         List<Cbpd> goods = cbpdDto.getGoods();
         if(goods==null||goods.size()==0){
             throw new SwException("请至少添加一件货物");

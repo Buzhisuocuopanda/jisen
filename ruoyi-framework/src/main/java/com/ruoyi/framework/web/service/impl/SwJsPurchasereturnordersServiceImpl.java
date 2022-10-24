@@ -488,6 +488,11 @@ Cbpg cbpgs = new Cbpg();
 
     @Override
     public void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto) {
+        Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
+        if(!cbpg1.getCbpg11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能修改");
+        }
+
         if(cbpgDto.getCbpg01()==null){
             throw new SwException("采购退库单主表不能为空");
         }

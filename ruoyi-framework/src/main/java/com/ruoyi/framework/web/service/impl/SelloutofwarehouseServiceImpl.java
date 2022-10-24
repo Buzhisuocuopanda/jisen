@@ -928,6 +928,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsbDo.getCbsb01()==null){
             throw new SwException("销售出库单id不能为空");
         }
+        Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
+        if(!cbsb1.getCbsb11().equals(TaskStatus.mr.getCode())){
+            throw new SwException(" 未审核状态才能编辑");
+        }
+
         List<Cbsc> goods = cbsbDo.getGoods();
         if(goods==null||goods.size()==0){
             throw new SwException("请至少添加一件货物");
@@ -969,8 +974,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             cbsc.setCbsc16(good.getCbsc16());
             cbsc.setCbsc17(good.getCbsc17());
 
-            CbscCriteria example = new CbscCriteria();
-            example.createCriteria().andCbsc01EqualTo(good.getCbsc01());
+      /*      CbscCriteria example = new CbscCriteria();
+            example.createCriteria().andCbsc01EqualTo(good.getCbsc01());*/
             cbscMapper.insertSelective(cbsc);
         }
         return;

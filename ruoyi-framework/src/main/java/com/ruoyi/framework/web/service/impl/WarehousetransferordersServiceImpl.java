@@ -77,7 +77,7 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         cbaa.setCbaa03(Math.toIntExact(userId));
         cbaa.setCbaa04(date);
         cbaa.setCbaa05(Math.toIntExact(userId));
-        cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbaa.setCbaa06(DeleteFlagEnum.DELETE.getCode());
 
         String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNos(cbaaDo.getCbaa10());
 
@@ -112,13 +112,20 @@ if(itemList.size()==0){
             itemList.get(i).setCbab06(Math.toIntExact(userid));
             itemList.get(i).setCbab07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
-            if(itemList.get(i).getCbab11()==null){
-                throw new SwException("商品单价不能为空");
+            if(Objects.isNull(itemList.get(i).getCbab08())){
+                throw new SwException("商品不能为空");
             }
-            itemList.get(i).setCbab11(itemList.get(i).getCbab11());
             if(itemList.get(i).getCbab09()==null){
                 throw new SwException("商品数量不能为空");
             }
+            if(itemList.get(i).getCbab11()==null){
+                throw new SwException("商品单价不能为空");
+            }
+            if(itemList.get(i).getCbaa01()==null){
+                throw new SwException("仓库调拨单主表id不能为空");
+            }
+            itemList.get(i).setCbab11(itemList.get(i).getCbab11());
+
             itemList.get(i).setCbab09(itemList.get(i).getCbab09());
             itemList.get(i).setCbab12(itemList.get(i).getCbab12());
 
@@ -136,6 +143,14 @@ if(itemList.size()==0){
         }
         session.commit();
         session.clearCache();
+
+
+
+        Cbaa cbaa = new Cbaa();
+        cbaa.setCbaa01(itemList.get(0).getCbaa01());
+        cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbaaMapper.updateByPrimaryKeySelective(cbaa);
+
         return 1;
     }
 
@@ -685,6 +700,11 @@ if(cbacss.size()>0) {
 
     @Override
     public void Warehousetransferorderseditone(CbaaDo cbaaDo) {
+        Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaaDo.getCbaa01());
+        if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("未审核状态才能修改");
+        }
+
         if(cbaaDo.getCbaa01()==null){
             throw new SwException("调拨单id不能为空");
         }
