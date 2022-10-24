@@ -956,6 +956,23 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             orderex.createCriteria()
                     .andCboa07EqualTo(cbpk.getSaleOrderNo());
             List<Cboa> cboas = cboaMapper.selectByExample(orderex);
+
+            //判断是否有未扫码的
+            CbpmCriteria pmex=new CbpmCriteria();
+            pmex.createCriteria()
+                    .andCbpk01EqualTo(cbpk.getCbpk01())
+                    .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+            for (Cbpm cbpm : cbpms) {
+                if(cbpm.getCbpm11()==0){
+                    throw new SwException("提货单存在未扫码的商品");
+                }
+
+            }
+
+
+
+
             if(cboas.size()>0){
                 Cboa cboa = cboas.get(0);
                 CbobCriteria obex=new CbobCriteria();

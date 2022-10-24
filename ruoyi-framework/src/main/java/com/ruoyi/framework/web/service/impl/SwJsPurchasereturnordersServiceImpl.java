@@ -486,6 +486,7 @@ Cbpg cbpgs = new Cbpg();
         }
         return successMsg.toString();    }
 
+        @Transactional
     @Override
     public void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto) {
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
