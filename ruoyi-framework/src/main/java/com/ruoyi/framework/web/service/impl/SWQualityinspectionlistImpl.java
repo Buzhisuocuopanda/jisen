@@ -144,14 +144,14 @@ private CbpmMapper cbpmMapper;
                 List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
                 Integer goodsId;
                 if (gsGoodsSns1.size() > 0) {
-                    goodsId = gsGoodsSns1.get(0).getGoodsId();
+//                    goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSn.setStatus(new Byte("2"));
-                    gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
-                    gsGoodsSn.setGoodsId(goodsId);
-                    gsGoodsSn.setLocationId(locationId);
-                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example1);
+                    gsGoodsSns1.get(0).setStatus(new Byte("2"));
+                    gsGoodsSns1.get(0).setGroudStatus(Groudstatus.XJ.getCode());
+//                    gsGoodsSns1.get(0).setGoodsId(goodsId);
+                    gsGoodsSns1.get(0).setLocationId(null);
+                    gsGoodsSnMapper.updateByExample(gsGoodsSns1.get(0), example1);
                 } else {
                     throw new SwException("替换商品sn不存在或已删除");
 
