@@ -12,6 +12,7 @@ import com.ruoyi.system.service.IWarehousetransferordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -26,7 +27,7 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class WarehousetransferordersServiceImpl implements IWarehousetransferordersService {
     @Resource
@@ -759,6 +760,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 //调拨单调出接口
     @Override
     public int transferordersout(Cbac itemList) {
+        log.info("线程名"+Thread.currentThread().getName()+itemList.getCbac09());
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 

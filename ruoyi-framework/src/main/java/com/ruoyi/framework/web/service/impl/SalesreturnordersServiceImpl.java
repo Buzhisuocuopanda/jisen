@@ -30,10 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -84,7 +81,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setCbse03(Math.toIntExact(userid));
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
-        cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbse.setCbse06(DeleteFlagEnum.DELETE.getCode());
         cbse.setCbse07(salesreturnordersNo);
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
@@ -109,6 +106,18 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getGoodsId())){
+                throw new SwException("销售退库不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsf09())){
+                throw new SwException("销售退库数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsf11())){
+                throw new SwException("销售退库数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbse01())){
+                throw new SwException("销售退库id不能为空");
+            }
             itemList.get(i).setCbsf03(date);
             itemList.get(i).setCbsf04(Math.toIntExact(userid));
             itemList.get(i).setCbsf05(date);
@@ -116,6 +125,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             itemList.get(i).setCbsf07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
             itemList.get(i).setCbsf08(itemList.get(i).getGoodsId());
+
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -124,6 +134,14 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         }
         session.commit();
         session.clearCache();
+
+        Cbse cbse = new Cbse();
+        if(itemList.get(0).getCbse01()==null){
+            throw new SwException("销售退库id不能为空");
+        }
+        cbse.setCbse01(itemList.get(0).getCbse01());
+        cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbseMapper.updateByPrimaryKeySelective(cbse);
         return 1;
     }
     /**
@@ -670,6 +688,14 @@ if(cbsgss.size()>0){
 
     @Override
     public void Selloutofwarehousedeitone(CbseDo cbseDo) {
+        if(cbseDo.getCbse01()==null){
+            throw new SwException("销售退库单id不能为空");
+        }
+        Cbse cbse1 = cbseMapper.selectByPrimaryKey(cbseDo.getCbse01());
+        if(!cbse1.getCbse11().equals(0)){
+            throw new SwException("未审核状态才能修改");
+        }
+
         List<Cbsf> goods = cbseDo.getGoods();
 
         if(goods==null||goods.size()==0){

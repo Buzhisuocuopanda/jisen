@@ -134,7 +134,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         cbsb.setCbsb03(Math.toIntExact(userid));
         cbsb.setCbsb04(date);
         cbsb.setCbsb05(Math.toIntExact(userid));
-        cbsb.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsb.setCbsb06(DeleteFlagEnum.DELETE.getCode());
         cbsb.setCbsb10(cbsbDo.getCbsb10());
         String sellofwarehouseNo = numberGenerate.getSellofwarehouseNo(cbsbDo.getCbsb10());
         cbsb.setCbsb07(sellofwarehouseNo);
@@ -208,7 +208,16 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         for (int i = 0; i < itemList.size(); i++) {
 
             if(itemList.get(i).getCbsc08()==null){
-                throw new SwException("采购出货单明细商品id不能为空");
+                throw new SwException("销售出库单明细商品id不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsc09())){
+                throw new SwException("销售出库数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsc11())){
+                throw new SwException("销售出库单价不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbsb01())){
+                throw new SwException("销售出库主表id不能为空");
             }
             if(!skuIds.contains(itemList.get(i).getCbsc08())){
                 throw new SwException("仓库里没有该商品");
@@ -241,6 +250,13 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         }
         session.commit();
         session.clearCache();
+
+
+        Cbsb cbsb1 = new Cbsb();
+        cbsb1.setCbsb01(itemList.get(0).getCbsb01());
+        cbsb1.setCbsb06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsbMapper.updateByPrimaryKeySelective(cbsb1);
+
         return 1;
     }
     /**

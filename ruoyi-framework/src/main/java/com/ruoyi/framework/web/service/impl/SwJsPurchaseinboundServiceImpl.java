@@ -122,7 +122,7 @@ private NumberGenerate numberGenerate;
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc08(date);
             cbpc.setCbpc11(TaskStatus.mr.getCode());
-            cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpc.setCbpc06(DeleteFlagEnum.DELETE.getCode());
             String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
             cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setCbpc13(date);
@@ -427,6 +427,19 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
+            if(Objects.isNull(itemList.get(i).getCbpc01())){
+                throw new SwException("采购入库主表id不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd08())){
+                throw new SwException("商品不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd09())){
+                throw new SwException("数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbpd11())){
+                throw new SwException("单价不能为空");
+            }
+
             itemList.get(i).setCbpd03(date);
             itemList.get(i).setCbpd04(Math.toIntExact(userid));
             itemList.get(i).setCbpd05(date);
@@ -442,6 +455,14 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         }
         session.commit();
         session.clearCache();
+
+ Cbpc cbpc = new Cbpc();
+ if(itemList.get(0).getCbpc01()==null){
+     throw new SwException("采购入库主表id不能为空");
+ }
+        cbpc.setCbpc01(itemList.get(0).getCbpc01());
+        cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpcMapper.updateByPrimaryKeySelective(cbpc);
         return 1;
     }
 

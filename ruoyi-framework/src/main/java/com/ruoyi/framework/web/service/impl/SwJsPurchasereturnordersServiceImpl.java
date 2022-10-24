@@ -109,7 +109,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         cbpg.setCbpg03(Math.toIntExact(userid));
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpg.setCbpg06(DeleteFlagEnum.DELETE.getCode());
         cbpg.setCbpg10(cbpgDto.getCbpg10());
         cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setCbpg12(Math.toIntExact(userid));
@@ -166,10 +166,19 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         Long userid = SecurityUtils.getUserId();
         for (int i = 0; i < itemList.size(); i++) {
             if(itemList.get(i).getCbph08()==null){
-                throw new SwException("采购退货单明细商品id不能为空");
+                throw new SwException("采购退货单明细商品不能为空");
             }
             if(!skuIds.contains(itemList.get(i).getCbph08())){
                 throw new SwException("仓库里没有该商品");
+            }
+            if(Objects.isNull(itemList.get(i).getCbph08())){
+                throw new SwException("商品不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbph09())){
+                throw new SwException("商品数量不能为空");
+            }
+            if(Objects.isNull(itemList.get(i).getCbph10())){
+                throw new SwException("商品单价不能为空");
             }
 
             itemList.get(i).setCbph03(date);
@@ -186,6 +195,14 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
         }
         session.commit();
         session.clearCache();
+
+Cbpg cbpgs = new Cbpg();
+        cbpgs.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbpgs.setCbpg01(itemList.get(0).getCbpg01());
+        cbpgMapper.updateByPrimaryKeySelective(cbpgs);
+
+
+
         return 1;
     }
     /**

@@ -116,12 +116,25 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
             gsSalesOrdersDetails.setUpdateTime(date);
             gsSalesOrdersDetails.setCreateBy(String.valueOf(userid));
             gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+
             gsSalesOrdersDetails.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
+            if(good.getGoodsId()==null){
+                throw new SwException("请选择要销售的货物");
+            }
             gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
+            if(good.getQty()==null){
+                throw new SwException("请选择要销售的货物");
+            }
             gsSalesOrdersDetails.setQty(good.getQty());
+            if(good.getPrice()==null){
+                throw new SwException("请选择货物的单价");
+            }
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
             gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders.getId()));
+            if(good.getFactory()==null){
+                throw new SwException("请选择货物的工厂");
+            }
             gsSalesOrdersDetails.setFactory(good.getFactory());
             gsSalesOrdersDetailsMapper.insert(gsSalesOrdersDetails);
         }
@@ -135,6 +148,11 @@ return;
      */
     @Override
     public void editSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
+        GsSalesOrders gsSalesOrders1 = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
+        if(!gsSalesOrders1.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能修改");
+        }
+
         if (gsSalesOrdersDto.getId() == null) {
             throw new SwException("id不能为空");
         }
@@ -199,11 +217,24 @@ return;
             gsSalesOrdersDetails.setCreateBy(String.valueOf(userid));
             gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
             gsSalesOrdersDetails.setDeleteFlag(String.valueOf(DeleteFlagEnum1.NOT_DELETE.getCode()));
+            if(good.getGoodsId()==null){
+                throw new SwException("请选择要销售的货物");
+            }
             gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
+            if(good.getQty()==null){
+                throw new SwException("请选择要销售的货物");
+            }
             gsSalesOrdersDetails.setQty(good.getQty());
+            if(good.getPrice()==null){
+                throw new SwException("请选择货物的单价");
+            }
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
+
             gsSalesOrdersDetails.setGsSalesOrders(gsSalesOrdersDto.getId().toString());
+            if(good.getFactory()==null){
+                throw new SwException("请选择货物的工厂");
+            }
             gsSalesOrdersDetails.setFactory(good.getFactory());
             /*GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria1 = new GsSalesOrdersDetailsCriteria();
             gsSalesOrdersDetailsCriteria1.createCriteria()
@@ -1191,10 +1222,21 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpd.setUpdateTime(date);
             cbpd.setUpdateBy(userid);
             cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            if(good.getGoodsId()==null){
+                throw new SwException("货物id不能为空");
+            }
             cbpd.setGoodsId(good.getGoodsId());
+            if(good.getQty()==null){
+                throw new SwException("货物数量不能为空");
+            }
             cbpd.setQty(good.getQty());
+
             cbpd.setChangeid(id);
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
             cbpd.setFactory(good.getFactory());
+
             cbpd.setSupplierId(good.getSupplierId());
             cbpd.setGsSalesOrders(good.getGsSalesOrders());
             cbpd.setSalerId(good.getSalerId());
@@ -1211,7 +1253,11 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
     @Override
     public void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto) {
+
         GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能修改");
+        }
 
         if(gsSalesChange==null){
             throw new SwException("无此修改信息");
@@ -1264,7 +1310,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
                 gsSalesOrdersChangeMapper.insertSelective(cbpd);
 
-            gsSalesOrdersDetails.setUpdateTime(date);
+       /*     gsSalesOrdersDetails.setUpdateTime(date);
             gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
             gsSalesOrdersDetails.setQty(good.getQty());
             GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
@@ -1272,7 +1318,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
                     .andGsSalesOrdersEqualTo(String.valueOf(gsSalesChange.getGsid()))
                     .andGoodsIdEqualTo(good.getGoodsId());
 
-            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,gsSalesOrdersDetailsCriteria);
+            gsSalesOrdersDetailsMapper.updateByExampleSelective(gsSalesOrdersDetails,gsSalesOrdersDetailsCriteria);*/
             }
     }
 
@@ -1291,9 +1337,14 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             throw new SwException("预订单主表id不能为空");
         }
         cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
+        if(cbpdDto.getId()==null){
+            throw new SwException("id不能为空");
+        }
 
         GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
-
+if(gsSalesChange.getGsid()==null){
+    throw new SwException("预订单id不能为空");
+}
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesChange.getGsid());
 
         GsSalesOrdersChangeDto gsSalesOrdersChangeDto = new GsSalesOrdersChangeDto();
@@ -1303,12 +1354,35 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
         gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
 
+            GsSalesOrdersChangeCriteria gsSalesOrdersChangeCriteria = new GsSalesOrdersChangeCriteria();
+            gsSalesOrdersChangeCriteria.createCriteria().andChangeidEqualTo(cbpdDto.getId());
+List<GsSalesOrdersChange> gsSalesOrdersChanges = gsSalesOrdersChangeMapper.selectByExample(gsSalesOrdersChangeCriteria);
+
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriteria = new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriteria.createCriteria().andGsSalesOrdersEqualTo(String.valueOf(gsSalesChange.getGsid()));
+            gsSalesOrdersDetailsMapper.deleteByExample(gsSalesOrdersDetailsCriteria);
+
+    for(int i=0;i<gsSalesOrdersChanges.size();i++){
+        GsSalesOrdersDetails gsSalesOrdersDetails = new GsSalesOrdersDetails();
+        gsSalesOrdersDetails.setCreateTime(date);
+        gsSalesOrdersDetails.setCreateBy(String.valueOf(userid));
+        gsSalesOrdersDetails.setUpdateTime(date);
+        gsSalesOrdersDetails.setUpdateBy(String.valueOf(userid));
+        gsSalesOrdersDetails.setDeleteFlag(String.valueOf(DeleteFlagEnum.NOT_DELETE.getCode()));
+        gsSalesOrdersDetails.setGoodsId(gsSalesOrdersChanges.get(i).getGoodsId());
+        gsSalesOrdersDetails.setQty(gsSalesOrdersChanges.get(i).getQty());
+        gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders.getId()));
+        gsSalesOrdersDetails.setFactory(gsSalesOrdersChanges.get(i).getFactory());
+        gsSalesOrdersDetailsMapper.insertSelective(gsSalesOrdersDetails);
+    }
 
 
+return ;
     }
 
     @Override
     public void SwJsPurchaseinboundbgdxgdelete(GsSalesChangeDo cbpdDto) {
+
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);
@@ -1316,9 +1390,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
-        if(cbpc.getGsid()==null) {
+        /*if(cbpc.getGsid()==null) {
             throw new SwException("预订单主表id不能为空");
-        }
+        }*/
         gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
 
     }
