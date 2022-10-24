@@ -793,6 +793,10 @@ WHERE
       and ca.CBCA08 = #{customerName}
     </if>
 
+    <if test="saleNo != null and saleNo != ''">
+      and oa.CBOA07 like concat('%', #{saleNo}, '%')
+    </if>
+
     <if test="whId != null">
 
       and outs.wh_id = #{whId}
