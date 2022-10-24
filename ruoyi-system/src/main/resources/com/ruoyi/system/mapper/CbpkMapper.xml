@@ -776,10 +776,43 @@ ORDER BY
 
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbsVo">
       SELECT
-      a.CBSB07,c.CBCA09,a.CBSB08,c.CBCA08,d.CBWA09,i.user_name as caua15,j.CBSD03,a.CBSB17,a.CBSB10,a.CBSB09,
-    c.CBCA28,e.CALA08 as cny,a.CBSB18,a.CBSB31,b.CBSC01, a.CBSB20,
-      a.CBSB19,a.CBSB21,f.CBSA08,b.CBSC17,h.CALA08,g.CBPB12,g.CBPB08,g.CBPB15,b.CBSC08,
-     b.CBSC09,b.CBSC11,b.CBSC12,b.CBSC13,j.CBSD09,k.CBLA09,j.CBSD11,a.CBSB01,a.CBSB30,b.CBSC02,l.CBPA07,j.CBSD02
+      a.CBSB07 as cbsb07,
+      c.CBCA09 as cbca09,
+      a.CBSB08 as cbsb08,
+      c.CBCA08 as cbca08,
+      d.CBWA09 as cbwa09,
+      i.user_name as caua15,
+      j.CBSD03 as cbsd03,
+      a.CBSB17 as cbsb17,
+      a.CBSB10 as cbsb10,
+      a.CBSB09 as cbsb09,
+    c.CBCA28 as cbca28,
+    e.CALA08 as cny,
+    a.CBSB18 as cbsb18,
+    a.CBSB31 as cbsb31,
+    b.CBSC01 as cbsc01,
+    a.CBSB20 as cbsb20,
+      a.CBSB19 as cbsb19,
+      a.CBSB21 as cbsb21,
+      f.CBSA08 as cbsa08,
+      b.CBSC17 as cbsc17,
+      h.CALA08 as cala08,
+      g.CBPB12 as cbpb12,
+      g.CBPB08 as cbpb08,
+      g.CBPB15 as cbpb15,
+      b.CBSC08 as cbsc08,
+     b.CBSC09 as cbsc09,
+     b.CBSC11 as cbsc11,
+     b.CBSC12 as cbsc12,
+     b.CBSC13 as cbsc13,
+     j.CBSD09 as cbsd09,
+     k.CBLA09 as cbla09,
+     j.CBSD11 as cbsd11,
+     a.CBSB01 as cbsb01,
+     a.CBSB30 as cbsb30,
+     b.CBSC02 as cbsc02,
+     l.CBPA07 as cbpa07,
+     j.CBSD02 as cbsd02
 
       FROM
       CBSB a
@@ -836,8 +869,8 @@ ORDER BY
       <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
         and date_format(a.cbsb08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
-      GROUP BY
-      b.CBSC08
+  /*    GROUP BY
+      b.CBSC08*/
     </select>
 
   <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cbpk" useGeneratedKeys="true" keyProperty="cbpk01">

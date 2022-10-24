@@ -1,11 +1,12 @@
 package com.ruoyi.system.domain.Do;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.system.domain.GsSalesOrdersIn;
 import lombok.Data;
 
 import java.util.Date;
 @Data
-public class GsSalesOrdersInDo {
+public class GsSalesOrdersInDo extends GsSalesOrdersIn {
     @Excel(name = "客户名称")
     private String custmername;
 
