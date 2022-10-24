@@ -24,6 +24,9 @@ public class InwuqusVo {
     @Excel(name = "型号")
     private String cbpb12;
 
+    @Excel(name = "商品")
+    private String cbpb08;
+
     @Excel(name = "UPC")
     private String cbpb15;
 
