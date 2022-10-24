@@ -88,10 +88,13 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
         cbaaMapper.insertSelective(cbaa);
         CbaaCriteria example = new CbaaCriteria();
         example.createCriteria().andCbaa07EqualTo(warehouseinitializationNo)
-                .andCbaa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbaa06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbaa> cbaas = cbaaMapper.selectByExample(example);
         IdVo idVo = new IdVo();
-        idVo.setId(cbaas.get(0).getCbaa01());
+        if(CollectionUtils.isNotEmpty(cbaas)){
+            idVo.setId(cbaas.get(0).getCbaa01());
+        }
+      //  idVo.setId(cbaas.get(0).getCbaa01());
         return idVo;
     }
 

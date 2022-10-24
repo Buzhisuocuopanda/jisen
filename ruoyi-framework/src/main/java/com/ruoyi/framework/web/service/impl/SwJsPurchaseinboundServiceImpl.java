@@ -132,10 +132,13 @@ private NumberGenerate numberGenerate;
 
             CbpcCriteria example1 = new CbpcCriteria();
             example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
-                    .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    .andCbpc06EqualTo(DeleteFlagEnum.DELETE.getCode());
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
-        idVo.setId(cbpcs1.get(0).getCbpc01());
+        if(!CollectionUtils.isEmpty(cbpcs1)){
+            idVo.setId(cbpcs1.get(0).getCbpc01());
+        }
+       // idVo.setId(cbpcs1.get(0).getCbpc01());
 
         List<Cbpd> goods = cbpdDto.getGoods();
         for(Cbpd cbpd : goods){

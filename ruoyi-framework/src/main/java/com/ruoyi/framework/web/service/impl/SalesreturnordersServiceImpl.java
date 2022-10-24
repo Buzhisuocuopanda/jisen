@@ -81,7 +81,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         cbse.setCbse03(Math.toIntExact(userid));
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
-        cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbse.setCbse06(DeleteFlagEnum.DELETE.getCode());
         cbse.setCbse07(salesreturnordersNo);
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
@@ -90,10 +90,12 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         System.out.println(a);
         CbseCriteria example1 = new CbseCriteria();
         example1.createCriteria().andCbse07EqualTo(salesreturnordersNo)
-                .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbse06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbse> cbsess = cbseMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
-        idVo.setId(cbsess.get(0).getCbse01());
+        if(cbsess.size()>0){
+            idVo.setId(cbsess.get(0).getCbse01());
+        }
         List<Cbsf> cbsfList = cbseDo.getGoods();
         for(Cbsf cbsf:cbsfList){
             cbsf.setCbse01(cbsess.get(0).getCbse01());
