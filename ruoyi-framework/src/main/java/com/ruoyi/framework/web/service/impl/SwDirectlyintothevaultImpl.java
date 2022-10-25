@@ -132,7 +132,6 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
             CbicCriteria example1 = new CbicCriteria();
             example1.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
             List<Cbic> cbicss = cbicMapper.selectByExample(example1);
-            //更新
       /*      if (cbicss.size() > 0) {
 
 
@@ -269,6 +268,10 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
                 taskService.InsertCBIB(cbibDo);
             }*/
 
+            if(cbicss.size()>0){
+                throw new SwException("sn重复");
+
+            }
 //添加
             Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
             cbic.setCbic02(date);
