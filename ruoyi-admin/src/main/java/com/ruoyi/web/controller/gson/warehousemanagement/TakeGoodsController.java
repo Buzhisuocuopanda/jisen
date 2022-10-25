@@ -532,7 +532,7 @@ public class TakeGoodsController extends BaseController {
             excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_" + res.getOrderNo() + time + ".xlsx";
 
 
-            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SUGGEST_EXCEL),new File(excelPaht2));
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL),new File(excelPaht2));
             File is = new File(excelPaht2);
 //
             wb = new XSSFWorkbook(is);
