@@ -132,7 +132,7 @@ private NumberGenerate numberGenerate;
 
             CbpcCriteria example1 = new CbpcCriteria();
             example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
-                    .andCbpc06EqualTo(DeleteFlagEnum.DELETE.getCode());
+                    .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         if(!CollectionUtils.isEmpty(cbpcs1)){

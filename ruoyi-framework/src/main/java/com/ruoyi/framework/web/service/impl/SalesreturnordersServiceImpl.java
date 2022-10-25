@@ -750,7 +750,7 @@ if(cbsgss.size()>0){
             if(!uio.contains(good.getCbsf01())){
                 throw new SwException("该商品不在销售出库单明细中");
             }
-            cbsf.setCbsf01(good.getCbsf01());
+//            cbsf.setCbsf01(good.getCbsf01());
             cbsf.setCbse01(cbseDo.getCbse01());
             cbsf.setCbsf02(good.getCbsf02());
             cbsf.setCbsf03(date);
