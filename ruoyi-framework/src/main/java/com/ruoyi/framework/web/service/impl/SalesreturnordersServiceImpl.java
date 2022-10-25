@@ -121,7 +121,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 throw new SwException("销售退库数量不能为空");
             }
             if(Objects.isNull(itemList.get(i).getCbsf11())){
-                throw new SwException("销售退库数量不能为空");
+                throw new SwException("销售退库单价不能为空");
             }
             if(Objects.isNull(itemList.get(i).getCbse01())){
                 throw new SwException("销售退库id不能为空");
