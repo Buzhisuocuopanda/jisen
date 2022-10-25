@@ -380,14 +380,20 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         if(itemList.get(0).getCbpb14()==null||itemList.get(0).getCbpb14().equals("")){
             throw new SwException("分类编号不能为空！");
         }
-        Integer cbpb14 = itemList.get(0).getCbpb14();
+        String cbpb14 = itemList.get(0).getCbpb14();
 
 
         //品牌
         if(itemList.get(0).getCbpb10()==null||itemList.get(0).getCbpb10().equals("")){
             throw new SwException("品牌不能为空！");
         }
-        Integer cbpb10 = itemList.get(0).getCbpb10();
+        String cbpb10 = itemList.get(0).getCbpb10();
+        CalaCriteria calaCriteria = new CalaCriteria();
+        calaCriteria.createCriteria().andCala08EqualTo(cbpb10);
+        List<Cala> calaList = calaMapper.selectByExample(calaCriteria);
+        if(calaList.size()==0){
+            throw new SwException("品牌不存在！");
+        }
 
         //型号
         if(itemList.get(0).getCbpb12()==null||itemList.get(0).getCbpb12().equals("")){
@@ -421,8 +427,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb04(Math.toIntExact(userid));
         cbpb.setCbpb05(Math.toIntExact(userid));
         cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
-        cbpb.setCbpb14(cbpb14);
-        cbpb.setCbpb10(cbpb10);
+        cbpb.setCbpb10(calaList.get(0).getCala01());
         cbpb.setCbpb08(cbpb08);
         cbpb.setCbpb12(cbpb12);
         cbpb.setCbpb15(cbpb15);
@@ -452,7 +457,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
             if(itemList.get(i).getMoneyType()==null){
                 throw new SwException("货币类型不能为空！");
             }
-            CalaCriteria calaCriteria = new CalaCriteria();
+            CalaCriteria calaCriteria1 = new CalaCriteria();
             calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
             List<Cala> calas = calaMapper.selectByExample(calaCriteria);
             if(calas.size()==0){
