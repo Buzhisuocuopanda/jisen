@@ -110,7 +110,11 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
         gsSalesOrders.setUserId(userid.intValue());
         gsSalesOrders.setPonumber(gsSalesOrdersDto.getPonumber());
         gsSalesOrders.setFactory(gsSalesOrdersDto.getFactory());
-        gsSalesOrdersMapper.insertWithId(gsSalesOrders);
+        gsSalesOrdersMapper.insertSelective(gsSalesOrders);
+
+        GsSalesOrdersCriteria gsSalesOrdersCriteria = new GsSalesOrdersCriteria();
+        gsSalesOrdersCriteria.createCriteria().andOrderNoEqualTo(saleOrdersNo);
+        List<GsSalesOrders> gsSalesOrders1 = gsSalesOrdersMapper.selectByExample(gsSalesOrdersCriteria);
 
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
         for (GsSalesOrdersDetailsDto good : goods) {
@@ -134,12 +138,12 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
             }
             gsSalesOrdersDetails.setPrice(good.getPrice());
             gsSalesOrdersDetails.setRemark(good.getRemark());
-            gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders.getId()));
+            gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders1.get(0).getId()));
             if(good.getFactory()==null){
                 throw new SwException("请选择货物的工厂");
             }
             gsSalesOrdersDetails.setFactory(good.getFactory());
-            gsSalesOrdersDetailsMapper.insert(gsSalesOrdersDetails);
+            gsSalesOrdersDetailsMapper.insertSelective(gsSalesOrdersDetails);
         }
 
 return;
@@ -174,6 +178,7 @@ return;
         if (!SaleOrderStatusEnums.WEITIJIAO.getCode().equals(gsSalesOrders.getStatus().intValue())) {
             throw new SwException("销售预订单状态必须为未提交状态");
         }
+
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         gsSalesOrders.setUpdateTime(date);
@@ -245,8 +250,9 @@ return;
             .andGoodsIdEqualTo(good.getGoodsId());*/
             gsSalesOrdersDetailsMapper.insertSelective(gsSalesOrdersDetails);
 
-            return;
         }
+        return;
+
     }
     @Override
     public void deleteSalesScheduledOrders(DeleteSaleOrderDto deleteSaleOrderDto) {

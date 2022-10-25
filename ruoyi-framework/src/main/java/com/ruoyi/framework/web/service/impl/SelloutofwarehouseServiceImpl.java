@@ -196,6 +196,15 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(itemList.get(0).getCbsb01()==null){
             throw new SwException("销售出库单主单id不能为空");
         }
+//判断重复
+        List<Integer> collect = itemList.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+        HashSet<Integer> set = new HashSet<>(collect);
+        if(set.size()<itemList.size()){
+            throw new SwException("商品信息重复");
+        }
+
+
+
         Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.get(0).getCbsb01());
         if(cbsb==null){
             throw new SwException("销售出库单主单不存在");
@@ -686,9 +695,10 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         if(cbsds.size()>0) {
             Integer saoma = 0;
 
-           // for (int i = 0; i < cbsbsVos.size(); i++) {
+            for (int i = 0; i < cbsbsVos.size(); i++) {
                 CbsdCriteria example2 = new CbsdCriteria();
-                example2.createCriteria().andCbsb01EqualTo(cbsb01);
+                example2.createCriteria().andCbsb01EqualTo(cbsb01)
+                                .andCbsd08EqualTo(cbsbsVos.get(i).getCbsc08());
                 List<Cbsd> cbpes = cbsdMapper.selectByExample(example2);
 
                 int size = cbpes.size();
@@ -710,9 +720,11 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     scanVo.setCbpe03(cbpes.get(j).getCbsd03());
                     goods.add(scanVo);
                 }
-                cbsbsVos.get(0).setSaoma(size);
-                saoma +=cbsbsVos.get(0).getSaoma();
-           // }
+
+
+                cbsbsVos.get(i).setSaoma(size);
+                saoma +=cbsbsVos.get(i).getSaoma();
+            }
             cbsbsVos.get(0).setSaomanums(saoma);
 
             cbsbsVos.get(0).setGoods(goods);

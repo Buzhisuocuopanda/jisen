@@ -869,8 +869,8 @@ ORDER BY
       <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
         and date_format(a.cbsb08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
       </if>
-  /*    GROUP BY
-      b.CBSC08*/
+      GROUP BY
+      b.CBSC08
     </select>
 
   <insert id="insertWithId" parameterType="com.ruoyi.system.domain.Cbpk" useGeneratedKeys="true" keyProperty="cbpk01">

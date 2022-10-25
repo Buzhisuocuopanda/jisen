@@ -711,7 +711,7 @@ if(cbsgss.size()>0){
             throw new SwException("请至少添加一件货物");
         }
         if(cbseDo.getCbse01()==null){
-            throw new SwException("销售出库单id不能为空");
+            throw new SwException("销售退库id不能为空");
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
