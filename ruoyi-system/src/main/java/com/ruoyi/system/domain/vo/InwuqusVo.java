@@ -45,4 +45,8 @@ public class InwuqusVo {
     @Excel(name = "质量状态", readConverterExp = "0=正常,1=维修中")
     private Integer repairStatus;
 
+    private Integer goodsId;
+
+    private Integer locationId;
+
 }

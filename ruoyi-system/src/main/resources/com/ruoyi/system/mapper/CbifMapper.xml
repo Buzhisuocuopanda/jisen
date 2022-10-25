@@ -567,7 +567,7 @@ where
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
         sn.id,c.CBWA09,d.CBLA09,g.CBPA07,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB08,e.CBPB15,sn.sn,sn.in_time as inTime,
-        sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus
+        sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,sn.location_id as locationId
       FROM
         gs_goods_sn sn
 

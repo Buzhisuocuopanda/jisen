@@ -121,7 +121,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 throw new SwException("销售退库数量不能为空");
             }
             if(Objects.isNull(itemList.get(i).getCbsf11())){
-                throw new SwException("销售退库单价不能为空");
+                throw new SwException("销售退库数量不能为空");
             }
             if(Objects.isNull(itemList.get(i).getCbse01())){
                 throw new SwException("销售退库id不能为空");
@@ -744,25 +744,12 @@ if(cbsgss.size()>0){
          cbsf=new Cbsf();
          cbsf.setCbsf05(date);
             cbsf.setCbsf06(Math.toIntExact(userid));
-            if(good.getCbsf01()==null){
+            /*if(good.getCbsf01()==null){
                 throw new SwException("销售出库单明细id不能为空");
             }
             if(!uio.contains(good.getCbsf01())){
                 throw new SwException("该商品不在销售出库单明细中");
-            }
-
-            if(Objects.isNull(good.getCbsf08())){
-                throw new SwException("销售退库商品不能为空");
-            }
-            if(Objects.isNull(good.getCbsf09())){
-                throw new SwException("销售退库数量不能为空");
-            }
-            if(Objects.isNull(good.getCbsf11())){
-                throw new SwException("销售退库单价不能为空");
-            }
-            if(Objects.isNull(good.getCbse01())){
-                throw new SwException("销售退库id不能为空");
-            }
+            }*/
 //            cbsf.setCbsf01(good.getCbsf01());
             cbsf.setCbse01(cbseDo.getCbse01());
             cbsf.setCbsf02(good.getCbsf02());
