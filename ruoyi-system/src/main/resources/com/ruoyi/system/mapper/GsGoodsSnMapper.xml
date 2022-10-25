@@ -523,7 +523,7 @@ order by a.update_time desc
   </select>
     <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.GsGoodsSnsVo">
       select
-      a.*,b.CBPB08,b.CBPB12,b.CBPB15,c.CBWA09
+      a.*,b.CBPB08,b.CBPB12,b.CBPB15,c.CBWA09 as cbwa09
       from gs_goods_sn a
       LEFT JOIN
       CBPB b

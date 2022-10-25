@@ -50,4 +50,6 @@ public class GsGoodsSnsVo {
 
     //商品描述
     private String cbpb08;
+
+    private String cbwa09;
 }
