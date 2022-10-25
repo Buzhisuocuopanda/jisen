@@ -1054,6 +1054,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("只能由销售人员本人操作");
         }
 
+        if(cboa.getCboa11()!=0){
+            throw new SwException("只有在未提交的状态下才能提交");
+
+        }
 
         cboa.setCboa01(delSaleOrderDto.getOrderId());
         cboa.setCboa06(DeleteFlagEnum.DELETE.getCode());
@@ -1831,7 +1835,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                    .andCboa01EqualTo(cboa.getCboa01())
 //                    .andCbob06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             if(good.getCbobId()==null){
-                throw new SwException("销售订单明细为空");
+                continue;
             }
             Cbob cbob = cbobMapper.selectByPrimaryKey(good.getCbobId());
             if (cbob==null) {
@@ -2164,7 +2168,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod11(good.getCurrentPrice());
             cbod.setCbod12(good.getCurrentPrice() * good.getQty());
             cbod.setCbod13(good.getRemark());
-            cbod.setCbod01(saleOrderChangeDto.getId());
+
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
             cbod.setCboc01(cboc.getCboc01());
