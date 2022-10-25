@@ -31,4 +31,5 @@ public interface GsSalesOrdersChangeMapper {
     int updateByPrimaryKey(GsSalesOrdersChange record);
 
     List<GsSalesOrdersChangeVo> seleteGsSalesOrdersChange(GsSalesOrdersChangeVo gsSalesOrdersChangeVo);
+
 }

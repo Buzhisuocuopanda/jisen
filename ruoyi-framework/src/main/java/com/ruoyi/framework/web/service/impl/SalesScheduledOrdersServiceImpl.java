@@ -1238,9 +1238,12 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setCreateBy(userid);
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
+
+        String purchaseinboundNo = numberGenerate.getTakeOrderNoss();
+
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
-        cbpc.setOrderNo(cbpdDto.getOrderNo());
+        cbpc.setOrderNo(purchaseinboundNo);
         cbpc.setOrderDate(date);
        if(cbpc.getGsid()==null) {
            throw new SwException("预订单主表id不能为空");
@@ -1248,31 +1251,37 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
         gsSalesChangeMapper.insertSelective(cbpc);
         GsSalesChangeCriteria gsSalesChangeCriteria = new GsSalesChangeCriteria();
-        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getOrderNo());
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(purchaseinboundNo);
         List<GsSalesChange> gsSalesChanges = gsSalesChangeMapper.selectByExample(gsSalesChangeCriteria);
-        Integer id = gsSalesChanges.get(0).getId();
+
         GsSalesOrdersChange cbpd = null;
         for(GsSalesOrdersChange good:goods){
             cbpd = new GsSalesOrdersChange();
+            if(gsSalesChanges.size()>0) {
 
+                cbpd.setChangeid(gsSalesChanges.get(0).getId());
+            }
+            cbpd.setGoodsId(good.getGoodsId());
             cbpd.setCreateTime(date);
             cbpd.setCreateBy(userid);
             cbpd.setUpdateTime(date);
             cbpd.setUpdateBy(userid);
             cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            if(good.getPrice()==null){
+                throw new SwException("货物价格不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
             if(good.getGoodsId()==null){
                 throw new SwException("货物id不能为空");
             }
-            cbpd.setGoodsId(good.getGoodsId());
             if(good.getQty()==null){
                 throw new SwException("货物数量不能为空");
             }
             cbpd.setQty(good.getQty());
 
-            cbpd.setChangeid(id);
-            if(good.getFactory()==null){
-                throw new SwException("货物厂家不能为空");
-            }
+
             cbpd.setFactory(good.getFactory());
 
             cbpd.setSupplierId(good.getSupplierId());
@@ -1281,7 +1290,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpd.setOrderDate(date);
             cbpd.setOrderNo(cbpdDto.getOrderNo());
             cbpd.setGsSalesOrders(cbpc.getGsid());
-
+            cbpd.setPrice(good.getPrice());
             gsSalesOrdersChangeMapper.insertSelective(cbpd);
         }
 
@@ -1334,6 +1343,18 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
 
         for(GsSalesOrdersChange good:goods){
+            if(good.getPrice()==null){
+                throw new SwException("货物价格不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
+            if(good.getGoodsId()==null){
+                throw new SwException("货物id不能为空");
+            }
+            if(good.getQty()==null){
+                throw new SwException("货物数量不能为空");
+            }
                 cbpd = new GsSalesOrdersChange();
                 cbpd.setCreateTime(date);
                 cbpd.setCreateBy(userid);
@@ -1346,6 +1367,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
                 cbpd.setFactory(good.getFactory());
                 cbpd.setChangeid(cbpdDto.getId());
             cbpd.setFactory(good.getFactory());
+            cbpd.setPrice(good.getPrice());
 
                 gsSalesOrdersChangeMapper.insertSelective(cbpd);
 

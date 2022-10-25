@@ -18,6 +18,8 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="changeid" jdbcType="INTEGER" property="changeid" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, order_no, order_date,
-    saler_id, supplier_id, goodsclassify, qty, gs_Sales_orders, `status`, goods_id, changeid
+    saler_id, supplier_id, goodsclassify, qty, gs_Sales_orders, `status`, goods_id, changeid,
+    factory, price
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsSalesOrdersChangeCriteria" resultMap="BaseResultMap">
     select
@@ -117,13 +120,15 @@
       order_no, order_date, saler_id,
       supplier_id, goodsclassify, qty,
       gs_Sales_orders, `status`, goods_id,
-      changeid)
+      changeid, factory, price
+      )
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
       #{orderNo,jdbcType=VARCHAR}, #{orderDate,jdbcType=DATE}, #{salerId,jdbcType=INTEGER},
       #{supplierId,jdbcType=INTEGER}, #{goodsclassify,jdbcType=VARCHAR}, #{qty,jdbcType=DOUBLE},
       #{gsSalesOrders,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{goodsId,jdbcType=INTEGER},
-      #{changeid,jdbcType=INTEGER})
+      #{changeid,jdbcType=INTEGER}, #{factory,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsSalesOrdersChange">
     insert into `gs_ Sales_orders_change`
@@ -176,6 +181,12 @@
       <if test="changeid != null">
         changeid,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -225,6 +236,12 @@
       </if>
       <if test="changeid != null">
         #{changeid,jdbcType=INTEGER},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -285,6 +302,12 @@
       <if test="record.changeid != null">
         changeid = #{record.changeid,jdbcType=INTEGER},
       </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +330,9 @@
       gs_Sales_orders = #{record.gsSalesOrders,jdbcType=INTEGER},
       `status` = #{record.status,jdbcType=TINYINT},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
-      changeid = #{record.changeid,jdbcType=INTEGER}
+      changeid = #{record.changeid,jdbcType=INTEGER},
+      factory = #{record.factory,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +385,12 @@
       <if test="changeid != null">
         changeid = #{changeid,jdbcType=INTEGER},
       </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -379,9 +410,14 @@
       gs_Sales_orders = #{gsSalesOrders,jdbcType=INTEGER},
       `status` = #{status,jdbcType=TINYINT},
       goods_id = #{goodsId,jdbcType=INTEGER},
-      changeid = #{changeid,jdbcType=INTEGER}
+      changeid = #{changeid,jdbcType=INTEGER},
+      factory = #{factory,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
 
   <select id="seleteGsSalesOrdersChange" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersChangeVo">
     SELECT DISTINCT
@@ -418,12 +454,12 @@
     <if test="id != null and id !=''">
      and   a.id   like concat('%', #{id}, '%')
     </if>
-<!--    &lt;if test="startTime != null"&gt;-->
-<!--      and a.order_date &amp;gt;= #{startTime}-->
-<!--    &lt;/if&gt;-->
-<!--    &lt;if test="endTime != null"&gt;-->
-<!--      and a.order_date &amp;lt;=#{endTime}-->
-<!--    &lt;/if&gt;-->
+<!--    &amp;lt;if test="startTime != null"&amp;gt;-->
+<!--      and a.order_date &amp;amp;gt;= #{startTime}-->
+<!--    &amp;lt;/if&amp;gt;-->
+<!--    &amp;lt;if test="endTime != null"&amp;gt;-->
+<!--      and a.order_date &amp;amp;lt;=#{endTime}-->
+<!--    &amp;lt;/if&amp;gt;-->
 
       <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
           and date_format(a.order_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
