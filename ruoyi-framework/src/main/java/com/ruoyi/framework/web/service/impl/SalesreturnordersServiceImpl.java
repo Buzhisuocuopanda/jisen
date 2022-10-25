@@ -744,12 +744,12 @@ if(cbsgss.size()>0){
          cbsf=new Cbsf();
          cbsf.setCbsf05(date);
             cbsf.setCbsf06(Math.toIntExact(userid));
-            if(good.getCbsf01()==null){
+            /*if(good.getCbsf01()==null){
                 throw new SwException("销售出库单明细id不能为空");
             }
             if(!uio.contains(good.getCbsf01())){
                 throw new SwException("该商品不在销售出库单明细中");
-            }
+            }*/
 //            cbsf.setCbsf01(good.getCbsf01());
             cbsf.setCbse01(cbseDo.getCbse01());
             cbsf.setCbsf02(good.getCbsf02());
