@@ -112,7 +112,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
      * @param cbsbDo 审核信息
      * @return 结果
      */
-    @Transactional
+   // @Transactional
     @Override
     public IdVo insertSelloutofwarehouse(CbsbDo cbsbDo) {
 
@@ -173,7 +173,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 
         IdVo idVo = new IdVo();
-        if(cbsbDo.getCbsb30()!=null){
+        if(cbsbss.size()>0){
             idVo.setId(cbsbss.get(0).getCbsb01());
         }
 

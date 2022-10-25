@@ -2155,7 +2155,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
             cbod = new Cbod();
-            cbod.setCbobid(good.getCbobId());
+            cbod.setCbobid(cbob.getCbob01());
             cbod.setCbod02(good.getNumber());
             cbod.setCbod03(date);
             cbod.setCbod04(saleOrderChangeDto.getUserId());

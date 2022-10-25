@@ -677,69 +677,62 @@ where
 
  <select id="saleOrderListdetails" resultType="com.ruoyi.system.domain.vo.GsSalesOrdersDetailsVo">
    SELECT DISTINCT
-   a.order_no as orderNo,
-   a.order_date as orderDate,
-   rt.price  as price,
-   b.CAUA17 as caua17,
-   c.CBSA08 as cbsa08,
-   sf.id as id,
-   a.status as status,
-   a.supplier_id as supplierId,
-   c.CBSA08 as supplier,
-   a.saler_id as salerId,
-   b.CAUA17 as saler,
-   c.CBSA08 as supplierMge,
-   b.CAUA15 as salerMag,
-sf.qty as qty,
-   gs.customer_id as customerId,
-   cb.CBCA08 as customer,
-   cb.CBCA08 as customerMag,
-   sf.goods_id as goodsId,
-   pb.CBPB08 as cbpb08,
-   pb.CBPB10 as cbpb10,
-   pb.CBPB12 as cbpb12,
-   ca.CALA08 as cala08,
-   gs.wh_id as whId,
-   sf.factory as factory,
-   a.id as ids
+     a.order_no as orderNo,
+     a.order_date as orderDate,
+     sf.price  as price,
+     b.CAUA17 as caua17,
+     c.CBSA08 as cbsa08,
+     sf.id as id,
+     a.status as status,
+     a.supplier_id as supplierId,
+     c.CBSA08 as supplier,
+     a.saler_id as salerId,
+     b.CAUA17 as saler,
+     c.CBSA08 as supplierMge,
+     b.CAUA15 as salerMag,
+     sf.qty as qty,
+     a.customer_id as customerId,
+     cb.CBCA08 as customer,
+     cb.CBCA08 as customerMag,
+     sf.goods_id as goodsId,
+     pb.CBPB08 as cbpb08,
+     pb.CBPB10 as cbpb10,
+     pb.CBPB12 as cbpb12,
+     ca.CALA08 as cala08,
+     a.wh_id as whId,
+     sf.factory as factory,
+     a.id as ids
    FROM
-   `gs_Sales_change` a
-   LEFT JOIN
-   `gs_ Sales_orders_change` sf
-   on
-   sf.changeid=a.id
-   LEFT JOIN
-   CAUA b
-   ON
-   a.saler_id=b.CAUA01
-   LEFT JOIN
-   CBSA c
-   on
-   c.CBSA01=a.supplier_id
-   LEFT JOIN
-   `gs_ Sales_orders` gs
-   on
-   gs.id = a.gsid
+     `gs_Sales_change` a
+       LEFT JOIN
+     `gs_ Sales_orders_change` sf
+     on
+       sf.changeid=a.id
+       LEFT JOIN
+     CAUA b
+     ON
+       a.saler_id=b.CAUA01
+       LEFT JOIN
+     CBSA c
+     on
+       c.CBSA01=a.supplier_id
 
-   LEFT JOIN
-   CBCA cb
-   on
-   cb.CBCA01 = gs.customer_id
-   LEFT JOIN
-   CBPB pb
-   on
-   pb.CBPB01 = sf.goods_id
-   LEFT JOIN
-   CALA ca
-   on
-   pb.CBPB10 = ca.CALA01
-   LEFT JOIN
 
-   gs_Sales_orders_details rt
-   on
-   rt.gs_Sales_orders=gs.id
+       LEFT JOIN
+     CBCA cb
+     on
+       cb.CBCA01 = a.customer_id
+       LEFT JOIN
+     CBPB pb
+     on
+       pb.CBPB01 = sf.goods_id
+       LEFT JOIN
+     CALA ca
+     on
+       pb.CBPB10 = ca.CALA01
 
-  where
+
+   where
       a.id = #{icu}
 
 

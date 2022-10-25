@@ -46,7 +46,10 @@ public class GsGoodsSnsVo {
 
     //型号
     private String cbpb12;
+    private String cbpb15;
 
     //商品描述
     private String cbpb08;
+
+    private String cbwa09;
 }

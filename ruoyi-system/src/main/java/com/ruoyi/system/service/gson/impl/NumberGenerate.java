@@ -180,6 +180,34 @@ private CbieMapper cbieMapper;
 
     }
 
+
+    public synchronized String getTakeOrderNoss() {
+        //拼接规则 OC202208040017 SP05 +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo="SC"+format;
+        GsSalesChangeCriteria example=new GsSalesChangeCriteria();
+        example.createCriteria()
+                .andOrderNoLike("%"+format+"%");
+        List< GsSalesChange> cbpks = gsSalesChangeMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+            Integer num=0;
+            for (GsSalesChange res : cbpks) {
+                Integer no = getNum(res.getOrderNo(),12);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
+
     //采购入库编号
     public synchronized String getPurchaseinboundNo(int storeId) {
         //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增

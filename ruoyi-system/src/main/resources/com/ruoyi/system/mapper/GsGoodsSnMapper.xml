@@ -523,13 +523,24 @@ order by a.update_time desc
   </select>
     <select id="getInfosss" resultType="com.ruoyi.system.domain.vo.GsGoodsSnsVo">
       select
-          *
-from gs_goods_sn a
-where
-    a.repair_status=1
+      a.*,b.CBPB08,b.CBPB12,b.CBPB15,c.CBWA09 as cbwa09
+      from gs_goods_sn a
+      LEFT JOIN
+      CBPB b
+      ON
+      b.CBPB01=a.goods_id
+      LEFT JOIN
+      CBWA c
+      ON
+      c.CBWA01=a.wh_id
+      where
+      a.repair_status=1
 
       <if test="sn != null and sn != ''">
         and   a.sn like concat('%',  #{sn}, '%')
+      </if>
+      <if test="id != null and id != ''">
+        and   a.id like concat('%',  #{id}, '%')
       </if>
     </select>
 

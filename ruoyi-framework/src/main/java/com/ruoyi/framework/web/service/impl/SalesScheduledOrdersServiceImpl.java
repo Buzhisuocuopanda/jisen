@@ -82,6 +82,7 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
      * @param gsSalesOrdersDto
      */
     @Override
+    @Transactional
     public void addSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrdersDto gsSalesOrdersDto1 = new GsSalesOrdersDto();
 
@@ -130,7 +131,7 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
             }
             gsSalesOrdersDetails.setGoodsId(good.getGoodsId());
             if(good.getQty()==null){
-                throw new SwException("请选择要销售的货物");
+                throw new SwException("请选择货物的数量");
             }
             gsSalesOrdersDetails.setQty(good.getQty());
             if(good.getPrice()==null){
@@ -154,6 +155,7 @@ return;
      * @param gsSalesOrdersDto
      */
     @Override
+    @Transactional
     public void editSalesScheduledOrders(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders1 = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if(!gsSalesOrders1.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
@@ -255,6 +257,7 @@ return;
 
     }
     @Override
+    @Transactional
     public void deleteSalesScheduledOrders(DeleteSaleOrderDto deleteSaleOrderDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(deleteSaleOrderDto.getOrderId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
@@ -296,6 +299,7 @@ return;
     }
 
     @Override
+    @Transactional
     public void salesScheduledOrderssh(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
@@ -315,6 +319,8 @@ return;
     }
 
     @Override
+    @Transactional
+
     public void salesScheduledOrdersfs(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
@@ -333,6 +339,7 @@ return;
     }
 
     @Override
+    @Transactional
     public void salesScheduledOrdersbjwc(GsSalesOrdersDto gsSalesOrdersDto) {
         if(gsSalesOrdersDto.getId()==null){
             throw new SwException("销售预订单id不能为空");
@@ -400,6 +407,8 @@ return;
     }
 
     @Override
+    @Transactional
+
     public void salesScheduledOrdersqxwc(GsSalesOrdersDto gsSalesOrdersDto) {
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesOrdersDto.getId());
         if (gsSalesOrders == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrders.getDeleteFlag().intValue())) {
@@ -457,6 +466,8 @@ return;
     }
 
     @Override
+    @Transactional
+
     public void editSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
         /*GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         // int i = Integer.parseInt(gsSalesOrdersIn.getDeleteFlag());
@@ -502,6 +513,7 @@ return;
         }
 
     @Override
+    @Transactional
     public void deleteSubscribetotheinventoryslip(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
@@ -533,6 +545,8 @@ return;
     }
 
     @Override
+    @Transactional
+
     public void subscribetotheinventoryslipsh(GsSalesOrdersInDto gsSalesOrdersInDto) {
 Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -578,6 +592,8 @@ Date date = new Date();
     }
 
     @Override
+    @Transactional
+
     public void subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
@@ -596,6 +612,7 @@ Date date = new Date();
     }
 
     @Override
+    @Transactional
     public void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
 GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
@@ -662,6 +679,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
         GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
@@ -728,6 +746,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void editGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
@@ -746,6 +765,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void deleteGsSalesOrdersChange(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesChange.getDeleteFlag().intValue())) {
@@ -767,6 +787,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void gsSalesOrdersChangesh(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
 
 //id预订单id
@@ -859,6 +880,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void gsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
@@ -877,6 +899,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
@@ -939,6 +962,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void gsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
@@ -962,6 +986,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public int insertSwJsStores(List<GsSalesOrdersdrDto> itemList) {
         if(itemList.size() == 0){
             throw new SwException("没有数据");
@@ -1078,6 +1103,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public String importSwJsGoods(List<GsSalesOrdersdrDto> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
@@ -1103,6 +1129,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public FgkVo seleteSaleFgkVomary(FgkVo fgkVo) {
         if(fgkVo.getId() == null){
             throw new SwException("id不能为空");
@@ -1135,6 +1162,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public int editGsSalesOrdersChanges(List<GsSalesOrdersChange> gsSalesOrdersChangeDto) {
 
 
@@ -1195,6 +1223,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         return 1;    }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundeditone(GsSalesChangeDo cbpdDto) {
 
         List<GsSalesOrdersChange> goods = cbpdDto.getGoods();
@@ -1209,9 +1238,12 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setCreateBy(userid);
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
+
+        String purchaseinboundNo = numberGenerate.getTakeOrderNoss();
+
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
-        cbpc.setOrderNo(cbpdDto.getOrderNo());
+        cbpc.setOrderNo(purchaseinboundNo);
         cbpc.setOrderDate(date);
        if(cbpc.getGsid()==null) {
            throw new SwException("预订单主表id不能为空");
@@ -1219,31 +1251,37 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
         gsSalesChangeMapper.insertSelective(cbpc);
         GsSalesChangeCriteria gsSalesChangeCriteria = new GsSalesChangeCriteria();
-        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getOrderNo());
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(purchaseinboundNo);
         List<GsSalesChange> gsSalesChanges = gsSalesChangeMapper.selectByExample(gsSalesChangeCriteria);
-        Integer id = gsSalesChanges.get(0).getId();
+
         GsSalesOrdersChange cbpd = null;
         for(GsSalesOrdersChange good:goods){
             cbpd = new GsSalesOrdersChange();
+            if(gsSalesChanges.size()>0) {
 
+                cbpd.setChangeid(gsSalesChanges.get(0).getId());
+            }
+            cbpd.setGoodsId(good.getGoodsId());
             cbpd.setCreateTime(date);
             cbpd.setCreateBy(userid);
             cbpd.setUpdateTime(date);
             cbpd.setUpdateBy(userid);
             cbpd.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            if(good.getPrice()==null){
+                throw new SwException("货物价格不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
             if(good.getGoodsId()==null){
                 throw new SwException("货物id不能为空");
             }
-            cbpd.setGoodsId(good.getGoodsId());
             if(good.getQty()==null){
                 throw new SwException("货物数量不能为空");
             }
             cbpd.setQty(good.getQty());
 
-            cbpd.setChangeid(id);
-            if(good.getFactory()==null){
-                throw new SwException("货物厂家不能为空");
-            }
+
             cbpd.setFactory(good.getFactory());
 
             cbpd.setSupplierId(good.getSupplierId());
@@ -1252,7 +1290,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpd.setOrderDate(date);
             cbpd.setOrderNo(cbpdDto.getOrderNo());
             cbpd.setGsSalesOrders(cbpc.getGsid());
-
+            cbpd.setPrice(good.getPrice());
             gsSalesOrdersChangeMapper.insertSelective(cbpd);
         }
 
@@ -1261,6 +1299,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto) {
 
         GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
@@ -1304,6 +1343,18 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         GsSalesOrdersDetails gsSalesOrdersDetails = null;
 
         for(GsSalesOrdersChange good:goods){
+            if(good.getPrice()==null){
+                throw new SwException("货物价格不能为空");
+            }
+            if(good.getFactory()==null){
+                throw new SwException("货物厂家不能为空");
+            }
+            if(good.getGoodsId()==null){
+                throw new SwException("货物id不能为空");
+            }
+            if(good.getQty()==null){
+                throw new SwException("货物数量不能为空");
+            }
                 cbpd = new GsSalesOrdersChange();
                 cbpd.setCreateTime(date);
                 cbpd.setCreateBy(userid);
@@ -1316,6 +1367,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
                 cbpd.setFactory(good.getFactory());
                 cbpd.setChangeid(cbpdDto.getId());
             cbpd.setFactory(good.getFactory());
+            cbpd.setPrice(good.getPrice());
 
                 gsSalesOrdersChangeMapper.insertSelective(cbpd);
 
@@ -1332,6 +1384,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundedgdxgsh(GsSalesChangeDo cbpdDto) {
 
 
@@ -1390,6 +1443,7 @@ return ;
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundbgdxgdelete(GsSalesChangeDo cbpdDto) {
 
         Long userid = SecurityUtils.getUserId();
@@ -1421,6 +1475,7 @@ return ;
     }
 
     @Override
+    @Transactional
     public String importSwJsGoodss(List<GsSalesOrdersInDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
         {
@@ -1517,6 +1572,7 @@ if(gsSalesOrders.get(0).getId()==null){
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundrkdxz(GsOrdersInDo cbpdDto) {
         List<GsSalesOrdersIn> goods = cbpdDto.getGoods();
         if(goods==null||goods.size()==0){
@@ -1593,6 +1649,7 @@ if(gsSalesOrders.get(0).getId()==null){
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinboundedirkdxg(GsOrdersInDo cbpdDto) {
         GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
         if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
@@ -1668,6 +1725,7 @@ if(gsSalesOrders.get(0).getId()==null){
     }
 
     @Override
+    @Transactional
     public void SwJsPurchaseinbounderkdsh(GsSalesChangeDo cbpdDto) {
         GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
         if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
