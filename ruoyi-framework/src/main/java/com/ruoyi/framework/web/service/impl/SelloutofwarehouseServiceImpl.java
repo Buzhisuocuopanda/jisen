@@ -707,7 +707,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
                     ScanVo scanVo = new ScanVo();
 
-                  //  scanVo.setLx(cbsbsVos.get(i).getCbpa07());
+                    scanVo.setLx(cbsbsVos.get(i).getCbpa07());
                     scanVo.setPinpai(cala.getCala08());
                     scanVo.setCbpb08(cbpb.getCbpb08());
                     scanVo.setCbpb12(cbpb.getCbpb12());
