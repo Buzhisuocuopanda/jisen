@@ -52,4 +52,6 @@ public class GsGoodsSnsVo {
     private String cbpb08;
 
     private String cbwa09;
+
+    private Integer brandId;
 }
