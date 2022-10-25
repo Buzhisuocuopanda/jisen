@@ -16,7 +16,7 @@
     <result column="CBBA12" jdbcType="INTEGER" property="cbba12" />
     <result column="CBBA13" jdbcType="DOUBLE" property="cbba13" />
     <result column="CBBA14" jdbcType="DOUBLE" property="cbba14" />
-    <result column="CBBA15" jdbcType="INTEGER" property="cbba15" />
+    <result column="CBBA15" jdbcType="BIGINT" property="cbba15" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -121,7 +121,7 @@
       #{cbba04,jdbcType=TIMESTAMP}, #{cbba05,jdbcType=INTEGER}, #{cbba06,jdbcType=INTEGER},
       #{cbba07,jdbcType=VARCHAR}, #{cbba08,jdbcType=INTEGER}, #{cbba09,jdbcType=DOUBLE},
       #{cbba10,jdbcType=INTEGER}, #{cbba11,jdbcType=DOUBLE}, #{cbba12,jdbcType=INTEGER},
-      #{cbba13,jdbcType=DOUBLE}, #{cbba14,jdbcType=DOUBLE}, #{cbba15,jdbcType=INTEGER}
+      #{cbba13,jdbcType=DOUBLE}, #{cbba14,jdbcType=DOUBLE}, #{cbba15,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbba">
@@ -217,7 +217,7 @@
         #{cbba14,jdbcType=DOUBLE},
       </if>
       <if test="cbba15 != null">
-        #{cbba15,jdbcType=INTEGER},
+        #{cbba15,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -273,7 +273,7 @@
         CBBA14 = #{record.cbba14,jdbcType=DOUBLE},
       </if>
       <if test="record.cbba15 != null">
-        CBBA15 = #{record.cbba15,jdbcType=INTEGER},
+        CBBA15 = #{record.cbba15,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -296,7 +296,7 @@
       CBBA12 = #{record.cbba12,jdbcType=INTEGER},
       CBBA13 = #{record.cbba13,jdbcType=DOUBLE},
       CBBA14 = #{record.cbba14,jdbcType=DOUBLE},
-      CBBA15 = #{record.cbba15,jdbcType=INTEGER}
+      CBBA15 = #{record.cbba15,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -344,7 +344,7 @@
         CBBA14 = #{cbba14,jdbcType=DOUBLE},
       </if>
       <if test="cbba15 != null">
-        CBBA15 = #{cbba15,jdbcType=INTEGER},
+        CBBA15 = #{cbba15,jdbcType=BIGINT},
       </if>
     </set>
     where CBBA01 = #{cbba01,jdbcType=INTEGER}
@@ -364,24 +364,25 @@
       CBBA12 = #{cbba12,jdbcType=INTEGER},
       CBBA13 = #{cbba13,jdbcType=DOUBLE},
       CBBA14 = #{cbba14,jdbcType=DOUBLE},
-      CBBA15 = #{cbba15,jdbcType=INTEGER}
+      CBBA15 = #{cbba15,jdbcType=BIGINT}
     where CBBA01 = #{cbba01,jdbcType=INTEGER}
   </update>
 
 
+
   <select id="selectLowPriority" resultMap="BaseResultMap">
     SELECT
-	*
+   *
 FROM
-	`CBBA` cb
+   `CBBA` cb
 WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15 &gt;= #{poritiry}
-	AND cb.CBBA01 != #{cbba01}
+   cb.CBBA06 = 0
+   AND cb.CBBA12 = 0
+   AND cb.CBBA08 = #{goodsId}
+   AND cb.CBBA15 &gt;= #{poritiry}
+   AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15
+   cb.CBBA15
   </select>
 
   <select id="selectLowPriorityGet" resultMap="BaseResultMap">
@@ -403,59 +404,59 @@ ORDER BY
 
   <select id="selectByPriorityDure" resultMap="BaseResultMap">
 SELECT
-	*
+   *
 FROM
-	`CBBA` cb
+   `CBBA` cb
 WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15 &gt;= #{newPriority}
-	AND cb.CBBA15 &lt;= #{oldPriority}
-	AND cb.CBBA01 != #{cbba01}
+   cb.CBBA06 = 0
+   AND cb.CBBA12 = 0
+   AND cb.CBBA08 = #{goodsId}
+   AND cb.CBBA15 &gt;= #{newPriority}
+   AND cb.CBBA15 &lt;= #{oldPriority}
+   AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 DESC
+   cb.CBBA15 DESC
   </select>
   <select id="selectByPriorityDurelow2H" resultMap="BaseResultMap">
 SELECT
-	*
+   *
 FROM
-	`CBBA` cb
+   `CBBA` cb
 WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15  &gt;= #{newPriority}
+   cb.CBBA06 = 0
+   AND cb.CBBA12 = 0
+   AND cb.CBBA08 = #{goodsId}
+   AND cb.CBBA15  &gt;= #{newPriority}
 
-	AND cb.CBBA01 != #{cbba01}
+   AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 DESC
+   cb.CBBA15 DESC
   </select>
 
   <select id="selectByPriorityDureH2low" resultMap="BaseResultMap">
 SELECT
-	*
+   *
 FROM
-	`CBBA` cb
+   `CBBA` cb
 WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA15  &gt;= #{oldPriority}
+   cb.CBBA06 = 0
+   AND cb.CBBA12 = 0
+   AND cb.CBBA08 = #{goodsId}
+   AND cb.CBBA15  &gt;= #{oldPriority}
 ORDER BY
-	cb.CBBA15
+   cb.CBBA15
   </select>
 
   <select id="selectByGoodsId" resultMap="BaseResultMap">
 SELECT
-	*
+   *
 FROM
-	CBBA c
+   CBBA c
 WHERE
-	c.CBBA08 = #{goodsId}
-	AND c.CBBA06 =0
-	AND c.CBBA12= 0
-	order by c.CBBA15 DESC
+   c.CBBA08 = #{goodsId}
+   AND c.CBBA06 =0
+   AND c.CBBA12= 0
+   order by c.CBBA15 DESC
   </select>
 
   <!--  获取生产总订单列表-->
@@ -497,9 +498,9 @@ WHERE
 
     </if>
     <if test="sortKey=='orderQty' and sortType=='descending'">
-    order by ba.CBBA09 DESC
+      order by ba.CBBA09 DESC
 
-  </if>
+    </if>
     <if test="sortKey=='orderQty' and sortType=='ascending'">
       order by ba.CBBA09
 
@@ -521,15 +522,16 @@ WHERE
 
   <select id="selectByOther" resultMap="BaseResultMap">
 SELECT
-	*
+   *
 FROM
-	`CBBA` cb
+   `CBBA` cb
 WHERE
-	cb.CBBA06 = 0
-	AND cb.CBBA12 = 0
-	AND cb.CBBA08 = #{goodsId}
-	AND cb.CBBA01 != #{cbba01}
+   cb.CBBA06 = 0
+   AND cb.CBBA12 = 0
+   AND cb.CBBA08 = #{goodsId}
+   AND cb.CBBA01 != #{cbba01}
 ORDER BY
-	cb.CBBA15 ASC
+   cb.CBBA15 ASC
   </select>
+
 </mapper>

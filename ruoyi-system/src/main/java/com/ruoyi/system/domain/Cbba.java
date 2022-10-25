@@ -32,7 +32,7 @@ public class Cbba implements Serializable {
 
     private Double cbba14;
 
-    private Integer cbba15;
+    private Long cbba15;
 
     private static final long serialVersionUID = 1L;
 
@@ -148,11 +148,11 @@ public class Cbba implements Serializable {
         this.cbba14 = cbba14;
     }
 
-    public Integer getCbba15() {
+    public Long getCbba15() {
         return cbba15;
     }
 
-    public void setCbba15(Integer cbba15) {
+    public void setCbba15(Long cbba15) {
         this.cbba15 = cbba15;
     }
 

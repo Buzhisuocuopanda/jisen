@@ -238,10 +238,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         //先查一下有没有其他商品
         List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
-        if(cbbas.size()>0){
+//        if(cbbas.size()>0){
             cbba = orderDistributionService.reassign(send);
 
-        }
+//        }
 
         cbbaMapper.insert(cbba);
         return cbba;
@@ -370,7 +370,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             //是否是修改商品
             Integer oldgoodsId = cbba.getCbba08();
             if (oldgoodsId.equals(totalOrderAddDto.getGoodsId())) {
-                Integer oldPoririty = cbba.getCbba15();
+                Long oldPoririty = cbba.getCbba15();
 
                 Double oldQty = cbba.getCbba09();
                 cbba.setCbba15(totalOrderAddDto.getPriority());
@@ -1054,6 +1054,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("只能由销售人员本人操作");
         }
 
+        if(cboa.getCboa11()!=0){
+            throw new SwException("只有在未提交的状态下才能提交");
+
+        }
 
         cboa.setCboa01(delSaleOrderDto.getOrderId());
         cboa.setCboa06(DeleteFlagEnum.DELETE.getCode());
@@ -1831,7 +1835,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                    .andCboa01EqualTo(cboa.getCboa01())
 //                    .andCbob06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             if(good.getCbobId()==null){
-                throw new SwException("销售订单明细为空");
+                continue;
             }
             Cbob cbob = cbobMapper.selectByPrimaryKey(good.getCbobId());
             if (cbob==null) {
@@ -2164,7 +2168,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbod.setCbod11(good.getCurrentPrice());
             cbod.setCbod12(good.getCurrentPrice() * good.getQty());
             cbod.setCbod13(good.getRemark());
-            cbod.setCbod01(saleOrderChangeDto.getId());
+
             cbod.setCbod14(good.getNormalPrice());
             cbod.setBefPrice(cbob.getCbob11());
             cbod.setCboc01(cboc.getCboc01());

@@ -965,52 +965,52 @@ public class CbbaCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCbba15EqualTo(Integer value) {
+        public Criteria andCbba15EqualTo(Long value) {
             addCriterion("CBBA15 =", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotEqualTo(Integer value) {
+        public Criteria andCbba15NotEqualTo(Long value) {
             addCriterion("CBBA15 <>", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15GreaterThan(Integer value) {
+        public Criteria andCbba15GreaterThan(Long value) {
             addCriterion("CBBA15 >", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15GreaterThanOrEqualTo(Integer value) {
+        public Criteria andCbba15GreaterThanOrEqualTo(Long value) {
             addCriterion("CBBA15 >=", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15LessThan(Integer value) {
+        public Criteria andCbba15LessThan(Long value) {
             addCriterion("CBBA15 <", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15LessThanOrEqualTo(Integer value) {
+        public Criteria andCbba15LessThanOrEqualTo(Long value) {
             addCriterion("CBBA15 <=", value, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15In(List<Integer> values) {
+        public Criteria andCbba15In(List<Long> values) {
             addCriterion("CBBA15 in", values, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotIn(List<Integer> values) {
+        public Criteria andCbba15NotIn(List<Long> values) {
             addCriterion("CBBA15 not in", values, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15Between(Integer value1, Integer value2) {
+        public Criteria andCbba15Between(Long value1, Long value2) {
             addCriterion("CBBA15 between", value1, value2, "cbba15");
             return (Criteria) this;
         }
 
-        public Criteria andCbba15NotBetween(Integer value1, Integer value2) {
+        public Criteria andCbba15NotBetween(Long value1, Long value2) {
             addCriterion("CBBA15 not between", value1, value2, "cbba15");
             return (Criteria) this;
         }

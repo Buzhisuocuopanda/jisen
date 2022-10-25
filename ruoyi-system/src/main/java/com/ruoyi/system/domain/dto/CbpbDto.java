@@ -19,6 +19,7 @@ public class CbpbDto extends Cbpf {
     @Excel(name = "商品分类名称")
     private String cbpb10s;
 
+
     @Excel(name = "品牌")
     private String cbpb10;
 

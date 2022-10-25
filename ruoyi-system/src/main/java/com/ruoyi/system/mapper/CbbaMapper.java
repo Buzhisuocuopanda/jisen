@@ -31,11 +31,11 @@ public interface CbbaMapper {
 
     int updateByPrimaryKey(Cbba record);
 
-    List<Cbba> selectLowPriority(@Param("goodsId")Integer goodsId,@Param("poritiry") Integer poritiry,@Param("cbba01") Integer cbba01);
+    List<Cbba> selectLowPriority(@Param("goodsId")Integer goodsId,@Param("poritiry") Long poritiry,@Param("cbba01") Integer cbba01);
 
-    List<Cbba> selectByPriorityDureH2low(@Param("goodsId") Integer goodsId, @Param("newPriority")Integer newPriority, @Param("oldPriority")Integer oldPriority,@Param("cbba01")Integer cbba01);
+    List<Cbba> selectByPriorityDureH2low(@Param("goodsId") Integer goodsId, @Param("newPriority")Long newPriority, @Param("oldPriority")Long oldPriority,@Param("cbba01")Integer cbba01);
 
-    List<Cbba> selectByPriorityDurelow2H(@Param("goodsId")Integer goodsId, @Param("newPriority")Integer newPriority, @Param("oldPriority")Integer oldPriority,@Param("cbba01")Integer cbba01);
+    List<Cbba> selectByPriorityDurelow2H(@Param("goodsId")Integer goodsId, @Param("newPriority")Long newPriority, @Param("oldPriority")Long oldPriority,@Param("cbba01")Integer cbba01);
 
 
     List<Cbba> selectByGoodsId(@Param("goodsId") Integer goodsId);
@@ -44,7 +44,7 @@ public interface CbbaMapper {
 
     Cbba selectByPrimaryKeyForUpdate(@Param("id") Integer id);
 
-    List<Cbba> selectLowPriorityGet(@Param("goodsId")Integer goodsId,@Param("poritiry") Integer poritiry,@Param("cbba01") Integer cbba01);
+    List<Cbba> selectLowPriorityGet(@Param("goodsId")Integer goodsId,@Param("poritiry") Long poritiry,@Param("cbba01") Integer cbba01);
 
     List<Cbba> selectByOther(@Param("goodsId")Integer goodsId,@Param("cbba01") Integer cbba01);
 }
