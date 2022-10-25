@@ -249,7 +249,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();
 //            cbpl.setCbpl16();
-            cbpl.setGoodProductQty(0.0);
+//            cbpl.setGoodProductQty(0.0);
             cbplMapper.insert(cbpl);
 
 //            List<Cbpl> list=cbplMapper.selectBySaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
@@ -799,7 +799,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();
 //            cbpl.setCbpl16();
-            cbpl.setGoodProductQty(0.0);
+            cbpl.setGoodProductQty(good.getQty());
             cbplMapper.insert(cbpl);
 
 
