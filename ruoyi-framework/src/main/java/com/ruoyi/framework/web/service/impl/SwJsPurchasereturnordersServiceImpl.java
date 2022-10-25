@@ -1033,6 +1033,12 @@ if(infoss.size()>0) {
 
     @Override
     public List<GsGoodsSnsVo> selectSwJsTaskGoodsRelListssS(GsGoodsSnsVo gsGoodsSnsVo) {
-        return  gsGoodsSnMapper.getInfosss(gsGoodsSnsVo);
+        Map<Integer, String> brandMap = baseCheckService.brandMap();
+
+        List<GsGoodsSnsVo> infosss = gsGoodsSnMapper.getInfosss(gsGoodsSnsVo);
+        for (GsGoodsSnsVo goodsSnsVo : infosss) {
+            goodsSnsVo.setCbpb10(brandMap.get(goodsSnsVo.getBrandId()));
+        }
+        return infosss;
     }
 }
