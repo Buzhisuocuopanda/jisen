@@ -15,7 +15,7 @@ public class TotalOrderListVo {
     @Excel(name = "优先级", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("优先级")
 
-    private Integer priority;
+    private Long priority;
 
     private Integer id;
     @Excel(name = "订单号")

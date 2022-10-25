@@ -802,7 +802,7 @@ WHERE
       and outs.wh_id = #{whId}
     </if>
 	group by oa.CBOA07
-	ORDER BY oa.CBOA02
+	ORDER BY oa.CBOA02 DESC
   </select>
 
   <select id="saleOrderListGoods" resultType="com.ruoyi.system.domain.vo.SaleOrderListVo">

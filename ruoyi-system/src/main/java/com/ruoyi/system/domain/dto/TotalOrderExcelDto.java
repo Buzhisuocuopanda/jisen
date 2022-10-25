@@ -13,7 +13,7 @@ import lombok.Data;
 public class TotalOrderExcelDto {
 
     @Excel(name = "priority")
-    private Integer priority;
+    private Long priority;
 
     @Excel(name = "PoNumber")
     private String orderNo;

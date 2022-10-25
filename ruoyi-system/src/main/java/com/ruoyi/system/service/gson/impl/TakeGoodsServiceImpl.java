@@ -225,6 +225,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
 
+            if (good.getQty()==0) {
+                throw new SwException("提货数量不能为0");
+            }
+
             //生成明细表
             cbpl=new Cbpl();
             cbpl.setCbpk01(cbpk.getCbpk01());
@@ -1061,6 +1065,10 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbpk01EqualTo(cbpk.getCbpk01())
                     .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
+            if(cbpms.size()==0){
+                throw new SwException("提货单生成出库商品才能质检");
+            }
+
             for (Cbpm cbpm : cbpms) {
                 if(cbpm.getCbpm11()==0){
                     throw new SwException("提货单存在未扫码的商品");

@@ -78,7 +78,8 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         }
 
         CbpbCriteria examples = new CbpbCriteria();
-        examples.createCriteria().andCbpb12EqualTo(cbpbDo.getCbpb12());
+        examples.createCriteria().andCbpb12EqualTo(cbpbDo.getCbpb12())
+                .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs1 = cbpbMapper.selectByExample(examples);
         if(cbpbs1.size()>0){
             throw new SwException("商品型号已存在");
@@ -257,10 +258,12 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         for (CbpbDto cbpbDto: swJsGoodsList) {
             if(cbpbDto.getCbpf02()==1||cbpbDto.getCbpf02()==2||cbpbDto.getCbpf02()==3){
                 swJsGoodsList2.add(cbpbDto);
+            }else {
+                throw new SwException("客户等级为1，2，3的允许导入");
             }
         }
 
-        this.insertSwJsStores(swJsGoodsList2);
+        this.insertSwJsStores(swJsGoodsList);
 
         if (failureNum > 0)
         {
@@ -376,11 +379,11 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
            throw new SwException("导入数据不能为空！");
         }
 
-        //分类编号
+        //商品分类
         if(itemList.get(0).getCbpb14()==null||itemList.get(0).getCbpb14().equals("")){
-            throw new SwException("分类编号不能为空！");
+            throw new SwException("商品分类编号不能为空！");
         }
-        String cbpb14 = itemList.get(0).getCbpb14();
+        Integer cbpb14 = itemList.get(0).getCbpb14();
 
 
         //品牌
@@ -430,7 +433,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb10(calaList.get(0).getCala01());
         cbpb.setCbpb08(cbpb08);
         cbpb.setCbpb12(cbpb12);
+        cbpb.setCbpb14(cbpb14);
         cbpb.setCbpb15(cbpb15);
+        cbpb.setType(1);
 
         cbpbMapper.insertSelective(cbpb);
 

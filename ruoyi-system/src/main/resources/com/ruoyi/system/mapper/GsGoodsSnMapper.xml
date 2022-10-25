@@ -527,6 +527,10 @@ order by a.update_time desc
 from gs_goods_sn a
 where
     a.repair_status=1
+
+      <if test="sn != null and sn != ''">
+        and   a.sn like concat('%',  #{sn}, '%')
+      </if>
     </select>
 
 </mapper>
