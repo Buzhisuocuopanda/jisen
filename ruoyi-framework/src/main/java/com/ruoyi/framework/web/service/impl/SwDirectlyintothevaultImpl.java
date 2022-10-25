@@ -134,6 +134,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
             List<Cbic> cbicss = cbicMapper.selectByExample(example1);
             //更新
             if (cbicss.size() > 0) {
+
                 Cbic cbic=new Cbic();
                 cbic.setCbic02(date);
                 CbicCriteria example2 = new CbicCriteria();
