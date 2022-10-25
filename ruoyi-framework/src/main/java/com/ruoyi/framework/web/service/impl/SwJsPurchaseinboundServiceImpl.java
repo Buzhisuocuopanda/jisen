@@ -122,7 +122,7 @@ private NumberGenerate numberGenerate;
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc08(date);
             cbpc.setCbpc11(TaskStatus.mr.getCode());
-            cbpc.setCbpc06(DeleteFlagEnum.DELETE.getCode());
+            cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
             String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
             cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setCbpc13(date);
@@ -132,7 +132,7 @@ private NumberGenerate numberGenerate;
 
             CbpcCriteria example1 = new CbpcCriteria();
             example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
-                    .andCbpc06EqualTo(DeleteFlagEnum.DELETE.getCode());
+                    .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         if(!CollectionUtils.isEmpty(cbpcs1)){
