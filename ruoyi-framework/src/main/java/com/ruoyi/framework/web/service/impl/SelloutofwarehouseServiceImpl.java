@@ -505,10 +505,10 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             throw new SwException("销售出库单扫描记录未查到");
 
         }
-        if(   cbsds.get(i).getCbsd10()==null){
+      /*  if(   cbsds.get(i).getCbsd10()==null){
             throw new SwException("销售出库单库位未查到");
 
-        }
+        }*/
         }
 
         Double num = (double) cbsds.size();
