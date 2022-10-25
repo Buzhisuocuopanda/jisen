@@ -1495,6 +1495,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             for (TakeOrderGoodsVo good : takeGoodsOrderDetailVo.getGoods()) {
 
                 good.setTakegoodsid(id);
+                good.setQty(good.getGoodsNum());
             }
             goods.addAll(takeGoodsOrderDetailVo.getGoods());
         }
