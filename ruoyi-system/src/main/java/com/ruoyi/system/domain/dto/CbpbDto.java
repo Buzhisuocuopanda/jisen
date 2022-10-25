@@ -13,8 +13,11 @@ import java.util.List;
 @Data
 public class CbpbDto extends Cbpf {
 
-    @Excel(name = "商品分类")
-    private String cbpb14;
+    @Excel(name = "商品分类编号")
+    private Integer cbpb14;
+
+    @Excel(name = "商品分类名称")
+    private String cbpb10s;
 
     @Excel(name = "品牌")
     private String cbpb10;

@@ -381,9 +381,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
 
         //商品分类
         if(itemList.get(0).getCbpb14()==null||itemList.get(0).getCbpb14().equals("")){
-            throw new SwException("商品分类不能为空！");
+            throw new SwException("商品分类编号不能为空！");
         }
-        String cbpb14 = itemList.get(0).getCbpb14();
+        Integer cbpb14 = itemList.get(0).getCbpb14();
 
 
         //品牌
@@ -433,7 +433,9 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb10(calaList.get(0).getCala01());
         cbpb.setCbpb08(cbpb08);
         cbpb.setCbpb12(cbpb12);
+        cbpb.setCbpb14(cbpb14);
         cbpb.setCbpb15(cbpb15);
+        cbpb.setType(1);
 
         cbpbMapper.insertSelective(cbpb);
 
