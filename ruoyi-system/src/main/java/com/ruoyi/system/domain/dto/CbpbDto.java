@@ -14,11 +14,11 @@ import java.util.List;
 public class CbpbDto extends Cbpf {
 
     @Excel(name = "商品分类")
-    private Integer cbpb14;
+    private String cbpb14;
 
 
     @Excel(name = "品牌")
-    private Integer cbpb10;
+    private String cbpb10;
 
     @NotBlank(message = "商品型号不能为空")
     @Length(min=1, max=50)

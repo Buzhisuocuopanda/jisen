@@ -223,6 +223,27 @@ private NumberGenerate numberGenerate;
                if (itemList.getCbpe08() == null) {
                    throw new SwException("商品id不能为空");
                }
+               CbpeCriteria example = new CbpeCriteria();
+                example.createCriteria().andCbpe08EqualTo(itemList.getCbpe08())
+                          .andCbpc01EqualTo(itemList.getCbpc01());
+                List<Cbpe> cbpess = cbpeMapper.selectByExample(example);
+                if(cbpess.size()>0){
+                CbpdCriteria example1 = new CbpdCriteria();
+                example1.createCriteria().andCbpc01EqualTo(itemList.getCbpc01())
+                        .andCbpd08EqualTo(itemList.getCbpe08());
+                List<Cbpd> cbpds = cbpdMapper.selectByExample(example1);
+                    if(cbpds.size()==0){
+                        throw new SwException("该商品不在该采购入库单中");
+                    }
+
+                    if(cbpess.size()==cbpds.get(0).getCbpd09()){
+                        throw new SwException("该商品已扫描完成");
+                    }
+
+                }
+
+
+
                if (!sio.contains(itemList.getCbpe08())) {
                    throw new SwException("该商品不在采购入货单明细中");
                }
