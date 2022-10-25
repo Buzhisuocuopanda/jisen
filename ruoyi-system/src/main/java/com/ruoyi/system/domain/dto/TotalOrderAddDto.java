@@ -20,7 +20,7 @@ public class TotalOrderAddDto {
     @NotNull(message = "优先级不能为空")
     @ApiModelProperty("优先级")
 
-    private Integer priority;
+    private Long priority;
 
     @NotBlank(message = "订单号不能为空")
     @ApiModelProperty("订单号")

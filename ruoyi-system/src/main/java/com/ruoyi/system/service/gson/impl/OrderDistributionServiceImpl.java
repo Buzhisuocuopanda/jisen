@@ -225,7 +225,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //2、修改数量
                 if (TotalOrderOperateEnum.MDFPRIORITY.getCode().equals(orderDistributionDo.getType())) {
                     //优先级由高到低
-                    if (Integer.valueOf(orderDistributionDo.getPriority()) <Integer.valueOf( orderDistributionDo.getOldPriority())) {
+                    if (orderDistributionDo.getPriority() <orderDistributionDo.getOldPriority()) {
                         getUnDistributionGoods(cbba, ungoods);
                         if (!cbba.getCbba13().equals(cbba.getCbba09() - cbba.getCbba11())) {
                             getOrderPriority(cbba, orderDistributionDo.getOldPriority());
@@ -305,7 +305,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
         Double givenNum = makeNum - orderNum;
         cbba.setCbba13(cbba.getCbba13() - givenNum);
-        List<Cbba> res = cbbaMapper.selectLowPriority(cbba.getCbba08(),Integer.valueOf(cbba.getCbba15()),cbba.getCbba01() );
+        List<Cbba> res = cbbaMapper.selectLowPriority(cbba.getCbba08(),cbba.getCbba15(),cbba.getCbba01() );
         for (Cbba re : res) {
             //订单所需数量为 订单数量减去 分配数量减去发货数量
             Double needNum = re.getCbba09() - re.getCbba11() - re.getCbba13();
@@ -358,7 +358,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     }
 
     //优先级由低到高
-    private Cbba getOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba getOrderPriority(Cbba cbba, Long oldPriority) {
 
 
 //        Double makeNum = cbba.getCbba13() - useNum;
@@ -370,7 +370,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         Double needNum = cbba.getCbba09() - cbba.getCbba11()-cbba.getCbba13() ;
         Integer goodsId = cbba.getCbba08();
 //        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
-        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
+        List<Cbba> list = cbbaMapper.selectByPriorityDurelow2H(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
         for (Cbba res : list) {
             Double useNum = 0.0;
             if (!res.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -415,7 +415,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      *
      * @param cbba
      */
-    private Cbba giveOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba giveOrderPriority(Cbba cbba, Long oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -437,7 +437,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             return cbba;
         }
         Integer goodsId = cbba.getCbba08();
-        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, Integer.valueOf(cbba.getCbba15()), Integer.valueOf(oldPriority),cbba.getCbba01());
+        List<Cbba> list = cbbaMapper.selectByPriorityDureH2low(goodsId, cbba.getCbba15(), oldPriority,cbba.getCbba01());
 
         for (Cbba res : list) {
             if(res.getCbba01().equals(cbba.getCbba01())){
@@ -598,7 +598,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
     }
 
-    private Cbba delgiveOrderPriority(Cbba cbba, Integer oldPriority) {
+    private Cbba delgiveOrderPriority(Cbba cbba, Long oldPriority) {
         // 国际订单可能会出现占用数量大于分配数量
         Double useNum = 0.0;
         if (!cbba.getCbba07().startsWith(TotalOrderConstants.GUONEIORDER)) {
@@ -737,7 +737,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             return null;
         }
 
-        List<Cbba> res = cbbaMapper.selectLowPriorityGet(cbba.getCbba08(),Integer.valueOf(cbba.getCbba15()),cbba.getCbba01() );
+        List<Cbba> res = cbbaMapper.selectLowPriorityGet(cbba.getCbba08(),cbba.getCbba15(),cbba.getCbba01() );
         //先从优先级最低的取
         //未发货数量
         Double orderNum = cbba.getCbba09() - cbba.getCbba11();

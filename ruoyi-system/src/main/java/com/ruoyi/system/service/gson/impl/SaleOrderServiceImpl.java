@@ -238,10 +238,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         //先查一下有没有其他商品
         List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
-        if(cbbas.size()>0){
+//        if(cbbas.size()>0){
             cbba = orderDistributionService.reassign(send);
 
-        }
+//        }
 
         cbbaMapper.insert(cbba);
         return cbba;
@@ -370,7 +370,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             //是否是修改商品
             Integer oldgoodsId = cbba.getCbba08();
             if (oldgoodsId.equals(totalOrderAddDto.getGoodsId())) {
-                Integer oldPoririty = cbba.getCbba15();
+                Long oldPoririty = cbba.getCbba15();
 
                 Double oldQty = cbba.getCbba09();
                 cbba.setCbba15(totalOrderAddDto.getPriority());
