@@ -122,7 +122,7 @@ private NumberGenerate numberGenerate;
             cbpc.setCbpc05(Math.toIntExact(userid));
             cbpc.setCbpc08(date);
             cbpc.setCbpc11(TaskStatus.mr.getCode());
-            cbpc.setCbpc06(DeleteFlagEnum.DELETE.getCode());
+            cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
             String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
             cbpc.setCbpc07(purchaseinboundNo);
             cbpc.setCbpc13(date);
