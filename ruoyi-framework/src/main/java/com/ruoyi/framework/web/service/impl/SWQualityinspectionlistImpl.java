@@ -164,18 +164,16 @@ private CbpmMapper cbpmMapper;
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
             if (gsGoodsSns.size() > 0) {
 
-                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
                 //不是上架就更新上架（暂不上架）
 //                gsGoodsSn.setStatus(new Byte("1"));
 //                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-                if(locationId!=null){
-                    gsGoodsSn.setLocationId(locationId);
-                }
+                gsGoodsSn.setLocationId(null);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
                 gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
+                gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
             }
@@ -207,8 +205,6 @@ private CbpmMapper cbpmMapper;
             if(index ==0){
                 throw new SwException("没查到对应的提货单扫码记录");
             }
-
-
           ///////////////  //////////////////////
         /*    Cbpm cbpm1 = cbpmMapper.selectByPrimaryKey(itemList.get(i).getCbqb08());
             cbpm1.setCbpm08(goodsId);
@@ -227,6 +223,8 @@ private CbpmMapper cbpmMapper;
                 session.clearCache();
             }
         }
+        session.commit();
+        session.clearCache();
         /////////////////////////////zgl添加
 
         //遍历新增的质检单明细
@@ -268,11 +266,6 @@ private CbpmMapper cbpmMapper;
                 }
             }
         }
-//////////////////////////////////////
-        session.commit();
-        session.clearCache();
-
-
         return 1;
 
 

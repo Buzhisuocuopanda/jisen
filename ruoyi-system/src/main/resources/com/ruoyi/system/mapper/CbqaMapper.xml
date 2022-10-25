@@ -331,10 +331,8 @@
       on
         b.CBPM01=a.CBQB08
 
-        LEFT JOIN
-      CBPB c
-      on
-        c.CBPB01=b.CBPM08
+    LEFT JOIN gs_goods_sn sn on sn.sn=a.CBQB10
+        LEFT JOIN CBPB c on c.CBPB01=sn.goods_id
 
         LEFT JOIN
       CALA d
