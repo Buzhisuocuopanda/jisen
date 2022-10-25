@@ -430,6 +430,7 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
         cbpb.setCbpb04(Math.toIntExact(userid));
         cbpb.setCbpb05(Math.toIntExact(userid));
         cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
+        cbpb.setCbpb07("启用");
         cbpb.setCbpb10(calaList.get(0).getCala01());
         cbpb.setCbpb08(cbpb08);
         cbpb.setCbpb12(cbpb12);
