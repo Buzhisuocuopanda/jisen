@@ -751,18 +751,6 @@ if(cbsgss.size()>0){
                 throw new SwException("该商品不在销售出库单明细中");
             }*/
 //            cbsf.setCbsf01(good.getCbsf01());
-
-
-            if(Objects.isNull(good.getCbsf08())){
-                throw new SwException("销售退库商品不能为空");
-            }
-            if(Objects.isNull(good.getCbsf09())){
-                throw new SwException("销售退库数量不能为空");
-            }
-            if(Objects.isNull(good.getCbsf11())){
-                throw new SwException("销售退库价格不能为空");
-            }
-
             cbsf.setCbse01(cbseDo.getCbse01());
             cbsf.setCbsf02(good.getCbsf02());
             cbsf.setCbsf03(date);
