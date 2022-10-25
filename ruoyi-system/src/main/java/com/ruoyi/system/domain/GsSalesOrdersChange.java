@@ -1,10 +1,8 @@
 package com.ruoyi.system.domain;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
-@Data
+
 public class GsSalesOrdersChange implements Serializable {
     private Integer id;
 
@@ -19,9 +17,6 @@ public class GsSalesOrdersChange implements Serializable {
     private Byte deleteFlag;
 
     private String orderNo;
-
-    private String factory;
-
 
     private Date orderDate;
 
@@ -40,6 +35,10 @@ public class GsSalesOrdersChange implements Serializable {
     private Integer goodsId;
 
     private Integer changeid;
+
+    private String factory;
+
+    private Double price;
 
     private static final long serialVersionUID = 1L;
 
@@ -171,6 +170,22 @@ public class GsSalesOrdersChange implements Serializable {
         this.changeid = changeid;
     }
 
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory == null ? null : factory.trim();
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -198,7 +213,9 @@ public class GsSalesOrdersChange implements Serializable {
             && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getGoodsId() == null ? other.getGoodsId() == null : this.getGoodsId().equals(other.getGoodsId()))
-            && (this.getChangeid() == null ? other.getChangeid() == null : this.getChangeid().equals(other.getChangeid()));
+            && (this.getChangeid() == null ? other.getChangeid() == null : this.getChangeid().equals(other.getChangeid()))
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()));
     }
 
     @Override
@@ -221,6 +238,8 @@ public class GsSalesOrdersChange implements Serializable {
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getGoodsId() == null) ? 0 : getGoodsId().hashCode());
         result = prime * result + ((getChangeid() == null) ? 0 : getChangeid().hashCode());
+        result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
         return result;
     }
 
@@ -246,6 +265,8 @@ public class GsSalesOrdersChange implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", changeid=").append(changeid);
+        sb.append(", factory=").append(factory);
+        sb.append(", price=").append(price);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

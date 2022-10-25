@@ -1111,6 +1111,136 @@ public class GsSalesOrdersChangeCriteria {
             addCriterion("changeid not between", value1, value2, "changeid");
             return (Criteria) this;
         }
+
+        public Criteria andFactoryIsNull() {
+            addCriterion("factory is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryIsNotNull() {
+            addCriterion("factory is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryEqualTo(String value) {
+            addCriterion("factory =", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotEqualTo(String value) {
+            addCriterion("factory <>", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryGreaterThan(String value) {
+            addCriterion("factory >", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryGreaterThanOrEqualTo(String value) {
+            addCriterion("factory >=", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryLessThan(String value) {
+            addCriterion("factory <", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryLessThanOrEqualTo(String value) {
+            addCriterion("factory <=", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryLike(String value) {
+            addCriterion("factory like", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotLike(String value) {
+            addCriterion("factory not like", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryIn(List<String> values) {
+            addCriterion("factory in", values, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotIn(List<String> values) {
+            addCriterion("factory not in", values, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryBetween(String value1, String value2) {
+            addCriterion("factory between", value1, value2, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotBetween(String value1, String value2) {
+            addCriterion("factory not between", value1, value2, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceEqualTo(Double value) {
+            addCriterion("price =", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotEqualTo(Double value) {
+            addCriterion("price <>", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThan(Double value) {
+            addCriterion("price >", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("price >=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThan(Double value) {
+            addCriterion("price <", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThanOrEqualTo(Double value) {
+            addCriterion("price <=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIn(List<Double> values) {
+            addCriterion("price in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotIn(List<Double> values) {
+            addCriterion("price not in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceBetween(Double value1, Double value2) {
+            addCriterion("price between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotBetween(Double value1, Double value2) {
+            addCriterion("price not between", value1, value2, "price");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
