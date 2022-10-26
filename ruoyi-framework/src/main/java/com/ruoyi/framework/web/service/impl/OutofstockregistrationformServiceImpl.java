@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OutofstockregistrationformServiceImpl implements OutofstockregistrationformService {
@@ -298,8 +295,11 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
         }
         cboe.setUserId(Math.toIntExact(userid));
         cboeMapper.updateByPrimaryKeySelective(cboe);
-
+        List<Cbof> cbofList =new ArrayList<>();
         Cbof cbof = null;
+        CbofCriteria exampleDel = new CbofCriteria();
+        exampleDel.createCriteria().andCboe01EqualTo(cboeDo.getCboe01());
+        cbofMapper.deleteByExample(exampleDel);
         for (CbofDo good : goods) {
             cbof =new Cbof();
 
@@ -323,12 +323,13 @@ public class OutofstockregistrationformServiceImpl implements Outofstockregistra
             if(good.getRemark()!=""){
                 cbof.setCbof13(good.getRemark());
             }
-            CbofCriteria example = new CbofCriteria();
+            cbofList.add(cbof);
+           /* CbofCriteria example = new CbofCriteria();
             example.createCriteria().andCbof01EqualTo(good.getCbof01())
                     .andCbof07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-            cbofMapper.updateByExampleSelective(cbof, example);
-
+            cbofMapper.updateByExampleSelective(cbof, example);*/
         }
+        this.insertSwJsStores(cbofList);
         return ;
     }
 }

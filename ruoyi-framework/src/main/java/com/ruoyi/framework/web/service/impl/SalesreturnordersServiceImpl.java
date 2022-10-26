@@ -277,10 +277,14 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         if(jho.size()==0){
             throw new SwException("没有明细不能标记完成");
         }
+
+
         for(Cbsf cbsf:jho){
             Double cbsf09 = cbsf.getCbsf09();
             sdw+=cbsf09;
         }
+
+
         CbsgCriteria wtw = new CbsgCriteria();
         wtw.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
         List<Cbsg> cbsg = cbsgMapper.selectByExample(wtw);
@@ -567,10 +571,14 @@ if(cbsgss.size()>0){
             GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
             examples.createCriteria().andSnEqualTo( itemList.getCbsg09());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);
-            if(gsGoodsSns.size()==0){
+           /* if(gsGoodsSns.size()==0){
                 throw new SwException("该sn不存在与库存表");
+            }*/
+           if(gsGoodsSns.size()>0){
+               if(gsGoodsSns.get(0).getStatus()==1){
+                   throw new SwException("该sn已经入库");
+               }
             }
-
             if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
                 throw new SwException("该商品不在采购退货单明细中");
             }
