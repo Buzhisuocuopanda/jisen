@@ -32,13 +32,13 @@ public class GsOrdersInVo implements Serializable {
     private String customerName;
     @Excel(name = "订单时间")
     private Date orderDate;
-
+    @Excel(name = "订单状态")
     private Byte status;
 //    @Excel(name = "仓库id")
     private Integer whId;
 
     private Integer userId;
-    @Excel(name = "订单状态")
+
     private Integer statuss;
 
     private String ponumber;
