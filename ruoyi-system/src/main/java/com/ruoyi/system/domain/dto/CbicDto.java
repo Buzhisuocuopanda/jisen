@@ -1,12 +1,13 @@
 package com.ruoyi.system.domain.dto;
 
+import com.ruoyi.system.domain.Cbic;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 @Data
-public class CbicDto {
+public class CbicDto extends Cbic {
     private Integer cbic01;
 
     private Date cbic02;
@@ -40,5 +41,10 @@ public class CbicDto {
     private Integer userId;
 
     private String upc;
+
+    private String kuwei ;
+
+    private String sn ;
+
 
 }

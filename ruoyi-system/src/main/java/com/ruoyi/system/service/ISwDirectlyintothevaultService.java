@@ -14,4 +14,6 @@ public interface ISwDirectlyintothevaultService{
     List<CbicVo> selectSwJsTaskGoodsRelListss(CbicVo cbicVo);
 
     List<CbicVo> selectSwJsTaskGoodsRelLists(CbicVo cbicVo);
+
+    int insertSwJsSkuBarcodess(List<CbicDto> cbicDto);
 }

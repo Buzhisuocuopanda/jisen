@@ -1303,13 +1303,15 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
     public void SwJsPurchaseinboundedibgdxg(GsSalesChangeDo cbpdDto) {
 
         GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
-        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
-            throw new SwException("未审核状态才能修改");
-        }
 
         if(gsSalesChange==null){
             throw new SwException("无此修改信息");
         }
+        if(!gsSalesChange.getStatus().equals(TaskStatus.mr.getCode().byteValue())){
+            throw new SwException("未审核状态才能修改");
+        }
+
+
         if(gsSalesChange.getGsid()==null){
             throw new SwException("预订单id为空");
         }
@@ -1325,9 +1327,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
             cbpc.setUpdateTime(date);
             cbpc.setUpdateBy(userid);
             cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            if(cbpc.getGsid()==null) {
+            /*if(cbpc.getGsid()==null) {
                 throw new SwException("预订单主表id不能为空");
-            }
+            }*/
 
             gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
 
@@ -1395,9 +1397,9 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-        if(cbpc.getGsid()==null) {
+      /*  if(cbpc.getGsid()==null) {
             throw new SwException("预订单主表id不能为空");
-        }
+        }*/
         cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
         if(cbpdDto.getId()==null){
             throw new SwException("id不能为空");
@@ -1408,10 +1410,12 @@ if(gsSalesChange.getGsid()==null){
     throw new SwException("预订单id不能为空");
 }
         GsSalesOrders gsSalesOrders = gsSalesOrdersMapper.selectByPrimaryKey(gsSalesChange.getGsid());
-
+if(gsSalesOrders==null){
+    throw new SwException("预订单id不能为空");
+}
         GsSalesOrdersChangeDto gsSalesOrdersChangeDto = new GsSalesOrdersChangeDto();
         gsSalesOrdersChangeDto.setId(gsSalesOrders.getId());
-        gsSalesOrdersChangesh( gsSalesOrdersChangeDto);
+      //  gsSalesOrdersChangesh( gsSalesOrdersChangeDto);
 
 
         gsSalesChangeMapper.updateByPrimaryKeySelective(cbpc);
@@ -1435,6 +1439,7 @@ List<GsSalesOrdersChange> gsSalesOrdersChanges = gsSalesOrdersChangeMapper.selec
         gsSalesOrdersDetails.setQty(gsSalesOrdersChanges.get(i).getQty());
         gsSalesOrdersDetails.setGsSalesOrders(String.valueOf(gsSalesOrders.getId()));
         gsSalesOrdersDetails.setFactory(gsSalesOrdersChanges.get(i).getFactory());
+        gsSalesOrdersDetails.setPrice(BigDecimal.valueOf(gsSalesOrdersChanges.get(i).getPrice()));
         gsSalesOrdersDetailsMapper.insertSelective(gsSalesOrdersDetails);
     }
 
