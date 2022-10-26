@@ -124,15 +124,19 @@ public class AftersalesServiceImpl implements AftersalesService {
     @Override
     public GsAfterSales saleOderDetail(Integer orderId) {
         GsAfterSales gsAfterSales = aftersalesMapper.selectByPrimaryKey(orderId);
-        GsGoodsSnVo gsGoodsSnVo = new GsGoodsSnVo();
-        gsGoodsSnVo.setSn(gsAfterSales.getSn());
-        List<GsGoodsSnVo> gsGoodsSnVos = selectGoodsSnSelect2(gsGoodsSnVo);
-        if(gsGoodsSnVos!=null&&gsGoodsSnVos.size()>0){
-            gsAfterSales.setGoodsMsg(gsGoodsSnVos.get(0).getGoodsMsg());
-            gsAfterSales.setGoodsId(gsGoodsSnVos.get(0).getGoodsId());
-            gsAfterSales.setCbpb08(gsGoodsSnVos.get(0).getCbpb08());
-            gsAfterSales.setCbpb10(gsGoodsSnVos.get(0).getCbpb10());
+        if(gsAfterSales.getSn()!=null&&!("").equals(gsAfterSales.getSn())){
+            GsGoodsSnVo gsGoodsSnVo = new GsGoodsSnVo();
+            gsGoodsSnVo.setSn(gsAfterSales.getSn());
+            List<GsGoodsSnVo> gsGoodsSnVos = selectGoodsSnSelect2(gsGoodsSnVo);
+
+            if(gsGoodsSnVos!=null&&gsGoodsSnVos.size()>0){
+                gsAfterSales.setGoodsMsg(gsGoodsSnVos.get(0).getGoodsMsg());
+                gsAfterSales.setGoodsId(gsGoodsSnVos.get(0).getGoodsId());
+                gsAfterSales.setCbpb08(gsGoodsSnVos.get(0).getCbpb08());
+                gsAfterSales.setCbpb10(gsGoodsSnVos.get(0).getCbpb10());
+            }
         }
+
         return gsAfterSales;
     }
 

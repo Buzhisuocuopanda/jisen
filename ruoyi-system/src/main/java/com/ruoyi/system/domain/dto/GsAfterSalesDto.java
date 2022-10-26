@@ -21,19 +21,19 @@ public class GsAfterSalesDto {
     private Byte deleteFlag;
     @NotNull(message = "客户不能为空")
     private Integer customerId;
-    @NotBlank(message = "销售订单号不能为空")
+//    @NotBlank(message = "销售订单号不能为空")
     private String saleOrderNo;
-    @NotNull(message = "商品id不能为空")
+//    @NotNull(message = "商品id不能为空")
     private Integer goodsId;
-    @NotBlank(message = "问题原因不能为空")
+//    @NotBlank(message = "问题原因不能为空")
     private String question;
-    @NotBlank(message = "SN不能为空")
+//    @NotBlank(message = "SN不能为空")
     private String sn;
    // @NotNull(message = "供料单位不能为空")
     private Integer suplierId;
-    @NotNull(message = "处理结果不能为空")
+//    @NotNull(message = "处理结果不能为空")
     private Integer answerMsg;
-    @NotNull(message = "进度不能为空")
+//    @NotNull(message = "进度不能为空")
     private Integer process;
     @NotNull(message = "销售人员不能为空")
     private Integer salerId;
