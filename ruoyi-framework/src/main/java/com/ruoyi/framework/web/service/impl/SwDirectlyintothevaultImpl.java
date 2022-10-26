@@ -60,7 +60,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
 
-
+    private GsOrdersInMapper gsOrdersInMapper;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
