@@ -300,6 +300,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
                 cbic.setCbic10(cbicDto.get(i).getSn());
                 cbic.setCbic09(cbpbs.get(0).getCbpb01());
                 cbic.setCbic07(cbla.get(0).getCbla10());
+                cbic.setCbic08(cbla.get(0).getCbla01());
                 cbic.setUserId(Math.toIntExact(userid));
                 cbicMapper.insertSelective(cbic);
 

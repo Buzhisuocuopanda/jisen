@@ -432,7 +432,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
        if(cbsa!=null){
         cbibDo.setCbib06(cbsa.getCbsa08());}
         cbibDo.setCbib07(cbsfs.get(j).getCbsf01());
-        cbibDo.setCbib08(cbsgs.get(j).getCbsg08());
+        cbibDo.setCbib08(cbsfs.get(j).getCbsf08());
         //本次入库数量
         cbibDo.setCbib11((double) 0);
         cbibDo.setCbib12((double) 0);

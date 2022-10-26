@@ -100,4 +100,6 @@ public interface SalesScheduledOrdersService {
     void SwJsPurchaseinboundedirkdxg(GsOrdersInDo cbpdDto);
 
     void SwJsPurchaseinbounderkdsh(GsSalesChangeDo cbpdDto);
+
+    GsOrdersInDo SwJsPurchaseinboundrrkdxq(GsOrdersInDo cbpdDto);
 }
