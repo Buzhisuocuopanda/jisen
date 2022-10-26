@@ -287,7 +287,10 @@ public class SaleOrderController extends BaseController {
             //封装集合
 //            DelTotalOrderDo delTotalOrderDo=saleOrderService.getPlTotalOrderDeleIds(totalOrderAddDto.getIds());
 
-            for (Integer id : totalOrderAddDto.getIds()) {
+            //先批量删除
+            List<Integer> ids=saleOrderService.plDelete(totalOrderAddDto.getIds());
+
+            for (Integer id : ids) {
                 totalOrderAddDto.setId(id);
                 totalOrderAddDto.setDelete(DeleteFlagEnum.DELETE.getCode());
                 Cbba cbba = saleOrderService.mdfTotalOrder(totalOrderAddDto);

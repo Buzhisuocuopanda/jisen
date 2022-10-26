@@ -267,6 +267,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             totalOrderAddDto.setQty(nqty);
             totalOrderAddDto.setOrderNo(cbba.getCbba07());
             totalOrderAddDto.setId(cbba.getCbba01());
+
             mdfTotalOrder(totalOrderAddDto);
             return cbba;
 
@@ -1112,9 +1113,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
 
         Map<String, List<String>> customerMap = new HashMap<>();
+        Map<String, List<SaleOrderExcelDto>> customerGoodsMap = new HashMap<>();
         Map<String, List<SaleOrderExcelDto>> goodsMap = new HashMap<>();
-        Map<String, Integer> totalOrderMap = new HashMap<>();
+//        Map<String, Integer> totalOrderMap = new HashMap<>();
         Map<String, Integer> totalCustomerOrderMap = new HashMap<>();
+
 
 
         for (SaleOrderExcelDto saleOrderExcelDto : list) {
@@ -1135,7 +1138,17 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("Release Quantity那一列有为空的数据");
             }
 
-            totalOrderMap.put(saleOrderExcelDto.getTotalOrderNo(), 1);
+            if(customerGoodsMap.get(saleOrderExcelDto.getCustomerName())==null) {
+                List<SaleOrderExcelDto> res = new ArrayList<>();
+                res.add(saleOrderExcelDto);
+                customerGoodsMap.put(saleOrderExcelDto.getCustomerName(), res);
+            }else {
+                customerGoodsMap.get(saleOrderExcelDto.getCustomerName()).add(saleOrderExcelDto);
+            }
+
+
+
+//            totalOrderMap.put(saleOrderExcelDto.getTotalOrderNo(), 1);
 
             List<SaleOrderExcelDto> strings = goodsMap.get(saleOrderExcelDto.getTotalOrderNo() + "_" + saleOrderExcelDto.getCustomerName());
             if (strings == null) {
@@ -1158,21 +1171,21 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         }
 
-        for (String key : totalOrderMap.keySet()) {
-            List<String> customers = customerMap.get(key);
-            if (customers == null) {
-                customers = new ArrayList<>();
-            }
-            for (String customer : customers) {
-                List<SaleOrderExcelDto> saleOrderExcelDtos = goodsMap.get(key + "_" + customer);
+        for (String key : customerGoodsMap.keySet()) {
+//            List<String> customers = customerMap.get(key);
+//            if (customers == null) {
+//                customers = new ArrayList<>();
+//            }
+//            for (String customer : customers) {
+                List<SaleOrderExcelDto> saleOrderExcelDtos = customerGoodsMap.get(key);
                 CbcaCriteria caex = new CbcaCriteria();
                 caex.createCriteria()
-                        .andCbca08EqualTo(customer)
+                        .andCbca08EqualTo(key)
                         .andCbca06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                         .andCbca07EqualTo("启用");
                 List<Cbca> cbcas = cbcaMapper.selectByExample(caex);
                 if (cbcas.size() == 0) {
-                    throw new SwException("该客户不可用，客户:" + customer);
+                    throw new SwException("该客户不可用，客户:" + key);
                 }
                 Cbca cbca = cbcas.get(0);
                 String saleUser = "";
@@ -1311,7 +1324,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             }
 
-        }
+
 
         return "导入成功";
 
@@ -1420,7 +1433,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }else {
             pfex.createCriteria()
                     .andCbpf02EqualTo(cbca.getCbca28())
-                    .andCbpf06EqualTo(goodsPriceAndSkuDto.getCurrency())
+//                    .andCbpf06EqualTo(goodsPriceAndSkuDto.getCurrency())
                     .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
             pfex.setOrderByClause("CBPF07 desc");
         }
@@ -2927,6 +2940,28 @@ Date date=new Date();
 
 
 
+
+    }
+
+    @Override
+    public List<Integer> plDelete(List<Integer> ids) {
+
+        List<Cbba> list= cbbaMapper.selectByIds(ids);
+        List<Integer> data=new ArrayList<>();
+        List<Integer> returndata=new ArrayList<>();
+        for (Cbba cbba : list) {
+            if(cbba.getCbba13()==0 &&cbba.getCbba11()==0){
+                   data.add(cbba.getCbba01());
+            }else {
+                returndata.add(cbba.getCbba01());
+            }
+        }
+
+        cbbaMapper.plDeleByIds(returndata);
+
+
+
+        return returndata;
 
     }
 

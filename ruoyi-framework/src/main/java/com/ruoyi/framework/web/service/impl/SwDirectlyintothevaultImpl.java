@@ -72,7 +72,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
          log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
 
         CbpbCriteria exampe = new CbpbCriteria();
-        exampe.createCriteria().andCbpb15EqualTo(cbicDto.getUpc());
+        exampe.createCriteria().andCbpb15EqualTo(cbicDto.getUpc())
+        .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
         List<Cbpb> cbpbs = cbbpbMapper.selectByExample(exampe);
         if(cbpbs.size()==0){
             throw new SwException("该upc没有对应商品");

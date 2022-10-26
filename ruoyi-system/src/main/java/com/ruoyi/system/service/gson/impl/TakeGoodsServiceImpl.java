@@ -1056,6 +1056,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
         }else if(auditTakeOrderDto.getOpType().equals(6)){
+            if(cbpk.getCheckStatus().equals(new Byte("1"))){
+                throw new SwException("该提货单已质检完成");
+            }
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();
 
