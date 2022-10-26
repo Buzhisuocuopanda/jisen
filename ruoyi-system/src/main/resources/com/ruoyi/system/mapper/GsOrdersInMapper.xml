@@ -442,7 +442,7 @@
     LEFT JOIN CBSA b on b.CBSA01=a.supplier_id
     LEFT JOIN CBCA c on c.CBCA01=a.customer_id
     where
-    a.delete_flag=0 and
+    a.delete_flag=0
     <if test="supplierId != null "> and a.supplier_id  = #{supplierId}</if>
     <if test="customerId != null "> and a.customer_id  = #{customerId}</if>
     <if test="statuss != null "> and a.statuss  = #{statuss}</if>
