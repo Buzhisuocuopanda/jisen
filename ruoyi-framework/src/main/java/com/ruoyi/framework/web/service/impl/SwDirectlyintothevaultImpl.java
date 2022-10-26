@@ -59,7 +59,7 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
-
+    @Resource
     private GsOrdersInMapper gsOrdersInMapper;
 
     @Autowired
