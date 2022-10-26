@@ -2956,8 +2956,10 @@ Date date=new Date();
                 returndata.add(cbba.getCbba01());
             }
         }
+        if(data.size()!=0){
+            cbbaMapper.plDeleByIds(data);
+        }
 
-        cbbaMapper.plDeleByIds(returndata);
 
 
 

@@ -50,5 +50,5 @@ public interface CbbaMapper {
 
     List<Cbba> selectByIds(@Param("ids") List<Integer> ids);
 
-    void plDeleByIds(List<Integer> returndata);
+    void plDeleByIds(@Param("ids") List<Integer> ids);
 }

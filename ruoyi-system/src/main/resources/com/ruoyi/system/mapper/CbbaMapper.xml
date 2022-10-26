@@ -534,6 +534,21 @@ ORDER BY
    cb.CBBA15 ASC
   </select>
 
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    `CBBA` cb
+    WHERE
+    cb.CBBA01
+    in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+
   <update id="plDeleByIds" >
 
     update
@@ -542,6 +557,7 @@ ORDER BY
 
     WHERE
     cb.CBBA01
+    in
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
       #{id}
     </foreach>
