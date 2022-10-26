@@ -2,6 +2,7 @@ package com.ruoyi.system.domain.Do;
 
 import com.ruoyi.system.domain.GsSalesOrdersChange;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
+import com.ruoyi.system.domain.vo.GsSalesOrdersInVo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -51,5 +52,8 @@ public class GsOrdersInDo {
 
     List<GsSalesOrdersIn> goods =new ArrayList<>();
 
+    private String customerName;
+
+    private String supplierName;
 
 }

@@ -81,8 +81,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id, 
-    saler_id, customer_id, order_date, `status`, wh_id, user_id, statuss, PONumber, factory, 
+    id, create_time, update_time, create_by, update_by, delete_flag, order_no, supplier_id,
+    saler_id, customer_id, order_date, `status`, wh_id, user_id, statuss, PONumber, factory,
     cas, gsid
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsOrdersInCriteria" resultMap="BaseResultMap">
@@ -100,7 +100,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `gs_orders_in`
     where id = #{id,jdbcType=INTEGER}
@@ -116,19 +116,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.GsOrdersIn">
-    insert into `gs_orders_in` (id, create_time, update_time, 
-      create_by, update_by, delete_flag, 
-      order_no, supplier_id, saler_id, 
-      customer_id, order_date, `status`, 
-      wh_id, user_id, statuss, 
-      PONumber, factory, cas, 
+    insert into `gs_orders_in` (id, create_time, update_time,
+      create_by, update_by, delete_flag,
+      order_no, supplier_id, saler_id,
+      customer_id, order_date, `status`,
+      wh_id, user_id, statuss,
+      PONumber, factory, cas,
       gsid)
-    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT}, 
-      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER}, 
-      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT}, 
-      #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{statuss,jdbcType=INTEGER}, 
-      #{ponumber,jdbcType=VARCHAR}, #{factory,jdbcType=VARCHAR}, #{cas,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, #{deleteFlag,jdbcType=TINYINT},
+      #{orderNo,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{salerId,jdbcType=INTEGER},
+      #{customerId,jdbcType=INTEGER}, #{orderDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+      #{whId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{statuss,jdbcType=INTEGER},
+      #{ponumber,jdbcType=VARCHAR}, #{factory,jdbcType=VARCHAR}, #{cas,jdbcType=INTEGER},
       #{gsid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsOrdersIn">
@@ -442,7 +442,7 @@
     LEFT JOIN CBSA b on b.CBSA01=a.supplier_id
     LEFT JOIN CBCA c on c.CBCA01=a.customer_id
     where
-    a.delete_flag=0 and
+    a.delete_flag=0
     <if test="supplierId != null "> and a.supplier_id  = #{supplierId}</if>
     <if test="customerId != null "> and a.customer_id  = #{customerId}</if>
     <if test="statuss != null "> and a.statuss  = #{statuss}</if>

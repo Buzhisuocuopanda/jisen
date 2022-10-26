@@ -231,10 +231,9 @@ public class TaskServiceImpl implements TaskService {
             if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
                 if(cbib1.getCbib15()==null){
                     cbib1.setCbib15((double) 0);
-                    throw new SwException("上次结存数量为空");
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -248,7 +247,7 @@ public class TaskServiceImpl implements TaskService {
             //直接入库
             if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
 
                 cbib.setCbib11((double) 1);
@@ -263,10 +262,10 @@ public class TaskServiceImpl implements TaskService {
            //采购退库单
             if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -279,10 +278,10 @@ public class TaskServiceImpl implements TaskService {
             //销售出库
             if(cbibDo.getCbib17().equals(TaskType.xcckd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -293,10 +292,10 @@ public class TaskServiceImpl implements TaskService {
             //销售退库
             if(cbibDo.getCbib17().equals(TaskType.xstkd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -306,10 +305,10 @@ public class TaskServiceImpl implements TaskService {
             //采购订单
             if(cbibDo.getCbib17().equals(TaskType.cgdd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -320,10 +319,10 @@ public class TaskServiceImpl implements TaskService {
             //初期入库
             if(cbibDo.getCbib17().equals(TaskType.cqrk.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -333,10 +332,10 @@ public class TaskServiceImpl implements TaskService {
             //仓库调拨单入
             if(cbibDo.getCbib17().equals(TaskType.xsthd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -346,10 +345,10 @@ public class TaskServiceImpl implements TaskService {
             //仓库调拨单出
             if(cbibDo.getCbib17().equals(TaskType.zjd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -359,10 +358,10 @@ public class TaskServiceImpl implements TaskService {
             //销售预订单
             if(cbibDo.getCbib17().equals(TaskType.xsydd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
@@ -372,10 +371,10 @@ public class TaskServiceImpl implements TaskService {
             //预订单入库单
             if(cbibDo.getCbib17().equals(TaskType.yydrkd.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    throw new SwException("上次结存数量为空");
+                    cbib1.setCbib15((double) 0);
                 }
                 if(cbib1.getCbib16()==null){
-                    throw new SwException("上次结存金额为空");
+                    cbib1.setCbib16((double) 0);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());

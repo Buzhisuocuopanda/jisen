@@ -25,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +77,11 @@ public class SalesScheduledOrdersServiceImpl implements SalesScheduledOrdersServ
 
     @Resource
     private GsOrdersInMapper gsOrdersInMapper;
+
+
+
+    @Resource
+    private CalaMapper calaMapper;
     /**
      * 添加销售预订单
      *
@@ -1746,6 +1752,66 @@ if(gsSalesOrders.get(0).getId()==null){
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.sh.getCode().byteValue());
         gsOrdersInMapper.updateByPrimaryKey(cbpc);
+    }
+
+    @Override
+    public GsOrdersInDo SwJsPurchaseinboundrrkdxq(GsOrdersInDo cbpdDto) {
+        if(cbpdDto.getId()==null){
+            throw new SwException("入库单id不能为空");
+        }
+        GsOrdersIn gsSalesChange = gsOrdersInMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(gsSalesChange==null){
+            throw new SwException("无此入库单信息");
+        }
+        cbpdDto = BeanCopyUtils.coypToClass(gsSalesChange, GsOrdersInDo.class, null);
+if(cbpdDto.getCustomerId()!=null){
+    Cbca cbca = cbcaMapper.selectByPrimaryKey(cbpdDto.getCustomerId());
+    if (cbca != null) {
+        cbpdDto.setCustomerName(cbca.getCbca08());
+    }
+}
+
+
+
+if(cbpdDto.getSupplierId()!=null){
+    Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbpdDto.getSupplierId());
+    if(cbsa!=null){
+        cbpdDto.setSupplierName(cbsa.getCbsa08());
+    }
+}
+
+        GsSalesOrdersInCriteria gsSalesChangeCriteria = new GsSalesOrdersInCriteria();
+        gsSalesChangeCriteria.createCriteria().andInidEqualTo(cbpdDto.getId());
+        List<GsSalesOrdersIn> gsSalesChanges = gsSalesOrdersInMapper.selectByExample(gsSalesChangeCriteria);
+        if(gsSalesChanges==null||gsSalesChanges.size()==0){
+            throw new SwException("无此入库单货物信息");
+        }
+        List<GsSalesOrdersIn> goods = cbpdDto.getGoods();
+        for (GsSalesOrdersIn gsSalesChange1:gsSalesChanges){
+            goods.add(gsSalesChange1);
+        }
+if(goods!=null&&goods.size()>0){
+    for(GsSalesOrdersIn good:goods){
+        if(good.getGoodsId()!=null){
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
+            if(cbpb!=null){
+                good.setGoodsName(cbpb.getCbpb08());
+                good.setBrand(cbpb.getCbpb12());
+                if(cbpb.getCbpb10()!=null){
+                    Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                    if(cala!=null){
+                        good.setPinpai(cala.getCala08());
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+        return cbpdDto;
+
+
     }
 
 
