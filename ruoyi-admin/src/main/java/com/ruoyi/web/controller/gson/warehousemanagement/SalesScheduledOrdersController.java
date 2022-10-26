@@ -1409,7 +1409,35 @@ public class SalesScheduledOrdersController extends BaseController {
     }
 
 
+    @ApiOperation(
+            value ="入库单详情",
+            notes = "入库单详情"
+    )
+    @PostMapping("/rkdxq")
+    public AjaxResult SwJsPurchaseinboundrrkdxq( GsOrdersInDo cbpdDto) {
 
+
+        try {
+            GsOrdersInDo gsOrdersInDo = salesScheduledOrdersService.SwJsPurchaseinboundrrkdxq(cbpdDto);
+            return AjaxResult.success(gsOrdersInDo);
+
+
+        }catch (SwException e) {
+            log.error("【入库单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【入库单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【入库单新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 
 
