@@ -10,8 +10,10 @@ import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.DirectWarehousingDto;
+import com.ruoyi.system.domain.dto.GsOrdersInDto;
 import com.ruoyi.system.domain.vo.CbicVo;
 import com.ruoyi.system.domain.vo.DirectWarehousingVo;
+import com.ruoyi.system.domain.vo.GsOrdersInVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
@@ -54,6 +56,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
+    @Resource
+    private GsOrdersInMapper gsOrdersInMapper;
 
 
 
@@ -411,4 +415,11 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     public List<CbicVo> selectSwJsTaskGoodsRelLists(CbicVo cbicVo) {
         return cbicMapper.selectSwJsTaskGoodsRelLists(cbicVo);
     }
+
+    @Override
+    public List<GsOrdersInVo> swJsOrderInlist(GsOrdersInDto gsOrdersInDto) {
+        return gsOrdersInMapper.swJsOrderInlist(gsOrdersInDto);
+    }
+
+
 }

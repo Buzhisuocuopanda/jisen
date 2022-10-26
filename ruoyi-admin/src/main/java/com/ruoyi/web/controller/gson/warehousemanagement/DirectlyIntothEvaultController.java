@@ -10,7 +10,9 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.dto.CbicDto;
+import com.ruoyi.system.domain.dto.GsOrdersInDto;
 import com.ruoyi.system.domain.vo.CbicVo;
+import com.ruoyi.system.domain.vo.GsOrdersInVo;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -154,4 +156,35 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/26 11:14
+     */
+    @ApiOperation(
+            value ="直接入库单条件查询2",
+            notes = "直接入库单条件查询2"
+    )
+    @GetMapping("/swJsOrderInlist")
+    @PreAuthorize("@ss.hasPermi('system:directly:list2')")
+    public AjaxResult<TableDataInfo> swJsOrderInlist(GsOrdersInDto gsOrdersInDto) {
+        try {
+            startPage();
+            List<GsOrdersInVo> list = swDirectlyintothevaultService.swJsOrderInlist(gsOrdersInDto);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【直接入库单条件查询】接口出现异常,参数${},异常${}$", JSON.toJSON(gsOrdersInDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【直接入库单条件查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsOrdersInDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 }

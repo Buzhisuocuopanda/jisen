@@ -430,4 +430,29 @@
       gsid = #{gsid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="swJsOrderInlist" resultType="com.ruoyi.system.domain.vo.GsOrdersInVo">
+    SELECT
+        a.id,a.order_no as orderNo, a.order_date as orderDate,a.factory b.CBSA08 as supplierName,
+        b.CBCA08 as customerName,a.statuss,a.supplier_id as supplierId,a.customer_id as customerId
+    FROM
+      gs_orders_in a
+
+    LEFT JOIN CBSA b on b.CBSA01=a.supplier_id
+    LEFT JOIN CBCA c on c.CBCA01=a.customer_id
+    where
+    a.delete_flag=0 and
+    <if test="supplierId != null "> and a.supplier_id  = #{supplierId}</if>
+    <if test="customerId != null "> and a.customer_id  = #{customerId}</if>
+    <if test="statuss != null "> and a.statuss  = #{statuss}</if>
+    <if test="startTime !=null ">
+      AND a.order_date  &gt;= #{startTime}
+    </if>
+    <if test="endTime !=null ">
+      AND a.order_date &lt;=#{endTime}
+    </if>
+    order by  a.create_time desc
+
+  </select>
 </mapper>

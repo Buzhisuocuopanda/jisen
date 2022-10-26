@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.GsOrdersIn;
 import com.ruoyi.system.domain.GsOrdersInCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.GsOrdersInDto;
+import com.ruoyi.system.domain.vo.GsOrdersInVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsOrdersInMapper {
@@ -27,4 +30,12 @@ public interface GsOrdersInMapper {
     int updateByPrimaryKeySelective(GsOrdersIn record);
 
     int updateByPrimaryKey(GsOrdersIn record);
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/10/26 11:46
+     *查询直接入库单数据
+     */
+    List<GsOrdersInVo> swJsOrderInlist(GsOrdersInDto gsOrdersInDto);
+
 }
