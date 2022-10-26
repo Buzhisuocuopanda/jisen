@@ -791,7 +791,7 @@ ORDER BY
     a.CBSB18 as cbsb18,
     a.CBSB31 as cbsb31,
     b.CBSC01 as cbsc01,
-    a.CBSB20 as cbsb20,
+    b.takegoodsid as cbsb20,
       a.CBSB19 as cbsb19,
       a.CBSB21 as cbsb21,
       f.CBSA08 as cbsa08,

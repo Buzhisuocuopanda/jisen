@@ -230,6 +230,7 @@ public class TaskServiceImpl implements TaskService {
             //采购入库
             if(cbibDo.getCbib17().equals(TaskType.cgrkd.getMsg())){
                 if(cbib1.getCbib15()==null){
+                    cbib1.setCbib15((double) 0);
                     throw new SwException("上次结存数量为空");
                 }
                 if(cbib1.getCbib16()==null){
@@ -386,7 +387,6 @@ public class TaskServiceImpl implements TaskService {
         }
         Date date=new Date();
         cbib.setCbib04(date);
-
 
 
         cbibMapper.insertSelective(cbib);

@@ -50,7 +50,7 @@ public class DirectlyIntothEvaultController extends BaseController {
     )
     @PostMapping("/SwJsPurchaseinboundadd")
     @PreAuthorize("@ss.hasPermi('system:directly:add')")
-    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody CbicDto cbicDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody  CbicDto cbicDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodes(cbicDto));
@@ -70,6 +70,38 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 新增直接入库单
+     */
+    @ApiOperation(
+            value ="新增直接入库单批处理",
+            notes = "新增直接入库单批处理"
+    )
+    @PostMapping("/SwJsPurchaseinboundadds")
+    @PreAuthorize("@ss.hasPermi('system:directly:add')")
+    public AjaxResult swJsPurchaseinboundadds(@Valid @RequestBody  List<CbicDto> cbicDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【新增直接入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增直接入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
     /**
      * 删除直接入库单
