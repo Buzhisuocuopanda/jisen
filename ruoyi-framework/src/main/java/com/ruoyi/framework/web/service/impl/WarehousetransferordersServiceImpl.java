@@ -288,7 +288,8 @@ if(itemList.size()==0){
                 for(Cbac cbac:cbacs){
                     if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                         GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                        gsGoodsSn.setWhId(cbac.getCbac10());
+                        gsGoodsSn.setLocationId(cbac.getCbac10());
+                        gsGoodsSn.setWhId(cbaaDo.getCbaa10());
                         GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
                         gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
                         gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
