@@ -13,19 +13,13 @@ import com.ruoyi.system.domain.dto.TakeGoodsOrderListDto;
 import com.ruoyi.system.domain.vo.CbpcVo;
 import com.ruoyi.system.domain.vo.CbpkVo;
 import com.ruoyi.system.domain.vo.TakeGoodsOrderListVo;
-import com.ruoyi.system.mapper.CblaMapper;
-import com.ruoyi.system.mapper.CbpkMapper;
-import com.ruoyi.system.mapper.CbpmMapper;
-import com.ruoyi.system.mapper.GsGoodsSnMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISellinglistingsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +36,9 @@ private CbpmMapper cbpmMapper;
 
 @Resource
 private CblaMapper cblaMapper;
+
+@Resource
+private CbpbMapper cbpbMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
@@ -60,7 +57,17 @@ CbpmCriteria cbpmCriteria = new CbpmCriteria();
         if(cbpk.getCbpk11()!=2){
             throw new SwException("该销售提货单不是审核状态");
         }
-
+        if(goodsSnDo.getSn()!=null) {
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(goodsSnDo.getSn());
+            List<GsGoodsSn> gsGoodsSns = goodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSns.size()>0){
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsGoodsSns.get(0).getGoodsId());
+                if(Objects.equals(cbpb.getCbpb12(), goodsSnDo.getSn())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
 
         if(goodsSnDo.getLocationId()==null){
             throw new SwException("库位不能为空不能为空");

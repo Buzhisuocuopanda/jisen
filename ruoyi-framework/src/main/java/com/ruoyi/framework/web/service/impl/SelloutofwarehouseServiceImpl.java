@@ -979,18 +979,28 @@ return 1;
         CbsbsVo cbsbsVo = new CbsbsVo();
         cbsbsVo.setCbsb01(itemList.getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
-
+if(cbsbsVos.size()>0){
         if(cbsbsVos.get(0).getSaoma()!=null){
             double v = cbsbsVos.get(0).getSaoma().doubleValue();
 
             if( v==cbsbsVos.get(0).getNums()){
             throw new SwException("该销售出库单已扫描完成");
         }
-        }
+        }}
 
         if(itemList==null){
             throw new SwException("请扫描商品");
         }
+        //对比sn和sku
+        if(itemList.getCbsd08()!=null) {
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbsd08());
+            if(cbpb!=null){
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbsd09())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
+
         if (itemList.getCbsb01() == null) {
             throw new SwException("销售出库单主表id不能为空");
         }

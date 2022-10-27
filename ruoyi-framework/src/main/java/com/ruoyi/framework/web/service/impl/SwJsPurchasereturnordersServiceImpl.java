@@ -224,6 +224,16 @@ Cbpg cbpgs = new Cbpg();
         if (itemList.getCbpg01() == null) {
             throw new SwException("采购退货单主表id不能为空");
         }
+
+        if(itemList.getCbpi08()!=null) {
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbpi08());
+            if(cbpb!=null){
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbpi09())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
+
         CbphCriteria cas = new CbphCriteria();
         cas.createCriteria().andCbpg01EqualTo(itemList.getCbpg01())
                 .andCbph07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
