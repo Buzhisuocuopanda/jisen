@@ -51,6 +51,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 //            return   list.range(key,0,-1);//如果存在直接从缓存查询返回集合
 //        }else {
         List<ApprovalVo> approvalVos = gsWorkInstanceMapper.selectApprovalrecords(approvalVo);
+        for(ApprovalVo item :approvalVos){
+            if(item.getCabraa21()!=null&&item.getCabraa21().length()>6){
+                item.setCabraa21(item.getCabraa21().substring(item.getCabraa21().indexOf("客户:")+3,item.getCabraa21().length()));
+            }
+        }
             //list.leftPushAll(key,approvalVos);//如果不存在将设置好的key键值和查询数据库的结果放入
             Long userid = SecurityUtils.getUserId();
         String task= "1,2";
@@ -72,6 +77,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<ApprovalVo> selectApprovalrecordsdb(ApprovalVo approvalVo) {
         List<ApprovalVo> approvalVos = gsWorkInstanceMapper.selectApprovalrecordsdb(approvalVo);
+        for(ApprovalVo item :approvalVos){
+            if(item.getCabraa21()!=null&&item.getCabraa21().length()>6){
+                item.setCabraa21(item.getCabraa21().substring(item.getCabraa21().indexOf("客户:")+3,item.getCabraa21().length()));
+            }
+        }
         Long userid = SecurityUtils.getUserId();
         String task= "1,2";
          baseCheckService.checkUserTask(userid, task);

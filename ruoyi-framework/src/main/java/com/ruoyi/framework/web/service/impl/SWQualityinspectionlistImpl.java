@@ -168,7 +168,7 @@ private CbpmMapper cbpmMapper;
                 //不是上架就更新上架（暂不上架）
 //                gsGoodsSn.setStatus(new Byte("1"));
 //                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-                gsGoodsSn.setLocationId(null);
+                gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
                 gsGoodsSn.setStatus(new Byte("2"));
