@@ -36,4 +36,7 @@ public interface TaskService {
      //流程审批表
      Cabraa addGCabraa(CabraaDo cabraaDo);
 
-}
+
+     int afsfs(String sn,String upc);
+
+    }

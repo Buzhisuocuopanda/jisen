@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Do.DelTotalOrderDo;
 import com.ruoyi.system.domain.GsWorkInstance;
@@ -89,6 +90,8 @@ public interface SaleOrderService {
     List<GoodsDetailAndSkuVo> goodsShopLists(List<GoodsPriceAndSkuDto> itemList);
 
     void delgoodsShop(DelSaleOrderDto delSaleOrderDto);
+
+    void batchDelgoodsShop(List<Integer> ids,Integer userId);
 
     void initSn();
 

@@ -2982,6 +2982,19 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     }
 
     @Override
+    public void batchDelgoodsShop(List<Integer> ids,Integer userId) {
+        GsSaleShoppingCriteria criteria = new GsSaleShoppingCriteria();
+        criteria.createCriteria().andIdIn(ids);
+        GsSaleShopping gsSaleShopping=new GsSaleShopping();
+        Date date=new Date();
+        gsSaleShopping.setUpdateBy(Math.toIntExact(userId));
+        gsSaleShopping.setUpdateTime(date);
+        gsSaleShopping.setDeleteFlag(DeleteFlagEnum1.DELETE.getCode());
+        gsSaleShoppingMapper.updateByExampleSelective(gsSaleShopping,criteria);
+    }
+
+
+    @Override
     public void initSn() {
         CbdaCriteria exampl=new CbdaCriteria();
         List<Cbda> cbods = cbdaMapper.selectByExample(exampl);
