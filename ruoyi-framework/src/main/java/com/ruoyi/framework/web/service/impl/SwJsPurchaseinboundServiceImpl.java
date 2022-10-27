@@ -285,7 +285,8 @@ if(itemList.getCbpe08()!=null) {
 
                //校验sn码
                CbpeCriteria examples = new CbpeCriteria();
-               examples.createCriteria().andCbpe09EqualTo(sn);
+               examples.createCriteria().andCbpe09EqualTo(sn)
+                       .andCbpc01EqualTo(itemList.getCbpc01());
                List<Cbpe> cbpes = cbpeMapper.selectByExample(examples);
                if (cbpes.size() > 0) {
                    throw new SwException("该sn已存在");
