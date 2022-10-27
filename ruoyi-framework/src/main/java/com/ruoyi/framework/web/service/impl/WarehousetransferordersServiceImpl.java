@@ -1447,7 +1447,7 @@ else {
                 }
                 if(size<kio){
                     throw new SwException("调拨数量小于任务数量");
-                }else {//zgl  根据扫码记录修改gs_goods_sn表的仓库id
+                } else {//zgl  根据扫码记录修改gs_goods_sn表的仓库id
                     for(Cbac cbac:cbacs){
                         if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                             GsGoodsSn gsGoodsSn = new GsGoodsSn();
@@ -1603,7 +1603,7 @@ else {
                     throw new SwException("该仓库调拨单扫码记录不存在");
 
                 } else {
-                    for(Cbac cbac:cbacs){
+                    for(Cbac cbac:cbacs){//zgl  根据扫码记录修改gs_goods_sn表的仓库id
                         if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                             GsGoodsSn gsGoodsSn = new GsGoodsSn();
                             gsGoodsSn.setLocationId(cbac.getCbac10());
