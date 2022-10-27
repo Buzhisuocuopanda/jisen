@@ -621,6 +621,153 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
     }
+//    /**
+//     * 添加销售订单
+//     *
+//     * @param saleOrderAddDto
+//     */
+//    @Transactional
+//    @Override
+//    public void addSaleOrder(SaleOrderAddDto saleOrderAddDto) {
+//
+//        //判断客户是否可用
+//        Cbca cbca = baseCheckService.checkCustomer(saleOrderAddDto.getCustomerId());
+//
+//        //检查是否销售货物
+//        List<SaleOrderGoodsDto> goods = saleOrderAddDto.getGoods();
+//        if (goods.size() == 0) {
+//            throw new SwException("请选择要销售的货物");
+//        }
+//
+//        //
+//        //创建销售订单主表
+//        Cboa cboa = new Cboa();
+//        Date date = new Date();
+//        cboa.setCboa02(date);
+//        cboa.setCboa03(saleOrderAddDto.getUserId());
+//        cboa.setCboa04(date);
+//        cboa.setCboa05(saleOrderAddDto.getUserId());
+//        cboa.setCboa06(DeleteFlagEnum.NOT_DELETE.getCode());
+//        NumberDo numberDo = new NumberDo();
+//        numberDo.setType(NumberGenerateEnum.SALEORDER.getCode());
+//        cboa.setCboa07(numberGenerate.createOrderNo(numberDo).getOrderNo());
+//        cboa.setCboa08(date);
+//        cboa.setCboa09(saleOrderAddDto.getCustomerId());
+//        cboa.setCboa10(saleOrderAddDto.getSaleUserId());
+//        cboa.setCboa11(AuditStatusConstants.SO_COMMIT);
+//        cboa.setCboa13(date);
+//        cboa.setCboa16(saleOrderAddDto.getCurrency());
+//        cboa.setCboa17(saleOrderAddDto.getReceiveName());
+//        cboa.setCboa18(saleOrderAddDto.getAddress());
+//        cboa.setCboa19(saleOrderAddDto.getReceivePhone());
+//        cboa.setCboa22(saleOrderAddDto.getInvoiceType());
+//        cboa.setCboa24(saleOrderAddDto.getOrderType());
+//        cboa.setCboa25(saleOrderAddDto.getCustomerNo());
+//        cboa.setCboa27(saleOrderAddDto.getOrderClass());
+//        cboa.setCboa20(saleOrderAddDto.getFcNumber());
+//        cboa.setCboa21(saleOrderAddDto.getRemark());
+//        cboaMapper.insertWithId(cboa);
+//        GsWorkInstanceDo gsWorkInstanceDo = new GsWorkInstanceDo();
+//        gsWorkInstanceDo.setOrderType((byte) 1);
+//        gsWorkInstanceDo.setOrderClose((byte) 2);
+//        gsWorkInstanceDo.setOrderStatus((byte) 1);
+//        gsWorkInstanceDo.setOrderNo(cboa.getCboa07());
+//        taskService.addGsWorkInstance(gsWorkInstanceDo);
+//        Cbob cbob = null;
+//        //创建销售订单明细表
+//        for (SaleOrderGoodsDto good : goods) {
+//            if(good.getGoodsId()!=null){
+//                good.setId(good.getGoodsId());
+//            }else {
+//                good.setGoodsId(good.getId());
+//            }
+//
+//            if(good.getQty()==null || good.getQty()==0){
+//                throw new SwException("请输入商品数量");
+//            }
+//
+//            if(good.getTotalPrice() ==null ){
+//                throw new SwException("请输入商品金额");
+//            }
+//
+//            //判断库存是否足够
+////            GoodsCheckStockVo goodsCheckStockVo=baseCheckService.checkGoodsStock(good.getGoodsId(),saleOrderAddDto.getOrderClass());
+//            cbob = new Cbob();
+//            cbob.setCbob02(good.getNumber());
+//            cbob.setCbob03(date);
+//            cbob.setCbob04(saleOrderAddDto.getUserId());
+//            cbob.setCbob05(date);
+//            cbob.setCbob06(saleOrderAddDto.getUserId());
+//            cbob.setCbob07(DeleteFlagEnum.NOT_DELETE.getCode());
+//            cbob.setCbob08(good.getGoodsId());
+//            cbob.setCbob09(good.getQty());
+//            cbob.setCbob10(0.0);
+//            cbob.setCbob11(good.getCurrentPrice());
+//            cbob.setCbob12(good.getTotalPrice());
+//            cbob.setCbob13(good.getRemark());
+//            cbob.setCboa01(cboa.getCboa01());
+//            cbob.setCbob14(good.getNormalPrice());
+//            cbobMapper.insert(cbob);
+//            //创建销售订单要锁住库存
+//            GoodsOperationDo goodsOperationDo = new GoodsOperationDo();
+//            goodsOperationDo.setGoodsId(good.getGoodsId());
+//            goodsOperationDo.setNum(good.getQty());
+//            goodsOperationDo.setOrderNo(cboa.getCboa07());
+//            goodsOperationDo.setOrderNum(good.getQty());
+//            goodsOperationDo.setOrderType(saleOrderAddDto.getOrderClass());
+//            goodsOperationDo.setUserId(saleOrderAddDto.getUserId());
+//
+//            SaleOrderMakeDo saleOrderMakeDo = orderDistributionService.saleOrderMake(goodsOperationDo);
+//            //插入缺货建议
+//            if (saleOrderMakeDo.getPrompt() == 1 && saleOrderMakeDo.getPrompt() != null) {
+//                GsOutStockAdivce advice = null;
+//                for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
+//                    if(outSuggestionsDo.getQty()!=0){
+//                        advice = new GsOutStockAdivce();
+//                        advice.setCreateBy(saleOrderAddDto.getUserId());
+//                        advice.setCreateTime(date);
+//                        advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+//                        advice.setGoodsId(outSuggestionsDo.getGoodsId());
+//                        advice.setQty(outSuggestionsDo.getQty());
+//                        advice.setSaleOrderNo(cboa.getCboa07());
+//                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId()) || WareHouseType.GQWWHID.equals(outSuggestionsDo.getWhId())){
+//                            advice.setStatus(new Byte("3"));
+//                        }else {
+//                            advice.setStatus(new Byte("2"));
+//                        }
+//
+//                        advice.setUpdateBy(saleOrderAddDto.getUserId());
+//                        advice.setUpdateTime(date);
+//                        advice.setWhId(outSuggestionsDo.getWhId());
+//                        gsOutStockAdivceMapper.insert(advice);
+//                    }
+//
+//
+//
+//                }
+//            }
+//            //  如果通过清单生成的销售订单，要清空清单
+//            if (saleOrderAddDto.getShoppongIds().size()>=0) {
+//                List<Integer> shoppongIds = saleOrderAddDto.getShoppongIds();
+//                for (Integer shoppongId : shoppongIds) {
+//
+//                    int i = gsSaleShoppingMapper.deleteByPrimaryKey(shoppongId);
+//                }
+//
+////                GsSaleShoppingCriteria shex = new GsSaleShoppingCriteria();
+////                shex.createCriteria()
+////                        .andUserIdEqualTo(saleOrderAddDto.getUserId())
+////                        .andGoodsIdEqualTo(good.getGoodsId());
+////                int i = gsSaleShoppingMapper.deleteByExample(shex);
+//            }
+//
+//        }
+//
+//        return;
+//
+//    }
+
+
     /**
      * 添加销售订单
      *
@@ -654,7 +801,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cboa.setCboa08(date);
         cboa.setCboa09(saleOrderAddDto.getCustomerId());
         cboa.setCboa10(saleOrderAddDto.getSaleUserId());
-        cboa.setCboa11(AuditStatusConstants.SO_COMMIT);
+        cboa.setCboa11(AuditStatusConstants.SO_NO_COMMIT);
         cboa.setCboa13(date);
         cboa.setCboa16(saleOrderAddDto.getCurrency());
         cboa.setCboa17(saleOrderAddDto.getReceiveName());
@@ -709,43 +856,43 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cbob.setCbob14(good.getNormalPrice());
             cbobMapper.insert(cbob);
             //创建销售订单要锁住库存
-            GoodsOperationDo goodsOperationDo = new GoodsOperationDo();
-            goodsOperationDo.setGoodsId(good.getGoodsId());
-            goodsOperationDo.setNum(good.getQty());
-            goodsOperationDo.setOrderNo(cboa.getCboa07());
-            goodsOperationDo.setOrderNum(good.getQty());
-            goodsOperationDo.setOrderType(saleOrderAddDto.getOrderClass());
-            goodsOperationDo.setUserId(saleOrderAddDto.getUserId());
-
-            SaleOrderMakeDo saleOrderMakeDo = orderDistributionService.saleOrderMake(goodsOperationDo);
-            //插入缺货建议
-            if (saleOrderMakeDo.getPrompt() == 1 && saleOrderMakeDo.getPrompt() != null) {
-                GsOutStockAdivce advice = null;
-                for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
-                    if(outSuggestionsDo.getQty()!=0){
-                        advice = new GsOutStockAdivce();
-                        advice.setCreateBy(saleOrderAddDto.getUserId());
-                        advice.setCreateTime(date);
-                        advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
-                        advice.setGoodsId(outSuggestionsDo.getGoodsId());
-                        advice.setQty(outSuggestionsDo.getQty());
-                        advice.setSaleOrderNo(cboa.getCboa07());
-                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId()) || WareHouseType.GQWWHID.equals(outSuggestionsDo.getWhId())){
-                            advice.setStatus(new Byte("3"));
-                        }else {
-                            advice.setStatus(new Byte("2"));
-                        }
-
-                        advice.setUpdateBy(saleOrderAddDto.getUserId());
-                        advice.setUpdateTime(date);
-                        advice.setWhId(outSuggestionsDo.getWhId());
-                        gsOutStockAdivceMapper.insert(advice);
-                    }
-
-
-
-                }
-            }
+//            GoodsOperationDo goodsOperationDo = new GoodsOperationDo();
+//            goodsOperationDo.setGoodsId(good.getGoodsId());
+//            goodsOperationDo.setNum(good.getQty());
+//            goodsOperationDo.setOrderNo(cboa.getCboa07());
+//            goodsOperationDo.setOrderNum(good.getQty());
+//            goodsOperationDo.setOrderType(saleOrderAddDto.getOrderClass());
+//            goodsOperationDo.setUserId(saleOrderAddDto.getUserId());
+//
+//            SaleOrderMakeDo saleOrderMakeDo = orderDistributionService.saleOrderMake(goodsOperationDo);
+//            //插入缺货建议
+//            if (saleOrderMakeDo.getPrompt() == 1 && saleOrderMakeDo.getPrompt() != null) {
+//                GsOutStockAdivce advice = null;
+//                for (OutSuggestionsDo outSuggestionsDo : saleOrderMakeDo.getList()) {
+//                    if(outSuggestionsDo.getQty()!=0){
+//                        advice = new GsOutStockAdivce();
+//                        advice.setCreateBy(saleOrderAddDto.getUserId());
+//                        advice.setCreateTime(date);
+//                        advice.setDeleteFlag(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+//                        advice.setGoodsId(outSuggestionsDo.getGoodsId());
+//                        advice.setQty(outSuggestionsDo.getQty());
+//                        advice.setSaleOrderNo(cboa.getCboa07());
+//                        if(WareHouseType.CDCWHID.equals(outSuggestionsDo.getWhId()) || WareHouseType.GQWWHID.equals(outSuggestionsDo.getWhId())){
+//                            advice.setStatus(new Byte("3"));
+//                        }else {
+//                            advice.setStatus(new Byte("2"));
+//                        }
+//
+//                        advice.setUpdateBy(saleOrderAddDto.getUserId());
+//                        advice.setUpdateTime(date);
+//                        advice.setWhId(outSuggestionsDo.getWhId());
+//                        gsOutStockAdivceMapper.insert(advice);
+//                    }
+//
+//
+//
+//                }
+//            }
             //  如果通过清单生成的销售订单，要清空清单
             if (saleOrderAddDto.getShoppongIds().size()>=0) {
                 List<Integer> shoppongIds = saleOrderAddDto.getShoppongIds();
@@ -2823,7 +2970,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public void delgoodsShop(DelSaleOrderDto delSaleOrderDto) {
         Long userid = SecurityUtils.getUserId();
-Date date=new Date();
+        Date date=new Date();
         GsSaleShopping gsSaleShopping=new GsSaleShopping();
         gsSaleShopping.setId(delSaleOrderDto.getOrderId());
         gsSaleShopping.setUpdateBy(Math.toIntExact(userid));
