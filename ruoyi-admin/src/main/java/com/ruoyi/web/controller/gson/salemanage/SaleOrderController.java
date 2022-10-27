@@ -1166,6 +1166,36 @@ public class SaleOrderController extends BaseController {
     }
 
 
+    /**
+     * 批量删除购物车
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(
+            value ="批量删除购物车",
+            notes = "批量删除购物车"
+    )
+
+    @PostMapping("/batchDelgoodsShop")
+    public AjaxResult batchDelgoodsShop(@Valid @RequestBody List<Integer> ids) {
+        try {
+//            ValidUtils.bindvaild(bindingResult);
+            /*if (delSaleOrderDto.getOrderId() == null) {
+                throw new SwException("请选择要删除的购物车");
+            }*/
+            Integer userId = getUserId().intValue();
+            saleOrderService.batchDelgoodsShop(ids,userId);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【删除购物车】接口出现异常,参数${}$,异常${}$",  JSON.toJSON(ids), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+
+    }
 
     /**
      * 购物车列表list版
