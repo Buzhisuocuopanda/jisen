@@ -799,6 +799,13 @@ if(cbiw.getOrdertype()==2){
                     .andCbaa01EqualTo(cbiw.getId());
             cbacMapper.deleteByExample(example);
         }
+        if(cbiw.getOrdertype()==5){
+            CbacCriteria example = new CbacCriteria();
+            example.createCriteria().andCbac09EqualTo(cbiw.getSn())
+                    .andCbaa01EqualTo(cbiw.getId());
+            cbacMapper.deleteByExample(example);
+        }
+
 
 
 GsGoodsSn gsGoodsSn = new GsGoodsSn();

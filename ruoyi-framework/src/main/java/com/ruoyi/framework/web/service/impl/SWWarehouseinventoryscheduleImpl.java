@@ -141,16 +141,17 @@ private CbsjMapper cbbsjMapper;
             CbsjCriteria CAS = new CbsjCriteria();
             CAS.createCriteria()
                     .andCbsj09EqualTo(itemList.getCbsj09())
-                            .andCbsj11EqualTo(TaskStatus.sh.getCode());
+                            .andCbsj11EqualTo(TaskStatus.sh.getCode())
+                    .andCbsh01EqualTo(itemList.getCbsh01());
             List<Cbsj> cbsjs = cbsjMapper.selectByExample(CAS);
-            if(cbsjs.size() > 0){
+           /* if(cbsjs.size() > 0){
                 throw new SwException("商品sn已盘点，不能重复盘点");
             }
             CbsjCriteria tyui = new CbsjCriteria();
             tyui.createCriteria()
                     .andCbsj09EqualTo(itemList.getCbsj09());
-            List<Cbsj> cbsjs1 = cbsjMapper.selectByExample(tyui);
-            if(cbsjs1.size()==0){
+            List<Cbsj> cbsjs1 = cbsjMapper.selectByExample(tyui);*/
+            if(cbsjs.size()==0){
                 throw new SwException("商品sn不在仓库盘点明细里");
             }
 
