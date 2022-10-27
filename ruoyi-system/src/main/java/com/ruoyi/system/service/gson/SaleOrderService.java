@@ -105,6 +105,8 @@ public interface SaleOrderService {
 
     DelTotalOrderDo getPlTotalOrderDeleIds(List<Integer> ids);
 
+    List<Integer> plDelete(List<Integer> ids);
+
 
 //    GsWorkInstance createTask();
 

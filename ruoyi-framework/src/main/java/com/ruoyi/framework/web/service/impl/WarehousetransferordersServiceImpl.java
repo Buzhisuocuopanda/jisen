@@ -62,6 +62,9 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     @Resource
     private CbwaMapper cbwaMapper;
 
+    @Resource
+    private CbpbMapper cbpbMapper;
+
     @Autowired
     private StringRedisTemplate redisTemplate;
     @Resource
@@ -808,6 +811,18 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         if( cbaa.getCbaa09()==null){
             throw new SwException("调拨单调出仓库为空");
         }
+        if(itemList.getCbac09()!=null) {
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSns.size()>0){
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsGoodsSns.get(0).getGoodsId());
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbac09())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
+
         //锁
         String cbic10 = itemList.getCbac09();
         String uuid = UUID.randomUUID().toString();
@@ -911,6 +926,18 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
         if (itemList.getCbaa01() == null) {
             throw new SwException("调拨单id不能为空");
+        }
+
+        if(itemList.getCbac09()!=null) {
+            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSns.size()>0){
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsGoodsSns.get(0).getGoodsId());
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbac09())){
+                    throw new SwException("sn不正确");
+                }
+            }
         }
 
         Cbaa cbaa = cbaaMapper.selectByPrimaryKey(itemList.getCbaa01());

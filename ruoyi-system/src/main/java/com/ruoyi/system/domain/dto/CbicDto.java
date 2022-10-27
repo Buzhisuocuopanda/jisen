@@ -42,7 +42,7 @@ public class CbicDto extends Cbic {
 
     private String upc;
 
-    private String kuwei ;
+    private String storesku ;
 
     private String sn ;
 

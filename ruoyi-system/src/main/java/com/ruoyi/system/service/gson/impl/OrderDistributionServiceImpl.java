@@ -447,7 +447,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             }
 
 
-        list=list.stream().sorted(Comparator.comparing(Cbba::getCbba15).reversed()).collect(Collectors.toList());
+        list=list.stream().sorted(Comparator.comparing(Cbba::getCbba15)).collect(Collectors.toList());
 
 
         for (Cbba res : list) {
@@ -992,7 +992,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 }
 
-                if(sendNum.equals(cboas)){
+                if(sendNum.equals(cbobs)){
                     cboa.setCboa04(new Date());
                     cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
                     cboaMapper.updateByPrimaryKey(cboa);

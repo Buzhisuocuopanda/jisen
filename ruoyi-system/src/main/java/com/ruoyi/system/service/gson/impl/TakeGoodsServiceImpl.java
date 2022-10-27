@@ -1056,6 +1056,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
         }else if(auditTakeOrderDto.getOpType().equals(6)){
+            if(cbpk.getCheckStatus().equals(new Byte("1"))){
+                throw new SwException("该提货单已质检完成");
+            }
             cbpk.setCheckStatus(new Byte("1"));
             List<GoodsDto> goods = auditTakeOrderDto.getGoods();
 
@@ -1207,7 +1210,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
           CbpmCriteria sfgu=new CbpmCriteria();
             sfgu.createCriteria()
                     .andCbpm09EqualTo(itemList.getCbpm09())
-                            .andCbpm11EqualTo(ScanStatusEnum.YISAOMA.getCode());
+                            .andCbpm11EqualTo(ScanStatusEnum.YISAOMA.getCode())
+                    .andCbpk01EqualTo(itemList.getCbpk01());
             List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
             if(cbpmss.size()>0){
                 throw new SwException("sn已扫码" );

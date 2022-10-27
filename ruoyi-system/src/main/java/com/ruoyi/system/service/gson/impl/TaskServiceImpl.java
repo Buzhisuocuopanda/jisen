@@ -247,14 +247,14 @@ public class TaskServiceImpl implements TaskService {
             //直接入库
             if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
                 if(cbib1.getCbib15()==null){
-                    cbib1.setCbib15((double) 0);
+                    cbib1.setCbib15((double) 1);
                 }
-
+                cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib11((double) 1);
                 cbib.setCbib12((double) 0);
                 cbib.setCbib13((double) 0);
                 cbib.setCbib14((double) 0);
-                cbib.setCbib15(cbib1.getCbib15()+1);
+                cbib.setCbib15(cbib.getCbib09()+cbib.getCbib11());
                 cbib.setCbib16((double) 0);
             }
 
@@ -594,6 +594,19 @@ public class TaskServiceImpl implements TaskService {
         cabraa.setCabraa03(date);
 
         return null;
+    }
+    public int afsfs(String sn,String upc){
+        CbpbCriteria example = new CbpbCriteria();
+        example.createCriteria().andCbpb15EqualTo(upc);
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
+        if(cbpbs.size()>0){
+            if(Objects.equals(cbpbs.get(0).getCbpb12(), sn)){
+                throw new SwException("sn不正确");
+            }
+        }
+
+
+        return 1;
     }
 
 }

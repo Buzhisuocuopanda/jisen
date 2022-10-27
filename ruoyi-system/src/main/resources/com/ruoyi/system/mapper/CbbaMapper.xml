@@ -456,7 +456,7 @@ WHERE
    c.CBBA08 = #{goodsId}
    AND c.CBBA06 =0
    AND c.CBBA12= 0
-   order by c.CBBA15 DESC
+   order by c.CBBA15
   </select>
 
   <!--  获取生产总订单列表-->
@@ -533,5 +533,35 @@ WHERE
 ORDER BY
    cb.CBBA15 ASC
   </select>
+
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    `CBBA` cb
+    WHERE
+    cb.CBBA01
+    in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+
+  <update id="plDeleByIds" >
+
+    update
+    `CBBA` cb
+   set cb.CBBA06=1
+
+    WHERE
+    cb.CBBA01
+    in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
 
 </mapper>

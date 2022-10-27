@@ -47,4 +47,8 @@ public interface CbbaMapper {
     List<Cbba> selectLowPriorityGet(@Param("goodsId")Integer goodsId,@Param("poritiry") Long poritiry,@Param("cbba01") Integer cbba01);
 
     List<Cbba> selectByOther(@Param("goodsId")Integer goodsId,@Param("cbba01") Integer cbba01);
+
+    List<Cbba> selectByIds(@Param("ids") List<Integer> ids);
+
+    void plDeleByIds(@Param("ids") List<Integer> ids);
 }

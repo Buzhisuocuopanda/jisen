@@ -10,10 +10,7 @@ import com.ruoyi.system.domain.Do.CbsjDo;
 import com.ruoyi.system.domain.Do.GsGoodsSkuDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
 import com.ruoyi.system.domain.vo.*;
-import com.ruoyi.system.mapper.CbsgMapper;
-import com.ruoyi.system.mapper.CbshMapper;
-import com.ruoyi.system.mapper.CbsjMapper;
-import com.ruoyi.system.mapper.GsGoodsSnMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWWarehouseinventoryscheduleService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TaskService;
@@ -28,10 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -59,6 +53,9 @@ private CbsjMapper cbbsjMapper;
     private StringRedisTemplate redisTemplate;
     @Resource
     private CbsjMapper cbsjMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
     @Override
     public List<CbshVo> selectSwJsStoreList(CbshVo cbshVo) {
         return cbshMapper.selectstorelist(cbshVo);
@@ -108,6 +105,16 @@ private CbsjMapper cbbsjMapper;
             if( itemList.getCbsj09() == null){
                 throw new SwException("商品sn不能为空");
             }
+
+        if(itemList.getCbsj08()!=null) {
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbsj08());
+            if(cbpb!=null){
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbsj09())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
+
 
         String cbic10 = itemList.getCbsj09();
         String uuid = UUID.randomUUID().toString();

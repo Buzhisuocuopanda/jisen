@@ -10,6 +10,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.system.domain.Cbiw;
+import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
@@ -269,7 +270,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(CbiwVo),ExceptionUtils.getStackTrace(e));
+            log.error("【直接入库列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(CbiwVo),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -301,6 +302,100 @@ public class DirectlyIntothEvaultController extends BaseController {
 
         } catch (Exception e) {
             log.error("【临时删除直接入库】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 临时删除直接入库批处理
+     */
+    @ApiOperation(
+            value ="临时删除直接入库批处理",
+            notes = "临时删除直接入库批处理"
+    )
+    @PostMapping("/deletelessmore")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult deletelessmore( @RequestBody List<Cbiw>  cbiw) {
+
+        try {
+            swDirectlyintothevaultService.deletelessmore(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 统用删除pad
+     */
+    @ApiOperation(
+            value ="统用删除pad",
+            notes = "统用删除pad"
+    )
+    @PostMapping("/deletelesssw")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult deletelesss( @RequestBody deleteVo cbiw) {
+
+        try {
+            swDirectlyintothevaultService.deletelesss(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【统用删除pad】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【统用删除pad】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【统用删除pad】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 统用删除pad批处理
+     */
+    @ApiOperation(
+            value ="统用删除pad批处理",
+            notes = "统用删除pad批处理"
+    )
+    @PostMapping("/deletelww")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult deletelesss( @RequestBody List<deleteVo> cbiw) {
+
+        try {
+            swDirectlyintothevaultService.deletelessws(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

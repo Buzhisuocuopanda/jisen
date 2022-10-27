@@ -47,7 +47,7 @@ public class CbsbDo {
     @NotBlank(message = "销售人员不能为空")
   //  @Length(min =1 , max = 10, message = "销售人员长度")
     private String cbsb17;
-    @NotBlank(message = "联系人不能为空")
+  //  @NotBlank(message = "联系人不能为空")
   //  @Length(min =1 , max = 10)
     private String cbsb18;
   //  @NotBlank(message = "电话不能为空")
