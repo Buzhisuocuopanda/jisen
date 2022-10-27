@@ -1384,6 +1384,7 @@ else {
     }
     //仓库调拨单调入标记完成
     @Override
+    @Transactional
     public int transferordersinbjwc(CbaaDo cbaaDo) {
 
         //调出标记完成
@@ -1437,15 +1438,25 @@ else {
                 List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
                 int size = cbacs.size();
                 for(int s=0;s<cbabs.size();s++){
-             if(cbabs.get(s).getCbab09()==0){
-                 throw new SwException("调拨数量不能为空");
-             }
-             kio+=cbabs.get(s).getCbab09();
-          }
-           if(size<kio){
-               throw new SwException("调拨数量小于任务数量");
-
-            }
+                    if(cbabs.get(s).getCbab09()==0){
+                        throw new SwException("调拨数量不能为空");
+                    }
+                    kio+=cbabs.get(s).getCbab09();
+                }
+                if(size<kio){
+                    throw new SwException("调拨数量小于任务数量");
+                }else {//zgl  根据扫码记录修改gs_goods_sn表的仓库id
+                    for(Cbac cbac:cbacs){
+                        if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
+                            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                            gsGoodsSn.setLocationId(cbac.getCbac10());
+                            gsGoodsSn.setWhId(cbaaDo.getCbaa10());
+                            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+                            gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
+                            gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                        }
+                    }
+                }
             }
             //调出扫码
 
