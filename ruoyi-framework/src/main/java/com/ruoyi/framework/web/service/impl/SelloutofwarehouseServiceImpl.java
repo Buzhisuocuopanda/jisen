@@ -855,6 +855,7 @@ return 1;
         CbsbsVo res = new CbsbsVo();
         List<ScanVo> goods = res.getGoods();
          List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
+        HashSet<TakeOrderSugestVo> outsuggestions = new HashSet<>();
 
         for (int k=0;k<cbsbsVos.size();k++) {
             if(cbsbsVos.get(k).getCbsb20()!=null){
@@ -873,10 +874,10 @@ return 1;
 
                 }
 
-                outsuggestion.addAll(sugests);
+                outsuggestions.addAll(sugests);
             }
         }
-
+        outsuggestion.addAll(outsuggestions);
 
         Integer cbsb01 = cbsbsVo.getCbsb01();
         if(cbsb01==null){

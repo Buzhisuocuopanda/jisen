@@ -66,6 +66,9 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     private StringRedisTemplate redisTemplate;
 
 
+
+
+
     @Transactional
     @Override
     public int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) {

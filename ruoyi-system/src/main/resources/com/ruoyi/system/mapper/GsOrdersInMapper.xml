@@ -434,8 +434,8 @@
 
   <select id="swJsOrderInlist" resultType="com.ruoyi.system.domain.vo.GsOrdersInVo">
     SELECT
-        a.id,a.order_no as orderNo, a.order_date as orderDate,a.factory b.CBSA08 as supplierName,
-        b.CBCA08 as customerName,a.statuss,a.status,a.supplier_id as supplierId,a.customer_id as customerId
+        a.id,a.order_no as orderNo, a.order_date as orderDate,a.factory,b.CBSA08 as supplierName,
+        c.CBCA08 as customerName,a.statuss,a.status,a.supplier_id as supplierId,a.customer_id as customerId
     FROM
       gs_orders_in a
 
@@ -445,9 +445,9 @@
     a.delete_flag=0
     <if test="supplierId != null "> and a.supplier_id  = #{supplierId}</if>
     <if test="customerId != null "> and a.customer_id  = #{customerId}</if>
-    <if test="statuss != null "> and a.statuss  = #{statuss}</if>
-    <if test="startTime !=null ">
-      AND a.order_date  &gt;= #{startTime}
+    <if test="status != null "> and a.status  = #{status}</if>
+    <if test="beginTime !=null ">
+      AND a.order_date  &gt;= #{beginTime}
     </if>
     <if test="endTime !=null ">
       AND a.order_date &lt;=#{endTime}
