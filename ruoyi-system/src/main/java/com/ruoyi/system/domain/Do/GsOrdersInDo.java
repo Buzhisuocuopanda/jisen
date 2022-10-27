@@ -56,4 +56,6 @@ public class GsOrdersInDo {
 
     private String supplierName;
 
+    private String salerName;
+
 }

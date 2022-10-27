@@ -842,9 +842,8 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                     gsGoodsSku.setId(id);
-                    if(gsGoodsSku.getQty() + selectbyid.get(k).getNums()>=cbla11){
-                        throw new SwException("入库数量为"+gsGoodsSku.getQty()+"所在库位数量"+gsGoodsSku.getQty()
-                                +"大于库位最大容量"+cbla11);
+                    if(gsGoodsSku.getQty() + selectbyid.get(k).getNums()>cbla11){
+                        throw new SwException("库位容量不足");
                     }
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + selectbyid.get(k).getNums());
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));

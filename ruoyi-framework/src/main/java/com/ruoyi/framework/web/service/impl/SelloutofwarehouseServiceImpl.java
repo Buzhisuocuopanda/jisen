@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -56,6 +57,9 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private BaseCheckService baseCheckService;
+
+    @Resource
+    private CbpaMapper cbpaMapper;
 
     @Resource
     private OrderDistributionService orderDistributionService;
@@ -857,6 +861,32 @@ return 1;
          List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
         HashSet<TakeOrderSugestVo> outsuggestions = new HashSet<>();
 
+
+        for (int k=0;k<cbsbsVos.size();k++) {
+            if(cbsbsVos.get(k).getCbsb20()!=null) {
+                CbpmCriteria example = new CbpmCriteria();
+                example.createCriteria().andCbpk01EqualTo(cbsbsVos.get(k).getCbsb20())
+                        .andCbpm08EqualTo(cbsbsVos.get(k).getCbsc08());
+                List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+                for (int j = 0; j < cbpms.size(); j++){
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(j).getCbpm10());
+                    Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpms.get(j).getCbpm08());
+                    Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                    Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                    TakeOrderSugestVo outsuggestio = new TakeOrderSugestVo();
+                    outsuggestio.setBrand(cala.getCala08());
+                    outsuggestio.setGoodClass(cbpa.getCbpa08());
+                    outsuggestio.setModel(cbpb.getCbpb12());
+                    outsuggestio.setDescription(cbpb.getCbpb08());
+                    outsuggestio.setSn(cbpms.get(j).getCbpm09());
+                    outsuggestio.setSku(cbla.getCbla09());
+                    outsuggestion.add(outsuggestio);
+            }
+            }
+            }
+       // outsuggestions.addAll(outsuggestions);
+
+/*
         for (int k=0;k<cbsbsVos.size();k++) {
             if(cbsbsVos.get(k).getCbsb20()!=null){
                 TakeGoodsOrderDetailVo takeGoodsOrderDetailVo = takeGoodsService.takeOrderDetail(cbsbsVos.get(k).getCbsb20());
@@ -877,6 +907,8 @@ return 1;
                 outsuggestions.addAll(sugests);
             }
         }
+*/
+
         outsuggestion.addAll(outsuggestions);
 
         Integer cbsb01 = cbsbsVo.getCbsb01();
