@@ -369,4 +369,37 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     * 统用删除pad批处理
+     */
+    @ApiOperation(
+            value ="统用删除pad批处理",
+            notes = "统用删除pad批处理"
+    )
+    @PostMapping("/deletelww")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult deletelesss( @RequestBody List<deleteVo> cbiw) {
+
+        try {
+            swDirectlyintothevaultService.deletelessws(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【统用删除pad批处理】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
 }

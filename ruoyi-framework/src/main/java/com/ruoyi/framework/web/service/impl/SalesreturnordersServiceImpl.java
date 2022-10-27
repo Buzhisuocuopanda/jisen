@@ -66,6 +66,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
     private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private CblaMapper cblaMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
     /**
      * 新增销售退库单主表
      */
@@ -622,6 +625,17 @@ if(cbsgss.size()>0){
         if(!cbse1.getCbse11().equals(TaskStatus.sh.getCode())){
             throw new SwException("审核状态才能扫码");
         }
+
+        if(itemList.getCbsg08()!=null) {
+            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbsg08());
+            if(cbpb!=null){
+                if(Objects.equals(cbpb.getCbpb12(), itemList.getCbsg09())){
+                    throw new SwException("sn不正确");
+                }
+            }
+        }
+
+
 
         CbsfCriteria cas = new CbsfCriteria();
         cas.createCriteria().andCbse01EqualTo(itemList.getCbse01());

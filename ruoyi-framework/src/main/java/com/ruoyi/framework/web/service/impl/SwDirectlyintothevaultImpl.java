@@ -741,6 +741,26 @@ if(cbiw.getSn()==null){
 if(cbiw.getType()==null){
     throw new SwException("类型不能为空");
 }
+if(cbiw.getOrdertype()==null){
+    throw new SwException("订单类型不能为空");
+}
+if(cbiw.getOrdertype()==1){
+    CbpeCriteria example = new CbpeCriteria();
+    example.createCriteria().andCbpe09EqualTo(cbiw.getSn())
+            .andCbpc01EqualTo(cbiw.getId());
+
+}
+
+
+
+
+
+GsGoodsSn gsGoodsSn = new GsGoodsSn();
+        gsGoodsSn.setStatus(cbiw.getType().byteValue());
+        gsGoodsSn.setSn(cbiw.getSn());
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(cbiw.getSn());
+        gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example);
 
     }
 
@@ -763,7 +783,30 @@ if(cbiw.getType()==null){
         return 1;
         }
 
-public int afsfs(String sn,String upc){
+    @Override
+    public int deletelessws(List<deleteVo> cbiw) {
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        GsGoodsSnMapper mapper = session.getMapper(GsGoodsSnMapper.class);
+        for(int i=0;i<cbiw.size();i++){
+            if(cbiw.get(i).getSn()==null){
+                throw new SwException("sn不能为空");
+            }
+            if(cbiw.get(i).getType()==null){
+                throw new SwException("类型不能为空");
+            }
+            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+            gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
+            gsGoodsSn.setSn(cbiw.get(i).getSn());
+            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
+            mapper.updateByExampleSelective(gsGoodsSn,example);
+        }
+        session.commit();
+        session.clearCache();
+        return 1;
+    }
+
+    public int afsfs(String sn,String upc){
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(upc);
     List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);

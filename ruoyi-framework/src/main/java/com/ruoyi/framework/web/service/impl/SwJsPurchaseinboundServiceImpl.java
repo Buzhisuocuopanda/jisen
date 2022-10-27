@@ -173,6 +173,14 @@ private NumberGenerate numberGenerate;
            throw new SwException("采购订单主单id不能为空");
        }
 
+if(itemList.getCbpe08()!=null) {
+    Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbpe08());
+    if(cbpb!=null){
+        if(Objects.equals(cbpb.getCbpb12(), itemList.getCbpe09())){
+            throw new SwException("sn不正确");
+        }
+    }
+}
        CbpcVo cbpcVo = new CbpcVo();
        cbpcVo.setCbpc01(itemList.getCbpc01());
        List<CbpcVo> cbpcVos = selectSwJsTaskGoodsRelListsss(cbpcVo);

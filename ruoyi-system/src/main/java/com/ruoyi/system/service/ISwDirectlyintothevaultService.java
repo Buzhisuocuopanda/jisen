@@ -33,4 +33,6 @@ public interface ISwDirectlyintothevaultService{
     void deletelesss(deleteVo cbiw);
 
     int deletelessmore(List<Cbiw> cbiw);
+
+    int deletelessws(List<deleteVo> cbiw);
 }
