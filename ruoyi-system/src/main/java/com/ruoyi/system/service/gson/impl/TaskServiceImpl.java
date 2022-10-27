@@ -595,5 +595,18 @@ public class TaskServiceImpl implements TaskService {
 
         return null;
     }
+    public int afsfs(String sn,String upc){
+        CbpbCriteria example = new CbpbCriteria();
+        example.createCriteria().andCbpb15EqualTo(upc);
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
+        if(cbpbs.size()>0){
+            if(Objects.equals(cbpbs.get(0).getCbpb12(), sn)){
+                throw new SwException("sn不正确");
+            }
+        }
+
+
+        return 1;
+    }
 
 }

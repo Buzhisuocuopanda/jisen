@@ -161,6 +161,8 @@ private NumberGenerate numberGenerate;
     @Override
     public int insertSwJsSkuBarcodesm(Cbpe itemList) {
 
+
+
        log.info("打印" + Thread.currentThread().getName() + "sn表");
 
 
@@ -170,6 +172,7 @@ private NumberGenerate numberGenerate;
        if (itemList.getCbpc01() == null) {
            throw new SwException("采购订单主单id不能为空");
        }
+
        CbpcVo cbpcVo = new CbpcVo();
        cbpcVo.setCbpc01(itemList.getCbpc01());
        List<CbpcVo> cbpcVos = selectSwJsTaskGoodsRelListsss(cbpcVo);
@@ -228,6 +231,8 @@ private NumberGenerate numberGenerate;
                           .andCbpc01EqualTo(itemList.getCbpc01());
                 List<Cbpe> cbpess = cbpeMapper.selectByExample(example);
                 if(cbpess.size()>0){
+
+
                 CbpdCriteria example1 = new CbpdCriteria();
                 example1.createCriteria().andCbpc01EqualTo(itemList.getCbpc01())
                         .andCbpd08EqualTo(itemList.getCbpe08());
@@ -301,14 +306,20 @@ private NumberGenerate numberGenerate;
                    throw new SwException("该sn已存在库存sn表里");
                }
 
-               gsGoodsSnDo = new GsGoodsSnDo();
-               gsGoodsSnDo.setSn(itemList.getCbpe09());
-               gsGoodsSnDo.setGoodsId(itemList.getCbpe08());
-               gsGoodsSnDo.setWhId(cbpc.getCbpc10());
-               gsGoodsSnDo.setLocationId(itemList.getCbpe10());
-               gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
-               gsGoodsSnDo.setInTime(date);
-               gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+               GsGoodsSn  gsGoodsSn = new GsGoodsSn();
+               gsGoodsSn.setCreateTime(date);
+               gsGoodsSn.setUpdateTime(date);
+               gsGoodsSn.setCreateBy(Math.toIntExact(userid));
+               gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+               gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+               gsGoodsSn.setSn(itemList.getCbpe09());
+               gsGoodsSn.setGoodsId(itemList.getCbpe08());
+               gsGoodsSn.setWhId(cbpc.getCbpc10());
+               gsGoodsSn.setLocationId(itemList.getCbpe10());
+               gsGoodsSn.setStatus(GoodsType.yrk.getCode());
+               gsGoodsSn.setInTime(date);
+               gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+               gsGoodsSnMapper.insertSelective(gsGoodsSn);
            } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
@@ -324,7 +335,7 @@ private NumberGenerate numberGenerate;
            // this.redisTemplate.delete("lock");
 
            cbpeMapper.insertSelective(itemList);
-           taskService.addGsGoodsSns(gsGoodsSnDo);
+          // taskService.addGsGoodsSns(gsGoodsSnDo);
 
 
            //  redisTemplate.delete("lock");
