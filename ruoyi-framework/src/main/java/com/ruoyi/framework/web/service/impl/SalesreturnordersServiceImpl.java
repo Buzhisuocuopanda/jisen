@@ -645,8 +645,15 @@ if(cbsgss.size()>0){
             example.createCriteria()
                     .andCbsg09EqualTo(itemList.getCbsg09());
             List<Cbsg> cbsgs = cbsgMapper.selectByExample(example);
+
             if(cbsgs.size()>0){
-                throw new SwException("该商品已经扫过");
+                Cbsg cbsg = new Cbsg();
+                cbsg.setCbsg09(itemList.getCbsg09());
+                cbsg.setCbsg05(date);
+                CbsgCriteria example1 = new CbsgCriteria();
+                example1.createCriteria().andCbsg09EqualTo(itemList.getCbsg09());
+                return cbsgMapper.updateByExampleSelective(cbsg,example1);
+
             }
 
 
@@ -661,6 +668,14 @@ if(cbsgss.size()>0){
                if(gsGoodsSns.get(0).getStatus()==1){
                    throw new SwException("该sn已经入库");
                }
+               GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                gsGoodsSn.setSn(itemList.getCbsg09());
+                gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
+               gsGoodsSn.setUpdateTime(date);
+                GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+                example1.createCriteria().andSnEqualTo(itemList.getCbsg09());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+
             }
             if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
                 throw new SwException("该商品不在采购退货单明细中");
@@ -705,16 +720,20 @@ if(cbsgss.size()>0){
 
             }*/
 
-
             //更新sn表
-            GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
+        GsGoodsSn gsGoodsSnDo = new GsGoodsSn();
+        gsGoodsSnDo.setCreateBy(Math.toIntExact(userid));
+        gsGoodsSnDo.setCreateTime(date);
+        gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
+        gsGoodsSnDo.setUpdateTime(date);
+        gsGoodsSnDo.setGoodsId(itemList.getCbsg08());
             gsGoodsSnDo.setLocationId(itemList.getCbsg10());
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setSn(itemList.getCbsg09());
             gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
-            taskService.updateGsGoodsSn(gsGoodsSnDo);
+        gsGoodsSnMapper.insertSelective(gsGoodsSnDo);
 
         cbsgMapper.insertSelective(itemList);
 

@@ -65,6 +65,9 @@ public class NumberGenerate {
 
     @Resource
     private GsSalesOrdersMapper gsSalesOrdersMapper;
+
+    @Resource
+    private GsOrdersInMapper gsOrdersInMapper;
 @Resource
 private CbieMapper cbieMapper;
 
@@ -179,7 +182,33 @@ private CbieMapper cbieMapper;
         }
 
     }
+    //入库单新增
+    public synchronized String getTakeOrderNosss() {
+        //拼接规则 OC202208040017 SP05 +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo="SP"+format;
+        GsOrdersInCriteria example=new GsOrdersInCriteria();
+        example.createCriteria()
+                .andOrderNoLike("%"+format+"%");
+        List<  GsOrdersIn> cbpks =  gsOrdersInMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+            Integer num=0;
+            for ( GsOrdersIn res : cbpks) {
+                Integer no = getNum(res.getOrderNo(),12);
+                if(num<no){
+                    num=no;
+                }
 
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
 
     public synchronized String getTakeOrderNoss() {
         //拼接规则 OC202208040017 SP05 +年月日 +四位数数量自增

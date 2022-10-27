@@ -489,7 +489,7 @@ return;
         gsSalesOrdersInDto.getGsSalesOrders();*/
         List<GsSalesOrdersIn> goods = gsSalesOrdersInDto.getGoods();
         GsSalesOrdersInCriteria gsSalesOrdersInCriteria = new GsSalesOrdersInCriteria();
-        gsSalesOrdersInCriteria.createCriteria().andGsSalesOrdersEqualTo(gsSalesOrdersInDto.getGsSalesOrders());
+        gsSalesOrdersInCriteria.createCriteria().andInidEqualTo(gsSalesOrdersInDto.getId());
         int i = gsSalesOrdersInMapper.deleteByExample(gsSalesOrdersInCriteria);
 
 
@@ -1598,7 +1598,9 @@ if(gsSalesOrders.get(0).getId()==null){
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
-        cbpc.setOrderNo(cbpdDto.getOrderNo());
+        String purchaseinboundNo = numberGenerate.getTakeOrderNosss();
+
+        cbpc.setOrderNo(purchaseinboundNo);
         cbpc.setOrderDate(date);
         cbpc.setPonumber(cbpdDto.getPonumber());
         if(cbpc.getGsid()==null) {
@@ -1609,7 +1611,7 @@ if(gsSalesOrders.get(0).getId()==null){
         gsOrdersInMapper.insertSelective(cbpc);
 
         GsOrdersInCriteria gsSalesChangeCriteria = new GsOrdersInCriteria();
-        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(cbpdDto.getPonumber());
+        gsSalesChangeCriteria.createCriteria().andOrderNoEqualTo(purchaseinboundNo);
         List<GsOrdersIn> gsOrdersIns = gsOrdersInMapper.selectByExample(gsSalesChangeCriteria);
 
 
@@ -1679,12 +1681,16 @@ if(gsSalesOrders.get(0).getId()==null){
         }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
-        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        GsOrdersIn cbpc = new GsOrdersIn();
         cbpc.setId(cbpdDto.getId());
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
         cbpc.setStatus(TaskStatus.mr.getCode().byteValue());
+        cbpc.setCustomerId(cbpdDto.getCustomerId());
+        cbpc.setSupplierId(cbpdDto.getSupplierId());
+        cbpc.setSalerId(cbpdDto.getSalerId());
+
         gsOrdersInMapper.updateByPrimaryKey(cbpc);
 
         GsSalesOrdersInCriteria gsSalesChangeCriteria = new GsSalesOrdersInCriteria();
@@ -1726,6 +1732,7 @@ if(gsSalesOrders.get(0).getId()==null){
             cbpd.setPonumber(good.getPonumber());
             cbpd.setFactory(good.getFactory());
             cbpd.setInid(cbpdDto.getId());
+            cbpd.setInQty(good.getInQty());
 
             gsSalesOrdersInMapper.insertSelective(cbpd);
         }
@@ -1745,8 +1752,9 @@ if(gsSalesOrders.get(0).getId()==null){
 
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
-        GsOrdersIn cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsOrdersIn.class, null);
+        GsOrdersIn cbpc = new GsOrdersIn();
         cbpc.setId(cbpdDto.getId());
+        cbpc.setCreateTime(date);
         cbpc.setUpdateTime(date);
         cbpc.setUpdateBy(userid);
         cbpc.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
@@ -1769,8 +1777,14 @@ if(cbpdDto.getCustomerId()!=null){
     if (cbca != null) {
         cbpdDto.setCustomerName(cbca.getCbca08());
     }
-}
 
+}
+if(cbpdDto.getSalerId()!=null){
+    SysUser sysUser = sysUserMapper.selectByPrimaryKey(Long.valueOf(cbpdDto.getSalerId()));
+    if (sysUser != null) {
+        cbpdDto.setSalerName(sysUser.getNickName());
+    }
+}
 
 
 if(cbpdDto.getSupplierId()!=null){
@@ -1806,6 +1820,7 @@ if(goods!=null&&goods.size()>0){
             }
 
         }
+
     }
 }
 

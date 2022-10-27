@@ -9,10 +9,12 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.system.domain.Cbiw;
 import com.ruoyi.system.domain.dto.CbicDto;
+import com.ruoyi.system.domain.dto.CbpdDto;
+import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.dto.GsOrdersInDto;
-import com.ruoyi.system.domain.vo.CbicVo;
-import com.ruoyi.system.domain.vo.GsOrdersInVo;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -218,5 +220,91 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 临时保存直接入库
+     */
+    @ApiOperation(
+            value ="临时保存直接入库",
+            notes = "临时保存直接入库"
+    )
+    @PostMapping("/addless")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult addless( @RequestBody Cbiw cbiw) {
+
+        try {
+            swDirectlyintothevaultService.addless(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【临时保存直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【临时保存直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【临时保存直接入库】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 直接入库列表
+     */
+    @ApiOperation(
+            value ="直接入库列表",
+            notes = "直接入库列表"
+    )
+    @GetMapping("/swJsGoodslistBySelectAll")
+    public AjaxResult<CbiwVo> swJsGoodslistBySelectAll(CbiwVo CbiwVo) {
+        try {
+            List<CbiwVo> list = swDirectlyintothevaultService.swJsGoodslistBySelect(CbiwVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(CbiwVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 临时删除直接入库
+     */
+    @ApiOperation(
+            value ="临时删除直接入库",
+            notes = "临时删除直接入库"
+    )
+    @PostMapping("/deleteless")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult deleteless( @RequestBody Cbiw cbiw) {
+
+        try {
+            swDirectlyintothevaultService.deleteless(cbiw);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【临时删除直接入库】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 }
