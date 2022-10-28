@@ -335,6 +335,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 
 
+            mapper.insertSelective(itemList.get(i));
 
 
            // mapper.insertSelective(itemList.get(i));
@@ -345,7 +346,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         }
 
 
-        List<Integer> collect = itemList.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+ /*       List<Integer> collect = itemList.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
         HashSet<Integer> set = new HashSet<>(collect);
 
             List<Cbsc> newList = getNewList(itemList);
@@ -356,7 +357,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     session.commit();
                     session.clearCache();
                 }
-            }
+            }*/
        // mapper.insertSelective(itemList.get(i));
 
 

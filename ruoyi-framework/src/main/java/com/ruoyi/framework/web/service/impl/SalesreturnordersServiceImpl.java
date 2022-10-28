@@ -635,7 +635,7 @@ if(cbsgss.size()>0){
             }
         }
 
-
+log.info("sn为"+itemList.getCbsg09());
 
         CbsfCriteria cas = new CbsfCriteria();
         cas.createCriteria().andCbse01EqualTo(itemList.getCbse01());
@@ -666,7 +666,7 @@ if(cbsgss.size()>0){
                 cbsg.setCbsg05(date);
                 CbsgCriteria example1 = new CbsgCriteria();
                 example1.createCriteria().andCbsg09EqualTo(itemList.getCbsg09());
-                return cbsgMapper.updateByExampleSelective(cbsg,example1);
+                 cbsgMapper.updateByExampleSelective(cbsg,example1);
 
             }
 
