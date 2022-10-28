@@ -308,7 +308,7 @@
 
   <select id="selectApprovalrecords" resultType="com.ruoyi.system.domain.vo.ApprovalVo">
     SELECT
-    b.*,a.CBOA01 as id
+    b.*,a.CBOA01 as id,a.CBOA11 as status
     FROM
     CBOA a
     LEFT JOIN
@@ -320,7 +320,7 @@
     ON
     c.order_no=b.CABRAA14
     WHERE
-    b.CABRAA06=0 and a.CBOA11 &gt;=2
+    b.CABRAA06=0 and a.CBOA11 &gt;=3
     <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
     <if test="startTime != null">
       and b.CABRAA15 &gt;= #{startTime}
