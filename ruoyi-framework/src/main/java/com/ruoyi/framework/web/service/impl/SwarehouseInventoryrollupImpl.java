@@ -241,7 +241,7 @@ CbifCriteria rty = new CbifCriteria();
 
     @Transactional
     @Override
-    public int SwJsSkuBarcodeshsss(CbifDo cbifDo) {
+    public int SwJsSkuBarcodeshsss(CbifDo cbifDo) throws InterruptedException {
         CbieCriteria example1 = new CbieCriteria();
         example1.createCriteria().andCbie01EqualTo(cbifDo.getCbie01())
                 .andCbie06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());

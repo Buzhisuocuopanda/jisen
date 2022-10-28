@@ -9,13 +9,14 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
-import com.ruoyi.system.domain.Cbiw;
-import com.ruoyi.system.domain.Cbpd;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.CbpdDto;
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.dto.GsOrdersInDto;
 import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.mapper.CbiwMapper;
+import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +45,11 @@ import java.util.List;
 public class DirectlyIntothEvaultController extends BaseController {
     @Resource
     private ISwDirectlyintothevaultService swDirectlyintothevaultService;
+    @Resource
+    private CblaMapper cblaMapper;
+
+    @Resource
+    private CbiwMapper cbiwMapper;
     /**
      * 新增直接入库单
      */
@@ -87,9 +93,28 @@ public class DirectlyIntothEvaultController extends BaseController {
     public AjaxResult swJsPurchaseinboundadds(@Valid @RequestBody  List<CbicDto> cbicDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
+            int i = 0;
+/*
+            for (CbicDto cbicDto1 : cbicDto) {
+                CblaCriteria cblaCriteria = new CblaCriteria();
+                cblaCriteria.createCriteria().andCbla09EqualTo(cbicDto1.getStoresku());
+                List<Cbla> cbiws = cblaMapper.selectByExample(cblaCriteria);
+                if (cbiws.size() > 0) {
+                    cbicDto1.setCbic08(cbiws.get(0).getCbla01());
+                    cbicDto1.setCbic07(cbiws.get(0).getCbla10());
+                }
+                cbicDto1.setCbic10(cbicDto1.getSn());
+                i = swDirectlyintothevaultService.insertSwJsSkuBarcodes(cbicDto1);
+                //删除临时表
+                String cbic10 = cbicDto1.getSn();
+                CbiwCriteria cbiwCriteria = new CbiwCriteria();
+                cbiwCriteria.createCriteria().andSnEqualTo(cbic10);
+                cbiwMapper.deleteByExample(cbiwCriteria);
 
-
+            }
+*/
+             return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
+           // return toAjax(i);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 

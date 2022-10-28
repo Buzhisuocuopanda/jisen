@@ -619,7 +619,7 @@ Date date = new Date();
 
     @Override
     @Transactional
-    public void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) {
+    public void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) throws InterruptedException {
 GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSalesOrdersInDto.getId());
         if (gsSalesOrdersIn == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(Integer.parseInt(gsSalesOrdersIn.getDeleteFlag()))) {
             throw new SwException("没有查到该订单");
@@ -906,7 +906,7 @@ GsSalesOrdersIn gsSalesOrdersIn = gsSalesOrdersInMapper.selectByPrimaryKey(gsSal
 
     @Override
     @Transactional
-    public void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) {
+    public void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) throws InterruptedException {
         GsSalesOrdersChange gsSalesOrdersChange = gsSalesOrdersChangeMapper.selectByPrimaryKey(gsSalesOrdersChangeDto.getId());
         if (gsSalesOrdersChange == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(gsSalesOrdersChange.getDeleteFlag().intValue())) {
             throw new SwException("没有查到该订单");

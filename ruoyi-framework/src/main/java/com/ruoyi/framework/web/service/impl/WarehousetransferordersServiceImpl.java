@@ -10,8 +10,10 @@ import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.session.ExecutorType;
@@ -69,6 +71,10 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
     private StringRedisTemplate redisTemplate;
     @Resource
     private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private OrderDistributionService orderDistributionService;
+
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
@@ -247,6 +253,7 @@ if(itemList.size()==0){
     /**
      * 仓库调拨单标记完成
      */
+    @SneakyThrows
     @Transactional
     @Override
     public int insertSwJsSkuBarcodebjwc(CbaaDo cbaaDo) {
@@ -1161,7 +1168,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
     //调出标记完成
     @Override
-    public int transferordersoutbjwc(CbaaDo cbaaDo) {
+    public int transferordersoutbjwc(CbaaDo cbaaDo) throws InterruptedException {
 
 
         Long userid = SecurityUtils.getUserId();
@@ -1227,8 +1234,15 @@ if(gsGoodsSkus.get(j).getLocationId()==null) {
     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
     gsGoodsSku.setUpdateTime(date);
     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
-}
 
+    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+    tranUseQtyDo.setGoodsId(goodsid);
+    tranUseQtyDo.setQty(num);
+    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+    orderDistributionService.diaoboUseOp(tranUseQtyDo);
+
+}
                 }
                   //台账
                 //供应商名称
@@ -1360,7 +1374,12 @@ else {
                         gsGoodsSkuDo1.setQty(qty - 1);
                         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-
+                        TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                        tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
+                        tranUseQtyDo.setQty(1.0);
+                        tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                        tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                        orderDistributionService.diaoboUseOp(tranUseQtyDo);
                     }
                 }
             }
@@ -1414,7 +1433,7 @@ else {
     //仓库调拨单调入标记完成
     @Override
     @Transactional
-    public int transferordersinbjwc(CbaaDo cbaaDo) {
+    public int transferordersinbjwc(CbaaDo cbaaDo) throws InterruptedException {
 
         //调出标记完成
         transferordersoutbjwc(cbaaDo);
@@ -1481,6 +1500,7 @@ else {
                                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                                 gsGoodsSn.setLocationId(cbac.getCbac10());
                                 gsGoodsSn.setWhId(cbaa1.getCbaa10());
+                                gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
                                 GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
                                 gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
                                 if(cbaa1.getCbaa10()==null){
@@ -1526,12 +1546,19 @@ else {
                     gsGoodsSku.setGoodsId(goodsid);
                     gsGoodsSku.setWhId(cbaa1.getCbaa10());
                     gsGoodsSku.setQty(num);
-                    gsGoodsSkuMapper.insertSelective(gsGoodsSku);                }
+                    gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+                    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                    tranUseQtyDo.setGoodsId(goodsid);
+                    tranUseQtyDo.setQty(num);
+                    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                    orderDistributionService.diaoboUseOp(tranUseQtyDo);}
                 else {
 
                     for (int j = 0; j < gsGoodsSkus.size(); j++) {
 
-                        if (gsGoodsSkus.get(j).getLocationId() == null) {
+                        if (gsGoodsSkus.get(j).getLocationId()==null) {
                             Integer id = gsGoodsSkus.get(0).getId();
                             GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
 
@@ -1540,8 +1567,37 @@ else {
                             gsGoodsSku.setUpdateBy(Math.toIntExact(userId));
                             gsGoodsSku.setUpdateTime(date);
                             gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                            TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                            tranUseQtyDo.setGoodsId(goodsid);
+                            tranUseQtyDo.setQty(num);
+                            tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                            tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                            orderDistributionService.diaoboUseOp(tranUseQtyDo);
+                        }else {
+                            gsGoodsSkus.remove(j);
+
                         }
 
+                    }
+                    if(gsGoodsSkus.size()==0){
+                        GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                        gsGoodsSku.setCreateTime(date);
+                        gsGoodsSku.setUpdateTime(date);
+                        gsGoodsSku.setCreateBy(Math.toIntExact(userId));
+                        gsGoodsSku.setUpdateBy(Math.toIntExact(userId));
+                        gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                        gsGoodsSku.setGoodsId(goodsid);
+                        gsGoodsSku.setWhId(cbaa1.getCbaa10());
+                        gsGoodsSku.setQty(num);
+                        gsGoodsSkuMapper.insertSelective(gsGoodsSku);
+
+                        TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                        tranUseQtyDo.setGoodsId(goodsid);
+                        tranUseQtyDo.setQty(num);
+                        tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                        tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                        orderDistributionService.diaoboUseOp(tranUseQtyDo);
                     }
                 }
                 //台账
@@ -1684,6 +1740,13 @@ else {
                     gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
                     gsGoodsSkuDo2.setQty(1.0);
                     taskService.addGsGoodsSku(gsGoodsSkuDo2);
+
+                    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                    tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
+                    tranUseQtyDo.setQty(1.0);
+                    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                    orderDistributionService.diaoboUseOp(tranUseQtyDo);
                 } else {
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus1.get(0).getId());
@@ -1697,6 +1760,13 @@ else {
                     double v = qty + 1;
                     gsGoodsSkuDo2.setQty(v);
                     taskService.updateGsGoodsSku(gsGoodsSkuDo2);
+
+                    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                    tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
+                    tranUseQtyDo.setQty(1.0);
+                    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                    orderDistributionService.diaoboUseOp(tranUseQtyDo);
                 }
 
                 //调入仓库

@@ -21,7 +21,7 @@ public interface IPurchaseordertableService {
 
     int swJsPurchasereturnorderfs(GsPurchaseOrderDo gsPurchaseOrderDo);
 
-    int swJsPurchasereturnorderbjwc(GsPurchaseOrderDo gsPurchaseOrderDo);
+    int swJsPurchasereturnorderbjwc(GsPurchaseOrderDo gsPurchaseOrderDo) throws InterruptedException;
 
     int swJsPurchasereturnorderqxwc(GsPurchaseOrderDo gsPurchaseOrderDo);
 

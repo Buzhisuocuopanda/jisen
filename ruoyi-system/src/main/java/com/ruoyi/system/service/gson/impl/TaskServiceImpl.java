@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -152,9 +153,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public synchronized Cbib InsertCBIB(CbibDo cbibDo) {
+    public synchronized Cbib InsertCBIB(CbibDo cbibDo) throws InterruptedException {
+        //Thread.sleep(100+new Random().nextInt(100));
 
-       //上次
+        //上次
         Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
 
 
@@ -162,11 +164,11 @@ public class TaskServiceImpl implements TaskService {
         if(cbib1==null){
             //直接入库
             if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
-                cbib.setCbib11((double) 1);
+                cbib.setCbib11(cbibDo.getCbib11());
                 cbib.setCbib12((double) 0);
                 cbib.setCbib13((double) 0);
                 cbib.setCbib14((double) 0);
-                cbib.setCbib15(1.0);
+                cbib.setCbib15(cbibDo.getCbib11());
                 cbib.setCbib16((double) 0);
                 cbib.setCbib18(1);
             }
@@ -251,7 +253,7 @@ public class TaskServiceImpl implements TaskService {
                     cbib1.setCbib15((double) 1);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
-                cbib.setCbib11((double) 1);
+                cbib.setCbib11(cbibDo.getCbib11());
                 cbib.setCbib12((double) 0);
                 cbib.setCbib13((double) 0);
                 cbib.setCbib14((double) 0);
@@ -390,6 +392,8 @@ public class TaskServiceImpl implements TaskService {
 
 
         cbibMapper.insertSelective(cbib);
+      //  Thread.sleep(100+new Random().nextInt(100));
+
         //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());
 
         CbibCriteria example = new CbibCriteria();

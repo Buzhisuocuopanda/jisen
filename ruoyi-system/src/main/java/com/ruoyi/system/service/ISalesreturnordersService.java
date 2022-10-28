@@ -20,7 +20,7 @@ public interface ISalesreturnordersService {
 
     int insertSwJsSkuBarcodeqxwc(CbseDo cbseDo);
 
-    int insertSwJsSkuBarcodebjwc(CbseDo cbseDo);
+    int insertSwJsSkuBarcodebjwc(CbseDo cbseDo) throws InterruptedException;
 
     int insertSwJsSkuBarcodel(CbseDo cbseDo);
 

@@ -32,7 +32,7 @@ public interface ISwJsPurchasereturnordersService {
 
     int SwJsSkuBarcodeshss(CbpgDto cbpgDto);
 
-    int SwJsSkuBarcodes(CbpgDto cbpgDto);
+    int SwJsSkuBarcodes(CbpgDto cbpgDto) throws InterruptedException;
 
     int insertSwJsSkuBarcodess(List<Cbph> itemList);
 

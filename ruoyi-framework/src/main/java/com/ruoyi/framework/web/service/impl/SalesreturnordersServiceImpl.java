@@ -261,7 +261,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         return cbseMapper.updateByExampleSelective(cbse,example1);    }
 
     @Override
-    public int insertSwJsSkuBarcodebjwc(CbseDo cbseDo) {
+    public int insertSwJsSkuBarcodebjwc(CbseDo cbseDo) throws InterruptedException {
         CbsgCriteria wtw2 = new CbsgCriteria();
         wtw2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
         List<Cbsg> cbsg2 = cbsgMapper.selectByExample(wtw2);
@@ -689,11 +689,11 @@ if(cbsgss.size()>0){
                 GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
                 example1.createCriteria().andSnEqualTo(itemList.getCbsg09());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+               if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
+                   throw new SwException("该商品不在采购退货单明细中");
+               }
+            }
 
-            }
-            if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
-                throw new SwException("该商品不在采购退货单明细中");
-            }
             itemList.setCbsg03(date);
             itemList.setCbsg04(Math.toIntExact(userid));
             itemList.setCbsg05(date);

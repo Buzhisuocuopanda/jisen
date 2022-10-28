@@ -48,7 +48,7 @@ public interface SalesScheduledOrdersService {
 
     void subscribetotheinventoryslipfs(GsSalesOrdersInDto gsSalesOrdersInDto);
 
-    void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto);
+    void subscribetotheinventoryslipbjwc(GsSalesOrdersInDto gsSalesOrdersInDto) throws InterruptedException;
 
     void subscribetotheinventoryslipqxwc(GsSalesOrdersInDto gsSalesOrdersInDto);
 
@@ -64,7 +64,7 @@ public interface SalesScheduledOrdersService {
 
     void gsSalesOrdersChangefs(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 
-    void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
+    void gsSalesOrdersChangebjwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto) throws InterruptedException;
 
     void gsSalesOrdersChangeqxwc(GsSalesOrdersChangeDto gsSalesOrdersChangeDto);
 

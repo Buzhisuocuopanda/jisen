@@ -36,7 +36,7 @@ public interface ISwJsPurchaseinboundService {
 
     int SwJsSkuBarcodeshss(CbpdDto cbpdDto);
 
-    int SwJsSkuBarcodeshsss(CbpdDto cbpdDto);
+    int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) throws InterruptedException;
 
     int SwJsSkuBarcodesh(CbpdDto cbpdDto);
 

@@ -44,9 +44,9 @@ public interface IWarehousetransferordersService {
 
     int transferordersin(Cbac itemList);
 
-    int transferordersoutbjwc(CbaaDo cbaaDo);
+    int transferordersoutbjwc(CbaaDo cbaaDo) throws InterruptedException;
 
-    int transferordersinbjwc(CbaaDo cbaaDo);
+    int transferordersinbjwc(CbaaDo cbaaDo) throws InterruptedException;
 
     List<CbacVo> selectSwJsTaskGoodsRelListsss(CbacVo cbacVo);
 

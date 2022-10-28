@@ -667,7 +667,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
      */
     @Transactional
     @Override
-    public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) {
+    public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) throws InterruptedException {
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
         if(cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){}
