@@ -526,10 +526,10 @@ public class TakeGoodsController extends BaseController {
             TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
 
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-            excelPaht = RuoYiConfig.getSwprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
+            excelPaht = RuoYiConfig.getSwdataprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
 //            FileCopyUtils.copyFile(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL,excelPaht);
 //            File is = new File(RuoYiConfig.getSwprofile());
-            excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_" + res.getOrderNo() + time + ".xlsx";
+            excelPaht2 = RuoYiConfig.getSwdataprofile() + "模板提货单_" + res.getOrderNo() + time + ".xlsx";
 
 
             FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL),new File(excelPaht2));
@@ -543,7 +543,7 @@ public class TakeGoodsController extends BaseController {
 
 
             //转成pdf
-            pdfPath=RuoYiConfig.getSwprofile()+"提货单详情_"+res.getOrderNo()+time+".pdf";
+            pdfPath=RuoYiConfig.getSwdataprofile()+"提货单详情_"+res.getOrderNo()+time+".pdf";
             Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
 //            in=new FileInputStream(new File(pdfPath));
             //  in.close();

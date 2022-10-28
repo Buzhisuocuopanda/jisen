@@ -59,6 +59,8 @@ public class TotalOrderListVo {
 
     private String goods;
 
+    private Double useQty;
+
     private Double qty;
     private String brand;
 
