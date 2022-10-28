@@ -43,7 +43,7 @@ public class SaleOderDetailGoods {
     //标准单价
     @ApiModelProperty("标准单价")
 
-    private Double normPrice;
+    private Double normalPrice;
     //本次单价
     @ApiModelProperty("本次单价")
 

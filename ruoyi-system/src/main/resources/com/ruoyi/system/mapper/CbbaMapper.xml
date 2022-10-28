@@ -473,7 +473,8 @@ WHERE
     ba.CBBA10 as orderType,
     ba.CBBA11 as ShippedQty,
     pb.CBPB01 as goodsId,
-    pb.CBPB10 as brand
+    pb.CBPB10 as brand,
+    ba.CBBA14 as useQty
     FROM
     `CBBA` ba
     LEFT JOIN CBPB pb ON pb.CBPB01 = ba.CBBA08
@@ -505,7 +506,15 @@ WHERE
       order by ba.CBBA09
 
     </if>
+    <if test="sortKey=='makeQty' and sortType=='ascending'">
+      order by ba.CBBA13
 
+    </if>
+
+    <if test="sortKey=='makeQty' and sortType=='descending'">
+      order by ba.CBBA13 DESC
+
+    </if>
     <if test="sortKey==null ">
       order by ba.CBBA15
 

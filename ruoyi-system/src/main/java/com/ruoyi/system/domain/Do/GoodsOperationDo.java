@@ -31,6 +31,8 @@ import java.math.BigDecimal;
 
     private Integer userId;
 
+    private String totalOrderNo;
+
 //    private String orderNo;
 
 }
