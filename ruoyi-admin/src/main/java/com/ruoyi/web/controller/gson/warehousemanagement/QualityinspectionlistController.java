@@ -218,7 +218,7 @@ public class QualityinspectionlistController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:qualityin:fs')")
     public AjaxResult SwJsPurchaseinboundshs( @RequestBody CbqaDo cbqaDo) {
         try {
-            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeshs(cbqaDo));
+            return toAjax(swQualityinspectionlistService.insertSwJsSkuBarcodeshs2(cbqaDo));
 
 
         }catch (SwException e) {
