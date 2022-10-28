@@ -198,6 +198,7 @@ private CbpmMapper cbpmMapper;
                     cbpm2.setCbpm01(cbpm3.getCbpm01());
                     cbpm2.setCbpm09(itemList.get(i).getCbqb09());
                     cbpm2.setCbpm12("sn由"+itemList.get(i).getCbqb10()+"替换为"+itemList.get(i).getCbqb09());
+                    cbpm2.setCbpm11(1);
                     cbpmMapper.updateByPrimaryKeySelective(cbpm2);
                 }
             }
@@ -267,9 +268,63 @@ private CbpmMapper cbpmMapper;
             }
         }
         return 1;
-
-
     }
+
+    /**
+     * 反审质检单
+     */
+    @Transactional
+    @Override
+    public int insertSwJsSkuBarcodeshs2(CbqaDo cbqaDo) {
+
+        Cbqa cbqa1 = cbqaMapper.selectByPrimaryKey(cbqaDo.getCbqa01());
+        if(!cbqa1.getCbqa09().equals(TaskStatus.sh.getCode())){
+            throw new SwException("审核状态才能反审");
+        }
+
+        CbqbCriteria example = new CbqbCriteria();
+        example.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01());
+        List<Cbqb> cbqbs = cbqbMapper.selectByExample(example);
+        if(cbqbs.size()==0){
+            throw new SwException("质检单明细为空");
+        }
+        if(cbqbs.get(0).getCbqb09()==null){
+            throw new SwException("质检单明细替换商品sn为空");
+        }
+        String cbqb09 = cbqbs.get(0).getCbqb09();
+
+        CbpmCriteria example2 = new CbpmCriteria();
+        example2.createCriteria().andCbpm01EqualTo(cbqbs.get(0).getCbqb08());
+        List<Cbpm> cbpms = cbpmMapper.selectByExample(example2);
+        if(cbpms.size()==0){
+            throw new SwException("提货单扫码记录sn不存在");
+        }
+        if(cbpms.get(0).getCbpk01()==null){
+            throw new SwException("提货单id为空");
+        }
+        Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbpms.get(0).getCbpk01());
+        if(cbpk==null){
+            throw new SwException("提货单不存在");
+        }
+        if(cbpk.getCbpk11()==null){
+            throw new SwException("提货单状态为空");
+        }
+        if(cbpk.getCbpk11().equals(TaskStatus.bjwc.getCode())){
+            throw new SwException("提货单已标记完成，不能反审");
+        }
+
+
+        Long userid = SecurityUtils.getUserId();
+        Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
+        Date date = new Date();
+        cbqa.setCbqa05(Math.toIntExact(userid));
+        cbqa.setCbqa09(TaskStatus.mr.getCode());
+        CbqaCriteria example1 = new CbqaCriteria();
+        example1.createCriteria().andCbqa01EqualTo(cbqaDo.getCbqa01())
+                .andCbqa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        return cbqaMapper.updateByExampleSelective(cbqa,example1);    }
+
     /**
      * 删除质检单
      */
@@ -314,7 +369,7 @@ private CbpmMapper cbpmMapper;
         return cbqaMapper.updateByExampleSelective(cbqa,example1);
     }
     /**
-     * 反审质检单
+     * 反审质检单（弃用）
      */
     @Transactional
     @Override

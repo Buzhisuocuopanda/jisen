@@ -292,7 +292,7 @@ if(itemList.size()==0){
                     if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                         GsGoodsSn gsGoodsSn = new GsGoodsSn();
                         gsGoodsSn.setLocationId(cbac.getCbac10());
-                        gsGoodsSn.setWhId(cbaaDo.getCbaa10());
+                        gsGoodsSn.setWhId(cbaa1.getCbaa10());
                         GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
                         gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
                         gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
@@ -1475,16 +1475,24 @@ else {
                 if(size<kio){
                     throw new SwException("调拨数量小于任务数量");
                 } else {//zgl  根据扫码记录修改gs_goods_sn表的仓库id
-                    for(Cbac cbac:cbacs){
-                        if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
-                            GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                            gsGoodsSn.setLocationId(cbac.getCbac10());
-                            gsGoodsSn.setWhId(cbaaDo.getCbaa10());
-                            GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
-                            gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
-                            gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                    if(cbacs!=null){
+                        for(Cbac cbac:cbacs){
+                            if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
+                                GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                                gsGoodsSn.setLocationId(cbac.getCbac10());
+                                gsGoodsSn.setWhId(cbaa1.getCbaa10());
+                                GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+                                gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
+                                if(cbaa1.getCbaa10()==null){
+                                    throw new SwException("调拨单调入仓库为空");
+                                }else {
+                                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                                }
+
+                            }
                         }
                     }
+
                 }
             }
             //调出扫码
@@ -1634,10 +1642,15 @@ else {
                         if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                             GsGoodsSn gsGoodsSn = new GsGoodsSn();
                             gsGoodsSn.setLocationId(cbac.getCbac10());
-                            gsGoodsSn.setWhId(cbaaDo.getCbaa10());
+                            gsGoodsSn.setWhId(cbaa1.getCbaa10());
                             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
                             gsGoodsSnCriteria.createCriteria().andSnEqualTo(cbac.getCbac09());
-                            gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                            if(cbaa1.getCbaa10()==null){
+                                throw new SwException("调拨单调入仓库为空");
+                            }else {
+                                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                            }
+
                         }
                     }
                 }

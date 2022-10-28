@@ -13,6 +13,8 @@ public interface CountQueryService {
 
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 
+    List<InwuqusVo2> selectOutInventorysummaryquerys(InwuqusDto inwuqusDto);
+
     List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo);
 
     List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo);
