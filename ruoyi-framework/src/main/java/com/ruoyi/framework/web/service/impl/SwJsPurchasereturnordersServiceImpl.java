@@ -866,15 +866,20 @@ if(infoss.size()>0) {
         if(uio1 == null||uio1.size()==0){//zgl 判断扫码数量未空则修改gs_goods_sku和cbib表数据
             for(Cbph cbph:uio){
                 ////////////////修改gs_goods_sku
-                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+               /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
                 //获取仓库id
                 gsGoodsSkuDo.setWhId(cbpg1.getCbpg10());
 //                gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
                 //获取商品id
                 gsGoodsSkuDo.setGoodsId(cbph.getCbph08());
-                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode())*/;
                 //通过仓库id和货物id判断是否存在
-                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+                example.createCriteria().andWhIdEqualTo(cbpg1.getCbpg10())
+                        .andGoodsIdEqualTo(cbph.getCbph08())
+                        .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+//                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                 if(gsGoodsSkus.size()==0){
                     throw new SwException("没有该库存信息");
                 }

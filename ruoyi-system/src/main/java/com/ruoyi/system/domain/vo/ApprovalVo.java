@@ -72,4 +72,6 @@ public class ApprovalVo extends BaseEntity {
     //客户名称
     private String cbca08;
 
+    private Integer status;
+
 }
