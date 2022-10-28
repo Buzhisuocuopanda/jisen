@@ -521,6 +521,7 @@ if(cbacss.size()>0) {
             scanVo.setPinpai(cbaasVos.get(i).getPinpai());
             scanVo.setCbpb08(cbaasVos.get(i).getCbpb08());
             scanVo.setCbpb12(cbaasVos.get(i).getCbpb12());
+            scanVo.setCbpb15(cbaasVos.get(i).getCbpb15());
             scanVo.setSn(cbacs.get(j).getCbac09());
             scanVo.setKwm(cbaasVos.get(i).getCbla09());
             scanVo.setCbpe03(cbacs.get(j).getCbac03());
@@ -850,7 +851,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                throw new SwException("sn不能为空");
            }
             CbacCriteria cbacCriteria = new CbacCriteria();
-            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
+            cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09())
+                    .andCbaa01EqualTo(itemList.getCbaa01());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
             if(cbacs.size()>0){
 
@@ -922,6 +924,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     public int transferordersin(Cbac itemList) {
 
 
+
+
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
 
@@ -929,6 +933,12 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
         if (itemList.getCbaa01() == null) {
             throw new SwException("调拨单id不能为空");
         }
+
+
+
+
+
+
 
         if(itemList.getCbac09()!=null) {
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
@@ -1010,16 +1020,33 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 cbacMapper.insertSelective(itemList);
             }
             else{
+                //判断调出扫码是否完成
+                CbacCriteria cbacCriterias = new CbacCriteria();
+                cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
+                List<Cbac> cbacss = cbacMapper.selectByExample(cbacCriterias);
+
+                CbabCriteria cbabCriterias = new CbabCriteria();
+                cbabCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
+                List<Cbab> cbpshs = cbabMapper.selectByExample(cbabCriterias);
+                if(cbpshs.size()>0){
+                    double sum = cbpshs.stream().mapToDouble(Cbab::getCbab09).sum();
+                    if(cbacss.size()<sum){
+                        throw new SwException("调拨单扫码调出未完成");
+                    }
+                }
+
+
 
             CbacCriteria cbaceria = new CbacCriteria();
-            cbaceria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
+            cbaceria.createCriteria().andCbac09EqualTo(itemList.getCbac09())
+                    .andCbaa01EqualTo(itemList.getCbaa01());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbaceria);
             if(cbacs.size()==0){
                 throw new SwException("sn不存在");}
 
-            if(cbacs.get(0).getCbac14()!=1){
+           /* if(cbacs.get(0).getCbac14()!=1){
                 throw new SwException("该sn已调入，不能重复调入");
-            }
+            }*/
 
 
             if (itemList.getCbac10() == null) {

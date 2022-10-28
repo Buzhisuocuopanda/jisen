@@ -152,10 +152,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Cbib InsertCBIB(CbibDo cbibDo) {
+    public synchronized Cbib InsertCBIB(CbibDo cbibDo) {
 
        //上次
         Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
+
 
         Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
         if(cbib1==null){
@@ -390,6 +391,14 @@ public class TaskServiceImpl implements TaskService {
 
         cbibMapper.insertSelective(cbib);
         //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());
+
+        CbibCriteria example = new CbibCriteria();
+        example.createCriteria()
+                .andCbib02EqualTo(cbibDo.getCbib02())
+                .andCbib08EqualTo(cbibDo.getCbib08());
+        Cbib cbib3=new Cbib();
+        cbib3.setCbib19(1);
+        cbibMapper.updateByExampleSelective(cbib3,example);
         return cbib;
     }
 

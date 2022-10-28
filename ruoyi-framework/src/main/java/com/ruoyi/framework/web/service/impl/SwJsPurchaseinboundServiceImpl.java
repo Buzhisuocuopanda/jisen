@@ -312,6 +312,17 @@ if(itemList.getCbpe08()!=null) {
                gsGoodsSnCriteria.createCriteria().andSnEqualTo(sn);
                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
                if (gsGoodsSns.size() > 0) {
+                   if(gsGoodsSns.get(0).getStatus().equals(TaskStatus.sh.getCode().byteValue())){
+                       throw new SwException("该sn已存在库存sn表里入库状态");
+                   }else {
+                       GsGoodsSn  gsGoodsSn = new GsGoodsSn();
+                       gsGoodsSn.setStatus(GoodsType.yrk.getCode());
+                       gsGoodsSn.setGroudStatus(GoodsType.yrk.getCode());
+                       gsGoodsSn.setSn(itemList.getCbpe09());
+                       GsGoodsSnCriteria gsGoodsSnCriteria1 = new GsGoodsSnCriteria();
+                          gsGoodsSnCriteria1.createCriteria().andSnEqualTo(sn);
+                          gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria1);
+                   }
                    throw new SwException("该sn已存在库存sn表里");
                }
 

@@ -310,6 +310,7 @@ Cbpg cbpgs = new Cbpg();
             //校验sn库存表李是否有该sn
             GsGoodsSnDo gsGoodsSnDoss = new GsGoodsSnDo();
             gsGoodsSnDoss.setSn(sn);
+
             baseCheckService.checkGsGoodsSn(gsGoodsSnDoss);
 
 

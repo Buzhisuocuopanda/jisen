@@ -211,8 +211,10 @@ private CbpmMapper cbpmMapper;
                     cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
 
                     cbibDo.setCbib17(TaskType.zjrk.getMsg());
+                  //  Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbibDo.getCbib08(), cbibDo.getCbib02());
 
                     taskService.InsertCBIB(cbibDo);
+
 
                 }
                 else {
@@ -342,17 +344,18 @@ private CbpmMapper cbpmMapper;
         cblaCriteria.createCriteria().andCbla09EqualTo(cbiw.getStoresku());
         List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
         if(cblas.size()>0){
+            //库位容量
             Double nums = cblas.get(0).getCbla11();
             GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
             gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
             List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
             if(gsGoodsSkus.size()>0){
                 double skusum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                if (skusum+cbicDtos1.size()>nums) {
+                if (skusum+cbicDtos1.size()>=nums) {
                     throw new SwException("库位容量不足");
                 }
             }else {
-                if (cbicDtos1.size()>nums) {
+                if (cbicDtos1.size()>=nums) {
                     throw new SwException("库位容量不足");
                 }
 
@@ -784,13 +787,23 @@ if(cbiw.getTypes()==1){
     example.createCriteria().andCbpe09EqualTo(cbiw.getSn())
             .andCbpc01EqualTo(cbiw.getId());
    cbpeMapper.deleteByExample(example);
+
 }
 if(cbiw.getTypes()==2){
             CbpiCriteria example = new CbpiCriteria();
             example.createCriteria().andCbpi09EqualTo(cbiw.getSn())
                     .andCbpg01EqualTo(cbiw.getId());
             cbpiMapper.deleteByExample(example);
+
+    GsGoodsSn gsGoodsSn = new GsGoodsSn();
+    gsGoodsSn.setStatus(cbiw.getType().byteValue());
+    gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+    gsGoodsSn.setSn(cbiw.getSn());
+    GsGoodsSnCriteria exampleq = new GsGoodsSnCriteria();
+    exampleq.createCriteria().andSnEqualTo(cbiw.getSn());
+    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampleq);
         }
+
         if(cbiw.getTypes()==3){
             CbsdCriteria example = new CbsdCriteria();
             example.createCriteria().andCbsd09EqualTo(cbiw.getSn())

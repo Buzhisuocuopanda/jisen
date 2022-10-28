@@ -128,7 +128,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             value ="新增采购入库单扫码",
             notes = "新增采购入库单扫码"
     )
-    @Resubmit(delaySeconds = 2)
+    //@Resubmit(delaySeconds = 2)
     @PostMapping("/SwJsPurchaseinboundaddsm")
     public AjaxResult swJsPurchaseinboundaddsm(@Valid @RequestBody Cbpe itemList, BindingResult bindingResult) {
         try {
