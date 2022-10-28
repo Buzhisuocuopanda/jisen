@@ -103,5 +103,7 @@ public interface OrderDistributionService {
 
 
 
+    Boolean diaoboUseOp(TranUseQtyDo tranUseQtyDo);
+
 
 }

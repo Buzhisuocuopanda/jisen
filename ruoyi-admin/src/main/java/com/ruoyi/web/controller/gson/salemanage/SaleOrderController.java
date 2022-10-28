@@ -1171,7 +1171,7 @@ public class SaleOrderController extends BaseController {
 
     /**
      * 批量删除购物车
-     * @param bindingResult
+     * @param
      * @return
      */
     @ApiOperation(
