@@ -846,6 +846,13 @@ return 1;
         CbsbCriteria example1 = new CbsbCriteria();
         example1.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
                 .andCbsb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+
+        CbscCriteria example2 = new CbscCriteria();
+        example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
+        int i = cbscMapper.deleteByExample(example2);
+
+
+
         return cbsbMapper.updateByExampleSelective(cbsb,example1);    }
 
 
@@ -939,6 +946,7 @@ return 1;
                     scanVo.setPinpai(cala.getCala08());
                     scanVo.setCbpb08(cbpb.getCbpb08());
                     scanVo.setCbpb12(cbpb.getCbpb12());
+                    scanVo.setCbpb15(cbpb.getCbpb15());
                     scanVo.setSn(cbpes.get(j).getCbsd09());
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpes.get(j).getCbsd10());
                     if(cbla==null){
@@ -1091,15 +1099,27 @@ if(cbsbsVos.size()>0){
 
             //如果查不到添加信息到库存表
             Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
-            //判断是否在提货单里
-            CbpkCriteria example = new CbpkCriteria();
-            example.createCriteria().andCbpk09EqualTo(cbsb.getCbsb09())
-                    .andCbpk01EqualTo(cbsb.getCbsb20());
+            CbscCriteria examplae = new CbscCriteria();
+            examplae.createCriteria().andCbsb01EqualTo(itemList.getCbsb01());
+            List<Cbsc> cbscs = cbscMapper.selectByExample(examplae);
+                 if(cbscs.size()>0){
+                     for(int k=0;k<cbscs.size();k++) {
+                         if(cbscs.get(k).getTakegoodsid()!=null){
+                         CbpkCriteria example = new CbpkCriteria();
+                         example.createCriteria().andCbpk09EqualTo(cbsb.getCbsb09())
+                                 .andCbpk01EqualTo(cbscs.get(k).getTakegoodsid());
 //                    .andCheckStatusEqualTo(checkstatusEnum.ZJWC.getCode());
-            List<Cbpk> cbpkList = cbpkMapper.selectByExample(example);
-            if(cbpkList.size()==0){
-                throw new SwException("该商品不在提货单里");
-            }
+                         List<Cbpk> cbpkList = cbpkMapper.selectByExample(example);
+                         if (cbpkList.size() == 0) {
+                             throw new SwException("该商品不在提货单里");
+                         }}
+                     }
+                 }
+            //判断是否在提货单里
+
+
+
+
             //更新sn表
             gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.getCbsd09());
