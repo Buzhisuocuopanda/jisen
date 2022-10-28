@@ -29,9 +29,14 @@ public interface ISWQualityinspectionlistService {
      */
     int insertSwJsSkuBarcodesh(CbqaDo cbqaDo);
     /**
-     * 反审质检单
+     * 反审质检单（弃用）
      */
     int insertSwJsSkuBarcodeshs(CbqaDo cbqaDo);
+
+    /**
+     * 反审质检单2
+     */
+    int insertSwJsSkuBarcodeshs2(CbqaDo cbqaDo);
 
     List<CbqaVo> selectSwJsTaskGoodsRelListss(CbqaVo cbqaVo);
 

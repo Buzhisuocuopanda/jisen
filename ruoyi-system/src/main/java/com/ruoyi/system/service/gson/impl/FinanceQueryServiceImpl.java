@@ -164,10 +164,9 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                         .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
                         .andCbib17EqualTo("直接入库");
                 ibex.setOrderByClause("CBIB04 DESC");
-                Integer count = cbibMapper.selectCountZjrk2(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
-
-                if(count!=null){
-                    fnGoodsSkuVo.setMakeQty(Double.valueOf(count));
+                Map map = cbibMapper.selectCountZjrk2(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+                if(map!=null&&map.get("num")!=null){
+                    fnGoodsSkuVo.setMakeQty((Double) map.get("num"));
                 }else {
                     fnGoodsSkuVo.setMakeQty(0d);
                 }

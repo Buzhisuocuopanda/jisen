@@ -24,11 +24,15 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.stream.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
@@ -103,8 +107,8 @@ private CbpmMapper cbpmMapper;
             throw new SwException("upc没输入");
         }
        //  log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbicMapper mapper = session.getMapper(CbicMapper.class);
+        /*SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbicMapper mapper = session.getMapper(CbicMapper.class);*/
 
 
         for (int i=0;i<cbicDto.size();i++) {
@@ -292,12 +296,12 @@ private CbpmMapper cbpmMapper;
                         "end";
               this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList("lock"), uuid);
             }
-            mapper.insertSelective(cbicDto.get(i));
-
+          //  mapper.insertSelective(cbicDto.get(i));
+            cbicMapper.insertSelective(cbicDto.get(i));
 
         }
-        session.commit();
-        session.clearCache();
+    /*    session.commit();
+        session.clearCache();*/
         return 1;
 
     }
@@ -772,53 +776,53 @@ if(cbiw.getSn()==null){
 if(cbiw.getType()==null){
     throw new SwException("类型不能为空");
 }
-if(cbiw.getOrdertype()==null){
+if(cbiw.getTypes()==null){
     throw new SwException("订单类型不能为空");
 }
-if(cbiw.getOrdertype()==1){
+if(cbiw.getTypes()==1){
     CbpeCriteria example = new CbpeCriteria();
     example.createCriteria().andCbpe09EqualTo(cbiw.getSn())
             .andCbpc01EqualTo(cbiw.getId());
    cbpeMapper.deleteByExample(example);
 }
-if(cbiw.getOrdertype()==2){
+if(cbiw.getTypes()==2){
             CbpiCriteria example = new CbpiCriteria();
             example.createCriteria().andCbpi09EqualTo(cbiw.getSn())
                     .andCbpg01EqualTo(cbiw.getId());
             cbpiMapper.deleteByExample(example);
         }
-        if(cbiw.getOrdertype()==3){
+        if(cbiw.getTypes()==3){
             CbsdCriteria example = new CbsdCriteria();
             example.createCriteria().andCbsd09EqualTo(cbiw.getSn())
                     .andCbsb01EqualTo(cbiw.getId());
             cbsdMapper.deleteByExample(example);
         }
-        if(cbiw.getOrdertype()==4){
+        if(cbiw.getTypes()==4){
             CbsgCriteria example = new CbsgCriteria();
             example.createCriteria().andCbsg09EqualTo(cbiw.getSn())
                     .andCbse01EqualTo(cbiw.getId());
             cbsgMapper.deleteByExample(example);
         }
-        if(cbiw.getOrdertype()==6){
+        if(cbiw.getTypes()==6){
             CbacCriteria example = new CbacCriteria();
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
             cbacMapper.deleteByExample(example);
         }
-        if(cbiw.getOrdertype()==5){
+        if(cbiw.getTypes()==5){
             CbacCriteria example = new CbacCriteria();
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
             cbacMapper.deleteByExample(example);
         }
-        if(cbiw.getOrdertype()==7){
+        if(cbiw.getTypes()==7){
             CbpmCriteria example = new CbpmCriteria();
             example.createCriteria().andCbpm09EqualTo(cbiw.getSn())
                     .andCbpk01EqualTo(cbiw.getId());
             cbpmMapper.deleteByExample(example);
         }
 
-        if(cbiw.getOrdertype()==8){
+        if(cbiw.getTypes()==8){
             CbsjCriteria example = new CbsjCriteria();
             example.createCriteria().andCbsj09EqualTo(cbiw.getSn())
                     .andCbsh01EqualTo(cbiw.getId());
@@ -865,50 +869,53 @@ GsGoodsSn gsGoodsSn = new GsGoodsSn();
             if(cbiw.get(i).getType()==null){
                 throw new SwException("类型不能为空");
             }
-            if(cbiw.get(i).getOrdertype()==1){
+            if(cbiw.get(i).getTypes()==null){
+                throw new SwException("订单类型不能为空");
+            }
+            if(cbiw.get(i).getTypes()==1){
                 CbpeCriteria example = new CbpeCriteria();
                 example.createCriteria().andCbpe09EqualTo(cbiw.get(i).getSn())
                         .andCbpc01EqualTo(cbiw.get(i).getId());
                 cbpeMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==2){
+            if(cbiw.get(i).getTypes()==2){
                 CbpiCriteria example = new CbpiCriteria();
                 example.createCriteria().andCbpi09EqualTo(cbiw.get(i).getSn())
                         .andCbpg01EqualTo(cbiw.get(i).getId());
                 cbpiMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==3){
+            if(cbiw.get(i).getTypes()==3){
                 CbsdCriteria example = new CbsdCriteria();
                 example.createCriteria().andCbsd09EqualTo(cbiw.get(i).getSn())
                         .andCbsb01EqualTo(cbiw.get(i).getId());
                 cbsdMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==4){
+            if(cbiw.get(i).getTypes()==4){
                 CbsgCriteria example = new CbsgCriteria();
                 example.createCriteria().andCbsg09EqualTo(cbiw.get(i).getSn())
                         .andCbse01EqualTo(cbiw.get(i).getId());
                 cbsgMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==6){
+            if(cbiw.get(i).getTypes()==6){
                 CbacCriteria example = new CbacCriteria();
                 example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
                         .andCbaa01EqualTo(cbiw.get(i).getId());
                 cbacMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==5){
+            if(cbiw.get(i).getTypes()==5){
                 CbacCriteria example = new CbacCriteria();
                 example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
                         .andCbaa01EqualTo(cbiw.get(i).getId());
                 cbacMapper.deleteByExample(example);
             }
-            if(cbiw.get(i).getOrdertype()==7){
+            if(cbiw.get(i).getTypes()==7){
                 CbpmCriteria example = new CbpmCriteria();
                 example.createCriteria().andCbpm09EqualTo(cbiw.get(i).getSn())
                         .andCbpk01EqualTo(cbiw.get(i).getId());
                 cbpmMapper.deleteByExample(example);
             }
 
-            if(cbiw.get(i).getOrdertype()==8){
+            if(cbiw.get(i).getTypes()==8){
                 CbsjCriteria example = new CbsjCriteria();
                 example.createCriteria().andCbsj09EqualTo(cbiw.get(i).getSn())
                         .andCbsh01EqualTo(cbiw.get(i).getId());
@@ -940,5 +947,7 @@ GsGoodsSn gsGoodsSn = new GsGoodsSn();
 
     return 1;
 }
+
+
 
 }

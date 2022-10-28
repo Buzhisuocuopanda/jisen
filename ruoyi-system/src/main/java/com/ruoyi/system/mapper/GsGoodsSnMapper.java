@@ -39,6 +39,8 @@ public interface GsGoodsSnMapper {
 
     List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(@Param("whId") Integer whId, @Param("goodsId") Integer goodsId);
 
+    List<GsGoodsSnVo> selectGoodsSnByStatus(GsGoodsSnVo gsGoodsSnVo);
+
     List<GsGoodsSnVo> selectGoodsSnSelect(GsGoodsSnVo gsGoodsSnVo);
     List<GsGoodsSnVo> selectGoodsSnSelect2(@Param("sn") String sn);
     List<GsGoodsSnVo> selectGoodsSnSelect3(@Param("sn") String sn);

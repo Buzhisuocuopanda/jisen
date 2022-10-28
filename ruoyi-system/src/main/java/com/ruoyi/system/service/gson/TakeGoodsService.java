@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson;
 
 import com.ruoyi.system.domain.Cbpm;
+import com.ruoyi.system.domain.GsGoodsSn;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -37,6 +38,8 @@ public interface TakeGoodsService {
     void auditOutStockEnd(GsOutStockAdivceDto gsOutStockAdivceDto);
 
     List<GsGoodsSnVo> selectGoodsSnByWhIdAndGoodsId(Integer whId,Integer goodsId);
+
+    List<GsGoodsSnVo> selectGoodsSnByStatus(GsGoodsSnVo gsGoodsSnVo);
 
     void mdfTakeSuggest2(CbpmDto cbpmDto);
 

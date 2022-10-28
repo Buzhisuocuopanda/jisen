@@ -389,6 +389,7 @@ public class TaskServiceImpl implements TaskService {
 
 
         cbibMapper.insertSelective(cbib);
+        //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());
         return cbib;
     }
 

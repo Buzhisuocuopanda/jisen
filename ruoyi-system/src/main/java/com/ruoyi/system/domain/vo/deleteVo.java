@@ -9,7 +9,7 @@ public class deleteVo {
      //1,入库 3,出库
     private Integer type;
 
-    private Integer Ordertype;
+    private Integer types;
 
     private Integer id;
 
