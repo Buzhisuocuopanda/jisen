@@ -595,7 +595,7 @@ where
           h.CALA01=e.CBPB10
       LEFT JOIN sys_user u ON u.user_id = sn.create_by
       WHERE
-          (sn.delete_flag =0 or sn.delete_flag is null)
+          (sn.delete_flag =0 or sn.delete_flag is null) and sn.status!=3
       <if test="cbwa09s != null">
         and c.CBWA09 in
         <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
@@ -632,6 +632,84 @@ where
         order by sn.create_time desc
 
     </select>
+
+  <select id="selectOutInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo2">
+    SELECT
+    sn.id,c.CBWA09,d.CBLA09,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB08,e.CBPB15,sn.sn,sn.in_time as inTime,sn.out_time as outTime,
+    sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,sn.location_id as locationId
+    FROM
+    gs_goods_sn sn
+
+    LEFT JOIN
+    CBWA c
+    ON
+    sn.wh_id=c.CBWA01
+    LEFT JOIN
+    CBLA d
+    ON
+    d.CBLA01=sn.location_id
+    LEFT JOIN
+    CBPB e
+    ON
+    e.CBPB01=sn.goods_id
+    LEFT JOIN
+    CBPA f
+    ON
+    f.CBPA01=e.CBPB14
+    LEFT JOIN
+    CBPA g
+    ON
+    f.CBPA09=g.CBPA01
+    LEFT JOIN
+    CALA h
+    ON
+    h.CALA01=e.CBPB10
+    LEFT JOIN sys_user u ON u.user_id = sn.create_by
+    WHERE
+    (sn.delete_flag =0 or sn.delete_flag is null) and sn.status=3
+    <if test="cbwa09s != null">
+      and c.CBWA09 in
+      <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
+    </if>
+    <if test="cbla09s != null">
+      and d.CBLA09 in
+      <foreach item="cblaItem" collection="cbla09s" open="(" separator="," close=")">
+        #{cblaItem}
+      </foreach>
+    </if>
+
+    <if test="cbig09 != null ">
+      and sn.goods_id =#{cbig09}
+    </if>
+    <if test="cbig10 != null and cbig10 !=''">
+      and sn.sn like concat('%', #{cbig10}, '%')
+    </if>
+
+    <if test="cbpb01 != null">
+      and e.cbpb01 =#{cbpb01}
+    </if>
+    <if test="cbpb10 != null">
+      and e.cbpb10 =#{cbpb10}
+    </if>
+    <if test="status != null">
+      and sn.status =#{status}
+    </if>
+    <if test="groudStatus != null">
+      and sn.groud_status =#{groudStatus}
+    </if>
+
+    <if test="startTime != null">
+      and sn.out_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and sn.out_time &lt;=#{endTime}
+    </if>
+    ${params.dataScope}
+    order by sn.create_time desc
+
+  </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
     SELECT
       b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,

@@ -392,9 +392,9 @@ ORDER BY
     c.CBIB04 DESC limit 1
   </select>
 
-  <select id="selectCountZjrk2" resultMap="BaseResultMap">
+  <select id="selectCountZjrk2" resultType="map">
     SELECT
-   sum(c.CBIB11)
+   sum(c.CBIB11) as num
     FROM
     `CBIB` c
     WHERE

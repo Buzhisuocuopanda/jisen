@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.dto;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class InwuqusDto extends BaseEntity {
     private String cbwa09;
@@ -28,4 +30,8 @@ public class InwuqusDto extends BaseEntity {
     private Long deptId;
 
     private Long userId;
+
+    private Date startTime;
+
+    private Date endTime;
 }

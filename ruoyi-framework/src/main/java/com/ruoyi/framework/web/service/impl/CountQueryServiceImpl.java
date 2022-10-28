@@ -265,6 +265,15 @@ public class CountQueryServiceImpl implements CountQueryService {
         return cbifMapper.selectInventorysummaryquerys(inwuqusDto);
     }
 
+
+    @Override
+    @DataScope(deptAlias = "u")
+    public List<InwuqusVo2> selectOutInventorysummaryquerys(InwuqusDto inwuqusDto) {
+        inwuqusDto.setDeptId(SecurityUtils.getDeptId());
+        inwuqusDto.setDeptId(SecurityUtils.getUserId());
+        return cbifMapper.selectOutInventorysummaryquerys(inwuqusDto);
+    }
+
     @Override
     public List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo) {
         return cbifMapper.selectInventorysmmaryquerys(ledgerVo);

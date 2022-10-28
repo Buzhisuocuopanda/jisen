@@ -399,7 +399,7 @@ order by a.CBQA08 desc
     d.CBPK01=c.CBPK01
 
     where
-    a.CBPB06=0
+    a.CBPB06=0 and d.check_status = 2
     <if test='cbpk01 != null and cbpk01 != ""'> and d.CBPK01 =#{cbpk01}</if>
     <if test='cbpm09 != null and cbpm09 != ""'> and c.CBPM09 like concat('%',  #{cbpm09}, '%') </if>
     order by d.CBPK08 desc
