@@ -420,6 +420,28 @@ ORDER BY
     sn.create_time desc
   </select>
 
+  <select id="selectGoodsSnByStatus" resultType="com.ruoyi.system.domain.vo.GsGoodsSnVo">
+
+    SELECT
+     sn.id,sn.goods_id,sn.location_id,sn.wh_id, sn.sn,la.CBLA09,pb.CBPB10,pb.CBPB12,pb.CBPB08
+    FROM
+    `gs_goods_sn` sn
+    left join CBPB pb on pb.CBPB01 = sn.goods_id
+    left join CBLA la on la.CBLA01 = sn.location_id
+    WHERE
+    sn.groud_status=1
+    AND sn.status=1
+    <if test="sn != null and sn!=''">
+      and( sn.sn like concat('%', #{sn}, '%')
+    </if>
+
+    <if test="cbpb08 != null and cbpb08!=''">
+      or pb.CBPB08 like concat('%', #{cbpb08}, '%'))
+    </if>
+    ORDER BY
+    sn.create_time desc
+  </select>
+
   <select id="selectGoodsSnSelect" resultType="com.ruoyi.system.domain.vo.GsGoodsSnVo">
 
     SELECT
