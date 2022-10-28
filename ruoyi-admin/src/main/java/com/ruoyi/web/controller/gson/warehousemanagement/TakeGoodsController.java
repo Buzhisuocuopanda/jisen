@@ -961,6 +961,28 @@ public class TakeGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/29 17:31
+     *未被占用的sn商品
+     */
+    @GetMapping("selectGoodsSnByStatus")
+    public AjaxResult selectGoodsSnByStatus(GsGoodsSnVo gsGoodsSnVo ) {
+        try {
+            startPage();
+            List<GsGoodsSnVo> gsGoodsSnVos =takeGoodsService.selectGoodsSnByStatus(gsGoodsSnVo);
+            return AjaxResult.success(gsGoodsSnVos);
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【调拨建议标记完成】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsGoodsSnVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/9/30 8:52

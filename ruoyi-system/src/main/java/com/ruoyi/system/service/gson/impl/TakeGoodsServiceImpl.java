@@ -1380,6 +1380,26 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         return gsGoodsSnVos;
     }
 
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/29 17:31
+     *查未被占用的sn商品
+     *
+     */
+    @Override
+    public List<GsGoodsSnVo> selectGoodsSnByStatus(GsGoodsSnVo gsGoodsSnVo2) {
+        List<GsGoodsSnVo> gsGoodsSnVos = gsGoodsSnMapper.selectGoodsSnByStatus(gsGoodsSnVo2);
+        Map<Integer, String> integerStringMap = baseCheckService.brandMap();
+        for (GsGoodsSnVo gsGoodsSnVo:gsGoodsSnVos) {
+            if(gsGoodsSnVo.getCbpb10()!=null){
+                gsGoodsSnVo.setCbpb10(integerStringMap.get(Integer.parseInt(gsGoodsSnVo.getCbpb10())));
+            }
+            gsGoodsSnVo.setGoodsMsg(gsGoodsSnVo.getSn()+" - "+gsGoodsSnVo.getCbla09()+" - "+gsGoodsSnVo.getCbpb10()+" - "+gsGoodsSnVo.getCbpb12()+" - "+gsGoodsSnVo.getCbpb08());
+        }
+
+        return gsGoodsSnVos;
+    }
+
     @Override
     @Transactional
     public void mdfTakeSuggest2(CbpmDto cbpmDto) {
