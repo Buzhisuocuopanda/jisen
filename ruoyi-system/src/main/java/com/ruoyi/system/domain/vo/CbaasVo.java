@@ -67,6 +67,8 @@ public class CbaasVo {
 
     private String orderClass;
 
+    private Integer cbaa09;
 
+    private Integer cbaa10;
 
 }

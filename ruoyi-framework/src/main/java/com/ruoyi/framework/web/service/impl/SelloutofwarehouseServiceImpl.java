@@ -1040,7 +1040,8 @@ if(cbsbsVos.size()>0){
             Date date = new Date();
             Long userid = SecurityUtils.getUserId();
             CbsdCriteria IOP = new CbsdCriteria();
-            IOP.createCriteria().andCbsd09EqualTo(itemList.getCbsd09());
+            IOP.createCriteria().andCbsd09EqualTo(itemList.getCbsd09())
+                    .andCbsb01EqualTo(itemList.getCbsb01());
             List<Cbsd> cbsds = cbsdMapper.selectByExample(IOP);
             if (cbsds.size() > 0) {
                 throw new SwException("SN码已存在销售出库扫码记录");

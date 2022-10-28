@@ -66,6 +66,9 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
     @Resource
     private GsGoodsSkuMapper gsGoodsSkuMapper;
 
+    @Resource
+    private CbsgMapper cbsgMapper;
+
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 @Resource
@@ -81,10 +84,13 @@ private CbpiMapper cbpiMapper;
 private CbsdMapper cbsdMapper;
 
 @Resource
-private CbsgMapper cbsgMapper;
+private CbsjMapper cbsjMapper;
 
 @Resource
 private CbacMapper cbacMapper;
+
+@Resource
+private CbpmMapper cbpmMapper;
 
 
 
@@ -799,6 +805,25 @@ if(cbiw.getOrdertype()==2){
                     .andCbaa01EqualTo(cbiw.getId());
             cbacMapper.deleteByExample(example);
         }
+        if(cbiw.getOrdertype()==5){
+            CbacCriteria example = new CbacCriteria();
+            example.createCriteria().andCbac09EqualTo(cbiw.getSn())
+                    .andCbaa01EqualTo(cbiw.getId());
+            cbacMapper.deleteByExample(example);
+        }
+        if(cbiw.getOrdertype()==7){
+            CbpmCriteria example = new CbpmCriteria();
+            example.createCriteria().andCbpm09EqualTo(cbiw.getSn())
+                    .andCbpk01EqualTo(cbiw.getId());
+            cbpmMapper.deleteByExample(example);
+        }
+
+        if(cbiw.getOrdertype()==8){
+            CbsjCriteria example = new CbsjCriteria();
+            example.createCriteria().andCbsj09EqualTo(cbiw.getSn())
+                    .andCbsh01EqualTo(cbiw.getId());
+            cbsjMapper.deleteByExample(example);
+        }
 
 
 GsGoodsSn gsGoodsSn = new GsGoodsSn();
@@ -840,6 +865,56 @@ GsGoodsSn gsGoodsSn = new GsGoodsSn();
             if(cbiw.get(i).getType()==null){
                 throw new SwException("类型不能为空");
             }
+            if(cbiw.get(i).getOrdertype()==1){
+                CbpeCriteria example = new CbpeCriteria();
+                example.createCriteria().andCbpe09EqualTo(cbiw.get(i).getSn())
+                        .andCbpc01EqualTo(cbiw.get(i).getId());
+                cbpeMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==2){
+                CbpiCriteria example = new CbpiCriteria();
+                example.createCriteria().andCbpi09EqualTo(cbiw.get(i).getSn())
+                        .andCbpg01EqualTo(cbiw.get(i).getId());
+                cbpiMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==3){
+                CbsdCriteria example = new CbsdCriteria();
+                example.createCriteria().andCbsd09EqualTo(cbiw.get(i).getSn())
+                        .andCbsb01EqualTo(cbiw.get(i).getId());
+                cbsdMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==4){
+                CbsgCriteria example = new CbsgCriteria();
+                example.createCriteria().andCbsg09EqualTo(cbiw.get(i).getSn())
+                        .andCbse01EqualTo(cbiw.get(i).getId());
+                cbsgMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==6){
+                CbacCriteria example = new CbacCriteria();
+                example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
+                        .andCbaa01EqualTo(cbiw.get(i).getId());
+                cbacMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==5){
+                CbacCriteria example = new CbacCriteria();
+                example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
+                        .andCbaa01EqualTo(cbiw.get(i).getId());
+                cbacMapper.deleteByExample(example);
+            }
+            if(cbiw.get(i).getOrdertype()==7){
+                CbpmCriteria example = new CbpmCriteria();
+                example.createCriteria().andCbpm09EqualTo(cbiw.get(i).getSn())
+                        .andCbpk01EqualTo(cbiw.get(i).getId());
+                cbpmMapper.deleteByExample(example);
+            }
+
+            if(cbiw.get(i).getOrdertype()==8){
+                CbsjCriteria example = new CbsjCriteria();
+                example.createCriteria().andCbsj09EqualTo(cbiw.get(i).getSn())
+                        .andCbsh01EqualTo(cbiw.get(i).getId());
+                cbsjMapper.deleteByExample(example);
+            }
+
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
             gsGoodsSn.setSn(cbiw.get(i).getSn());

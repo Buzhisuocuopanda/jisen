@@ -302,7 +302,7 @@ Cbpg cbpgs = new Cbpg();
 
             CbpiCriteria erd = new CbpiCriteria();
             erd.createCriteria().andCbpi09EqualTo(sn)
-                    .andCbpi06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                    .andCbpg01EqualTo(itemList.getCbpg01());
             List<Cbpi> cbpiList = cbpiMapper.selectByExample(erd);
             if (cbpiList.size() > 0) {
                 throw new SwException("该sn已存在");
