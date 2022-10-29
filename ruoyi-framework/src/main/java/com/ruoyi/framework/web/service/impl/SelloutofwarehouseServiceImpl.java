@@ -362,7 +362,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 
         session.commit();
-        session.clearCache();
+                                                                        session.clearCache();
 
 
         Cbsb cbsb1 = new Cbsb();

@@ -676,7 +676,7 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setSn(cbpis.get(j).getCbpi09());
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpis.get(j).getCbpi10());
                     if(cbla==null){
-                        throw new SwException("没有改库位信息");
+                        throw new SwException("没有该库位信息");
                     }
                     scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpis.get(j).getCbpi03());
