@@ -1386,13 +1386,15 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     //查占用
                     List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), goodsOperationDo.getGoodsId());
                     useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
-                    canUseNum = cbib.getCbib15();
+                    canUseNum = cbib.getCbib15()-useNum;
                 } else {
                     //再查GQW的 gqw分配给GBSH开头的订单的分配数量 -占用数量
                     CbbaCriteria baex = new CbbaCriteria();
                     baex.createCriteria()
                             .andCbba08EqualTo(goodsOperationDo.getGoodsId())
+                            .andCbba12EqualTo(TotalOrderConstants.NO)
                             .andCbba07Like("GBSH" + "%");
+                    baex.setOrderByClause("CBBA15 asc");
                     List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
                     //            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
 
@@ -1440,19 +1442,37 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 if (out.getQty() == 0) {
                     continue;
                 }
-                GsGoodsUse goodsUse = new GsGoodsUse();
-                goodsUse.setCreateBy(goodsOperationDo.getUserId());
-                goodsUse.setCreateTime(new Date());
-                goodsUse.setGoodsId(goodsOperationDo.getGoodsId());
-                goodsUse.setLockQty(out.getQty());
+                GsGoodsUseCriteria usex=new GsGoodsUseCriteria();
+                usex.createCriteria()
+                        .andWhIdEqualTo(cbwa.getCbwa01())
+                        .andGoodsIdEqualTo(goodsOperationDo.getGoodsId());
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
+                if(gsGoodsUses.size()>0){
+                    GsGoodsUse goodsUse =gsGoodsUses.get(0);
+
+                    goodsUse.setLockQty(goodsUse.getLockQty()+out.getQty());
+//
+                    goodsUse.setUpdateTime(new Date());
+
+                    gsGoodsUseMapper.updateByPrimaryKey(goodsUse);
+                }else {
+                    GsGoodsUse goodsUse = new GsGoodsUse();
+                    goodsUse.setCreateBy(goodsOperationDo.getUserId());
+                    goodsUse.setCreateTime(new Date());
+                    goodsUse.setGoodsId(goodsOperationDo.getGoodsId());
+                    goodsUse.setLockQty(out.getQty());
 //                goodsUse.setOrderNo(goodsOperationDo.getOrderNo());
-                goodsUse.setOrderQty(goodsOperationDo.getOrderNum());
-                goodsUse.setOrderType(goodsOperationDo.getOrderType().byteValue());
-                goodsUse.setUpdateBy(goodsOperationDo.getUserId());
-                goodsUse.setUpdateTime(new Date());
-                goodsUse.setWhId(cbwa.getCbwa01());
-                goodsUse.setNoOutQty(0.0);
-                gsGoodsUseMapper.insert(goodsUse);
+                    goodsUse.setOrderQty(goodsOperationDo.getOrderNum());
+                    goodsUse.setOrderType(goodsOperationDo.getOrderType().byteValue());
+                    goodsUse.setUpdateBy(goodsOperationDo.getUserId());
+                    goodsUse.setUpdateTime(new Date());
+                    goodsUse.setWhId(cbwa.getCbwa01());
+                    goodsUse.setNoOutQty(0.0);
+                    gsGoodsUseMapper.insert(goodsUse);
+                }
+
+
+
 
                 if (num.equals(0.0)) {
                     break;
@@ -1761,6 +1781,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
              gsGoodsUs.setUpdateTime(date);
              gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
 
+            }
+
+            if(qty==0.0){
+                break;
             }
         }
         Double inuseQty=orginQty-qty;
