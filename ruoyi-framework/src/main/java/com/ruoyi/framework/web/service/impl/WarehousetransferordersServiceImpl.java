@@ -1374,12 +1374,7 @@ else {
                         gsGoodsSkuDo1.setQty(qty - 1);
                         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
 
-                        TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
-                        tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
-                        tranUseQtyDo.setQty(1.0);
-                        tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
-                        tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                        orderDistributionService.diaoboUseOp(tranUseQtyDo);
+
                     }
                 }
             }
@@ -1424,6 +1419,14 @@ else {
                 cbibDo1.setCbib17(TaskType.zjd.getMsg());
                 cbibDo1.setCbib19(cbabs.get(i).getCbab14());
                 taskService.InsertCBIB(cbibDo1);
+
+
+                TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                tranUseQtyDo.setGoodsId(goodsid);
+                tranUseQtyDo.setQty(num);
+                tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                orderDistributionService.diaoboUseOp(tranUseQtyDo);
             }
 
             cbaaMapper.updateByExampleSelective(cbaa, example);
@@ -1553,7 +1556,8 @@ else {
                     tranUseQtyDo.setQty(num);
                     tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
                     tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                    orderDistributionService.diaoboUseOp(tranUseQtyDo);}
+                    orderDistributionService.diaoboUseOp(tranUseQtyDo);
+                }
                 else {
 
                     for (int j = 0; j < gsGoodsSkus.size(); j++) {
@@ -1741,12 +1745,7 @@ else {
                     gsGoodsSkuDo2.setQty(1.0);
                     taskService.addGsGoodsSku(gsGoodsSkuDo2);
 
-                    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
-                    tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
-                    tranUseQtyDo.setQty(1.0);
-                    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
-                    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                    orderDistributionService.diaoboUseOp(tranUseQtyDo);
+
                 } else {
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus1.get(0).getId());
@@ -1761,12 +1760,7 @@ else {
                     gsGoodsSkuDo2.setQty(v);
                     taskService.updateGsGoodsSku(gsGoodsSkuDo2);
 
-                    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
-                    tranUseQtyDo.setGoodsId(cbacs.get(j).getCbac08());
-                    tranUseQtyDo.setQty(1.0);
-                    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
-                    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                    orderDistributionService.diaoboUseOp(tranUseQtyDo);
+
                 }
 
                 //调入仓库
@@ -1830,7 +1824,12 @@ else {
             cbibDo1.setCbib17(TaskType.zjd.getMsg());
             cbibDo1.setCbib19(cbabs.get(i).getCbab14());
             taskService.InsertCBIB(cbibDo1);*/
-
+                TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                tranUseQtyDo.setGoodsId(goodsid);
+                tranUseQtyDo.setQty(Double.valueOf(num));
+                tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+                tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+                orderDistributionService.diaoboUseOp(tranUseQtyDo);
             }
 
             return cbaaMapper.updateByExampleSelective(cbaa, example);
