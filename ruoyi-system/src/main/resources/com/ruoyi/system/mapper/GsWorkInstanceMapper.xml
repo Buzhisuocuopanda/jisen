@@ -320,7 +320,7 @@
     ON
     c.order_no=b.CABRAA14
     WHERE
-    b.CABRAA06=0 and a.CBOA11 &gt;=3
+    b.CABRAA06=0 and a.CBOA11 &gt;=2
     <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
     <if test="startTime != null">
       and b.CABRAA15 &gt;= #{startTime}
@@ -388,9 +388,9 @@
       ON
         a.CBOA07=b.CABRAA14
     WHERE
-    a.cboa11 in (2,5)
+--     a.cboa11 in (2,5)
 
-    and
+--     and
     b.CABRAA06=0 and a.CBOA11=1
     <if test="cabraa14 != null "> and b.CABRAA14  = #{cabraa14}</if>
 
