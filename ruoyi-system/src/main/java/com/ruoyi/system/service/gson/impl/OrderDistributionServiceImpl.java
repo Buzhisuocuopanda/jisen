@@ -1832,7 +1832,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
             goodsUse.setUpdateTime(new Date());
-            goodsUse.setWhId(WareHouseType.GQWWHID);
+            goodsUse.setWhId(tranUseQtyDo.getInWhId());
             gsGoodsUseMapper.insert(goodsUse);
         }
 
