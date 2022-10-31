@@ -253,6 +253,18 @@ private CbpmMapper cbpmMapper;
                 //通过仓库id和货物id判断是否存在
                 List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                 if (gsGoodsSkus.size() == 0) {
+
+                    GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
+                    example21.createCriteria()
+                            .andLocationIdEqualTo(cbla.get(0).getCbla01());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum +1>cbla.get(0).getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                     gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
                     gsGoodsSkuDo1.setWhId(cbla.get(0).getCbla10());
@@ -262,6 +274,18 @@ private CbpmMapper cbpmMapper;
                 }
                 //如果存在则更新库存数量
                 else {
+
+                    GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
+                    example21.createCriteria()
+                            .andLocationIdEqualTo(cbla.get(0).getCbla01());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum +1>cbla.get(0).getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
@@ -742,16 +766,66 @@ private CbpmMapper cbpmMapper;
     @Transactional
     @Override
     public int deleteSwJsSkuBarcodsById(CbicDto cbicDto) {
+        if(cbicDto.getCbic01()==null){
+            throw new SwException("直接入库id不能为空");
+        }
+        Cbic cbic1 = cbicMapper.selectByPrimaryKey(cbicDto.getCbic01());
+        //sn操作
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(cbic1.getCbic10());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+
+
+        //库存操作
+        GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+        //获取仓库id
+        gsGoodsSkuDo.setWhId(cbic1.getCbic07());
+        //获取商品id
+        gsGoodsSkuDo.setGoodsId(cbic1.getCbic09());
+        //获取库位id
+        gsGoodsSkuDo.setLocationId(cbic1.getCbic08());
+        gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        //通过仓库id和货物id判断是否存在
+        List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+        if (gsGoodsSkus.size() == 0) {
+          throw new SwException("库位该商品数量为0");
+        }
+        //如果存在则更新库存数量
+        else {
+            //加锁
+            baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            gsGoodsSkuDo1.setGoodsId(cbic1.getCbic09());
+            gsGoodsSkuDo1.setWhId(cbic1.getCbic07());
+            gsGoodsSkuDo1.setLocationId(cbic1.getCbic08());
+            //查出
+            Double qty = gsGoodsSkus.get(0).getQty();
+            if(qty - 1.0 < 0){
+                throw new SwException("库位该商品数量不足");
+            }
+            gsGoodsSkuDo1.setQty(qty - 1.0);
+            taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+        }
+
+
+
+
+
         Long userid = SecurityUtils.getUserId();
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
         Date date = new Date();
         cbic.setCbic05(Math.toIntExact(userid));
         cbic.setCbic06(DeleteFlagEnum.DELETE.getCode());
-        CbicCriteria example = new CbicCriteria();
-        example.createCriteria().andCbic01EqualTo(cbicDto.getCbic01())
+        CbicCriteria example1 = new CbicCriteria();
+        example1.createCriteria().andCbic01EqualTo(cbicDto.getCbic01())
                 .andCbic06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbicMapper.updateByExampleSelective(cbic,example);
+         cbicMapper.updateByExampleSelective(cbic,example1);
+
+
+
+        return 1;
     }
 
     @Override

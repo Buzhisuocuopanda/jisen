@@ -313,7 +313,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 //            if(itemList.get(i).getTakegoodsid()==null){
 //                throw new SwException("提货单id不能为空");
 //            }
-            Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getTakegoodsid());
+          //  Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemList.get(i).getTakegoodsid());
 
            /* skuIds1.add(cbpk.getCbpk09());
             if(skuIds1.size()>1){
@@ -332,7 +332,12 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
             itemList.get(i).setCbsc12(itemList.get(i).getCbsc09()*itemList.get(i).getCbsc11());
 
             //判断重复
-
+if(itemList.get(i).getTakegoodsid()!=null){
+    Cbpk cbpk=new Cbpk();
+    cbpk.setCbpk01(itemList.get(i).getTakegoodsid());
+    cbpk.setCbpk11(4);
+    cbpkMapper.updateByPrimaryKeySelective(cbpk);
+}
 
 
             mapper.insertSelective(itemList.get(i));
