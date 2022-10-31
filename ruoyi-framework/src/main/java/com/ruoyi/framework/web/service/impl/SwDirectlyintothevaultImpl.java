@@ -335,6 +335,16 @@ private CbpmMapper cbpmMapper;
         if(cbiw.getSn()==null){
             throw new SwException("upc不能为空");
         }
+        CbpbCriteria cbpbCriterias = new CbpbCriteria();
+        cbpbCriterias.createCriteria().andCbpb12EqualTo(cbiw.getSn());
+        List<Cbpb> cbpbss = cbpbMapper.selectByExample(cbpbCriterias);
+        if(cbpbss.size()>0){
+            throw new SwException("sn不正确");
+        }
+
+
+
+
         if(cbiw.getUpc()==null){
             throw new SwException("upc不能为空");
         }
@@ -765,7 +775,8 @@ private CbpmMapper cbpmMapper;
 
     @Transactional
     @Override
-    public int deleteSwJsSkuBarcodsById(CbicDto cbicDto) {
+    public int deleteSwJsSkuBarcodsById(CbicDto cbicDto)  {
+        Date date = new Date();
         if(cbicDto.getCbic01()==null){
             throw new SwException("直接入库id不能为空");
         }
@@ -774,7 +785,22 @@ private CbpmMapper cbpmMapper;
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andSnEqualTo(cbic1.getCbic10());
         List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
-      //  if(){}
+        if(gsGoodsSns.size()>0){
+            if(gsGoodsSns.get(0)!=null){
+                if(gsGoodsSns.get(0).getStatus()!=null){
+                    if(gsGoodsSns.get(0).getStatus()!=1){
+                        throw new SwException("该商品sn不是入库状态");
+                    }
+                    GsGoodsSn gsGoodsSn=new GsGoodsSn();
+                    gsGoodsSn.setStatus(TaskStatus.qxwc.getCode().byteValue());
+                    gsGoodsSn.setUpdateTime(new Date());
+                    gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+                    GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
+                    tyui.createCriteria().andSnEqualTo(cbic1.getCbic10());
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, tyui);
+                }
+            }
+        }
 
 
         //库存操作
@@ -810,13 +836,24 @@ private CbpmMapper cbpmMapper;
         }
 
 
+        CbibDo cbibDo = new CbibDo();
+        cbibDo.setCbib02(cbic1.getCbic07());
+        cbibDo.setCbib04(date);
+        cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+        cbibDo.setCbib08(cbic1.getCbic08());
+        cbibDo.setCbib11(1.0);
+        cbibDo.setCbib17(TaskType.zjrkde.getMsg());
 
+        try {
+            taskService.InsertCBIB(cbibDo);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
 
         Long userid = SecurityUtils.getUserId();
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
-        Date date = new Date();
         cbic.setCbic05(Math.toIntExact(userid));
         cbic.setCbic06(DeleteFlagEnum.DELETE.getCode());
         CbicCriteria example1 = new CbicCriteria();

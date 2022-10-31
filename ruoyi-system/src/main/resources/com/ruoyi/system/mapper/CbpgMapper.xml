@@ -463,8 +463,8 @@
     <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
       and date_format(a.CBPG08,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
     </if>
-    GROUP BY
-    b.cbph08
+/*    GROUP BY
+    b.cbph08*/
   </select>
   <select id="getInfos" resultType="com.ruoyi.system.domain.vo.CbpgVo">
     SELECT  a.CBPG01,a.CBPG07,a.CBPG08,c.CBSA08,d.CBWA09,e.CALA08,a.CBPG11
