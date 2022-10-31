@@ -509,7 +509,7 @@ if(cbacss.size()>0) {
     for (int i = 0; i < cbaasVos.size(); i++) {
 
         Integer cbab15 = cbaasVos.get(0).getCbab15();
-        if(cbab15==1){
+        if(cbab15!=null && cbab15==1){
             cbaasVos.get(0).setOrderClass("国内订单");
         }else{
             cbaasVos.get(0).setOrderClass("国际订单");

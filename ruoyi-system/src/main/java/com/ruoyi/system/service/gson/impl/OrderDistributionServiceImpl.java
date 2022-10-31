@@ -1810,7 +1810,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         Double inuseQty=orginQty-qty;
         //增加调入仓库库存占用
         GsGoodsUseCriteria inUseEx=new GsGoodsUseCriteria();
-        outUseEx.createCriteria()
+        inUseEx.createCriteria()
                 .andWhIdEqualTo(tranUseQtyDo.getInWhId())
                 .andGoodsIdEqualTo(tranUseQtyDo.getGoodsId());
 
