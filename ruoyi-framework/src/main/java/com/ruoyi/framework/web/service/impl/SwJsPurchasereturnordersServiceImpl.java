@@ -903,7 +903,17 @@ if(infoss.size()>0) {
                         throw new SwException("库存数量不足");
                     }
                     gsGoodsSkuDo1.setQty(qty-cbph.getCbph09());
-                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+                    Long userid = SecurityUtils.getUserId();
+                    GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(gsGoodsSkuDo1, GsGoodsSku.class, null);
+                    gsGoodsSku.setUpdateTime(new Date());
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+//                    gsGoodsSku.setQty(goodsSkuDo.getQty());
+                    GsGoodsSkuCriteria exampleSKU = new GsGoodsSkuCriteria();
+                    example.createCriteria()
+                            .andGoodsIdEqualTo(gsGoodsSkuDo1.getGoodsId())
+                            .andWhIdEqualTo(gsGoodsSkuDo1.getWhId());
+                    int i = gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku, exampleSKU);
+//                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
                 }
 
                 ///////////修改cbib表
