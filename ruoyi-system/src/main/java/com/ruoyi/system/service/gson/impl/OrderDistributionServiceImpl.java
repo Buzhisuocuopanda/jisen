@@ -1791,7 +1791,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         outUseEx.setOrderByClause("update_time");
         List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(outUseEx);
         for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-            if(gsGoodsUs.getLockQty()<qty){
+            if(gsGoodsUs.getLockQty()<=qty){
                 qty=qty-gsGoodsUs.getLockQty();
                 gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
 

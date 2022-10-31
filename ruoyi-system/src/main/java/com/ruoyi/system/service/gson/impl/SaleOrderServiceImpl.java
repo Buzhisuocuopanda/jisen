@@ -2111,10 +2111,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         Double cbob09 = cbob.getCbob09();
                         GsGoodsUse gqwGsUse=null;
                         for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
-                            if(gsGoodsUs.getWhId().equals(WareHouseType.GQWWHID)){
-                                gqwGsUse=gsGoodsUs;
-                                continue;
-                            }
+//                            if(gsGoodsUs.getWhId().equals(WareHouseType.GQWWHID)){
+//                                gqwGsUse=gsGoodsUs;
+//                                continue;
+//                            }
                             if(cbob09>gsGoodsUs.getLockQty()){
                                 cbob09=cbob09-gsGoodsUs.getLockQty();
                                 gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
@@ -2133,7 +2133,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
                         }
                         if(cbob09!=0.0){
-                            throw new SwException("无法撤销，占用数对不上，请联系管理员");
+                            throw new SwException("无法反审，占用数对不上，请联系管理员");
 
                         }
 
