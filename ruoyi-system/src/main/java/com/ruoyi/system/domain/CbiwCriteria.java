@@ -444,6 +444,66 @@ public class CbiwCriteria {
             addCriterion("createtime not between", value1, value2, "createtime");
             return (Criteria) this;
         }
+
+        public Criteria andUserIsNull() {
+            addCriterion("`user` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIsNotNull() {
+            addCriterion("`user` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserEqualTo(Integer value) {
+            addCriterion("`user` =", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNotEqualTo(Integer value) {
+            addCriterion("`user` <>", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserGreaterThan(Integer value) {
+            addCriterion("`user` >", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`user` >=", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLessThan(Integer value) {
+            addCriterion("`user` <", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLessThanOrEqualTo(Integer value) {
+            addCriterion("`user` <=", value, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIn(List<Integer> values) {
+            addCriterion("`user` in", values, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNotIn(List<Integer> values) {
+            addCriterion("`user` not in", values, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserBetween(Integer value1, Integer value2) {
+            addCriterion("`user` between", value1, value2, "user");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNotBetween(Integer value1, Integer value2) {
+            addCriterion("`user` not between", value1, value2, "user");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

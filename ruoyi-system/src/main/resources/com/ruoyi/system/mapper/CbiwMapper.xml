@@ -7,6 +7,7 @@
     <result column="storesku" jdbcType="VARCHAR" property="storesku" />
     <result column="upc" jdbcType="VARCHAR" property="upc" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="user" jdbcType="INTEGER" property="user" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    goodssku, sn, storesku, upc, createtime
+    goodssku, sn, storesku, upc, createtime, `user`
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbiwCriteria" resultMap="BaseResultMap">
     select
@@ -91,9 +92,11 @@
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbiw">
     insert into `cbiw` (goodssku, sn, storesku,
-      upc, createtime)
+      upc, createtime, `user`
+      )
     values (#{goodssku,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{storesku,jdbcType=VARCHAR},
-      #{upc,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+      #{upc,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{user,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbiw">
     insert into `cbiw`
@@ -113,6 +116,9 @@
       <if test="createtime != null">
         createtime,
       </if>
+      <if test="user != null">
+        `user`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodssku != null">
@@ -129,6 +135,9 @@
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="user != null">
+        #{user,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -156,6 +165,9 @@
       <if test="record.createtime != null">
         createtime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.user != null">
+        `user` = #{record.user,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -167,7 +179,8 @@
       sn = #{record.sn,jdbcType=VARCHAR},
       storesku = #{record.storesku,jdbcType=VARCHAR},
       upc = #{record.upc,jdbcType=VARCHAR},
-      createtime = #{record.createtime,jdbcType=TIMESTAMP}
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      `user` = #{record.user,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -175,8 +188,10 @@
 
 
 
+
   <select id="swJsGoodslistBySelect" resultType="com.ruoyi.system.domain.vo.CbiwVo">
     select * from cbiw
+             where user = #{user}
 
 order by createtime desc
   </select>
@@ -193,6 +208,7 @@ order by createtime desc
         CBPB c
         ON
           c.CBPB15=a.upc
+      where user = #{user}
 
       group
         by
