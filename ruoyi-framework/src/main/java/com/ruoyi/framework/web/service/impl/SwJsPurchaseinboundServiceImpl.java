@@ -847,6 +847,23 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 // double num = doubles[i];
                 //对库存表的操作
                 if (gsGoodsSkus.size() == 0) {
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
+                    Double cbla11 = cbla.getCbla11();
+
+                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+                    example1.createCriteria()
+                            .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example1);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum + selectbyid.get(k).getNums()>cbla11){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
+                    if( selectbyid.get(k).getNums()>cbla11){
+                        throw new SwException("库位容量不足");
+                    }
                     //新增数据
                     GsGoodsSku gsGoodsSku = new GsGoodsSku();
                     gsGoodsSku.setCreateTime(date);
@@ -873,9 +890,21 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                     gsGoodsSku.setId(id);
-                    if(gsGoodsSku.getQty() + selectbyid.get(k).getNums()>cbla11){
+                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+                    example1.createCriteria()
+                            .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example1);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum + selectbyid.get(k).getNums()>cbla11){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+                    if( selectbyid.get(k).getNums()>cbla11){
                         throw new SwException("库位容量不足");
                     }
+
+
                     gsGoodsSku.setQty(gsGoodsSku.getQty() + selectbyid.get(k).getNums());
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                     gsGoodsSku.setUpdateTime(date);
