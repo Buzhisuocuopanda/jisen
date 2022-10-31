@@ -774,6 +774,7 @@ private CbpmMapper cbpmMapper;
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andSnEqualTo(cbic1.getCbic10());
         List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+      //  if(){}
 
 
         //库存操作
