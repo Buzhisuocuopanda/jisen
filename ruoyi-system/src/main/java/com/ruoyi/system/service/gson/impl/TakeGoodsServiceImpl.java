@@ -1165,7 +1165,7 @@ public TakeGoodsOrderDetailVo takeOrderDetailBySaleId(Integer saleOrderId,Intege
                 usex.createCriteria()
                         .andGoodsIdEqualTo(cbpl.getCbpl08())
                         .andWhIdEqualTo(cbpk.getCbpk10())
-                        .andOrderNoEqualTo(cbpk.getSaleOrderNo())
+
                         ;
 
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
