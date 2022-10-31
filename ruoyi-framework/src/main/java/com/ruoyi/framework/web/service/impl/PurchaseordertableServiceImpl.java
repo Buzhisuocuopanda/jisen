@@ -184,7 +184,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
     }
     @Transactional
     @Override
-    public int swJsPurchasereturnorderbjwc(GsPurchaseOrderDo gsPurchaseOrderDo) {
+    public int swJsPurchasereturnorderbjwc(GsPurchaseOrderDo gsPurchaseOrderDo) throws InterruptedException {
         //标记完成不可删除
         GsPurchaseOrder gsPurchaseOrder1 = purchaseOrderMapper.selectByPrimaryKey(gsPurchaseOrderDo.getId());
         if (!gsPurchaseOrder1.getStatus().equals(TaskStatus.sh.getCode().byteValue())) {

@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbiwCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.vo.CbiwVo;
+import com.ruoyi.system.domain.vo.CbpbVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbiwMapper {
@@ -24,4 +25,5 @@ public interface CbiwMapper {
 
     List<CbiwVo> swJsGoodslistBySelect(CbiwVo cbiwVo);
 
+    List<CbiwVo> selectbystoreandgoods();
 }

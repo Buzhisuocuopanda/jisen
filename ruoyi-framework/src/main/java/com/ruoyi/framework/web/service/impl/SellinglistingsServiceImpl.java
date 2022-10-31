@@ -54,8 +54,8 @@ CbpmCriteria cbpmCriteria = new CbpmCriteria();
             throw new SwException("销售提货单主键id为空");
         }
         Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbpmList.get(0).getCbpk01());
-        if(cbpk.getCbpk11()!=2){
-            throw new SwException("该销售提货单不是审核状态");
+        if(cbpk.getCbpk11()!=4){
+            throw new SwException("该销售提货单不是标记完成状态");
         }
         if(goodsSnDo.getSn()!=null) {
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();

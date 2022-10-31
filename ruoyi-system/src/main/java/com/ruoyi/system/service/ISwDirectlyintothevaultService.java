@@ -22,7 +22,7 @@ public interface ISwDirectlyintothevaultService{
 
     List<GsOrdersInVo> swJsOrderInlist(GsOrdersInDto gsOrdersInDto);
 
-    int insertSwJsSkuBarcodess(List<CbicDto> cbicDto);
+    int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) throws InterruptedException;
 
     void addless(Cbiw cbiw);
 

@@ -230,7 +230,11 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             cbibDo.setCbib17(TaskType.cqrk.getMsg());
             cbibDo.setCbib18(ids);
             cbibDo.setCbib19(vendorid);
-            taskService.InsertCBIB(cbibDo);
+            try {
+                taskService.InsertCBIB(cbibDo);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 1;
     }
@@ -336,7 +340,11 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
                  cbibDo.setCbib17(TaskType.cgrkd.getMsg());
                  //cbibDo.setCbib19(cbpc1.getCbpc09());
-                 taskService.InsertCBIB(cbibDo);
+                 try {
+                     taskService.InsertCBIB(cbibDo);
+                 } catch (InterruptedException e) {
+                     throw new RuntimeException(e);
+                 }
              }
          }
 

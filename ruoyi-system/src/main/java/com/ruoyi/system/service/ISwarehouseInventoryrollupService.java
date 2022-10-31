@@ -25,7 +25,7 @@ public interface ISwarehouseInventoryrollupService {
 
     int swJsStoreendds(CbieDo cbieDo);
 
-    int SwJsSkuBarcodeshsss(CbifDo cbifDo);
+    int SwJsSkuBarcodeshsss(CbifDo cbifDo) throws InterruptedException;
 
     List<CbieVo> SwJsStorelists(CbieVo cbieVo);
 

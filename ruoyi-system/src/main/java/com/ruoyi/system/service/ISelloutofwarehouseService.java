@@ -16,7 +16,7 @@ public interface ISelloutofwarehouseService {
 
     int insertSwJsSkuBarcodesf(CbsbDo cbsbDo);
 
-    int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo);
+    int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) throws InterruptedException;
 
     int insertSwJsSkuBarcodeqxwc(CbsbDo cbsbDo);
 

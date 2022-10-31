@@ -180,5 +180,24 @@
 
 order by createtime desc
   </select>
+    <select id="selectbystoreandgoods" resultType="com.ruoyi.system.domain.vo.CbiwVo">
+      select
+        c.CBPB01 as goodsid,b.CBLA10 as storeid,count(*) as sum
+      from
+        cbiw a
+          LEFT join
+        CBLA b
+        ON
+          b.CBLA09=a.storesku
+          LEFT JOIN
+        CBPB c
+        ON
+          c.CBPB15=a.upc
+
+      group
+        by
+        upc and b.CBLA10
+
+    </select>
 
 </mapper>

@@ -310,6 +310,7 @@ Cbpg cbpgs = new Cbpg();
             //校验sn库存表李是否有该sn
             GsGoodsSnDo gsGoodsSnDoss = new GsGoodsSnDo();
             gsGoodsSnDoss.setSn(sn);
+
             baseCheckService.checkGsGoodsSn(gsGoodsSnDoss);
 
 
@@ -675,7 +676,7 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setSn(cbpis.get(j).getCbpi09());
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpis.get(j).getCbpi10());
                     if(cbla==null){
-                        throw new SwException("没有改库位信息");
+                        throw new SwException("没有该库位信息");
                     }
                     scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpis.get(j).getCbpi03());
@@ -841,7 +842,7 @@ if(infoss.size()>0) {
      */
     @Transactional
     @Override
-    public int SwJsSkuBarcodes(CbpgDto cbpgDto) {
+    public int SwJsSkuBarcodes(CbpgDto cbpgDto) throws InterruptedException {
         if(cbpgDto.getCbpg01()==null){
             throw new SwException("退货单id不能为空");
         }
@@ -869,7 +870,7 @@ if(infoss.size()>0) {
                /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
                 //获取仓库id
                 gsGoodsSkuDo.setWhId(cbpg1.getCbpg10());
-//                gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
+//               gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
                 //获取商品id
                 gsGoodsSkuDo.setGoodsId(cbph.getCbph08());
                 gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode())*/;

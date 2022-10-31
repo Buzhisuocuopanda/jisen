@@ -14,7 +14,7 @@ public interface TaskService {
 
     int   InsertGsGoodsntrans(GsGoodsSnTransDo goodsSnTransDo);
 
-    Cbib InsertCBIB(CbibDo cbibDo);
+    Cbib InsertCBIB(CbibDo cbibDo) throws InterruptedException;
     //采购入库如果没库存新增库存
     GsGoodsSku addGsGoodsSku(GsGoodsSkuDo goodsSkuDo);
     //新增sn

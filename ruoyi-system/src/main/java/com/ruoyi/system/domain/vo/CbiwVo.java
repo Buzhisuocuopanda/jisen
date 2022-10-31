@@ -16,4 +16,9 @@ public class CbiwVo {
 
     private Date createtime;
 
+    private Double sum;
+
+    private Integer goodsid;
+
+    private Integer storeid;
 }

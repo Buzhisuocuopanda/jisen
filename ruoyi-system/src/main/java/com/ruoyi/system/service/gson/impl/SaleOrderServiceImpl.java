@@ -1237,16 +1237,152 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("没有查到该订单");
         }
 
-        //只能是已提交状态才能撤销
-        if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cboa.getCboa11())) {
-            throw new SwException("订单状态为未提交才能进行撤销");
+
+
+        CbobCriteria obex=new CbobCriteria();
+        obex.createCriteria()
+                .andCboa01EqualTo(cboa.getCboa01());
+        List<Cbob> cbobs = cbobMapper.selectByExample(obex);
+        Date date = new Date();
+
+        if(cboa.getCboa27()==2){
+            //只能是已提交状态才能撤销
+            if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cboa.getCboa11())) {
+                throw new SwException("订单状态为已提交才能进行撤销");
+            }
+
+            for (Cbob cbob : cbobs) {
+                //撤销后删除商品占用
+
+                GsGoodsUseCriteria usexample = new GsGoodsUseCriteria();
+                usexample.createCriteria()
+                        .andGoodsIdEqualTo(cbob.getCbob08());
+                usexample.setOrderByClause("wh_id desc ");
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usexample);
+                Double cbob09 = cbob.getCbob09();
+                GsGoodsUse gqwGsUse=null;
+                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                    if(gsGoodsUs.getWhId().equals(WareHouseType.GQWWHID)){
+                        gqwGsUse=gsGoodsUs;
+                        continue;
+                    }
+                    if(cbob09>gsGoodsUs.getLockQty()){
+                        cbob09=cbob09-gsGoodsUs.getLockQty();
+                        gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+
+                    }else {
+
+                        gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-cbob09);
+                        gsGoodsUs.setUpdateTime(date);
+                        cbob09=0.0;
+                        gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+
+                    }
+                    if(cbob09==0){
+                        break;
+                    }
+
+                }
+
+                if(cbob09!=0.0 & gqwGsUse!=null){
+                    if(cbob09>gqwGsUse.getLockQty()){
+                        throw new SwException("无法撤销，占用数对不上，请联系管理员");
+                    }
+                    gqwGsUse.setLockQty(gqwGsUse.getLockQty()-cbob09);
+
+                    CbbaCriteria baex=new CbbaCriteria();
+                    baex.createCriteria()
+                            .andCbba08EqualTo(cbob.getCbob08())
+                            .andCbba12EqualTo(0)
+                            .andCbba07Like("GBSH" + "%");
+                    baex.setOrderByClause("CBBA15 asc");
+                    List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
+                    for (Cbba cbba : cbbas) {
+                        if(cbba.getCbba14()>cbob09){
+                            cbba.setCbba14(cbba.getCbba14()-cbob09);
+                            cbba.setCbba04(date);
+                            cbbaMapper.updateByPrimaryKey(cbba);
+                            cbob09=0.0;
+                        }else {
+                            cbob09=cbba.getCbba14()-cbob09;
+                            cbba.setCbba14(0.0);
+                            cbba.setCbba04(date);
+                            cbbaMapper.updateByPrimaryKey(cbba);
+
+                        }
+                        if(cbob09==0.0){
+                            break;
+                        }
+                    }
+
+                }
+
+                if(cbob09!=0.0){
+                    throw new SwException("无法撤销，生产总订单占用数对不上，请联系管理员");
+                }
+
+
+//            int i = gsGoodsUseMapper.deleteByExample(usexample);
+            }
+
+        }else {
+            //只能是已提交状态才能撤销
+            if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cboa.getCboa11())) {
+                throw new SwException("订单状态为未提交才能进行撤销");
+            }
+
+            for (Cbob cbob : cbobs) {
+
+
+
+                GsGoodsUseCriteria usexample = new GsGoodsUseCriteria();
+                usexample.createCriteria()
+                        .andWhIdEqualTo(WareHouseType.GQWWHID)
+                        .andGoodsIdEqualTo(cbob.getCbob08());
+                usexample.setOrderByClause("wh_id desc ");
+                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usexample);
+                Double cbob09 = cbob.getCbob09();
+                GsGoodsUse gqwGsUse=null;
+                for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
+                    if(gsGoodsUs.getWhId().equals(WareHouseType.GQWWHID)){
+                        gqwGsUse=gsGoodsUs;
+                        continue;
+                    }
+                    if(cbob09>gsGoodsUs.getLockQty()){
+                        cbob09=cbob09-gsGoodsUs.getLockQty();
+                        gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+
+                    }else {
+
+                        gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-cbob09);
+                        gsGoodsUs.setUpdateTime(date);
+                        cbob09=0.0;
+                        gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+
+                    }
+                    if(cbob09==0){
+                        break;
+                    }
+
+                }
+                if(cbob09!=0.0){
+                    throw new SwException("无法撤销，占用数对不上，请联系管理员");
+
+                }
+
+
+
+                Cbba cbba= cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+                if(cbba==null){
+                    throw new SwException("没有查到该生产总订单，请联系管理员"+cbob.getCbob18());
+
+                }
+                cbba.setCbba14(cbba.getCbba14()-cbob.getCbob09());
+
+
+            }
         }
 
-        //撤销后删除商品占用
-        GsGoodsUseCriteria usexample = new GsGoodsUseCriteria();
-        usexample.createCriteria()
-                .andOrderNoEqualTo(cboa.getCboa07());
-        int i = gsGoodsUseMapper.deleteByExample(usexample);
 
 
         //删除缺货建议
@@ -2500,13 +2636,46 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 if (noneedNum != 0.0) {
                     GsGoodsUseCriteria usex = new GsGoodsUseCriteria();
                     usex.createCriteria()
-                            .andGoodsIdEqualTo(cbod.getCbod08())
-                            .andOrderNoEqualTo(cboa.getCboa07());
+                            .andGoodsIdEqualTo(cbod.getCbod08());
+                    usex.setOrderByClause("wh_id desc");
+//                            .andOrderNoEqualTo(cboa.getCboa07());
                     List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);
                     for (GsGoodsUse gsGoodsUs : gsGoodsUses) {
                         if(noneedNum==0){
                             break;
                         }
+                        if(gsGoodsUs.getWhId().equals(WareHouseType.GQWWHID)){
+                            if(cbob.getCbob17()!=null){
+                                Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+
+                                cbba.setCbba14(cbba.getCbba14()-noneedNum);
+                                cbba.setCbba04(date);
+                                cbbaMapper.updateByPrimaryKey(cbba);
+                            }else {
+                                CbbaCriteria baex = new CbbaCriteria();
+                                baex.createCriteria()
+                                        .andCbba08EqualTo(cbob.getCbob08())
+                                        .andCbba12EqualTo(TotalOrderConstants.NO)
+                                        .andCbba07Like("GBSH" + "%");
+                                baex.setOrderByClause("CBBA15 asc");
+                                List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
+                                for (Cbba cbba : cbbas) {
+                                    if(cbba.getCbba14()>noneedNum){
+                                        cbba.setCbba14(cbba.getCbba14()-noneedNum);
+                                        cbba.setCbba04(date);
+                                        noneedNum=0.0;
+                                        cbbaMapper.updateByPrimaryKey(cbba);
+                                    }else {
+                                        noneedNum=cbba.getCbba14()-noneedNum;
+                                        cbba.setCbba14(0.0);
+                                        cbba.setCbba04(date);
+
+                                        cbbaMapper.updateByPrimaryKey(cbba);
+                                    }
+                                }
+                            }
+                        }
+
                         GsOutStockAdivceCriteria adex=new GsOutStockAdivceCriteria();
                         adex.createCriteria()
                                 .andGoodsIdEqualTo(gsGoodsUs.getGoodsId())

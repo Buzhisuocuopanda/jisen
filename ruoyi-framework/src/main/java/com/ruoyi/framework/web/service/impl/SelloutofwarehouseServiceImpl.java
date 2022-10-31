@@ -335,6 +335,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
 
 
+            mapper.insertSelective(itemList.get(i));
 
 
            // mapper.insertSelective(itemList.get(i));
@@ -345,7 +346,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
         }
 
 
-        List<Integer> collect = itemList.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
+ /*       List<Integer> collect = itemList.stream().map(Cbsc::getCbsc08).collect(Collectors.toList());
         HashSet<Integer> set = new HashSet<>(collect);
 
             List<Cbsc> newList = getNewList(itemList);
@@ -356,12 +357,12 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
                     session.commit();
                     session.clearCache();
                 }
-            }
+            }*/
        // mapper.insertSelective(itemList.get(i));
 
 
         session.commit();
-        session.clearCache();
+                                                                        session.clearCache();
 
 
         Cbsb cbsb1 = new Cbsb();
@@ -432,7 +433,7 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Transactional
     @Override
-    public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) {
+    public int insertSwJsSkuBarcodeshwc(CbsbDo cbsbDo) throws InterruptedException {
         Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(cbsbDo.getCbsb01());
         if (cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
         } else {
@@ -881,12 +882,22 @@ return 1;
                     Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
                     Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
                     TakeOrderSugestVo outsuggestio = new TakeOrderSugestVo();
-                    outsuggestio.setBrand(cala.getCala08());
-                    outsuggestio.setGoodClass(cbpa.getCbpa08());
-                    outsuggestio.setModel(cbpb.getCbpb12());
-                    outsuggestio.setDescription(cbpb.getCbpb08());
+                    if(cala!=null){
+                        outsuggestio.setBrand(cala.getCala08());
+
+                    }
+                    if(cbpa!=null){
+                        outsuggestio.setGoodClass(cbpa.getCbpa08());
+                    }
+                    if(cbpb!=null){
+                        outsuggestio.setDescription(cbpb.getCbpb08());
+                        outsuggestio.setModel(cbpb.getCbpb12());
+
+                    }
                     outsuggestio.setSn(cbpms.get(j).getCbpm09());
-                    outsuggestio.setSku(cbla.getCbla09());
+                    if(cbla!=null){
+                        outsuggestio.setSku(cbla.getCbla09());
+                    }
                     outsuggestion.add(outsuggestio);
             }
             }
