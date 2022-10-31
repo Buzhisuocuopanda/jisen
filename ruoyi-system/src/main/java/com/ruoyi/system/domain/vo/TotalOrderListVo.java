@@ -41,6 +41,11 @@ public class TotalOrderListVo {
     @ApiModelProperty("生产数量")
 
     private Double makeQty;
+
+    @Excel(name = "占用数量", cellType = Excel.ColumnType.NUMERIC)
+    @ApiModelProperty("占用数量")
+
+    private Double useQty;
     @Excel(name = "已发货数量", cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("已发货数量")
 
@@ -59,7 +64,7 @@ public class TotalOrderListVo {
 
     private String goods;
 
-    private Double useQty;
+
 
     private Double qty;
     private String brand;
