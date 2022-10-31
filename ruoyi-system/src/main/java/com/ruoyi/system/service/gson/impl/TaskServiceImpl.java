@@ -261,6 +261,20 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib16((double) 0);
             }
 
+            //直接入库删除
+            if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrkde.getMsg())){
+                if(cbib1.getCbib15()==null){
+                    cbib1.setCbib15((double) 1);
+                }
+                cbib.setCbib09(cbib1.getCbib15());
+                cbib.setCbib11(cbibDo.getCbib11());
+                cbib.setCbib12((double) 0);
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbib.getCbib09()-cbib.getCbib11());
+                cbib.setCbib16((double) 0);
+            }
+
                 //采购入库
            //采购退库单
             if(cbibDo.getCbib17().equals(TaskType.cgtkd.getMsg())){
