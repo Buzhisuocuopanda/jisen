@@ -293,6 +293,19 @@ public class CountQueryServiceImpl implements CountQueryService {
                 }
 
             }
+            Double num1=0d;
+            Double num2=0d;
+            Double num3=0d;
+            if(occupancyVo2.getCbob09()!=null){
+                num1 = occupancyVo2.getCbob09();
+            }
+            if(occupancyVo2.getCbob10()!=null){
+                num2 = occupancyVo2.getCbob10();
+            }
+            if(occupancyVo2.getCbob15()!=null){
+                num3 = occupancyVo2.getCbob15();
+            }
+            occupancyVo2.setLockQty(num1-num2-num3);
         }
         return occupancyVos;
     }
