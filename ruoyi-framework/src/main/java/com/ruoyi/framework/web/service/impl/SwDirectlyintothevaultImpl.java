@@ -102,6 +102,7 @@ private CbpmMapper cbpmMapper;
     @Override
     public int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) throws InterruptedException {
         Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
 
         if(cbicDto.get(0).getUpc()==null){
             throw new SwException("upc没输入");
@@ -109,8 +110,9 @@ private CbpmMapper cbpmMapper;
        //  log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
         /*SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbicMapper mapper = session.getMapper(CbicMapper.class);*/
-
-        List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods();
+        CbiwVo cbiwVo = new CbiwVo();
+        cbiwVo.setUser(Math.toIntExact(userid));
+        List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods(cbiwVo);
         if(selectbystoreandgoods.size()>0){
             for(int m=0;m<selectbystoreandgoods.size();m++){
                      //台账
@@ -156,7 +158,7 @@ private CbpmMapper cbpmMapper;
 
 
 
-                Long userid = SecurityUtils.getUserId();
+               // Long userid = SecurityUtils.getUserId();
 
                 //获取仓库id
                 CblaCriteria example = new CblaCriteria();
@@ -331,6 +333,8 @@ private CbpmMapper cbpmMapper;
 
     @Override
     public void addless(Cbiw cbiw) {
+        Long userid = SecurityUtils.getUserId();
+
         Date date = new Date();
         if(cbiw.getSn()==null){
             throw new SwException("upc不能为空");
@@ -404,6 +408,7 @@ private CbpmMapper cbpmMapper;
         cbiw.setCreatetime(date);
         cbiw.setSn(cbiw.getSn());
         cbiw.setUpc(cbiw.getUpc());
+        cbiw.setUser(Math.toIntExact(userid));
         CbpbCriteria cbpbCriteria = new CbpbCriteria();
         cbpbCriteria.createCriteria().andCbpb15EqualTo(cbiw.getUpc());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
@@ -425,16 +430,21 @@ private CbpmMapper cbpmMapper;
 
     @Override
     public List<CbiwVo> swJsGoodslistBySelect(CbiwVo cbiwVo) {
+        Long userid = SecurityUtils.getUserId();
+        cbiwVo.setUser(Math.toIntExact(userid));
         return cbiwMapper.swJsGoodslistBySelect(cbiwVo);
     }
 
     @Override
     public void deleteless(Cbiw cbiw) {
+        Long userid = SecurityUtils.getUserId();
+
         if(cbiw.getSn()==null){
             throw new SwException("sn不能为空");
         }
         CbiwCriteria cbiwCriteria = new CbiwCriteria();
-        cbiwCriteria.createCriteria().andSnEqualTo(cbiw.getSn());
+        cbiwCriteria.createCriteria().andSnEqualTo(cbiw.getSn())
+                .andUserEqualTo(userid.intValue());
         cbiwMapper.deleteByExample(cbiwCriteria);
 
     }
@@ -1009,6 +1019,7 @@ if(cbiw.getTypes()==2){
 
     @Override
     public int deletelessmore(List<Cbiw> cbiw) {
+        Long userid = SecurityUtils.getUserId();
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbiwMapper mapper = session.getMapper(CbiwMapper.class);
@@ -1017,7 +1028,8 @@ if(cbiw.getTypes()==2){
                 throw new SwException("sn不能为空");
             }
             CbiwCriteria example = new CbiwCriteria();
-            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
+            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn())
+                    .andUserEqualTo(Math.toIntExact(userid));
 
             mapper.deleteByExample(example);
         }
