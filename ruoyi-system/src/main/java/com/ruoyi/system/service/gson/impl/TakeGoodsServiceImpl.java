@@ -202,7 +202,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andWhIdEqualTo(takeGoodsOrderAddDto.getWhId());
             List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
             if(gsGoodsUses.size()==0){
-                throw new SwException("该商品没有在本仓库占用库存，商品:");
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
+                throw new SwException("该商品没有在本仓库占用库存，商品:"+cbpb.getCbpb12());
             }
 
             GsGoodsUse goodsUse = gsGoodsUses.get(0);
@@ -910,11 +911,11 @@ public TakeGoodsOrderDetailVo takeOrderDetailBySaleId(Integer saleOrderId,Intege
                 cbobQty=0.0;
                 gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-cbobQty);
                 gsGoodsUs.setUpdateTime(date);
-                gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+//                gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
             }else {
                 canTakeQty=canTakeQty+gsGoodsUs.getLockQty();
                 cbobQty=cbobQty-gsGoodsUs.getLockQty();
-                gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+//                gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
 
             }
 

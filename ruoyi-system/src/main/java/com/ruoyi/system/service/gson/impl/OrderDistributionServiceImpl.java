@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.constant.TotalOrderConstants;
 import com.ruoyi.common.constant.WareHouseType;
 import com.ruoyi.common.enums.*;
@@ -1776,7 +1777,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     @Override
     @Transactional
     public Boolean diaoboUseOp(TranUseQtyDo tranUseQtyDo) {
-
+        log.info("调拨标记完成"+ JSON.toJSON(tranUseQtyDo));
         if(!tranUseQtyDo.getInWhId().equals(WareHouseType.CDCWHID)   ){
             return true;
         }
