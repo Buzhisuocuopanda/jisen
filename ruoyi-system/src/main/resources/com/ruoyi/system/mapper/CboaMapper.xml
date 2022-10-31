@@ -783,10 +783,13 @@ FROM
 	LEFT JOIN CBOB ob ON ob.CBOA01 = oa.CBOA01
 	LEFT JOIN CBPB pb ON ob.CBOB08 = pb.CBPB01
     LEFT JOIN gs_goods_use outs ON outs.goods_id =ob.CBOB08
+    LEFT  JOIN CBSC sc ON ob.CBOB01=sc.CBSC14
+    LEFT JOIN CBSB sb ON sb.CBSB01=sc.CBSB01
 WHERE
 	oa.CBOA06 = 0
 	AND oa.CBOA11 = 5
     AND pb.type=0
+    AND sb.CBSB11 >=0
     <if test="customerName != null and customerName != '' ">
 
 
