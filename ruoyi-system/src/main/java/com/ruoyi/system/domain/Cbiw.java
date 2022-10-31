@@ -14,6 +14,8 @@ public class Cbiw implements Serializable {
 
     private Date createtime;
 
+    private Integer user;
+
     private static final long serialVersionUID = 1L;
 
     public String getGoodssku() {
@@ -56,6 +58,14 @@ public class Cbiw implements Serializable {
         this.createtime = createtime;
     }
 
+    public Integer getUser() {
+        return user;
+    }
+
+    public void setUser(Integer user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -72,7 +82,8 @@ public class Cbiw implements Serializable {
             && (this.getSn() == null ? other.getSn() == null : this.getSn().equals(other.getSn()))
             && (this.getStoresku() == null ? other.getStoresku() == null : this.getStoresku().equals(other.getStoresku()))
             && (this.getUpc() == null ? other.getUpc() == null : this.getUpc().equals(other.getUpc()))
-            && (this.getCreatetime() == null ? other.getCreatetime() == null : this.getCreatetime().equals(other.getCreatetime()));
+            && (this.getCreatetime() == null ? other.getCreatetime() == null : this.getCreatetime().equals(other.getCreatetime()))
+            && (this.getUser() == null ? other.getUser() == null : this.getUser().equals(other.getUser()));
     }
 
     @Override
@@ -84,6 +95,7 @@ public class Cbiw implements Serializable {
         result = prime * result + ((getStoresku() == null) ? 0 : getStoresku().hashCode());
         result = prime * result + ((getUpc() == null) ? 0 : getUpc().hashCode());
         result = prime * result + ((getCreatetime() == null) ? 0 : getCreatetime().hashCode());
+        result = prime * result + ((getUser() == null) ? 0 : getUser().hashCode());
         return result;
     }
 
@@ -98,6 +110,7 @@ public class Cbiw implements Serializable {
         sb.append(", storesku=").append(storesku);
         sb.append(", upc=").append(upc);
         sb.append(", createtime=").append(createtime);
+        sb.append(", user=").append(user);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

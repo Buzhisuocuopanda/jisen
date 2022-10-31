@@ -21,4 +21,6 @@ public class CbiwVo {
     private Integer goodsid;
 
     private Integer storeid;
+
+    private Integer user;
 }

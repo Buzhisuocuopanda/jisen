@@ -183,8 +183,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbob08EqualTo(good.getGoodsId());
             List<Cbob> cbobs = cbobMapper.selectByExample(cbobex);
             for (Cbob cbob : cbobs) {
-                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
-                    throw new SwException("提货数量不能超过订单数量");
+//                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
+//                    throw new SwException("提货数量不能超过订单数量");
+//                }
+                List<Cbpl> cbpls=cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(),good.getGoodsId());
+                Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+                if (good.getQty()+collect >cbob.getCbob09()) {
+                    throw new SwException("提货数量总和不能大于该销售订单数量");
                 }
             }
 
@@ -192,11 +198,12 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             GsGoodsUseCriteria guex=new GsGoodsUseCriteria();
             guex.createCriteria()
                     .andGoodsIdEqualTo(good.getGoodsId())
-                    .andOrderNoEqualTo(takeGoodsOrderAddDto.getSaleOrderNo())
+//                    .andOrderNoEqualTo(takeGoodsOrderAddDto.getSaleOrderNo())
                     .andWhIdEqualTo(takeGoodsOrderAddDto.getWhId());
             List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
             if(gsGoodsUses.size()==0){
-                throw new SwException("该商品没有在本仓库占用库存，商品:");
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
+                throw new SwException("该商品没有在本仓库占用库存，商品:"+cbpb.getCbpb12());
             }
 
             GsGoodsUse goodsUse = gsGoodsUses.get(0);
@@ -214,15 +221,11 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //
 //            }
 
-             Double lockQty = goodsUse.getLockQty();
+//             Double lockQty1 = goodsUse.getLockQty();
+//             Double lockQty1 = goodsUse.getLockQty();
 
             //查出提货数量
-            List<Cbpl> cbpls=cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(),good.getGoodsId());
-            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
 
-            if (good.getQty()+collect >lockQty) {
-                throw new SwException("提货数量总和不能大于该销售订单数量");
-            }
 
 
             if (good.getQty()==0) {
@@ -908,11 +911,11 @@ public TakeGoodsOrderDetailVo takeOrderDetailBySaleId(Integer saleOrderId,Intege
                 cbobQty=0.0;
                 gsGoodsUs.setLockQty(gsGoodsUs.getLockQty()-cbobQty);
                 gsGoodsUs.setUpdateTime(date);
-                gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
+//                gsGoodsUseMapper.updateByPrimaryKey(gsGoodsUs);
             }else {
                 canTakeQty=canTakeQty+gsGoodsUs.getLockQty();
                 cbobQty=cbobQty-gsGoodsUs.getLockQty();
-                gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
+//                gsGoodsUseMapper.deleteByPrimaryKey(gsGoodsUs.getId());
 
             }
 
@@ -1162,7 +1165,7 @@ public TakeGoodsOrderDetailVo takeOrderDetailBySaleId(Integer saleOrderId,Intege
                 usex.createCriteria()
                         .andGoodsIdEqualTo(cbpl.getCbpl08())
                         .andWhIdEqualTo(cbpk.getCbpk10())
-                        .andOrderNoEqualTo(cbpk.getSaleOrderNo())
+
                         ;
 
                 List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(usex);

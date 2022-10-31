@@ -507,14 +507,14 @@ if(itemList.size()==0){
 
 if(cbacss.size()>0) {
     for (int i = 0; i < cbaasVos.size(); i++) {
-
+if(cbaasVos.get(0).getCbab15()!=null){
         Integer cbab15 = cbaasVos.get(0).getCbab15();
-        if(cbab15==1){
+        if(cbab15!=null && cbab15==1){
             cbaasVos.get(0).setOrderClass("国内订单");
         }else{
             cbaasVos.get(0).setOrderClass("国际订单");
 
-        }
+        }}
 
 
         CbacCriteria example = new CbacCriteria();
@@ -1738,6 +1738,21 @@ else {
                 //通过仓库id和货物id判断是否存在
                 List<GsGoodsSku> gsGoodsSkus1 = taskService.checkGsGoodsSku(gsGoodsSkuDo1);
                 if (gsGoodsSkus1.size() == 0) {
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
+                    if (cbla == null) {
+                        throw new SwException("调入库位不存在");
+                    }
+                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+                    example1.createCriteria()
+                            .andLocationIdEqualTo(cbacs.get(j).getCbac10());
+                    List<GsGoodsSku> gsGoodsSkuss1 = gsGoodsSkuMapper.selectByExample(example1);
+                    if(gsGoodsSkuss1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum + 1>cbla.getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
                     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
                     gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
                     gsGoodsSkuDo2.setWhId(instore);
@@ -1747,6 +1762,21 @@ else {
 
 
                 } else {
+
+                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
+                    if (cbla == null) {
+                        throw new SwException("调入库位不存在");
+                    }
+                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+                    example1.createCriteria()
+                            .andLocationIdEqualTo(cbacs.get(j).getCbac10());
+                    List<GsGoodsSku> gsGoodsSkuss1 = gsGoodsSkuMapper.selectByExample(example1);
+                    if(gsGoodsSkuss1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum + 1>cbla.getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus1.get(0).getId());
                     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();

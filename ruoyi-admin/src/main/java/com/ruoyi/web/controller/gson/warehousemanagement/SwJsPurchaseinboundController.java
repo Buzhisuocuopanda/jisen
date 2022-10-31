@@ -219,6 +219,7 @@ public class SwJsPurchaseinboundController extends BaseController {
             value ="采购入库标记完成",
             notes = "采购入库标记完成"
     )
+    @Resubmit(delaySeconds = 3)
     @PostMapping("/SwJsPurchaseinboundshss")
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:bjwc')")
     public AjaxResult swJsPurchaseinboundshss( @RequestBody CbpdDto cbpdDto ) {

@@ -102,6 +102,7 @@ private CbpmMapper cbpmMapper;
     @Override
     public int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) throws InterruptedException {
         Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
 
         if(cbicDto.get(0).getUpc()==null){
             throw new SwException("upc没输入");
@@ -109,8 +110,9 @@ private CbpmMapper cbpmMapper;
        //  log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
         /*SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbicMapper mapper = session.getMapper(CbicMapper.class);*/
-
-        List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods();
+        CbiwVo cbiwVo = new CbiwVo();
+        cbiwVo.setUser(Math.toIntExact(userid));
+        List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods(cbiwVo);
         if(selectbystoreandgoods.size()>0){
             for(int m=0;m<selectbystoreandgoods.size();m++){
                      //台账
@@ -156,7 +158,7 @@ private CbpmMapper cbpmMapper;
 
 
 
-                Long userid = SecurityUtils.getUserId();
+               // Long userid = SecurityUtils.getUserId();
 
                 //获取仓库id
                 CblaCriteria example = new CblaCriteria();
@@ -253,6 +255,18 @@ private CbpmMapper cbpmMapper;
                 //通过仓库id和货物id判断是否存在
                 List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                 if (gsGoodsSkus.size() == 0) {
+
+                    GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
+                    example21.createCriteria()
+                            .andLocationIdEqualTo(cbla.get(0).getCbla01());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum +1>cbla.get(0).getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                     gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
                     gsGoodsSkuDo1.setWhId(cbla.get(0).getCbla10());
@@ -262,6 +276,18 @@ private CbpmMapper cbpmMapper;
                 }
                 //如果存在则更新库存数量
                 else {
+
+                    GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
+                    example21.createCriteria()
+                            .andLocationIdEqualTo(cbla.get(0).getCbla01());
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+                    if(gsGoodsSkus1.size()>0){
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if(sum +1>cbla.get(0).getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
+                    }
+
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
@@ -307,10 +333,22 @@ private CbpmMapper cbpmMapper;
 
     @Override
     public void addless(Cbiw cbiw) {
+        Long userid = SecurityUtils.getUserId();
+
         Date date = new Date();
         if(cbiw.getSn()==null){
             throw new SwException("upc不能为空");
         }
+        CbpbCriteria cbpbCriterias = new CbpbCriteria();
+        cbpbCriterias.createCriteria().andCbpb12EqualTo(cbiw.getSn());
+        List<Cbpb> cbpbss = cbpbMapper.selectByExample(cbpbCriterias);
+        if(cbpbss.size()>0){
+            throw new SwException("sn不正确");
+        }
+
+
+
+
         if(cbiw.getUpc()==null){
             throw new SwException("upc不能为空");
         }
@@ -370,6 +408,7 @@ private CbpmMapper cbpmMapper;
         cbiw.setCreatetime(date);
         cbiw.setSn(cbiw.getSn());
         cbiw.setUpc(cbiw.getUpc());
+        cbiw.setUser(Math.toIntExact(userid));
         CbpbCriteria cbpbCriteria = new CbpbCriteria();
         cbpbCriteria.createCriteria().andCbpb15EqualTo(cbiw.getUpc());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
@@ -391,16 +430,21 @@ private CbpmMapper cbpmMapper;
 
     @Override
     public List<CbiwVo> swJsGoodslistBySelect(CbiwVo cbiwVo) {
+        Long userid = SecurityUtils.getUserId();
+        cbiwVo.setUser(Math.toIntExact(userid));
         return cbiwMapper.swJsGoodslistBySelect(cbiwVo);
     }
 
     @Override
     public void deleteless(Cbiw cbiw) {
+        Long userid = SecurityUtils.getUserId();
+
         if(cbiw.getSn()==null){
             throw new SwException("sn不能为空");
         }
         CbiwCriteria cbiwCriteria = new CbiwCriteria();
-        cbiwCriteria.createCriteria().andSnEqualTo(cbiw.getSn());
+        cbiwCriteria.createCriteria().andSnEqualTo(cbiw.getSn())
+                .andUserEqualTo(userid.intValue());
         cbiwMapper.deleteByExample(cbiwCriteria);
 
     }
@@ -741,17 +785,95 @@ private CbpmMapper cbpmMapper;
 
     @Transactional
     @Override
-    public int deleteSwJsSkuBarcodsById(CbicDto cbicDto) {
+    public int deleteSwJsSkuBarcodsById(CbicDto cbicDto)  {
+        Date date = new Date();
+        if(cbicDto.getCbic01()==null){
+            throw new SwException("直接入库id不能为空");
+        }
+        Cbic cbic1 = cbicMapper.selectByPrimaryKey(cbicDto.getCbic01());
+        //sn操作
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(cbic1.getCbic10());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+        if(gsGoodsSns.size()>0){
+            if(gsGoodsSns.get(0)!=null){
+                if(gsGoodsSns.get(0).getStatus()!=null){
+                    if(gsGoodsSns.get(0).getStatus()!=1){
+                        throw new SwException("该商品sn不是入库状态");
+                    }
+                    GsGoodsSn gsGoodsSn=new GsGoodsSn();
+                    gsGoodsSn.setStatus(TaskStatus.qxwc.getCode().byteValue());
+                    gsGoodsSn.setUpdateTime(new Date());
+                    gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+                    GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
+                    tyui.createCriteria().andSnEqualTo(cbic1.getCbic10());
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, tyui);
+                }
+            }
+        }
+
+
+        //库存操作
+        GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
+        //获取仓库id
+        gsGoodsSkuDo.setWhId(cbic1.getCbic07());
+        //获取商品id
+        gsGoodsSkuDo.setGoodsId(cbic1.getCbic09());
+        //获取库位id
+        gsGoodsSkuDo.setLocationId(cbic1.getCbic08());
+        gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        //通过仓库id和货物id判断是否存在
+        List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+        if (gsGoodsSkus.size() == 0) {
+          throw new SwException("库位该商品数量为0");
+        }
+        //如果存在则更新库存数量
+        else {
+            //加锁
+            baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
+            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+            gsGoodsSkuDo1.setGoodsId(cbic1.getCbic09());
+            gsGoodsSkuDo1.setWhId(cbic1.getCbic07());
+            gsGoodsSkuDo1.setLocationId(cbic1.getCbic08());
+            //查出
+            Double qty = gsGoodsSkus.get(0).getQty();
+            if(qty - 1.0 < 0){
+                throw new SwException("库位该商品数量不足");
+            }
+            gsGoodsSkuDo1.setQty(qty - 1.0);
+            taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+
+        }
+
+
+        CbibDo cbibDo = new CbibDo();
+        cbibDo.setCbib02(cbic1.getCbic07());
+        cbibDo.setCbib04(date);
+        cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+        cbibDo.setCbib08(cbic1.getCbic08());
+        cbibDo.setCbib11(1.0);
+        cbibDo.setCbib17(TaskType.zjrkde.getMsg());
+
+        try {
+            taskService.InsertCBIB(cbibDo);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
         Long userid = SecurityUtils.getUserId();
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
-        Date date = new Date();
         cbic.setCbic05(Math.toIntExact(userid));
         cbic.setCbic06(DeleteFlagEnum.DELETE.getCode());
-        CbicCriteria example = new CbicCriteria();
-        example.createCriteria().andCbic01EqualTo(cbicDto.getCbic01())
+        CbicCriteria example1 = new CbicCriteria();
+        example1.createCriteria().andCbic01EqualTo(cbicDto.getCbic01())
                 .andCbic06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        return cbicMapper.updateByExampleSelective(cbic,example);
+         cbicMapper.updateByExampleSelective(cbic,example1);
+
+
+
+        return 1;
     }
 
     @Override
@@ -897,6 +1019,7 @@ if(cbiw.getTypes()==2){
 
     @Override
     public int deletelessmore(List<Cbiw> cbiw) {
+        Long userid = SecurityUtils.getUserId();
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbiwMapper mapper = session.getMapper(CbiwMapper.class);
@@ -905,7 +1028,8 @@ if(cbiw.getTypes()==2){
                 throw new SwException("sn不能为空");
             }
             CbiwCriteria example = new CbiwCriteria();
-            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
+            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn())
+                    .andUserEqualTo(Math.toIntExact(userid));
 
             mapper.deleteByExample(example);
         }

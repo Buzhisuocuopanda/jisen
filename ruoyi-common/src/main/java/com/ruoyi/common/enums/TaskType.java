@@ -20,6 +20,7 @@ public enum TaskType {
     yydrkd(new Byte("13"), "预订单入库单"),
     yybgd(new Byte("14"), "预订单变更单"),
 
+    zjrkde(new Byte("15"), "直接入库删除"),
 
 
 

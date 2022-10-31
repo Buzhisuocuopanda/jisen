@@ -285,6 +285,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     //通过仓库id和货物id判断是否存在
                     List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                     if(gsGoodsSkus.size()==0){
+
+
                         //新增数据
                         GsGoodsSku gsGoodsSku = new GsGoodsSku();
                         gsGoodsSku.setCreateTime(date);
@@ -345,7 +347,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
             }
 
             return 1;
-        }else {
+        }
+        else {
 
             //校验审核状态
             CbseCriteria example = new CbseCriteria();
@@ -414,6 +417,24 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     //通过仓库id和货物id判断是否存在
                     List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
                     if(gsGoodsSkus.size()==0){
+
+                        Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
+                        if(cbla==null){
+                            throw new SwException("库位不存在");
+                        }
+                        GsGoodsSkuCriteria example11 = new GsGoodsSkuCriteria();
+                        example11.createCriteria()
+                                .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+                        List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example11);
+                        if(gsGoodsSkus1.size()>0){
+                            double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                            if(sum + selectbyid.get(k).getNums()>cbla.getCbla11()){
+                                throw new SwException("库位容量不足");
+                            }
+                        }
+                        if(selectbyid.get(k).getNums()>cbla.getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
                         //新增数据
                         GsGoodsSku gsGoodsSku = new GsGoodsSku();
                         gsGoodsSku.setCreateTime(date);
@@ -427,6 +448,23 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                         gsGoodsSkuMapper.insertSelective(gsGoodsSku);                }
                     //如果存在则更新库存数量
                     else {
+                        Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
+                        if(cbla==null){
+                            throw new SwException("库位不存在");
+                        }
+                        GsGoodsSkuCriteria example11 = new GsGoodsSkuCriteria();
+                        example11.createCriteria()
+                                .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+                        List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example11);
+                        if(gsGoodsSkus1.size()>0){
+                            double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                            if(sum + selectbyid.get(k).getNums()>cbla.getCbla11()){
+                                throw new SwException("库位容量不足");
+                            }
+                        }
+                        if(selectbyid.get(k).getNums()>cbla.getCbla11()){
+                            throw new SwException("库位容量不足");
+                        }
                         //加锁
                         baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
                         GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
