@@ -921,7 +921,7 @@ if(infoss.size()>0) {
                     gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
 //                    gsGoodsSku.setQty(goodsSkuDo.getQty());
                     GsGoodsSkuCriteria exampleSKU = new GsGoodsSkuCriteria();
-                    example.createCriteria()
+                    exampleSKU.createCriteria()
                             .andGoodsIdEqualTo(gsGoodsSkuDo1.getGoodsId())
                             .andWhIdEqualTo(gsGoodsSkuDo1.getWhId());
                     int i = gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku, exampleSKU);
