@@ -738,7 +738,7 @@
     </if>
     <if test="customerName != null and customerName != ''" >
 
-      and ca.CBCA08 =#{customerName}
+      and ca.CBCA08 like concat('%', #{customerName}, '%')
     </if>
     <if test="whId != null and whId != ''" >
 

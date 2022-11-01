@@ -1171,6 +1171,22 @@ if(cbiw.getTypes()==2){
         return 1;
     }
 
+    @Override
+    public String SwJsPusn(CbicDto cbicDto) {
+        if (cbicDto==null) {
+            throw new SwException("sn不能为空");
+        }
+       CbpbCriteria example = new CbpbCriteria();
+        example.createCriteria().andCbpb12EqualTo(cbicDto.getSn());
+List<Cbpb> cbpb = cbpbMapper.selectByExample(example);
+if(cbpb.size()>0){
+    throw new SwException("1");
+}
+
+String S="0";
+        return S;
+    }
+
     public int afsfs(String sn,String upc){
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(upc);

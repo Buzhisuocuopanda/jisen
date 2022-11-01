@@ -996,6 +996,14 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
             if(fhji.contains(cbaa1.getCbaa09()) ){
 
+
+                Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.getCbac10());
+                if(cbla!=null){
+                    if(!cbla.getCbla10().equals(cbaa.getCbaa10())){
+                        throw new SwException("调拨单调库位不在单据调入仓库");
+                    }
+                }
+
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setCreateTime(date);
                 gsGoodsSn.setUpdateTime(date);

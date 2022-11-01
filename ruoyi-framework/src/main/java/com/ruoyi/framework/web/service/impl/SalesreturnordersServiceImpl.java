@@ -674,6 +674,16 @@ if(cbsgss.size()>0){
         }
 
 log.info("sn为"+itemList.getCbsg09());
+        if(itemList.getCbsg10()==null){
+            throw new SwException("库位id不能为空");
+        }
+        Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.getCbsg10());
+        if(cbla==null){
+            throw new SwException("没有改库位信息");
+        }
+        if(!cbla.getCbla10().equals(cbse1.getCbse10())){
+            throw new SwException("库位不属于该仓库");
+        }
 
         CbsfCriteria cas = new CbsfCriteria();
         cas.createCriteria().andCbse01EqualTo(itemList.getCbse01());
@@ -779,6 +789,7 @@ log.info("sn为"+itemList.getCbsg09());
         gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
         gsGoodsSnDo.setUpdateTime(date);
         gsGoodsSnDo.setGoodsId(itemList.getCbsg08());
+        gsGoodsSnDo.setWhId(cbse.getCbse10());
             gsGoodsSnDo.setLocationId(itemList.getCbsg10());
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setSn(itemList.getCbsg09());

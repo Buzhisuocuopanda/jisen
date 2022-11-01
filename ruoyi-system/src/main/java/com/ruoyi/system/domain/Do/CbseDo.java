@@ -3,6 +3,7 @@ package com.ruoyi.system.domain.Do;
 import com.ruoyi.system.domain.Cbsf;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +26,9 @@ public class CbseDo {
     private String cbse07;
 
     private Date cbse08;
-
+    @NotNull(message = "客户不能为空")
     private Integer cbse09;
-
+    @NotNull(message = "仓库不能为空")
     private Integer cbse10;
 
     private Integer cbse11;
