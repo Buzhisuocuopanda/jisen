@@ -278,6 +278,9 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
 //                    gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
                     //获取仓库id
+                    if(cbseDo.getCbse10() == null){
+                        throw new SwException("销售退货单仓库不能为空");
+                    }
                     gsGoodsSkuDo.setWhId(cbseDo.getCbse10());
                     //获取商品id
                     gsGoodsSkuDo.setGoodsId(cbsf.getGoodsId());
