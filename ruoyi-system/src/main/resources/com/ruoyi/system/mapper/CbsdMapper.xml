@@ -355,6 +355,7 @@
   <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
 
 SELECT
+    sd.CBSD01,
     sd.CBSD08 AS goodsId,
     sd.CBSD09 AS sn,
     sc.CBSC03 AS outWhTime,
@@ -381,7 +382,7 @@ FROM
     LEFT JOIN CBPB pb on sd.CBSD08 =pb.CBPB01
 
     LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
-    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
+    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01 and pd.CBPD08 =pe.CBPE08
     LEFT JOIN CBPC pc ON pc.CBPC01 = pd.CBPC01
     LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
 

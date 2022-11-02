@@ -38,7 +38,7 @@ public class FnQueryAyntgesisVo {
     @Excel(name = "描述")
     private String description;
     //数据库注释 数量 表cbsc
-    @Excel(name = "数量")
+//    @Excel(name = "数量")
     private Double qty;
     @Excel(name = "序列号")
     private String sn;

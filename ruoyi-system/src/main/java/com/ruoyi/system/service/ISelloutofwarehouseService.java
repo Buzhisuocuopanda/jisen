@@ -6,6 +6,7 @@ import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.vo.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface ISelloutofwarehouseService {
     IdVo insertSelloutofwarehouse(CbsbDo cbsbDo);
@@ -27,9 +28,9 @@ public interface ISelloutofwarehouseService {
     int insertSwJsSkuBarcodel(CbsbDo cbsbDo);
 
 
-    List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo);
+    List<CbsbsVo> selectSwJsTaskGoodsRelListss(CbsbsVo cbsbsVo) throws ExecutionException, InterruptedException;
 
-    int insertSwJsStoress(Cbsd itemList);
+    int insertSwJsStoress(Cbsd itemList) throws ExecutionException, InterruptedException;
 
     int insertSwJsSkuBarcodedit(CbsbDo cbsbDo);
 

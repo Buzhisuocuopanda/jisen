@@ -864,7 +864,19 @@ if(infoss.size()>0) {
         CbpiCriteria fgoi = new CbpiCriteria();
         fgoi.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
         List<Cbpi> uio1 = cbpiMapper.selectByExample(fgoi);
+
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date();
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg11(TaskStatus.bjwc.getCode());
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        cbpg.setCbpg13(date);
+
         if(uio1 == null||uio1.size()==0){//zgl 判断扫码数量未空则修改gs_goods_sku和cbib表数据
+//            Long userid = SecurityUtils.getUserId();
+
             for(Cbph cbph:uio){
                 ////////////////修改gs_goods_sku
                /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
@@ -903,7 +915,17 @@ if(infoss.size()>0) {
                         throw new SwException("库存数量不足");
                     }
                     gsGoodsSkuDo1.setQty(qty-cbph.getCbph09());
-                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+//                    Long userid = SecurityUtils.getUserId();
+                    GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(gsGoodsSkuDo1, GsGoodsSku.class, null);
+                    gsGoodsSku.setUpdateTime(new Date());
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+//                    gsGoodsSku.setQty(goodsSkuDo.getQty());
+                    GsGoodsSkuCriteria exampleSKU = new GsGoodsSkuCriteria();
+                    exampleSKU.createCriteria()
+                            .andGoodsIdEqualTo(gsGoodsSkuDo1.getGoodsId())
+                            .andWhIdEqualTo(gsGoodsSkuDo1.getWhId());
+                    int i = gsGoodsSkuMapper.updateByExampleSelective(gsGoodsSku, exampleSKU);
+//                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
                 }
 
                 ///////////修改cbib表
@@ -1006,15 +1028,15 @@ if(infoss.size()>0) {
                 throw new SwException("扫码数量小于任务数量不能标记完成");
             }
 
-            Long userid = SecurityUtils.getUserId();
-            Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+
+            /*Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
             Date date = new Date();
             cbpg.setCbpg04(date);
             cbpg.setCbpg05(Math.toIntExact(userid));
             cbpg.setCbpg11(TaskStatus.bjwc.getCode());
 
             cbpg.setCbpg12(Math.toIntExact(userid));
-            cbpg.setCbpg13(date);
+            cbpg.setCbpg13(date);*/
             //cbpg.setCbpg15(date);
             Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpg1.getCbpg09());
 

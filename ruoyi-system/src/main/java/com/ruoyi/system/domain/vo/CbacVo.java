@@ -45,4 +45,11 @@ public class CbacVo {
     private Integer saomanums;
 
     private Double nums;
+
+    private String upc;
+
+    private String goodssku;
+
+    private String storesku;
+
 }

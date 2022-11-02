@@ -712,7 +712,7 @@ where
   </select>
   <select id="selectInventorysmmaryquerys" resultType="com.ruoyi.system.domain.vo.LedgerVo">
     SELECT
-      b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,
+      b.CBWA09,a.CBIB04,a.CBIB03,a.CBIB17,a.CBIB06,c.CBPB08,c.CBPB12,
       a.CBIB09,a.CBIB10,a.CBIB11,b.CBWA11,a.CBIB12,a.CBIB13,a.CBIB14,a.CBIB15,a.CBIB16
     FROM CBIB a
         LEFT JOIN CBWA b on a.CBIB02=b.CBWA01

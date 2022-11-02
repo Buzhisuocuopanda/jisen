@@ -437,21 +437,35 @@ FROM
   </select>-->
   <select id="selectSwJsTaskGoodsRelListsss" resultType="com.ruoyi.system.domain.vo.CbacVo">
     SELECT
-      b.CBAC09,b.CBAC10
+      b.CBAC09,b.CBAC10,c.goods_id,d.CBPB15 as upc,d.CBPB12 as goodssku,e.CBLA09 as storesku
     FROM
       CBAA a
         LEFT JOIN
       CBAC b
       ON
         a.CBAA01=b.CBAA01
+        LEFT	JOIN
+      gs_goods_sn c
+      ON
+        c.sn=b.CBAC09
+        LEFT	join
+      CBPB d
+      ON
+        d.CBPB01=c.goods_id
+        join
+      CBLA e
+      ON
+        e.CBLA01=c.location_id
     WHERE
         a.CBAA01 = #{cbaa01,jdbcType=INTEGER}
         and
       b.CBAC14=1
+and
+        b.CBAC07=0
   </select>
   <select id="swJsGoodslistsss" resultType="com.ruoyi.system.domain.vo.CbacVo">
     SELECT
-      b.CBAC09,b.CBAC10,c.CBLA09
+      b.CBAC09,b.CBAC10,c.CBLA09,e.CBPB15 as upc,e.CBPB12 as goodssku,c.CBLA09 as storesku
     FROM
       CBAA a
         LEFT JOIN
@@ -462,10 +476,20 @@ FROM
       CBLA c
       on
         c.CBLA01=b.CBAC10
+        LEFT	JOIN
+      gs_goods_sn d
+      ON
+        d.sn=b.CBAC09
+        LEFT	join
+      CBPB e
+      ON
+        e.CBPB01=d.goods_id
     WHERE
       a.CBAA01 = #{cbaa01,jdbcType=INTEGER}
       and
       b.CBAC14=2
+    and
+        b.CBAC07=0
   </select>
 
 </mapper>

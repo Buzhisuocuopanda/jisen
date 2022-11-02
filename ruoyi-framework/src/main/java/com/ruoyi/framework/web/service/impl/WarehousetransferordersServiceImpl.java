@@ -502,7 +502,8 @@ if(itemList.size()==0){
             throw new SwException("调拨单id不能为空");
         }
         CbacCriteria example2 = new CbacCriteria();
-        example2.createCriteria().andCbaa01EqualTo(cbaa01);
+        example2.createCriteria().andCbaa01EqualTo(cbaa01)
+                .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbac> cbacss = cbacMapper.selectByExample(example2);
 
 if(cbacss.size()>0) {
@@ -996,6 +997,14 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
             if(fhji.contains(cbaa1.getCbaa09()) ){
 
+
+                Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.getCbac10());
+                if(cbla!=null){
+                    if(!cbla.getCbla10().equals(cbaa.getCbaa10())){
+                        throw new SwException("调拨单调库位不在单据调入仓库");
+                    }
+                }
+
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setCreateTime(date);
                 gsGoodsSn.setUpdateTime(date);
@@ -1029,7 +1038,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             else{
                 //判断调出扫码是否完成
                 CbacCriteria cbacCriterias = new CbacCriteria();
-                cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01());
+                cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01())
+                        .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
                 List<Cbac> cbacss = cbacMapper.selectByExample(cbacCriterias);
 
                 CbabCriteria cbabCriterias = new CbabCriteria();

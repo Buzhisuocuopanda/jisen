@@ -44,7 +44,7 @@ private CbpbMapper cbpbMapper;
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
 
 
-CbpmCriteria cbpmCriteria = new CbpmCriteria();
+       CbpmCriteria cbpmCriteria = new CbpmCriteria();
         cbpmCriteria.createCriteria().andCbpm09EqualTo(goodsSnDo.getSn());
         List<Cbpm> cbpmList = cbpmMapper.selectByExample(cbpmCriteria);
         if (cbpmList.size() == 0) {
