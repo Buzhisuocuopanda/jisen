@@ -463,7 +463,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             //良品数量
 
-            good.setGoodsNum(cbpl.getGoodProductQty());
+
 
 
             good.setPrice(cbpl.getCbpl11());
@@ -472,9 +472,11 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             pmex.createCriteria()
                     .andCbpm08EqualTo(good.getGoodsId())
                     .andCbpm11EqualTo(1)
+                    .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbpk01EqualTo(cbpk.getCbpk01());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
             good.setScanQty(cbpms.size());
+
             good.setGoodsNum(Double.valueOf(cbpms.size()));
             //todo
 //            good.setRemark();
