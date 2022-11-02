@@ -379,6 +379,11 @@ private CbpmMapper cbpmMapper;
         cblaCriteria.createCriteria().andCbla09EqualTo(cbiw.getStoresku());
         List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
         if(cblas.size()>0){
+            if(cblas.get(0).getCbla10()!=null){
+            if(cblas.get(0).getCbla10()!=5){
+               throw new SwException("库位不属于GQW仓库");
+                }
+            }
             //库位容量
             Double nums = cblas.get(0).getCbla11();
             GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
@@ -977,7 +982,6 @@ if(cbiw.getTypes()==2){
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
             Cbac cbac = new Cbac();
-            cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
             cbac.setCbac14(1);
             cbacMapper.updateByExampleSelective(cbac,example);
 

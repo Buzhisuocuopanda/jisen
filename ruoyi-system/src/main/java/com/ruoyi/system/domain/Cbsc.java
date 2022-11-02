@@ -44,6 +44,8 @@ public class Cbsc implements Serializable {
 
     private Integer takegoodsid;
 
+    private Integer scannum;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbsc01() {
@@ -206,6 +208,14 @@ public class Cbsc implements Serializable {
         this.takegoodsid = takegoodsid;
     }
 
+    public Integer getScannum() {
+        return scannum;
+    }
+
+    public void setScannum(Integer scannum) {
+        this.scannum = scannum;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -237,7 +247,8 @@ public class Cbsc implements Serializable {
             && (this.getCbsc16() == null ? other.getCbsc16() == null : this.getCbsc16().equals(other.getCbsc16()))
             && (this.getCbsc17() == null ? other.getCbsc17() == null : this.getCbsc17().equals(other.getCbsc17()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getTakegoodsid() == null ? other.getTakegoodsid() == null : this.getTakegoodsid().equals(other.getTakegoodsid()));
+            && (this.getTakegoodsid() == null ? other.getTakegoodsid() == null : this.getTakegoodsid().equals(other.getTakegoodsid()))
+            && (this.getScannum() == null ? other.getScannum() == null : this.getScannum().equals(other.getScannum()));
     }
 
     @Override
@@ -264,6 +275,7 @@ public class Cbsc implements Serializable {
         result = prime * result + ((getCbsc17() == null) ? 0 : getCbsc17().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getTakegoodsid() == null) ? 0 : getTakegoodsid().hashCode());
+        result = prime * result + ((getScannum() == null) ? 0 : getScannum().hashCode());
         return result;
     }
 
@@ -293,6 +305,7 @@ public class Cbsc implements Serializable {
         sb.append(", cbsc17=").append(cbsc17);
         sb.append(", userId=").append(userId);
         sb.append(", takegoodsid=").append(takegoodsid);
+        sb.append(", scannum=").append(scannum);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

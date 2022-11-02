@@ -1259,6 +1259,9 @@ if(cbsbsVos.size()>0){
             gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+
+
+
         } finally {
             String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                     "then " +
@@ -1273,37 +1276,7 @@ if(cbsbsVos.size()>0){
 
         taskService.updateGsGoodsSn(gsGoodsSnDo);
 
-          /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-            //获取仓库id
-            gsGoodsSkuDo.setWhId(cbsb.getCbsb10());
-            //获取商品id
-            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbsd08());
-            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            //通过仓库id和货物id判断是否存在
-            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-            if(gsGoodsSkus.size()==0){
-                throw new SwException("没有该库存信息");
 
-            }
-            //如果存在则更新库存数量
-            else {
-                //加锁
-                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                //查出
-                Double qty = gsGoodsSkus.get(0).getQty();
-                if(qty==0){
-                    throw new SwException("库存数量不足");
-                }
-                //获取仓库id
-                gsGoodsSkuDo1.setWhId(cbsb.getCbsb10());
-                //获取商品id
-                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsd08());
-                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsd10());
-                gsGoodsSkuDo1.setQty(qty-1);
-                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
-
-            }*/
 
 
         cbsdMapper.insertSelective(itemList);
