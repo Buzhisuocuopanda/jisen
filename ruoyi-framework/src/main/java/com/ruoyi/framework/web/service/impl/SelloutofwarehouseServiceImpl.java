@@ -501,32 +501,41 @@ CbsdCriteria dfsd=new CbsdCriteria();
             //在提货单id在明细表，for
             if (cbscs.size() > 0) {
                 for (int i = 0; i < cbscs.size(); i++) {
+                    Cbsc cbsc = cbscs.get(i);
+//                    if (cbscs.get(i).getTakegoodsid()!= null) {
+//                        Cbpk cbpk1 = cbpkMapper.selectByPrimaryKey(cbscs.get(i).getTakegoodsid());
+                    Cbob cbob = cbobMapper.selectByPrimaryKey(cbsc.getCbsc14());
+                    if(cbob==null){
+                        throw new SwException("没有查到该销售订单明细");
+                    }
 
-                    if (cbscs.get(i).getTakegoodsid()!= null) {
-                        Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbscs.get(i).getTakegoodsid());
-
-                        CboaCriteria afd = new CboaCriteria();
-                        afd.createCriteria().andCboa07EqualTo(cbpk.getSaleOrderNo());
-                        List<Cboa> cboas = cboaMapper.selectByExample(afd);
-                        Cboa cboa = cboas.get(0);
+                    Cboa cboa = cboaMapper.selectByPrimaryKey(cbob.getCboa01());
+                    if(cboa==null){
+                        throw new SwException("没有查到该销售订单");
+                    }
+//                    CboaCriteria afd = new CboaCriteria();
+//                        afd.createCriteria().andCboa07EqualTo(cbob.getSaleOrderNo());
+//                        List<Cboa> cboas = cboaMapper.selectByExample(afd);
+//                        Cboa cboa1 = cboas.get(0);
 
                         SaleOrderExitDo saleOrderExitDo = new SaleOrderExitDo();
+                    saleOrderExitDo.setTotalOrderNo(cbob.getCbob18());
                         saleOrderExitDo.setOrderNo(cboa.getCboa07());
                         saleOrderExitDo.setGoodsId(cbscs.get(i).getCbsc08());
                         saleOrderExitDo.setQty(cbscs.get(i).getCbsc09());
                         saleOrderExitDo.setCbobId(cbscs.get(i).getCbsc14());
                         saleOrderExitDo.setOrderClass(cboa.getCboa27());
                         saleOrderExitDo.setWhId(cbsb1.getCbsb10());
-                        if(cbscs.get(i).getCbsc14()!=null) {
-                            Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
-                            if (cbob == null) {
-                                throw new SwException("销售订单明细表未查到");
-                            }
-
-                            saleOrderExitDo.setTotalOrderNo(cbob.getCbob18());
-                        }
+//                        if(cbscs.get(i).getCbsc14()!=null) {
+//                            Cbob cbob = cbobMapper.selectByPrimaryKey(cbscs.get(i).getCbsc14());
+//                            if (cbob == null) {
+//                                throw new SwException("销售订单明细表未查到");
+//                            }
+//
+//                            saleOrderExitDo.setTotalOrderNo(cbob.getCbob18());
+//                        }
                         orderDistributionService.saleOrderExit(saleOrderExitDo);
-                    }
+//                    }
                 }
             }
 
