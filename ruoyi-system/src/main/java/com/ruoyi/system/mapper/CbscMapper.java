@@ -30,6 +30,7 @@ public interface CbscMapper {
     int updateByPrimaryKeySelective(Cbsc record);
 
     int updateByPrimaryKey(Cbsc record);
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/10/21 14:46

@@ -489,7 +489,6 @@ CbsdCriteria dfsd=new CbsdCriteria();
 
             }
 
-
             //回写生产总总订单
             CbscCriteria example = new CbscCriteria();
             example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
@@ -714,6 +713,7 @@ CbsdCriteria dfsd=new CbsdCriteria();
             }
             return cbsbMapper.updateByExampleSelective(cbsb, example1);
         }
+        //数量
         else {
 
             //主表状态更新
@@ -764,6 +764,7 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
                         if (qty == 0) {
                             throw new SwException("库存数量不足");
                         }
+                        gsGoodsSkuDo1.setId(gsGoodsSkus.get(0).getId());
                         //获取仓库id
                         gsGoodsSkuDo1.setWhId(cbsb1.getCbsb10());
                         //获取商品id
@@ -776,7 +777,7 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
                             throw new SwException("出库数量大于库存数量");
                         }
                         gsGoodsSkuDo1.setQty(qty - cbscs.get(i).getCbsc09());
-                        gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuDo1);
+                        int i1 = gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuDo1);
                     }
                     Cbsc cbsc = cbscs.get(i);
 
@@ -956,7 +957,7 @@ return 1;
                         //仓库
                       if(cbsb.getCbsb10()!=null){
                           Cbwa cbwa = cbwaMapper.selectByPrimaryKey(cbsb.getCbsb10());
-                          cbwa.setCbwa09(cbwa.getCbwa09());
+                          cbsbsVo1.setCbwa09(cbwa.getCbwa09());
                       }
                         //客户名称
                       if (cbsb.getCbsb09()!= null) {
@@ -975,6 +976,7 @@ return 1;
                         cbsbsVo1.setCbsc13(cbscs.get(i).getCbsc13());
                         cbsbsVo1.setCbsc17(cbscs.get(i).getCbsc17());
                       cbsbsVo1.setCbsc09(cbscs.get(i).getCbsc09());
+                      cbsbsVo1.setSaoma(cbscs.get(i).getScannum());
                       if(cbscs.get(i).getCbsc08()!=null) {
                             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbscs.get(i).getCbsc08());
                             cbsbsVo1.setCbpb08(cbpb.getCbpb08());
@@ -1011,7 +1013,8 @@ return 1;
         List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
         HashSet<TakeOrderSugestVo> outsuggestions = new HashSet<>();
 
-        CompletableFuture<List<TakeOrderSugestVo>> f2 = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<List<TakeOrderSugestVo>> f2 =
+                CompletableFuture.supplyAsync(() -> {
 
             //  for (int k=0;k<cbsbsVos.size();k++) {
             CbscCriteria asd = new CbscCriteria();
@@ -1071,7 +1074,8 @@ return 1;
         Double sum = 0.0;
 
        // List<CbsbsVo> finalCbsbsVos = cbsbsVos;
-        CompletableFuture<List<ScanVo>> f3 = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<List<ScanVo>> f3 =
+                CompletableFuture.supplyAsync(() -> {
 
 
         Integer cbsb01 = cbsbsVo.getCbsb01();
@@ -1157,8 +1161,8 @@ return 1;
         cbsbsVo.setCbsb01(itemList.getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
 if(cbsbsVos.size()>0){
-        if(cbsbsVos.get(0).getSaoma()!=null){
-            double v = cbsbsVos.get(0).getSaoma().doubleValue();
+        if(cbsbsVos.get(0).getSaomanums()!=null){
+            double v = cbsbsVos.get(0).getSaomanums().doubleValue();
 
             if( v==cbsbsVos.get(0).getNums()){
             throw new SwException("该销售出库单已扫描完成");
@@ -1241,7 +1245,7 @@ if(cbsbsVos.size()>0){
 }*/
             Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(0).getCbpm10());
             if (cbla == null) {
-                throw new SwException("库位不存在");
+                throw new SwException("提货单扫描表库位不存在");
             }
             if (!cbla.getCbla10().equals(storeid)) {
                 throw new SwException("库位不属于该仓库");
@@ -1295,6 +1299,27 @@ if(cbsbsVos.size()>0){
             gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+
+            CbscCriteria example1 = new CbscCriteria();
+            example1.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                    .andCbsc08EqualTo(itemList.getCbsd08());
+            List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
+            if(cbscList.size()>0){
+                for(int i=0;i<cbscList.size();i++){
+                    if(cbscList.get(i).getScannum()==null){
+                        cbscList.get(i).setScannum(1);
+                      cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+                    }else {
+                        if (cbscList.get(i).getScannum()+1>cbscList.get(i).getCbsc09())continue;
+
+                        cbscList.get(i).setScannum(cbscList.get(i).getScannum() + 1);
+                        cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+
+                    }
+                }
+            }
+
+
         } finally {
             String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                     "then " +
@@ -1309,37 +1334,7 @@ if(cbsbsVos.size()>0){
 
         taskService.updateGsGoodsSn(gsGoodsSnDo);
 
-          /* GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-            //获取仓库id
-            gsGoodsSkuDo.setWhId(cbsb.getCbsb10());
-            //获取商品id
-            gsGoodsSkuDo.setGoodsId(itemList.get(i).getCbsd08());
-            gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-            //通过仓库id和货物id判断是否存在
-            List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-            if(gsGoodsSkus.size()==0){
-                throw new SwException("没有该库存信息");
 
-            }
-            //如果存在则更新库存数量
-            else {
-                //加锁
-                baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                //查出
-                Double qty = gsGoodsSkus.get(0).getQty();
-                if(qty==0){
-                    throw new SwException("库存数量不足");
-                }
-                //获取仓库id
-                gsGoodsSkuDo1.setWhId(cbsb.getCbsb10());
-                //获取商品id
-                gsGoodsSkuDo1.setGoodsId(itemList.get(i).getCbsd08());
-                gsGoodsSkuDo1.setLocationId(itemList.get(i).getCbsd10());
-                gsGoodsSkuDo1.setQty(qty-1);
-                taskService.updateGsGoodsSku(gsGoodsSkuDo1);
-
-            }*/
 
 
         cbsdMapper.insertSelective(itemList);
