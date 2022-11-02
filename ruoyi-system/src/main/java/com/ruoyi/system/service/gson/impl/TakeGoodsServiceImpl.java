@@ -170,7 +170,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         int insert = cbpkMapper.insertWithId(cbpk);
         Cbpl cbpl=null;
         for (TakeOrderGoodsDto good : takeGoodsOrderAddDto.getGoods()) {
-
+            if(good.getQty()==0){
+                continue;
+            }
 
             if(good.getGoodsId()==null){
                 throw new SwException("提货货物不能为空");
@@ -183,6 +185,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbob08EqualTo(good.getGoodsId());
             List<Cbob> cbobs = cbobMapper.selectByExample(cbobex);
             for (Cbob cbob : cbobs) {
+
+
 //                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
 //                    throw new SwException("提货数量不能超过订单数量");
 //                }
