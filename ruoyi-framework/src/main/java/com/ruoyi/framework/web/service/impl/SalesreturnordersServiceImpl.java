@@ -444,6 +444,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                         gsGoodsSku.setUpdateTime(date);
                         gsGoodsSku.setCreateBy(Math.toIntExact(userid));
                         gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                        gsGoodsSku.setLocationId(selectbyid.get(k).getStoreskuid());
                         gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                         gsGoodsSku.setGoodsId(selectbyid.get(k).getGoodsId());
                         gsGoodsSku.setWhId(cbses.get(0).getCbse10());
@@ -560,8 +561,8 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 cbibDo.setCbib08(cbsfs.get(j).getCbsf08());
                 //本次入库数量
                 cbibDo.setCbib11(num);
-                cbibDo.setCbib12((double) 0);
-                cbibDo.setCbib13(num*cbsfs.get(0).getCbsf11());
+                cbibDo.setCbib12(num*cbsfs.get(0).getCbsf11());
+                cbibDo.setCbib13(0.0);
                 cbibDo.setCbib14((double) 0);
                 cbibDo.setCbib17(TaskType.xstkd.getMsg());
                 cbibDo.setCbib19(cbsfs.get(j).getCbsf15());

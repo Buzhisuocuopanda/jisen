@@ -94,25 +94,7 @@ public class DirectlyIntothEvaultController extends BaseController {
         try {
             ValidUtils.bindvaild(bindingResult);
             int i = 0;
-/*
-            for (CbicDto cbicDto1 : cbicDto) {
-                CblaCriteria cblaCriteria = new CblaCriteria();
-                cblaCriteria.createCriteria().andCbla09EqualTo(cbicDto1.getStoresku());
-                List<Cbla> cbiws = cblaMapper.selectByExample(cblaCriteria);
-                if (cbiws.size() > 0) {
-                    cbicDto1.setCbic08(cbiws.get(0).getCbla01());
-                    cbicDto1.setCbic07(cbiws.get(0).getCbla10());
-                }
-                cbicDto1.setCbic10(cbicDto1.getSn());
-                i = swDirectlyintothevaultService.insertSwJsSkuBarcodes(cbicDto1);
-                //删除临时表
-                String cbic10 = cbicDto1.getSn();
-                CbiwCriteria cbiwCriteria = new CbiwCriteria();
-                cbiwCriteria.createCriteria().andSnEqualTo(cbic10);
-                cbiwMapper.deleteByExample(cbiwCriteria);
 
-            }
-*/
              return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
            // return toAjax(i);
         }catch (SwException e) {

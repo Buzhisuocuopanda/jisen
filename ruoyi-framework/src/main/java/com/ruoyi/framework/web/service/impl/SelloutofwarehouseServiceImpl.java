@@ -489,7 +489,6 @@ CbsdCriteria dfsd=new CbsdCriteria();
 
             }
 
-
             //回写生产总总订单
             CbscCriteria example = new CbscCriteria();
             example.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01())
@@ -705,6 +704,7 @@ CbsdCriteria dfsd=new CbsdCriteria();
             }
             return cbsbMapper.updateByExampleSelective(cbsb, example1);
         }
+        //数量
         else {
 
             //主表状态更新
@@ -1260,6 +1260,24 @@ if(cbsbsVos.size()>0){
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
 
+            CbscCriteria example1 = new CbscCriteria();
+            example1.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                    .andCbsc08EqualTo(itemList.getCbsd08());
+            List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
+            if(cbscList.size()>0){
+                for(int i=0;i<cbscList.size();i++){
+                    if(cbscList.get(i).getScannum()==null){
+                        cbscList.get(i).setScannum(1);
+                      cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+                    }else {
+                        if (cbscList.get(i).getScannum()+1>cbscList.get(i).getCbsc09())continue;
+
+                        cbscList.get(i).setScannum(cbscList.get(i).getScannum() + 1);
+                        cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+
+                    }
+                }
+            }
 
 
         } finally {

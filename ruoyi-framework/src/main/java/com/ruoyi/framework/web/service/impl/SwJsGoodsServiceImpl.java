@@ -135,6 +135,10 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
      */
     @Override
     public int updateSwJsGoodsClassify(CbpbDo cbpbDo) {
+
+GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
+      //  examples.createCriteria().(cbpbDo.getCbpb01());
+
         Long userid = SecurityUtils.getUserId();
 
         if(cbpbDo.getCbpb15()!=null){
