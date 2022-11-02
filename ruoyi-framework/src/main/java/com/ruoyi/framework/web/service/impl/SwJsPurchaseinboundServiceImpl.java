@@ -1191,8 +1191,8 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     cbib.setCbib07(cbpc2.getCbpc01());
                     cbib.setCbib08(cbpds1.get(j).getCbpd08());
                     //本次入库数量
-                    cbib.setCbib11(cbpds1.get(j).getCbpd09());
-                    cbib.setCbib12(cbpds1.get(j).getCbpd12());
+                    cbib.setCbib11(0.0);
+                    cbib.setCbib12(0.0);
 
 
                     cbib.setCbib17(TaskType.cgrkd.getMsg());
@@ -1202,10 +1202,10 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                         cbib.setCbib09(cbib1.getCbib15());
                         cbib.setCbib10(cbib1.getCbib16());
 
-                        cbib.setCbib13(cbib1.getCbib13());
-                        cbib.setCbib14(cbib1.getCbib14());
-                        cbib.setCbib15(cbib.getCbib09()-cbib.getCbib11());
-                        cbib.setCbib16(cbib.getCbib10()-cbib.getCbib12());
+                        cbib.setCbib13(cbpds1.get(j).getCbpd09());
+                        cbib.setCbib14(cbpds1.get(j).getCbpd12());
+                        cbib.setCbib15(cbib.getCbib09()-cbib.getCbib13());
+                        cbib.setCbib16(cbib.getCbib10()-cbib.getCbib14());
                         cbib.setCbib18(cbib1.getCbib18()+1);
                     }
                     cbibMapper.insertSelective(cbib);

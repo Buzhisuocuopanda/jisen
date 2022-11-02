@@ -1457,6 +1457,16 @@ return ;
     @Transactional
     public void SwJsPurchaseinboundbgdxgdelete(GsSalesChangeDo cbpdDto) {
 
+        if(cbpdDto.getId()==null){
+            throw new SwException("id不能为空");
+        }
+        GsSalesChange gsSalesChange = gsSalesChangeMapper.selectByPrimaryKey(cbpdDto.getId());
+        if(gsSalesChange==null){
+            throw new SwException("找不到此预订单");
+        }
+        if(gsSalesChange.getStatus()!=TaskStatus.mr.getCode().byteValue()){
+            throw new SwException("变更单不是未审核状态，不能删除");
+        }
         Long userid = SecurityUtils.getUserId();
         Date date = new Date();
         GsSalesChange cbpc = BeanCopyUtils.coypToClass(cbpdDto, GsSalesChange.class, null);

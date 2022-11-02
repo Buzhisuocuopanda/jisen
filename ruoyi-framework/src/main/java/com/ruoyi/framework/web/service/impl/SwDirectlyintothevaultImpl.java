@@ -955,11 +955,14 @@ if(cbiw.getTypes()==2){
             exampwle.createCriteria().andSnEqualTo(cbiw.getSn());
             gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampwle);
         }
+        //调拨单调出删除
         if(cbiw.getTypes()==6){
             CbacCriteria example = new CbacCriteria();
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
-            cbacMapper.deleteByExample(example);
+            Cbac cbac = new Cbac();
+            cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
+            cbacMapper.updateByExampleSelective(cbac,example);
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setStatus(cbiw.getType().byteValue());
             gsGoodsSn.setSn(cbiw.getSn());
@@ -968,11 +971,15 @@ if(cbiw.getTypes()==2){
             gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampwle);
 
         }
+        //调拨单调入删除
         if(cbiw.getTypes()==5){
             CbacCriteria example = new CbacCriteria();
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
-            cbacMapper.deleteByExample(example);
+            Cbac cbac = new Cbac();
+            cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
+            cbac.setCbac14(1);
+            cbacMapper.updateByExampleSelective(cbac,example);
 
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
             gsGoodsSn.setStatus(cbiw.getType().byteValue());

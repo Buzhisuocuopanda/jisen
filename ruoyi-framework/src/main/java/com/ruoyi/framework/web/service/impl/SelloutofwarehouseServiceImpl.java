@@ -1,6 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.core.domain.entity.Cbpa;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -47,10 +48,12 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
 
     @Resource
     private CbpkMapper cbpkMapper;
-
+@Resource
+private CbwaMapper cbwaMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
-
+@Resource
+   private SysUserMapper sysUserMapper;
     @Resource
     private NumberGenerate numberGenerate;
 
@@ -109,7 +112,8 @@ public class SelloutofwarehouseServiceImpl implements ISelloutofwarehouseService
     @Resource
     private  CalaMapper calaMapper;
 
-
+@Resource
+private CbcaMapper cbcaMapper;
     @Resource
     private  CbpbMapper cbpbMapper;
     /**
@@ -888,8 +892,71 @@ return 1;
         CompletableFuture<List<CbsbsVo>> f1 =
                 CompletableFuture.supplyAsync(()->{
         int sizes=0;
-        List<CbsbsVo> cbsbsVos1 = cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
-        CbscCriteria dgrt = new CbscCriteria();
+      //  List<CbsbsVo> cbsbsVos1 = cbpkMapper.selectSwJsTaskGoodsRelListss(cbsbsVo);
+                   // HashSet<CbsbsVo> cbsbsVoss = new HashSet<>(cbsbsVos1);
+                    Cbsb cbsb = cbsbMapper.selectByPrimaryKey(cbsbsVo.getCbsb01());
+                    CbscCriteria example2 = new CbscCriteria();
+                    example2.createCriteria().andCbsb01EqualTo(cbsbsVo.getCbsb01());
+                    List<Cbsc> cbscs = cbscMapper.selectByExample(example2);
+
+                    List<CbsbsVo> cbsbsVos = new ArrayList<>(cbscs.size());
+                  for(int i=0;i<cbscs.size();i++){
+                      CbsbsVo cbsbsVo1 = new CbsbsVo();
+                      cbsbsVo1.setCbsb01(cbsb.getCbsb01());
+                        cbsbsVo1.setCbsb07(cbsb.getCbsb07());
+                      cbsbsVo1.setCbsb08(cbsb.getCbsb08());
+                      cbsbsVo1.setCbsb09(cbsb.getCbsb09());
+                        cbsbsVo1.setCbsb10(cbsb.getCbsb10());
+                      cbsbsVo1.setCbsb18(cbsb.getCbsb18());
+                        cbsbsVo1.setCbsb19(cbsb.getCbsb19());
+                        cbsbsVo1.setCbsb20(cbsb.getCbsb20());
+                        cbsbsVo1.setCbsb21(cbsb.getCbsb21());
+                        cbsbsVo1.setCbsb17(cbsb.getCbsb17());
+                        //货币
+                      if(cbsb.getCbsb16()!=null){
+                          Cala cala = calaMapper.selectByPrimaryKey(cbsb.getCbsb16());
+                          cbsbsVo1.setCny(cala.getCala08());
+                      }
+                        //仓库
+                      if(cbsb.getCbsb10()!=null){
+                          Cbwa cbwa = cbwaMapper.selectByPrimaryKey(cbsb.getCbsb10());
+                          cbwa.setCbwa09(cbwa.getCbwa09());
+                      }
+                        //客户名称
+                      if (cbsb.getCbsb09()!= null) {
+                          Cbca cbca = cbcaMapper.selectByPrimaryKey(cbsb.getCbsb09());
+                          cbsbsVo1.setCbca08(cbca.getCbca08());
+                          cbsbsVo1.setCbca28(cbca.getCbca28());
+                      }
+                      //销售人员
+                        if (cbsb.getCbsb17()!= null) {
+                            SysUser sysUser = sysUserMapper.selectByPrimaryKey(Long.valueOf(cbsb.getCbsb17()));
+                            cbsbsVo1.setCaua15(sysUser.getNickName());
+                        }
+                      cbsbsVo1.setCbsc01(cbscs.get(i).getCbsc01());
+                        cbsbsVo1.setCbsc11(cbscs.get(i).getCbsc11());
+                      cbsbsVo1.setCbsc12(cbscs.get(i).getCbsc12());
+                        cbsbsVo1.setCbsc13(cbscs.get(i).getCbsc13());
+                        cbsbsVo1.setCbsc17(cbscs.get(i).getCbsc17());
+                      cbsbsVo1.setCbsc09(cbscs.get(i).getCbsc09());
+                      if(cbscs.get(i).getCbsc08()!=null) {
+                            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbscs.get(i).getCbsc08());
+                            cbsbsVo1.setCbpb08(cbpb.getCbpb08());
+                            cbsbsVo1.setCbpb15(cbpb.getCbpb15());
+                            cbsbsVo1.setCbpb12(cbpb.getCbpb12());
+                            //品牌
+                        if(cbpb.getCbpb10()!=null){
+                            Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                            cbsbsVo1.setCala08(cala.getCala08());
+                        }
+                        if(cbpb.getCbpb14()!=null){
+                            Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                            cbsbsVo1.setCbpa07(cbpa.getCbpa07());
+                        }
+                        }
+                      cbsbsVos.add(cbsbsVo1);
+                    }
+      /*  CbscCriteria dgrt = new CbscCriteria();
         dgrt.createCriteria().andCbsb01EqualTo(cbsbsVo.getCbsb01());
         List<Cbsc> cbscs = cbscMapper.selectByExample(dgrt);
         if(cbscs.size()>0){
@@ -899,7 +966,7 @@ return 1;
 
         for(int i = 0; i<sizes; i++){
             cbsbsVos.add(cbsbsVos1.get(i));
-        }
+        }*/
                     return cbsbsVos;
                 });
 
