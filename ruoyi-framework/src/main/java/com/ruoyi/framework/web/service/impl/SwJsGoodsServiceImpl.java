@@ -54,9 +54,13 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     private CbcaMapper cbcaMapper;
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
-
+@Resource
+private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private CalaMapper calaMapper;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
 @Resource
    private  CbobMapper cbobMapper;
     /**
@@ -137,7 +141,18 @@ public class SwJsGoodsServiceImpl implements ISwJsGoodsService {
     public int updateSwJsGoodsClassify(CbpbDo cbpbDo) {
 
 GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
-      //  examples.createCriteria().(cbpbDo.getCbpb01());
+       examples.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(examples);
+        if(gsGoodsSkus.size()>0){
+            throw new SwException("商品已使用不能修改");
+        }
+
+        GsGoodsSnCriteria examplee = new GsGoodsSnCriteria();
+        examplee.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examplee);
+        if(gsGoodsSns.size()>0){
+            throw new SwException("商品已使用不能修改");
+        }
 
         Long userid = SecurityUtils.getUserId();
 
@@ -197,6 +212,22 @@ GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
      */
     @Override
     public int deleteSwJsGoodsClassifyById(CbpbDo cbpbDo) {
+
+        GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
+        examples.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(examples);
+        if(gsGoodsSkus.size()>0){
+            throw new SwException("商品已使用不能删除");
+        }
+
+        GsGoodsSnCriteria examplee = new GsGoodsSnCriteria();
+        examplee.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examplee);
+        if(gsGoodsSns.size()>0){
+            throw new SwException("商品已使用不能删除");
+        }
+
+
         Long userid = SecurityUtils.getUserId();
         Cbpb cbpb = BeanCopyUtils.coypToClass(cbpbDo, Cbpb.class, null);
         Date date = new Date();

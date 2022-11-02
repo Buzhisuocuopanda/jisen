@@ -764,6 +764,7 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
                         if (qty == 0) {
                             throw new SwException("库存数量不足");
                         }
+                        gsGoodsSkuDo1.setId(gsGoodsSkus.get(0).getId());
                         //获取仓库id
                         gsGoodsSkuDo1.setWhId(cbsb1.getCbsb10());
                         //获取商品id
@@ -776,7 +777,7 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
                             throw new SwException("出库数量大于库存数量");
                         }
                         gsGoodsSkuDo1.setQty(qty - cbscs.get(i).getCbsc09());
-                        gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuDo1);
+                        int i1 = gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuDo1);
                     }
 
                     //台账
@@ -929,7 +930,7 @@ return 1;
                         //仓库
                       if(cbsb.getCbsb10()!=null){
                           Cbwa cbwa = cbwaMapper.selectByPrimaryKey(cbsb.getCbsb10());
-                          cbwa.setCbwa09(cbwa.getCbwa09());
+                          cbsbsVo1.setCbwa09(cbwa.getCbwa09());
                       }
                         //客户名称
                       if (cbsb.getCbsb09()!= null) {
@@ -948,6 +949,7 @@ return 1;
                         cbsbsVo1.setCbsc13(cbscs.get(i).getCbsc13());
                         cbsbsVo1.setCbsc17(cbscs.get(i).getCbsc17());
                       cbsbsVo1.setCbsc09(cbscs.get(i).getCbsc09());
+                      cbsbsVo1.setSaoma(cbscs.get(i).getScannum());
                       if(cbscs.get(i).getCbsc08()!=null) {
                             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbscs.get(i).getCbsc08());
                             cbsbsVo1.setCbpb08(cbpb.getCbpb08());
@@ -984,7 +986,8 @@ return 1;
         List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
         HashSet<TakeOrderSugestVo> outsuggestions = new HashSet<>();
 
-        CompletableFuture<List<TakeOrderSugestVo>> f2 = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<List<TakeOrderSugestVo>> f2 =
+                CompletableFuture.supplyAsync(() -> {
 
             //  for (int k=0;k<cbsbsVos.size();k++) {
             CbscCriteria asd = new CbscCriteria();
@@ -1044,7 +1047,8 @@ return 1;
         Double sum = 0.0;
 
        // List<CbsbsVo> finalCbsbsVos = cbsbsVos;
-        CompletableFuture<List<ScanVo>> f3 = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<List<ScanVo>> f3 =
+                CompletableFuture.supplyAsync(() -> {
 
 
         Integer cbsb01 = cbsbsVo.getCbsb01();
@@ -1130,8 +1134,8 @@ return 1;
         cbsbsVo.setCbsb01(itemList.getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
 if(cbsbsVos.size()>0){
-        if(cbsbsVos.get(0).getSaoma()!=null){
-            double v = cbsbsVos.get(0).getSaoma().doubleValue();
+        if(cbsbsVos.get(0).getSaomanums()!=null){
+            double v = cbsbsVos.get(0).getSaomanums().doubleValue();
 
             if( v==cbsbsVos.get(0).getNums()){
             throw new SwException("该销售出库单已扫描完成");
@@ -1214,7 +1218,7 @@ if(cbsbsVos.size()>0){
 }*/
             Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(0).getCbpm10());
             if (cbla == null) {
-                throw new SwException("库位不存在");
+                throw new SwException("提货单扫描表库位不存在");
             }
             if (!cbla.getCbla10().equals(storeid)) {
                 throw new SwException("库位不属于该仓库");
