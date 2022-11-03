@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbscCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.dto.FnsalesAnalysisDto;
+import com.ruoyi.system.domain.vo.FnSynthesisPartsVo;
 import com.ruoyi.system.domain.vo.SaleAnalysisVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,11 @@ public interface CbscMapper {
      *销售分析查询
      */
     List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto);
+
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/11/2 15:18
+     *配件财务综合报表查询
+     */
+    List<FnSynthesisPartsVo> fnSynthesisParts(FnSynthesisPartsVo fnSynthesisPartsVo);
 }

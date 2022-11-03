@@ -27,4 +27,6 @@ public interface FinanceQueryService {
     List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo);
 
     List<CbibVo2> monthlySales(CbibVo2 cbibVo);
+
+    List<FnSynthesisPartsVo> fnSynthesisParts(FnSynthesisPartsVo fnSynthesisPartsVo);
 }

@@ -107,6 +107,50 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     }
 
     @Override
+    public List<FnSynthesisPartsVo> fnSynthesisParts(FnSynthesisPartsVo fnSynthesisPartsVo) {
+        List<FnSynthesisPartsVo> list=cbscMapper.fnSynthesisParts(fnSynthesisPartsVo);
+//        List<FnQueryAyntgesisVo> listresult =new ArrayList<>();
+        Map<Integer, String> integerStringMap = baseCheckService.brandMap();
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
+        for(int i =0;i<list.size();i++){
+            if(list.get(i).getCurrency()!=null){
+                if(list.get(i).getCurrency() == 5){//美元
+                    list.get(i).setUPrice(list.get(i).getRPrice());
+                    list.get(i).setRPrice(null);
+                }else if(list.get(i).getCurrency() == 6){//人民币
+                    list.get(i).setUPrice(null);
+                }
+
+            }
+            if(list.get(i).getCbpc16()!=null){
+                if(list.get(i).getCbpc16() == 5){//美元
+                    list.get(i).setCgUprice(list.get(i).getCgRprice());
+                    list.get(i).setCgRprice(null);
+                }else if(list.get(i).getCbpc16() == 6){//人民币
+                    list.get(i).setCgRprice(list.get(i).getCgRprice());
+                    list.get(i).setCgUprice(null);
+                }
+            }
+            if(list.get(i).getInWhTime()!=null){
+                list.get(i).setInWhTimeMsg(sd.format(list.get(i).getInWhTime()));
+            }
+            if(list.get(i).getOutWhTime()!=null){
+                list.get(i).setOutWhTimeMsg(sd.format(list.get(i).getOutWhTime()));
+            }
+            if(list.get(i).getBrand()!=null){
+                list.get(i).setBrand(integerStringMap.get(Integer.parseInt(list.get(i).getBrand())));
+            }
+
+        }
+
+
+
+        return list;
+
+    }
+
+
+    @Override
     public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
         List<FnGoodsSkuVo> list=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
         Map<Integer, String> brandMap = baseCheckService.brandMap();

@@ -94,6 +94,30 @@ public class FinanceQueryController extends BaseController {
     }
 
     /**
+     * 配件财务综合报表查询
+     * @param fnSynthesisPartsVo
+     * @return
+     */
+    @GetMapping("/fnSynthesisParts")
+    @PreAuthorize("@ss.hasPermi('query:fnSynthesisParts:list')")
+    public AjaxResult<TableDataInfo> fnSynthesisParts(FnSynthesisPartsVo fnSynthesisPartsVo) {
+        try {
+            if(fnSynthesisPartsVo.getEndTime()!=null){
+                fnSynthesisPartsVo.setEndTime(new Date(fnSynthesisPartsVo.getEndTime().getTime()+24*60*60*1000-1));
+            }
+            startPage();
+            List<FnSynthesisPartsVo> list=financeQueryService.fnSynthesisParts(fnSynthesisPartsVo);
+            TableDataInfo tableDataInfo = getDataTable(list);
+            return AjaxResult.success(tableDataInfo);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("【配件财务综合报表查询】接口出现异常,参数${}$,异常${}$", JSON.toJSONString(fnSynthesisPartsVo), ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 库存情况报表
      * @param fnGoodsSkuDto
      * @return

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
 import com.ruoyi.system.domain.vo.FnQueryAyntgesisVo;
+import com.ruoyi.system.domain.vo.FnSynthesisPartsVo;
 import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,8 +36,14 @@ public interface CbsdMapper {
     //zgl
     List<FnQueryAyntgesisVo> fnSynthesis(@Param("cbsd01")Integer cbsd01);
 
-    //zgl
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/11/2 15:18
+     *财务综合报表查询
+     */
     List<FnQueryAyntgesisVo> fnSynthesis2(FnQueryAynthesisDto fnQueryAynthesisDto);
+
+
 
     //zgl
     List<FnQueryAyntgesisVo> fnSynthesis3(FnQueryAynthesisDto fnQueryAynthesisDto);
