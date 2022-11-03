@@ -33,7 +33,10 @@ public interface CbsdMapper {
 
     int updateByPrimaryKey(Cbsd record);
 
-    //zgl
+    //zgl查询财务报表（弃用）
+    List<FnQueryAyntgesisVo> fnSynthesisQiYong(@Param("cbsd01")Integer cbsd01);
+
+    //zgl查询财务报表
     List<FnQueryAyntgesisVo> fnSynthesis(@Param("cbsd01")Integer cbsd01);
 
     /**
