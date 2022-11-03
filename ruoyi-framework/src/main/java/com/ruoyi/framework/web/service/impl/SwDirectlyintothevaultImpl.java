@@ -1203,6 +1203,30 @@ String S="0";
         return S;
     }
 
+    @Override
+    public String SwJsPusns(CbicDto cbicDto) {
+        if(cbicDto.getSn()==null){
+            throw new SwException("sn不能为空");
+        }
+        GsGoodsSnCriteria example = new GsGoodsSnCriteria();
+        example.createCriteria().andSnEqualTo(cbicDto.getSn());
+        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
+        if(gsGoodsSns.size()==0){
+            throw new SwException("0");
+        }
+        else {
+            if(gsGoodsSns.get(0).getGoodsId()!=null){
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsGoodsSns.get(0).getGoodsId());
+                if(cbpb!=null){
+                    if(cbpb.getCbpb15()!=null){
+                        return cbpb.getCbpb15();
+                    }
+                }
+            }
+        }
+        return "1";
+    }
+
     public int afsfs(String sn,String upc){
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(upc);

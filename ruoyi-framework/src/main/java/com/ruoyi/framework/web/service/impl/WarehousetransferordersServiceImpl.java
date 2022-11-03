@@ -806,6 +806,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     }
 //调拨单调出接口
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int transferordersout(Cbac itemList) {
         log.info("线程名"+Thread.currentThread().getName()+itemList.getCbac09());
         Date date = new Date();
@@ -929,6 +930,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     }
 //调拨单入库扫码
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int transferordersin(Cbac itemList) {
 
 
@@ -942,9 +944,16 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             throw new SwException("调拨单id不能为空");
         }
 
-
-
-
+        if (itemList.getCbac12() == null) {
+            throw new SwException("upc不能为空");
+        }
+     CbpbCriteria cbpbCriteria = new CbpbCriteria();
+        cbpbCriteria.createCriteria().andCbpb15EqualTo(itemList.getCbac12());
+        List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+        if(cbpbs.size()==0){
+            throw new SwException("upc不存在");
+        }
+        Integer goodsid = cbpbs.get(0).getCbpb01();
 
 
 
@@ -1004,6 +1013,16 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                         throw new SwException("调拨单调库位不在单据调入仓库");
                     }
                 }
+                GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+                gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
+                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+                if(gsGoodsSns.size()>0){
+                    GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                    gsGoodsSn.setStatus((byte) 1);
+                    gsGoodsSn.setGroudStatus((byte) 1);
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
+                }
+                else{
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setCreateTime(date);
@@ -1014,20 +1033,25 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setSn(itemList.getCbac09());
                 gsGoodsSn.setStatus((byte) 1);
                 gsGoodsSn.setInTime(date);
-                gsGoodsSn.setGoodsId(cbphs.get(0).getCbab08());
+                gsGoodsSn.setGoodsId(goodsid);
                 gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
                 gsGoodsSn.setGroudStatus((byte) 1);
-                gsGoodsSnMapper.insertSelective(gsGoodsSn);
+                gsGoodsSnMapper.insertSelective(gsGoodsSn);}
 
-                //判断调出扫码是否完成
+                //判断调入扫码删除状态
                 CbacCriteria cbacCriterias = new CbacCriteria();
                 cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01())
-                        .andCbac09EqualTo(itemList.getCbac09());
+                        .andCbac09EqualTo(itemList.getCbac09())
+                        .andCbac14EqualTo(1);
                 List<Cbac> cbacss = cbacMapper.selectByExample(cbacCriterias);
                 if(cbacss.size()>0){
-                    throw new SwException("sn重复，请勿重复提交");
-                }
+                    Cbac cbac = new Cbac();
+                    cbac.setCbaa01(itemList.getCbaa01());
+                    cbac.setCbac09(itemList.getCbac09());
+                    cbac.setCbac14(2);
+                    cbacMapper.updateByExampleSelective(cbac,cbacCriterias);
+                }else{
 
                 itemList.setCbac03(date);
                 itemList.setCbac04(Math.toIntExact(userid));
@@ -1037,12 +1061,12 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 itemList.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
                 itemList.setCbac10(itemList.getCbac10());
                 itemList.setCbac09(itemList.getCbac09());
-                itemList.setCbac08(cbphs.get(0).getCbab08());
+                itemList.setCbac08(goodsid);
 
                 itemList.setCbaa01(itemList.getCbaa01());
                 itemList.setCbac14(2);
                 itemList.setUserId(Math.toIntExact(userid));
-                cbacMapper.insertSelective(itemList);
+               }
             }
             else{
                 //判断调出扫码是否完成
@@ -1127,7 +1151,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 CbacCriteria cbacCriteria = new CbacCriteria();
                 cbacCriteria.createCriteria().andCbac09EqualTo(itemList.getCbac09());
 
-                cbacMapper.updateByExampleSelective(itemList, cbacCriteria);
+            return     cbacMapper.updateByExampleSelective(itemList, cbacCriteria);
             }
         } finally {
 
@@ -1141,7 +1165,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
         }
 
-
+        cbacMapper.insertSelective(itemList);
         return 1;    }
 
     //调出标记完成

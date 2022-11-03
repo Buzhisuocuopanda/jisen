@@ -37,4 +37,6 @@ public interface ISwDirectlyintothevaultService{
     int deletelessws(List<deleteVo> cbiw);
 
     String SwJsPusn(CbicDto cbicDto);
+
+    String SwJsPusns(CbicDto cbicDto);
 }

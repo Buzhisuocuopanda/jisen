@@ -47,5 +47,4 @@ public interface GsGoodsSnMapper {
 
     List<GsGoodsSnsVo> getInfosss(GsGoodsSnsVo gsGoodsSnsVo);
 
-
 }

@@ -435,4 +435,33 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 扫描sn带出upc
+     */
+    @ApiOperation(
+            value ="扫描sn带出upc",
+            notes = "扫描sn带出upc"
+    )
+    @PostMapping("/SwJsPusns")
+    public AjaxResult SwJsPusns(@RequestBody CbicDto cbicDto) {
+        try {
+            String s = swDirectlyintothevaultService.SwJsPusns(cbicDto);
+            return AjaxResult.success(s);
+            // return toAjax(i);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【判断sn】接口出现异常,参数${},异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【判断sn】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

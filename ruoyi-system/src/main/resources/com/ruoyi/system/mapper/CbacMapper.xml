@@ -436,7 +436,7 @@ FROM
 
   </select>-->
   <select id="selectSwJsTaskGoodsRelListsss" resultType="com.ruoyi.system.domain.vo.CbacVo">
-    SELECT
+    SELECT DISTINCT
       b.CBAC09,b.CBAC10,c.goods_id,d.CBPB15 as upc,d.CBPB12 as goodssku,e.CBLA09 as storesku
     FROM
       CBAA a
@@ -464,7 +464,7 @@ and
         b.CBAC07=0
   </select>
   <select id="swJsGoodslistsss" resultType="com.ruoyi.system.domain.vo.CbacVo">
-    SELECT
+    SELECT DISTINCT
       b.CBAC09,b.CBAC10,c.CBLA09,e.CBPB15 as upc,e.CBPB12 as goodssku,c.CBLA09 as storesku
     FROM
       CBAA a

@@ -790,7 +790,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 cbibDo.setCbib02(cbpc1.getCbpc10());
                 cbibDo.setCbib03(cbpc1.getCbpc07());
                 cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
-                cbibDo.setCbib06(cbsa.getCbsa07());
+                cbibDo.setCbib06(cbsa.getCbsa08());
                 cbibDo.setCbib07(cbpc1.getCbpc01());
                 cbibDo.setCbib08(cbpds1.get(j).getCbpd08());
                 //本次入库数量
