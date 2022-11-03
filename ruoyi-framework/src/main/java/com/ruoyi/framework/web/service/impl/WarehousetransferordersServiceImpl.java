@@ -1033,6 +1033,9 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbac09());
                 List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
                 if(gsGoodsSns.size()>0){
+                    if(gsGoodsSns.get(0).getStatus()==1){
+                        throw new SwException("sn已经入库");
+                    }
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setStatus((byte) 1);
                     gsGoodsSn.setGroudStatus((byte) 1);
@@ -1140,9 +1143,9 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 throw new SwException("sn不存在");
             }
             //校验sn是否已经出库
-           /* if(!gsGoodsSnList.get(i).getStatus().equals(3)){
-                throw new SwException("该sn已经出库");
-            }*/
+           if(gsGoodsSnList.get(0).getStatus()==1){
+               throw new SwException("该sn已经入库");
+            }
 
 
 
@@ -1774,18 +1777,18 @@ else {
                             .andLocationIdEqualTo(cbacs.get(j).getCbac10());
                     List<GsGoodsSku> gsGoodsSkuss1 = gsGoodsSkuMapper.selectByExample(example1);
                     if(gsGoodsSkuss1.size()>0){
-                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        double sum = gsGoodsSkuss1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum + 1>cbla.getCbla11()){
                             throw new SwException("库位容量不足");
                         }
-                    }
+                    }else{     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+                        gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
+                        gsGoodsSkuDo2.setWhId(instore);
+                        gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
+                        gsGoodsSkuDo2.setQty(1.0);
+                        taskService.addGsGoodsSku(gsGoodsSkuDo2);}
 
-                    GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
-                    gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
-                    gsGoodsSkuDo2.setWhId(instore);
-                    gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
-                    gsGoodsSkuDo2.setQty(1.0);
-                    taskService.addGsGoodsSku(gsGoodsSkuDo2);
+
 
 
                 } else {

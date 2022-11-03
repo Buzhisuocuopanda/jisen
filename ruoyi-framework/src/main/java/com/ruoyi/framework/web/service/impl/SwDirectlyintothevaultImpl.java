@@ -44,7 +44,8 @@ public class SwDirectlyintothevaultImpl implements ISwDirectlyintothevaultServic
 
     @Resource
     private OrderDistributionService orderDistributionService;
-
+@Resource
+private CbscMapper cbscMapper;
     @Resource
     private TaskService taskService;
 
@@ -938,6 +939,33 @@ if(cbiw.getTypes()==2){
             CbsdCriteria example = new CbsdCriteria();
             example.createCriteria().andCbsd09EqualTo(cbiw.getSn())
                     .andCbsb01EqualTo(cbiw.getId());
+
+            CbsdCriteria ere = new CbsdCriteria();
+            ere.createCriteria().andCbsd09EqualTo(cbiw.getSn())
+                    .andCbsb01EqualTo(cbiw.getId());
+            List<Cbsd> cbsds = cbsdMapper.selectByExample(ere);
+if(cbsds.size()>0) {
+    CbscCriteria example1 = new CbscCriteria();
+    example1.createCriteria().andCbsb01EqualTo(cbiw.getId())
+            .andCbsc08EqualTo(cbsds.get(0).getCbsd08());
+    List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
+    if (cbscList.size() > 0) {
+        for (int i = 0; i < cbscList.size(); i++) {
+            if (cbscList.get(i).getScannum()!= null) {
+                if(cbscList.get(i).getScannum() - 1.0 >= 0){
+
+                    cbscList.get(i).setScannum(cbscList.get(i).getScannum() - 1);
+                    cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+
+                }
+                if(cbscList.get(i).getScannum() - 1.0 <0)continue;
+            } else {
+                 throw new SwException("扫描数量不能为空");
+
+            }
+        }
+    }
+}
             cbsdMapper.deleteByExample(example);
 
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
