@@ -352,7 +352,7 @@
   </update>
 
 
-  <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
+  <select id="fnSynthesisQiYong" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
 
 SELECT
     sd.CBSD01,
@@ -389,7 +389,41 @@ FROM
     where
    sd.CBSD01 = #{cbsd01}
 
+  </select>
 
+  <select id="fnSynthesis" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
+
+SELECT
+    sd.CBSD01,
+    sd.CBSD08 AS goodsId,
+    sd.CBSD09 AS sn,
+    sc.CBSC03 AS outWhTime,
+    sc.CBSC09 AS qty,
+    ob.CBOB11 AS rPrice,
+    oa.CBOA07 AS orderNo,
+    oa.CBOA16 AS currency,
+    ca.CBCA09 AS suplierName,
+    pb.CBPB08 AS description,
+    pb.CBPB10 AS brand,
+    pb.CBPB12 AS model,
+
+	sn.in_time AS inWhTime,
+    sa.CBSA08 AS gc,
+	sn.price AS cgRprice,
+    sn.currency as cbpc16,ob.CBOB18 as totalOrderNo
+FROM
+	CBSD sd
+    LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01 and  sc.CBSC08 = sd.CBSD08
+    LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
+    LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
+    LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
+    LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
+    LEFT JOIN CBPB pb on sd.CBSD08 =pb.CBPB01
+    LEFT JOIN CBSA sa ON sa.CBSA01 = sc.CBSC15
+    LEFT JOIN gs_goods_sn sn on sn.sn =sd.CBSD09
+
+    where
+   sd.CBSD01 = #{cbsd01}
 
   </select>
 
