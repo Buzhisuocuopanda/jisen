@@ -55,6 +55,9 @@ public class ApprovalServiceImpl implements ApprovalService {
             if(item.getCabraa21()!=null&&item.getCabraa21().length()>6){
                 item.setCabraa21(item.getCabraa21().substring(item.getCabraa21().indexOf("客户:")+3,item.getCabraa21().length()));
             }
+
+            item.setCabraa07("销售订单");
+
         }
             //list.leftPushAll(key,approvalVos);//如果不存在将设置好的key键值和查询数据库的结果放入
             Long userid = SecurityUtils.getUserId();

@@ -833,6 +833,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 throw new SwException("请输入商品数量");
             }
 
+            if(good.getCurrentPrice() ==null ){
+                throw new SwException("请输入商品单价");
+            }
             if(good.getTotalPrice() ==null ){
                 throw new SwException("请输入商品金额");
             }
@@ -1742,27 +1745,29 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         //查询客户是否可用
         Cbca cbca = baseCheckService.checkCustomer(goodsPriceAndSkuDto.getCustomerId());
-
-
-        CbpfCriteria pfex = new CbpfCriteria();
-        if(goodsPriceAndSkuDto.getCurrency()==null){
-            pfex.createCriteria()
-                    .andCbpf02EqualTo(cbca.getCbca28())
-                    .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
-            pfex.setOrderByClause("CBPF07 desc");
-        }else {
-            pfex.createCriteria()
-                    .andCbpf02EqualTo(cbca.getCbca28())
+       if (cbca.getCbca28()!=null){
+           CbpfCriteria pfex = new CbpfCriteria();
+           if(goodsPriceAndSkuDto.getCurrency()==null){
+               pfex.createCriteria()
+                       .andCbpf02EqualTo(cbca.getCbca28())
+                       .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
+               pfex.setOrderByClause("CBPF07 desc");
+           }else {
+               pfex.createCriteria()
+                       .andCbpf02EqualTo(cbca.getCbca28())
 //                    .andCbpf06EqualTo(goodsPriceAndSkuDto.getCurrency())
-                    .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
-            pfex.setOrderByClause("CBPF07 desc");
+                       .andCbpb01EqualTo(goodsPriceAndSkuDto.getGoodsId());
+               pfex.setOrderByClause("CBPF07 desc");
+           }
+
+           List<Cbpf> cbpfs = cbpfMapper.selectByExample(pfex);
+           Date date = new Date();
+           if (cbpfs.size() > 0 && cbpfs.get(0).getCbpf07().getTime() <= date.getTime()) {
+               res.setNormalPrice(cbpfs.get(0).getCbpf05());
+           }
         }
 
-        List<Cbpf> cbpfs = cbpfMapper.selectByExample(pfex);
-        Date date = new Date();
-        if (cbpfs.size() > 0 && cbpfs.get(0).getCbpf07().getTime() <= date.getTime()) {
-            res.setNormalPrice(cbpfs.get(0).getCbpf05());
-        }
+
         res.setGoodsId(goodsPriceAndSkuDto.getGoodsId());
 
 

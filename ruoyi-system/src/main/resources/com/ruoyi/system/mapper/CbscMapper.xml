@@ -22,6 +22,7 @@
     <result column="CBSC17" jdbcType="INTEGER" property="cbsc17" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="takegoodsid" jdbcType="INTEGER" property="takegoodsid" />
+    <result column="scannum" jdbcType="INTEGER" property="scannum" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -83,7 +84,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBSC01, CBSC02, CBSC03, CBSC04, CBSC05, CBSC06, CBSC07, CBSC08, CBSC09, CBSC10, CBSC11,
-    CBSC12, CBSC13, CBSB01, CBSC14, CBSC15, CBSC16, CBSC17, user_id, takegoodsid
+    CBSC12, CBSC13, CBSB01, CBSC14, CBSC15, CBSC16, CBSC17, user_id, takegoodsid, scannum
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbscCriteria" resultMap="BaseResultMap">
     select
@@ -122,14 +123,16 @@
       CBSC10, CBSC11, CBSC12,
       CBSC13, CBSB01, CBSC14,
       CBSC15, CBSC16, CBSC17,
-      user_id, takegoodsid)
+      user_id, takegoodsid, scannum
+      )
     values (#{cbsc01,jdbcType=INTEGER}, #{cbsc02,jdbcType=INTEGER}, #{cbsc03,jdbcType=TIMESTAMP},
       #{cbsc04,jdbcType=INTEGER}, #{cbsc05,jdbcType=TIMESTAMP}, #{cbsc06,jdbcType=INTEGER},
       #{cbsc07,jdbcType=INTEGER}, #{cbsc08,jdbcType=INTEGER}, #{cbsc09,jdbcType=DOUBLE},
       #{cbsc10,jdbcType=DOUBLE}, #{cbsc11,jdbcType=DOUBLE}, #{cbsc12,jdbcType=DOUBLE},
       #{cbsc13,jdbcType=VARCHAR}, #{cbsb01,jdbcType=INTEGER}, #{cbsc14,jdbcType=INTEGER},
       #{cbsc15,jdbcType=INTEGER}, #{cbsc16,jdbcType=INTEGER}, #{cbsc17,jdbcType=INTEGER},
-      #{userId,jdbcType=INTEGER}, #{takegoodsid,jdbcType=INTEGER})
+      #{userId,jdbcType=INTEGER}, #{takegoodsid,jdbcType=INTEGER}, #{scannum,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbsc">
     insert into `CBSC`
@@ -194,6 +197,9 @@
       <if test="takegoodsid != null">
         takegoodsid,
       </if>
+      <if test="scannum != null">
+        scannum,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbsc01 != null">
@@ -255,6 +261,9 @@
       </if>
       <if test="takegoodsid != null">
         #{takegoodsid,jdbcType=INTEGER},
+      </if>
+      <if test="scannum != null">
+        #{scannum,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -327,6 +336,9 @@
       <if test="record.takegoodsid != null">
         takegoodsid = #{record.takegoodsid,jdbcType=INTEGER},
       </if>
+      <if test="record.scannum != null">
+        scannum = #{record.scannum,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -353,7 +365,8 @@
       CBSC16 = #{record.cbsc16,jdbcType=INTEGER},
       CBSC17 = #{record.cbsc17,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      takegoodsid = #{record.takegoodsid,jdbcType=INTEGER}
+      takegoodsid = #{record.takegoodsid,jdbcType=INTEGER},
+      scannum = #{record.scannum,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -418,6 +431,9 @@
       <if test="takegoodsid != null">
         takegoodsid = #{takegoodsid,jdbcType=INTEGER},
       </if>
+      <if test="scannum != null">
+        scannum = #{scannum,jdbcType=INTEGER},
+      </if>
     </set>
     where CBSC01 = #{cbsc01,jdbcType=INTEGER}
   </update>
@@ -441,9 +457,11 @@
       CBSC16 = #{cbsc16,jdbcType=INTEGER},
       CBSC17 = #{cbsc17,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
-      takegoodsid = #{takegoodsid,jdbcType=INTEGER}
+      takegoodsid = #{takegoodsid,jdbcType=INTEGER},
+      scannum = #{scannum,jdbcType=INTEGER}
     where CBSC01 = #{cbsc01,jdbcType=INTEGER}
   </update>
+
 
   <select id="salesAnalysis3" resultType="com.ruoyi.system.domain.vo.SaleAnalysisVo">
 

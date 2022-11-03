@@ -267,11 +267,11 @@ public class TaskServiceImpl implements TaskService {
                     cbib1.setCbib15((double) 1);
                 }
                 cbib.setCbib09(cbib1.getCbib15());
-                cbib.setCbib11(cbibDo.getCbib11());
+                cbib.setCbib11(0.0);
                 cbib.setCbib12((double) 0);
-                cbib.setCbib13((double) 0);
+                cbib.setCbib13(cbibDo.getCbib11());
                 cbib.setCbib14((double) 0);
-                cbib.setCbib15(cbib.getCbib09()-cbib.getCbib11());
+                cbib.setCbib15(cbib.getCbib09()- cbib.getCbib13());
                 cbib.setCbib16((double) 0);
             }
 
@@ -316,8 +316,8 @@ public class TaskServiceImpl implements TaskService {
                 }
                 cbib.setCbib09(cbib1.getCbib15());
                 cbib.setCbib10(cbib1.getCbib16());
-                cbib.setCbib15(cbib.getCbib09()+cbibDo.getCbib13());
-                cbib.setCbib16(cbib.getCbib10()+cbibDo.getCbib14());
+                cbib.setCbib15(cbib.getCbib09()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib.getCbib10()+cbibDo.getCbib12());
             }
             //采购订单
             if(cbibDo.getCbib17().equals(TaskType.cgdd.getMsg())){

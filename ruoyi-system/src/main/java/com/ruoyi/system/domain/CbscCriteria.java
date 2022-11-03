@@ -1314,6 +1314,66 @@ public class CbscCriteria {
             addCriterion("takegoodsid not between", value1, value2, "takegoodsid");
             return (Criteria) this;
         }
+
+        public Criteria andScannumIsNull() {
+            addCriterion("scannum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumIsNotNull() {
+            addCriterion("scannum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumEqualTo(Integer value) {
+            addCriterion("scannum =", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumNotEqualTo(Integer value) {
+            addCriterion("scannum <>", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumGreaterThan(Integer value) {
+            addCriterion("scannum >", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("scannum >=", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumLessThan(Integer value) {
+            addCriterion("scannum <", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumLessThanOrEqualTo(Integer value) {
+            addCriterion("scannum <=", value, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumIn(List<Integer> values) {
+            addCriterion("scannum in", values, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumNotIn(List<Integer> values) {
+            addCriterion("scannum not in", values, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumBetween(Integer value1, Integer value2) {
+            addCriterion("scannum between", value1, value2, "scannum");
+            return (Criteria) this;
+        }
+
+        public Criteria andScannumNotBetween(Integer value1, Integer value2) {
+            addCriterion("scannum not between", value1, value2, "scannum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -212,7 +212,7 @@ order by createtime desc
 
       group
         by
-        upc and b.CBLA10
+        upc
 
     </select>
 

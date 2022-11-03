@@ -692,7 +692,7 @@
       and pk.check_status =#{checkStatus}
     </if>
     <if test="whName != null and whName !='' ">
-      and wa.CBWA01 = #{whName}
+      and wa.CBWA09  like concat('%', #{whName}, '%')
     </if>
     <if test="orderNo != null and orderNo != ''" >
       and pk.CBPK07 like  concat('%', #{orderNo}, '%')
@@ -738,7 +738,7 @@
     </if>
     <if test="customerName != null and customerName != ''" >
 
-      and ca.CBCA08 =#{customerName}
+      and ca.CBCA08 like concat('%', #{customerName}, '%')
     </if>
     <if test="whId != null and whId != ''" >
 
@@ -752,7 +752,7 @@
       and pk.check_status =#{checkStatus}
     </if>
     <if test="whName != null and whName !='' ">
-      and wa.CBWA01 = #{whName}
+      and wa.CBWA09  like concat('%', #{whName}, '%')
     </if>
     <if test="orderNo != null and orderNo != ''" >
       and pk.CBPK07 like  concat('%', #{orderNo}, '%')
@@ -775,7 +775,7 @@ ORDER BY
   </select>
 
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsbsVo">
-      SELECT
+      SELECT distinct
       a.CBSB07 as cbsb07,
       c.CBCA09 as cbca09,
       a.CBSB08 as cbsb08,
