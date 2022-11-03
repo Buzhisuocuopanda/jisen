@@ -473,6 +473,9 @@ ORDER BY
     <if test="cbpb08 != null and cbpb08!=''">
       or pb.CBPB08 like concat('%', #{cbpb08}, '%'))
     </if>
+    <if test="goodsId != null and goodsId!=''">
+      and sn.goods_id = #{goodsId}
+    </if>
     ORDER BY
     sn.create_time desc
   </select>
