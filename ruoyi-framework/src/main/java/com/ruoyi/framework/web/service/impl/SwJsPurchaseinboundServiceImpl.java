@@ -325,7 +325,9 @@ if(itemList.getCbpe08()!=null) {
                    }
                    throw new SwException("该sn已存在库存sn表里");
                }
-
+               CbpdCriteria cbpdCriteria =new CbpdCriteria();
+               cbpdCriteria.createCriteria().andCbpc01EqualTo(cbpcs.getCbpc01()).andCbpd08EqualTo(itemList.getCbpe08());
+               List<Cbpd> cbpdList = cbpdMapper.selectByExample(cbpdCriteria);
                GsGoodsSn  gsGoodsSn = new GsGoodsSn();
                gsGoodsSn.setCreateTime(date);
                gsGoodsSn.setUpdateTime(date);
@@ -339,6 +341,10 @@ if(itemList.getCbpe08()!=null) {
                gsGoodsSn.setStatus(GoodsType.yrk.getCode());
                gsGoodsSn.setInTime(date);
                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+               if(cbpdList!=null&&cbpdList.size()>0){
+                   gsGoodsSn.setPrice(cbpdList.get(0).getCbpd11());
+               }
+
                gsGoodsSnMapper.insertSelective(gsGoodsSn);
            } finally {
 
