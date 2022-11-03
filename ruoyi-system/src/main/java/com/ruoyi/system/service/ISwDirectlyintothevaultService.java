@@ -39,4 +39,6 @@ public interface ISwDirectlyintothevaultService{
     String SwJsPusn(CbicDto cbicDto);
 
     String SwJsPusns(CbicDto cbicDto);
+
+    Cbiw addlessui(Cbiw cbiw);
 }

@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 public class CbsesVo extends BaseEntity {
-
+    private Integer cbca01;
+    private Integer cbwa01;
 
     private Integer cbsf01;
 

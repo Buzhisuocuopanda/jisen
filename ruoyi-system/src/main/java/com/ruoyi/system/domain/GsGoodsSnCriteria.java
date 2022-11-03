@@ -1161,6 +1161,66 @@ public class GsGoodsSnCriteria {
             addCriterion("price not between", value1, value2, "price");
             return (Criteria) this;
         }
+
+        public Criteria andCurrencyIsNull() {
+            addCriterion("currency is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyIsNotNull() {
+            addCriterion("currency is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyEqualTo(Integer value) {
+            addCriterion("currency =", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyNotEqualTo(Integer value) {
+            addCriterion("currency <>", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyGreaterThan(Integer value) {
+            addCriterion("currency >", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("currency >=", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyLessThan(Integer value) {
+            addCriterion("currency <", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyLessThanOrEqualTo(Integer value) {
+            addCriterion("currency <=", value, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyIn(List<Integer> values) {
+            addCriterion("currency in", values, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyNotIn(List<Integer> values) {
+            addCriterion("currency not in", values, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyBetween(Integer value1, Integer value2) {
+            addCriterion("currency between", value1, value2, "currency");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrencyNotBetween(Integer value1, Integer value2) {
+            addCriterion("currency not between", value1, value2, "currency");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
