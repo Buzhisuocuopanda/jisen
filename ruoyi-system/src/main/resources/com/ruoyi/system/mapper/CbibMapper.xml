@@ -406,7 +406,7 @@ ORDER BY
     c.CBIB02 = #{whId}
     and c.CBIB17 = "直接入库"
   </select>
-  <select id="selectSumSaleOut" resultMap="BaseResultMap">
+  <select id="selectSumSaleOut" resultType="java.lang.Double">
     SELECT
     sum(c.CBIB13)
     FROM
@@ -416,7 +416,7 @@ ORDER BY
     c.CBIB08 = #{goodsId}
     and
     c.CBIB02 = #{whId}
-    and c.CBIB17 = "销售出库"
+    and c.CBIB17 = "销售出库单"
 
   </select>
 

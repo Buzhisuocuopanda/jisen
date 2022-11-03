@@ -173,7 +173,7 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setRepairStatus(1);
                 gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-                gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
             }
