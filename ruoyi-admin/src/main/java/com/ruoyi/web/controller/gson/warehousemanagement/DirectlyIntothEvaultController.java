@@ -89,7 +89,7 @@ public class DirectlyIntothEvaultController extends BaseController {
             notes = "新增直接入库单批处理"
     )
     @PostMapping("/SwJsPurchaseinboundadds")
-    @PreAuthorize("@ss.hasPermi('system:directly:add')")
+  //  @PreAuthorize("@ss.hasPermi('system:directly:add')")
     public AjaxResult swJsPurchaseinboundadds(@Valid @RequestBody  List<CbicDto> cbicDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -139,6 +139,41 @@ public class DirectlyIntothEvaultController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+
+    /**
+     * 批量删除直接入库单
+     */
+    @ApiOperation(
+            value ="批量删除直接入库单",
+            notes = "批量删除直接入库单"
+    )
+    @PostMapping("/SwJsPurchaseinboundremoves")
+    @PreAuthorize("@ss.hasPermi('system:directly:remove')")
+    public AjaxResult swJsPurchaseinboundremove(@RequestBody List<CbicDto> cbicDto) {
+        try {
+            for(int i=0;i<cbicDto.size();i++){
+                swDirectlyintothevaultService.deleteSwJsSkuBarcodsById(cbicDto.get(i));
+            }
+
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【批量删除直接入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbicDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【批量删除直接入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbicDto),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
     /**
      * 直接入库单列表
@@ -261,6 +296,37 @@ public class DirectlyIntothEvaultController extends BaseController {
         }
     }
 
+
+    /**
+     * 扫码返回sku
+     */
+    @ApiOperation(
+            value ="扫码返回sku",
+            notes = "扫码返回sku"
+    )
+    @PostMapping("/addlessui")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult addlessui( @RequestBody Cbiw cbiw) {
+
+        try {
+            swDirectlyintothevaultService.addlessui(cbiw);
+            return AjaxResult.success(swDirectlyintothevaultService.addlessui(cbiw));
+        }catch (SwException e) {
+            log.error("【扫码返回sku】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【扫码返回sku】接口出现异常,参数${},异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【扫码返回sku】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbiw), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 直接入库列表
      */

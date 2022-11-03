@@ -864,9 +864,16 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                     .andCbaa01EqualTo(itemList.getCbaa01());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
             if(cbacs.size()>0){
+            if(cbacs.get(0).getCbac07().equals(DeleteFlagEnum.NOT_DELETE.getCode())){
+                    throw new SwException("sn已经调出");
+                }else {
+                Cbac cbac = new Cbac();
+                cbac.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
+                cbacMapper.updateByExampleSelective(cbac,cbacCriteria);
+            }
 
 
-                throw new SwException("sn已存在");}
+            }
 
             //校验sn
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
@@ -984,6 +991,15 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
 
         try {
+            CbabCriteria cbabCritesria = new CbabCriteria();
+            cbabCritesria.createCriteria().andCbaa01EqualTo(itemList.getCbaa01())
+                    .andCbab08EqualTo(goodsid);
+            List<Cbab> cbabs = cbabMapper.selectByExample(cbabCritesria);
+            if (cbabs.size() == 0) {
+                throw new SwException("调拨单明细中没有该商品");
+            }
+
+
             Integer instoreid = cbaa.getCbaa10();
 
             CbabCriteria cbabCriteria = new CbabCriteria();
@@ -1020,6 +1036,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setStatus((byte) 1);
                     gsGoodsSn.setGroudStatus((byte) 1);
+                    gsGoodsSn.setPrice(cbabs.get(0).getCbab11());
+
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria);
                 }
                 else{
@@ -1037,20 +1055,25 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
                 gsGoodsSn.setGroudStatus((byte) 1);
+                    gsGoodsSn.setPrice(cbabs.get(0).getCbab11());
                 gsGoodsSnMapper.insertSelective(gsGoodsSn);}
 
                 //判断调入扫码删除状态
                 CbacCriteria cbacCriterias = new CbacCriteria();
                 cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01())
-                        .andCbac09EqualTo(itemList.getCbac09())
-                        .andCbac14EqualTo(1);
+                        .andCbac09EqualTo(itemList.getCbac09());
                 List<Cbac> cbacss = cbacMapper.selectByExample(cbacCriterias);
                 if(cbacss.size()>0){
-                    Cbac cbac = new Cbac();
-                    cbac.setCbaa01(itemList.getCbaa01());
-                    cbac.setCbac09(itemList.getCbac09());
-                    cbac.setCbac14(2);
-                    cbacMapper.updateByExampleSelective(cbac,cbacCriterias);
+                    if(cbacss.get(0).getCbac14()==1){
+                        Cbac cbac = new Cbac();
+                        cbac.setCbaa01(itemList.getCbaa01());
+                        cbac.setCbac09(itemList.getCbac09());
+                        cbac.setCbac14(2);
+                        cbacMapper.updateByExampleSelective(cbac,cbacCriterias);
+                    }else {
+                        throw new SwException("该商品已经调入");
+                    }
+
                 }else{
 
                 itemList.setCbac03(date);
@@ -1066,6 +1089,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 itemList.setCbaa01(itemList.getCbaa01());
                 itemList.setCbac14(2);
                 itemList.setUserId(Math.toIntExact(userid));
+                    cbacMapper.insertSelective(itemList);
                }
             }
             else{
@@ -1144,6 +1168,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 gsGoodsSn.setInTime(date);
                 gsGoodsSn.setLocationId(itemList.getCbac10());
                 gsGoodsSn.setWhId(instoreid);
+                gsGoodsSn.setPrice(cbabs.get(0).getCbab11());
 
 
                 gsGoodsSnMapper.updateByPrimaryKeySelective(gsGoodsSn);
@@ -1165,7 +1190,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
         }
 
-        cbacMapper.insertSelective(itemList);
+
         return 1;    }
 
     //调出标记完成
