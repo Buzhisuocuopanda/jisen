@@ -1664,6 +1664,9 @@ if(gsSalesOrders.get(0).getId()==null){
             cbpd.setFactory(good.getFactory());
             cbpd.setInid(id);
             cbpd.setInQty(good.getInQty());
+            cbpd.setPrice(good.getPrice());
+            BigDecimal multiply = good.getPrice().multiply(BigDecimal.valueOf(good.getInQty()));
+            cbpd.setTotalprice(multiply);
 
             gsSalesOrdersInMapper.insertSelective(cbpd);
         }
@@ -1715,11 +1718,25 @@ if(gsSalesOrders.get(0).getId()==null){
             gsSalesOrdersDetailsCriteria.createCriteria()
                     .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()))
                     .andGoodsIdEqualTo(good.getGoodsId());
-            List<GsSalesOrdersDetails> gsSalesOrdersDetails = gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
-            double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
-            if(good.getInQty()>sum){
+            List<GsSalesOrdersDetails> gsSalesOrdersDetails =
+                    gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+           if(gsSalesOrdersDetails.size()>0) {
+               double sum = gsSalesOrdersDetails.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+               if (good.getInQty() > sum) {
+                   throw new SwException("入库数量大于预订单数量");
+               }
+           }
+            GsSalesOrdersDetailsCriteria gsSalesOrdersDetailsCriterias=new GsSalesOrdersDetailsCriteria();
+            gsSalesOrdersDetailsCriterias.createCriteria()
+                    .andGsSalesOrdersEqualTo(String.valueOf(cbpdDto.getGsid()));
+            List<GsSalesOrdersDetails> gsSalesOrdersDetailss =
+                    gsSalesOrdersDetailsMapper.selectByExample(gsSalesOrdersDetailsCriteria);
+            double sums = gsSalesOrdersDetailss.stream().mapToDouble(GsSalesOrdersDetails::getQty).sum();
+            if (good.getInQty() > sums) {
                 throw new SwException("入库数量大于预订单数量");
             }
+
+
 
 
             cbpd = new GsSalesOrdersIn();
@@ -1745,7 +1762,9 @@ if(gsSalesOrders.get(0).getId()==null){
             cbpd.setFactory(good.getFactory());
             cbpd.setInid(cbpdDto.getId());
             cbpd.setInQty(good.getInQty());
-
+            cbpd.setPrice(good.getPrice());
+            BigDecimal multiply = good.getPrice().multiply(BigDecimal.valueOf(good.getInQty()));
+            cbpd.setTotalprice(multiply);
             gsSalesOrdersInMapper.insertSelective(cbpd);
         }
 

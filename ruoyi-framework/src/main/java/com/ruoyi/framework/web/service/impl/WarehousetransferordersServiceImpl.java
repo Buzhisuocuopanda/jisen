@@ -1387,8 +1387,8 @@ else {
             for (int i = 0; i < cbabs1.size(); i++) {
                 CbacCriteria example3 = new CbacCriteria();
                 example3.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
-                        .andCbac08EqualTo(cbabs1.get(i).getCbab08())
-                        .andCbac14EqualTo(2);
+                        .andCbac08EqualTo(cbabs1.get(i).getCbab08());
+                        //.andCbac14EqualTo(2);
                 cbacs = cbacMapper.selectByExample(example3);
                 if (cbacs.size() == 0) {
                     throw new SwException("该仓库调拨单扫码记录不存在");
@@ -1754,8 +1754,8 @@ else {
             for (int i = 0; i < cbabs1.size(); i++) {
                 CbacCriteria example3 = new CbacCriteria();
                 example3.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
-                        .andCbac08EqualTo(cbabs1.get(i).getCbab08())
-                        .andCbac14EqualTo(2);
+                        .andCbac08EqualTo(cbabs1.get(i).getCbab08());
+                       // .andCbac14EqualTo(2);
                 cbacs = cbacMapper.selectByExample(example3);
                 if (cbacs.size() == 0) {
                     throw new SwException("该仓库调拨单扫码记录不存在");

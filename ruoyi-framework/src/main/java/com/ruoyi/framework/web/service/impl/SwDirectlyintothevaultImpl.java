@@ -27,7 +27,6 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.stream.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
@@ -113,11 +112,34 @@ private CbpmMapper cbpmMapper;
         if(cbicDto.get(0).getUpc()==null){
             throw new SwException("upc没输入");
         }
-       /* Map<String, Long> map  = cbicDto.stream().collect(Collectors.groupingBy(CbicDto::getUpc,CbicDto:: Collectors.counting()));
+
+      /*  Map<String, Long> map  = cbicDto.stream().collect(Collectors.groupingBy(CbicDto::getUpc, Collectors.counting()));
         for(Map.Entry<String, Long> entry : map.entrySet()){
             System.out.println("key ："+entry.getKey()+", value ："+entry.getValue());
-        }
-*/
+            CbibDo cbibDo = new CbibDo();
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb15EqualTo(entry.getKey());
+            List<Cbpb> cbpbs = cbbpbMapper.selectByExample(cbpbCriteria);
+            if(cbpbs.size()==0){
+                throw new SwException("upc没找到");
+            }
+            cbibDo.setCbib02(5);
+            cbibDo.setCbib04(date);
+            cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+            cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
+            cbibDo.setCbib11(Double.valueOf(entry.getValue()));
+            cbibDo.setCbib17(TaskType.zjrk.getMsg());
+
+            taskService.InsertCBIB(cbibDo);
+        }*/
+        //
+
+
+
+
+
+
+        ///
 
         CbiwVo cbiwVo = new CbiwVo();
         cbiwVo.setUser(Math.toIntExact(userid));

@@ -45,6 +45,8 @@ public class GsOrdersInVo implements Serializable {
     @Excel(name = "工厂")
     private String factory;
 
+
+
     private Integer cas;
 
     private Integer gsid;

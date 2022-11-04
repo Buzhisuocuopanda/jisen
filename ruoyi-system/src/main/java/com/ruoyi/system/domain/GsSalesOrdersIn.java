@@ -3,6 +3,7 @@ package com.ruoyi.system.domain;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 public class GsSalesOrdersIn implements Serializable {
@@ -32,15 +33,15 @@ public class GsSalesOrdersIn implements Serializable {
 
     private Integer inid;
 
+    private BigDecimal price;
+
+    private BigDecimal totalprice;
+
     private String goodsName;
 
     private String brand;
 
     private String pinpai;
-
-
-
-
 
     private static final long serialVersionUID = 1L;
 
@@ -148,6 +149,22 @@ public class GsSalesOrdersIn implements Serializable {
         this.inid = inid;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(BigDecimal totalprice) {
+        this.totalprice = totalprice;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -172,7 +189,9 @@ public class GsSalesOrdersIn implements Serializable {
             && (this.getGsSalesOrders() == null ? other.getGsSalesOrders() == null : this.getGsSalesOrders().equals(other.getGsSalesOrders()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()))
-            && (this.getInid() == null ? other.getInid() == null : this.getInid().equals(other.getInid()));
+            && (this.getInid() == null ? other.getInid() == null : this.getInid().equals(other.getInid()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+            && (this.getTotalprice() == null ? other.getTotalprice() == null : this.getTotalprice().equals(other.getTotalprice()));
     }
 
     @Override
@@ -192,6 +211,8 @@ public class GsSalesOrdersIn implements Serializable {
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
         result = prime * result + ((getInid() == null) ? 0 : getInid().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
+        result = prime * result + ((getTotalprice() == null) ? 0 : getTotalprice().hashCode());
         return result;
     }
 
@@ -214,8 +235,12 @@ public class GsSalesOrdersIn implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", factory=").append(factory);
         sb.append(", inid=").append(inid);
+        sb.append(", price=").append(price);
+        sb.append(", totalprice=").append(totalprice);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
+
+
 }

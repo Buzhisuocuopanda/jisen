@@ -999,67 +999,78 @@ return 1;
         CbsbsVo res = new CbsbsVo();
         List<ScanVo> goods = res.getGoods();
         List<TakeOrderSugestVo> outsuggestion = res.getOutsuggestion();
+        List<TakeOrderSugestVo> outsuggestionss = new ArrayList<>();
+
         HashSet<TakeOrderSugestVo> outsuggestions = new HashSet<>();
 
         CompletableFuture<List<TakeOrderSugestVo>> f2 =
                 CompletableFuture.supplyAsync(() -> {
 
-            //  for (int k=0;k<cbsbsVos.size();k++) {
-            CbscCriteria asd = new CbscCriteria();
-            asd.createCriteria().andCbsb01EqualTo(cbsbsVo.getCbsb01());
-            List<Cbsc> cbscs1 = cbscMapper.selectByExample(asd);
-            if(cbscs1.size()>0){
-               // double sum = cbscs1.stream().mapToDouble(Cbsc::getCbsc09).sum();
-                for (int k=0;k<cbscs1.size();k++) {
-                    if(cbscs1.get(k).getTakegoodsid()!=null) {
-                        CbpmCriteria example = new CbpmCriteria();
-                        example.createCriteria().andCbpk01EqualTo(cbscs1.get(k).getTakegoodsid())
-                                .andCbpm08EqualTo(cbscs1.get(k).getCbsc08());
-                        List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
-                        for (int j = 0; j < cbpms.size(); j++){
-                            Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(j).getCbpm10());
-                            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpms.get(j).getCbpm08());
-                            Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
-                            Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
-                            TakeOrderSugestVo outsuggestio = new TakeOrderSugestVo();
-                            if(cala!=null){
-                                outsuggestio.setBrand(cala.getCala08());
+                    //  for (int k=0;k<cbsbsVos.size();k++) {
+                    CbscCriteria asd = new CbscCriteria();
+                    asd.createCriteria().andCbsb01EqualTo(cbsbsVo.getCbsb01());
+                    List<Cbsc> cbscs1 = cbscMapper.selectByExample(asd);
+                    double sum = 0;
+                    if (cbscs1.size() > 0) {
+                        sum = cbscs1.stream().mapToDouble(Cbsc::getCbsc09).sum();
+                        for (int k = 0; k < cbscs1.size(); k++) {
+                            if (cbscs1.get(k).getTakegoodsid() != null) {
+                                CbpmCriteria example = new CbpmCriteria();
+                                example.createCriteria().andCbpk01EqualTo(cbscs1.get(k).getTakegoodsid())
+                                        .andCbpm08EqualTo(cbscs1.get(k).getCbsc08());
+                                List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+                                for (int j = 0; j < cbpms.size(); j++) {
+                                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(j).getCbpm10());
+                                    Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpms.get(j).getCbpm08());
+                                    Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                                    Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                                    TakeOrderSugestVo outsuggestio = new TakeOrderSugestVo();
+                                    if (cala != null) {
+                                        outsuggestio.setBrand(cala.getCala08());
 
-                            }
-                            if(cbpa!=null){
-                                outsuggestio.setGoodClass(cbpa.getCbpa08());
-                            }
-                            if(cbpb!=null){
-                                outsuggestio.setDescription(cbpb.getCbpb08());
-                                outsuggestio.setModel(cbpb.getCbpb12());
+                                    }
+                                    if (cbpa != null) {
+                                        outsuggestio.setGoodClass(cbpa.getCbpa08());
+                                    }
+                                    if (cbpb != null) {
+                                        outsuggestio.setDescription(cbpb.getCbpb08());
+                                        outsuggestio.setModel(cbpb.getCbpb12());
 
-                            }
-                            if(cbpms.get(j).getCbpm09()!=null){
-                                CbsdCriteria cbsdCriteria=new CbsdCriteria();
-                                cbsdCriteria.createCriteria().andCbsd09EqualTo(cbpms.get(j).getCbpm09());
-                                List<Cbsd> cbsds = cbsdMapper.selectByExample(cbsdCriteria);
-                                if(cbsds.size()>0){
-                                    outsuggestio.setScanStatus("已扫码");
-                                }else{
-                                    outsuggestio.setScanStatus("未扫码");
+                                    }
+                                    if (cbpms.get(j).getCbpm09() != null) {
+                                        CbsdCriteria cbsdCriteria = new CbsdCriteria();
+                                        cbsdCriteria.createCriteria().andCbsd09EqualTo(cbpms.get(j).getCbpm09());
+                                        List<Cbsd> cbsds = cbsdMapper.selectByExample(cbsdCriteria);
+                                        if (cbsds.size() > 0) {
+                                            outsuggestio.setScanStatus("已扫码");
+                                        } else {
+                                            outsuggestio.setScanStatus("未扫码");
+                                        }
+
+                                    }
+                                    outsuggestio.setSn(cbpms.get(j).getCbpm09());
+                                    if (cbla != null) {
+                                        outsuggestio.setSku(cbla.getCbla09());
+                                    }
+
+                                    outsuggestions.add(outsuggestio);
                                 }
-
                             }
-                            outsuggestio.setSn(cbpms.get(j).getCbpm09());
-                            if(cbla!=null){
-                                outsuggestio.setSku(cbla.getCbla09());
-                            }
-
-                            outsuggestions.add(outsuggestio);
                         }
                     }
-                }
-            }
-                    outsuggestion.addAll(outsuggestions);
+                    outsuggestionss.addAll(outsuggestions);
 //            outsuggestion.addAll(outsuggestions);
+                  //  int a= (int) sum;
+                    if (outsuggestionss.size() > sum) {
+                        List<TakeOrderSugestVo> takeOrderSugestVos = outsuggestionss.subList(0, (int) sum);
+                        outsuggestion.addAll(takeOrderSugestVos);
 
-            return outsuggestion;
-        });
+                    } else {
+                        outsuggestion.addAll(outsuggestionss);
+                    }
+
+                    return outsuggestion;
+                });
 
         Double sum = 0.0;
 

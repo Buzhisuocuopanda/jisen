@@ -435,7 +435,8 @@
   <select id="swJsOrderInlist" resultType="com.ruoyi.system.domain.vo.GsOrdersInVo">
     SELECT
         a.id,a.order_no as orderNo, a.order_date as orderDate,a.factory,b.CBSA08 as supplierName,
-        c.CBCA08 as customerName,a.statuss,a.status,a.supplier_id as supplierId,a.customer_id as customerId
+        c.CBCA08 as customerName,a.statuss,a.status,a.supplier_id as supplierId,a.customer_id as customerId,
+        a.PONumber as ponumber
     FROM
       gs_orders_in a
 
