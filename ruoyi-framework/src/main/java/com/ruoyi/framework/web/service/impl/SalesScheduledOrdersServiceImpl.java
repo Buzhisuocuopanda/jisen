@@ -1653,7 +1653,7 @@ if(gsSalesOrders.get(0).getId()==null){
             if(good.getFactory()==null){
                 throw new SwException("货物厂家不能为空");
             }
-
+            cbpd.setGoodsId(good.getGoodsId());
             cbpd.setCreateTime(date);
             cbpd.setCreateBy(userid);
             cbpd.setUpdateTime(date);
@@ -1663,6 +1663,7 @@ if(gsSalesOrders.get(0).getId()==null){
             cbpd.setPonumber(good.getPonumber());
             cbpd.setFactory(good.getFactory());
             cbpd.setInid(id);
+            cbpd.setInQty(good.getInQty());
 
             gsSalesOrdersInMapper.insertSelective(cbpd);
         }
@@ -1701,7 +1702,7 @@ if(gsSalesOrders.get(0).getId()==null){
         cbpc.setSupplierId(cbpdDto.getSupplierId());
         cbpc.setSalerId(cbpdDto.getSalerId());
 
-        gsOrdersInMapper.updateByPrimaryKey(cbpc);
+        gsOrdersInMapper.updateByPrimaryKeySelective(cbpc);
 
         GsSalesOrdersInCriteria gsSalesChangeCriteria = new GsSalesOrdersInCriteria();
         gsSalesChangeCriteria.createCriteria().andInidEqualTo(cbpdDto.getId());
@@ -1732,6 +1733,7 @@ if(gsSalesOrders.get(0).getId()==null){
             if(good.getFactory()==null){
                 throw new SwException("货物厂家不能为空");
             }
+            String purchaseinboundNo = numberGenerate.getTakeOrderNosss();
 
             cbpd.setCreateTime(date);
             cbpd.setCreateBy(userid);
@@ -1814,13 +1816,14 @@ if(cbpdDto.getSupplierId()!=null){
         for (GsSalesOrdersIn gsSalesChange1:gsSalesChanges){
             goods.add(gsSalesChange1);
         }
-if(goods!=null&&goods.size()>0){
-    for(GsSalesOrdersIn good:goods){
-        if(good.getGoodsId()!=null){
-            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
-            if(cbpb!=null){
+      if(goods!=null&&goods.size()>0){
+         for(GsSalesOrdersIn good:goods){
+             if(good.getGoodsId()!=null){
+               Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
+                 if(cbpb!=null){
                 good.setGoodsName(cbpb.getCbpb08());
                 good.setBrand(cbpb.getCbpb12());
+                    // good.setInQty();
                 if(cbpb.getCbpb10()!=null){
                     Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
                     if(cala!=null){
