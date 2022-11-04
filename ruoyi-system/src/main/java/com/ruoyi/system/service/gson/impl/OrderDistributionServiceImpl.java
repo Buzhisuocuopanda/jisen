@@ -1026,7 +1026,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 }
 
-                if (sendNum.equals(cbobs)) {
+                if (sendNum.equals(cbobs.size())) {
                     cboa.setCboa04(new Date());
                     cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
                     cboaMapper.updateByPrimaryKey(cboa);
