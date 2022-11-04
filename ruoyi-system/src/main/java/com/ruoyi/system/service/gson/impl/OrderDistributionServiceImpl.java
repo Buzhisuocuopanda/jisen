@@ -887,6 +887,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         try {
             //   lockTotalOrder();
             List<Cbba> cbbas = new ArrayList<>();
+            Cbob thiscbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
+            if(thiscbob==null){
+                throw new SwException("没有查到销售订单明细");
+            }
+
             if (saleOrderExitDo.getOrderClass() == 2) {
                 //国内订单根据优先级来
                 //如果出库仓库是GQW
@@ -903,16 +908,16 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //                        .andCbba07EqualTo(saleOrderExitDo.getOrderNo())
 //                        .andCbba12EqualTo(TotalOrderConstants.NO);
 //                cbbas = cbbaMapper.selectByExample(baex);
-                Cbob cbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
-                if (cbob == null) {
-                    throw new SwException("没有查到该出库单的销售订单明细");
-                }
+//                Cbob cbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
+//                if (cbob == null) {
+//                    throw new SwException("没有查到该出库单的销售订单明细");
+//                }
 
-                if (cbob.getCbob17() == null) {
+                if (thiscbob.getCbob17() == null) {
                     throw new SwException("没有查到该出库单的生产总订单");
 
                 }
-                Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+                Cbba cbba = cbbaMapper.selectByPrimaryKey(thiscbob.getCbob17());
                 if (cbba == null) {
                     throw new SwException("没有查到该出库单的生产总订单");
 
@@ -995,7 +1000,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             Integer sendNum = 0;
             if (cboas.size() > 0) {
                 Cboa cboa = cboas.get(0);
-                CbobCriteria obex = new CbobCriteria();
+
+                CbobCriteria obex=new CbobCriteria();
                 obex.createCriteria()
                         .andCboa01EqualTo(cboa.getCboa01());
                 List<Cbob> cbobs = cbobMapper.selectByExample(obex);
@@ -1004,7 +1010,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         sendNum = sendNum + 1;
                         continue;
                     }
-                    if (cbob.getCbob08().equals(saleOrderExitDo.getGoodsId())) {
+                    if (cbob.getCbob01().equals(thiscbob.getCbob01())) {
                         if (cbob.getCbob09().equals(cbob.getCbob10() + saleOrderExitDo.getQty())) {
                             cbob.setCbob10(cbob.getCbob10() + saleOrderExitDo.getQty());
                             cbobMapper.updateByPrimaryKey(cbob);

@@ -835,7 +835,8 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
 
             cbsbMapper.updateByExampleSelective(cbsb, example1);
         }
-return 1;
+        throw new SwException("测试");
+//return 1;
     }
 
     @Transactional

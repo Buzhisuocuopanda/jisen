@@ -23,6 +23,8 @@ public interface TakeGoodsService {
 
     TakeGoodsOrderDetailVo takeOrderDetailBySaleId(Integer saleOrderId,Integer whId);
 
+    TakeGoodsOrderDetailVo takeOrderDetailBySaleIdIds(List<Integer> saleOrderIds,Integer whId);
+
     void mdfTakeGoodsOrder(TakeGoodsOrderAddDto takeGoodsOrderAddDto);
 
     void delTakeGoodsOrder(Integer id, Long userId);
