@@ -266,6 +266,10 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
         wtw2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
         List<Cbsg> cbsg2 = cbsgMapper.selectByExample(wtw2);
         Long userid = SecurityUtils.getUserId();
+        //zgl
+        Cbse cbse2 = cbseMapper.selectByPrimaryKey(cbseDo.getCbse01());
+        cbseDo = BeanCopyUtils.coypToClass(cbse2, CbseDo.class, null);
+
         Date date = new Date();
         if(cbsg2==null||cbsg2.size()==0){//zgl 判断扫码数量未空则修改gs_goods_sku和cbib表数据
 
