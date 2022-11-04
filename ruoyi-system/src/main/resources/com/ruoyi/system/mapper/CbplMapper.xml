@@ -20,6 +20,7 @@
     <result column="CBPL16" jdbcType="INTEGER" property="cbpl16" />
     <result column="CBPK01" jdbcType="INTEGER" property="cbpk01" />
     <result column="good_product_qty" jdbcType="DOUBLE" property="goodProductQty" />
+    <result column="cbob_id" jdbcType="INTEGER" property="cbobId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     CBPL01, CBPL02, CBPL03, CBPL04, CBPL05, CBPL06, CBPL07, CBPL08, CBPL09, CBPL10, CBPL11,
-    CBPL12, CBPL13, CBPL14, CBPL15, CBPL16, CBPK01, good_product_qty
+    CBPL12, CBPL13, CBPL14, CBPL15, CBPL16, CBPK01, good_product_qty, cbob_id
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.CbplCriteria" resultMap="BaseResultMap">
     select
@@ -119,15 +120,15 @@
       CBPL07, CBPL08, CBPL09,
       CBPL10, CBPL11, CBPL12,
       CBPL13, CBPL14, CBPL15,
-      CBPL16, CBPK01, good_product_qty
-      )
+      CBPL16, CBPK01, good_product_qty,
+      cbob_id)
     values (#{cbpl01,jdbcType=INTEGER}, #{cbpl02,jdbcType=INTEGER}, #{cbpl03,jdbcType=TIMESTAMP},
       #{cbpl04,jdbcType=INTEGER}, #{cbpl05,jdbcType=TIMESTAMP}, #{cbpl06,jdbcType=INTEGER},
       #{cbpl07,jdbcType=INTEGER}, #{cbpl08,jdbcType=INTEGER}, #{cbpl09,jdbcType=DOUBLE},
       #{cbpl10,jdbcType=DOUBLE}, #{cbpl11,jdbcType=DOUBLE}, #{cbpl12,jdbcType=DOUBLE},
       #{cbpl13,jdbcType=VARCHAR}, #{cbpl14,jdbcType=INTEGER}, #{cbpl15,jdbcType=INTEGER},
-      #{cbpl16,jdbcType=INTEGER}, #{cbpk01,jdbcType=INTEGER}, #{goodProductQty,jdbcType=DOUBLE}
-      )
+      #{cbpl16,jdbcType=INTEGER}, #{cbpk01,jdbcType=INTEGER}, #{goodProductQty,jdbcType=DOUBLE},
+      #{cbobId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpl">
     insert into `CBPL`
@@ -186,6 +187,9 @@
       <if test="goodProductQty != null">
         good_product_qty,
       </if>
+      <if test="cbobId != null">
+        cbob_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cbpl01 != null">
@@ -241,6 +245,9 @@
       </if>
       <if test="goodProductQty != null">
         #{goodProductQty,jdbcType=DOUBLE},
+      </if>
+      <if test="cbobId != null">
+        #{cbobId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -307,6 +314,9 @@
       <if test="record.goodProductQty != null">
         good_product_qty = #{record.goodProductQty,jdbcType=DOUBLE},
       </if>
+      <if test="record.cbobId != null">
+        cbob_id = #{record.cbobId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -331,7 +341,8 @@
       CBPL15 = #{record.cbpl15,jdbcType=INTEGER},
       CBPL16 = #{record.cbpl16,jdbcType=INTEGER},
       CBPK01 = #{record.cbpk01,jdbcType=INTEGER},
-      good_product_qty = #{record.goodProductQty,jdbcType=DOUBLE}
+      good_product_qty = #{record.goodProductQty,jdbcType=DOUBLE},
+      cbob_id = #{record.cbobId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -390,6 +401,9 @@
       <if test="goodProductQty != null">
         good_product_qty = #{goodProductQty,jdbcType=DOUBLE},
       </if>
+      <if test="cbobId != null">
+        cbob_id = #{cbobId,jdbcType=INTEGER},
+      </if>
     </set>
     where CBPL01 = #{cbpl01,jdbcType=INTEGER}
   </update>
@@ -411,22 +425,24 @@
       CBPL15 = #{cbpl15,jdbcType=INTEGER},
       CBPL16 = #{cbpl16,jdbcType=INTEGER},
       CBPK01 = #{cbpk01,jdbcType=INTEGER},
-      good_product_qty = #{goodProductQty,jdbcType=DOUBLE}
+      good_product_qty = #{goodProductQty,jdbcType=DOUBLE},
+      cbob_id = #{cbobId,jdbcType=INTEGER}
     where CBPL01 = #{cbpl01,jdbcType=INTEGER}
   </update>
+
   <select id="selectBySaleOrderNoAndGoodsId" resultMap="BaseResultMap">
 
     SELECT
-	cbpl.*
+   cbpl.*
 FROM
-	CBPL cbpl
-	INNER JOIN CBPK cbpk on cbpk.CBPK01= cbpl.CBPK01
-	INNER JOIN CBOA cboa ON cboa.CBOA07=cbpk.sale_order_no
-	WHERE
-	 cbpk.check_status=1
-	 AND cbpk.CBPK06=0
-	 AND cbpl.CBPL08=#{goodsId}
-	 AND cbpk.sale_order_no=#{orderNo}
+   CBPL cbpl
+   INNER JOIN CBPK cbpk on cbpk.CBPK01= cbpl.CBPK01
+   INNER JOIN CBOA cboa ON cboa.CBOA07=cbpk.sale_order_no
+   WHERE
+    cbpk.check_status=1
+    AND cbpk.CBPK06=0
+    AND cbpl.CBPL08=#{goodsId}
+    AND cbpk.sale_order_no=#{orderNo}
   </select>
 
 
