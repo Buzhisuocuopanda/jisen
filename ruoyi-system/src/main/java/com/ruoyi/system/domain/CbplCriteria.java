@@ -1194,6 +1194,66 @@ public class CbplCriteria {
             addCriterion("good_product_qty not between", value1, value2, "goodProductQty");
             return (Criteria) this;
         }
+
+        public Criteria andCbobIdIsNull() {
+            addCriterion("cbob_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdIsNotNull() {
+            addCriterion("cbob_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdEqualTo(Integer value) {
+            addCriterion("cbob_id =", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdNotEqualTo(Integer value) {
+            addCriterion("cbob_id <>", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdGreaterThan(Integer value) {
+            addCriterion("cbob_id >", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cbob_id >=", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdLessThan(Integer value) {
+            addCriterion("cbob_id <", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdLessThanOrEqualTo(Integer value) {
+            addCriterion("cbob_id <=", value, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdIn(List<Integer> values) {
+            addCriterion("cbob_id in", values, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdNotIn(List<Integer> values) {
+            addCriterion("cbob_id not in", values, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdBetween(Integer value1, Integer value2) {
+            addCriterion("cbob_id between", value1, value2, "cbobId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCbobIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("cbob_id not between", value1, value2, "cbobId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

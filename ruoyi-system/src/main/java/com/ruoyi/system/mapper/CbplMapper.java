@@ -30,6 +30,4 @@ public interface CbplMapper {
 
     List<Cbpl> selectBySaleOrderNoAndGoodsId( @Param("orderNo")String orderNo, @Param("goodsId") Integer goodsId);
 
-
-//    List<Cbpl> selectByGoodsAndSaleOrderNo(Integer goodsId,String saleOrderNo);
 }

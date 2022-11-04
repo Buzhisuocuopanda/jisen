@@ -51,4 +51,7 @@ public class TakeOrderGoodsDto {
     private Integer cbpc099;
 
 
+    private Integer cbob01;
+
+
 }
