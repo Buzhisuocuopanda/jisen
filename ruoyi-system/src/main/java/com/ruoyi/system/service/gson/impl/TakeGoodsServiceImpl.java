@@ -103,8 +103,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     }
 
     @Transactional
-    @Override
-    public void addTakeGoodsOrder(TakeGoodsOrderAddDto takeGoodsOrderAddDto) {
+    public void addTakeGoodsOrderold(TakeGoodsOrderAddDto takeGoodsOrderAddDto) {
 
         //查出销售订单 检查销售订单是否已复审通过
         CboaCriteria oaex = new CboaCriteria();
@@ -247,6 +246,186 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpl.setCbpl12(good.getTotalPrice());
             cbpl.setGoodProductQty(good.getQty());
             cbpl.setCbpl16(cboa.getCboa27());
+            cbpl.setCbobId(good.getCbob01());
+//            cbpl.setCbpl13();
+//            cbpl.setCbpl14();
+//            cbpl.setCbpl15();
+//            cbpl.setCbpl16();
+//            cbpl.setGoodProductQty(0.0);
+            cbplMapper.insert(cbpl);
+
+//            List<Cbpl> list=cbplMapper.selectBySaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
+
+
+            //提货数量
+//            Double takeQty = list.stream().collect(Collectors.summingDouble(Cbpl::getCbpl09));
+            //良品数量
+//            Double goodQty = list.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+//            Double lessQty=takeQty-goodQty;
+
+
+        }
+
+    }
+
+    @Transactional
+    @Override
+
+    public void addTakeGoodsOrder(TakeGoodsOrderAddDto takeGoodsOrderAddDto) {
+
+        //查出销售订单 检查销售订单是否已复审通过
+//        CboaCriteria oaex = new CboaCriteria();
+//        oaex.createCriteria()
+//                .andCboa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                .andCboa07EqualTo(takeGoodsOrderAddDto.getSaleOrderNo());
+//        List<Cboa> cboas = cboaMapper.selectByExample(oaex);
+//        if (cboas.size() == 0) {
+//            throw new SwException("没有查到该销售订单订单");
+//        }
+//        Cboa cboa = cboas.get(0);
+//        if (!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(cboa.getCboa11())) {
+//            throw new SwException("销售订单必须为已复审状态");
+//        }
+
+        //只有该销售订单在此仓库最新一提货单质检完成之后才能再生成
+        Cbpk old = cbpkMapper.selectLastBySaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
+        if (old != null && TakeOrderCheckStatus.NOCHECK.getCode().equals(old.getCheckStatus())) {
+            throw new SwException("该销售订单的最新提货单需要质检完成之后才能提交新的提货单");
+        }
+
+        Cbpk cbpk = new Cbpk();
+        Date date = new Date();
+        cbpk.setCbpk02(date);
+        cbpk.setCbpk03(takeGoodsOrderAddDto.getUserId());
+        cbpk.setCbpk04(date);
+        cbpk.setCbpk05(takeGoodsOrderAddDto.getUserId());
+        cbpk.setCbpk06(DeleteFlagEnum.NOT_DELETE.getCode());
+        NumberDo numberDo = new NumberDo();
+        numberDo.setType(NumberGenerateEnum.TAKEORDER.getCode());
+        cbpk.setCbpk07(numberGenerate.createOrderNo(numberDo).getOrderNo());
+        cbpk.setCbpk08(takeGoodsOrderAddDto.getOrderDate());
+        cbpk.setCbpk09(takeGoodsOrderAddDto.getCustomerId());
+        cbpk.setCbpk10(takeGoodsOrderAddDto.getWhId());
+        cbpk.setCbpk11(SaleOrderStatusEnums.YITIJIAO.getCode());
+//        cbpk.setCbpk12();
+//        cbpk.setCbpk13();
+//        cbpk.setCbpk14();/
+//        cbpk.setCbpk15();
+        cbpk.setCbpk16(takeGoodsOrderAddDto.getCurrency());
+        cbpk.setCbpk17(takeGoodsOrderAddDto.getSaleUserId());
+        cbpk.setCbpk18(takeGoodsOrderAddDto.getContacts());
+        cbpk.setCbpk19(takeGoodsOrderAddDto.getPhone());
+//        cbpk.setCbpk20();
+        cbpk.setCbpk21(takeGoodsOrderAddDto.getReceiveAdress());
+//        cbpk.setCbpk22();
+//        cbpk.setCbpk23();
+//        cbpk.setCbpk24();
+//        cbpk.setCbpk25();
+//        cbpk.setCbpk26();
+//        cbpk.setCbpk27();
+//        cbpk.setCbpk28();
+//        cbpk.setCbpk29();
+        cbpk.setCbpk30(takeGoodsOrderAddDto.getCustomerNo());
+
+        cbpk.setCbpk31(TakeOrderConstants.WEIWANCHENG);
+        cbpk.setCheckStatus(TakeOrderCheckStatus.NOCHECK.getCode().byteValue());
+        cbpk.setSaleOrderNo(takeGoodsOrderAddDto.getSaleOrderNo());
+        int insert = cbpkMapper.insertWithId(cbpk);
+        Cbpl cbpl = null;
+        for (TakeOrderGoodsDto good : takeGoodsOrderAddDto.getGoods()) {
+            if (good.getQty() == 0) {
+                continue;
+            }
+
+            if (good.getGoodsId() == null) {
+                throw new SwException("提货货物不能为空");
+            }
+
+            //判断是否全部提货完
+            Cbob cbob = cbobMapper.selectByPrimaryKey(good.getCbob01());
+            if(cbob==null){
+                throw new SwException("没有查到该销售订单明细");
+            }
+            Cboa cboa = cboaMapper.selectByPrimaryKey(cbob.getCboa01());
+        if (cboa==null) {
+            throw new SwException("没有查到该销售订单订单");
+        }
+
+        if (!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(cboa.getCboa11())) {
+            throw new SwException("销售订单必须为已复审状态");
+        }
+
+
+
+//            for (Cbob cbob : cbobs) {
+
+
+//                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
+//                    throw new SwException("提货数量不能超过订单数量");
+//                }
+                List<Cbpl> cbpls = cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(), good.getGoodsId());
+                Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+                if (good.getQty() + collect > cbob.getCbob09()) {
+                    throw new SwException("提货数量总和不能大于该销售订单数量");
+                }
+//            }
+
+            //检查是否已占用了库存 并且提货数量不能大于占用数量 以及历史提货数量减去良品数量
+            GsGoodsUseCriteria guex = new GsGoodsUseCriteria();
+            guex.createCriteria()
+                    .andGoodsIdEqualTo(good.getGoodsId())
+//                    .andOrderNoEqualTo(takeGoodsOrderAddDto.getSaleOrderNo())
+                    .andWhIdEqualTo(takeGoodsOrderAddDto.getWhId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(guex);
+            if (gsGoodsUses.size() == 0) {
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(good.getGoodsId());
+                throw new SwException("该商品没有在本仓库占用库存，商品:" + cbpb.getCbpb12());
+            }
+
+            GsGoodsUse goodsUse = gsGoodsUses.get(0);
+            if (good.getQty() > goodsUse.getLockQty()) {
+                throw new SwException("该商品的提货数量不能大于占用数量");
+
+            }
+            //未出库数量
+//            Double noOutQty = goodsUse.getNoOutQty();
+//            List<Cbpl> list=cbplMapper.selectByGoodsAndSaleOrderNo(good.getGoodsId(),cboa.getCboa07());
+//            Double takeQty=list.stream().mapToDouble(Cbpl::getGoodProductQty).sum();
+//            Double lockQty = goodsUse.getLockQty();
+//            if(good.getQty()+takeQty>lockQty){
+//                throw new SwException("该商品未出库的提货单数量相加超过占用数量");
+//
+//            }
+
+//             Double lockQty1 = goodsUse.getLockQty();
+//             Double lockQty1 = goodsUse.getLockQty();
+
+            //查出提货数量
+
+
+            if (good.getQty() == 0) {
+                throw new SwException("提货数量不能为0");
+            }
+
+            //生成明细表
+            cbpl = new Cbpl();
+            cbpl.setCbpk01(cbpk.getCbpk01());
+            cbpl.setCbpl02(good.getNumber());
+            cbpl.setCbpl03(date);
+            cbpl.setCbpl04(takeGoodsOrderAddDto.getUserId());
+            cbpl.setCbpl05(date);
+            cbpl.setCbpl06(takeGoodsOrderAddDto.getUserId());
+            cbpl.setCbpl07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpl.setCbpl08(good.getGoodsId());
+            cbpl.setCbpl09(good.getQty());
+            cbpl.setCbpl10(0.0);
+            cbpl.setCbpl11(good.getPrice());
+            cbpl.setCbpl12(good.getTotalPrice());
+            cbpl.setGoodProductQty(good.getQty());
+            cbpl.setCbpl16(cboa.getCboa27());
+            cbpl.setCbobId(cbob.getCbob01());
 //            cbpl.setCbpl13();
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();
@@ -388,6 +567,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
         Map<Integer, TakeOrderGoodsVo> goodsMap = new HashMap<>();
         int i = 0;
+        Map<Integer,Integer> goodsScanQty=new HashMap<>();
         for (Cbpl cbpl : cbpls) {
             good = new TakeOrderGoodsVo();
 //            CbpmCriteria pmex=new CbpmCriteria();
@@ -406,9 +586,20 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
 
             //zhaoGuoLiang添加销售订单明细表id
-            if (cbobList != null && cbobList.size() > i) {
-                good.setCbob01(cbobList.get(i).getCbob01());
+
+            if(cbpl.getCbobId()!=null){
+                Cbob cbob = cbobMapper.selectByPrimaryKey(cbpl.getCbobId());
+                if(cbob!=null){
+                    good.setCbob01(cbob.getCbob01());
+                }
+
+
+            }else {
+                if (cbobList != null && cbobList.size() > i) {
+                    good.setCbob01(cbobList.get(i).getCbob01());
+                }
             }
+
             good.setCbplId(cbpl.getCbpl01());
             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpl.getCbpl08());
             if (cbpb != null) {
@@ -446,14 +637,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 }
 
-                CbobCriteria obex = new CbobCriteria();
-                obex.createCriteria()
-                        .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
-                        .andCbob08EqualTo(good.getGoodsId())
-                        .andCboa01EqualTo(cboa.getCboa01());
-                List<Cbob> cbobs = cbobMapper.selectByExample(obex);
-                if (cbobs.size() > 0) {
-                    Cbob cbob = cbobs.get(0);
+//                CbobCriteria obex = new CbobCriteria();
+//                obex.createCriteria()
+//                        .andCbob07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+//                        .andCbob08EqualTo(good.getGoodsId())
+//                        .andCboa01EqualTo(cboa.getCboa01());
+               Cbob cbob = cbobMapper.selectByPrimaryKey(cbpl.getCbobId());
+                if (cbob!=null) {
+//                    Cbob cbob = cbobs.get(0);
                     good.setNoSendQty(cbob.getCbob09() - cbob.getCbob10());
                     good.setOrderQty(cbob.getCbob09());
                 }
@@ -475,13 +666,27 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbpm07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbpk01EqualTo(cbpk.getCbpk01());
             List<Cbpm> cbpms = cbpmMapper.selectByExample(pmex);
-            good.setScanQty(cbpms.size());
+            Integer usqty = goodsScanQty.get(good.getGoodsId());
+            if(usqty==null){
+                usqty=0;
+            }
+            Integer scanqty=cbpms.size()-usqty;
+            if(cbpl.getCbpl09()>scanqty){
+                good.setScanQty(scanqty);
+                goodsScanQty.put(good.getGoodsId(),usqty+scanqty);
+            }else {
+                good.setScanQty(cbpl.getCbpl09().intValue());
+                goodsScanQty.put(good.getGoodsId(),usqty+cbpl.getCbpl09().intValue());
+            }
 
-            good.setGoodsNum(Double.valueOf(cbpms.size()));
+
+
+
+//            good.setGoodsNum(Double.valueOf(cbpms.size()));
             //todo
 //            good.setRemark();
             good.setQty(cbpl.getCbpl09());
-            good.setGoodsNum(cbpl.getGoodProductQty());
+            good.setGoodsNum(good.getScanQty().doubleValue());
             //TODO
 //            good.setSupplierId();
             good.setTotalPrice(cbpl.getCbpl12());
@@ -549,25 +754,25 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     scanMap.put(takeOrderGoodsVo.getGoodsId(), integer + 1);
                 }
             }
-            for (TakeOrderGoodsVo resGood : res.getGoods()) {
-                if (scanMap.get(resGood.getGoodsId()) == null) {
-                    resGood.setScanQty(0);
-                } else {
-                    resGood.setScanQty(scanMap.get(resGood.getGoodsId()));
-                }
-
-
-            }
+//            for (TakeOrderGoodsVo resGood : res.getGoods()) {
+//                if (scanMap.get(resGood.getGoodsId()) == null) {
+//                    resGood.setScanQty(0);
+//                } else {
+//                    resGood.setScanQty(scanMap.get(resGood.getGoodsId()));
+//                }
+//
+//
+//            }
 
 
         }
         List<TakeOrderGoodsVo> goods1 = res.getGoods();
-        for (TakeOrderGoodsVo takeOrderGoodsVo : goods1) {
-            if (scanMap.get(takeOrderGoodsVo.getGoodsId()) != null) {
-                takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
-
-            }
-        }
+//        for (TakeOrderGoodsVo takeOrderGoodsVo : goods1) {
+//            if (scanMap.get(takeOrderGoodsVo.getGoodsId()) != null) {
+//                takeOrderGoodsVo.setGoodsNum(scanMap.get(takeOrderGoodsVo.getGoodsId()).doubleValue());
+//
+//            }
+//        }
 
 
         if (res.getOrderDate() != null) {
@@ -930,6 +1135,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
             good.setNoSendQty(cbob.getCbob09() - cbob.getCbob10());
             good.setPrice(cbob.getCbob11());
+            good.setCbob01(cbob.getCbob01());
             //todo
 //            good.setRemark();
             good.setQty(canTakeQty);
@@ -1083,6 +1289,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             cbpl.setCbpl10(0.0);
             cbpl.setCbpl11(good.getPrice());
             cbpl.setCbpl12(good.getTotalPrice());
+            cbpl.setCbobId(good.getCbob01());
 //            cbpl.setCbpl13();
 //            cbpl.setCbpl14();
 //            cbpl.setCbpl15();

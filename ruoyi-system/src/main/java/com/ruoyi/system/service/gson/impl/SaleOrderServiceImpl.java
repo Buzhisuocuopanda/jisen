@@ -579,13 +579,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
         }
-//        if(errors.size()>0){
-//
-//            throw new SwException("没有查到该型号的商品:" + errors.toString());
-//
-//        }
+        if(errors.size()>0){
 
-            for (TotalOrderExcelDto totalOrderExcelDto : list2) {
+            throw new SwException("没有查到该型号的商品:" + errors.toString());
+
+        }
+
+            for (TotalOrderExcelDto totalOrderExcelDto : list) {
 
 //            if (totalOrderExcelDto.getPriority()==null) {
 //                throw new SwException("优先级不能为空,商品：" + totalOrderExcelDto.getModel());
@@ -1205,12 +1205,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             throw new SwException("只能由销售人员本人操作");
         }
         if(OrderTypeEnum.GUOJIDINGDAN.getCode().equals(cboa.getCboa27())){
-            if(cboa.getCboa11()!=1){
-                throw new SwException("只有在已提交的状态下才能提交");
-
-            }
-
-        }else {
+//            if(cboa.getCboa11()!=1){
+//                throw new SwException("只有在已提交的状态下才能提交");
+//
+//            }
+//
+//        }else {
             if(cboa.getCboa11()!=0){
                 throw new SwException("只有在未提交的状态下才能提交");
 

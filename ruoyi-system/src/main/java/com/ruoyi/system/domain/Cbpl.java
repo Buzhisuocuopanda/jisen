@@ -40,6 +40,8 @@ public class Cbpl implements Serializable {
 
     private Double goodProductQty;
 
+    private Integer cbobId;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getCbpl01() {
@@ -186,6 +188,14 @@ public class Cbpl implements Serializable {
         this.goodProductQty = goodProductQty;
     }
 
+    public Integer getCbobId() {
+        return cbobId;
+    }
+
+    public void setCbobId(Integer cbobId) {
+        this.cbobId = cbobId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -215,7 +225,8 @@ public class Cbpl implements Serializable {
             && (this.getCbpl15() == null ? other.getCbpl15() == null : this.getCbpl15().equals(other.getCbpl15()))
             && (this.getCbpl16() == null ? other.getCbpl16() == null : this.getCbpl16().equals(other.getCbpl16()))
             && (this.getCbpk01() == null ? other.getCbpk01() == null : this.getCbpk01().equals(other.getCbpk01()))
-            && (this.getGoodProductQty() == null ? other.getGoodProductQty() == null : this.getGoodProductQty().equals(other.getGoodProductQty()));
+            && (this.getGoodProductQty() == null ? other.getGoodProductQty() == null : this.getGoodProductQty().equals(other.getGoodProductQty()))
+            && (this.getCbobId() == null ? other.getCbobId() == null : this.getCbobId().equals(other.getCbobId()));
     }
 
     @Override
@@ -240,6 +251,7 @@ public class Cbpl implements Serializable {
         result = prime * result + ((getCbpl16() == null) ? 0 : getCbpl16().hashCode());
         result = prime * result + ((getCbpk01() == null) ? 0 : getCbpk01().hashCode());
         result = prime * result + ((getGoodProductQty() == null) ? 0 : getGoodProductQty().hashCode());
+        result = prime * result + ((getCbobId() == null) ? 0 : getCbobId().hashCode());
         return result;
     }
 
@@ -267,6 +279,7 @@ public class Cbpl implements Serializable {
         sb.append(", cbpl16=").append(cbpl16);
         sb.append(", cbpk01=").append(cbpk01);
         sb.append(", goodProductQty=").append(goodProductQty);
+        sb.append(", cbobId=").append(cbobId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

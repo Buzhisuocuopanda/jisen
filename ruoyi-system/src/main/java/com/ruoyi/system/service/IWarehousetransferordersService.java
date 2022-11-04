@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Cbab;
 import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Do.CbaaDo;
 import com.ruoyi.system.domain.Do.CbabDo;
+import com.ruoyi.system.domain.dto.cbaaDto;
 import com.ruoyi.system.domain.vo.*;
 import org.springframework.stereotype.Service;
 
@@ -51,4 +52,6 @@ public interface IWarehousetransferordersService {
     List<CbacVo> selectSwJsTaskGoodsRelListsss(CbacVo cbacVo);
 
     List<CbacVo> swJsGoodslistsss(CbacVo cbacVo);
+
+    String importSwJsGoods(List<cbaaDto> swJsGoodsList, boolean updateSupport, String operName);
 }

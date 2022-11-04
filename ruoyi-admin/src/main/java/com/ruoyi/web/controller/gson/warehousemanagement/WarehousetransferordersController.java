@@ -8,12 +8,15 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ValidUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbab;
 import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.Cbsc;
 import com.ruoyi.system.domain.Do.*;
+import com.ruoyi.system.domain.dto.CbpcDto;
+import com.ruoyi.system.domain.dto.cbaaDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
 import io.swagger.annotations.Api;
@@ -23,11 +26,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
 
 /**
  * 仓库调拨单Controller
@@ -627,4 +633,54 @@ public class WarehousetransferordersController extends BaseController {
         }
     }
 
+    /**
+     * 导入调拨单下载模板
+     */
+    @ApiOperation(
+            value ="导入调拨单下载模板",
+            notes = "导入调拨单下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<cbaaDto> util = new ExcelUtil<cbaaDto>(cbaaDto.class);
+        util.importTemplateExcel(response,"导入调拨单下载模板");
+    }
+
+    /**
+     * 导入调拨单
+     */
+    @ApiOperation(
+            value ="导入调拨单",
+            notes = "导入调拨单"
+    )
+    @PostMapping("/importSwJsGoods")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:import')")
+    @ResponseBody
+    public AjaxResult importSwJsGoods(MultipartFile file, boolean updateSupport) {
+        try {
+            ExcelUtil<cbaaDto> util = new ExcelUtil<>(cbaaDto.class);
+            List<cbaaDto> swJsGoodsList = util.importExcel(file.getInputStream());
+            //    LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+            String operName = SecurityUtils.getUsername();
+
+            //String operName = loginUser.getUsername();
+            String message = warehousetransferordersService.importSwJsGoods(swJsGoodsList, updateSupport,operName);
+            return AjaxResult.success(message);
+        }catch (SwException e) {
+            log.error("【导入调拨单】接口出现异常,参数${},异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【导入调拨单】接口出现异常,参数${},异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【导入调拨单】接口出现异常,参数${},异常${}$", JSON.toJSON(message),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }
