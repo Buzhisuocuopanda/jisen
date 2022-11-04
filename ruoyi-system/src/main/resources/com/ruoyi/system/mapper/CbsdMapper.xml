@@ -419,9 +419,12 @@ FROM
     LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
     LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
     LEFT JOIN CBPB pb on sd.CBSD08 =pb.CBPB01
-    LEFT JOIN CBSA sa ON sa.CBSA01 = sc.CBSC15
     LEFT JOIN gs_goods_sn sn on sn.sn =sd.CBSD09
 
+    LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
+    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01 and pd.CBPD08 =pe.CBPE08
+    LEFT JOIN CBPC pc ON pc.CBPC01 = pd.CBPC01
+     LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
     where
    sd.CBSD01 = #{cbsd01}
 

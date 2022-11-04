@@ -1524,6 +1524,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         }
 
         GsGoodsSn goodsSn = new GsGoodsSn();
+        goodsSn = gsGoodsSns.get(0);
         goodsSn.setId(gsGoodsSns.get(0).getId());
         goodsSn.setCreateTime(gsGoodsSns.get(0).getCreateTime());
         goodsSn.setCreateBy(gsGoodsSns.get(0).getCreateBy());

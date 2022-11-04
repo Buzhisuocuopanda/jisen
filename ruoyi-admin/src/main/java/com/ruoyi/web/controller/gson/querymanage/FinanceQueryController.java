@@ -118,6 +118,26 @@ public class FinanceQueryController extends BaseController {
     }
 
     /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/21 14:51
+     *
+     */
+    @ApiOperation(
+            value ="导出配件财务综合报表查询",
+            notes = "导出配件财务综合报表查询"
+    )
+    @PostMapping("/fnSynthesisPartsExcel")
+    @PreAuthorize("@ss.hasPermi('query:fnSynthesisParts:export')")
+    public void fnSynthesisExcelList(FnSynthesisPartsVo fnSynthesisPartsVo, HttpServletResponse response) {
+        if(fnSynthesisPartsVo.getEndTime()!=null){
+            fnSynthesisPartsVo.setEndTime(new Date(fnSynthesisPartsVo.getEndTime().getTime()+24*60*60*1000-1));
+        }
+        List<FnSynthesisPartsVo> list = financeQueryService.fnSynthesisParts(fnSynthesisPartsVo);
+        ExcelUtil<FnSynthesisPartsVo> util = new ExcelUtil<>(FnSynthesisPartsVo.class);
+        util.exportExcel(response, list, "配件财务综合报表查询数据");
+    }
+
+    /**
      * 库存情况报表
      * @param fnGoodsSkuDto
      * @return

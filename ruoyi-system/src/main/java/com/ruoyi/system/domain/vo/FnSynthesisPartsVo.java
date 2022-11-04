@@ -50,7 +50,7 @@ public class FnSynthesisPartsVo {
     private String suplierName;
     @Excel(name = "品牌")
     private String brand;
-    @Excel(name = "工厂")
+//    @Excel(name = "工厂")
     private String gc;
     //数据库注释 单价 表cbpd
 //    @Excel(name = "采购单价U")
