@@ -727,6 +727,7 @@
     AND cbsb.CBSB06=0
     AND cbsb.CBSB11 is null
     where pk.CBPK06=0
+    AND pk.CBPK11=4
 
 
     <if test="startTime != null">

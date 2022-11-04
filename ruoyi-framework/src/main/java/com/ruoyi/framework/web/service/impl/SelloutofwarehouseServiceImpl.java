@@ -597,24 +597,24 @@ if(itemList.get(i).getTakegoodsid()!=null){
                     }
                 }}
 
-            for(int i=0;i<size;i++){
-                Integer cbsc14 = cbscs1.get(i).getCbsc14();
-                Cbob cbob = cbobMapper.selectByPrimaryKey(cbsc14);
-                if(cbob == null){
-                    throw new SwException("找不到此销售订单明细");
-                }
-                CbsdCriteria example3 = new CbsdCriteria();
-                example3.createCriteria().andCbsd08EqualTo(cbscs1.get(i).getCbsc08())
-                                .andCbsb01EqualTo(cbscs1.get(i).getCbsb01());
-                List<Cbsd> cbsds = cbsdMapper.selectByExample(example3);
-                if(cbsds.size()==0){
-                    throw new SwException("找不到此销售出货单扫码记录");
-
-                }
-                cbob.setCbob10(cbob.getCbob10()+cbsds.size());
-                cbob.setCbob01(cbsc14);
-                cbobMapper.updateByPrimaryKeySelective(cbob);
-            }
+//            for(int i=0;i<size;i++){
+//                Integer cbsc14 = cbscs1.get(i).getCbsc14();
+//                Cbob cbob = cbobMapper.selectByPrimaryKey(cbsc14);
+//                if(cbob == null){
+//                    throw new SwException("找不到此销售订单明细");
+//                }
+//                CbsdCriteria example3 = new CbsdCriteria();
+//                example3.createCriteria().andCbsd08EqualTo(cbscs1.get(i).getCbsc08())
+//                                .andCbsb01EqualTo(cbscs1.get(i).getCbsb01());
+//                List<Cbsd> cbsds = cbsdMapper.selectByExample(example3);
+//                if(cbsds.size()==0){
+//                    throw new SwException("找不到此销售出货单扫码记录");
+//
+//                }
+//                cbob.setCbob10(cbob.getCbob10()+cbsds.size());
+//                cbob.setCbob01(cbsc14);
+//                cbobMapper.updateByPrimaryKeySelective(cbob);
+//            }
             List<Cbsd> cbsds=null;
             for(int i=0;i<size;i++){
 
@@ -835,8 +835,8 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
 
             cbsbMapper.updateByExampleSelective(cbsb, example1);
         }
-        throw new SwException("测试");
-//return 1;
+
+return 1;
     }
 
     @Transactional

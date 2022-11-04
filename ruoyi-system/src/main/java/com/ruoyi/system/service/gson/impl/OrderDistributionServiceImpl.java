@@ -881,8 +881,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      * @param saleOrderExitDo
      * @return
      */
+    @Transactional
     @Override
     public SaleOrderExitVo saleOrderExit(SaleOrderExitDo saleOrderExitDo) {
+
+        log.info("销售出库回写订单参数"+JSON.toJSON(saleOrderExitDo));
         SaleOrderExitVo saleOrderExitVo = new SaleOrderExitVo();
         try {
             //   lockTotalOrder();
@@ -892,7 +895,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 throw new SwException("没有查到销售订单明细");
             }
 
-            if (saleOrderExitDo.getOrderClass() == 2) {
+            Cboa cboa = cboaMapper.selectByPrimaryKey(thiscbob.getCboa01());
+            if(cboa==null){
+                throw new SwException("没有查到销售订单");
+            }
+            if (cboa.getCboa27() == 2) {
                 //国内订单根据优先级来
                 //如果出库仓库是GQW
                 if(WareHouseType.GQWWHID.equals(saleOrderExitDo.getWhId())){
@@ -992,14 +999,10 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
             }
 
-            CboaCriteria oaex = new CboaCriteria();
-            oaex.createCriteria()
-                    .andCboa07EqualTo(saleOrderExitDo.getOrderNo());
 
-            List<Cboa> cboas = cboaMapper.selectByExample(oaex);
             Integer sendNum = 0;
-            if (cboas.size() > 0) {
-                Cboa cboa = cboas.get(0);
+//            if (cboas.size() > 0) {
+//                Cboa cboa = cboas.get(0);
 
                 CbobCriteria obex=new CbobCriteria();
                 obex.createCriteria()
@@ -1028,8 +1031,8 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
                     cboaMapper.updateByPrimaryKey(cboa);
                 }
-            }
-
+//            }
+//        throw new SwException("czsb");
         } finally {
             // unLockOtherOrder();
         }
