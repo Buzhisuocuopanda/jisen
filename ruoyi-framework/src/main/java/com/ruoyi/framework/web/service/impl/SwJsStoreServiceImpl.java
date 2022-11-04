@@ -61,7 +61,11 @@ public class SwJsStoreServiceImpl implements ISwJsStoreService {
         cbla.setCbla05(Math.toIntExact(userid));
         cbla.setCbla06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbla.setCbla07(cblaDto.getCbla07());
-        cbla.setCbla08(cblaDto.getCbla08());
+        if ("启用".equals(cblaDto.getCbla08()) || "禁用".equals(cblaDto.getCbla08())){
+            cbla.setCbla08(cblaDto.getCbla08());
+        }else{
+            throw new SwException("状态只能为启用或禁用");
+        }
         cbla.setCbla09(cblaDto.getCbla09());
         if(!(cblaDto.getStorename() ==null)){
             CbwaCriteria example1 = new CbwaCriteria();

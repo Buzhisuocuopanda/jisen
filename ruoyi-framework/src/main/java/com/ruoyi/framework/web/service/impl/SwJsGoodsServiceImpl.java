@@ -101,7 +101,7 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         cbpb.setCbpb04(Math.toIntExact(userid));
         cbpb.setCbpb05(Math.toIntExact(userid));
         cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
-        cbpb.setCbpb07(cbpbDo.getCbpb07());
+        cbpb.setCbpb07("启用");
         cbpb.setCbpb08(cbpbDo.getCbpb08());
         cbpb.setCbpb09(cbpbDo.getCbpb09());
         cbpb.setCbpb10(cbpbDo.getCbpb10());
