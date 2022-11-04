@@ -542,4 +542,18 @@ FROM
 --     LEFT JOIN CBPC pc ON pc.CBPC01 = pd.CBPC01
 --
   </select>
+    <select id="selegroupgoodsid" resultType="com.ruoyi.system.domain.Cbsc">
+      select
+        b.CBSC08,sum(b.CBSC09) as CBSC09,sum(b.CBSC12) as CBSC12
+      FROM
+        CBSB a
+          LEFT JOIN
+        CBSC b
+        ON
+          a.CBSB01=b.CBSB01
+      WHERE
+        a.CBSB01=#{cbsb01,jdbcType=INTEGER}
+      GROUP BY
+        b.CBSC08
+    </select>
 </mapper>

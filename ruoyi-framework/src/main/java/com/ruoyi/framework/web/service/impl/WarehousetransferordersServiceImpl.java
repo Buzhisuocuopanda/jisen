@@ -1,11 +1,15 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.*;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
+import com.ruoyi.system.domain.dto.cbaaDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
@@ -54,7 +58,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
     @Resource
     private BaseCheckService baseCheckService;
-
+@Resource
+private CalaMapper calaMapper;
     @Resource
     private CbacMapper cbacMapper;
 
@@ -74,7 +79,8 @@ public class WarehousetransferordersServiceImpl implements IWarehousetransferord
 
     @Resource
     private OrderDistributionService orderDistributionService;
-
+@Resource
+private CbpaMapper cbpaMapper;
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbaaDo cbaaDo) {
@@ -505,7 +511,48 @@ if(itemList.size()==0){
         example2.createCriteria().andCbaa01EqualTo(cbaa01)
                 .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbac> cbacss = cbacMapper.selectByExample(example2);
+        CbacCriteria example = new CbacCriteria();
+        example.createCriteria().andCbaa01EqualTo(cbaa01)
+                .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbac> cbacs = cbacMapper.selectByExample(example);
+        int size = cbacs.size();
+        for (int j = 0; j < cbacs.size(); j++) {
 
+            ScanVo scanVo = new ScanVo();
+            if(cbacs.get(j).getCbac08()!=null){
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbacs.get(j).getCbac08());
+                if(cbpb!=null){
+                    scanVo.setCbpb08(cbpb.getCbpb08());
+                    scanVo.setCbpb12(cbpb.getCbpb12());
+                    scanVo.setCbpb15(cbpb.getCbpb15());
+                    if(cbpb.getCbpb10()!=null){
+                        Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                        if(cala!=null){
+                            scanVo.setPinpai(cala.getCala08());
+                        }
+                    }
+                    //类型
+                    if(cbpb.getCbpb14()!=null){
+                        Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                        if(cbpa!=null){
+                            scanVo.setLx(cbpa.getCbpa08());
+                        }
+                    }
+
+                }
+            }
+            if(cbacs.get(j).getCbac10()!=null){
+                Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
+                if(cbla!=null){
+                    scanVo.setKwm(cbla.getCbla09());
+
+                }
+
+            }
+            scanVo.setSn(cbacs.get(j).getCbac09());
+            scanVo.setCbpe03(cbacs.get(j).getCbac03());
+            goods.add(scanVo);
+        }
 if(cbacss.size()>0) {
     for (int i = 0; i < cbaasVos.size(); i++) {
 if(cbaasVos.get(0).getCbab15()!=null){
@@ -518,23 +565,7 @@ if(cbaasVos.get(0).getCbab15()!=null){
         }}
 
 
-        CbacCriteria example = new CbacCriteria();
-        example.createCriteria().andCbaa01EqualTo(cbaa01);
-               // .andCbac08EqualTo(cbaasVos.get(i).getCbab08());
-        List<Cbac> cbacs = cbacMapper.selectByExample(example);
-        int size = cbacs.size();
-        for (int j = 0; j < size; j++) {
-            ScanVo scanVo = new ScanVo();
-            scanVo.setLx(cbaasVos.get(i).getCbpa08());
-            scanVo.setPinpai(cbaasVos.get(i).getPinpai());
-            scanVo.setCbpb08(cbaasVos.get(i).getCbpb08());
-            scanVo.setCbpb12(cbaasVos.get(i).getCbpb12());
-            scanVo.setCbpb15(cbaasVos.get(i).getCbpb15());
-            scanVo.setSn(cbacs.get(j).getCbac09());
-            scanVo.setKwm(cbaasVos.get(i).getCbla09());
-            scanVo.setCbpe03(cbacs.get(j).getCbac03());
-            goods.add(scanVo);
-        }
+
         cbaasVos.get(i).setSaoma(size);
     }
     cbaasVos.get(0).setGoods(goods);
@@ -1956,6 +1987,154 @@ else {
         }
 
         return cbacVos;
+    }
+
+    @Override
+    @Transactional
+    public String importSwJsGoods(List<cbaaDto> swJsGoodsList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        this.inserttake(swJsGoodsList);
+
+
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
+        }
+        return successMsg.toString();    }
+
+    private void inserttake(List<cbaaDto> swJsGoodsList) {
+        if(swJsGoodsList.size()==0){
+            throw new SwException("导入数据为空");
+        }
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+
+        if(swJsGoodsList.get(0).getTime()==null){
+            throw new SwException("日期不能为空");
+        }
+        if(swJsGoodsList.get(0).getIntstore()==null){
+            throw new SwException("调入仓库不能为空");
+        }
+        CbwaCriteria example = new CbwaCriteria();
+        example.createCriteria().andCbwa09EqualTo(swJsGoodsList.get(0).getIntstore());
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(example);
+        if(cbwas.size()==0){
+            throw new SwException("调入仓库不存在");
+        }
+        if(swJsGoodsList.get(0).getOutstore()==null){
+            throw new SwException("调出库仓库不能为空");
+        }
+        CbwaCriteria example1 = new CbwaCriteria();
+        example1.createCriteria().andCbwa09EqualTo(swJsGoodsList.get(0).getOutstore());
+        List<Cbwa> cbwass = cbwaMapper.selectByExample(example1);
+        if(cbwass.size()==0){
+            throw new SwException("调出库仓库不存在");
+        }
+
+        if(swJsGoodsList.get(0).getCurrent()==null){
+            throw new SwException("结算货币不能为空");
+        }
+        CalaCriteria example2 = new CalaCriteria();
+        example2.createCriteria().andCala08EqualTo(swJsGoodsList.get(0).getCurrent());
+        List<Cala> calas = calaMapper.selectByExample(example2);
+        if(calas.size()==0){
+            throw new SwException("结算货币不存在");
+        }
+        Cbaa cbaa =new Cbaa();
+        cbaa.setCbaa02(date);
+        cbaa.setCbaa03(Math.toIntExact(userid));
+        cbaa.setCbaa04(date);
+        cbaa.setCbaa05(Math.toIntExact(userid));
+        cbaa.setCbaa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNos(cbwas.get(0).getCbwa01());
+        cbaa.setCbaa07(warehouseinitializationNo);
+        cbaa.setCbaa08(swJsGoodsList.get(0).getTime());
+        cbaa.setCbaa09(cbwass.get(0).getCbwa01());
+        cbaa.setCbaa10(cbwas.get(0).getCbwa01());
+        cbaa.setCbaa11(TaskStatus.mr.getCode());
+        cbaa.setCbaa12(Math.toIntExact(userid));
+        cbaa.setCbaa16(calas.get(0).getCala01());
+        cbaaMapper.insertSelective(cbaa);
+
+        CbaaCriteria example3 = new CbaaCriteria();
+        example3.createCriteria().andCbaa07EqualTo(warehouseinitializationNo);
+        List<Cbaa> cbaas = cbaaMapper.selectByExample(example3);
+        if(cbaas.size()>0){
+            Integer cbaa01 = cbaas.get(0).getCbaa01();
+        }
+
+        for(int i=0;i<swJsGoodsList.size();i++){
+            if(swJsGoodsList.get(i).getSupplierName()==null){
+                throw new SwException("供应商不能为空");
+            }
+            CbsaCriteria example4 = new CbsaCriteria();
+            example4.createCriteria().andCbsa08EqualTo(swJsGoodsList.get(i).getSupplierName());
+            List<Cbsa> cbsas = cbsaMapper.selectByExample(example4);
+            if(cbsas.size()==0){
+                throw new SwException("供应商不存在");
+            }
+
+            if(swJsGoodsList.get(i).getOrderNo()==null){
+                throw new SwException("订单分类不能为空");
+            }
+            if(swJsGoodsList.get(i).getGoodssku()==null){
+                throw new SwException("商品型号不能为空");
+            }
+
+            CbpbCriteria example5 = new CbpbCriteria();
+            example5.createCriteria().andCbpb12EqualTo(swJsGoodsList.get(i).getGoodssku());
+            List<Cbpb> cbpbs = cbpbMapper.selectByExample(example5);
+            if(cbpbs.size()==0){
+                throw new SwException("商品型号不存在");
+            }
+
+            if(swJsGoodsList.get(i).getNum()==null){
+                throw new SwException("数量不能为空");
+            }
+            if(swJsGoodsList.get(i).getPrice()==null){
+                throw new SwException("单价不能为空");
+            }
+            Cbab cbab =new Cbab();
+            cbab.setCbab03(date);
+            cbab.setCbab04(Math.toIntExact(userid));
+            cbab.setCbab05(date);
+            cbab.setCbab06(Math.toIntExact(userid));
+            cbab.setCbab07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbab.setCbab08(cbpbs.get(0).getCbpb01());
+            cbab.setCbab09(Double.valueOf(swJsGoodsList.get(i).getNum()));
+            cbab.setCbab11(Double.valueOf(swJsGoodsList.get(i).getPrice()));
+            cbab.setCbab12(swJsGoodsList.get(i).getNum()*swJsGoodsList.get(i).getPrice());
+            cbab.setCbab13(swJsGoodsList.get(i).getMark());
+            if(cbaas.size()>0){
+                Integer cbaa01 = cbaas.get(0).getCbaa01();
+                cbab.setCbaa01(cbaa01);
+            }
+            if(Objects.equals(swJsGoodsList.get(i).getOrderNo(), "国内订单")){
+                cbab.setCbab15(1);
+            }
+            if(Objects.equals(swJsGoodsList.get(i).getOrderNo(), "国际订单")){
+                cbab.setCbab15(2);
+            }
+            cbabMapper.insertSelective(cbab);
+
+
+
+        }
+
+
+return ;
     }
 
 

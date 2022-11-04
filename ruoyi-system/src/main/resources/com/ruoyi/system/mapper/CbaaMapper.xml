@@ -563,8 +563,7 @@ order by
       on
       n.CALA01=g.CBPB10
       where
-          l.CBAC07=0
-          and
+
      a.CBAA01 = #{cbaa01}
     <!--  <if test="cbwa09 != null "> and c.cbwa09 = #{cbwa09}</if>
       <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;

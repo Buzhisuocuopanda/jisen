@@ -44,4 +44,6 @@ public interface CbscMapper {
      *配件财务综合报表查询
      */
     List<FnSynthesisPartsVo> fnSynthesisParts(FnSynthesisPartsVo fnSynthesisPartsVo);
+
+    List<Cbsc> selegroupgoodsid(Integer cbsb01);
 }
