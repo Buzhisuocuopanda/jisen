@@ -350,34 +350,37 @@ private CbpmMapper cbpmMapper;
                     throw new SwException("替换商品sn不存在或已删除");
 
                 }
+                CbpmCriteria cbpmCriteria = new CbpmCriteria();
+                cbpmCriteria.createCriteria().andCbpm09EqualTo(itemList.get(i).getCbqb09());
+                List<Cbpm> cbpmList =cbpmMapper.selectByExample(cbpmCriteria);
+
+                //遍历质检单明细关联的提货单扫码记录
+                int index = 0;
+                for(Cbpm cbpm3: cbpmList){
+                    Cbpk cbpk2 = cbpkMapper.selectByPrimaryKey(cbpm3.getCbpk01());
+                    if(cbpk2.getCheckStatus()==1){
+                        throw new SwException("对应的提货单的质检状态 已质检完成");
+                    }
+                    //判断出对应提货单扫码记录的主表的状态为已审核的那条，如果查到则修改cbpm
+                    if(cbpk2.getCbpk11() == 2){
+                        index = 1;
+                        itemList.get(i).setCbqb08(cbpm3.getCbpm01());
+                        Cbpm cbpm2 = new Cbpm();
+                        cbpm2.setCbpm01(cbpm3.getCbpm01());
+                        cbpm2.setCbpm09(itemList.get(i).getCbqb10());
+                        cbpm2.setCbpm12("sn由反审"+itemList.get(i).getCbqb09()+"替换回"+itemList.get(i).getCbqb10());
+                        cbpm2.setCbpm11(1);
+                        cbpmMapper.updateByPrimaryKeySelective(cbpm2);
+                    }
+                }
+                //如果没查到对应的提货单扫码记录,则删除该条质检单明细
+                if(index ==0){
+                    throw new SwException("没查到对应的提货单扫码记录");
+                }
             }
 
-            CbpmCriteria cbpmCriteria = new CbpmCriteria();
-            cbpmCriteria.createCriteria().andCbpm09EqualTo(itemList.get(i).getCbqb09());
-            List<Cbpm> cbpmList =cbpmMapper.selectByExample(cbpmCriteria);
-            //遍历质检单明细关联的提货单扫码记录
-            int index = 0;
-            for(Cbpm cbpm3: cbpmList){
-                Cbpk cbpk2 = cbpkMapper.selectByPrimaryKey(cbpm3.getCbpk01());
-                if(cbpk2.getCheckStatus()==1){
-                    throw new SwException("对应的提货单的质检状态 已质检完成");
-                }
-                //判断出对应提货单扫码记录的主表的状态为已审核的那条，如果查到则修改cbpm
-                if(cbpk2.getCbpk11() == 2){
-                    index = 1;
-                    itemList.get(i).setCbqb08(cbpm3.getCbpm01());
-                    Cbpm cbpm2 = new Cbpm();
-                    cbpm2.setCbpm01(cbpm3.getCbpm01());
-                    cbpm2.setCbpm09(itemList.get(i).getCbqb10());
-                    cbpm2.setCbpm12("sn由反审"+itemList.get(i).getCbqb09()+"替换回"+itemList.get(i).getCbqb10());
-                    cbpm2.setCbpm11(1);
-                    cbpmMapper.updateByPrimaryKeySelective(cbpm2);
-                }
-            }
-            //如果没查到对应的提货单扫码记录,则删除该条质检单明细
-            if(index ==0){
-                throw new SwException("没查到对应的提货单扫码记录");
-            }
+
+
 
            /* mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
