@@ -881,13 +881,25 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
      * @param saleOrderExitDo
      * @return
      */
+    @Transactional
     @Override
     public SaleOrderExitVo saleOrderExit(SaleOrderExitDo saleOrderExitDo) {
+
+        log.info("销售出库回写订单参数"+JSON.toJSON(saleOrderExitDo));
         SaleOrderExitVo saleOrderExitVo = new SaleOrderExitVo();
         try {
             //   lockTotalOrder();
             List<Cbba> cbbas = new ArrayList<>();
-            if (saleOrderExitDo.getOrderClass() == 2) {
+            Cbob thiscbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
+            if(thiscbob==null){
+                throw new SwException("没有查到销售订单明细");
+            }
+
+            Cboa cboa = cboaMapper.selectByPrimaryKey(thiscbob.getCboa01());
+            if(cboa==null){
+                throw new SwException("没有查到销售订单");
+            }
+            if (cboa.getCboa27() == 2) {
                 //国内订单根据优先级来
                 //如果出库仓库是GQW
                 if(WareHouseType.GQWWHID.equals(saleOrderExitDo.getWhId())){
@@ -903,16 +915,16 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //                        .andCbba07EqualTo(saleOrderExitDo.getOrderNo())
 //                        .andCbba12EqualTo(TotalOrderConstants.NO);
 //                cbbas = cbbaMapper.selectByExample(baex);
-                Cbob cbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
-                if (cbob == null) {
-                    throw new SwException("没有查到该出库单的销售订单明细");
-                }
+//                Cbob cbob = cbobMapper.selectByPrimaryKey(saleOrderExitDo.getCbobId());
+//                if (cbob == null) {
+//                    throw new SwException("没有查到该出库单的销售订单明细");
+//                }
 
-                if (cbob.getCbob17() == null) {
+                if (thiscbob.getCbob17() == null) {
                     throw new SwException("没有查到该出库单的生产总订单");
 
                 }
-                Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+                Cbba cbba = cbbaMapper.selectByPrimaryKey(thiscbob.getCbob17());
                 if (cbba == null) {
                     throw new SwException("没有查到该出库单的生产总订单");
 
@@ -987,15 +999,12 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
             }
 
-            CboaCriteria oaex = new CboaCriteria();
-            oaex.createCriteria()
-                    .andCboa07EqualTo(saleOrderExitDo.getOrderNo());
 
-            List<Cboa> cboas = cboaMapper.selectByExample(oaex);
             Integer sendNum = 0;
-            if (cboas.size() > 0) {
-                Cboa cboa = cboas.get(0);
-                CbobCriteria obex = new CbobCriteria();
+//            if (cboas.size() > 0) {
+//                Cboa cboa = cboas.get(0);
+
+                CbobCriteria obex=new CbobCriteria();
                 obex.createCriteria()
                         .andCboa01EqualTo(cboa.getCboa01());
                 List<Cbob> cbobs = cbobMapper.selectByExample(obex);
@@ -1004,7 +1013,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         sendNum = sendNum + 1;
                         continue;
                     }
-                    if (cbob.getCbob08().equals(saleOrderExitDo.getGoodsId())) {
+                    if (cbob.getCbob01().equals(thiscbob.getCbob01())) {
                         if (cbob.getCbob09().equals(cbob.getCbob10() + saleOrderExitDo.getQty())) {
                             cbob.setCbob10(cbob.getCbob10() + saleOrderExitDo.getQty());
                             cbobMapper.updateByPrimaryKey(cbob);
@@ -1017,13 +1026,13 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                 }
 
-                if (sendNum.equals(cbobs)) {
+                if (sendNum.equals(cbobs.size())) {
                     cboa.setCboa04(new Date());
                     cboa.setCboa11(SaleOrderStatusEnums.YIWANCHENG.getCode());
                     cboaMapper.updateByPrimaryKey(cboa);
                 }
-            }
-
+//            }
+//        throw new SwException("czsb");
         } finally {
             // unLockOtherOrder();
         }

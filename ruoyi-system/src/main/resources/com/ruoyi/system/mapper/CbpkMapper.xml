@@ -725,9 +725,9 @@
     LEFT JOIN CBSC cbsc on cbsc.takegoodsid=pk.CBPK01
     LEFT JOIN CBSB cbsb on cbsb.CBSB01 =  cbsc.CBSB01
     AND cbsb.CBSB06=0
-    AND cbsb.CBSB11!=2
-    AND cbsb.CBSB11!=4
+    AND cbsb.CBSB11 is null
     where pk.CBPK06=0
+    AND pk.CBPK11=4
 
 
     <if test="startTime != null">

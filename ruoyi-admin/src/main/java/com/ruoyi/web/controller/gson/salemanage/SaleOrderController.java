@@ -20,10 +20,12 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.Do.DelTotalOrderDo;
+import com.ruoyi.system.domain.Do.SaleOrderExitDo;
 import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.SysUserMapper;
+import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.web.utils.Excel2PdfUtil;
 import io.swagger.annotations.Api;
@@ -75,6 +77,9 @@ public class SaleOrderController extends BaseController {
 
     @Resource
     private SaleOrderService saleOrderService;
+
+    @Resource
+    private OrderDistributionService orderDistributionService;
 
 
     @Resource
@@ -2290,5 +2295,11 @@ public class SaleOrderController extends BaseController {
         return AjaxResult.success();
     }
 
+    @PostMapping("ceshi")
+    public AjaxResult ceshi(@RequestBody SaleOrderExitDo saleOrderExitDto){
+//        SaleOrderExitDo saleOrderExitDto=new SaleOrderExitDo();
+        orderDistributionService.saleOrderExit(saleOrderExitDto);
+        return AjaxResult.success();
+    }
 
 }
