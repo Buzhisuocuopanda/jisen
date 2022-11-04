@@ -895,14 +895,15 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                     .andCbaa01EqualTo(itemList.getCbaa01());
             List<Cbac> cbacs = cbacMapper.selectByExample(cbacCriteria);
             if(cbacs.size()>0){
-            if(cbacs.get(0).getCbac07().equals(DeleteFlagEnum.NOT_DELETE.getCode())){
+                throw new SwException("sn已经调出");
+             /*   if(cbacs.get(0).getCbac07().equals(DeleteFlagEnum.NOT_DELETE.getCode())){
                     throw new SwException("sn已经调出");
-                }else {
+                }
+                else {
                 Cbac cbac = new Cbac();
                 cbac.setCbac07(DeleteFlagEnum.NOT_DELETE.getCode());
                 cbacMapper.updateByExampleSelective(cbac,cbacCriteria);
-            }
-
+            }*/
 
             }
 
@@ -1102,6 +1103,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                         Cbac cbac = new Cbac();
                         cbac.setCbaa01(itemList.getCbaa01());
                         cbac.setCbac09(itemList.getCbac09());
+                        cbac.setCbac10(itemList.getCbac10());
                         cbac.setCbac14(2);
                         cbacMapper.updateByExampleSelective(cbac,cbacCriterias);
                     }else {
@@ -1245,7 +1247,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             throw new SwException("审核状态才能标记完成");
         }
 
-//数量仓库出库
+        //数量仓库出库
         CbwaCriteria exampse1 = new CbwaCriteria();
         exampse1.createCriteria().andCbwa12EqualTo("数量管理");
         List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
@@ -1330,8 +1332,6 @@ if(gsGoodsSkus.get(j).getLocationId()==null) {
                 taskService.InsertCBIB(cbibDo1);
 
 
-
-
             }
 
            // cbaa1.setCbaa11(TaskStatus.bjwc.getCode());
@@ -1387,7 +1387,8 @@ else {
             for (int i = 0; i < cbabs1.size(); i++) {
                 CbacCriteria example3 = new CbacCriteria();
                 example3.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
-                        .andCbac08EqualTo(cbabs1.get(i).getCbab08());
+                        .andCbac08EqualTo(cbabs1.get(i).getCbab08())
+                        .andCbac14EqualTo(2);
                 cbacs = cbacMapper.selectByExample(example3);
                 if (cbacs.size() == 0) {
                     throw new SwException("该仓库调拨单扫码记录不存在");
@@ -1753,7 +1754,8 @@ else {
             for (int i = 0; i < cbabs1.size(); i++) {
                 CbacCriteria example3 = new CbacCriteria();
                 example3.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01())
-                        .andCbac08EqualTo(cbabs1.get(i).getCbab08());
+                        .andCbac08EqualTo(cbabs1.get(i).getCbab08())
+                        .andCbac14EqualTo(2);
                 cbacs = cbacMapper.selectByExample(example3);
                 if (cbacs.size() == 0) {
                     throw new SwException("该仓库调拨单扫码记录不存在");
@@ -1812,7 +1814,8 @@ else {
                         if(sum + 1>cbla.getCbla11()){
                             throw new SwException("库位容量不足");
                         }
-                    }else{     GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+                    }else{
+                        GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
                         gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
                         gsGoodsSkuDo2.setWhId(instore);
                         gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
@@ -1822,7 +1825,8 @@ else {
 
 
 
-                } else {
+                }
+                else {
 
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
                     if (cbla == null) {
@@ -1853,21 +1857,7 @@ else {
 
 
                 }
-
-                //调入仓库
-                Integer storeid = cbaa1.getCbaa10();
-                //调出仓库
-                Integer storeid1 = cbaa1.getCbaa09();
-                //编号
-                String number = cbaa1.getCbaa07();
-                //单据id
-                Integer id = cbaa1.getCbaa01();
-
-                //查仓库调拨单明细表
-                CbabCriteria example1 = new CbabCriteria();
-                example1.createCriteria().andCbaa01EqualTo(cbaaDo.getCbaa01());
-                List<Cbab> cbabs = cbabMapper.selectByExample(example1);
-
+//调入仓库加
 
             }
 
@@ -1899,22 +1889,7 @@ else {
                 cbibDo.setCbib19(cbabs.get(i).getCbab14());
                 taskService.InsertCBIB(cbibDo);
 
-      /*      //台账新增数据调出仓库
-            CbibDo cbibDo1 = new CbibDo();
-            cbibDo1.setCbib02(storeid1);
-            cbibDo1.setCbib03(number);
-            cbibDo1.setCbib05(String.valueOf(TaskType.zjd.getCode()));
-            cbibDo1.setCbib06(vendername);
-            cbibDo1.setCbib07(id);
-            cbibDo1.setCbib08(goodsid);
-            cbibDo1.setCbib11((double) 0);
-            cbibDo1.setCbib12((double) 0);
-            cbibDo1.setCbib13(cbabs.get(i).getCbab09());
-            cbibDo1.setCbib14(cbabs.get(i).getCbab12());
 
-            cbibDo1.setCbib17(TaskType.zjd.getMsg());
-            cbibDo1.setCbib19(cbabs.get(i).getCbab14());
-            taskService.InsertCBIB(cbibDo1);*/
                 TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
                 tranUseQtyDo.setGoodsId(goodsid);
                 tranUseQtyDo.setQty(Double.valueOf(num));

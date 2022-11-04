@@ -53,10 +53,18 @@ private CbpbMapper cbpbMapper;
         if(cbpmList.get(0).getCbpk01()==null){
             throw new SwException("销售提货单主键id为空");
         }
+
         Cbpk cbpk = cbpkMapper.selectByPrimaryKey(cbpmList.get(0).getCbpk01());
-        if(cbpk.getCbpk11()!=4){
-            throw new SwException("该销售提货单不是标记完成状态");
+        if(cbpk.getCbpk11()!=2){
+            throw new SwException("该销售提货单不是已审核状态状态");
         }
+        Cbpm cbpm = new Cbpm();
+        cbpm.setCbpm11(0);
+        CbpmCriteria cbpmCriteria1 = new CbpmCriteria();
+        cbpmCriteria1.createCriteria().andCbpm09EqualTo(goodsSnDo.getSn());
+        cbpmMapper.updateByExampleSelective(cbpm, cbpmCriteria1);
+
+
         if(goodsSnDo.getSn()!=null) {
             GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
             gsGoodsSnCriteria.createCriteria().andSnEqualTo(goodsSnDo.getSn());
