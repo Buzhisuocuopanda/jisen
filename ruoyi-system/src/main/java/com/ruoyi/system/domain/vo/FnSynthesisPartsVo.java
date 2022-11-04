@@ -17,7 +17,7 @@ public class FnSynthesisPartsVo {
     private Date inWhTime;
 
     //入库时间
-    @Excel(name = "入库时间")
+//    @Excel(name = "入库时间")
     private String inWhTimeMsg;
 
 
@@ -36,7 +36,7 @@ public class FnSynthesisPartsVo {
     @Excel(name = "描述")
     private String description;
     //数据库注释 数量 表cbsc
-//    @Excel(name = "数量")
+    @Excel(name = "数量")
     private Double qty;
     @Excel(name = "序列号")
     private String sn;
@@ -50,12 +50,12 @@ public class FnSynthesisPartsVo {
     private String suplierName;
     @Excel(name = "品牌")
     private String brand;
-    @Excel(name = "工厂")
+//    @Excel(name = "工厂")
     private String gc;
     //数据库注释 单价 表cbpd
-    @Excel(name = "采购单价U")
+//    @Excel(name = "采购单价U")
     private Double cgUprice;
-    @Excel(name = "采购单价R")
+//    @Excel(name = "采购单价R")
     private Double cgRprice;
 
 

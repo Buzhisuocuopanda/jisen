@@ -36,6 +36,10 @@ public class GsGoodsSn implements Serializable {
 
     private Integer repairStatus;
 
+    private Double price;
+
+    private Integer currency;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -166,6 +170,22 @@ public class GsGoodsSn implements Serializable {
         this.repairStatus = repairStatus;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Integer getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Integer currency) {
+        this.currency = currency;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -193,7 +213,9 @@ public class GsGoodsSn implements Serializable {
             && (this.getOutTime() == null ? other.getOutTime() == null : this.getOutTime().equals(other.getOutTime()))
             && (this.getPrdDate() == null ? other.getPrdDate() == null : this.getPrdDate().equals(other.getPrdDate()))
             && (this.getGroudStatus() == null ? other.getGroudStatus() == null : this.getGroudStatus().equals(other.getGroudStatus()))
-            && (this.getRepairStatus() == null ? other.getRepairStatus() == null : this.getRepairStatus().equals(other.getRepairStatus()));
+            && (this.getRepairStatus() == null ? other.getRepairStatus() == null : this.getRepairStatus().equals(other.getRepairStatus()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+            && (this.getCurrency() == null ? other.getCurrency() == null : this.getCurrency().equals(other.getCurrency()));
     }
 
     @Override
@@ -216,6 +238,8 @@ public class GsGoodsSn implements Serializable {
         result = prime * result + ((getPrdDate() == null) ? 0 : getPrdDate().hashCode());
         result = prime * result + ((getGroudStatus() == null) ? 0 : getGroudStatus().hashCode());
         result = prime * result + ((getRepairStatus() == null) ? 0 : getRepairStatus().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
+        result = prime * result + ((getCurrency() == null) ? 0 : getCurrency().hashCode());
         return result;
     }
 
@@ -241,6 +265,8 @@ public class GsGoodsSn implements Serializable {
         sb.append(", prdDate=").append(prdDate);
         sb.append(", groudStatus=").append(groudStatus);
         sb.append(", repairStatus=").append(repairStatus);
+        sb.append(", price=").append(price);
+        sb.append(", currency=").append(currency);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

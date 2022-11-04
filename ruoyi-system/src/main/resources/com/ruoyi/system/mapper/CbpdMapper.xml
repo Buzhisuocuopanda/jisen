@@ -404,7 +404,7 @@
 
     <if test='startTime != null and startTime != ""'>and a.CBPC08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.CBPC08 <![CDATA[<=]]>#{endTime}</if>
-    order by a.CBPC08 desc
+    order by a.CBPC02 desc
   </select>
   <resultMap type="CBPC" id="CBPCResult">
     <result property="cbpc01"    column="CBPC01"    />

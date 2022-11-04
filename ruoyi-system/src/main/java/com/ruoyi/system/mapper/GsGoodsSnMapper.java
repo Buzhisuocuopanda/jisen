@@ -46,6 +46,4 @@ public interface GsGoodsSnMapper {
     List<GsGoodsSnVo> selectGoodsSnSelect3(@Param("sn") String sn);
 
     List<GsGoodsSnsVo> getInfosss(GsGoodsSnsVo gsGoodsSnsVo);
-
-
 }
