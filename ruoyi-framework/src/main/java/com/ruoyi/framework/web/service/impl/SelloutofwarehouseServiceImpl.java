@@ -1017,7 +1017,7 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
                         example.createCriteria().andCbpk01EqualTo(cbscs1.get(k).getTakegoodsid())
                                 .andCbpm08EqualTo(cbscs1.get(k).getCbsc08());
                         List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
-                        for (int j = 0; j < cbscs1.get(k).getCbsc09(); j++){
+                        for (int j = 0; j < cbpms.size(); j++){
                             Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(j).getCbpm10());
                             Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbpms.get(j).getCbpm08());
                             Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
@@ -1297,14 +1297,16 @@ if(cbsbsVos.size()>0){
             List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
             if(cbscList.size()>0){
                 for(int i=0;i<cbscList.size();i++){
-                    if(cbscList.get(i).getScannum()==null){
+                    if(cbscList.get(i).getScannum()==null || cbscList.get(i).getScannum()==0){
                         cbscList.get(i).setScannum(1);
                       cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+                      break;
                     }else {
                         if (cbscList.get(i).getScannum()+1>cbscList.get(i).getCbsc09())continue;
 
                         cbscList.get(i).setScannum(cbscList.get(i).getScannum() + 1);
                         cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+                        break;
 
                     }
                 }
