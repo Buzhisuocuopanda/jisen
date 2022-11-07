@@ -143,7 +143,8 @@ public class SysUserController extends BaseController
         Long[] i2 = user.getWarehousePerms();
         if(i1!=null&&i1.length>0){
             String str1 = Arrays.toString(i1);
-            user.setAuditPerm(str1.substring(1,str1.length()-1));
+            String str2 =str1.substring(1,str1.length()-1);
+            user.setAuditPerm(str2.replace(" ", ""));
         }
         if(i2!=null&&i2.length>0){
             String str2 = Arrays.toString(i2);
