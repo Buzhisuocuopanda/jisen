@@ -108,12 +108,14 @@ private CbpmMapper cbpmMapper;
     public int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) throws InterruptedException {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
-
+if(cbicDto.size()==0){
+    throw  new SwException("请扫码");
+}
         if(cbicDto.get(0).getUpc()==null){
             throw new SwException("upc没输入");
         }
 
-      /*  Map<String, Long> map  = cbicDto.stream().collect(Collectors.groupingBy(CbicDto::getUpc, Collectors.counting()));
+        Map<String, Long> map  = cbicDto.stream().collect(Collectors.groupingBy(CbicDto::getUpc, Collectors.counting()));
         for(Map.Entry<String, Long> entry : map.entrySet()){
             System.out.println("key ："+entry.getKey()+", value ："+entry.getValue());
             CbibDo cbibDo = new CbibDo();
@@ -131,7 +133,7 @@ private CbpmMapper cbpmMapper;
             cbibDo.setCbib17(TaskType.zjrk.getMsg());
 
             taskService.InsertCBIB(cbibDo);
-        }*/
+        }
         //
 
 
@@ -141,7 +143,7 @@ private CbpmMapper cbpmMapper;
 
         ///
 
-        CbiwVo cbiwVo = new CbiwVo();
+        /*CbiwVo cbiwVo = new CbiwVo();
         cbiwVo.setUser(Math.toIntExact(userid));
         List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods(cbiwVo);
         if(selectbystoreandgoods.size()>0){
@@ -157,7 +159,7 @@ private CbpmMapper cbpmMapper;
 
         taskService.InsertCBIB(cbibDo);
             }
-        }
+        }*/
 
 
         for (int i=0;i<cbicDto.size();i++) {
