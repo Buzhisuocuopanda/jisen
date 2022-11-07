@@ -373,5 +373,16 @@
     WHERE
     pd.CBPD08 = #{goodsId}
   </select>
+    <select id="selectByGoodsIdAndWhId" resultType="com.ruoyi.system.domain.GsGoodsSku">
+      SELECT
+        *
+      FROM
+        gs_goods_sku a
+      WHERE
+          a.goods_id= #{goodsId}
+            AND a.wh_id = #{whId}
+            and
+        a.location_id is null
+    </select>
 
 </mapper>

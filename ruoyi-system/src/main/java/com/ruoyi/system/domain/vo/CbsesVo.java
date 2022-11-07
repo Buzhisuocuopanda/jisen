@@ -11,6 +11,8 @@ import java.util.List;
 public class CbsesVo extends BaseEntity {
     private Integer cbca01;
     private Integer cbwa01;
+    private Integer cbsa01;
+    private Integer cbpb01;
 
     private Integer cbsf01;
 

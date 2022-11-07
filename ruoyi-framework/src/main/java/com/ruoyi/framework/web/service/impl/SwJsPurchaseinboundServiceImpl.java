@@ -698,23 +698,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         }
 
 
-/*        int sdw=0;
-        CbpdCriteria hji = new CbpdCriteria();
-        hji.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
-        List<Cbpd> ser = cbpdMapper.selectByExample(hji);
-        if(ser.size()==0){
-            throw new SwException("没有明细不能标记完成");
-        }
-        for (Cbpd cbpd : ser) {
-            Double cbpd09 = cbpd.getCbpd09();
-            sdw+=cbpd09;
-        }
-     CbpeCriteria ehks = new CbpeCriteria();
-        ehks.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
-        List<Cbpe> aoc = cbpeMapper.selectByExample(ehks);
-        if(aoc.size()<sdw){
-            throw new SwException("扫码数量小于任务数量不能标记完成");
-        }*/
+
 
 
 
@@ -764,11 +748,13 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             for(int i=0;i<ints.length;i++) {
                 int goodsid = ints[i];
                // cbpds.get(i).getCbpd08();
-                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+               /* GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
                         .andGoodsIdEqualTo(goodsid)
                         .andWhIdEqualTo(cbpc1.getCbpc10());
-                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);*/
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByGoodsIdAndWhId(goodsid, cbpc1.getCbpc10());
+
                 double num = doubles[i];
                 //对库存表的操作
                 if (gsGoodsSkus.size() == 0) {

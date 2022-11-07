@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.system.domain.GsSalesOrdersIn;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 public class GsSalesOrdersInDo extends GsSalesOrdersIn {
@@ -34,7 +35,7 @@ public class GsSalesOrdersInDo extends GsSalesOrdersIn {
     private Double inQty;
 
     @Excel(name = "单价")
-    private Double price;
+    private BigDecimal price;
 
 
     @Excel(name = "备注")

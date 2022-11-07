@@ -982,7 +982,7 @@ if(cbsds.size()>0) {
             .andCbsc08EqualTo(cbsds.get(0).getCbsd08());
     List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
     if (cbscList.size() > 0) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < cbscList.size(); i++) {
             if (cbscList.get(i).getScannum()!= null) {
                 if(cbscList.get(i).getScannum() - 1.0 >= 0){
 
@@ -1069,7 +1069,7 @@ if(cbsds.size()>0) {
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setStatus(cbiw.getType().byteValue());
                     gsGoodsSn.setSn(cbiw.getSn());
-                    gsGoodsSn.getLocationId();
+                    gsGoodsSn.setLocationId(cbacs.get(0).getCbac11());
                     GsGoodsSnCriteria exampwle = new GsGoodsSnCriteria();
                     exampwle.createCriteria().andSnEqualTo(cbiw.getSn());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampwle);

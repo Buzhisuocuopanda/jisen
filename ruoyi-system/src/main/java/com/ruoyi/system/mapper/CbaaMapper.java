@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Cbaa;
 import com.ruoyi.system.domain.CbaaCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.Cbac;
 import com.ruoyi.system.domain.vo.CbaaVo;
 import com.ruoyi.system.domain.vo.CbaasVo;
 import com.ruoyi.system.domain.vo.CbsbVo;
@@ -37,4 +38,6 @@ public interface CbaaMapper {
     List<CbaaVo> selectSwJsTaskGoodsRelLists(CbaaVo cbaaVo);
 
     List<CbaasVo> selectSwJsTaskGoodsRelListss(CbaasVo cbaasVo);
+
+    List<Cbac> selectbytype(Integer cbaa01);
 }

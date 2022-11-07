@@ -1066,9 +1066,19 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
                 if(gsGoodsSns.size()>0){
                     if(gsGoodsSns.get(0).getStatus()==1){
-                        throw new SwException("sn已经入库");
+                        if(gsGoodsSns.get(0).getLocationId()==0){
+                            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                            gsGoodsSn.setLocationId(itemList.getCbac10());
+                            gsGoodsSn.setStatus((byte) 1);
+                            gsGoodsSn.setGroudStatus((byte) 1);
+                            gsGoodsSn.setPrice(cbabs.get(0).getCbab11());
+                        }else{
+                            throw new SwException("sn已经入库");
+                        }
+
                     }
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                    gsGoodsSn.setLocationId(itemList.getCbac10());
                     gsGoodsSn.setStatus((byte) 1);
                     gsGoodsSn.setGroudStatus((byte) 1);
                     gsGoodsSn.setPrice(cbabs.get(0).getCbab11());
@@ -1247,6 +1257,11 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             throw new SwException("审核状态才能标记完成");
         }
 
+
+        List<Cbac> selectbytype = cbaaMapper.selectbytype(cbaaDo.getCbaa01());
+        if(selectbytype.size()>1){
+            throw new SwException("调拨单扫码未完成");
+        }
         //数量仓库出库
         CbwaCriteria exampse1 = new CbwaCriteria();
         exampse1.createCriteria().andCbwa12EqualTo("数量管理");
@@ -1271,11 +1286,13 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                }
                 Integer goodsid = cbabs.get(i).getCbab08();
 
-                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+              /*  GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                 example.createCriteria()
                         .andGoodsIdEqualTo(goodsid)
                         .andWhIdEqualTo(cbaa1.getCbaa09());
-                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);*/
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByGoodsIdAndWhId(goodsid, cbaa1.getCbaa09());
+
                 //对库存表的操作
 
                 if(gsGoodsSkus.size()==0){
@@ -1532,6 +1549,7 @@ else {
         Set<Integer> icu = new HashSet<>(goodsidss);
         //调出是扫码情况
 
+        //调入是数量
         if (sio.contains(cbaa1.getCbaa10())) {
 
 
@@ -1563,7 +1581,7 @@ else {
                         for(Cbac cbac:cbacs){
                             if(cbac.getCbac09()!=null&&!("").equals(cbac.getCbac09())){
                                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                                gsGoodsSn.setLocationId(cbac.getCbac10());
+                                gsGoodsSn.setLocationId(0);
                                 gsGoodsSn.setWhId(cbaa1.getCbaa10());
                                 gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
                                 GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
@@ -1582,7 +1600,7 @@ else {
             }
             //调出扫码
 
-
+             //调出数量
             for (int i = 0; i < cbabs.size(); i++) {
                 if (cbabs.get(i).getCbab09() == null) {
                     throw new SwException("调拨数量不能为空");
@@ -1593,12 +1611,9 @@ else {
                 }
                 Integer goodsid = cbabs.get(i).getCbab08();
 
-                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
-                example.createCriteria()
-                        .andGoodsIdEqualTo(goodsid)
-                        .andWhIdEqualTo(cbaa1.getCbaa09());
-                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+
                 //对库存表的操作
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByGoodsIdAndWhId(goodsid, cbaa1.getCbaa10());
 
                 if (gsGoodsSkus.size() == 0) {
                     //新增数据
@@ -1624,7 +1639,6 @@ else {
 
                     for (int j = 0; j < gsGoodsSkus.size(); j++) {
 
-                        if (gsGoodsSkus.get(j).getLocationId()==null) {
                             Integer id = gsGoodsSkus.get(0).getId();
                             GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
 
@@ -1640,31 +1654,10 @@ else {
                             tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
                             tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
                             orderDistributionService.diaoboUseOp(tranUseQtyDo);
-                        }else {
-                            gsGoodsSkus.remove(j);
 
-                        }
 
                     }
-                    if(gsGoodsSkus.size()==0){
-                        GsGoodsSku gsGoodsSku = new GsGoodsSku();
-                        gsGoodsSku.setCreateTime(date);
-                        gsGoodsSku.setUpdateTime(date);
-                        gsGoodsSku.setCreateBy(Math.toIntExact(userId));
-                        gsGoodsSku.setUpdateBy(Math.toIntExact(userId));
-                        gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-                        gsGoodsSku.setGoodsId(goodsid);
-                        gsGoodsSku.setWhId(cbaa1.getCbaa10());
-                        gsGoodsSku.setQty(num);
-                        gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
-                        TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
-                        tranUseQtyDo.setGoodsId(goodsid);
-                        tranUseQtyDo.setQty(num);
-                        tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
-                        tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                        orderDistributionService.diaoboUseOp(tranUseQtyDo);
-                    }
                 }
                 //台账
                 //供应商名称

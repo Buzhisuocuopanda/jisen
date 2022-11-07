@@ -575,5 +575,18 @@ order by
       GROUP BY
       f.CBAB08
     </select>
+    <select id="selectbytype" resultType="com.ruoyi.system.domain.Cbac">
+      select b.CBAC14
+      from
+        CBAA a
+          left JOIN
+        CBAC b
+        ON
+          a.CBAA01=b.CBAA01
+      WHERE
+        a.CBAA01=#{cbaa01}
+      GROUP BY
+        b.CBAC14
+    </select>
 
 </mapper>

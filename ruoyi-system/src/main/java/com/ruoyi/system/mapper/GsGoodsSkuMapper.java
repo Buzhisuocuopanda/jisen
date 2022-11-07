@@ -40,4 +40,5 @@ public interface GsGoodsSkuMapper {
 
     List<Map> fnSkuListSupplier(@Param("goodsId") Integer goodsId);
 
+    List<GsGoodsSku> selectByGoodsIdAndWhId(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
 }

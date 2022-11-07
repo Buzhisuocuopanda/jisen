@@ -712,11 +712,13 @@ List<Cbsc> cbscs = cbscMapper.selectByExample(afw);
 
             if (cbscs.size() >0) {
                 for (int i = 0; i < cbscs.size(); i++) {
-                    GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+                  /*  GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
                     example.createCriteria()
                             .andGoodsIdEqualTo(cbscs.get(i).getCbsc08())
                             .andWhIdEqualTo(cbsb1.getCbsb10());
-                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);*/
+                    List<GsGoodsSku> gsGoodsSkus =
+                            gsGoodsSkuMapper.selectByGoodsIdAndWhId(cbscs.get(i).getCbsc08(), cbsb1.getCbsb10());
 
                     if (gsGoodsSkus.size() == 0) {
                         throw new SwException("没有该库存信息");
@@ -1018,7 +1020,9 @@ return 1;
                             if (cbscs1.get(k).getTakegoodsid() != null) {
                                 CbpmCriteria example = new CbpmCriteria();
                                 example.createCriteria().andCbpk01EqualTo(cbscs1.get(k).getTakegoodsid())
-                                        .andCbpm08EqualTo(cbscs1.get(k).getCbsc08());
+                                        .andCbpm08EqualTo(cbscs1.get(k).getCbsc08())
+                                        .andCbpm07EqualTo(0);
+
                                 List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
                                 for (int j = 0; j < cbpms.size(); j++) {
                                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(j).getCbpm10());
@@ -1059,16 +1063,16 @@ return 1;
                             }
                         }
                     }
-                    outsuggestionss.addAll(outsuggestions);
+                   outsuggestion.addAll(outsuggestions);
 //            outsuggestion.addAll(outsuggestions);
                   //  int a= (int) sum;
-                    if (outsuggestionss.size() > sum) {
+               /*     if (outsuggestionss.size() > sum) {
                         List<TakeOrderSugestVo> takeOrderSugestVos = outsuggestionss.subList(0, (int) sum);
                         outsuggestion.addAll(takeOrderSugestVos);
 
                     } else {
                         outsuggestion.addAll(outsuggestionss);
-                    }
+                    }*/
 
                     return outsuggestion;
                 });
