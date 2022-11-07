@@ -1114,6 +1114,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                         cbac.setCbaa01(itemList.getCbaa01());
                         cbac.setCbac09(itemList.getCbac09());
                         cbac.setCbac10(itemList.getCbac10());
+                        cbac.setCbac08(goodsid);
                         cbac.setCbac14(2);
                         cbacMapper.updateByExampleSelective(cbac,cbacCriterias);
                     }else {

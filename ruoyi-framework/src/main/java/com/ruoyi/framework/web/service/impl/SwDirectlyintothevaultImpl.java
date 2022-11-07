@@ -56,6 +56,8 @@ private CbscMapper cbscMapper;
     private CbsaMapper cbsaMapper;
     @Resource
     private CblaMapper cblaMapper;
+
+
 @Resource
 private CbaaMapper cbaaMapper;
     @Resource
@@ -827,6 +829,8 @@ if(cbicDto.size()==0){
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int deleteSwJsSkuBarcodsById(CbicDto cbicDto)  {
+        Long userid = SecurityUtils.getUserId();
+
         Date date = new Date();
         if(cbicDto.getCbic01()==null){
             throw new SwException("直接入库id不能为空");
@@ -851,6 +855,9 @@ if(cbicDto.size()==0){
                     gsGoodsSnMapper.deleteByExample(tyui);
                 }
             }
+            GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
+            tyui.createCriteria().andSnEqualTo(cbic1.getCbic10());
+            gsGoodsSnMapper.deleteByExample(tyui);
         }
 
 
@@ -886,6 +893,12 @@ if(cbicDto.size()==0){
 
         }
 
+        DirectWarehousingDto directWarehousingDto = new DirectWarehousingDto();
+        directWarehousingDto.setGoodsId(cbic1.getCbic09());
+        directWarehousingDto.setStoreId(cbic1.getCbic07());
+        directWarehousingDto.setUserId(Math.toIntExact(userid));
+
+        orderDistributionService.deldirectWarehousing(directWarehousingDto);
 
         CbibDo cbibDo = new CbibDo();
         cbibDo.setCbib02(cbic1.getCbic07());
@@ -902,7 +915,7 @@ if(cbicDto.size()==0){
         }
 
 
-        Long userid = SecurityUtils.getUserId();
+       // Long userid = SecurityUtils.getUserId();
 
         Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
         cbic.setCbic05(Math.toIntExact(userid));
