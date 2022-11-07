@@ -1581,6 +1581,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     if (cbpbs.size() == 0) {
                         errors=errors+"商品不可用，商品：" + saleOrderExcelDto.getSku();
 //                        throw new SwException("该商品不可用，商品：" + saleOrderExcelDto.getSku());
+                        continue;
                     }
                     Cbpb cbpb = cbpbs.get(0);
                     //检查是否有可用库存
@@ -1592,7 +1593,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku();
 
 //                        throw new SwException("该商品库存，商品：" + saleOrderExcelDto.getSku());
-
+                        continue;
                     }
                     CbpfCriteria pfex = new CbpfCriteria();
                     pfex.createCriteria()
