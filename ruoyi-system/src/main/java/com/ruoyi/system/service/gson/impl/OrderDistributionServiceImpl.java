@@ -813,7 +813,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     @Override
     public DirectWarehousingVo directWarehousing(DirectWarehousingDto directWarehousingDto) {
         try {
-            lockOtherOrder();
+//            lockOtherOrder();
             DirectWarehousingVo res = new DirectWarehousingVo();
             //
             //分配给总订单
@@ -865,7 +865,56 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
         } finally {
-            unLockOtherOrder();
+//            unLockOtherOrder();
+        }
+
+    }
+
+    @Override
+    public DirectWarehousingVo deldirectWarehousing(DirectWarehousingDto directWarehousingDto) {
+        try {
+//            lockOtherOrder();
+            DirectWarehousingVo res = new DirectWarehousingVo();
+            //
+            GsAllocationBalanceCriteria baex = new GsAllocationBalanceCriteria();
+            baex.createCriteria()
+                    .andGoodsIdEqualTo(directWarehousingDto.getGoodsId());
+            List<GsAllocationBalance> gsAllocationBalances = gsAllocationBalanceMapper.selectByExample(baex);
+            Integer giveQty=1;
+            if(gsAllocationBalances.size()>0){
+                GsAllocationBalance gsAllocationBalance = gsAllocationBalances.get(0);
+                if(gsAllocationBalance.getQty()>0){
+                    gsAllocationBalance.setQty(gsAllocationBalance.getQty()-1);
+                    gsAllocationBalance.setUpdateTime(new Date());
+                    gsAllocationBalanceMapper.updateByPrimaryKey(gsAllocationBalance);
+                    giveQty=0;
+                }
+            }
+            if(giveQty!=0){
+                //分配给总订单
+                List<Cbba> list = cbbaMapper.selectByGoodsIdGive(directWarehousingDto.getGoodsId());
+
+                for (Cbba cbba : list) {
+                    Double hasqty=cbba.getCbba13()-cbba.getCbba14();
+                    if(hasqty>0){
+                        cbba.setCbba13(cbba.getCbba13()-1);
+                        cbbaMapper.updateByPrimaryKey(cbba);
+                        giveQty=0;
+                    }
+                    if(giveQty==0){
+                        break;
+                    }
+                }
+            }
+            if(giveQty!=0){
+                throw new SwException("无法删除,已经被总订单占用");
+            }
+
+           return res;
+
+
+        } finally {
+//            unLockOtherOrder();
         }
 
     }
