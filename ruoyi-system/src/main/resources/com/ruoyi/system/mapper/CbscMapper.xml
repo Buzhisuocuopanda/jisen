@@ -473,7 +473,7 @@
     LEFT JOIN CBSB sb ON sb.CBSB01 = sc.CBSB01
     LEFT JOIN CBPB pb ON pb.CBPB01 = sc.CBSC08
     LEFT JOIN CBCA ca ON ca.CBCA01 = sb.CBSB09
-    WHERE 1=1
+    WHERE sc.CBSC07=0
     <if test="customerId !=null ">
       AND sb.CBSB09 = #{customerId}
     </if>
@@ -516,7 +516,7 @@ FROM
     LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
     LEFT JOIN CBPB pb on sc.CBSC08 =pb.CBPB01
     LEFT JOIN CBSA sa ON sa.CBSA01 = sc.CBSC15
-    where pb.type = 0
+    where pb.type = 0 and sc.CBSC07 = 0
 
     <if test="saleOrderNo != null and saleOrderNo != ''">
       AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')

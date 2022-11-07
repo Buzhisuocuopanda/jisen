@@ -776,7 +776,7 @@ where
       gs_goods_use g
       ON
         g.order_no=a.CBOA07 and e.CBOB08 = g.goods_id
-where a.CBOA06=0
+where a.CBOA06=0 and e.CBOB07 =0
     <if test="cbpa07 != null and cbpa07 != ''">
     and  d.CBPA07 like concat('%', #{cbpa07}, '%')
     </if>
@@ -820,7 +820,7 @@ where a.CBOA06=0
       ON
         g.CBPA01=e.CBPB14
 where
-    a.CBOA06=0
+    a.CBOA06=0 and b.CBOB07 = 0
     <if test="cbca08 != null and cbca08 != ''">
       and  c.CBCA08 = #{cbca08}
     </if>
@@ -877,7 +877,7 @@ where
       ON
         g.CBCA01=a.CBOE09
 where
-    a.CBOE06=0
+    a.CBOE06=0 and b.CBOF07 = 0
     <if test="cbpa08 != null and cbpa08 != ''">
       and  d.CBPA08 like concat('%', #{cbpa08}, '%')
     </if>
