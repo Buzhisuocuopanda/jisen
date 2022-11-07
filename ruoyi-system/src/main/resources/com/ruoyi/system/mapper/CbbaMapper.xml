@@ -459,6 +459,19 @@ WHERE
    order by c.CBBA15
   </select>
 
+  <select id="selectByGoodsIdGive" resultMap="BaseResultMap">
+SELECT
+   *
+FROM
+   CBBA c
+WHERE
+   c.CBBA08 = #{goodsId}
+   AND c.CBBA06 =0
+   AND c.CBBA12= 0
+   order by c.CBBA15 DESC
+  </select>
+
+
   <!--  获取生产总订单列表-->
   <select id="totalOrderList" resultType="com.ruoyi.system.domain.vo.TotalOrderListVo">
     SELECT

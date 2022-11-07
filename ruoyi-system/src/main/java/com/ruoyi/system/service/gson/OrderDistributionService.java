@@ -50,6 +50,11 @@ public interface OrderDistributionService {
      * @param directWarehousingDto
      */
     DirectWarehousingVo directWarehousing(DirectWarehousingDto directWarehousingDto);
+    /**
+     * 直接入库删除逻辑
+     * @param directWarehousingDto
+     */
+    DirectWarehousingVo deldirectWarehousing(DirectWarehousingDto directWarehousingDto);
 
 
     /**

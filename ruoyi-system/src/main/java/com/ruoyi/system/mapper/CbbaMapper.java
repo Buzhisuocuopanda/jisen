@@ -39,6 +39,7 @@ public interface CbbaMapper {
 
 
     List<Cbba> selectByGoodsId(@Param("goodsId") Integer goodsId);
+    List<Cbba> selectByGoodsIdGive(@Param("goodsId") Integer goodsId);
 
     List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto);
 
