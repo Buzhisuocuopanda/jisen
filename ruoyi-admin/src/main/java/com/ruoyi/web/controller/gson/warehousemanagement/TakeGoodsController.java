@@ -18,6 +18,7 @@ import com.ruoyi.system.domain.Cbpi;
 import com.ruoyi.system.domain.Cbpm;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.mapper.GsGoodsSkuMapper;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.TakeGoodsService;
 import io.swagger.annotations.Api;
@@ -61,6 +62,9 @@ public class TakeGoodsController extends BaseController {
 
     @Resource
     private TakeGoodsService takeGoodsService;
+
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
 
 
     /**

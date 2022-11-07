@@ -442,6 +442,7 @@ FROM
     cbpk.check_status=1
     AND cbpk.CBPK06=0
     AND cbpl.CBPL08=#{goodsId}
+
     AND cbpk.sale_order_no=#{orderNo}
   </select>
 
