@@ -1806,7 +1806,13 @@ else {
                         double sum = gsGoodsSkuss1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum + 1>cbla.getCbla11()){
                             throw new SwException("库位容量不足");
-                        }
+                        }else{   GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
+                            gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());
+                            gsGoodsSkuDo2.setWhId(instore);
+                            gsGoodsSkuDo2.setLocationId(cbacs.get(j).getCbac10());
+                            gsGoodsSkuDo2.setQty(1.0);
+                            taskService.addGsGoodsSku(gsGoodsSkuDo2);}
+
                     }else{
                         GsGoodsSkuDo gsGoodsSkuDo2 = new GsGoodsSkuDo();
                         gsGoodsSkuDo2.setGoodsId(cbacs.get(j).getCbac08());

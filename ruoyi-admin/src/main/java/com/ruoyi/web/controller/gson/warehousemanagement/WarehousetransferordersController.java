@@ -19,6 +19,7 @@ import com.ruoyi.system.domain.dto.CbpcDto;
 import com.ruoyi.system.domain.dto.cbaaDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.IWarehousetransferordersService;
+import com.ruoyi.web.controller.tool.Resubmit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -490,6 +491,7 @@ public class WarehousetransferordersController extends BaseController {
             notes = "仓库调拨单调入扫码"
     )
     @PostMapping("/transferordersin")
+   // @Resubmit()
     public AjaxResult transferordersin(@Valid @RequestBody Cbac itemList, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
