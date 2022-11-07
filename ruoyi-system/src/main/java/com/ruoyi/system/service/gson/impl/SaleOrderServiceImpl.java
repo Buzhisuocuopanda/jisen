@@ -1155,6 +1155,16 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     throw new SwException("国际订单要输入生产总订单号");
                 }
             }
+            if(good.getQty()==null || good.getQty()==0){
+                throw new SwException("请输入商品数量");
+            }
+
+            if(good.getCurrentPrice() ==null ){
+                throw new SwException("请输入商品单价");
+            }
+            if(good.getTotalPrice() ==null ){
+                throw new SwException("请输入商品金额");
+            }
 
             //判断库存是否足够
 //            GoodsCheckStockVo goodsCheckStockVo=baseCheckService.checkGoodsStock(good.getGoodsId(),saleOrderAddDto.getOrderClass());
@@ -1569,7 +1579,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
                     if (cbpbs.size() == 0) {
-                        errors=errors+"该商品不可用，商品：" + saleOrderExcelDto.getSku()+",\\n";
+                        errors=errors+"商品不可用，商品：" + saleOrderExcelDto.getSku();
 //                        throw new SwException("该商品不可用，商品：" + saleOrderExcelDto.getSku());
                     }
                     Cbpb cbpb = cbpbs.get(0);
@@ -1579,7 +1589,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     checkSkuDo.setOrderClass(OrderTypeEnum.GUOJIDINGDAN.getCode());
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
                     if(qtyMsgVo.getCanUseNum()<saleOrderExcelDto.getQty()){
-                        errors=errors+"该商品库存不够，商品：" + saleOrderExcelDto.getSku()+",\\n";
+                        errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku();
 
 //                        throw new SwException("该商品库存，商品：" + saleOrderExcelDto.getSku());
 

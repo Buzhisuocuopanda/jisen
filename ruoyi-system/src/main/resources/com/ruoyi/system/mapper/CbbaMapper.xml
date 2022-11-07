@@ -490,6 +490,10 @@ WHERE
       AND  ba.CBBA12 = #{status}
 
     </if>
+    <if test="orderClass != null ">
+      AND  ba.CBBA10 = #{orderClass}
+
+    </if>
     <if test="sortKey=='priority' and sortType=='descending'">
       order by ba.CBBA15 DESC
 

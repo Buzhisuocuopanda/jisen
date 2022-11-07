@@ -31,4 +31,7 @@ public class TotalOrderListDto {
 
     private String sortType;
 
+
+    private Integer orderClass;
+
 }

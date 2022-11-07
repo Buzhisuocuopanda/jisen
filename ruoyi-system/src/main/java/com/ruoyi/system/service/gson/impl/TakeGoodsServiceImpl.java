@@ -1716,7 +1716,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 }
 
                 cbpl.setCbpl01(good.getPlId());
-                cbpl.setGoodProductQty(good.getGoodQty());
+                cbpl.setGoodProductQty(Double.valueOf(cbpms.size()));
                 cbplMapper.updateByPrimaryKeySelective(cbpl);
             }
 
