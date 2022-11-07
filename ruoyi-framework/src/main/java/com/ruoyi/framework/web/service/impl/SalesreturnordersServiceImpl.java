@@ -287,7 +287,7 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     }
                     gsGoodsSkuDo.setWhId(cbseDo.getCbse10());
                     //获取商品id
-                    gsGoodsSkuDo.setGoodsId(cbsf.getGoodsId());
+                    gsGoodsSkuDo.setGoodsId(cbsf.getCbsf08());
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     //通过仓库id和货物id判断是否存在
                     List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
