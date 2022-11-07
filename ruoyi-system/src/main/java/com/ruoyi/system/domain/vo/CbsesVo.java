@@ -26,6 +26,8 @@ public class CbsesVo extends BaseEntity {
     private String cbwa08;
     private String cala08;
     private Integer cbse18;
+    private Integer cbse11;
+
     //供应商id
     private Integer cbsf15;
     private String cbsa08;

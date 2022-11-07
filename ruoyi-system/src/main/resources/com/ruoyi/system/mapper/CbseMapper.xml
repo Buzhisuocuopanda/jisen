@@ -479,7 +479,7 @@ order by a.CBSE08 desc
   </select>
     <select id="selectSwJsTaskGoodsRelListss" resultType="com.ruoyi.system.domain.vo.CbsesVo">
       SELECT
-      a.CBSE07,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,d.CALA01,a.CBSE18,c.CBWA01,b.CBCA01,
+      a.CBSE07,a.CBSE11,a.CBSE08,b.CBCA08,c.CBWA09,d.CALA08,d.CALA01,a.CBSE18,c.CBWA01,b.CBCA01,
       i.CBSA08,i.CBSA01,e.CBSF16,g.CALA08 as pinpai ,h.CBSG03,
       f.CBPB12,f.CBPB08,f.CBPB15,e.CBSF09,f.CBPB01,
       e.CBSF11,e.CBSF12,e.CBSF13,e.CBSF15,h.CBSG09,l.CBLA09,l.CBLA01,a.CBSE01,e.CBSF08,m.CBPA08,e.CBSF01
