@@ -223,7 +223,12 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         for (Cbpa dept : depts)
         {
             // 如果是顶级节点, 遍历该父节点的所有子节点
-            if (!tempList.contains(dept.getCbpa09()))
+            /*if (!tempList.contains(dept.getCbpa09()))
+            {
+                recursionFn(depts, dept);
+                returnList.add(dept);
+            }*/
+            if (dept.getCbpa09()==0)
             {
                 recursionFn(depts, dept);
                 returnList.add(dept);
