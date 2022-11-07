@@ -285,12 +285,14 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     if(cbseDo.getCbse10() == null){
                         throw new SwException("销售退货单仓库不能为空");
                     }
+
                     gsGoodsSkuDo.setWhId(cbseDo.getCbse10());
                     //获取商品id
                     gsGoodsSkuDo.setGoodsId(cbsf.getCbsf08());
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     //通过仓库id和货物id判断是否存在
-                    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+//                    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSkuDo.getGoodsId(), gsGoodsSkuDo.getWhId());
                     if(gsGoodsSkus.size()==0){
 
 
