@@ -2096,6 +2096,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
             CbpkCriteria pkex=new CbpkCriteria();
             pkex.createCriteria()
+                    .andCbpk06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andSaleOrderNoEqualTo(cboa.getCboa07());
             List<Cbpk> cbpks = cbpkMapper.selectByExample(pkex);
             if(cbpks.size()>0){
