@@ -2115,11 +2115,11 @@ public class SaleOrderController extends BaseController {
 
       // in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
 
-            File sg = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
+            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+          //  File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
 
-            copyFileUsingFileChannels(sg,is);
+           // copyFileUsingFileChannels(sg,is);
 
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
@@ -2146,8 +2146,8 @@ public class SaleOrderController extends BaseController {
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".pdf");
             FileUtils.writeBytes(pdfPath, response.getOutputStream());
-            boolean delete = is.delete();
-            System.out.println(delete);
+      /*      boolean delete = is.delete();
+            System.out.println(delete);*/
 
 
 

@@ -94,6 +94,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
     @Resource
     private BaseCheckService baseCheckService;
 
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
 
     @Override
     public List<TakeGoodsOrderListVo> takeOrderList(TakeGoodsOrderListDto takeGoodsOrderListDto) {
@@ -1868,6 +1871,53 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             throw new SwException("您选择的Sn商品已经出库");
         }
 
+
+        if(gsGoodsSns.get(0).getGoodsId()==null){
+            throw new SwException("您选择的Sn商品没有绑定商品");
+        }
+        if(gsGoodsSns.get(0).getLocationId()==null){
+            throw new SwException("您选择的Sn商品没有绑定库位");
+        }
+        if(gsGoodsSns.get(0).getWhId()==null){
+            throw new SwException("您选择的Sn商品没有绑定仓库");
+        }
+        //库存释放,
+        GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+        tuiw.createCriteria()
+                .andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
+                .andLocationIdEqualTo(gsGoodsSns.get(0).getLocationId())
+                .andWhIdEqualTo(gsGoodsSns.get(0).getWhId());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
+        if (gsGoodsSkus.size()> 0) {
+            List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+            if(gsGoodsSkus1.size()>0){
+                GsGoodsSku gsGoodsSku =new GsGoodsSku();
+                gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty()+gsGoodsSkus1.get(0).getQty());
+                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }else {  GsGoodsSku gsGoodsSku =new GsGoodsSku();
+                gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                gsGoodsSku.setCreateTime(date);
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSku.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
+                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
+                gsGoodsSku.setLocationId(null);
+                gsGoodsSkuMapper.updateByExample(gsGoodsSku,tuiw);}
+
+
+        }
+
+
+
+
+
+
+
         GsGoodsSn goodsSn = new GsGoodsSn();
         goodsSn = gsGoodsSns.get(0);
         goodsSn.setId(gsGoodsSns.get(0).getId());
@@ -1886,7 +1936,9 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             goodsSn.setInTime(gsGoodsSns.get(0).getInTime());
         }
 
+
         goodsSn.setInTime(gsGoodsSns.get(0).getInTime());
+
 
         GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
         example2.createCriteria()
