@@ -21,6 +21,7 @@ import com.ruoyi.system.domain.Cbba;
 import com.ruoyi.system.domain.Cbpd;
 import com.ruoyi.system.domain.Do.DelTotalOrderDo;
 import com.ruoyi.system.domain.Do.SaleOrderExitDo;
+import com.ruoyi.system.domain.Do.TranUseQtyDo;
 import com.ruoyi.system.domain.GsSaleShopping;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
@@ -2335,9 +2336,9 @@ public class SaleOrderController extends BaseController {
     }
 
     @PostMapping("ceshi")
-    public AjaxResult ceshi(@RequestBody SaleOrderExitDo saleOrderExitDto){
+    public AjaxResult ceshi(@RequestBody TranUseQtyDo saleOrderExitDto){
 //        SaleOrderExitDo saleOrderExitDto=new SaleOrderExitDo();
-        orderDistributionService.saleOrderExit(saleOrderExitDto);
+        orderDistributionService.diaoboUseOp(saleOrderExitDto);
         return AjaxResult.success();
     }
 

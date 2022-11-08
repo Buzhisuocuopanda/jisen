@@ -1527,6 +1527,7 @@ else {
 
             cbaaMapper.updateByExampleSelective(cbaa, example);
         }
+
         return 1;
     }
     //仓库调拨单调入标记完成

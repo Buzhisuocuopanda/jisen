@@ -766,7 +766,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //
 //
 //            }
-            useNum=cbba.getCbba14();
+            useNum=re.getCbba14();
             Double canuseNum = re.getCbba13() - useNum;
             if (canuseNum < 0) {
                 continue;
@@ -1992,6 +1992,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             goodsUse.setWhId(tranUseQtyDo.getInWhId());
             gsGoodsUseMapper.insert(goodsUse);
         }
+
 
         return true;
 
