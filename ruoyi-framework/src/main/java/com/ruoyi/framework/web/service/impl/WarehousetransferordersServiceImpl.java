@@ -1866,7 +1866,7 @@ else {
 
                     gsGoodsSkuDo2.setGoodsId(opi1.get(j).getCbac08());
                     gsGoodsSkuDo2.setWhId(instore);
-                    gsGoodsSkuDo2.setLocationId(gsGoodsSkus1.get(0).getLocationId());
+                    gsGoodsSkuDo2.setLocationId(opi1.get(j).getCbac10());
                     //查出
                     Double qty = gsGoodsSkus1.get(0).getQty();
                     double v = qty + 1;

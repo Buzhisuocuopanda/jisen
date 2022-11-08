@@ -77,12 +77,12 @@ private CbpcMapper cbpcMapper;
             throw new SwException("库位信息id不能为空");
         }
 
-        GsGoodsSnCriteria ettr = new GsGoodsSnCriteria();
+   /*     GsGoodsSnCriteria ettr = new GsGoodsSnCriteria();
         ettr.createCriteria().andWhIdEqualTo(cbwaDto.getCbwa01());
         List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(ettr);
         if(gsGoodsSns.size()>0){
             throw new SwException("仓库已有sn商品，不能修改");
-        }
+        }*/
 
 
         if(cbwaDto.getCbwa09()!=null){

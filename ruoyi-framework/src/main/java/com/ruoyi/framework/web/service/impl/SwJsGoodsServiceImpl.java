@@ -140,19 +140,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Override
     public int updateSwJsGoodsClassify(CbpbDo cbpbDo) {
 
-GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
-       examples.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
-        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(examples);
-        if(gsGoodsSkus.size()>0){
-            throw new SwException("商品已使用不能修改");
-        }
 
-        GsGoodsSnCriteria examplee = new GsGoodsSnCriteria();
-        examplee.createCriteria().andGoodsIdEqualTo(cbpbDo.getCbpb01());
-        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examplee);
-        if(gsGoodsSns.size()>0){
-            throw new SwException("商品已使用不能修改");
-        }
+
+
 
         Long userid = SecurityUtils.getUserId();
 
@@ -176,7 +166,7 @@ GsGoodsSkuCriteria examples = new GsGoodsSkuCriteria();
         cbpb.setCbpb09(cbpbDo.getCbpb09());
         cbpb.setCbpb10(cbpbDo.getCbpb10());
         cbpb.setCbpb11(cbpbDo.getCbpb11());
-        cbpb.setCbpb12(cbpbDo.getCbpb12());
+       // cbpb.setCbpb12(cbpbDo.getCbpb12());
         cbpb.setCbpb13(cbpbDo.getCbpb13());
         cbpb.setCbpb14(cbpbDo.getCbpb14());
         cbpb.setCbpb15(cbpbDo.getCbpb15());
