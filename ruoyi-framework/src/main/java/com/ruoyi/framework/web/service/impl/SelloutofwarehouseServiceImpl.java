@@ -558,7 +558,7 @@ if(itemList.get(i).getTakegoodsid()!=null){
                 for(int k=0;k<selectbyid.size();k++) {
                     GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
 
-                    gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
+                   gsGoodsSkuDo.setLocationId(selectbyid.get(k).getStoreskuid());
                     //获取仓库id
                     gsGoodsSkuDo.setWhId(cbsb1.getCbsb10());
                     //获取商品id
@@ -584,7 +584,7 @@ if(itemList.get(i).getTakegoodsid()!=null){
                         gsGoodsSkuDo1.setWhId(cbsb1.getCbsb10());
                         //获取商品id
                         gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
-                        gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
+                       // gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
     //        if(num>qty){
     //            throw new SwException("出库数量大于库存数量");
     //
