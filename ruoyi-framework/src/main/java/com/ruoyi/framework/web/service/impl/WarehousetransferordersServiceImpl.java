@@ -1316,7 +1316,6 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 if(gsGoodsSkus.size()==0){
                     throw new SwException("仓库数量仓库没有该商品");
                 }
-
                 for(int j=0;j<gsGoodsSkus.size();j++) {
 
 if(gsGoodsSkus.get(j).getLocationId()==null) {

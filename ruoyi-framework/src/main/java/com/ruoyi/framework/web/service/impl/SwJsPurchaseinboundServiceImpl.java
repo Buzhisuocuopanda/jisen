@@ -29,9 +29,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -1385,6 +1383,13 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
     public List<CbpcVo> selectSwJsTaskGoodsRelLists(CbpcVo cbpcVo) {
         return  cbpdMapper.getInfoss(cbpcVo);
     }
+
+    public double m2(double f) {
+        //#.00 表示两位小数
+        BigDecimal bigDecimal = new BigDecimal(f).setScale(2, BigDecimal.ROUND_DOWN);
+        double newDouble = bigDecimal.doubleValue();
+        return  newDouble;
+    }
     /**
      * 采购入库单详情
      * @param cbpcVo 审核信息
@@ -1409,6 +1414,8 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             Integer saoma = 0;
 
         for (int i = 0; i < infossss.size(); i++) {
+
+
             CbpeCriteria example = new CbpeCriteria();
             example.createCriteria().andCbpc01EqualTo(cbpc01)
                     .andCbpe08EqualTo(infossss.get(i).getCbpd08());
@@ -1447,6 +1454,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
         if(infossss.size()>0) {
             for (int i = 0; i < infossss.size(); i++) {
+
                 if(infossss.get(i).getCbpd09()==null){
                     throw new SwException("明细表数量为空");
 
