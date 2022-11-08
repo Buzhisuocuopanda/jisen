@@ -25,6 +25,7 @@ public interface TaskService {
     GsGoodsSku updateGsGoodsSku(GsGoodsSkuDo goodsSkuDo);
     //查库存
     List<GsGoodsSku> checkGsGoodsSku(GsGoodsSkuDo goodsSkuDo);
+    List<GsGoodsSku> checkGsGoodsSkuByWhId(GsGoodsSkuDo goodsSkuDo);
 
 
     GsGoodsSn addGsGoodsSns(GsGoodsSnDo goodsSnDo);

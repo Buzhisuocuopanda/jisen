@@ -505,6 +505,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<GsGoodsSku> checkGsGoodsSkuByWhId(GsGoodsSkuDo goodsSkuDo) {
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria().andWhIdEqualTo(goodsSkuDo.getWhId())
+                .andGoodsIdEqualTo(goodsSkuDo.getGoodsId())
+                .andWhIdEqualTo(goodsSkuDo.getWhId())
+                .andDeleteFlagEqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        return gsGoodsSkus;
+    }
+
+
+    @Override
     public GsGoodsSn addGsGoodsSns(GsGoodsSnDo goodsSnDo) {
         Date date=new Date();
         Long userid = SecurityUtils.getUserId();

@@ -565,7 +565,7 @@ if(itemList.get(i).getTakegoodsid()!=null){
                     gsGoodsSkuDo.setGoodsId(selectbyid.get(k).getGoodsId());
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     //通过仓库id和货物id判断是否存在
-                    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
+                    List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSkuByWhId(gsGoodsSkuDo);
                     if (gsGoodsSkus.size() == 0) {
                         throw new SwException("没有该库存信息");
 

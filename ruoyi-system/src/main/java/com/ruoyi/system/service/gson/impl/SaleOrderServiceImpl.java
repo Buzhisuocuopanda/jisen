@@ -1214,7 +1214,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         if (!cboa.getCboa10().equals(delSaleOrderDto.getUserId())) {
             throw new SwException("只能由销售人员本人操作");
         }
-        if(OrderTypeEnum.GUOJIDINGDAN.getCode().equals(cboa.getCboa27())){
+//        if(OrderTypeEnum.GUOJIDINGDAN.getCode().equals(cboa.getCboa27())){
 //            if(cboa.getCboa11()!=1){
 //                throw new SwException("只有在已提交的状态下才能提交");
 //
@@ -1222,12 +1222,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //
 //        }else {
             if(cboa.getCboa11()!=0){
-                throw new SwException("只有在未提交的状态下才能提交");
+                throw new SwException("只有在未提交的状态下才能删除");
 
             }
 
-
-        }
+//
+//        }else {
+//
+//        }
 
         cboa.setCboa01(delSaleOrderDto.getOrderId());
         cboa.setCboa06(DeleteFlagEnum.DELETE.getCode());
@@ -2754,7 +2756,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         adex.createCriteria()
                                 .andGoodsIdEqualTo(gsGoodsUs.getGoodsId())
                                 .andWhIdEqualTo(gsGoodsUs.getWhId())
-                                .andSaleOrderNoEqualTo(gsGoodsUs.getOrderNo());
+                                .andSaleOrderNoEqualTo(cboa.getCboa07());
                         List<GsOutStockAdivce> gsOutStockAdivces = gsOutStockAdivceMapper.selectByExample(adex);
                         Double lockQty=0.0;
                         if(noneedNum>=gsGoodsUs.getLockQty()){

@@ -367,10 +367,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //                if(cbob.getTakeQty()!=null && (cbob.getTakeQty()+good.getQty())>=cbob.getCbob09()){
 //                    throw new SwException("提货数量不能超过订单数量");
 //                }
-                List<Cbpl> cbpls = cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(), good.getGoodsId());
-                Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+//                List<Cbpl> cbpls = cbplMapper.selectBySaleOrderNoAndGoodsId(cboa.getCboa07(), good.getGoodsId());
+//                Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+            CbplCriteria plex=new CbplCriteria();
+            plex.createCriteria()
+                    .andCbobIdEqualTo(cbob.getCboa01())
+                    .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+             Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
 
-                if (good.getQty() + collect > cbob.getCbob09()) {
+            if (good.getQty() + collect > cbob.getCbob09()) {
                     throw new SwException("提货数量总和不能大于该销售订单数量");
                 }
 //            }
@@ -1720,6 +1726,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 cbpl.setCbpl01(good.getPlId());
                 cbpl.setGoodProductQty(Double.valueOf(cbpms.size()));
+                cbpl.setGoodProductQty(good.getGoodQty());
                 cbplMapper.updateByPrimaryKeySelective(cbpl);
             }
 
