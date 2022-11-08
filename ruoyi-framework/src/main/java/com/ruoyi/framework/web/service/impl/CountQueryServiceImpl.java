@@ -225,8 +225,12 @@ public class CountQueryServiceImpl implements CountQueryService {
                     checkSkuDo.setGoodsId(inwuquVos.get(i).getCbpb01());
                     checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+                    QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
                     if(qtyMsgVo!=null){
                         inwuquVos.get(i).setLockQty(qtyMsgVo.getCanUseNum());
+                    }
+                    if(qtyMsgVo2!=null){
+                        inwuquVos.get(i).setCbib15(qtyMsgVo2.getCanUseNum());
                     }
                 }
 
