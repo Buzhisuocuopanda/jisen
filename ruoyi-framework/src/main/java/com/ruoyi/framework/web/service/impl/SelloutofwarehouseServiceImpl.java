@@ -1117,11 +1117,11 @@ return 1;
                     scanVo.setCbpb12(cbpb.getCbpb12());
                     scanVo.setCbpb15(cbpb.getCbpb15());
                     scanVo.setSn(cbsds.get(j).getCbsd09());
-                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbsds.get(j).getCbsd10());
+               /*     Cbla cbla = cblaMapper.selectByPrimaryKey(cbsds.get(j).getCbsd10());
                     if(cbla==null){
                         throw new SwException("没有改库位信息");
                     }
-                    scanVo.setKwm(cbla.getCbla09());
+                    scanVo.setKwm(cbla.getCbla09());*/
                     scanVo.setCbpe03(cbsds.get(j).getCbsd03());
                     good.add(scanVo);
                 }
@@ -1249,13 +1249,13 @@ if(cbsbsVos.size()>0){
     throw new SwException("库位id为空");
 
 }*/
-            Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(0).getCbpm10());
+           /* Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(0).getCbpm10());
             if (cbla == null) {
                 throw new SwException("提货单扫描表库位不存在");
             }
             if (!cbla.getCbla10().equals(storeid)) {
                 throw new SwException("库位不属于该仓库");
-            }
+            }*/
 
             if (cbpms.get(0).getCbpm08() == null) {
                 throw new SwException("商品id不能为空");
