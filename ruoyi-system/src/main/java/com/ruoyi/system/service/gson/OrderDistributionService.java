@@ -98,6 +98,14 @@ public interface OrderDistributionService {
 
     QtyMsgVo checkSku(CheckSkuDo checkSkuDo);
 
+    /**
+     * 检查商品总库存
+     * @param checkSkuDo
+     * @return
+     */
+
+    QtyMsgVo checkSkuAll(CheckSkuDo checkSkuDo);
+
 
     /**
      * 修改库存占用（国际订单）

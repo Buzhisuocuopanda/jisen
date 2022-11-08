@@ -1785,6 +1785,104 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         return res;
     }
 
+    @Override
+    public QtyMsgVo checkSkuAll(CheckSkuDo checkSkuDo) {
+        Double canUseNum = 0.0;
+
+        if (OrderTypeEnum.GUONEIDINGDAN.getCode().equals(checkSkuDo.getOrderClass())) {
+
+            //该库存检测适用于国内订单创建
+            //查该商品的仓库台账
+            List<Cbwa> list = cbwaMapper.selectCalculationOrderPriorityNoGqw();
+
+            if (list.size() == 0) {
+                throw new SwException("无可用分配库存的仓库");
+            }
+
+
+            for (Cbwa cbwa : list) {
+                //查台账
+                Cbib cbib = cbibMapper.selectLastByGoodsIdAndStoreId(checkSkuDo.getGoodsId(), cbwa.getCbwa01());
+                if (cbib == null) {
+                    continue;
+                }
+
+                if (cbib.getCbib15() == null || cbib.getCbib15() == 0) {
+                    continue;
+                }
+                //查占用
+                List<GsGoodsUse> goodsUseList = gsGoodsUseMapper.selectByWhIdAndGoodsId(cbwa.getCbwa01(), checkSkuDo.getGoodsId());
+                Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+                Double num = cbib.getCbib15();
+                canUseNum = canUseNum + num;
+
+            }
+
+
+            //再查GQW的 gqw分配给GBSH开头的订单的分配数量 -占用数量
+            CbbaCriteria baex = new CbbaCriteria();
+            baex.createCriteria()
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+
+                    .andCbba08EqualTo(checkSkuDo.getGoodsId())
+                    .andCbba12EqualTo(TotalOrderConstants.NO)
+                    .andCbba07Like("GBSH" + "%");
+            List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
+            Double gqwQty=0.0;
+            for (Cbba cbba : cbbas) {
+                Double usenum=  cbba.getCbba13();
+                gqwQty=gqwQty+usenum;
+            }
+//            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+
+//            Double gqwMakeQty = cbbas.stream().mapToDouble(Cbba::getCbba13).sum();
+
+            //查占用数量
+//            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
+//            gqwEx.createCriteria()
+//                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+//
+//                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+//            Double sum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+
+//            gqw仓库数据
+
+
+            if (gqwQty < 0) {
+                gqwQty = 0.0;
+            }
+
+            canUseNum = canUseNum + gqwQty;
+
+        } else {
+            CbbaCriteria example = new CbbaCriteria();
+            example.createCriteria()
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbba12EqualTo(TotalOrderConstants.NO)
+                    .andCbba08EqualTo(checkSkuDo.getGoodsId())
+                    .andCbba07NotLike("GBSH" + "%");
+            List<Cbba> cbbas = cbbaMapper.selectByExample(example);
+            Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
+            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
+            gqwEx.createCriteria()
+                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+
+                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
+            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+            Double sum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+
+            Double gqwQty = gqwMakeQty - sum;
+            canUseNum = gqwQty;
+        }
+
+        QtyMsgVo res = new QtyMsgVo();
+        res.setGoodsId(checkSkuDo.getGoodsId());
+        res.setCanUseNum(canUseNum);
+        return res;
+    }
+
+
     /**
      * 修改库存占用（仅限国际订单）
      *
