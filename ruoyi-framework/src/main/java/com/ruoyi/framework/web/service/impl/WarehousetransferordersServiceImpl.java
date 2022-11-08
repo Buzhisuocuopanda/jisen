@@ -511,59 +511,68 @@ if(itemList.size()==0){
         example2.createCriteria().andCbaa01EqualTo(cbaa01)
                 .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbac> cbacss = cbacMapper.selectByExample(example2);
-        CbacCriteria example = new CbacCriteria();
-        example.createCriteria().andCbaa01EqualTo(cbaa01)
-                .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbac> cbacs = cbacMapper.selectByExample(example);
-        int size = cbacs.size();
-        if (size>0) {
-            for (int j = 0; j < cbacs.size(); j++) {
 
-                ScanVo scanVo = new ScanVo();
-                if(cbacs.get(j).getCbac08()!=null){
-                    Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbacs.get(j).getCbac08());
-                    if(cbpb!=null){
-                        scanVo.setCbpb08(cbpb.getCbpb08());
-                        scanVo.setCbpb12(cbpb.getCbpb12());
-                        scanVo.setCbpb15(cbpb.getCbpb15());
-                        if(cbpb.getCbpb10()!=null){
-                            Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
-                            if(cala!=null){
-                                scanVo.setPinpai(cala.getCala08());
+
+        int size = 0;
+        for (CbaasVo cbaasVo1 : cbaasVos) {
+            CbacCriteria example = new CbacCriteria();
+            example.createCriteria().andCbaa01EqualTo(cbaa01)
+                    .andCbac07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                    .andCbac08EqualTo(cbaasVo1.getCbab08());
+            List<Cbac> cbacs = cbacMapper.selectByExample(example);
+            size = cbacs.size();
+            if (size>0) {
+                for (int j = 0; j < cbacs.size(); j++) {
+
+                    ScanVo scanVo = new ScanVo();
+                    if(cbacs.get(j).getCbac08()!=null){
+                        Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbacs.get(j).getCbac08());
+                        if(cbpb!=null){
+                            scanVo.setCbpb08(cbpb.getCbpb08());
+                            scanVo.setCbpb12(cbpb.getCbpb12());
+                            scanVo.setCbpb15(cbpb.getCbpb15());
+                            if(cbpb.getCbpb10()!=null){
+                                Cala cala = calaMapper.selectByPrimaryKey(cbpb.getCbpb10());
+                                if(cala!=null){
+                                    scanVo.setPinpai(cala.getCala08());
+                                }
                             }
+                            //类型
+                            if(cbpb.getCbpb14()!=null){
+                                Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
+                                if(cbpa!=null){
+                                    scanVo.setLx(cbpa.getCbpa08());
+                                }
+                            }
+
                         }
-                        //类型
-                        if(cbpb.getCbpb14()!=null){
-                            Cbpa cbpa = cbpaMapper.selectByPrimaryKey(cbpb.getCbpb14());
-                            if(cbpa!=null){
-                                scanVo.setLx(cbpa.getCbpa08());
-                            }
+                    }
+                    if(cbacs.get(j).getCbac10()!=null){
+                        Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
+                        if(cbla!=null){
+                            scanVo.setKwm(cbla.getCbla09());
+
                         }
 
                     }
-                }
-                if(cbacs.get(j).getCbac10()!=null){
-                    Cbla cbla = cblaMapper.selectByPrimaryKey(cbacs.get(j).getCbac10());
-                    if(cbla!=null){
-                        scanVo.setKwm(cbla.getCbla09());
+                    scanVo.setSn(cbacs.get(j).getCbac09());
+                    scanVo.setCbpe03(cbacs.get(j).getCbac03());
+                    goods.add(scanVo);
 
-                    }
+                    cbaasVos.get(j).setSaoma(size);
 
                 }
-                scanVo.setSn(cbacs.get(j).getCbac09());
-                scanVo.setCbpe03(cbacs.get(j).getCbac03());
-                goods.add(scanVo);
 
-                cbaasVos.get(j).setSaoma(size);
+                cbaasVo1.setSaoma(size);
+
 
             }
-
-
-
         }
+
+
         if(cbacss.size()>0) {
     for (int i = 0; i < cbaasVos.size(); i++) {
-if(cbaasVos.get(0).getCbab15()!=null){
+    if(cbaasVos.get(0).getCbab15()!=null){
         Integer cbab15 = cbaasVos.get(0).getCbab15();
         if(cbab15!=null && cbab15==1){
             cbaasVos.get(0).setOrderClass("国内订单");
@@ -574,7 +583,7 @@ if(cbaasVos.get(0).getCbab15()!=null){
 
 
 
-        cbaasVos.get(i).setSaoma(size);
+       // cbaasVos.get(i).setSaoma(size);
     }
     cbaasVos.get(0).setGoods(goods);
 }
@@ -1118,7 +1127,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 List<Cbac> cbacss = cbacMapper.selectByExample(cbacCriterias);
                 if(cbacss.size()>0){
                     if(cbacss.get(0).getCbac14()==1){
-                        Cbac cbac = new Cbac();
+                        Cbac cbac = Cbac.getInstance();
                         cbac.setCbaa01(itemList.getCbaa01());
                         cbac.setCbac09(itemList.getCbac09());
                         cbac.setCbac10(itemList.getCbac10());

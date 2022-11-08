@@ -308,7 +308,7 @@ if(cbicDto.size()==0){
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum +1>cbla.get(0).getCbla11()){
-                            throw new SwException("库位容量不足");
+                            throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
                         }
                     }
 
@@ -329,7 +329,7 @@ if(cbicDto.size()==0){
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum +1>cbla.get(0).getCbla11()){
-                            throw new SwException("库位容量不足");
+                            throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
                         }
                     }
 
@@ -436,11 +436,11 @@ if(cbicDto.size()==0){
             if(gsGoodsSkus.size()>0){
                 double skusum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
                 if (skusum+cbicDtos1.size()>=nums) {
-                    throw new SwException("库位容量不足");
+                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
                 }
             }else {
                 if (cbicDtos1.size()>=nums) {
-                    throw new SwException("库位容量不足");
+                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
                 }
 
             }
@@ -1059,7 +1059,7 @@ if(cbsds.size()>0) {
                 exampwle.createCriteria().andSnEqualTo(cbiw.getSn());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampwle);}
             }*/
-            Cbac cbac = new Cbac();
+            Cbac cbac =  Cbac.getInstance();
             cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
             cbacMapper.deleteByExample(example);
 
@@ -1104,7 +1104,7 @@ if(cbsds.size()>0) {
                             }
 
                         }
-                        Cbac cbac = new Cbac();
+                        Cbac cbac = Cbac.getInstance();
                         cbac.setCbac14(1);
                         cbacMapper.updateByExampleSelective(cbac,example);
                     }
@@ -1266,7 +1266,7 @@ if(cbsds.size()>0) {
                 CbacCriteria example = new CbacCriteria();
                 example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
                         .andCbaa01EqualTo(cbiw.get(i).getId());
-                Cbac cbac = new Cbac();
+                Cbac cbac = Cbac.getInstance();
                 cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
                 cbacMapper.updateByExampleSelective(cbac,example);
 
@@ -1282,7 +1282,7 @@ if(cbsds.size()>0) {
                 CbacCriteria example = new CbacCriteria();
                 example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
                         .andCbaa01EqualTo(cbiw.get(i).getId());
-                Cbac cbac = new Cbac();
+                Cbac cbac =Cbac.getInstance();
                 cbac.setCbac14(1);
                 cbacMapper.updateByExampleSelective(cbac,example);
 
@@ -1427,11 +1427,11 @@ String S="0";
             if(gsGoodsSkus.size()>0){
                 double skusum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
                 if (skusum+1>=nums) {
-                    throw new SwException("库位容量不足");
+                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
                 }
             }else {
                 if (1>nums) {
-                    throw new SwException("库位容量不足");
+                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
                 }
 
             }

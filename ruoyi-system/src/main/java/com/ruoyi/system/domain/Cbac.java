@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Cbac implements Serializable {
+
+
+
+
     private Integer cbac01;
 
     private Integer cbac02;
@@ -244,5 +248,19 @@ public class Cbac implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+
+
+    private Cbac() {
+    }
+
+
+
+    private static class SingletonHolder {
+        private static final Cbac INSTANCE = new Cbac();
+    }
+    public static final Cbac getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 }
