@@ -407,18 +407,23 @@ public class TakeGoodsController extends BaseController {
             value ="导出提货单excel详情",
             notes = "导出提货单excel详情")
     @PostMapping("/exportDetail")
-    public void exportDetail(@RequestParam Integer id, HttpServletResponse response){
+    public void exportDetail(@RequestParam Integer id, HttpServletResponse response) throws IOException {
+        InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
         try {
             long time = System.currentTimeMillis();
 
             TakeGoodsOrderDetailVo res = takeGoodsService.takeOrderDetail(id);
-            InputStream in = null;
-            XSSFWorkbook wb = null;
+
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
              excelPaht = RuoYiConfig.getSwprofile() + "提货单_" + res.getOrderNo() + time + ".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板提货单_" + res.getOrderNo() + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL),new File(excelPaht2));
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_DETAIL_EXCEL);
+            File is = new File(excelPaht2);
 
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
@@ -438,7 +443,19 @@ public class TakeGoodsController extends BaseController {
 
 //            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }finally {
-            FileUtils.deleteFile(excelPaht);
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
+            }
         }
     }
 

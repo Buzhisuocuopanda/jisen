@@ -28,6 +28,7 @@ import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.web.utils.Excel2PdfUtil;
+import com.ruoyi.web.utils.FileCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -1536,25 +1537,30 @@ public class SaleOrderController extends BaseController {
     @PostMapping("/saleOrderdetailsexport")
 
     public void saleOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+        InputStream in = null;
         String excelPaht="";
-
+        String excelPaht2="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
         try {
             long time = System.currentTimeMillis();
 
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
-            InputStream in = null;
-            XSSFWorkbook wb = null;
+
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
              excelPaht = RuoYiConfig.getSwdataprofile() + "销售订单_" + res.getOrderNo() + time + ".xlsx";
             //File is = new File("D:\\data\\模板.xlsx");
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板销售订单_" + res.getOrderNo() + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL),new File(excelPaht2));
+
+            File is = new File(excelPaht2);
 
 //            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
           //  File sg = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
 
-          //  File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
+          //  File ii = new File(RuoYiConfig.getSwprofile()+ "导出销售订单详情"+date.getTime()+".xlsx");
 
-          //  copyFileUsingFileChannels(sg,is);
+          //  copyFileUsingFileChannels(sg,ii);
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
             String orderNo = res.getOrderNo();
@@ -1576,7 +1582,20 @@ public class SaleOrderController extends BaseController {
 
       // return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
     }finally {
-            FileUtils.deleteFile(excelPaht);
+
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
+            }
         }
    // return AjaxResult.success();
     }
@@ -1642,19 +1661,23 @@ public class SaleOrderController extends BaseController {
     )
     @PostMapping("/saleOrderdetailsexport1")
     public AjaxResult saleOrderdetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+        InputStream in = null;
         String excelPaht="";
-
+        String excelPaht2="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
         try {
             long time = System.currentTimeMillis();
 
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
-            InputStream in = null;
-            XSSFWorkbook wb = null;
+
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
            // File is = new File("D:\\data\\模板1.xlsx");
             excelPaht=   RuoYiConfig.getSwdataprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板销售订单_" + res.getOrderNo() + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANSEWASTYY_EXCEL),new File(excelPaht2));
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANSEWASTYY_EXCEL);
+            File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
             genarateReportss(wb, res);
             String orderNo = res.getOrderNo();
@@ -1679,7 +1702,20 @@ public class SaleOrderController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
-            FileUtils.deleteFile(excelPaht);
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
+            }
+
 
         }
         return AjaxResult.success();
@@ -2105,26 +2141,27 @@ public class SaleOrderController extends BaseController {
     public void printSaleOrder( @RequestParam  Integer orderId,HttpServletResponse response) throws IOException {
         InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
+
         String pdfPath="";
         XSSFWorkbook wb = null;
         try {
 
+            long time = System.currentTimeMillis();
 
             SaleOrderDetailVo res = saleOrderService.saleOderDetail(orderId);
+            excelPaht=   RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
 
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板销售订单_" + res.getOrderNo() + time + ".xlsx";
 
-      // in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL),new File(excelPaht2));
 
-            File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCELs);
-
-          //  File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCUIOEWASTYY_EXCEL);
-
-           // copyFileUsingFileChannels(sg,is);
-
+            // in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
+            File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
             genarateReports(wb, res);
-            long time = System.currentTimeMillis();
-             excelPaht=   RuoYiConfig.getSwprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
+            String orderNo = res.getOrderNo();
+
             saveExcelToDisk(wb,excelPaht );
 
             //转成pdf
@@ -2169,6 +2206,9 @@ public class SaleOrderController extends BaseController {
 
             if(excelPaht!=null){
                 FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
             }
             if(pdfPath!=null){
                 FileUtils.deleteFile(pdfPath);

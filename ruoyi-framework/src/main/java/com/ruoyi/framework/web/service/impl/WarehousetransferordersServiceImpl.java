@@ -559,7 +559,7 @@ if(itemList.size()==0){
                     scanVo.setCbpe03(cbacs.get(j).getCbac03());
                     goods.add(scanVo);
 
-                    cbaasVos.get(j).setSaoma(size);
+                    cbaasVo1.setSaoma(size);
 
                 }
 
