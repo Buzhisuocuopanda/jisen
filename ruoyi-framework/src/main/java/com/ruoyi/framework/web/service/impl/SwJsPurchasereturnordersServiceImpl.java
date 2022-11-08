@@ -272,6 +272,15 @@ Cbpg cbpgs = new Cbpg();
                 throw new SwException("商品条码不存在");
             }
 
+
+            if(gsGoodsSnss.get(0).getStatus()!=null){
+                if(gsGoodsSnss.get(0).getStatus()==2){
+                    throw new SwException("该sn是出库中状态,不能使用");
+                }
+                if(gsGoodsSnss.get(0).getStatus()!=1){
+                    throw new SwException("该sn不是已入库状态,不能使用");
+                }
+            }
             if(gsGoodsSnss.get(0).getGoodsId()==null){
                 throw new SwException("商品id不存在");
             }
