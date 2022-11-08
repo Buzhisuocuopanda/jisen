@@ -308,11 +308,11 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         send.setType(TotalOrderOperateEnum.MAKEORDER.getCode());
 
         //先查一下有没有其他商品
-        List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
-        if(cbbas.size()>0){
+//        List<Cbba> cbbas = cbbaMapper.selectByGoodsId(totalOrderAddDto.getGoodsId());
+//        if(cbbas.size()>0){
             cbba = orderDistributionService.reassign(send);
 
-        }
+//        }
 
         cbbaMapper.insert(cbba);
         return cbba;

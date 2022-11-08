@@ -400,7 +400,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 break;
 
             } else {
-                res.setCbba13(0.0);
+                res.setCbba13(useNum);
                 needNum = needNum - getNum;
                 res.setCbba04(new Date());
                 cbbaMapper.updateByPrimaryKey(res);
@@ -775,12 +775,12 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
             if (canuseNum >= needMakeNum) {
                 //如果可以使用的数量大于需要分配订单的所需数量
                 realMakeNum = realMakeNum + needMakeNum;
-                re.setCbba13(canuseNum - needMakeNum);
+                re.setCbba13( re.getCbba13() - needMakeNum);
                 needMakeNum = 0.0;
             } else {
                 realMakeNum = realMakeNum + canuseNum;
                 needMakeNum = needMakeNum - canuseNum;
-                re.setCbba13(0.0);
+                re.setCbba13(re.getCbba13()-canuseNum);
 
             }
             re.setCbba04(new Date());
