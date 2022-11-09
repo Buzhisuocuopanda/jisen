@@ -1896,6 +1896,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 .andWhIdEqualTo(gsGoodsSns.get(0).getWhId());
         List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
         if (gsGoodsSkus.size()> 0) {
+            //库位所在容量等于1
             if(gsGoodsSkus.get(0).getQty()==1) {
 
                 List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
