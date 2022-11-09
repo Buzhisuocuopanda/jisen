@@ -371,7 +371,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 //                Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
             CbplCriteria plex=new CbplCriteria();
             plex.createCriteria()
-                    .andCbobIdEqualTo(cbob.getCboa01())
+                    .andCbobIdEqualTo(cbob.getCbob01())
                     .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
             List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
              Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
