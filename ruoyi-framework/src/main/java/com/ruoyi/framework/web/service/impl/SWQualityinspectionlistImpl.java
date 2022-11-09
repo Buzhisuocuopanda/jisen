@@ -147,7 +147,7 @@ private CbpmMapper cbpmMapper;
 //                    goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSns1.get(0).setStatus(new Byte("2"));
+                    gsGoodsSns1.get(0).setStatus(new Byte("1"));
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.XJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(null);
@@ -171,7 +171,7 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
-                gsGoodsSn.setStatus(new Byte("2"));
+                gsGoodsSn.setStatus(new Byte("1"));
                 gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
             } else {
@@ -323,7 +323,7 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setLocationId(null);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
-                gsGoodsSn.setStatus(new Byte("3"));
+                gsGoodsSn.setStatus(new Byte("1"));
                 gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
                 gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
@@ -368,7 +368,7 @@ private CbpmMapper cbpmMapper;
                         Cbpm cbpm2 = new Cbpm();
                         cbpm2.setCbpm01(cbpm3.getCbpm01());
                         cbpm2.setCbpm09(itemList.get(i).getCbqb10());
-                        cbpm2.setCbpm12("sn由反审"+itemList.get(i).getCbqb09()+"替换回"+itemList.get(i).getCbqb10());
+                        cbpm2.setCbpm12("");
                         cbpm2.setCbpm11(0);
                         cbpmMapper.updateByPrimaryKeySelective(cbpm2);
                     }
