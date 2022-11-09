@@ -147,7 +147,7 @@ private CbpmMapper cbpmMapper;
 //                    goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSns1.get(0).setStatus(new Byte("1"));
+                    gsGoodsSns1.get(0).setStatus(new Byte("2"));
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.XJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(null);
@@ -157,6 +157,9 @@ private CbpmMapper cbpmMapper;
 
                 }
             }
+
+            //sku库位修改
+
 
             //校验原商品sn，使其维修状态为1
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
@@ -224,6 +227,10 @@ private CbpmMapper cbpmMapper;
                 session.commit();
                 session.clearCache();
             }
+
+
+
+
         }
         session.commit();
         session.clearCache();
@@ -320,11 +327,11 @@ private CbpmMapper cbpmMapper;
             if (gsGoodsSns.size() > 0) {
                 locationId = gsGoodsSns.get(0).getLocationId();
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
-                //恢复下架
+                //恢复上架
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
-                gsGoodsSn.setStatus(new Byte("1"));
+                gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
