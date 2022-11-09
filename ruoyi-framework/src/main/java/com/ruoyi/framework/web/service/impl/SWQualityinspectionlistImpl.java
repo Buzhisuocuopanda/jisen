@@ -147,7 +147,7 @@ private CbpmMapper cbpmMapper;
 //                    goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                    gsGoodsSns1.get(0).setStatus(new Byte("1"));
+                    gsGoodsSns1.get(0).setStatus(new Byte("2"));
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.XJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(null);
@@ -331,7 +331,7 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
-                gsGoodsSn.setStatus(new Byte("1"));
+                gsGoodsSn.setStatus(new Byte("2"));
                 gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
