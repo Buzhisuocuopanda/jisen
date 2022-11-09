@@ -158,6 +158,9 @@ private CbpmMapper cbpmMapper;
                 }
             }
 
+            //sku库位修改
+
+
             //校验原商品sn，使其维修状态为1
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
             example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
@@ -224,6 +227,10 @@ private CbpmMapper cbpmMapper;
                 session.commit();
                 session.clearCache();
             }
+
+
+
+
         }
         session.commit();
         session.clearCache();
@@ -320,7 +327,7 @@ private CbpmMapper cbpmMapper;
             if (gsGoodsSns.size() > 0) {
                 locationId = gsGoodsSns.get(0).getLocationId();
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
-                //恢复下架
+                //恢复上架
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
