@@ -50,38 +50,25 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
-        List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis2(fnQueryAynthesisDto);
+        List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis3(fnQueryAynthesisDto);
 //        List<FnQueryAyntgesisVo> listresult =new ArrayList<>();
         for(int i =0;i<list.size();i++){
 
-            List<FnQueryAyntgesisVo> list2=cbsdMapper.fnSynthesis(list.get(i).getCbsd01());
-            if(list2!=null&&list2.size()>0){
-                list.get(i).setInWhTime(list2.get(0).getInWhTime());
-                list.get(i).setOutWhTime(list2.get(0).getOutWhTime());
-                list.get(i).setOrderNo(list2.get(0).getOrderNo());
-                list.get(i).setModel(list2.get(0).getModel());
-                list.get(i).setDescription(list2.get(0).getDescription());
-                list.get(i).setQty(list2.get(0).getQty());
-                list.get(i).setTotalOrderNo(list2.get(0).getTotalOrderNo());
-            list.get(i).setSn(list2.get(0).getSn());
-            if(list2.get(0).getCurrency()!=null){
-                if(list2.get(0).getCurrency() == 5){//美元
-                    list.get(i).setUPrice(list2.get(0).getRPrice());
-                }else if(list2.get(0).getCurrency() == 6){//人民币
-                    list.get(i).setRPrice(list2.get(0).getRPrice());
+            if(list.get(i).getCurrency()!=null){
+                if(list.get(i).getCurrency() == 5){//美元
+                    list.get(i).setUPrice(list.get(i).getRPrice());
+                    list.get(i).setRPrice(null);
+                }else if(list.get(i).getCurrency() == 6){//人民币
+                    list.get(i).setRPrice(list.get(i).getRPrice());
                 }
 
             }
-
-                list.get(i).setSuplierName(list2.get(0).getSuplierName());
-                list.get(i).setBrand(list2.get(0).getBrand());
-                list.get(i).setGc(list2.get(0).getGc());
-                if(list2.get(0).getCbpc16()!=null){
-                    if(list2.get(0).getCbpc16() == 5){//美元
-                        list.get(i).setCgUprice(list2.get(0).getCgRprice());
-                    }else if(list2.get(0).getCbpc16() == 6){//人民币
-                        list.get(i).setCgRprice(list2.get(0).getCgRprice());
-                    }
+            if(list.get(i).getCbpc16()!=null){
+                if(list.get(i).getCbpc16() == 5){//美元
+                    list.get(i).setCgUprice(list.get(i).getCgRprice());
+                    list.get(i).setCgRprice(null);
+                }else if(list.get(i).getCbpc16() == 6){//人民币
+                    list.get(i).setCgRprice(list.get(i).getCgRprice());
                 }
             }
 

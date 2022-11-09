@@ -456,7 +456,7 @@ public class CountQueryController  extends BaseController {
             notes = "生产总订单查询"
     )
     @GetMapping("/Invsensstorsysummaryquery")
-    @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery:list')")
+    @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery2:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(SczddVo sczddVo) {
         try {
             startPage();
@@ -477,7 +477,7 @@ public class CountQueryController  extends BaseController {
             notes = "导出生产总订单查询"
     )
     @PostMapping("/InvsensstorsysummaryqueryExcelList")
-    @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery:export')")
+    @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery2:export')")
     public void InvsensstorsysummaryqueryExcelList(SczddVo sczddVo, HttpServletResponse response) {
         List<SczddVo> list = countQueryService.selectInnorysummaryquery(sczddVo);
         ExcelUtil<SczddVo> util = new ExcelUtil<>(SczddVo.class);

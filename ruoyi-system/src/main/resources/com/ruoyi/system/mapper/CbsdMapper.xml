@@ -446,7 +446,12 @@ FROM
     </if>
 
     <if test="whId != null ">
-      AND sb.CBSB10 = #{whId}
+        <if test="whId == 1">
+          AND oa.CBOA27 = 2
+        </if>
+      <if test="whId != 1">
+        AND sb.CBSB10 = #{whId}
+      </if>
     </if>
 
     <if test="customerId != null and customerId != ''">
@@ -467,12 +472,12 @@ FROM
   <select id="fnSynthesis3" resultType="com.ruoyi.system.domain.vo.FnQueryAyntgesisVo">
 
     SELECT
+    sd.CBSD01,
     sd.CBSD08 AS goodsId,
     sd.CBSD09 AS sn,
     sc.CBSC03 AS outWhTime,
     sc.CBSC09 AS qty,
     ob.CBOB11 AS rPrice,
-    ob.CBOB14 AS uPrice,
     oa.CBOA07 AS orderNo,
     oa.CBOA16 AS currency,
     ca.CBCA09 AS suplierName,
@@ -480,34 +485,40 @@ FROM
     pb.CBPB10 AS brand,
     pb.CBPB12 AS model,
 
-    pe.CBPE03 AS inWhTime,
+	sn.in_time AS inWhTime,
     sa.CBSA08 AS gc,
-    pd.CBPD11 AS cgRprice,
-    pd.CBPD12 AS cgUprice
-    FROM
-    CBSD sd
+	sn.price AS cgRprice,
+    sn.currency as cbpc16,ob.CBOB18 as totalOrderNo
+FROM
+	CBSD sd
     LEFT JOIN CBSC sc ON sc.CBSB01 = sd.CBSB01 and  sc.CBSC08 = sd.CBSD08
     LEFT JOIN CBSB sb on sb.CBSB01 =sc.CBSB01
     LEFT JOIN CBOB ob ON ob.CBOB01 = sc.CBSC14
     LEFT JOIN CBOA oa ON oa.CBOA01 = ob.CBOA01
     LEFT JOIN CBCA ca ON ca.CBCA01 = oa.CBOA09
     LEFT JOIN CBPB pb on sd.CBSD08 =pb.CBPB01
+    LEFT JOIN gs_goods_sn sn on sn.sn =sd.CBSD09
 
     LEFT JOIN CBPE pe ON pe.CBPE09 = sd.CBSD09
-    LEFT JOIN CBPC pc ON pc.CBPC01 = pe.CBPC01 and pc.CBPC09 = pe.CBPE08
-    LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
-    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01
+    LEFT JOIN CBPD pd on pd.CBPC01  =pe.CBPC01 and pd.CBPD08 =pe.CBPE08
+    LEFT JOIN CBPC pc ON pc.CBPC01 = pd.CBPC01
+     LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
     where sd.CBSD07 = 0
     <if test="saleOrderNo != null and saleOrderNo != ''">
       AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')
     </if>
 
     <if test="whId != null ">
-      AND sb.CBSB10 = #{whId}
+      <if test="whId == 1">
+        AND oa.CBOA27 = 2
+      </if>
+      <if test="whId != 1">
+        AND sb.CBSB10 = #{whId}
+      </if>
     </if>
 
     <if test="customerId != null and customerId != ''">
-      AND ca.CBCA01 = #{customerId}
+      AND oa.CBOA09 = #{customerId}
     </if>
 
     <if test="startTime != null">
