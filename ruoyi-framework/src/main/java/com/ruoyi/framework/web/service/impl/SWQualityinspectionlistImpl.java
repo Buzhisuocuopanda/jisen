@@ -172,7 +172,7 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
                 gsGoodsSn.setStatus(new Byte("1"));
-                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+//                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
@@ -320,11 +320,11 @@ private CbpmMapper cbpmMapper;
                 locationId = gsGoodsSns.get(0).getLocationId();
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
                 //恢复下架
-                gsGoodsSn.setLocationId(null);
+                gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
                 gsGoodsSn.setStatus(new Byte("1"));
-                gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
