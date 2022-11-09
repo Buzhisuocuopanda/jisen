@@ -1477,6 +1477,20 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         cbpkMapper.updateByPrimaryKey(cbpk);
 
 
+        CbplCriteria plex=new CbplCriteria();
+        plex.createCriteria()
+                .andCbpk01EqualTo(cbpk.getCbpk01());
+
+        Cbpl cbpl=new Cbpl();
+        cbpl.setCbpl07(DeleteFlagEnum.DELETE.getCode());
+        int i = cbplMapper.updateByExampleSelective(cbpl,plex);
+
+        CbpmCriteria pmex=new CbpmCriteria();
+        pmex.createCriteria()
+                .andCbpk01EqualTo(cbpk.getCbpk01());
+        int i1 = cbpmMapper.deleteByExample(pmex);
+
+
     }
 
     @Transactional
