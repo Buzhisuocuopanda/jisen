@@ -345,7 +345,7 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.SJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(locationId);
-                    gsGoodsSnMapper.updateByExample(gsGoodsSns1.get(0), example1);
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSns1.get(0), example1);
                 } else {
                     throw new SwException("替换商品sn不存在或已删除");
 
