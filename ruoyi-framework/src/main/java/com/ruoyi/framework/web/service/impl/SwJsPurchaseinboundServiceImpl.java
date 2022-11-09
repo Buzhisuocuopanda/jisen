@@ -485,6 +485,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             itemList.get(i).setCbpd08(cbpb01);
             itemList.get(i).setCbpd09(itemList.get(i).getCbpd09());
             itemList.get(i).setCbpd11(itemList.get(i).getCbpd11());
+            itemList.get(i).setCbpd12(itemList.get(i).getCbpd09()*itemList.get(i).getCbpd11());
             itemList.get(i).setCbpd13(itemList.get(i).getCbpd13());
             itemList.get(i).setCbpc01(cbpc01);
             mapper.insertSelective(itemList.get(i));

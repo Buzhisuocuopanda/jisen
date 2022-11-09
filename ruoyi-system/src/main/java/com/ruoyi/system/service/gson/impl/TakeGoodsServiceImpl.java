@@ -1896,28 +1896,62 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 .andWhIdEqualTo(gsGoodsSns.get(0).getWhId());
         List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
         if (gsGoodsSkus.size()> 0) {
-            List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
-            if(gsGoodsSkus1.size()>0){
-                GsGoodsSku gsGoodsSku =new GsGoodsSku();
-                gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
-                gsGoodsSku.setUpdateTime(date);
-                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty()+gsGoodsSkus1.get(0).getQty());
+            if(gsGoodsSkus.get(0).getQty()==1) {
+
+                List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                if (gsGoodsSkus1.size() > 0) {
+                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                    gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                    gsGoodsSku.setUpdateTime(date);
+                    gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() + gsGoodsSkus1.get(0).getQty());
+                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                    gsGoodsSkuMapper.deleteByPrimaryKey(gsGoodsSkus.get(0).getId());
+                } else {
+                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                    gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                    gsGoodsSku.setCreateTime(date);
+                    gsGoodsSku.setUpdateTime(date);
+                    gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                    gsGoodsSku.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                    gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
+                    gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
+                    gsGoodsSku.setLocationId(null);
+                    gsGoodsSkuMapper.updateByExample(gsGoodsSku, tuiw);
+                }
+            }
+            //库位数量大于1
+            else{
+                //释放一个库位加到数量仓库
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty()-1);
                 gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
 
-                gsGoodsSkuMapper.deleteByPrimaryKey(gsGoodsSkus.get(0).getId());
-            }else {  GsGoodsSku gsGoodsSku =new GsGoodsSku();
-                gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
-                gsGoodsSku.setCreateTime(date);
-                gsGoodsSku.setUpdateTime(date);
-                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
-                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
-                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-                gsGoodsSku.setGoodsId(gsGoodsSns.get(0).getGoodsId());
-                gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
-                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
-                gsGoodsSku.setLocationId(null);
-                gsGoodsSkuMapper.updateByExample(gsGoodsSku,tuiw);}
-
+                List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                if (gsGoodsSkus1.size() > 0) {
+                    GsGoodsSku gsGoodsSkuc = new GsGoodsSku();
+                    gsGoodsSkuc.setId(gsGoodsSkus1.get(0).getId());
+                    gsGoodsSkuc.setUpdateTime(date);
+                    gsGoodsSkuc.setQty(gsGoodsSkus1.get(0).getQty() + 1);
+                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuc);
+                }else{
+                    GsGoodsSku gsGoodsSkud = new GsGoodsSku();
+                    gsGoodsSkud.setId(gsGoodsSkus.get(0).getId());
+                    gsGoodsSkud.setCreateTime(date);
+                    gsGoodsSkud.setUpdateTime(date);
+                    gsGoodsSkud.setCreateBy(Math.toIntExact(userid));
+                    gsGoodsSkud.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSkud.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                    gsGoodsSkud.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                    gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
+                    gsGoodsSku.setQty(1.0);
+                    gsGoodsSku.setLocationId(null);
+                    gsGoodsSkuMapper.insert(gsGoodsSkud);
+                }
+            }
 
         }
 
