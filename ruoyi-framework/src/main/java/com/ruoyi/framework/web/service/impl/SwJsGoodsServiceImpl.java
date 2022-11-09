@@ -30,6 +30,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 商品分类Service业务层处理
@@ -403,19 +404,25 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         if(itemList.size()==0){
            throw new SwException("导入数据不能为空！");
         }
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        CbpfMapper mapper = session.getMapper(CbpfMapper.class);
+
+        for (int i = 0; i < itemList.size(); i++) {
+
+
 
         //商品分类
-        if(itemList.get(0).getCbpb14()==null||itemList.get(0).getCbpb14().equals("")){
+        if(itemList.get(i).getCbpb14()==null||itemList.get(i).getCbpb14().equals("")){
             throw new SwException("商品分类编号不能为空！");
         }
-        Integer cbpb14 = itemList.get(0).getCbpb14();
+        Integer cbpb14 = itemList.get(i).getCbpb14();
 
 
         //品牌
-        if(itemList.get(0).getCbpb10()==null||itemList.get(0).getCbpb10().equals("")){
+        if(itemList.get(i).getCbpb10()==null||itemList.get(i).getCbpb10().equals("")){
             throw new SwException("品牌不能为空！");
         }
-        String cbpb10 = itemList.get(0).getCbpb10();
+        String cbpb10 = itemList.get(i).getCbpb10();
         CalaCriteria calaCriteria = new CalaCriteria();
         calaCriteria.createCriteria().andCala08EqualTo(cbpb10);
         List<Cala> calaList = calaMapper.selectByExample(calaCriteria);
@@ -424,23 +431,23 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         }
 
         //型号
-        if(itemList.get(0).getCbpb12()==null||itemList.get(0).getCbpb12().equals("")){
+        if(itemList.get(i).getCbpb12()==null||itemList.get(i).getCbpb12().equals("")){
             throw new SwException("型号不能为空！");
         }
-        String cbpb12 = itemList.get(0).getCbpb12();
+        String cbpb12 = itemList.get(i).getCbpb12();
 
         //upc
-        if(itemList.get(0).getCbpb15()==null||itemList.get(0).getCbpb15().equals("")){
+        if(itemList.get(i).getCbpb15()==null||itemList.get(i).getCbpb15().equals("")){
             throw new SwException("upc不能为空！");
         }
-        String cbpb15 = itemList.get(0).getCbpb15();
+        String cbpb15 = itemList.get(i).getCbpb15();
 
         //商品描述
-        if(itemList.get(0).getCbpb08()==null || itemList.get(0).getCbpb08().equals("")){
+        if(itemList.get(i).getCbpb08()==null || itemList.get(0).getCbpb08().equals("")){
             throw new SwException("商品描述不能为空！");
         }
 
-        String cbpb08 = itemList.get(0).getCbpb08();
+        String cbpb08 = itemList.get(i).getCbpb08();
 
         CbpbCriteria example = new CbpbCriteria();
         example.createCriteria().andCbpb15EqualTo(cbpb15)
@@ -461,14 +468,22 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         cbpb.setCbpb12(cbpb12);
         cbpb.setCbpb14(cbpb14);
         cbpb.setCbpb15(cbpb15);
-        cbpb.setType(1);
+        //型号
+        if(itemList.get(i).getType()==null||itemList.get(i).getType().equals("")){
+            throw new SwException("商品类型不能为空！");
+        }
+        if(Objects.equals(itemList.get(i).getType(), "配件")){
+            cbpb.setType(0);
+        }else {
+            cbpb.setType(1);
+        }
 
         cbpbMapper.insertSelective(cbpb);
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+/*        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpfMapper mapper = session.getMapper(CbpfMapper.class);
 
-        for (int i = 0; i < itemList.size(); i++) {
+        for (int i = 0; i < itemList.size(); i++) {*/
 
              if(itemList.get(i).getCbpf02()==null){
                  throw new SwException("客户等级不能为空！");

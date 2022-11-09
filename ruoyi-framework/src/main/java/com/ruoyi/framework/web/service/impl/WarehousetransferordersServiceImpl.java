@@ -1332,12 +1332,12 @@ if(gsGoodsSkus.get(j).getLocationId()==null) {
     gsGoodsSku.setUpdateTime(date);
     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
 
-    TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+  /*  TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
     tranUseQtyDo.setGoodsId(goodsid);
     tranUseQtyDo.setQty(num);
     tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
     tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-    orderDistributionService.diaoboUseOp(tranUseQtyDo);
+    orderDistributionService.diaoboUseOp(tranUseQtyDo);*/
 
 }
                 }
@@ -1517,12 +1517,12 @@ else {
                 taskService.InsertCBIB(cbibDo1);
 
 
-                TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                /*TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
                 tranUseQtyDo.setGoodsId(goodsid);
                 tranUseQtyDo.setQty(cbabs.get(i).getCbab09());
                 tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
                 tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                orderDistributionService.diaoboUseOp(tranUseQtyDo);
+                orderDistributionService.diaoboUseOp(tranUseQtyDo);*/
             }
 
             cbaaMapper.updateByExampleSelective(cbaa, example);
