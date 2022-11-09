@@ -196,6 +196,7 @@ private CbpmMapper cbpmMapper;
                     itemList.get(i).setCbqb08(cbpm3.getCbpm01());
                     Cbpm cbpm2 = new Cbpm();
                     cbpm2.setCbpm01(cbpm3.getCbpm01());
+                    cbpm2.setCbpm10(locationId);
                     cbpm2.setCbpm09(itemList.get(i).getCbqb09());
                     cbpm2.setCbpm12("sn由"+itemList.get(i).getCbqb10()+"替换为"+itemList.get(i).getCbqb09());
                     cbpm2.setCbpm11(1);
