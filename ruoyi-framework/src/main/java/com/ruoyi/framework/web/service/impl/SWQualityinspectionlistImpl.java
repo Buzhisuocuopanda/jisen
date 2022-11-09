@@ -368,7 +368,7 @@ private CbpmMapper cbpmMapper;
                         Cbpm cbpm2 = new Cbpm();
                         cbpm2.setCbpm01(cbpm3.getCbpm01());
                         cbpm2.setCbpm09(itemList.get(i).getCbqb10());
-                        cbpm2.setCbpm12("");
+                        cbpm2.setCbpm12(" ");
                         cbpm2.setCbpm11(0);
                         cbpmMapper.updateByPrimaryKeySelective(cbpm2);
                     }
@@ -423,7 +423,7 @@ private CbpmMapper cbpmMapper;
                     //删除对应提货单恢复
                     cbpm.setCbpm07(0);
                     cbpm.setCbpm11(0);
-                    cbpm.setCbpm12("");
+                    cbpm.setCbpm12(" ");
                     cbpmMapper.updateByPrimaryKeySelective(cbpm);
 //                    cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
                 }
