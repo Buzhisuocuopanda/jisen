@@ -308,7 +308,7 @@ if(cbicDto.size()==0){
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum +1>cbla.get(0).getCbla11()){
-                            throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                          //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
                         }
                     }
 
@@ -329,7 +329,7 @@ if(cbicDto.size()==0){
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum +1>cbla.get(0).getCbla11()){
-                            throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                          //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
                         }
                     }
 
@@ -429,7 +429,7 @@ if(cbicDto.size()==0){
                 }
             }
             //库位容量
-            Double nums = cblas.get(0).getCbla11();
+       /*     Double nums = cblas.get(0).getCbla11();
             GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
             gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
             List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
@@ -443,7 +443,7 @@ if(cbicDto.size()==0){
                     throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
                 }
 
-            }
+            }*/
 
 
         }
@@ -1420,21 +1420,7 @@ String S="0";
                 }
             }
             //库位容量
-            Double nums = cblas.get(0).getCbla11();
-            GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
-            gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
-            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
-            if(gsGoodsSkus.size()>0){
-                double skusum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                if (skusum+1>=nums) {
-                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
-                }
-            }else {
-                if (1>nums) {
-                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
-                }
 
-            }
 
 
         }

@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,9 +49,9 @@ public class CbpgVo  extends BaseEntity
 
     private Double cbph09;
 
-    private Double cbph10;
+    private BigDecimal cbph10;
 
-    private Double cbph11;
+    private BigDecimal cbph11;
 
     private String cbph13;
 

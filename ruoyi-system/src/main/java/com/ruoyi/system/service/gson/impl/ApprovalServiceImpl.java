@@ -42,9 +42,9 @@ public class ApprovalServiceImpl implements ApprovalService {
     //查询审批记录
     @Override
     public List<ApprovalVo> selectApprovalrecords(ApprovalVo approvalVo) {
-//        String key="faqs";//设置键名
-//        ListOperations<String,ApprovalVo> list = redisTemplate.opsForList();
-//        Boolean bool=redisTemplate.hasKey(key);//判断是否存在该键名
+     /*   String key="faqs";//设置键名
+        ListOperations<String,ApprovalVo> list = redisTemplate.opsForList();
+        Boolean bool=redisTemplate.hasKey(key);//判断是否存在该键名*/
 //
 //        if (bool){
 //

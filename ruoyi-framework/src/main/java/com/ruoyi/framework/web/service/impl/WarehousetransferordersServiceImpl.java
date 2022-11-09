@@ -1316,7 +1316,6 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 if(gsGoodsSkus.size()==0){
                     throw new SwException("仓库数量仓库没有该商品");
                 }
-
                 for(int j=0;j<gsGoodsSkus.size();j++) {
 
 if(gsGoodsSkus.get(j).getLocationId()==null) {
@@ -1333,16 +1332,15 @@ if(gsGoodsSkus.get(j).getLocationId()==null) {
     gsGoodsSku.setUpdateTime(date);
     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
 
-
+  /*  TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+    tranUseQtyDo.setGoodsId(goodsid);
+    tranUseQtyDo.setQty(num);
+    tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
+    tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
+    orderDistributionService.diaoboUseOp(tranUseQtyDo);*/
 
 }
                 }
-                TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
-                tranUseQtyDo.setGoodsId(goodsid);
-                tranUseQtyDo.setQty(num);
-                tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
-                tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                orderDistributionService.diaoboUseOp(tranUseQtyDo);
                   //台账
                 //供应商名称
                 Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbabs.get(i).getCbab14());
@@ -1519,12 +1517,12 @@ else {
                 taskService.InsertCBIB(cbibDo1);
 
 
-                TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
+                /*TranUseQtyDo tranUseQtyDo = new TranUseQtyDo();
                 tranUseQtyDo.setGoodsId(goodsid);
                 tranUseQtyDo.setQty(cbabs.get(i).getCbab09());
                 tranUseQtyDo.setInWhId(cbaa1.getCbaa10());
                 tranUseQtyDo.setOutWhId(cbaa1.getCbaa09());
-                orderDistributionService.diaoboUseOp(tranUseQtyDo);
+                orderDistributionService.diaoboUseOp(tranUseQtyDo);*/
             }
 
             cbaaMapper.updateByExampleSelective(cbaa, example);

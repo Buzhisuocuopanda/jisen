@@ -83,5 +83,5 @@ public class CbpbDto extends Cbpf {
     @Excel(name = "货币")
     private String moneyType;
     @Excel(name = "类型", readConverterExp = "0=配件,1=商品")
-    private Integer type;
+    private String type;
 }

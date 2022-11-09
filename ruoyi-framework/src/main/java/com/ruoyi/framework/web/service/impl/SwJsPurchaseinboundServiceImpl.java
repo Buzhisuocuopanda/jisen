@@ -465,7 +465,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
         for (int i = 0; i < itemList.size(); i++) {
             if(Objects.isNull(itemList.get(i).getGoodtype())){
-                throw new SwException("商品不能为空");
+                throw new SwException("商品型号不能为空");
             }
             CbpbCriteria cbpbCriteria = new CbpbCriteria();
             cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodtype());
@@ -473,7 +473,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             if(cbpbs.size()==0){
                 throw new SwException("商品不存在");
             }
-            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+            Integer cbpb01 = cbpbs.get(0).getCbpb01();
 
 
             itemList.get(i).setCbpd03(date);
@@ -485,6 +485,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             itemList.get(i).setCbpd08(cbpb01);
             itemList.get(i).setCbpd09(itemList.get(i).getCbpd09());
             itemList.get(i).setCbpd11(itemList.get(i).getCbpd11());
+            itemList.get(i).setCbpd12(itemList.get(i).getCbpd09()*itemList.get(i).getCbpd11());
             itemList.get(i).setCbpd13(itemList.get(i).getCbpd13());
             itemList.get(i).setCbpc01(cbpc01);
             mapper.insertSelective(itemList.get(i));

@@ -158,6 +158,9 @@ private CbpmMapper cbpmMapper;
                 }
             }
 
+            //sku库位修改
+
+
             //校验原商品sn，使其维修状态为1
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
             example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
@@ -171,8 +174,8 @@ private CbpmMapper cbpmMapper;
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
-                gsGoodsSn.setStatus(new Byte("2"));
-                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                gsGoodsSn.setStatus(new Byte("1"));
+//                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
@@ -196,6 +199,7 @@ private CbpmMapper cbpmMapper;
                     itemList.get(i).setCbqb08(cbpm3.getCbpm01());
                     Cbpm cbpm2 = new Cbpm();
                     cbpm2.setCbpm01(cbpm3.getCbpm01());
+                    cbpm2.setCbpm10(locationId);
                     cbpm2.setCbpm09(itemList.get(i).getCbqb09());
                     cbpm2.setCbpm12("sn由"+itemList.get(i).getCbqb10()+"替换为"+itemList.get(i).getCbqb09());
                     cbpm2.setCbpm11(1);
@@ -223,6 +227,10 @@ private CbpmMapper cbpmMapper;
                 session.commit();
                 session.clearCache();
             }
+
+
+
+
         }
         session.commit();
         session.clearCache();
@@ -319,12 +327,12 @@ private CbpmMapper cbpmMapper;
             if (gsGoodsSns.size() > 0) {
                 locationId = gsGoodsSns.get(0).getLocationId();
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
-                //恢复下架
-                gsGoodsSn.setLocationId(null);
+                //恢复上架
+                gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(0);
-                gsGoodsSn.setStatus(new Byte("3"));
-                gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+                gsGoodsSn.setStatus(new Byte("2"));
+                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
             } else {
                 throw new SwException("原商品sn不存在");
@@ -345,7 +353,7 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.SJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(locationId);
-                    gsGoodsSnMapper.updateByExample(gsGoodsSns1.get(0), example1);
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSns1.get(0), example1);
                 } else {
                     throw new SwException("替换商品sn不存在或已删除");
 
@@ -368,7 +376,8 @@ private CbpmMapper cbpmMapper;
                         Cbpm cbpm2 = new Cbpm();
                         cbpm2.setCbpm01(cbpm3.getCbpm01());
                         cbpm2.setCbpm09(itemList.get(i).getCbqb10());
-                        cbpm2.setCbpm12("sn由反审"+itemList.get(i).getCbqb09()+"替换回"+itemList.get(i).getCbqb10());
+                        cbpm2.setCbpm10(locationId);
+                        cbpm2.setCbpm12(" ");
                         cbpm2.setCbpm11(0);
                         cbpmMapper.updateByPrimaryKeySelective(cbpm2);
                     }
@@ -423,7 +432,7 @@ private CbpmMapper cbpmMapper;
                     //删除对应提货单恢复
                     cbpm.setCbpm07(0);
                     cbpm.setCbpm11(0);
-                    cbpm.setCbpm12("");
+                    cbpm.setCbpm12(" ");
                     cbpmMapper.updateByPrimaryKeySelective(cbpm);
 //                    cbpmMapper.deleteByPrimaryKey(cbpm.getCbpm01());
                 }

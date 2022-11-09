@@ -3,6 +3,7 @@ package com.ruoyi.system.domain.vo;
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,9 +50,9 @@ public class CbaasVo {
 
     private Integer cbab08;
 
-    private Double cbab11;
+    private BigDecimal cbab11;
 
-    private Double cbab12;
+    private BigDecimal cbab12;
 
     private String cbab13;
 
