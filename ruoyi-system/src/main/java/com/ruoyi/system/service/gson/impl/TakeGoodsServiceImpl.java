@@ -1142,7 +1142,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     good.setGoodClass(cbpa.getCbpa07());
                 }
             }
-            good.setNoSendQty(cbob.getCbob09() - cbob.getCbob10());
+
+
+            CbplCriteria plex=new CbplCriteria();
+            plex.createCriteria()
+                    .andCbobIdEqualTo(cbob.getCbob01())
+                    .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+            good.setNoSendQty(cbob.getCbob09() -collect);
             good.setPrice(cbob.getCbob11());
             good.setCbob01(cbob.getCbob01());
             //todo
@@ -1325,7 +1334,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     good.setGoodClass(cbpa.getCbpa07());
                 }
             }
-            good.setNoSendQty(cbob.getCbob09() - cbob.getCbob10());
+            CbplCriteria plex=new CbplCriteria();
+            plex.createCriteria()
+                    .andCbobIdEqualTo(cbob.getCbob01())
+                    .andCbpl07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            List<Cbpl> cbpls = cbplMapper.selectByExample(plex);
+            Double collect = cbpls.stream().collect(Collectors.summingDouble(Cbpl::getGoodProductQty));
+
+            good.setNoSendQty(cbob.getCbob09() -collect);
+//            good.setNoSendQty(cbob.getCbob09() - cbob.getCbob10());
             good.setPrice(cbob.getCbob11());
             good.setCbob01(cbob.getCbob01());
             //todo
