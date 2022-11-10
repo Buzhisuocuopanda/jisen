@@ -1920,7 +1920,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             throw new SwException("您选择的Sn商品没有绑定仓库");
         }
         //库存释放,
-        GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+   /*     GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
         tuiw.createCriteria()
                 .andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
                 .andLocationIdEqualTo(gsGoodsSns.get(0).getLocationId())
@@ -1985,7 +1985,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 }
             }
 
-        }
+        }*/
 
 
 
