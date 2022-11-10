@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 
 import com.ruoyi.common.enums.DeleteFlagEnum1;
@@ -64,6 +65,9 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     private GsGoodsSnMapper gsGoodsSnMapper;
 @Resource
    private  CbobMapper cbobMapper;
+
+@Resource
+private CbpaMapper cbpaMapper;
     /**
      * 新增商品
      *
@@ -415,10 +419,21 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
         if(itemList.get(i).getCbpb14()==null||itemList.get(i).getCbpb14().equals("")){
             throw new SwException("商品分类编号不能为空！");
         }
-        Integer cbpb14 = itemList.get(i).getCbpb14();
+
+            if(itemList.get(i).getCbpb10s()==null||itemList.get(i).getCbpb10s().equals("")){
+                throw new SwException("商品分类名称不能为空！");
+            }
+        CbpaCriteria cbpaCriteria = new CbpaCriteria();
+        cbpaCriteria.createCriteria().andCbpa07EqualTo(itemList.get(i).getCbpb10s());
+        List<Cbpa> cbpaList = cbpaMapper.selectByExample(cbpaCriteria);
+
+            Integer cbpb14 = null;
+            if (cbpaList.size() > 0) {
+                cbpb14 = cbpaList.get(0).getCbpa01();
+            }
 
 
-        //品牌
+            //品牌
         if(itemList.get(i).getCbpb10()==null||itemList.get(i).getCbpb10().equals("")){
             throw new SwException("品牌不能为空！");
         }

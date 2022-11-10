@@ -44,7 +44,7 @@ public class CbsbDo {
     private Date cbsb15;
 
     private Integer cbsb16;
-    @NotBlank(message = "销售人员不能为空")
+   // @NotBlank(message = "销售人员不能为空")
   //  @Length(min =1 , max = 10, message = "销售人员长度")
     private String cbsb17;
   //  @NotBlank(message = "联系人不能为空")
@@ -55,7 +55,7 @@ public class CbsbDo {
     private String cbsb19;
 
     private Integer cbsb20;
-    @NotBlank(message = "收货地址不能为空")
+ //   @NotBlank(message = "收货地址不能为空")
    // @Length(min =1 , max = 20)
     private String cbsb21;
 
