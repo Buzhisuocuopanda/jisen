@@ -643,9 +643,28 @@ if(itemList.get(i).getTakegoodsid()!=null){
                     gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     //通过仓库id和货物id判断是否存在
                     List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByGoodsIdAndWhId(selectbyid.get(k).getGoodsId(),cbsb1.getCbsb10());
-                   // List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSkuByWhId(gsGoodsSkuDo);
                     if (gsGoodsSkus.size() == 0) {
-                        throw new SwException("没有该库存信息");
+                        List<GsGoodsSku> gsGoodsSkuss = taskService.checkGsGoodsSkuByWhId(gsGoodsSkuDo);
+                        if(gsGoodsSkuss.size()==0){
+                            throw new SwException("没有该库存信息");
+
+                        }else {
+                            GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
+                            gsGoodsSkuDo1.setId(gsGoodsSkuss.get(0).getId());
+                            gsGoodsSkuDo1.setWhId(cbsb1.getCbsb10());
+                            gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
+                            //获取商品id
+                            Double qty = gsGoodsSkuss.get(0).getQty();
+
+                            gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
+                            if(qty - selectbyid.get(k).getNums()<0){
+                                throw new SwException("出库数量大于库存数量");
+                            }
+                            gsGoodsSkuDo1.setQty(qty - selectbyid.get(k).getNums());
+                            taskService.updateGsGoodsSku(gsGoodsSkuDo1);
+                        }
+
+
 
                     }
                     //如果存在则更新库存数量
