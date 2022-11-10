@@ -295,7 +295,8 @@ private CbcaMapper cbcaMapper;
             if(itemList.get(i).getTakegoodsid()!=null){
                     CbscCriteria sdg=new CbscCriteria();
         sdg.createCriteria().andTakegoodsidEqualTo(itemList.get(i).getTakegoodsid())
-                .andCbsb01NotEqualTo(itemList.get(0).getCbsb01());
+                .andCbsb01NotEqualTo(itemList.get(0).getCbsb01())
+                .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsc> cbsbs = cbscMapper.selectByExample(sdg);
         if(cbsbs.size()>0){
             throw new SwException("关联提货单重复");

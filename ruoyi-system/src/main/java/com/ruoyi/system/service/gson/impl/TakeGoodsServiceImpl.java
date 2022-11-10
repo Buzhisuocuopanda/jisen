@@ -1920,7 +1920,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             throw new SwException("您选择的Sn商品没有绑定仓库");
         }
         //库存释放,
-   /*     GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+        GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
         tuiw.createCriteria()
                 .andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
                 .andLocationIdEqualTo(gsGoodsSns.get(0).getLocationId())
@@ -1978,14 +1978,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     gsGoodsSkud.setUpdateBy(Math.toIntExact(userid));
                     gsGoodsSkud.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
                     gsGoodsSkud.setGoodsId(gsGoodsSns.get(0).getGoodsId());
-                    gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
-                    gsGoodsSku.setQty(1.0);
-                    gsGoodsSku.setLocationId(null);
+                    gsGoodsSkud.setWhId(gsGoodsSns.get(0).getWhId());
+                    gsGoodsSkud.setQty(1.0);
+                    gsGoodsSkud.setLocationId(null);
                     gsGoodsSkuMapper.insert(gsGoodsSkud);
                 }
             }
 
-        }*/
+        }
 
 
 
