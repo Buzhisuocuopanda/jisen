@@ -14,6 +14,8 @@ public class CheckSkuDo {
 
     private Integer orderClass;
 
+//    private Integer cb;
+
 
 
 }

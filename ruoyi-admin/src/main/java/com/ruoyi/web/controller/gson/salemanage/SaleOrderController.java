@@ -400,7 +400,11 @@ public class SaleOrderController extends BaseController {
     @PostMapping("/totalOrderExcelListtmp")
     public void totalOrderExcelListtmp( HttpServletResponse response) {
         List<TotalOrderExcelDto> totalOrderLstVos =new ArrayList<>();
+        TotalOrderExcelDto totalOrderExcelDto=new TotalOrderExcelDto();
+//        totalOrderExcelDto.setDescription("商品描述");
+//        totalOrderExcelDto.setMakeQty(12.0);
         ExcelUtil<TotalOrderExcelDto> util = new ExcelUtil<>(TotalOrderExcelDto.class);
+
         util.exportExcel(response, totalOrderLstVos, "生产总订单数据模板");
     }
 
