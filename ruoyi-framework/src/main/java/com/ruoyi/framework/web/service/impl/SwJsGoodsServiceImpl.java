@@ -9,6 +9,8 @@ import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.service.PageUtil;
+import com.ruoyi.framework.web.service.redisUtil;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CbpbDo;
 import com.ruoyi.system.domain.Do.CbpfDo;
@@ -17,6 +19,7 @@ import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.domain.vo.BaseSelectVo;
 import com.ruoyi.system.domain.vo.IdVo;
+import com.ruoyi.system.domain.vo.TakeOrderSugestVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +27,19 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import javax.xml.transform.Result;
+import java.util.*;
 
 /**
  * 商品分类Service业务层处理
@@ -65,6 +73,13 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     private GsGoodsSnMapper gsGoodsSnMapper;
 @Resource
    private  CbobMapper cbobMapper;
+
+    @Qualifier("redisTemplate")
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private redisUtil redisUtil;
 
 @Resource
 private CbpaMapper cbpaMapper;
@@ -271,6 +286,30 @@ private CbpaMapper cbpaMapper;
   //  @DataScope(userAlias = "recruit.CBPB04")
     public List<CbpbVo> selectSwJsGoodsList(CbpbVo cbpbVo) {
         return cbpbMapper.selectSwJsGoodsList(cbpbVo);
+
+        // int allCount = cbpbMapper.selectcount();
+
+        //Integer[] pageAndPageSize = PageUtil.getPageAndPageSize(allCount, pageNo, pageSize);
+
+
+       /* if(cbpbVo.getCbpb15()==null &&cbpbVo.getCbpb07()==null&&cbpbVo.getCbpb12()==null
+                &&cbpbVo.getCala08()==null){
+            String key="启用";
+            ListOperations<String, CbpbVo> list = redisTemplate.opsForList();
+            Boolean bool=redisTemplate.hasKey(key);
+            if (bool){
+                List<CbpbVo> range = list.range(key, 0, -1);
+                return range;
+            }else {
+                list.leftPushAll(key,cbpbMapper.selectSwJsGoodsList(cbpbVo));
+                return cbpbMapper.selectSwJsGoodsList(cbpbVo);
+
+            }
+        }else {*/
+
+
+
+      //  return cbpbMapper.selectSwJsGoodsList(cbpbVo);
     }
 
     @Override
@@ -286,11 +325,12 @@ private CbpaMapper cbpaMapper;
         //zgl添加限制导入条件 客户等级为1，2，3的允许导入
         List<CbpbDto> swJsGoodsList2 = new ArrayList<>();
         for (CbpbDto cbpbDto: swJsGoodsList) {
+            if(cbpbDto.getCbpf02()!=null){
             if(cbpbDto.getCbpf02()==1||cbpbDto.getCbpf02()==2||cbpbDto.getCbpf02()==3){
                 swJsGoodsList2.add(cbpbDto);
             }else {
                 throw new SwException("客户等级为1，2，3的允许导入");
-            }
+            }}
         }
 
         this.insertSwJsStores(swJsGoodsList);
@@ -485,7 +525,7 @@ private CbpaMapper cbpaMapper;
         cbpb.setCbpb15(cbpb15);
         //型号
         if(itemList.get(i).getType()==null||itemList.get(i).getType().equals("")){
-            throw new SwException("商品类型不能为空！");
+          //  throw new SwException("商品类型不能为空！");
         }
         if(Objects.equals(itemList.get(i).getType(), "配件")){
             cbpb.setType(0);
@@ -501,13 +541,13 @@ private CbpaMapper cbpaMapper;
         for (int i = 0; i < itemList.size(); i++) {*/
 
              if(itemList.get(i).getCbpf02()==null){
-                 throw new SwException("客户等级不能为空！");
+                // throw new SwException("客户等级不能为空！");
              }
             if(itemList.get(i).getCbpf04()==null){
-                throw new SwException("标准进价不能为空！");
+              //  throw new SwException("标准进价不能为空！");
             }
             if(itemList.get(i).getCbpf05()==null){
-                throw new SwException("标准销货价不能为空！");
+              //  throw new SwException("标准销货价不能为空！");
             }
           /*  if(itemList.get(i).getCbpf06()==null){
                 throw new SwException("货币id不能为空！");
@@ -516,13 +556,13 @@ private CbpaMapper cbpaMapper;
                 throw new SwException("生效时间不能为空！");
             }*/
             if(itemList.get(i).getMoneyType()==null){
-                throw new SwException("货币类型不能为空！");
+              //  throw new SwException("货币类型不能为空！");
             }
             CalaCriteria calaCriteria1 = new CalaCriteria();
             calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
             List<Cala> calas = calaMapper.selectByExample(calaCriteria);
             if(calas.size()==0){
-                throw new SwException("货币类型不存在！");
+               // throw new SwException("货币类型不存在！");
             }
             itemList.get(i).setCbpf06(calas.get(0).getCala01());
             mapper.insertSelective(itemList.get(i));
@@ -569,6 +609,70 @@ private CbpaMapper cbpaMapper;
     public List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo) {
         return cbpbMapper.selectSwJsGoodsAll(cbpbVo);
     }
+
+
+    public List<BaseSelectVo> scan(String matchKey) {
+        //搜索到的 key 值存放的集合
+        Set<String> keys = new LinkedHashSet<>();
+        //开始搜索,数据存储在上面的 set 集合中
+        redisTemplate.execute((RedisConnection connection) -> {
+            try (Cursor<byte[]> cursor = connection.scan(
+                    ScanOptions.scanOptions()
+                            .count(Long.MAX_VALUE)
+                            //* 号通配符的作用
+                            .match("*"+matchKey+"*")
+                            .build()
+            )) {
+                cursor.forEachRemaining(item -> {
+                    keys.add(RedisSerializer.string().deserialize(item));
+                });
+                return keys;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        //获取一个 redis 操作对象
+        ListOperations ops = redisTemplate.opsForList();
+        //设置一个存放查询数据的集合
+        List<BaseSelectVo> voList = new ArrayList<>();
+        //遍历搜索的 key 并存放到集合中
+        keys.forEach(key ->{
+            voList.add((BaseSelectVo) ops.index(key,-1));
+        });
+        return voList;
+    }
+
+/*
+    public Result queryAllOrderHave(Integer userId, Integer pageNo, Integer pageSize) {
+
+        //获取该用户已支付订单的总记录数
+        int allCount = cbpbMapper.selectcount();
+        //这是封装的一个分页的方法，源码在下面展示
+        Integer[] pageAndPageSize = PageUtil.getPageAndPageSize(allCount, pageNo, pageSize);
+        if(pageAndPageSize==null){
+            throw new SwException("请检查pageNo和pageSize！");
+        }
+        //根据分页 显示出分页查询时需要的数据  redis中list的range 如果结束的位置超过总数量，默认为最后一个
+        //显示该用户所有未支付订单
+        //关键就在于后面的pageAndPageSize[0]和记录数pageAndPageSize[0]+pageAndPageSize[1]-1
+        List<Object> range1 = redisUtil.range("goods",pageAndPageSize[0], pageAndPageSize[0]+pageAndPageSize[1]-1);
+        //如果该key已经存在，直接从redis数据库里取，不用再遍历一遍
+        if(redisTemplate.hasKey("goods")){
+            return Result.success(range1,allCount);
+        }else{
+            //从数据库查出数据
+            Map<Object, Object> stringObjectMap = orderMapper.queryAllOrderHaveByUserId(userId);
+            for (Map.Entry<Object,Object> entry : stringObjectMap.entrySet()){
+                //将从数据里查出来的数据装到redis中的list集合内
+                redisTemplate.opsForList().rightPush("goods", entry.getValue());
+            }
+            //和上面的一样了
+            List<Object> range = redisUtil.range("goods", pageAndPageSize[0], pageAndPageSize[0]+pageAndPageSize[1]-1);
+            return Result.success(range,allCount);
+        }
+    }
+*/
+
 
 
 }

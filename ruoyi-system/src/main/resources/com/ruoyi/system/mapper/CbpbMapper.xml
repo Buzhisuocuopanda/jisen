@@ -562,5 +562,9 @@
         a.CBPB02 DESC
 
     </select>
+    <select id="selectcount" resultType="java.lang.Integer">
+        SELECT COUNT(a.CBPB01) FROM
+            CBPB a
+    </select>
 
 </mapper>

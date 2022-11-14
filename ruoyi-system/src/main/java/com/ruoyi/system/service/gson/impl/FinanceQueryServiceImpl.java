@@ -52,23 +52,23 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     public List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto) {
         List<FnQueryAyntgesisVo> list=cbsdMapper.fnSynthesis3(fnQueryAynthesisDto);
 //        List<FnQueryAyntgesisVo> listresult =new ArrayList<>();
-        for(int i =0;i<list.size();i++){
+        for (FnQueryAyntgesisVo queryAyntgesisVo : list) {
 
-            if(list.get(i).getCurrency()!=null){
-                if(list.get(i).getCurrency() == 5){//美元
-                    list.get(i).setUPrice(list.get(i).getRPrice());
-                    list.get(i).setRPrice(null);
-                }else if(list.get(i).getCurrency() == 6){//人民币
-                    list.get(i).setRPrice(list.get(i).getRPrice());
+            if (queryAyntgesisVo.getCurrency() != null) {
+                if (queryAyntgesisVo.getCurrency() == 5) {//美元
+                    queryAyntgesisVo.setUPrice(queryAyntgesisVo.getRPrice());
+                    queryAyntgesisVo.setRPrice(null);
+                } else if (queryAyntgesisVo.getCurrency() == 6) {//人民币
+                    queryAyntgesisVo.setRPrice(queryAyntgesisVo.getRPrice());
                 }
 
             }
-            if(list.get(i).getCbpc16()!=null){
-                if(list.get(i).getCbpc16() == 5){//美元
-                    list.get(i).setCgUprice(list.get(i).getCgRprice());
-                    list.get(i).setCgRprice(null);
-                }else if(list.get(i).getCbpc16() == 6){//人民币
-                    list.get(i).setCgRprice(list.get(i).getCgRprice());
+            if (queryAyntgesisVo.getCbpc16() != null) {
+                if (queryAyntgesisVo.getCbpc16() == 5) {//美元
+                    queryAyntgesisVo.setCgUprice(queryAyntgesisVo.getCgRprice());
+                    queryAyntgesisVo.setCgRprice(null);
+                } else if (queryAyntgesisVo.getCbpc16() == 6) {//人民币
+                    queryAyntgesisVo.setCgRprice(queryAyntgesisVo.getCgRprice());
                 }
             }
 

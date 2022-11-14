@@ -187,7 +187,7 @@ if(itemList.getCbpe08()!=null) {
            double v = cbpcVos.get(0).getSaoma().doubleValue();
 
            if( v==cbpcVos.get(0).getNums()){
-               throw new SwException("该销售出库单已扫描完成");
+               throw new SwException("该采购订单已扫描完成");
            }
        }
 
