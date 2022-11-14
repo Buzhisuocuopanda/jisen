@@ -1591,12 +1591,20 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     checkSkuDo.setGoodsId(cbpb.getCbpb01());
                     checkSkuDo.setOrderClass(OrderTypeEnum.GUOJIDINGDAN.getCode());
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+
                     if(qtyMsgVo.getCanUseNum()<saleOrderExcelDto.getQty()){
                         errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku();
 
 //                        throw new SwException("该商品库存，商品：" + saleOrderExcelDto.getSku());
                         continue;
                     }
+
+                    //检查生产总订单库存是否足够
+//                    Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+
+
+
+
                     CbpfCriteria pfex = new CbpfCriteria();
                     pfex.createCriteria()
                             .andCbpf03EqualTo(6)
@@ -1621,6 +1629,19 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         throw new SwException("没有查到该生产总订单，请先添加生产总订单，订单号:" + saleOrderExcelDto.getTotalOrderNo());
                     }
                     Cbba cbba = cbbas.get(0);
+
+                    Double canUserQty=cbba.getCbba13()-cbba.getCbba14();
+                    if(cbob.getCbob09()>canUserQty){
+
+                        String goodsMsg="";
+                        if(cbpb!=null){
+                            goodsMsg=cbpb.getCbpb12();
+
+                        }
+
+                        errors=errors+"商品库存不够，商品："+goodsMsg;
+                        continue;
+                    }
                     cbob = new Cbob();
                     cbob.setCbob02(i);
                     cbob.setCbob03(date);
@@ -1933,6 +1954,27 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     chedto.setOrderClass(OrderTypeEnum.GUOJIDINGDAN.getCode());
                     chedto.setGoodsId(cbob.getCbob08());
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(chedto);
+
+                    //检查生产总订单库存是否足够
+                    Cbba cbba = cbbaMapper.selectByPrimaryKey(cbob.getCbob17());
+
+                    if(cbba==null){
+                        throw new SwException("没有查到该生产总订单"+cbob.getCbob18());
+                    }
+                    Double canUserQty=cbba.getCbba13()-cbba.getCbba14();
+                    if(cbob.getCbob09()>canUserQty){
+                        Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbob.getCbob08());
+                        String goodsMsg="";
+                        if(cbpb!=null){
+                            goodsMsg=cbpb.getCbpb12();
+
+                        }
+
+                        errors=errors+"商品库存不够，商品："+goodsMsg;
+                        continue;
+                    }
+
+
                     if(qtyMsgVo.getCanUseNum()<cbob.getCbob09()){
                         Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbob.getCbob08());
                         String goodsMsg="";
@@ -1942,6 +1984,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         }
 
                         errors=errors+"商品库存不够，商品："+goodsMsg;
+                        continue;
                     }else {
                         //增加占用
                         GoodsOperationDo goodsOperationDo = new GoodsOperationDo();

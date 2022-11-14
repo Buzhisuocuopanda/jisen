@@ -56,9 +56,9 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://117.78.3.177:3306/SK_WMS?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        url: jdbc:mysql://127.0.0.1:3306/sk_wms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
         username: root
-        password: 'test123456'
+        password: 'NPc2zJ3vVik66Kqk'
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭
@@ -120,13 +120,13 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: '117.78.3.177'
+    host: '127.0.0.1'
     # 端口，默认为6379
     port: 6379
     # 数据库索引
     database: 0
     # 密码
-    password: 'foobared'
+    password: 'XE4Q8ilplSe3SFvK'
     # 连接超时时间
     timeout: 10s
     lettuce:
