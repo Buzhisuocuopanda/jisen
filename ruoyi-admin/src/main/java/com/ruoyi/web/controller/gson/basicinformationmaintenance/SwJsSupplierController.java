@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.gson.basicinformationmaintenance;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.constant.PathConstant;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -9,14 +11,17 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
+import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Cbsa;
 import com.ruoyi.system.domain.dto.CbsaDto;
 import com.ruoyi.system.service.ISwJsSupplierService;
+import com.ruoyi.web.utils.FileCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
@@ -213,9 +218,9 @@ public class SwJsSupplierController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
-    /**
+  /*  *//**
      * 导入供应商信息下载模板
-     */
+     *//*
     @ApiOperation(
             value ="导入供应商信息下载模板",
             notes = "导入供应商信息下载模板"
@@ -225,6 +230,90 @@ public class SwJsSupplierController extends BaseController {
     {
         ExcelUtil<CbsaDto> util = new ExcelUtil<CbsaDto>(CbsaDto.class);
          util.importTemplateExcel(response,"导入供应商信息");
+    }*/
+
+
+    /**
+     * 导入供应商信息下载模板
+     */
+    @ApiOperation(
+            value ="导入供应商信息下载模板",
+            notes = "导入供应商信息下载模板"
+    )
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException {
+        InputStream in = null;
+        String excelPaht="";
+        String excelPaht2="";
+        String pdfPath="";
+        XSSFWorkbook wb = null;
+        try {
+            long time = System.currentTimeMillis();
+
+
+            excelPaht=   RuoYiConfig.getSwdataprofile()+"供应商信息导入模板_"+time+".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板供应商信息导入_"  + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.SUPPIER_ORDER_SCANSER_EXCEL),new File(excelPaht2));
+
+            File is = new File(excelPaht2);
+            wb = new XSSFWorkbook(is);
+
+            File file = new File("text.java");
+
+            String filePath = file.getAbsolutePath();
+            saveExcelToDisk(wb, excelPaht);
+
+            //  saveExcelToDisk(wb, name);
+            FileUtils.setAttachmentResponseHeader(response, "供应商信息导入模板_.xlsx");
+            FileUtils.writeBytes(excelPaht, response.getOutputStream());
+        } catch (SwException e) {
+            log.error("【导入供应商信息下载模板】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            // return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【导入供应商信息下载模板】接口出现异常,参数${}$,异常${}$",  ExceptionUtils.getStackTrace(e));
+
+            // return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }finally {
+
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
+                FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
+            }
+        }
+        // return AjaxResult.success();
     }
+
+
+
+    private static void saveExcelToDisk(XSSFWorkbook wb, String filePath){
+        File file = new File(filePath);
+        OutputStream os=null;
+        try {
+            os = new FileOutputStream(file);
+            wb.write(os);
+            os.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {if(os!=null) {
+                os.close();
+            }
+            } catch (IOException e) { log.error("error", e);}
+        }
+    }
+
 
 }

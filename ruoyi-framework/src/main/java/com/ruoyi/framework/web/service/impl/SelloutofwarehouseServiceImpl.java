@@ -1003,6 +1003,7 @@ return 1;
         CbscCriteria example2 = new CbscCriteria();
         example2.createCriteria().andCbsb01EqualTo(cbsbDo.getCbsb01());
         List<Cbsc> cbscs = cbscMapper.selectByExample(example2);
+/*
         if(cbscs.size()>0){
             for(int i=0;i<cbscs.size();i++){
                 if(cbscs.get(i).getTakegoodsid()!=null){
@@ -1014,6 +1015,7 @@ return 1;
                 }
             }
         }
+*/
         int i = cbscMapper.deleteByExample(example2);
 
 
