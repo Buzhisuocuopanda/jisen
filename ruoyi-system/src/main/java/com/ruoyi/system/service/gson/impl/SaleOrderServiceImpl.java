@@ -215,7 +215,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cbba.setCbba07(totalOrderAddDto.getOrderNo());
         cbba.setCbba08(totalOrderAddDto.getGoodsId());
         cbba.setCbba09(totalOrderAddDto.getQty());
-        if (totalOrderAddDto.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+        if (totalOrderAddDto.getOrderNo().contains(TotalOrderConstants.GUONEIORDER)) {
             cbba.setCbba10(OrderTypeEnum.GUONEIDINGDAN.getCode());
         } else {
             cbba.setCbba10(OrderTypeEnum.GUOJIDINGDAN.getCode());
@@ -286,7 +286,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         cbba.setCbba07(totalOrderAddDto.getOrderNo());
         cbba.setCbba08(totalOrderAddDto.getGoodsId());
         cbba.setCbba09(totalOrderAddDto.getQty());
-        if (totalOrderAddDto.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+        if (totalOrderAddDto.getOrderNo().contains(TotalOrderConstants.GUONEIORDER)) {
             cbba.setCbba10(OrderTypeEnum.GUONEIDINGDAN.getCode());
         } else {
             cbba.setCbba10(OrderTypeEnum.GUOJIDINGDAN.getCode());
@@ -1309,7 +1309,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     baex.createCriteria()
                             .andCbba08EqualTo(cbob.getCbob08())
                             .andCbba12EqualTo(0)
-                            .andCbba07Like("GBSH" + "%");
+                            .andCbba07Like("%"+"GBSH" + "%");
                     baex.setOrderByClause("CBBA15 asc");
                     List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
                     for (Cbba cbba : cbbas) {
@@ -2775,7 +2775,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                                 baex.createCriteria()
                                         .andCbba08EqualTo(cbob.getCbob08())
                                         .andCbba12EqualTo(TotalOrderConstants.NO)
-                                        .andCbba07Like("GBSH" + "%");
+                                        .andCbba07Like("%"+"GBSH" + "%");
                                 baex.setOrderByClause("CBBA15 asc");
                                 List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
                                 for (Cbba cbba : cbbas) {

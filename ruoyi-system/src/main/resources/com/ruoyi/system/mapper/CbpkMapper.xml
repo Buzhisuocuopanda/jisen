@@ -724,11 +724,11 @@
     LEFT JOIN CBWA wa on wa.CBWA01=pk.CBPK10
     LEFT JOIN CBSC cbsc on cbsc.takegoodsid=pk.CBPK01
     LEFT JOIN CBSB cbsb on cbsb.CBSB01 =  cbsc.CBSB01
-    AND cbsb.CBSB06=0
+
     where pk.CBPK06=0
     AND pk.CBPK11=4
     AND cbsb.CBSB11 is null
-
+    AND cbsb.CBSB06=0
     <if test="startTime != null">
       and pk.CBPK08  &gt;= #{startTime}
     </if>

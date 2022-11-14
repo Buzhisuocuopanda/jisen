@@ -1177,7 +1177,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 use.setUpdateTime(new Date());
                 use.setLockQty(transferOrderDo.getQty());
                 use.setWhId(transferOrderDo.getInWhId());
-                if (transferOrderDo.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+                if (transferOrderDo.getOrderNo().contains(TotalOrderConstants.GUONEIORDER)) {
                     use.setOrderType(OrderTypeEnum.GUONEIDINGDAN.getCode().byteValue());
                 } else {
                     use.setOrderType(OrderTypeEnum.GUOJIDINGDAN.getCode().byteValue());
@@ -1455,7 +1455,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     baex.createCriteria()
                             .andCbba08EqualTo(goodsOperationDo.getGoodsId())
                             .andCbba12EqualTo(TotalOrderConstants.NO)
-                            .andCbba07Like("GBSH" + "%");
+                            .andCbba07Like("%"+"GBSH" + "%");
                     baex.setOrderByClause("CBBA15 asc");
                     cbbas = cbbaMapper.selectByExample(baex);
                     //            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
@@ -1727,7 +1727,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                     .andCbba08EqualTo(checkSkuDo.getGoodsId())
                     .andCbba12EqualTo(TotalOrderConstants.NO)
-                    .andCbba07Like("GBSH" + "%");
+                    .andCbba07Like("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
             Double gqwQty=0.0;
             for (Cbba cbba : cbbas) {
@@ -1762,7 +1762,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbba12EqualTo(TotalOrderConstants.NO)
                     .andCbba08EqualTo(checkSkuDo.getGoodsId())
-                    .andCbba07NotLike("GBSH" + "%");
+                    .andCbba07Like("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(example);
             Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
             GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
@@ -1826,7 +1826,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
                     .andCbba08EqualTo(checkSkuDo.getGoodsId())
                     .andCbba12EqualTo(TotalOrderConstants.NO)
-                    .andCbba07Like("GBSH" + "%");
+                    .andCbba07Like("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
             Double gqwQty=0.0;
             for (Cbba cbba : cbbas) {
@@ -1861,7 +1861,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbba12EqualTo(TotalOrderConstants.NO)
                     .andCbba08EqualTo(checkSkuDo.getGoodsId())
-                    .andCbba07NotLike("GBSH" + "%");
+                    .andCbba07Like("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(example);
             Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
             GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
@@ -1893,7 +1893,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     public ChangeSkuUseVo changeSkuUse(ChangeSkuUseDo changeSkuUseDo) {
         ChangeSkuUseVo res = new ChangeSkuUseVo();
         //判断是否是国际订单
-        if (changeSkuUseDo.getOrderNo().startsWith(TotalOrderConstants.GUONEIORDER)) {
+        if (changeSkuUseDo.getOrderNo().contains(TotalOrderConstants.GUONEIORDER)) {
             throw new SwException("修改占用必须为国际订单");
         }
 
