@@ -509,8 +509,46 @@ private CbpaMapper cbpaMapper;
                 .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
         if(cbpbs.size()>0){
-            throw new SwException("upc已存在");
-        }
+            Cbpb cbpb = new Cbpb();
+            cbpb.setCbpb02(date);
+            cbpb.setCbpb03(date);
+            cbpb.setCbpb04(Math.toIntExact(userid));
+            cbpb.setCbpb05(Math.toIntExact(userid));
+            cbpb.setCbpb06(DeleteFlagEnum1.NOT_DELETE.getCode());
+            cbpb.setCbpb07("启用");
+            cbpb.setCbpb10(calaList.get(0).getCala01());
+            cbpb.setCbpb08(cbpb08);
+            cbpb.setCbpb12(cbpb12);
+            cbpb.setCbpb14(cbpb14);
+            cbpb.setCbpb15(cbpb15);
+            CbpbCriteria cbpbCriteria = new CbpbCriteria();
+            cbpbCriteria.createCriteria().andCbpb15EqualTo(cbpb15);
+            cbpbMapper.updateByExampleSelective(cbpb,cbpbCriteria);
+
+            CbpbCriteria cbpbCriteria1 = new CbpbCriteria();
+            cbpbCriteria1.createCriteria().andCbpb15EqualTo(cbpb15);
+            List<Cbpb> cbpbList = cbpbMapper.selectByExample(cbpbCriteria1);
+
+            Cbpf cbpf = new Cbpf();
+            cbpf.setCbpf02(itemList.get(i).getCbpf02());
+            cbpf.setCbpf03(itemList.get(i).getCbpf03());
+            cbpf.setCbpf04(itemList.get(i).getCbpf04());
+            cbpf.setCbpf05(itemList.get(i).getCbpf05());
+            CalaCriteria calaCriteria1 = new CalaCriteria();
+            calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
+            List<Cala> calas = calaMapper.selectByExample(calaCriteria);
+            if(calas.size()==0){
+                // throw new SwException("货币类型不存在！");
+            }
+
+             cbpf.setCbpf06(calas.get(0).getCala01());
+            if(cbpbList.size()>0){
+                cbpf.setCbpb01(cbpbList.get(0).getCbpb01());
+            }
+            cbpf.setCbpf07(date);
+            cbpfMapper.insertSelective(cbpf);
+
+        }else{
         Cbpb cbpb = new Cbpb();
         cbpb.setCbpb02(date);
         cbpb.setCbpb03(date);
@@ -573,7 +611,7 @@ private CbpaMapper cbpaMapper;
         }
         session.commit();
         session.clearCache();
-        return 1;    }
+          } return 1; }
 
     @Override
     public List<BaseSelectVo> swJsGoodslistBySelect(GoodsSelectDto goodsSelectDto) {
