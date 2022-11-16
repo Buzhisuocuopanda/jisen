@@ -315,6 +315,20 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
     public List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo) {
         List<CbibVo> cbibVos = cbibMapper.monthlyStockInAndOut(cbibVo);
         for (int i = 0; i < cbibVos.size(); i++) {
+            //直接入库数量减去直接入库删除数量
+            if(cbibVos.get(i).getInCount()!=null && cbibVos.get(i).getCbib02()!=null
+            && cbibVos.get(i).getCbib08()!=null){
+                CbibCriteria ibex = new CbibCriteria();
+                ibex.createCriteria().andCbib02EqualTo(cbibVos.get(i).getCbib02())
+                        .andCbib08EqualTo(cbibVos.get(i).getCbib08())
+                        .andCbib17EqualTo("直接入库删除");
+                List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
+                if(cbibs.size()>0){
+                    cbibVos.get(i).setInCount(cbibVos.get(i).getInCount()-cbibs.size());
+                }
+
+
+            }
             if (cbibVos.get(i).getCbib17() != null) {
                 if (!TaskType.xcckd.getMsg().equals(cbibVos.get(i).getCbib17())) {
                     cbibVos.get(i).setOutCount(0.0);

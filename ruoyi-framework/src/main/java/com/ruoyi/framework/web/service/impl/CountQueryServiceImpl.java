@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class CountQueryServiceImpl implements CountQueryService {
@@ -45,17 +47,68 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     @DataScope(deptAlias = "u")
-    public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) {
+    public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException {
         inwuquDto.setDeptId(SecurityUtils.getDeptId());
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
+     /*   CompletableFuture<List<InwuquVo>> f1 =
+                CompletableFuture.supplyAsync(()->{
+                    List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
+                  //  return inwuquVos;
+                    Map<Integer, String> brandMap = baseCheckService.brandMap();
+                    Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
-/*        if(inwuquVos.size()>0){
-            double sum1 = inwuquVos.stream().mapToDouble(InwuquVo::getCbib15).sum();
-            inwuquVos.get(0).setTotalcbib15(sum1);
+                    for(int i=0;i<inwuquVos.size();i++){
 
-            double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
-            inwuquVos.get(0).setTotallockQty(sum2);
-        }*/
+                        if(inwuquVos.get(i)!=null){
+
+
+              */
+        /*  double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+                inwuquVos.get(0).setTotallockQty(sum2);*/
+        /*
+
+                            if(inwuquVos.get(i).getCbpb10()!=null){
+                                inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+                            }
+                            if(inwuquVos.get(i).getCbpb14()!=null){
+                                Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+                                if(cbpa!=null){
+                                    inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+                                    if(cbpa.getCbpa09()!=null){
+                                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                                        if(cbpa2!=null){
+                                            inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+                                        }
+                                    }
+                                }
+                            }
+                            if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
+                                List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
+                                Double sum =0d;
+                                for(int j=0;j<gsGoodsUses.size();j++){
+                                    if(gsGoodsUses.get(j).getLockQty()!=null){
+                                        sum+=gsGoodsUses.get(j).getLockQty();
+                                    }
+                                }
+                                if(inwuquVos.get(i).getCbib15()!=null){
+                                    inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
+                                }
+                            }else {
+                                if(inwuquVos.get(i).getCbib15()!=null){
+                                    inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
+                                }
+                            }
+
+                        }else {
+                            InwuquVo inwuquVo =new InwuquVo();
+                            inwuquVo.setCbib01(-1);
+                            inwuquVo.setLockQty(0d);
+                            inwuquVos.set(i,inwuquVo);
+                        }
+
+                    }
+                    return inwuquVos;
+                    });*/
 
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
@@ -63,6 +116,11 @@ public class CountQueryServiceImpl implements CountQueryService {
         for(int i=0;i<inwuquVos.size();i++){
 
             if(inwuquVos.get(i)!=null){
+
+
+   /*       double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+                inwuquVos.get(0).setTotallockQty(sum2);*/
+
                 if(inwuquVos.get(i).getCbpb10()!=null){
                     inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
                 }
@@ -94,12 +152,95 @@ public class CountQueryServiceImpl implements CountQueryService {
                         inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
                     }
                 }
+
             }else {
                 InwuquVo inwuquVo =new InwuquVo();
                 inwuquVo.setCbib01(-1);
+                inwuquVo.setLockQty(0d);
                 inwuquVos.set(i,inwuquVo);
             }
 
+        }
+     /*   CompletableFuture<List<InwuquVo>> f2 =
+                CompletableFuture.supplyAsync(() -> {
+                    List<InwuquVo> inwuquVos1 = selectInventorysummaryquerys(inwuquDto);
+                    return inwuquVos1;
+
+                });
+       // List<InwuquVo> inwuquVos1 = selectInventorysummaryquerys(inwuquDto);
+        CompletableFuture.allOf(f1, f2).join();
+        List<InwuquVo> inwuquVos = f1.get();
+        List<InwuquVo> inwuquVos1 = f2.get();*/
+ /*       if (inwuquVos1.size() > 0) {
+            inwuquVos.get(0).setTotallockQty(inwuquVos1.get(0).getTotallockQty());
+            inwuquVos.get(0).setTotalcbib15(inwuquVos1.get(0).getTotalcbib15());
+        }*/
+
+        return inwuquVos;
+    }
+
+    private List<InwuquVo> selectInventorysummaryquerys(InwuquDto inwuquDto) {
+        inwuquDto.setDeptId(SecurityUtils.getDeptId());
+        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
+
+
+        /*Map<Integer, String> brandMap = baseCheckService.brandMap();
+        Map<Integer, Cbpa> classMap = baseCheckService.classMap();*/
+
+        for(int i=0;i<inwuquVos.size();i++){
+
+            if(inwuquVos.get(i)!=null){
+                //汇总数量
+                double sum1 = inwuquVos.stream().mapToDouble(InwuquVo::getCbib15).sum();
+                inwuquVos.get(0).setTotalcbib15(sum1);
+
+              /*  double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+                inwuquVos.get(0).setTotallockQty(sum2);*/
+
+         /*       if(inwuquVos.get(i).getCbpb10()!=null){
+                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+                }*/
+          /*      if(inwuquVos.get(i).getCbpb14()!=null){
+                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+                    if(cbpa!=null){
+                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+                        if(cbpa.getCbpa09()!=null){
+                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                            if(cbpa2!=null){
+                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+                            }
+                        }
+                    }
+                }*/
+                if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
+                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
+                    Double sum =0d;
+                    for(int j=0;j<gsGoodsUses.size();j++){
+                        if(gsGoodsUses.get(j).getLockQty()!=null){
+                            sum+=gsGoodsUses.get(j).getLockQty();
+                        }
+                    }
+                    if(inwuquVos.get(i).getCbib15()!=null){
+                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
+                    }
+                }else {
+                    if(inwuquVos.get(i).getCbib15()!=null){
+                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
+                    }
+                }
+
+            }else {
+                InwuquVo inwuquVo =new InwuquVo();
+                inwuquVo.setCbib01(-1);
+                inwuquVo.setLockQty(0d);
+                inwuquVos.set(i,inwuquVo);
+            }
+
+        }
+
+        if (inwuquVos.size() > 0) {
+            double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+            inwuquVos.get(0).setTotallockQty(sum2);
         }
         return inwuquVos;
     }

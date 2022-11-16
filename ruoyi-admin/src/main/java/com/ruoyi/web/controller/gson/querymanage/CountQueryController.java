@@ -38,6 +38,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ClassName CountQueryController
@@ -109,7 +110,7 @@ public class CountQueryController  extends BaseController {
     )
     @PostMapping("/InventorysummaryqueryExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysummaryquery:export')")
-    public void InventorysummaryqueryExcelList(InwuquDto inwuquDto, HttpServletResponse response) {
+    public void InventorysummaryqueryExcelList(InwuquDto inwuquDto, HttpServletResponse response) throws ExecutionException, InterruptedException {
         List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
         ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
         util.exportExcel(response, list, "库存汇总查询数据");
@@ -407,7 +408,7 @@ public class CountQueryController  extends BaseController {
     )
     @PostMapping("/InventsorysummaryqueryExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery:export')")
-    public void InventsorysummaryqueryExcelList(InwuquDto inwuquDto, HttpServletResponse response) {
+    public void InventsorysummaryqueryExcelList(InwuquDto inwuquDto, HttpServletResponse response) throws ExecutionException, InterruptedException {
         List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
         ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
         util.exportExcel(response, list, "销售库存查询数据");
