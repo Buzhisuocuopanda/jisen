@@ -475,9 +475,64 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo) {
-        return cbifMapper.selectInntoryummaryquery(sczddVo);
-    }
+        CompletableFuture<List<SczddVo>> f1 =
+                CompletableFuture.supplyAsync(()->{
+                    List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
+                    return sczddVos;
+                    });
+        //List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
+        CompletableFuture<List<SczddVo>> f2 =
+                CompletableFuture.supplyAsync(() -> {
+                    List<SczddVo> sczddVos1 = selectInnorysummaryquerys(sczddVo);
+                   return sczddVos1;
+                });
+      //  List<SczddVo> sczddVos1 = selectInnorysummaryquerys(sczddVo);
+        CompletableFuture.allOf(f1, f2).join();
+        List<SczddVo> sczddVos = null;
+        try {
+            sczddVos = f1.get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        List<SczddVo> sczddVos1 = null;
+        try {
+            sczddVos1 = f2.get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
+        if(sczddVos.size()>0 && sczddVos1.size()>0){
+            sczddVos.get(0).setTotaldeliver(sczddVos1.get(0).getTotaldeliver());
+            sczddVos.get(0).setTotalstockoutNum(sczddVos1.get(0).getTotalstockoutNum());
+            sczddVos.get(0).setTotalproducedNum(sczddVos1.get(0).getTotalproducedNum());
+            sczddVos.get(0).setTotalOrderNum(sczddVos1.get(0).getTotalOrderNum());
+        }
+        return sczddVos;
+    }
+    private List<SczddVo> selectInnorysummaryquerys(SczddVo sczddVo) {
+        List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
+       /* double sum = sczddVos.stream().mapToDouble(SczddVo::getCbba09).sum();
+        double sum1 = sczddVos.stream().mapToDouble(SczddVo::getCbba11).sum();
+        double sum2 = sczddVos.stream().mapToDouble(SczddVo::getProducedNum).sum();
+        double sum3 = sczddVos.stream().mapToDouble(SczddVo::getStockoutNum).sum();*/
+
+        if(sczddVos.size()>0){
+            double sum = sczddVos.stream().mapToDouble(SczddVo::getCbba09).sum();
+            double sum1 = sczddVos.stream().mapToDouble(SczddVo::getCbba11).sum();
+            double sum2 = sczddVos.stream().mapToDouble(SczddVo::getProducedNum).sum();
+            double sum3 = sczddVos.stream().mapToDouble(SczddVo::getStockoutNum).sum();
+
+            sczddVos.get(0).setTotalOrderNum(sum);
+            sczddVos.get(0).setTotaldeliver(sum1);
+            sczddVos.get(0).setTotalproducedNum(sum2);
+            sczddVos.get(0).setTotalstockoutNum(sum3);
+        }
+        return  sczddVos;
+    }
     /**
      * 响应请求分页数据
      */

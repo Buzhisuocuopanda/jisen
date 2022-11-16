@@ -462,7 +462,8 @@ public class CountQueryController  extends BaseController {
         try {
             startPage();
             List<SczddVo> list = countQueryService.selectInnorysummaryquery(sczddVo);
-            return AjaxResult.success(getDataTable(list));
+            TableDataInfo t = getDataTable(list);
+            return AjaxResult.success(t);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
