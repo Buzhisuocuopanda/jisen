@@ -297,7 +297,7 @@ public class WarehousedetailsinitializeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:swJsStorea:detail')")
     public AjaxResult<TableDataInfo> swJsStorelist( CbigVo cbigVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbigVo> list = swarehousedetailsinitializeService.selectSwJsStoreList(cbigVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

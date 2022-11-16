@@ -251,6 +251,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
     @Override
     public List<CbigVo> selectSwJsStoreList(CbigVo cbigVo) {
+
         return  cbieMapper.selectSwJsStoreList(cbigVo);
     }
      //审核

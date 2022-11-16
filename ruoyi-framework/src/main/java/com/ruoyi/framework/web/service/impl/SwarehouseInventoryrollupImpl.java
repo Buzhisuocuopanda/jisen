@@ -317,6 +317,7 @@ CbifCriteria rty = new CbifCriteria();
 
     @Override
     public List<CbifVo> selectSwJsStoreList(CbifVo cbifVo) {
+
         return  cbifMapper.SwJsStoreslistss(cbifVo);
     }
 

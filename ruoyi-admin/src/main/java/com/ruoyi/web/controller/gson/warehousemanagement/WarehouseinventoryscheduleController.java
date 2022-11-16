@@ -347,7 +347,7 @@ public class WarehouseinventoryscheduleController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:detail')")
     public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsjVo cbsjVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbsjVo> list = warehouseinventoryscheduleService.SwJsStorelistsss(cbsjVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

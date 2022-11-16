@@ -364,7 +364,7 @@ public class SalesreturnordersController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists( CbsesVo cbsesVo) {
         try {
-            startPage();
+           // startPage();
             List<CbsesVo> list = salesreturnordersService.selectSwJsTaskGoodsRelListss(cbsesVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

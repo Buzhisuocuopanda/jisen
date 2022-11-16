@@ -236,7 +236,7 @@ public class WarehousetransferordersController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbaasVo cbaasVo) {
         try {
-            startPage();
+           // startPage();
             List<CbaasVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListss(cbaasVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

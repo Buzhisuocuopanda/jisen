@@ -36,6 +36,11 @@ public class InwuquVo extends BaseEntity {
 
     @Excel(name = "可用库存数量")
     private Double lockQty;
+    //可用库存总数
+    private Double totallockQty;
+    //库存总数
+    private Double totalcbib15;
+
     private Integer cbpb01;
 
     private Integer shopping;

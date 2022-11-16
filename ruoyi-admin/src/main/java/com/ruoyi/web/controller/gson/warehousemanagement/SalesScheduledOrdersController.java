@@ -209,7 +209,7 @@ public class SalesScheduledOrdersController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:saleOrder:detail')")
     public AjaxResult<List<TableDataInfo>> saleOrderListdetail( GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
         try {
-            startPage();
+           // startPage();
             List<GsSalesOrdersDetailsVo> list = salesScheduledOrdersService.saleOrderListdetail(gsSalesOrdersDetailsVo);
             return AjaxResult.success(getDataTable(list));
         } catch (SwException e) {
@@ -683,7 +683,7 @@ public class SalesScheduledOrdersController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:saleOrder:advance')")
     public AjaxResult<List<TableDataInfo>> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
         try {
-            startPage();
+            //startPage();
             List<GsSalesOrdersDetailsVo > list = salesScheduledOrdersService.saleOrderAdvance(gsSalesOrdersDetailsVo);
             return AjaxResult.success(getDataTable(list));
         } catch (SwException e) {

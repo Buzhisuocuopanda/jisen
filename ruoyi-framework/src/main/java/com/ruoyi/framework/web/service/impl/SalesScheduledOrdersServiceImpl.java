@@ -292,6 +292,7 @@ return;
    //详情
     @Override
     public List<GsSalesOrdersDetailsVo> saleOrderListdetail(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
+
         List<GsSalesOrdersDetailsVo> saleOrderListVos = gsSalesOrdersMapper.saleOrderListdetail(gsSalesOrdersDetailsVo);
 
         return saleOrderListVos;
@@ -300,6 +301,7 @@ return;
     //销售预订单变更单详情
     @Override
     public List<GsSalesOrdersDetailsVo> saleOrderAdvance(GsSalesOrdersDetailsVo gsSalesOrdersDetailsVo) {
+
         List<GsSalesOrdersDetailsVo> salesOrdersChangeVos = gsSalesOrdersMapper.saleOrderListdetails(gsSalesOrdersDetailsVo);
         return salesOrdersChangeVos;
     }

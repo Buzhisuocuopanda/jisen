@@ -398,7 +398,7 @@ public class SwJsPurchaseinboundController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbpcVo cbpcVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbpcVo> list = swJsPurchaseinboundService.selectSwJsTaskGoodsRelListsss(cbpcVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

@@ -195,6 +195,7 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
 
     @Override
     public List<CbsisVo> SwJsStorelistsss(CbsisVo cbsisVo) {
+
         return   cbshMapper.SwJsStorlistsss(cbsisVo);
     }
 

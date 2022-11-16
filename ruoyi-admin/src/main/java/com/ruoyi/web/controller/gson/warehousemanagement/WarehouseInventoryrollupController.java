@@ -298,7 +298,7 @@ public class WarehouseInventoryrollupController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:detail')")
     public AjaxResult<TableDataInfo> swJsStorelist( CbifVo cbifVo) {
         try {
-            startPage();
+           // startPage();
             List<CbifVo> list = swarehouseInventoryrollupService.selectSwJsStoreList(cbifVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

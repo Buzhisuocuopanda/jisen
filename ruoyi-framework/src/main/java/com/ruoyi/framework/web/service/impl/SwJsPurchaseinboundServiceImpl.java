@@ -1398,6 +1398,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
      */
     @Override
     public List<CbpcVo> selectSwJsTaskGoodsRelListsss(CbpcVo cbpcVo) {
+
         List<CbpcVo> infossss = cbpdMapper.getInfossss(cbpcVo);
         CbpcVo res = new CbpcVo();
         List<ScanVo> goods = res.getGoods();
@@ -1499,7 +1500,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         }
         else
         {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
         }
         return successMsg.toString();    }
 

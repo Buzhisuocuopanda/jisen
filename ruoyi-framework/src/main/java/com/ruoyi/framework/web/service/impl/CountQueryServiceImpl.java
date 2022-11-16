@@ -49,6 +49,14 @@ public class CountQueryServiceImpl implements CountQueryService {
         inwuquDto.setDeptId(SecurityUtils.getDeptId());
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
 
+/*        if(inwuquVos.size()>0){
+            double sum1 = inwuquVos.stream().mapToDouble(InwuquVo::getCbib15).sum();
+            inwuquVos.get(0).setTotalcbib15(sum1);
+
+            double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+            inwuquVos.get(0).setTotallockQty(sum2);
+        }*/
+
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
