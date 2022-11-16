@@ -177,10 +177,10 @@ if(cbicDto.size()==0){
 
            //删除临时表
             String cbic10 = cbicDto.get(i).getSn();
-            CbiwCriteria cbiwCriteria = new CbiwCriteria();
+        /*    CbiwCriteria cbiwCriteria = new CbiwCriteria();
             cbiwCriteria.createCriteria().andSnEqualTo(cbic10);
             cbiwMapper.deleteByExample(cbiwCriteria);
-
+*/
 
             String uuid = UUID.randomUUID().toString();
             Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
@@ -232,7 +232,7 @@ if(cbicDto.size()==0){
                     cbicMapper.updateByExampleSelective(cbicDto.get(i),asf);
 
                 }
-    //添加
+                //添加
                 else {
                     // Cbic cbic =new Cbic();
                     cbicDto.get(i).setCbic02(date);
@@ -356,7 +356,6 @@ if(cbicDto.size()==0){
 
 
             }  finally {
-
 
                 String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                         "then " +

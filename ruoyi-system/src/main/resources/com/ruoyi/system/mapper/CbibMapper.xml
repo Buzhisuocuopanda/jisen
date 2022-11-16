@@ -442,7 +442,9 @@ ORDER BY
     LEFT JOIN CBWA b on a.CBIB02=b.CBWA01
     LEFT JOIN CBPB c ON c.CBPB01=a.CBIB08
     where a.CBIB04 is not null
-  GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+    and a.cbib17 !="直接入库删除"
+
+    GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
   <if test="cbpb12!=null and cbpb12!=''">
     and c.CBPB12 like concat('%', #{cbpb12}, '%')
   </if>
