@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
+import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.vo.FnGoodsSkuVo;
+import com.ruoyi.system.domain.vo.InwuquVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GsGoodsSkuMapper {
@@ -41,4 +43,7 @@ public interface GsGoodsSkuMapper {
     List<Map> fnSkuListSupplier(@Param("goodsId") Integer goodsId);
 
     List<GsGoodsSku> selectByGoodsIdAndWhId(@Param("goodsId") Integer goodsId, @Param("whId") Integer whId);
+
+//    List<InwuquVo> selectGnSaleQuery(InwuquDto inwuquDto);
+
 }

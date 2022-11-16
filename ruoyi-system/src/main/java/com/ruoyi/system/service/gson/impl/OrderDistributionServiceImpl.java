@@ -1689,6 +1689,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     //国内订单查可用库存
     public QtyMsgVo checkSku(CheckSkuDo checkSkuDo) {
         Double canUseNum = 0.0;
+        Double totalqty = 0.0;
 
         if (OrderTypeEnum.GUONEIDINGDAN.getCode().equals(checkSkuDo.getOrderClass())) {
 
@@ -1716,7 +1717,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 Double useNum = goodsUseList.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
                 Double num = cbib.getCbib15() - useNum;
                 canUseNum = canUseNum + num;
-
+                totalqty= totalqty+cbib.getCbib15();
             }
 
 
@@ -1730,10 +1731,13 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andCbba07Like("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
             Double gqwQty=0.0;
+            Double totalGqwQty=0.0;
             for (Cbba cbba : cbbas) {
                 Double usenum=  cbba.getCbba13()-cbba.getCbba14();
                 gqwQty=gqwQty+usenum;
+                totalGqwQty=totalGqwQty+cbba.getCbba13();
             }
+
 //            Double countQty=gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
 
 //            Double gqwMakeQty = cbbas.stream().mapToDouble(Cbba::getCbba13).sum();
@@ -1749,7 +1753,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 //            gqw仓库数据
 
-
+            totalqty= totalqty+totalGqwQty;
             if (gqwQty < 0) {
                 gqwQty = 0.0;
             }

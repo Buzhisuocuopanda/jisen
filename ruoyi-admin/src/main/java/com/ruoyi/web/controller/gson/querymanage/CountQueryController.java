@@ -89,17 +89,17 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysummaryquery:list')")
     public AjaxResult<TableDataInfo> Inventorysummaryquery(InwuquDto inwuquDto) {
         try {
-            startPage();
+//            startPage();
             List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
             TableDataInfo t = getDataTable(list);
             return AjaxResult.success(t);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
-            log.error("【库存汇总查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuquDto), ExceptionUtils.getStackTrace(e));
+            log.error("【库存汇总查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuquDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (Exception e) {
-            log.error("【库存汇总查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuquDto), ExceptionUtils.getStackTrace(e));
+            log.error("【库存汇总查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuquDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -127,7 +127,7 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:saleOrderListCountquery:list')")
     public AjaxResult<TableDataInfo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto) {
         try {
-            startPage();
+//            startPage();
             if(gsSalesOrdersDetailsDto.getEndTime()!=null){
                 gsSalesOrdersDetailsDto.setEndTime(new Date(gsSalesOrdersDetailsDto.getEndTime().getTime()+24*60*60*1000-1));
             }
@@ -137,10 +137,10 @@ public class CountQueryController  extends BaseController {
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
-            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (Exception e) {
-            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售预订单明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(gsSalesOrdersDetailsDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -173,16 +173,16 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysummaryquerys:list')")
     public AjaxResult<TableDataInfo> Inventorysummaryquerys(InwuqusDto inwuqusDto) {
         try {
-            startPage();
+//            startPage();
             List<InwuqusVo> list = countQueryService.selectInventorysummaryquerys(inwuqusDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (ServiceException e) {
-            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuqusDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
-            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+            log.error("【库存明细查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuqusDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -215,16 +215,16 @@ public class CountQueryController  extends BaseController {
             if(inwuqusDto.getEndTime()!=null){
                 inwuqusDto.setEndTime(new Date(inwuqusDto.getEndTime().getTime()+24*60*60*1000-1));
             }
-            startPage();
+//            startPage();
             List<InwuqusVo2> list = countQueryService.selectOutInventorysummaryquerys(inwuqusDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (ServiceException e) {
-            log.error("【已出库库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+            log.error("【已出库库存明细查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuqusDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (Exception e) {
-            log.error("【已出库库存明细查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuqusDto), ExceptionUtils.getStackTrace(e));
+            log.error("【已出库库存明细查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuqusDto), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -260,16 +260,16 @@ public class CountQueryController  extends BaseController {
             if(ledgerVo.getEndTime()!=null){
                 ledgerVo.setEndTime(new Date(ledgerVo.getEndTime().getTime()+24*60*60*1000-1));
             }
-            startPage();
+//            startPage();
             List<LedgerVo> list = countQueryService.selectInventorysmmaryquerys(ledgerVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         } catch (ServiceException e) {
-            log.error("【库存台账查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(ledgerVo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存台账查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(ledgerVo), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
         }catch (Exception e) {
-            log.error("【库存台账查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(ledgerVo), ExceptionUtils.getStackTrace(e));
+            log.error("【库存台账查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(ledgerVo), ExceptionUtils.getStackTrace(e));
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
@@ -300,19 +300,19 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysumsmaryquery:list')")
     public AjaxResult<TableDataInfo> Inventorysumsmaryquery(OccupancyVo occupancyVo) {
         try {
-            startPage();
+//            startPage();
             List<OccupancyVo> list = countQueryService.selectInventorysmsmaryquerys(occupancyVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (ServiceException e) {
-            log.error("【商品占用查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(occupancyVo), ExceptionUtils.getStackTrace(e));
+            log.error("【商品占用查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(occupancyVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【商品占用查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(occupancyVo), ExceptionUtils.getStackTrace(e));
+            log.error("【商品占用查询】接口出现异常,参数${}$,异常${}$",JSON.toJSON(occupancyVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -357,7 +357,7 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售订单明细】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(occuspancyVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售订单明细】接口出现异常,参数${}$,异常${}$", JSON.toJSON(occuspancyVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -390,14 +390,14 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(InwuquDto inwuquDto) {
         try {
-            startPage();
+//            startPage();
             List<InwuquVo> list = countQueryService.selectInventorysummaryquery2(inwuquDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售库存查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(inwuquDto), ExceptionUtils.getStackTrace(e));
+            log.error("【销售库存查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(inwuquDto), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -425,14 +425,14 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:invsentorsysummaryquery:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(OutofstockregistrationVo outofstockregistrationVo) {
         try {
-            startPage();
+//            startPage();
             List<OutofstockregistrationVo> list = countQueryService.selectInntorysummaryquery(outofstockregistrationVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【销售库存查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(outofstockregistrationVo), ExceptionUtils.getStackTrace(e));
+            log.error("【销售库存查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(outofstockregistrationVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -460,7 +460,7 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery2:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(SczddVo sczddVo) {
         try {
-            startPage();
+//            startPage();
             List<SczddVo> list = countQueryService.selectInnorysummaryquery(sczddVo);
             TableDataInfo t = getDataTable(list);
             return AjaxResult.success(t);
@@ -468,7 +468,7 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (Exception e) {
-            log.error("【生产总订单查询】接口出现异常,参数${}$,异常${}$", JSONUtils.toJSONString(sczddVo), ExceptionUtils.getStackTrace(e));
+            log.error("【生产总订单查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(sczddVo), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

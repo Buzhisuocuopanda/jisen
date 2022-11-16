@@ -37,6 +37,8 @@ public class SczddVo {
 
     private Integer cbpb01;
 
+    private String sortKey;
+
     //订单总数
     private Double totalOrderNum;
     //已发货总数

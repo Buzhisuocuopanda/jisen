@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbibCriteria;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.vo.CbibVo;
 import com.ruoyi.system.domain.vo.CbibVo2;
 import org.apache.ibatis.annotations.Param;
@@ -68,4 +69,7 @@ public interface CbibMapper {
      */
     List<CbibVo2> monthlySalesTotal2();
 
+    List<Cbib> fnSkuListCbib(FnGoodsSkuDto fnGoodsSkuDto);
+
+    List<Cbib> selectByKcqkbaobiao(FnGoodsSkuDto fnGoodsSkuDto);
 }

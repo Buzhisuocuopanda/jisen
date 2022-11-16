@@ -518,4 +518,52 @@ ORDER BY
 
   </select>
 
+
+  <select id="fnSkuListCbib" resultMap="BaseResultMap">
+
+
+
+  </select>
+  <select id="selectByKcqkbaobiao" resultMap="BaseResultMap">
+    SELECT cbib.* FROM `CBIB` cbib
+    LEFT JOIN CBPB pb ON pb.CBPB01 = cbib.CBIB08
+    where
+    cbib.CBIB01 !=0
+
+    <if test="whIds != null">
+      and cbib.CBIB02 in
+      <foreach item="whIdItem" collection="whIds" open="(" separator="," close=")">
+        #{whIdItem}
+      </foreach>
+    </if>
+
+    <if test="goodsIds != null">
+      and cbib.CBIB08 in
+      <foreach item="goodsItem" collection="goodsIds" open="(" separator="," close=")">
+        #{goodsItem}
+      </foreach>
+    </if>
+    <!-- <if test="goodsId !=null">
+         AND sku.goods_id = #{goodsId}
+     </if>-->
+
+    <if test="brandIds != null">
+      and pb.CBPB10 in
+      <foreach item="brandItem" collection="brandIds" open="(" separator="," close=")">
+        #{brandItem}
+      </foreach>
+    </if>
+    <!--<if test="brandId !=null">
+      AND pb.CBPB10 = #{brandId}
+    </if>-->
+        <if test="startTime != null">
+          and cbib.CBIB04 &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+          and cbib.CBIB04 &lt;=#{endTime}
+        </if>
+    order by cbib.CBIB04 desc
+  </select>
+
+
 </mapper>

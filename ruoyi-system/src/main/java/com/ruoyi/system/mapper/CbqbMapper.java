@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbqb;
 import com.ruoyi.system.domain.CbqbCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbqbMapper {
@@ -29,4 +31,7 @@ public interface CbqbMapper {
     int updateByPrimaryKey(Cbqb record);
 
     List<Cbqb> selectGoodsBad(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
+
+    List<Cbqb> selectGoodsBadkcqk(FnGoodsSkuDto fnGoodsSkuDto);
+
 }
