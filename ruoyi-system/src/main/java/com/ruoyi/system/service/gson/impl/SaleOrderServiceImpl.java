@@ -371,6 +371,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             //是否是修改商品
             Integer oldgoodsId = cbba.getCbba08();
             if (oldgoodsId.equals(totalOrderAddDto.getGoodsId())) {
+
+
+
                 Long oldPoririty = cbba.getCbba15();
 
                 Double oldQty = cbba.getCbba09();
@@ -398,6 +401,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cbba.setCbba07(totalOrderAddDto.getOrderNo());
                 cbba.setCbba05(totalOrderAddDto.getUserId());
                 cbba.setCbba04(new Date());
+
                 cbbaMapper.updateByPrimaryKey(cbba);
 
             } else {

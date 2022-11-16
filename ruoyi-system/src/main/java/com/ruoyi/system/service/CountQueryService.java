@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface CountQueryService {
     List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException;
-    List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto);
+    List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) throws InterruptedException;
 
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);
 

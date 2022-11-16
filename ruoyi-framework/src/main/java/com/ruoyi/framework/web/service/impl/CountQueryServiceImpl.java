@@ -17,6 +17,7 @@ import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import com.ruoyi.system.utils.ThreadPoolUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,8 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 @Service
 public class CountQueryServiceImpl implements CountQueryService {
@@ -339,7 +339,7 @@ public class CountQueryServiceImpl implements CountQueryService {
     }
 
     @Override
-    public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {
+    public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) throws InterruptedException {
 //        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
 
 //        GsGoodsSkuCriteria skuex=new GsGoodsSkuCriteria();
@@ -377,51 +377,161 @@ public class CountQueryServiceImpl implements CountQueryService {
 //        pbex.createCriteria()
 //                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
 //        List<Cbpb> cbpbs =   cbpbMapper.selectByExample(pbex);
-        List<InwuquVo> list=new ArrayList<>();
-        InwuquVo res=null;
+        List<InwuquVo> list=new CopyOnWriteArrayList<>();
+//        InwuquVo res=null;
+        int suffex=5;
+        Double num=Math.ceil(pbmap.size()/suffex);
+        CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
+
+        List<Cbpb> npbs=new ArrayList<>();
         for (Integer key : pbmap.keySet()) {
-            Cbpb cbpb=pbmap.get(key);
-            res=new InwuquVo();
-            if(cbpb.getCbpb01()!=null){
-                res.setCala08(brandMap.get(cbpb.getCbpb01()));
-            }
+            npbs.add(pbmap.get(key));
+        }
 
-            //根据分类id查询商品分类名称和大类名称
-            if(cbpb.getCbpb14()!=null){
-                Cbpa cbpa = classMap.get(cbpb.getCbpb14());
-                if(cbpa!=null){
-                   res.setCbpa07(cbpa.getCbpa07());
-                    if(cbpa.getCbpa09()!=null){
-                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
-                        if(cbpa2!=null){
-                            res.setTotalclassify(cbpa2.getCbpa07());
+
+        for (int i=1;i<=num;i++){
+            final int y=i;
+            ThreadPoolUtils.execute(() -> {
+                try {
+
+//                    System.out.println("线程===="+y);
+                if(y==num){
+                    int windex= suffex*(y-1);
+                    for (int w=windex;w<npbs.size();w++) {
+                        Cbpb cbpb=npbs.get(w);
+                        InwuquVo   res=new InwuquVo();
+                        if(cbpb.getCbpb01()!=null){
+                            res.setCala08(brandMap.get(cbpb.getCbpb01()));
                         }
-                    }
-                }
-            }
 
-            if(cbpb.getCbpb01()!=null){
-                CheckSkuDo checkSkuDo = new CheckSkuDo();
-                checkSkuDo.setGoodsId(cbpb.getCbpb01());
-                checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
-                QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+                        //根据分类id查询商品分类名称和大类名称
+                        if(cbpb.getCbpb14()!=null){
+                            Cbpa cbpa = classMap.get(cbpb.getCbpb14());
+                            if(cbpa!=null){
+                                res.setCbpa07(cbpa.getCbpa07());
+                                if(cbpa.getCbpa09()!=null){
+                                    Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                                    if(cbpa2!=null){
+                                        res.setTotalclassify(cbpa2.getCbpa07());
+                                    }
+                                }
+                            }
+                        }
+
+                        if(cbpb.getCbpb01()!=null){
+                            CheckSkuDo checkSkuDo = new CheckSkuDo();
+                            checkSkuDo.setGoodsId(cbpb.getCbpb01());
+                            checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+                            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
 //                QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
-                if(qtyMsgVo!=null){
-                   res.setLockQty(qtyMsgVo.getCanUseNum());
-                    res.setCbib15(qtyMsgVo.getTotalQty());
-                }
+                            if(qtyMsgVo!=null){
+                                res.setLockQty(qtyMsgVo.getCanUseNum());
+                                res.setCbib15(qtyMsgVo.getTotalQty());
+                            }
 //                if(qtyMsgVo2!=null){
 //                    res.setCbib15(qtyMsgVo2.getCanUseNum());
 //                }
-            }
+                        }
 
-            res.setCbpb12(cbpb.getCbpb12());
-            res.setCbpb15(cbpb.getCbpb15());
-            list.add(res);
+                        res.setCbpb12(cbpb.getCbpb12());
+                        res.setCbpb15(cbpb.getCbpb15());
+                        list.add(res);
 
 
+                    }
+                }else {
+                    int windex= suffex*(y-1);
+                    for (int w=windex;w<windex+suffex;w++) {
+                        Cbpb cbpb=npbs.get(w);
+                        InwuquVo   res=new InwuquVo();
+                        if(cbpb.getCbpb01()!=null){
+                            res.setCala08(brandMap.get(cbpb.getCbpb01()));
+                        }
+
+                        //根据分类id查询商品分类名称和大类名称
+                        if(cbpb.getCbpb14()!=null){
+                            Cbpa cbpa = classMap.get(cbpb.getCbpb14());
+                            if(cbpa!=null){
+                                res.setCbpa07(cbpa.getCbpa07());
+                                if(cbpa.getCbpa09()!=null){
+                                    Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                                    if(cbpa2!=null){
+                                        res.setTotalclassify(cbpa2.getCbpa07());
+                                    }
+                                }
+                            }
+                        }
+
+                        if(cbpb.getCbpb01()!=null){
+                            CheckSkuDo checkSkuDo = new CheckSkuDo();
+                            checkSkuDo.setGoodsId(cbpb.getCbpb01());
+                            checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+                            QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+//                QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
+                            if(qtyMsgVo!=null){
+                                res.setLockQty(qtyMsgVo.getCanUseNum());
+                                res.setCbib15(qtyMsgVo.getTotalQty());
+                            }
+//                if(qtyMsgVo2!=null){
+//                    res.setCbib15(qtyMsgVo2.getCanUseNum());
+//                }
+                        }
+
+                        res.setCbpb12(cbpb.getCbpb12());
+                        res.setCbpb15(cbpb.getCbpb15());
+                        list.add(res);
+
+
+                    }
+                }
+                }finally {
+                    countDownLatch.countDown();
+                }
+            });
         }
-
+//        for (Integer key : pbmap.keySet()) {
+//            Cbpb cbpb=pbmap.get(key);
+//            res=new InwuquVo();
+//            if(cbpb.getCbpb01()!=null){
+//                res.setCala08(brandMap.get(cbpb.getCbpb01()));
+//            }
+//
+//            //根据分类id查询商品分类名称和大类名称
+//            if(cbpb.getCbpb14()!=null){
+//                Cbpa cbpa = classMap.get(cbpb.getCbpb14());
+//                if(cbpa!=null){
+//                   res.setCbpa07(cbpa.getCbpa07());
+//                    if(cbpa.getCbpa09()!=null){
+//                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+//                        if(cbpa2!=null){
+//                            res.setTotalclassify(cbpa2.getCbpa07());
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if(cbpb.getCbpb01()!=null){
+//                CheckSkuDo checkSkuDo = new CheckSkuDo();
+//                checkSkuDo.setGoodsId(cbpb.getCbpb01());
+//                checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+//                QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+////                QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
+//                if(qtyMsgVo!=null){
+//                   res.setLockQty(qtyMsgVo.getCanUseNum());
+//                    res.setCbib15(qtyMsgVo.getTotalQty());
+//                }
+////                if(qtyMsgVo2!=null){
+////                    res.setCbib15(qtyMsgVo2.getCanUseNum());
+////                }
+//            }
+//
+//            res.setCbpb12(cbpb.getCbpb12());
+//            res.setCbpb15(cbpb.getCbpb15());
+//            list.add(res);
+//
+//
+//        }
+        countDownLatch.await(60, TimeUnit.SECONDS);
 //        List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(Integer.parseInt(SecurityUtils.getUserId()+""));
 ////        Map<Integer,GoodsShopVo> shops=new HashMap<>();
 //        List<Integer> shops=new ArrayList<>();
