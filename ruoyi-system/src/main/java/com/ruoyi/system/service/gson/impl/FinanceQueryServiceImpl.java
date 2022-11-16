@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.gson.impl;
 
 import com.ruoyi.common.core.domain.entity.Cbpa;
+import com.ruoyi.common.enums.TaskType;
 import com.ruoyi.system.domain.Cbib;
 import com.ruoyi.system.domain.CbibCriteria;
 import com.ruoyi.system.domain.Cbqb;
@@ -312,9 +313,18 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo) {
-        return cbibMapper.monthlyStockInAndOut(cbibVo);
-    }
+        List<CbibVo> cbibVos = cbibMapper.monthlyStockInAndOut(cbibVo);
+        for (int i = 0; i < cbibVos.size(); i++) {
+            if (cbibVos.get(i).getCbib17() != null) {
+                if (!TaskType.xcckd.getMsg().equals(cbibVos.get(i).getCbib17())) {
+                    cbibVos.get(i).setOutCount(0.0);
+                }
+            }
 
+        }
+        return cbibVos;
+
+    }
     @Override
     public List<CbibVo2> monthlySales(CbibVo2 cbibVo) {
         List<CbibVo2> cbibVo2s = cbibMapper.monthlySales(cbibVo);

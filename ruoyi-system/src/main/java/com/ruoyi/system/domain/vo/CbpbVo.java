@@ -1,9 +1,14 @@
 package com.ruoyi.system.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.system.domain.Cbpf;
+import com.ruoyi.system.domain.Do.CbpfDo;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbpbVo {
   @Excel(name = "分类编号")
@@ -50,4 +55,58 @@ public class CbpbVo {
   private String sfqy;
   @Excel(name = "是否启用")
   private String cbpb07;
+//客户等级1
+  @Excel(name = "客户等级")
+  private Integer cbpf02;
+
+  @Excel(name = "标准进价")
+  private Double cbpf04;
+  @Excel(name = "标准销货价")
+  private Double cbpf05;
+
+  @Excel(name = "结算类型")
+  private String cbpf06;
+  @Excel(name = "生效日期")
+  private String cbpf07;
+  //客户等级2
+  @Excel(name = "客户等级")
+  private Integer cbpf022;
+
+  @Excel(name = "标准进价")
+  private Double cbpf044;
+  @Excel(name = "标准销货价")
+  private Double cbpf055;
+
+  @Excel(name = "结算类型")
+  private String cbpf066;
+  @Excel(name = "生效日期")
+  private String cbpf077;
+//客户等级3
+@Excel(name = "客户等级")
+private Integer cbpf0222;
+
+  @Excel(name = "标准进价")
+  private Double cbpf0444;
+  @Excel(name = "标准销货价")
+  private Double cbpf0555;
+
+  @Excel(name = "结算类型")
+  private String cbpf0666;
+  @Excel(name = "生效日期")
+  private String cbpf0777;
+  //客户等级4
+  @Excel(name = "客户等级")
+  private Integer cbpf02222;
+
+  @Excel(name = "标准进价")
+  private Double cbpf04444;
+  @Excel(name = "标准销货价")
+  private Double cbpf05555;
+
+  @Excel(name = "结算类型")
+  private String cbpf06666;
+  @Excel(name = "生效日期")
+  private String cbpf07777;
+
+
 }

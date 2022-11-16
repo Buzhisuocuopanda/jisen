@@ -226,7 +226,10 @@ if(cbicDto.size()==0){
                     cbicDto.get(i).setCbic02(date);
                     cbicDto.get(i).setCbic03(date);
                     cbicDto.get(i).setCbic04(Math.toIntExact(userid));
-                    cbicDto.get(i).setCbic05(Math.toIntExact(userid));                    cbicDto.get(i).setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
+                    cbicDto.get(i).setCbic05(Math.toIntExact(userid));
+                    cbicDto.get(i).setCbic07(cbicss.get(0).getCbic07());
+                    cbicDto.get(i).setCbic09(cbicss.get(0).getCbic09());
+                    cbicDto.get(i).setCbic08(cbicss.get(0).getCbic08());
                     cbicDto.get(i).setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
 
                     cbicMapper.updateByExampleSelective(cbicDto.get(i),asf);
@@ -265,6 +268,8 @@ if(cbicDto.size()==0){
                     gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
                     gsGoodsSn.setUpdateTime(date);
                     gsGoodsSn.setInTime(date);
+                    gsGoodsSn.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                    gsGoodsSn.setLocationId(gsGoodsSns.get(0).getLocationId());
                     GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
                     tyui.createCriteria().andSnEqualTo(cbicDto.get(i).getSn());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, tyui);

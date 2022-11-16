@@ -44,4 +44,6 @@ public interface CbpbMapper {
     Cbpb selectByPrimaryKeyForUpdate(Integer goodsId);
 
     int selectcount();
+
+    List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo);
 }
