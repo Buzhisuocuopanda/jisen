@@ -374,7 +374,7 @@ public class SelloutofwarehouseController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbsbsVo cbsbsVo) {
         try {
-            startPage();
+           // startPage();
             List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbsVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

@@ -338,7 +338,29 @@ public class SwJsGoodsController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 查询商品列表导出
+     */
+    @ApiOperation(
+            value ="查询商品列表导出",
+            notes = "查询商品列表导出"
+    )
+    @GetMapping("/SwJsGoodslistout")
+    @PreAuthorize("@ss.hasPermi('system:goods:list')")
+    public AjaxResult<TableDataInfo> SwJsGoodslistout(CbpbVo cbpbVo) {
+        try {
+            startPage();
+            List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsListout(cbpbVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【查询商品列表导出】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpbVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 导出商品列表
      */
@@ -349,7 +371,7 @@ public class SwJsGoodsController extends BaseController {
     @PostMapping("/SwJsGoodsexport")
     @PreAuthorize("@ss.hasPermi('system:goods:export')")
     public void swJsGoodsexport(HttpServletResponse response, CbpbVo cbpbVo) {
-        List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsList(cbpbVo);
+        List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsListout(cbpbVo);
         ExcelUtil<CbpbVo> util = new ExcelUtil<>(CbpbVo.class);
         util.exportExcel(response, list, "商品数据");
     }

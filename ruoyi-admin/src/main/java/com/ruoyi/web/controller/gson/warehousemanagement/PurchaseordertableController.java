@@ -330,7 +330,7 @@ public class PurchaseordertableController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:purchaseordertable:detail')")
     public AjaxResult<TableDataInfo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
         try {
-            startPage();
+           // startPage();
             List<GsPurchaseOrdersVo> list = purchaseordertableService.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

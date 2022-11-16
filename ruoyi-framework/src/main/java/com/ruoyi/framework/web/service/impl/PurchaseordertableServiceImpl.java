@@ -312,6 +312,7 @@ public class PurchaseordertableServiceImpl implements IPurchaseordertableService
 
     @Override
     public List<GsPurchaseOrdersVo> SwJsSkuBarcodelists(GsPurchaseOrdersVo gsPurchaseOrdersVo) {
+
         return purchaseOrderMapper.SwJsSkuBarcodelists(gsPurchaseOrdersVo);
     }
 

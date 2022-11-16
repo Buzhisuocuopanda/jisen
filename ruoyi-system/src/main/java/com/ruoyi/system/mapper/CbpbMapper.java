@@ -47,4 +47,6 @@ public interface CbpbMapper {
     int selectcount();
 
     List<Cbpb> selectGnXs(InwuquDto inwuquDto);
+
+    List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo);
 }

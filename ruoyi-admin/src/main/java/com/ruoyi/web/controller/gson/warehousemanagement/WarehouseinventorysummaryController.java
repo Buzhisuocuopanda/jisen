@@ -207,7 +207,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:detail')")
     public AjaxResult<TableDataInfo> SwJsStorelistsss( CbsisVo cbsisVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbsisVo> list = swarehouseinventorysummaryService.SwJsStorelistsss(cbsisVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

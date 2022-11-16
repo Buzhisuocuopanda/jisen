@@ -651,6 +651,7 @@ for(int i=0;i<cbphs.size();i++) {
      */
     @Override
     public List<CbpgVo> selectSwJsTaskGoodsRelLists(CbpgVo cbpgVo) {
+
         List<CbpgVo> infoss = cbpgMapper.getInfoss(cbpgVo);
         CbpgVo res = new CbpgVo();
         List<ScanVo> goods = res.getGoods();

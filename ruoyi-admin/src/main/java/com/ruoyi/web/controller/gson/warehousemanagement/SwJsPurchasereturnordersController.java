@@ -242,7 +242,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslist( CbpgVo cbpgVo) {
         try {
-            startPage();
+           // startPage();
             List<CbpgVo> list = swJsPurchasereturnordersService.selectSwJsTaskGoodsRelLists(cbpgVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

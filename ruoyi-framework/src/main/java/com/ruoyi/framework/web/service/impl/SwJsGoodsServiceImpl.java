@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.xml.transform.Result;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -640,6 +641,219 @@ private CbpaMapper cbpaMapper;
         example.createCriteria().andCbpb01EqualTo(cbpf.getCbpb01());
         List<Cbpf> cbpfs = cbpfMapper.selectByExample(example);
         return cbpfs;
+
+    }
+
+    @Override
+    public List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo) {
+        List<CbpbVo> cbpbVos = cbpbMapper.selectSwJsGoodsListout(cbpbVo);
+        for(int i=0;i<cbpbVos.size();i++){
+       if(cbpbVos.get(i).getCbpb01()!=null){
+           CbpfCriteria example = new CbpfCriteria();
+           example.createCriteria().andCbpb01EqualTo(cbpbVos.get(i).getCbpb01());
+           List<Cbpf> cbpfs = cbpfMapper.selectByExample(example);
+       for(int j=0;j<cbpfs.size();j++){
+           if(cbpfs.size()==1){
+           cbpbVos.get(i).setCbpf02(cbpfs.get(0).getCbpf02());
+              cbpbVos.get(i).setCbpf04(cbpfs.get(0).getCbpf04());
+                cbpbVos.get(i).setCbpf05(cbpfs.get(0).getCbpf05());
+
+               if (cbpfs.get(0).getCbpf06() != null) {
+                   if((cbpfs.get(0).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf06("CNY");
+                   }
+                   else{
+                          cbpbVos.get(i).setCbpf06("USD");
+                   }
+               }
+
+               if (cbpfs.get(0).getCbpf07() != null) {
+                   Date date = cbpfs.get(0).getCbpf07();
+                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                   String format = sdf.format(date);
+                   cbpbVos.get(i).setCbpf07(format);
+               }
+           }
+           if(cbpfs.size()==2){
+               cbpbVos.get(i).setCbpf02(cbpfs.get(0).getCbpf02());
+               cbpbVos.get(i).setCbpf04(cbpfs.get(0).getCbpf04());
+               cbpbVos.get(i).setCbpf05(cbpfs.get(0).getCbpf05());
+               if((cbpfs.get(0).getCbpf06()==6)){
+                   cbpbVos.get(i).setCbpf06("CNY");
+               }
+               else{
+                   cbpbVos.get(i).setCbpf06("USD");
+               }
+               if (cbpfs.get(0).getCbpf07() != null) {
+                   Date date = cbpfs.get(0).getCbpf07();
+                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                   String format = sdf.format(date);
+                   cbpbVos.get(i).setCbpf07(format);
+               }
+
+               cbpbVos.get(i).setCbpf022(cbpfs.get(1).getCbpf02());
+               cbpbVos.get(i).setCbpf044(cbpfs.get(1).getCbpf04());
+               cbpbVos.get(i).setCbpf055(cbpfs.get(1).getCbpf05());
+               if (cbpfs.get(1).getCbpf06() != null) {
+                   if((cbpfs.get(1).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf066("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf066("USD");
+                   }
+               }
+
+               if (cbpfs.get(1).getCbpf07() != null) {
+                   Date date1 = cbpfs.get(1).getCbpf07();
+                   SimpleDateFormat sdff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format1 = sdff.format(date1);
+                   cbpbVos.get(i).setCbpf077(format1);
+               }
+           }
+           if(cbpfs.size()==3){
+               cbpbVos.get(i).setCbpf02(cbpfs.get(0).getCbpf02());
+               cbpbVos.get(i).setCbpf04(cbpfs.get(0).getCbpf04());
+               cbpbVos.get(i).setCbpf05(cbpfs.get(0).getCbpf05());
+               if (cbpfs.get(0).getCbpf06() != null) {
+                   if((cbpfs.get(0).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf06("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf06("USD");
+                   }
+               }
+
+               if (cbpfs.get(0).getCbpf07() != null) {
+                   Date date = cbpfs.get(0).getCbpf07();
+                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                   String format = sdf.format(date);
+                   cbpbVos.get(i).setCbpf07(format);
+               }
+
+
+               cbpbVos.get(i).setCbpf022(cbpfs.get(1).getCbpf02());
+               cbpbVos.get(i).setCbpf044(cbpfs.get(1).getCbpf04());
+               cbpbVos.get(i).setCbpf055(cbpfs.get(1).getCbpf05());
+               if (cbpfs.get(1).getCbpf06() != null) {
+                   if((cbpfs.get(1).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf066("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf066("USD");
+                   }
+               }
+               if (cbpfs.get(1).getCbpf07() != null) {
+                   Date date1 = cbpfs.get(1).getCbpf07();
+                   SimpleDateFormat sdff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format1 = sdff.format(date1);
+                   cbpbVos.get(i).setCbpf077(format1);
+               }
+
+
+               cbpbVos.get(i).setCbpf0222(cbpfs.get(2).getCbpf02());
+               cbpbVos.get(i).setCbpf0444(cbpfs.get(2).getCbpf04());
+               cbpbVos.get(i).setCbpf0555(cbpfs.get(2).getCbpf05());
+               if (cbpfs.get(2).getCbpf06() != null) {
+                   if((cbpfs.get(2).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf0666("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf0666("USD");
+                   }
+               }
+               if (cbpfs.get(2).getCbpf07() != null) {
+                   Date date2 = cbpfs.get(2).getCbpf07();
+                   SimpleDateFormat sdfff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format2 = sdfff.format(date2);
+                   cbpbVos.get(i).setCbpf0777(format2);
+               }
+           }
+           if(cbpfs.size()>3){
+               //客户等级1
+               cbpbVos.get(i).setCbpf02(cbpfs.get(0).getCbpf02());
+               cbpbVos.get(i).setCbpf04(cbpfs.get(0).getCbpf04());
+               cbpbVos.get(i).setCbpf05(cbpfs.get(0).getCbpf05());
+               if (cbpfs.get(0).getCbpf06() != null) {
+                   if((cbpfs.get(0).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf06("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf06("USD");
+                   }
+               }
+               if (cbpfs.get(0).getCbpf07() != null) {
+                   Date date = cbpfs.get(0).getCbpf07();
+                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                   String format = sdf.format(date);
+                   cbpbVos.get(i).setCbpf07(format);
+               }
+
+               //客户等级2
+               cbpbVos.get(i).setCbpf022(cbpfs.get(1).getCbpf02());
+               cbpbVos.get(i).setCbpf044(cbpfs.get(1).getCbpf04());
+               cbpbVos.get(i).setCbpf055(cbpfs.get(1).getCbpf05());
+               if (cbpfs.get(1).getCbpf06() != null) {
+                   if((cbpfs.get(1).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf066("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf066("USD");
+                   }
+               }
+               if (cbpfs.get(1).getCbpf07() != null) {
+                   Date date1 = cbpfs.get(1).getCbpf07();
+                   SimpleDateFormat sdff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format1 = sdff.format(date1);
+                   cbpbVos.get(i).setCbpf077(format1);
+               }
+
+
+               //客户等级3
+               cbpbVos.get(i).setCbpf0222(cbpfs.get(2).getCbpf02());
+               cbpbVos.get(i).setCbpf0444(cbpfs.get(2).getCbpf04());
+               cbpbVos.get(i).setCbpf0555(cbpfs.get(2).getCbpf05());
+               if (cbpfs.get(2).getCbpf06() != null) {
+                   if((cbpfs.get(2).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf0666("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf0666("USD");
+                   }
+               }
+               if (cbpfs.get(2).getCbpf07() != null) {
+                   Date date2 = cbpfs.get(2).getCbpf07();
+                   SimpleDateFormat sdfff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format2 = sdfff.format(date2);
+                   cbpbVos.get(i).setCbpf0777(format2);
+               }
+
+
+               //客户等级4
+               cbpbVos.get(i).setCbpf02222(cbpfs.get(3).getCbpf02());
+               cbpbVos.get(i).setCbpf04444(cbpfs.get(3).getCbpf04());
+               cbpbVos.get(i).setCbpf05555(cbpfs.get(3).getCbpf05());
+               if (cbpfs.get(3).getCbpf06() != null) {
+                   if((cbpfs.get(3).getCbpf06()==6)){
+                       cbpbVos.get(i).setCbpf06666("CNY");
+                   }
+                   else{
+                       cbpbVos.get(i).setCbpf06666("USD");
+                   }
+               }
+               if (cbpfs.get(3).getCbpf07() != null) {
+                   Date date3 = cbpfs.get(3).getCbpf07();
+                   SimpleDateFormat sdffff = new SimpleDateFormat("yyyy-MM-dd");
+                   String format3 = sdffff.format(date3);
+                   cbpbVos.get(i).setCbpf077(format3);
+               }
+           }
+
+
+         }
+          // cbpbVos.get(i).setGoods(cbpfs);
+       }
+        }
+        return cbpbVos;
 
     }
 

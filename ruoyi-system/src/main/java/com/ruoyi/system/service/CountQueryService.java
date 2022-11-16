@@ -6,9 +6,10 @@ import com.ruoyi.system.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface CountQueryService {
-    List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto);
+    List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException;
     List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto);
 
     List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto);

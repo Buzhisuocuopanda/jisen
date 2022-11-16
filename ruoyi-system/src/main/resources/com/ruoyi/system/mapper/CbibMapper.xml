@@ -437,12 +437,15 @@ ORDER BY
      SELECT
 			a.CBIB02,a.CBIB08,
             c.CBPB08 as goodsName,b.CBWA09 as winName,c.CBPB12,
-      DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth, a.CBIB10,SUM(a.CBIB11) as inCount,a.CBIB12,SUM(a.CBIB13) as outCount
+      DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+      a.CBIB10,SUM(a.CBIB11) as inCount,a.CBIB12,SUM(a.CBIB13) as outCount,
+     a.CBIB17
     FROM CBIB a
     LEFT JOIN CBWA b on a.CBIB02=b.CBWA01
     LEFT JOIN CBPB c ON c.CBPB01=a.CBIB08
     where a.CBIB04 is not null
-  GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+
+    GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
   <if test="cbpb12!=null and cbpb12!=''">
     and c.CBPB12 like concat('%', #{cbpb12}, '%')
   </if>

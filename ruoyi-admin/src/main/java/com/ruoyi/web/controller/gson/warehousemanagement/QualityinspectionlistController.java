@@ -311,7 +311,7 @@ public class QualityinspectionlistController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:qualityin:detail')")
     public AjaxResult<TableDataInfo> swJsGoodslists(CbqaVo cbqaVo) {
         try {
-            startPage();
+           // startPage();
             List<CbqaVo> list = swQualityinspectionlistService.selectSwJsTaskGoodsRelListss(cbqaVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
