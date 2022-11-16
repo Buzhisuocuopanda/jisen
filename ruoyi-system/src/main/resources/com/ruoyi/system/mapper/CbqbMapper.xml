@@ -334,5 +334,35 @@ and sn.wh_id =#{whId}
 
 
   </select>
+  <select id="selectGoodsBadkcqk" resultMap="BaseResultMap">
+SELECT
+ distinct sn.sn
+    FROM
+CBQB qb
+LEFT JOIN
+gs_goods_sn sn on sn.sn =qb.CBQB10
+    where sn.goods_id =#{goodsId}
+
+    <if test="whIds != null">
+      and sn.wh_id in
+      <foreach item="whIdItem" collection="whIds" open="(" separator="," close=")">
+        #{whIdItem}
+      </foreach>
+    </if>
+
+<!--    <if test="goodsId != null">-->
+<!--      and sn.goods_id =#{goodsId}-->
+
+<!--    </if>-->
+
+    <if test="startTime != null">
+and qb.CBQB03 &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+and qb.CBQB03 &lt;=#{endTime}
+    </if>
+
+  </select>
+
 
 </mapper>

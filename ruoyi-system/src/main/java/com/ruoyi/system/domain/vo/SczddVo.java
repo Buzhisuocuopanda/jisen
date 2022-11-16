@@ -37,4 +37,6 @@ public class SczddVo {
 
     private Integer cbpb01;
 
+    private String sortKey;
+
 }

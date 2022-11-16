@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbpbCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.dto.GoodsSelectDto;
+import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.vo.CbpbVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,4 +45,6 @@ public interface CbpbMapper {
     Cbpb selectByPrimaryKeyForUpdate(Integer goodsId);
 
     int selectcount();
+
+    List<Cbpb> selectGnXs(InwuquDto inwuquDto);
 }

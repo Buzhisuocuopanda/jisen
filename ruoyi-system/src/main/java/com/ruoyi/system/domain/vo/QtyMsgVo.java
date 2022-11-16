@@ -15,4 +15,6 @@ public class QtyMsgVo {
 
     private Double canUseNum;
 
+    private Double totalQty;
+
 }

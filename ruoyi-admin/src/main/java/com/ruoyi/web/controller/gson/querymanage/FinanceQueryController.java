@@ -149,7 +149,7 @@ public class FinanceQueryController extends BaseController {
             if(fnGoodsSkuDto.getEndTime()!=null){
                 fnGoodsSkuDto.setEndTime(new Date(fnGoodsSkuDto.getEndTime().getTime()+24*60*60*1000-1));
             }
-            startPage();
+//            startPage();
             List<FnGoodsSkuVo> list=financeQueryService.fnSkuList(fnGoodsSkuDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

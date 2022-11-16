@@ -5,6 +5,7 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.OrderTypeEnum;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
@@ -42,6 +43,12 @@ public class CountQueryServiceImpl implements CountQueryService {
     private SaleOrderService saleOrderService;
     @Resource
     private CbodMapper cbodMapper;
+
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
+
+    @Resource
+    private CbpbMapper cbpbMapper;
 
     @Override
     @DataScope(deptAlias = "u")
@@ -184,55 +191,132 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {
-        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
+//        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
+
+//        GsGoodsSkuCriteria skuex=new GsGoodsSkuCriteria();
+//        skuex.createCriteria()
+//                .andDeleteFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+
+
+//        Map<Integer,Double> skumap=new HashMap<>();
+//        Map<Integer,Double> skumap=new HashMap<>();
+//        for (GsGoodsSku goodsSkus : gsGoodsSkus) {
+////            if(skumap.get(goodsSkus.getGoodsId())==null){
+////                skumap.put(goodsSkus.getGoodsId(),goodsSkus.getQty());
+////            }else {
+////                skumap.put(goodsSkus.getGoodsId(),skumap.get(goodsSkus.getGoodsId())+goodsSkus.getQty());
+////            }
+//        }
+//
+//        for (Integer integer : skumap.keySet()) {
+//
+//        }
+
+
+
         //商品品牌的map
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         //商品分类的map
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
-        List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(Integer.parseInt(SecurityUtils.getUserId()+""));
-//        Map<Integer,GoodsShopVo> shops=new HashMap<>();
-        List<Integer> shops=new ArrayList<>();
-        for (GoodsShopVo goodsShopVo:goodsShopVos) {
-            shops.add(goodsShopVo.getGoodsId());
-        }
 
-        for(int i=0;i<inwuquVos.size();i++){
-            if(shops.contains(inwuquVos.get(i).getCbpb01())){
-                inwuquVos.get(i).setShopping(1);
-            }else {
-                inwuquVos.get(i).setShopping(0);
+        Map<Integer,Cbpb> pbmap=new HashMap<>();
+        List<Cbpb> cbpbs=cbpbMapper.selectGnXs(inwuquDto);
+        for (Cbpb cbpb : cbpbs) {
+            pbmap.put(cbpb.getCbpb01(),cbpb);
+        }
+//        CbpbCriteria pbex=new CbpbCriteria();
+//        pbex.createCriteria()
+//                .andCbpb06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode().byteValue());
+//        List<Cbpb> cbpbs =   cbpbMapper.selectByExample(pbex);
+        List<InwuquVo> list=new ArrayList<>();
+        InwuquVo res=null;
+        for (Integer key : pbmap.keySet()) {
+            Cbpb cbpb=pbmap.get(key);
+            res=new InwuquVo();
+            if(cbpb.getCbpb01()!=null){
+                res.setCala08(brandMap.get(cbpb.getCbpb01()));
             }
-            if(inwuquVos.get(i)!=null){
-                if(inwuquVos.get(i).getCbpb10()!=null){
-                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
-                }
-                //根据分类id查询商品分类名称和大类名称
-                if(inwuquVos.get(i).getCbpb14()!=null){
-                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
-                    if(cbpa!=null){
-                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
-                        if(cbpa.getCbpa09()!=null){
-                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
-                            if(cbpa2!=null){
-                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
-                            }
+
+            //根据分类id查询商品分类名称和大类名称
+            if(cbpb.getCbpb14()!=null){
+                Cbpa cbpa = classMap.get(cbpb.getCbpb14());
+                if(cbpa!=null){
+                   res.setCbpa07(cbpa.getCbpa07());
+                    if(cbpa.getCbpa09()!=null){
+                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                        if(cbpa2!=null){
+                            res.setTotalclassify(cbpa2.getCbpa07());
                         }
                     }
                 }
+            }
 
-                if(inwuquVos.get(i).getCbpb01()!=null){
-                    CheckSkuDo checkSkuDo = new CheckSkuDo();
-                    checkSkuDo.setGoodsId(inwuquVos.get(i).getCbpb01());
-                    checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
-                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
-                    QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
-                    if(qtyMsgVo!=null){
-                        inwuquVos.get(i).setLockQty(qtyMsgVo.getCanUseNum());
-                    }
-                    if(qtyMsgVo2!=null){
-                        inwuquVos.get(i).setCbib15(qtyMsgVo2.getCanUseNum());
-                    }
+            if(cbpb.getCbpb01()!=null){
+                CheckSkuDo checkSkuDo = new CheckSkuDo();
+                checkSkuDo.setGoodsId(cbpb.getCbpb01());
+                checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+                QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+//                QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
+                if(qtyMsgVo!=null){
+                   res.setLockQty(qtyMsgVo.getCanUseNum());
+                    res.setCbib15(qtyMsgVo.getTotalQty());
                 }
+//                if(qtyMsgVo2!=null){
+//                    res.setCbib15(qtyMsgVo2.getCanUseNum());
+//                }
+            }
+
+            res.setCbpb12(cbpb.getCbpb12());
+            res.setCbpb15(cbpb.getCbpb15());
+            list.add(res);
+
+
+        }
+
+//        List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(Integer.parseInt(SecurityUtils.getUserId()+""));
+////        Map<Integer,GoodsShopVo> shops=new HashMap<>();
+//        List<Integer> shops=new ArrayList<>();
+//        for (GoodsShopVo goodsShopVo:goodsShopVos) {
+//            shops.add(goodsShopVo.getGoodsId());
+//        }
+//
+//        for(int i=0;i<inwuquVos.size();i++){
+//            if(shops.contains(inwuquVos.get(i).getCbpb01())){
+//                inwuquVos.get(i).setShopping(1);
+//            }else {
+//                inwuquVos.get(i).setShopping(0);
+//            }
+//            if(inwuquVos.get(i)!=null){
+//                if(inwuquVos.get(i).getCbpb10()!=null){
+//                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+//                }
+//                //根据分类id查询商品分类名称和大类名称
+//                if(inwuquVos.get(i).getCbpb14()!=null){
+//                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+//                    if(cbpa!=null){
+//                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+//                        if(cbpa.getCbpa09()!=null){
+//                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+//                            if(cbpa2!=null){
+//                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if(inwuquVos.get(i).getCbpb01()!=null){
+//                    CheckSkuDo checkSkuDo = new CheckSkuDo();
+//                    checkSkuDo.setGoodsId(inwuquVos.get(i).getCbpb01());
+//                    checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+//                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+//                    QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
+//                    if(qtyMsgVo!=null){
+//                        inwuquVos.get(i).setLockQty(qtyMsgVo.getCanUseNum());
+//                    }
+//                    if(qtyMsgVo2!=null){
+//                        inwuquVos.get(i).setCbib15(qtyMsgVo2.getCanUseNum());
+//                    }
+//                }
 
                 /*//查询对应商品和仓库的货物占用记录，并
                 if(inwuquVos.get(i).getCbib08()!=null){
@@ -251,15 +335,94 @@ public class CountQueryServiceImpl implements CountQueryService {
                         inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
                     }
                 }*/
-            }else {
-                InwuquVo inwuquVo =new InwuquVo();
-                inwuquVo.setCbib01(-1);
-                inwuquVos.set(i,inwuquVo);
-            }
-
-        }
-        return inwuquVos;
+//            }else {
+//                InwuquVo inwuquVo =new InwuquVo();
+//                inwuquVo.setCbib01(-1);
+//                inwuquVos.set(i,inwuquVo);
+//            }
+//
+//        }
+        return list;
     }
+
+//    @Override
+//    public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) {
+//        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
+//        //商品品牌的map
+//        Map<Integer, String> brandMap = baseCheckService.brandMap();
+//        //商品分类的map
+//        Map<Integer, Cbpa> classMap = baseCheckService.classMap();
+//        List<GoodsShopVo> goodsShopVos = saleOrderService.goodsShopList(Integer.parseInt(SecurityUtils.getUserId()+""));
+////        Map<Integer,GoodsShopVo> shops=new HashMap<>();
+//        List<Integer> shops=new ArrayList<>();
+//        for (GoodsShopVo goodsShopVo:goodsShopVos) {
+//            shops.add(goodsShopVo.getGoodsId());
+//        }
+//
+//        for(int i=0;i<inwuquVos.size();i++){
+//            if(shops.contains(inwuquVos.get(i).getCbpb01())){
+//                inwuquVos.get(i).setShopping(1);
+//            }else {
+//                inwuquVos.get(i).setShopping(0);
+//            }
+//            if(inwuquVos.get(i)!=null){
+//                if(inwuquVos.get(i).getCbpb10()!=null){
+//                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+//                }
+//                //根据分类id查询商品分类名称和大类名称
+//                if(inwuquVos.get(i).getCbpb14()!=null){
+//                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+//                    if(cbpa!=null){
+//                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+//                        if(cbpa.getCbpa09()!=null){
+//                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+//                            if(cbpa2!=null){
+//                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if(inwuquVos.get(i).getCbpb01()!=null){
+//                    CheckSkuDo checkSkuDo = new CheckSkuDo();
+//                    checkSkuDo.setGoodsId(inwuquVos.get(i).getCbpb01());
+//                    checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+//                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+//                    QtyMsgVo qtyMsgVo2 = orderDistributionService.checkSkuAll(checkSkuDo);
+//                    if(qtyMsgVo!=null){
+//                        inwuquVos.get(i).setLockQty(qtyMsgVo.getCanUseNum());
+//                    }
+//                    if(qtyMsgVo2!=null){
+//                        inwuquVos.get(i).setCbib15(qtyMsgVo2.getCanUseNum());
+//                    }
+//                }
+//
+//                /*//查询对应商品和仓库的货物占用记录，并
+//                if(inwuquVos.get(i).getCbib08()!=null){
+//                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByGoodsId2(inwuquVos.get(i).getCbib02());
+//                    Double sum =0d;
+//                    for(int j=0;j<gsGoodsUses.size();j++){
+//                        if(gsGoodsUses.get(j).getLockQty()!=null){
+//                            sum+=gsGoodsUses.get(j).getLockQty();
+//                        }
+//                    }
+//                    if(inwuquVos.get(i).getCbib15()!=null){
+//                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
+//                    }
+//                }else {
+//                    if(inwuquVos.get(i).getCbib15()!=null){
+//                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
+//                    }
+//                }*/
+//            }else {
+//                InwuquVo inwuquVo =new InwuquVo();
+//                inwuquVo.setCbib01(-1);
+//                inwuquVos.set(i,inwuquVo);
+//            }
+//
+//        }
+//        return inwuquVos;
+//    }
 
     @Override
     @DataScope(deptAlias = "u")
