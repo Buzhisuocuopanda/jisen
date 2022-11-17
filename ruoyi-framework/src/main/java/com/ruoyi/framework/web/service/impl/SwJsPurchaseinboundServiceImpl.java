@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISwJsPurchaseinboundService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,8 @@ private GsGoodsSkuMapper gsGoodsSkuMapper;
     @Resource
     private CbibMapper cbibMapper;
 
-
+    @Resource
+    private OrderDistributionService orderDistributionService;
 @Resource
 private NumberGenerate numberGenerate;
 
@@ -1159,11 +1161,22 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     exoample.createCriteria().andGoodsIdEqualTo(goodsid)
                                                .andWhIdEqualTo(storeid);
                     List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(exoample);
+
+                    //检查是否有可用库存
+                    CheckSkuDo checkSkuDo=new CheckSkuDo();
+                    checkSkuDo.setGoodsId(goodsid);
+                    checkSkuDo.setOrderClass(OrderTypeEnum.GUONEIDINGDAN.getCode());
+                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
+
+                    if(qtyMsgVo.getCanUseNum()<qty){
+                       throw new SwException("商品库存不够，商品：" + cbpds.get(i).getCbpd12());
+                    }
                     if(gsGoodsSkus.size()>0){
                         baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
 
                         Integer id = gsGoodsSkus.get(0).getId();
                         GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
+
                         if(gsGoodsSku.getQty()<qty){
                             throw new SwException("仓库id为"+storeid+"商品id为"+goodsid+"的商品库存不足");
                         }
