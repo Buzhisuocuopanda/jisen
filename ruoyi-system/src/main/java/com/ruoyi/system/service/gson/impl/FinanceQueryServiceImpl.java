@@ -518,7 +518,8 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //                .and
 //        List<Cbqa> cbqas = cbqaMapper.selectByExample(qaex);
         //        List<OccupancyVo> res=new CopyOnWriteArrayList<>();
-        Double num=Math.ceil(list.size()/ Constants.suffiex);
+//        Double su=Double.valueOf(list.size())/1;
+        Double num=Math.ceil(Double.valueOf(list.size())/Constants.suffiex);
         CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
 
 

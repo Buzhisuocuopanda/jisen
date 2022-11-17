@@ -75,7 +75,8 @@ public class CountQueryServiceImpl implements CountQueryService {
 
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
-        Double num=Math.ceil(inwuquVos.size()/suffex);
+//        Double num=Math.ceil(inwuquVos.size()/suffex);
+        Double num=Math.ceil(Double.valueOf(inwuquVos.size())/Constants.suffiex);
         CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
 
         for (int i=1;i<=num;i++) {
@@ -405,7 +406,8 @@ public class CountQueryServiceImpl implements CountQueryService {
         List<InwuquVo> list=new CopyOnWriteArrayList<>();
 //        InwuquVo res=null;
 
-        Double num=Math.ceil(pbmap.size()/suffex);
+//        Double num=Math.ceil(pbmap.size()/suffex);
+        Double num=Math.ceil(Double.valueOf(pbmap.size())/Constants.suffiex);
         CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
 
         List<Cbpb> npbs=new ArrayList<>();
@@ -425,8 +427,8 @@ public class CountQueryServiceImpl implements CountQueryService {
                     for (int w=windex;w<npbs.size();w++) {
                         Cbpb cbpb=npbs.get(w);
                         InwuquVo   res=new InwuquVo();
-                        if(cbpb.getCbpb01()!=null){
-                            res.setCala08(brandMap.get(cbpb.getCbpb01()));
+                        if(cbpb.getCbpb10()!=null){
+                            res.setCala08(brandMap.get(cbpb.getCbpb10()));
                         }
 
                         //根据分类id查询商品分类名称和大类名称
@@ -457,7 +459,7 @@ public class CountQueryServiceImpl implements CountQueryService {
 //                    res.setCbib15(qtyMsgVo2.getCanUseNum());
 //                }
                         }
-
+                        res.setCbpb08(cbpb.getCbpb08());
                         res.setCbpb12(cbpb.getCbpb12());
                         res.setCbpb15(cbpb.getCbpb15());
                         list.add(res);
