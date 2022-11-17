@@ -54,4 +54,9 @@ public class OccupancyVo {
     private Integer min;
     private Integer cbpb14;
 
+    private Double countOrderQty;
+    private Double countSendQty;
+    private Double countNoSendQty;
+
+
 }

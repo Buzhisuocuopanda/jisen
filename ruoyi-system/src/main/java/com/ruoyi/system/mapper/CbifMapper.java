@@ -56,6 +56,8 @@ public interface CbifMapper {
 
     List<SczddVo> selectInntoryummaryquery(SczddVo sczddVo);
 
+    List<OccupancyVo> selectInventorysmsmaryquerysCount(OccupancyVo occupancyVo);
+
 
 
 }

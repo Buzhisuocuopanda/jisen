@@ -17,7 +17,7 @@ public interface FinanceQueryService {
 
     List<FnQueryAyntgesisVo> fnSynthesis(FnQueryAynthesisDto fnQueryAynthesisDto);
 
-    List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto);
+    List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) throws InterruptedException;
 
     List<SaleAnalysisVo> salesAnalysis(FnsalesAnalysisDto fnsalesAnalysisDto);
 

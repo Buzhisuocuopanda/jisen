@@ -138,7 +138,7 @@ public class FinanceQueryController extends BaseController {
     }
 
     /**
-     * 库存情况报表
+     *  库存情况报表
      * @param fnGoodsSkuDto
      * @return
      */
@@ -171,7 +171,7 @@ public class FinanceQueryController extends BaseController {
     )
     @PostMapping("/fnSkuListExcelList")
     @PreAuthorize("@ss.hasPermi('query:fnSkuList:export')")
-    public void fnSkuListExcelList(FnGoodsSkuDto fnGoodsSkuDto, HttpServletResponse response) {
+    public void fnSkuListExcelList(FnGoodsSkuDto fnGoodsSkuDto, HttpServletResponse response) throws InterruptedException {
         if(fnGoodsSkuDto.getEndTime()!=null){
             fnGoodsSkuDto.setEndTime(new Date(fnGoodsSkuDto.getEndTime().getTime()+24*60*60*1000-1));
         }

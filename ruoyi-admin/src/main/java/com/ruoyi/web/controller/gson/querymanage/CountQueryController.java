@@ -300,7 +300,7 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysumsmaryquery:list')")
     public AjaxResult<TableDataInfo> Inventorysumsmaryquery(OccupancyVo occupancyVo) {
         try {
-//            startPage();
+            startPage();
             List<OccupancyVo> list = countQueryService.selectInventorysmsmaryquerys(occupancyVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
