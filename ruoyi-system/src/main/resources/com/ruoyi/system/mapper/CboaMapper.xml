@@ -851,7 +851,26 @@ WHERE
 	GROUP BY oa.CBOA07
 	ORDER BY oa.CBOA02 DESC
   </select>
+    <select id="selectMaxnumber" resultType="java.lang.Integer">
+select a.CBOA01
+FROM
+    CBOA a
+ORDER BY a.CBOA01 DESC
+limit 1
 
+    </select>
+  <select id="selectMinnumber" resultType="java.lang.Integer">
+    select a.CBOA01
+    FROM
+      CBOA a
+    ORDER BY a.CBOA01
+    limit 1
+  </select>
+    <select id="selectid" resultType="java.lang.Integer">
+      select a.CBOA01
+      FROM
+        CBOA a
+    </select>
 
 
 </mapper>

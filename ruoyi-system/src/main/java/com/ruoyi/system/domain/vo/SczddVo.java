@@ -39,4 +39,13 @@ public class SczddVo {
 
     private String sortKey;
 
+    //订单总数
+    private Double totalOrderNum;
+    //已发货总数
+    private Double totaldeliver;
+    //已生产总数
+    private Double totalproducedNum;
+    //缺货总数
+    private Double totalstockoutNum;
+
 }

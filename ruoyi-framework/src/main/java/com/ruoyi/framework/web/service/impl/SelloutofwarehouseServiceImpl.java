@@ -1196,7 +1196,9 @@ else{
                     } else {
                         outsuggestion.addAll(outsuggestionss);
                     }*/
-                        list.leftPushAll(key,outsuggestion);
+                        if(outsuggestion.size()>0){
+                            list.leftPushAll(key,outsuggestion);
+                        }
                     return outsuggestion;}
                 });
 

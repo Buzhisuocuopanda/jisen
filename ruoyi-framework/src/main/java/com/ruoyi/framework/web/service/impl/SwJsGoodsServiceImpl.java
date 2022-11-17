@@ -455,7 +455,6 @@ private CbpaMapper cbpaMapper;
         for (int i = 0; i < itemList.size(); i++) {
 
 
-
         //商品分类
         if(itemList.get(i).getCbpb14()==null||itemList.get(i).getCbpb14().equals("")){
             throw new SwException("商品分类编号不能为空！");
@@ -522,6 +521,9 @@ private CbpaMapper cbpaMapper;
             cbpb.setCbpb12(cbpb12);
             cbpb.setCbpb14(cbpb14);
             cbpb.setCbpb15(cbpb15);
+            if(itemList.get(i).getType()!=null) {
+                cbpb.setType(Integer.valueOf(itemList.get(i).getType()));
+            }
             CbpbCriteria cbpbCriteria = new CbpbCriteria();
             cbpbCriteria.createCriteria().andCbpb15EqualTo(cbpb15);
             cbpbMapper.updateByExampleSelective(cbpb,cbpbCriteria);
@@ -566,13 +568,10 @@ private CbpaMapper cbpaMapper;
         if(itemList.get(i).getType()==null||itemList.get(i).getType().equals("")){
           //  throw new SwException("商品类型不能为空！");
         }
-        if(Objects.equals(itemList.get(i).getType(), "配件")){
-            cbpb.setType(0);
-        }else {
-            cbpb.setType(1);
-        }
+            cbpb.setType(Integer.valueOf(itemList.get(i).getType()));
 
-        cbpbMapper.insertSelective(cbpb);
+
+            cbpbMapper.insertSelective(cbpb);
 
 /*        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbpfMapper mapper = session.getMapper(CbpfMapper.class);

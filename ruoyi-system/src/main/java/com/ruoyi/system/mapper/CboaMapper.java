@@ -48,4 +48,10 @@ public interface CboaMapper {
     List<SaleOrderListVo> saleOrderListPj(SaleOrderListDto saleOrderListDto);
 
     List<SaleOrderListVo> saleOrderListGoods(SaleOrderListDto saleOrderListDto);
+
+    int selectMaxnumber();
+
+    int selectMinnumber();
+
+    List<Integer> selectid();
 }

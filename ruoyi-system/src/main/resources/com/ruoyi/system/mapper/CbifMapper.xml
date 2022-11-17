@@ -787,6 +787,7 @@ where a.CBOA06=0 and e.CBOB07 =0
     <if test="cbpb01 != null ">
    and   c.CBPB01=#{cbpb01}
     </if>
+
     order by a.CBOA02 desc
   </select>
   <select id="selectInvntorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccuspancyVo">
