@@ -874,10 +874,8 @@ public class SelloutofwarehouseController extends BaseController {
 //        SaleOrderSkuVo res=new SaleOrderSkuVo();
 //        res.setGoodsName("aa");
             rlist.add(i+1);
-            rlist.add(outsuggestion.get(i).getGoodClass());
             rlist.add(outsuggestion.get(i).getBrand());
             rlist.add(outsuggestion.get(i).getModel());
-            rlist.add(outsuggestion.get(i).getDescription());
             rlist.add(outsuggestion.get(i).getSn());
             rlist.add(outsuggestion.get(i).getSku());
             rlist.add(outsuggestion.get(i).getScanStatus());

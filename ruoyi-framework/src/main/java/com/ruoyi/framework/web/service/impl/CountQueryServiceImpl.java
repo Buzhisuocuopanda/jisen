@@ -5,11 +5,11 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.OrderTypeEnum;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CheckSkuDo;
+import com.ruoyi.system.domain.Do.Maxnumber;
 import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
@@ -17,6 +17,10 @@ import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,8 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 @Service
 public class CountQueryServiceImpl implements CountQueryService {
@@ -52,70 +55,19 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Resource
     private CbpbMapper cbpbMapper;
 
+    @Resource
+    private CboaMapper cboaMapper;
+
+    @Autowired
+    @Qualifier("threadPoolTaskExecutor")
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
     @Override
     @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException {
         inwuquDto.setDeptId(SecurityUtils.getDeptId());
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
-     /*   CompletableFuture<List<InwuquVo>> f1 =
-                CompletableFuture.supplyAsync(()->{
-                    List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
-                  //  return inwuquVos;
-                    Map<Integer, String> brandMap = baseCheckService.brandMap();
-                    Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 
-                    for(int i=0;i<inwuquVos.size();i++){
-
-                        if(inwuquVos.get(i)!=null){
-
-
-              */
-        /*  double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
-                inwuquVos.get(0).setTotallockQty(sum2);*/
-        /*
-
-                            if(inwuquVos.get(i).getCbpb10()!=null){
-                                inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
-                            }
-                            if(inwuquVos.get(i).getCbpb14()!=null){
-                                Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
-                                if(cbpa!=null){
-                                    inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
-                                    if(cbpa.getCbpa09()!=null){
-                                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
-                                        if(cbpa2!=null){
-                                            inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
-                                        }
-                                    }
-                                }
-                            }
-                            if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
-                                List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
-                                Double sum =0d;
-                                for(int j=0;j<gsGoodsUses.size();j++){
-                                    if(gsGoodsUses.get(j).getLockQty()!=null){
-                                        sum+=gsGoodsUses.get(j).getLockQty();
-                                    }
-                                }
-                                if(inwuquVos.get(i).getCbib15()!=null){
-                                    inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
-                                }
-                            }else {
-                                if(inwuquVos.get(i).getCbib15()!=null){
-                                    inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
-                                }
-                            }
-
-                        }else {
-                            InwuquVo inwuquVo =new InwuquVo();
-                            inwuquVo.setCbib01(-1);
-                            inwuquVo.setLockQty(0d);
-                            inwuquVos.set(i,inwuquVo);
-                        }
-
-                    }
-                    return inwuquVos;
-                    });*/
 
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
@@ -595,8 +547,12 @@ public class CountQueryServiceImpl implements CountQueryService {
         return cbifMapper.selectInventorysmmaryquerys(ledgerVo);
     }
 
+    @SneakyThrows
     @Override
     public List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) {
+
+
+
         List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
         for (OccupancyVo occupancyVo2:occupancyVos) {
             CbodCriteria cbodCriteria = new CbodCriteria();
@@ -623,8 +579,13 @@ public class CountQueryServiceImpl implements CountQueryService {
             }
             occupancyVo2.setLockQty(num1-num2-num3);
         }
+        /*if(occupancyVos.size()>0){
+
+
+        }*/
         return occupancyVos;
     }
+
 
     @Override
     public List<OccuspancyVo> selectInvntorysmsmaryquerys(OccuspancyVo occuspancyVo) {
@@ -638,11 +599,8 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo) {
-        CompletableFuture<List<SczddVo>> f1 =
-                CompletableFuture.supplyAsync(()->{
-                    List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
-                    return sczddVos;
-                    });
+        List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
+
         //List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
         CompletableFuture<List<SczddVo>> f2 =
                 CompletableFuture.supplyAsync(() -> {
@@ -650,15 +608,6 @@ public class CountQueryServiceImpl implements CountQueryService {
                    return sczddVos1;
                 });
       //  List<SczddVo> sczddVos1 = selectInnorysummaryquerys(sczddVo);
-        CompletableFuture.allOf(f1, f2).join();
-        List<SczddVo> sczddVos = null;
-        try {
-            sczddVos = f1.get();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
         List<SczddVo> sczddVos1 = null;
         try {
             sczddVos1 = f2.get();
@@ -709,5 +658,55 @@ public class CountQueryServiceImpl implements CountQueryService {
         rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }
+
+    private Maxnumber selectMaxnumber(){
+        int i = cboaMapper.selectMaxnumber();
+        Maxnumber maxnumber = new Maxnumber();
+        maxnumber.setMaxnumber(i);
+        int i1 = cboaMapper.selectMinnumber();
+        maxnumber.setMinnumber(i1);
+        int i2 = i-i1;
+        maxnumber.setNumber(i2);
+        return maxnumber;
+    }
+
+    private List<Integer> selectid(){
+        List<Integer> selectid = cboaMapper.selectid();
+        return selectid;
+    }
+    public List<OccupancyVo> selectInventorysmsmaryqueryss(OccupancyVo occupancyVo) {
+
+        List<Integer> selectid = selectid();
+       // Executors
+
+        List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+        for (OccupancyVo occupancyVo2:occupancyVos) {
+            CbodCriteria cbodCriteria = new CbodCriteria();
+            cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
+            cbodCriteria.setOrderByClause("CBOD03 asc");
+            List<Cbod> cbodList = cbodMapper.selectByExample(cbodCriteria);
+            if(cbodList!=null&&cbodList.size()>0){
+                if(cbodList.get(0).getBefQty()!=null){
+                    occupancyVo2.setCbob15(cbodList.get(0).getBefQty()-occupancyVo2.getCbob09());
+                }
+
+            }
+            Double num1=0d;
+            Double num2=0d;
+            Double num3=0d;
+            if(occupancyVo2.getCbob09()!=null){
+                num1 = occupancyVo2.getCbob09();
+            }
+            if(occupancyVo2.getCbob10()!=null){
+                num2 = occupancyVo2.getCbob10();
+            }
+            if(occupancyVo2.getCbob15()!=null){
+                num3 = occupancyVo2.getCbob15();
+            }
+            occupancyVo2.setLockQty(num1-num2-num3);
+        }
+        return occupancyVos;
+    }
+
 }
 
