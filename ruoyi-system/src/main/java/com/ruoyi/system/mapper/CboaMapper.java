@@ -4,6 +4,7 @@ import com.ruoyi.system.domain.Cboa;
 import com.ruoyi.system.domain.CboaCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.Id;
 import com.ruoyi.system.domain.dto.BaseSelectDto;
 import com.ruoyi.system.domain.dto.SaleOrderListDto;
 import com.ruoyi.system.domain.dto.SaleOrderSkuDto;
@@ -53,5 +54,5 @@ public interface CboaMapper {
 
     int selectMinnumber();
 
-    List<Integer> selectid();
+    List<Id> selectid();
 }

@@ -866,7 +866,7 @@ limit 1
     ORDER BY a.CBOA01
     limit 1
   </select>
-    <select id="selectid" resultType="java.lang.Integer">
+    <select id="selectid" resultType="com.ruoyi.system.domain.Id">
       select a.CBOA01
       FROM
         CBOA a

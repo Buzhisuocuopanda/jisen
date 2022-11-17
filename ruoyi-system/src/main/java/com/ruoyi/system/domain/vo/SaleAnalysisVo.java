@@ -39,12 +39,17 @@ public class SaleAnalysisVo {
 
     @Excel(name = "数量")
     private Double qty;
+    //总数量
+    private Double totalqty;
 
 
 //    @Excel(name = "金额")
     private Double price;
+    //总金额
+    private Double totalprice;
 
-//    @Excel(name = "成本")
+
+    //    @Excel(name = "成本")
     private String cost;
 
     private Integer cbsb01;
@@ -54,7 +59,8 @@ public class SaleAnalysisVo {
 
     @Excel(name = "金额")
     private Double money;
-
+    //总金额
+    private Double totalmoney;
 
 
 

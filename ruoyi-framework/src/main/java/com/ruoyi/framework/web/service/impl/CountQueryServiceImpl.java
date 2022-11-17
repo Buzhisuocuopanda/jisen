@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.OrderTypeEnum;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.Id;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CheckSkuDo;
 import com.ruoyi.system.domain.Do.Maxnumber;
@@ -973,16 +974,68 @@ return outofstockregistrationVos;
         return maxnumber;
     }
 
-    private List<Integer> selectid(){
-        List<Integer> selectid = cboaMapper.selectid();
+    private List<Id> selectid(){
+        List<Id> selectid = cboaMapper.selectid();
         return selectid;
     }
     public List<OccupancyVo> selectInventorysmsmaryqueryss(OccupancyVo occupancyVo) {
+        List<OccupancyVo> occupancyVoList = null;
+        List<Id> selectid = selectid();
+        ExecutorService executorService = Executors.newFixedThreadPool(16);
+        List<CompletableFuture<List<OccupancyVo>>> list = new ArrayList<>();
+        for (int i = 0; i < selectid.size(); i++) {
+            int finalI1 = i;
+            CompletableFuture<List<OccupancyVo>> future = CompletableFuture.supplyAsync(() -> {
+                occupancyVo.setCboa01(selectid.get(finalI1).getId());
+                List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+                for (OccupancyVo occupancyVo2 : occupancyVos) {
+                    CbodCriteria cbodCriteria = new CbodCriteria();
+                    cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
+                    cbodCriteria.setOrderByClause("CBOD03 asc");
+                    List<Cbod> cbodList = cbodMapper.selectByExample(cbodCriteria);
+                    if (cbodList != null && cbodList.size() > 0) {
+                        if (cbodList.get(0).getBefQty() != null) {
+                            occupancyVo2.setCbob15(cbodList.get(0).getBefQty() - occupancyVo2.getCbob09());
+                        }
 
-        List<Integer> selectid = selectid();
-       // Executors
+                    }
+                    Double num1 = 0d;
+                    Double num2 = 0d;
+                    Double num3 = 0d;
+                    if (occupancyVo2.getCbob09() != null) {
+                        num1 = occupancyVo2.getCbob09();
+                    }
+                    if (occupancyVo2.getCbob10() != null) {
+                        num2 = occupancyVo2.getCbob10();
+                    }
+                    if (occupancyVo2.getCbob15() != null) {
+                        num3 = occupancyVo2.getCbob15();
+                    }
+                    occupancyVo2.setLockQty(num1 - num2 - num3);
+                }
+                return occupancyVos;
+            }, executorService);
+            list.add(future);
+        }
+        CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).join();
 
-        List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+        for (CompletableFuture<List<OccupancyVo>> future : list) {
+            try {
+                List<OccupancyVo> occupancyVos = future.get();
+                if (occupancyVoList == null) {
+                    occupancyVoList = occupancyVos;
+                } else {
+                    occupancyVoList.addAll(occupancyVos);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            executorService.shutdown();
+
+   /*     List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
         for (OccupancyVo occupancyVo2:occupancyVos) {
             CbodCriteria cbodCriteria = new CbodCriteria();
             cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
@@ -1008,8 +1061,13 @@ return outofstockregistrationVos;
             }
             occupancyVo2.setLockQty(num1-num2-num3);
         }
-        return occupancyVos;
+        return occupancyVos;*/
+        }
+        return occupancyVoList;
+
     }
+
+
 
 }
 

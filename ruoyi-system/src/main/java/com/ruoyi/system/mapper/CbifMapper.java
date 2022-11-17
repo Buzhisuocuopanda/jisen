@@ -7,8 +7,9 @@ import java.util.List;
 import com.ruoyi.system.domain.dto.InwuquDto;
 import com.ruoyi.system.domain.dto.InwuqusDto;
 import com.ruoyi.system.domain.vo.*;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+@Mapper
 public interface CbifMapper {
     long countByExample(CbifCriteria example);
 
@@ -56,4 +57,7 @@ public interface CbifMapper {
     List<SczddVo> selectInntoryummaryquery(SczddVo sczddVo);
 
     List<OccupancyVo> selectInventorysmsmaryquerysCount(OccupancyVo occupancyVo);
+
+
+
 }

@@ -38,6 +38,8 @@ public interface CbscMapper {
      */
     List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto);
 
+    List<SaleAnalysisVo> salesAnalysis3s(FnsalesAnalysisDto fnsalesAnalysisDto);
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/11/2 15:18

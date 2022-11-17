@@ -17,6 +17,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
 import com.ruoyi.system.utils.ThreadPoolUtils;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ClassName FinanceQueryServiceImpl
@@ -797,6 +800,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         return list;
     }
 
+    @SneakyThrows
     @Override
     public List<SaleAnalysisVo> salesAnalysis3(FnsalesAnalysisDto fnsalesAnalysisDto) {
         //查复审通过的销售订单明细
@@ -808,25 +812,54 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
             }
         }
 
+        CompletableFuture<List<SaleAnalysisVo>> f1 =
+                CompletableFuture.supplyAsync(()->{
+                    List<SaleAnalysisVo> saleAnalysisVos = salesAnalysis3s(fnsalesAnalysisDto);
+                    return saleAnalysisVos;
+                });
+        List<SaleAnalysisVo> saleAnalysisVos = f1.get();
+        if(list.size()>0 && saleAnalysisVos.size()>0 ){
+            list.get(0).setTotalqty(saleAnalysisVos.get(0).getTotalqty());
+            list.get(0).setTotalmoney(saleAnalysisVos.get(0).getTotalmoney());
+            list.get(0).setTotalprice(saleAnalysisVos.get(0).getTotalprice());
+        }
+
         return list;
     }
+    private List<SaleAnalysisVo> salesAnalysis3s(FnsalesAnalysisDto fnsalesAnalysisDto) {
 
+        //查复审通过的销售订单明细
+        List<SaleAnalysisVo> list= cbscMapper.salesAnalysis3s(fnsalesAnalysisDto);
+        if (list.size() > 0) {
+            double sum = list.stream().mapToDouble(SaleAnalysisVo::getQty).sum();
+            double sum1 = list.stream().mapToDouble(SaleAnalysisVo::getPrice).sum();
+            double sum2 = list.stream().mapToDouble(SaleAnalysisVo::getMoney).sum();
+            list.get(0).setTotalqty(sum);
+            list.get(0).setTotalprice(sum1);
+            list.get(0).setTotalmoney(sum2);
+        }
+        return list;
+    }
 
     @Override
     public List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo) {
         List<CbibVo> cbibVos = cbibMapper.monthlyStockInAndOut(cbibVo);
+        List<CbibVo> cbibVoss=new ArrayList<>();
         for (int i = 0; i < cbibVos.size(); i++) {
             //直接入库数量减去直接入库删除数量
+
             if(cbibVos.get(i).getInCount()!=null && cbibVos.get(i).getCbib02()!=null
             && cbibVos.get(i).getCbib08()!=null){
-                CbibCriteria ibex = new CbibCriteria();
-                ibex.createCriteria().andCbib02EqualTo(cbibVos.get(i).getCbib02())
-                        .andCbib08EqualTo(cbibVos.get(i).getCbib08())
-                        .andCbib17EqualTo("直接入库删除");
-                List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
-                if(cbibs.size()>0){
-                    cbibVos.get(i).setInCount(cbibVos.get(i).getInCount()-cbibs.size());
-                }
+
+                    CbibCriteria ibex = new CbibCriteria();
+                    ibex.createCriteria().andCbib02EqualTo(cbibVos.get(i).getCbib02())
+                            .andCbib08EqualTo(cbibVos.get(i).getCbib08())
+                            .andCbib17EqualTo("直接入库删除");
+                    List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
+                    if(cbibs.size()>0){
+                        cbibVos.get(i).setInCount(cbibVos.get(i).getInCount()-cbibs.size());
+                    }
+
 
 
             }
@@ -835,7 +868,9 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                     cbibVos.get(i).setOutCount(0.0);
                 }
             }
-
+          if(cbibVos.get(i).getInCount()==0 && cbibVos.get(i).getOutCount()==0){
+              cbibVos.remove(cbibVos.get(i));
+           }
         }
         return cbibVos;
 
