@@ -425,7 +425,7 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:invsentorsysummaryquery:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(OutofstockregistrationVo outofstockregistrationVo) {
         try {
-//            startPage();
+            startPage();
             List<OutofstockregistrationVo> list = countQueryService.selectInntorysummaryquery(outofstockregistrationVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

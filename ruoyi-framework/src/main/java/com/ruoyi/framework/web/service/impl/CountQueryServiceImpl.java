@@ -592,11 +592,32 @@ public class CountQueryServiceImpl implements CountQueryService {
         return cbifMapper.selectInvntorysmsmaryquerys(occuspancyVo);
     }
 
+    @SneakyThrows
     @Override
     public List<OutofstockregistrationVo> selectInntorysummaryquery(OutofstockregistrationVo outofstockregistrationVo) {
-        return cbifMapper.selectInntorysummaryquery(outofstockregistrationVo);
+        List<OutofstockregistrationVo> outofstockregistrationVos1 = cbifMapper.selectInntorysummaryquery(outofstockregistrationVo);
+        CompletableFuture<List<OutofstockregistrationVo>> f1 =
+                CompletableFuture.supplyAsync(()->{
+                    List<OutofstockregistrationVo> outofstockregistrationVos =
+                            selectInntorysummaryquerys(outofstockregistrationVo);
+                    return outofstockregistrationVos;
+                });
+        List<OutofstockregistrationVo> outofstockregistrationVos = f1.get();
+        if(outofstockregistrationVos1.size()>0 && outofstockregistrationVos.size()>0){
+            outofstockregistrationVos1.get(0).setTotalmum(outofstockregistrationVos.get(0).getTotalmum());
+        }
+
+        return outofstockregistrationVos1;
     }
 
+    private List<OutofstockregistrationVo> selectInntorysummaryquerys(OutofstockregistrationVo outofstockregistrationVo) {
+        List<OutofstockregistrationVo> outofstockregistrationVos = cbifMapper.selectInntorysummaryquery(outofstockregistrationVo);
+        if (outofstockregistrationVos.size() > 0) {
+            double sum = outofstockregistrationVos.stream().mapToDouble(OutofstockregistrationVo::getCbof09).sum();
+            outofstockregistrationVos.get(0).setTotalmum(sum);
+        }
+return outofstockregistrationVos;
+    }
     @Override
     public List<SczddVo> selectInnorysummaryquery(SczddVo sczddVo) {
         List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
@@ -627,10 +648,7 @@ public class CountQueryServiceImpl implements CountQueryService {
     }
     private List<SczddVo> selectInnorysummaryquerys(SczddVo sczddVo) {
         List<SczddVo> sczddVos = cbifMapper.selectInntoryummaryquery(sczddVo);
-       /* double sum = sczddVos.stream().mapToDouble(SczddVo::getCbba09).sum();
-        double sum1 = sczddVos.stream().mapToDouble(SczddVo::getCbba11).sum();
-        double sum2 = sczddVos.stream().mapToDouble(SczddVo::getProducedNum).sum();
-        double sum3 = sczddVos.stream().mapToDouble(SczddVo::getStockoutNum).sum();*/
+
 
         if(sczddVos.size()>0){
             double sum = sczddVos.stream().mapToDouble(SczddVo::getCbba09).sum();

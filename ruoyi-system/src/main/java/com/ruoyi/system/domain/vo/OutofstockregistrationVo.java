@@ -27,6 +27,8 @@ public class OutofstockregistrationVo {
 
     @Excel(name = "数量")
     private Double cbof09;
+//总数量
+    private Double totalmum;
 
     @Excel(name = "客户")
     private String cbca08;
