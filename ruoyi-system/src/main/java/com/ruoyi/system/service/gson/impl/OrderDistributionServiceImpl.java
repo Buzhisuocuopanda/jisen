@@ -1784,6 +1784,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         QtyMsgVo res = new QtyMsgVo();
         res.setGoodsId(checkSkuDo.getGoodsId());
         res.setCanUseNum(canUseNum);
+        res.setTotalQty(totalqty);
 
 
         return res;

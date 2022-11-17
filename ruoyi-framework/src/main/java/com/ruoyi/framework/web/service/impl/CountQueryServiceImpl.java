@@ -59,6 +59,8 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Resource
     private CboaMapper cboaMapper;
 
+    int suffex=5;
+
     @Autowired
     @Qualifier("threadPoolTaskExecutor")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
@@ -332,7 +334,7 @@ public class CountQueryServiceImpl implements CountQueryService {
 //        List<Cbpb> cbpbs =   cbpbMapper.selectByExample(pbex);
         List<InwuquVo> list=new CopyOnWriteArrayList<>();
 //        InwuquVo res=null;
-        int suffex=5;
+
         Double num=Math.ceil(pbmap.size()/suffex);
         CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
 
@@ -658,13 +660,89 @@ public class CountQueryServiceImpl implements CountQueryService {
         return cbifMapper.selectInventorysmmaryquerys(ledgerVo);
     }
 
-    @SneakyThrows
+//    @SneakyThrows
     @Override
-    public List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) {
+    public List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) throws InterruptedException {
 
 
 
+
+        //商品品牌的map
+//        Map<Integer, String> brandMap = baseCheckService.brandMap();
+//        //商品分类的map
+//        Map<Integer, Cbpa> classMap = baseCheckService.classMap();
         List<OccupancyVo> occupancyVos = cbifMapper.selectInventorysmsmaryquerys(occupancyVo);
+//        List<OccupancyVo> res=new CopyOnWriteArrayList<>();
+//        Double num=Math.ceil(occupancyVos.size()/suffex);
+//        CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
+//
+//
+//        for (int i=1;i<=num;i++){
+//            final int y=i;
+//            ThreadPoolUtils.execute(() -> {
+//                try {
+//                    int windex= suffex*(y-1);
+//                    int enddex=  0;
+//
+//                    if(y==num){
+//
+//                        enddex= occupancyVos.size();
+//                    }else {
+//                        enddex= windex+suffex;
+//
+//                    }
+//                    for (int w=windex;w<enddex;w++) {
+//                        OccupancyVo occupancyVo2=occupancyVos.get(w);
+//                        CbodCriteria cbodCriteria = new CbodCriteria();
+//                        cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
+//                        cbodCriteria.setOrderByClause("CBOD03 asc");
+//                        List<Cbod> cbodList = cbodMapper.selectByExample(cbodCriteria);
+//                        if(cbodList!=null&&cbodList.size()>0){
+//                            if(cbodList.get(0).getBefQty()!=null){
+//                                occupancyVo2.setCbob15(cbodList.get(0).getBefQty()-occupancyVo2.getCbob09());
+//                            }
+//
+//                        }
+////                        if(occupancyVo2.getCbpb01()!=null){
+////                            occupancyVo2.setCala08(brandMap.get(occupancyVo2.getCbpb01()));
+////                        }
+////
+////                        //根据分类id查询商品分类名称和大类名称
+////                        if(occupancyVo2.getCbpb14()!=null){
+////                            Cbpa cbpa = classMap.get(occupancyVo2.getCbpb14());
+////                            if(cbpa!=null){
+////                                occupancyVo2.setCbpa07(cbpa.getCbpa07());
+////                                if(cbpa.getCbpa09()!=null){
+////                                    Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+////                                    if(cbpa2!=null){
+////                                        occupancyVo2.setCbpa07(cbpa2.getCbpa07());
+////                                    }
+////                                }
+////                            }
+////                        }
+//                        Double num1=0d;
+//                        Double num2=0d;
+//                        Double num3=0d;
+//                        if(occupancyVo2.getCbob09()!=null){
+//                            num1 = occupancyVo2.getCbob09();
+//                        }
+//                        if(occupancyVo2.getCbob10()!=null){
+//                            num2 = occupancyVo2.getCbob10();
+//                        }
+//                        if(occupancyVo2.getCbob15()!=null){
+//                            num3 = occupancyVo2.getCbob15();
+//                        }
+//                        occupancyVo2.setLockQty(num1-num2-num3);
+//                        res.add(occupancyVo2);
+//                    }
+//                }finally {
+//                    countDownLatch.countDown();
+//                }
+//            });
+//        }
+//
+//        countDownLatch.await(60, TimeUnit.SECONDS);
+
         for (OccupancyVo occupancyVo2:occupancyVos) {
             CbodCriteria cbodCriteria = new CbodCriteria();
             cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());

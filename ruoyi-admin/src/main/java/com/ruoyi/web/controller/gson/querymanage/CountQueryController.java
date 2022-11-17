@@ -330,9 +330,15 @@ public class CountQueryController  extends BaseController {
     @PostMapping("/InventorysmsmaryquerysExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysumsmaryquery:export')")
     public void inventorysmsmaryquerysExcelList(OccupancyVo occupancyVo, HttpServletResponse response) {
+        try {
         List<OccupancyVo> list = countQueryService.selectInventorysmsmaryquerys(occupancyVo);
         ExcelUtil<OccupancyVo> util = new ExcelUtil<>(OccupancyVo.class);
         util.exportExcel(response, list, "商品占用查询数据");
+        } catch (Exception e) {
+            log.error("【商品占用查询】接口出现异常,参数${}$,异常${}$",JSON.toJSON(occupancyVo), ExceptionUtils.getStackTrace(e));
+
+            return ;
+        }
     }
 
 
@@ -460,7 +466,7 @@ public class CountQueryController  extends BaseController {
     @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery2:list')")
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(SczddVo sczddVo) {
         try {
-          // startPage();
+           startPage();
             List<SczddVo> list = countQueryService.selectInnorysummaryquery(sczddVo);
             TableDataInfo t = getDataTable(list);
             return AjaxResult.success(t);

@@ -52,5 +52,6 @@ public class OccupancyVo {
     private Integer cbob01;
     private Integer max;
     private Integer min;
+    private Integer cbpb14;
 
 }

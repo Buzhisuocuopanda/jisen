@@ -781,7 +781,7 @@ public class TakeGoodsController extends BaseController {
 
 //        FormExcelUtil.insertRowsStyleBatch(sheet, startNum, insertRows, styleRow, styleColStart, styleColEnd)
 
-        FormExcelUtil.insertRowsStyleBatch(sheet1, 4, data1.size(), 3, 1, 8);
+        FormExcelUtil.insertRowsStyleBatch(sheet1, 4, data1.size(), 3, 1, 6);
 
         FormExcelUtil.setTableData(sheet1, data1, 4, 1);
 //        addRows += data1.size()-2;

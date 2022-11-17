@@ -18,7 +18,7 @@ public interface CountQueryService {
 
     List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo);
 
-    List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo);
+    List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) throws InterruptedException;
 
     List<OccuspancyVo> selectInvntorysmsmaryquerys(OccuspancyVo occuspancyVo);
 
