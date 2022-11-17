@@ -35,6 +35,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -1223,7 +1224,7 @@ else{
 
             //for (int i = 0; i < cbsbsVos.size(); i++) {
 
-
+                Date date = new Date();
                 int size = cbsds.size();
                 for (int j = 0; j < size; j++) {
                     Cbpb cbpb = cbpbMapper.selectByPrimaryKey(cbsds.get(j).getCbsd08());
@@ -1236,7 +1237,7 @@ else{
                             scanVo.setLx(cbpa.getCbpa07());
                         }
                     }
-
+                    scanVo.setCbpe03(date);
                     scanVo.setPinpai(cala.getCala08());
                     scanVo.setCbpb08(cbpb.getCbpb08());
                     scanVo.setCbpb12(cbpb.getCbpb12());
@@ -1255,8 +1256,8 @@ else{
                // cbsbsVos.get(i).setSaoma(size);
                // saoma +=cbsbsVos.get(i).getSaoma();
            // }
-            goods.addAll(good);
-
+            Stream<ScanVo> sorted = good.stream().sorted(Comparator.comparing(ScanVo::getCbpe03).reversed());
+            goods.addAll(sorted.collect(Collectors.toList()));
         }
         //扫描记录
             return goods;

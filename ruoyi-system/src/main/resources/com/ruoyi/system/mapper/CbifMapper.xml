@@ -515,7 +515,9 @@ where
     pb.CBPB10,
     pb.CBPB14,
     pb.CBPB01,
-    wa.CBWA09
+    wa.CBWA09,
+    ( pb.CBPB12+0 > 0) boolNum
+
     FROM
     CBIB ib
     LEFT JOIN CBPB pb ON pb.CBPB01 = ib.CBIB08
@@ -531,7 +533,7 @@ where
     <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
     <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
 
-     order by ib.CBIB04 desc
+    order by   boolNum DESC, (pb.CBPB12+0), pb.CBPB12;
 
   </select>
 

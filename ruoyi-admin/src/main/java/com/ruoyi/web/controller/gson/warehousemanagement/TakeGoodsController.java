@@ -766,10 +766,8 @@ public class TakeGoodsController extends BaseController {
 //        res.setGoodsName("aa");
 
             rlist.add(goods.get(i).getNumber());
-            rlist.add(goods.get(i).getGoodClass());
             rlist.add(goods.get(i).getBrand());
             rlist.add(goods.get(i).getModel());
-            rlist.add(goods.get(i).getDescription());
             rlist.add(goods.get(i).getSn());
             rlist.add(goods.get(i).getSku());
             rlist.add(goods.get(i).getScanStatus());
