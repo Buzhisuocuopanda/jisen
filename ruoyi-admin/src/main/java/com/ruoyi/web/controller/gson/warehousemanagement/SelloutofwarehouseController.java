@@ -19,6 +19,7 @@ import com.ruoyi.system.domain.Do.CbsbDo;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import com.ruoyi.web.utils.Excel2PdfUtil;
+import com.ruoyi.web.utils.FileCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -462,35 +463,39 @@ public class SelloutofwarehouseController extends BaseController {
     )
     @PostMapping("/saleoutOrderdetailsexport1")
     public AjaxResult saleOrderdetailsexport1(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+        InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
         String pdfPath="";
+        XSSFWorkbook wb = null;
 
         try {
             long time = System.currentTimeMillis();
             CbsbsVo cbsbvo=new CbsbsVo();
             cbsbvo.setCbsb01(orderId);
             List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbvo);
-            InputStream in = null;
-            XSSFWorkbook wb = null;
-//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-           // File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
-           File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
+
+            excelPaht = RuoYiConfig.getSwprofile() + "出库单_" + list.get(0).getCbsb07() + time + ".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板出库单_" + list.get(0).getCbsb07() + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1),new File(excelPaht2));
+
+            File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
             genarateReportsss(wb, res, list);
-            String orderNo = res.getCbsb07();
+          //  String orderNo = res.getCbsb07();
             //name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
-            excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单_"+res.getCbsb07()+time+".xlsx";
+            //excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单_"+res.getCbsb07()+time+".xlsx";
 
-            File file = new File("text.java");
+           // File file = new File("text.java");
 
-            String filePath = file.getAbsolutePath();
+           // String filePath = file.getAbsolutePath();
             saveExcelToDisk(wb, excelPaht);
 
             //转成pdf
             pdfPath=RuoYiConfig.getSwprofile()+"销售出货单_"+res.getCbsb07()+time+".pdf";
             Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
-            in=new FileInputStream(new File(pdfPath));
+           // in=new FileInputStream(new File(pdfPath));
 
             //  saveExcelToDisk(wb, name);
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -507,8 +512,18 @@ public class SelloutofwarehouseController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
-            if (excelPaht != null) {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
                 FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
             }
         }
         return AjaxResult.success();
@@ -638,29 +653,32 @@ public class SelloutofwarehouseController extends BaseController {
     @PostMapping("/saleoutOrderdetailsexport")
 
     public AjaxResult saleoutOrderdetailsexport(HttpServletResponse response, @RequestParam Integer orderId) throws IOException, InvalidFormatException {
+        InputStream in = null;
         String excelPaht="";
+        String excelPaht2="";
         String pdfPath="";
+        XSSFWorkbook wb = null;
 
         try {
             long time = System.currentTimeMillis();
             CbsbsVo cbsbvo=new CbsbsVo();
             cbsbvo.setCbsb01(orderId);
             List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbvo);
-            InputStream in = null;
-            XSSFWorkbook wb = null;
-//        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
-           // File is = new File("D:\\data\\新建 XLSX 工作表.xlsx");
-             File is = new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1);
+            excelPaht = RuoYiConfig.getSwprofile() + "出库单_" + list.get(0).getCbsb07() + time + ".xlsx";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板出库单_" +list.get(0).getCbsb07() + time + ".xlsx";
+            FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.SALE_OUT_ORDER_DETAIL_EXCEL1),new File(excelPaht2));
+
+            File is = new File(excelPaht2);
             wb = new XSSFWorkbook(is);
             CbsbsVo res = list.get(0);
             genarateReportsss(wb, res, list);
-            String orderNo = res.getCbsb07();
+          //  String orderNo = res.getCbsb07();
             //name = "D:\\data\\" + "销售订单" + orderNo + ".xlsx";
-            excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单详情_"+res.getCbsb07()+time+".xlsx";
+          //  excelPaht=   RuoYiConfig.getSwprofile()+"销售出货单详情_"+res.getCbsb07()+time+".xlsx";
 
-            File file = new File("text.java");
+          /*  File file = new File("text.java");
 
-            String filePath = file.getAbsolutePath();
+            String filePath = file.getAbsolutePath();*/
             saveExcelToDisk(wb, excelPaht);
 
             //  saveExcelToDisk(wb, name);
@@ -677,8 +695,18 @@ public class SelloutofwarehouseController extends BaseController {
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         } finally {
-            if (excelPaht != null) {
+            if(in!=null){
+                in.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+
+            if(excelPaht!=null){
                 FileUtils.deleteFile(excelPaht);
+            }
+            if(excelPaht2!=null){
+                FileUtils.deleteFile(excelPaht2);
             }
         }
         return AjaxResult.success();
@@ -708,12 +736,13 @@ public class SelloutofwarehouseController extends BaseController {
         FormExcelUtil.setCellData(sheet1, res.getCbsb07(), 4, 2);
         FormExcelUtil.setCellData(sheet1, res.getCbsb30(), 4, 4);
         FormExcelUtil.setCellData(sheet1, format, 4, 7);
-        FormExcelUtil.setCellData(sheet1, res.getCbsa08(), 5, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbca08(), 5, 2);
         FormExcelUtil.setCellData(sheet1, res.getCbwa09(), 5, 4);
         FormExcelUtil.setCellData(sheet1, res.getCaua15(), 5, 7);
         FormExcelUtil.setCellData(sheet1, res.getCbsb18(), 6, 2);
         FormExcelUtil.setCellData(sheet1, res.getCbsb19(), 6, 7);
         FormExcelUtil.setCellData(sheet1, res.getCny(), 7, 2);
+        FormExcelUtil.setCellData(sheet1, res.getCbsb18(), 7, 4);
         FormExcelUtil.setCellData(sheet1, res.getCbsb21(), 8, 4);
 
 
