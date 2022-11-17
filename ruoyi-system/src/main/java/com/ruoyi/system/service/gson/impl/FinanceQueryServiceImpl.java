@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.gson.impl;
 
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.TaskType;
@@ -15,6 +16,7 @@ import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.FinanceQueryService;
+import com.ruoyi.system.utils.ThreadPoolUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +24,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -230,7 +234,238 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //        return list;
 //
 //    }
-    public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
+//    public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) {
+//        // 期初库存上次结存 生产入库的所有入库的  累计的是生产入库(如果生产是0累计也是0)的不良的 销售出库出库的
+////        List<Cbib> cbibs = cbibMapper.fnSkuListCbib(fnGoodsSkuDto);
+//
+//
+//        List<FnGoodsSkuVo> list=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
+//
+//        Map<Integer, String> brandMap = baseCheckService.brandMap();
+//        Map<Integer, Cbpa> classMap = baseCheckService.classMap();
+////        CbibCriteria ibex=new CbibCriteria();
+////        ibex.createCriteria()
+//////                .andCbib08EqualTo(fnGoodsSkuDto.getGoodsId())
+////                .andCbib04Between(fnGoodsSkuDto.getStartTime(),fnGoodsSkuDto.getEndTime());
+////        ibex.setOrderByClause("CBIB04 DESC");
+//        Map<Integer,List<Cbib>> map=new HashMap<>();
+//        List<Cbib> cbibs = cbibMapper.selectByKcqkbaobiao(fnGoodsSkuDto);
+//
+//
+//////            //不良返工 查质检单
+//        Map<Integer,List<Cbqb>> badmap=new HashMap<>();
+//
+////        for (Cbqb re : res) {
+////            List<Cbqb> qbs = map.get(cbib.getCbib08());
+////            if(ibs==null){
+////                ibs=new ArrayList<>();
+////                ibs.add(cbib);
+////            }else {
+////                ibs.add(cbib);
+////
+////            }
+////        }
+//
+//
+//        for (Cbib cbib : cbibs) {
+//            List<Cbib> ibs = map.get(cbib.getCbib08());
+//            if(ibs==null){
+//                ibs=new ArrayList<>();
+//                ibs.add(cbib);
+//
+//            }else {
+//                ibs.add(cbib);
+//
+//            }
+//            map.put(cbib.getCbib08(),ibs);
+//        }
+//
+//
+////        CbqaCriteria qaex=new CbqaCriteria();
+////        qaex.createCriteria()
+////                .andCb(DeleteFlagEnum.NOT_DELETE.getCode())
+////                .and
+////        List<Cbqa> cbqas = cbqaMapper.selectByExample(qaex);
+//        for (FnGoodsSkuVo fnGoodsSkuVo : list) {
+//            if(fnGoodsSkuVo.getBrand()!=null){
+//                fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
+//            }
+//            if(fnGoodsSkuVo.getGoodsId()!=null){
+//                String supplierNames ="";
+//                List<Map> mapList= gsGoodsSkuMapper.fnSkuListSupplier(fnGoodsSkuVo.getGoodsId());
+//                for (Map sumap: mapList) {
+//                    if(sumap!=null&&sumap.size()>0&&sumap.get("supplierName")!=null){
+//                        if(supplierNames.indexOf(sumap.get("supplierName")+",")<0){
+//                            supplierNames+=sumap.get("supplierName")+",";
+//                        }
+//                    }
+//                }
+//                if(supplierNames.length()>2){
+//                    fnGoodsSkuVo.setSupplieName(supplierNames.substring(0,supplierNames.length()-1));
+//                }
+//            }
+//            if(fnGoodsSkuVo.getSClass()!=null){
+//                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
+//                if(cbpa!=null){
+//                    fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+//                    if(cbpa.getCbpa09()!=null){
+//                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+//                        if(cbpa2!=null){
+//                            fnGoodsSkuVo.setBClass(cbpa2.getCbpa07());
+//                        }
+//                    }
+//                }
+//            }
+//            Double saleOutQty=0.0;
+//            Double totalQty=0.0;
+//            Double badQty=0.0;
+//            Double firstQty=0.0;
+//            Double makeQty=0.0;
+//            Double skuQty=0.0;
+////            for (int i=0;i<cbibs.size();i++) {
+////                Cbib cbib = cbibs.get(i);
+////                if(cbib)
+////            }
+//            List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId());
+//            if(mpibs==null){
+//                fnGoodsSkuVo.setOutSaleQty(saleOutQty);
+//                fnGoodsSkuVo.setBadQty(Double.valueOf(badQty));
+//
+//                fnGoodsSkuVo.setFirstQty(firstQty);
+//                fnGoodsSkuVo.setMakeQty(makeQty);
+//                fnGoodsSkuVo.setSkuQty(skuQty);
+//                if(makeQty==0){
+//                    fnGoodsSkuVo.setTotalQty(0.0);
+//                }else {
+//                    fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+//                }
+//                continue;
+//            }
+//            List<Cbib> newCrList= mpibs.stream().sorted(Comparator.comparing(Cbib::getCbib04).reversed())
+//                    .collect(Collectors.toList());
+//            for(int i=0;i<newCrList.size();i++){
+//                Cbib cbib = newCrList.get(i);
+//                if(i==0){
+//                    skuQty=cbib.getCbib15();
+//                }
+//                if(i==newCrList.size()-1){
+//                    firstQty=cbib.getCbib09();
+//                }
+//                if(TaskType.xcckd.getMsg().equals(cbib.getCbib17())){
+//                    saleOutQty=saleOutQty+cbib.getCbib13();
+//                }
+//
+//                if(cbib.getCbib11()>0){
+//                    makeQty=makeQty+cbib.getCbib11();
+//                }
+//
+//
+//
+//            }
+//            fnGoodsSkuDto.setGoodsId(fnGoodsSkuVo.getGoodsId());
+//            List<Cbqb> res=  cbqbMapper.selectGoodsBadkcqk(fnGoodsSkuDto);
+//            fnGoodsSkuVo.setOutSaleQty(saleOutQty);
+//            fnGoodsSkuVo.setBadQty(Double.valueOf(res.size()));
+//
+//            fnGoodsSkuVo.setFirstQty(firstQty);
+//            fnGoodsSkuVo.setMakeQty(makeQty);
+//            fnGoodsSkuVo.setSkuQty(skuQty);
+//            if(makeQty==0){
+//                fnGoodsSkuVo.setTotalQty(0.0);
+//            }else {
+//                fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+//            }
+//
+//
+//
+//
+//
+//        }
+//
+//
+////        for (FnGoodsSkuVo fnGoodsSkuVo : list) {
+////            if(fnGoodsSkuVo.getBrand()!=null){
+////                fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
+////            }
+////            if(fnGoodsSkuVo.getGoodsId()!=null){
+////                String supplierNames ="";
+////                List<Map> mapList= gsGoodsSkuMapper.fnSkuListSupplier(fnGoodsSkuVo.getGoodsId());
+////                for (Map map: mapList) {
+////                    if(map!=null&&map.size()>0&&map.get("supplierName")!=null){
+////                        if(supplierNames.indexOf(map.get("supplierName")+",")<0){
+////                            supplierNames+=map.get("supplierName")+",";
+////                        }
+////                    }
+////                }
+////                if(supplierNames.length()>2){
+////                    fnGoodsSkuVo.setSupplieName(supplierNames.substring(0,supplierNames.length()-1));
+////                }
+////            }
+////            if(fnGoodsSkuVo.getSClass()!=null){
+////                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
+////                if(cbpa!=null){
+////                    fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+////                    if(cbpa.getCbpa09()!=null){
+////                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+////                        if(cbpa2!=null){
+////                            fnGoodsSkuVo.setBClass(cbpa2.getCbpa07());
+////                        }
+////                    }
+////                }
+////            }
+////
+////            if(fnGoodsSkuVo.getGoodsId()!=null&&fnGoodsSkuVo.getWhId()!=null){
+////                //期初入库 查台账期初入库的
+////                CbibCriteria ibex=new CbibCriteria();
+////
+////                ibex.createCriteria()
+////                        .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
+////                        .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
+////                        .andCbib17EqualTo("期初入库");
+////                ibex.setOrderByClause("CBIB04 DESC");
+////                List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
+////                if(cbibs.size()>0){
+////                    fnGoodsSkuVo.setFirstQty(cbibs.get(0).getCbib16());
+////                }
+////
+////                //生产入库
+////                CbibCriteria mkibex=new CbibCriteria();
+////                mkibex.createCriteria()
+////                        .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId())
+////                        .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
+////                        .andCbib17EqualTo("直接入库");
+////                ibex.setOrderByClause("CBIB04 DESC");
+////                Map map = cbibMapper.selectCountZjrk2(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+////                if(map!=null&&map.get("num")!=null){
+////                    fnGoodsSkuVo.setMakeQty((Double) map.get("num"));
+////                }else {
+////                    fnGoodsSkuVo.setMakeQty(0d);
+////                }
+////            }
+////
+////
+////            //不良返工 查质检单
+////            List<Cbqb> res=  cbqbMapper.selectGoodsBad(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+////            fnGoodsSkuVo.setBadQty(Double.valueOf(res.size()));
+////
+////            //累计
+////            List<Cbib> totalcbibs = cbibMapper.selectLast(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+////            if(totalcbibs.size()>0){
+////                fnGoodsSkuVo.setTotalQty(totalcbibs.get(0).getCbib16());
+////            }
+////
+////
+////            //销售出库数量
+////            Double saleOut=cbibMapper.selectSumSaleOut(fnGoodsSkuVo.getGoodsId(),fnGoodsSkuVo.getWhId());
+////            fnGoodsSkuVo.setOutSaleQty(saleOut==null?0:saleOut);
+////
+////
+////
+////        }
+//        return list;
+//
+//    }
+    public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) throws InterruptedException {
         // 期初库存上次结存 生产入库的所有入库的  累计的是生产入库(如果生产是0累计也是0)的不良的 销售出库出库的
 //        List<Cbib> cbibs = cbibMapper.fnSkuListCbib(fnGoodsSkuDto);
 
@@ -282,101 +517,131 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //                .andCb(DeleteFlagEnum.NOT_DELETE.getCode())
 //                .and
 //        List<Cbqa> cbqas = cbqaMapper.selectByExample(qaex);
-        for (FnGoodsSkuVo fnGoodsSkuVo : list) {
-            if(fnGoodsSkuVo.getBrand()!=null){
-                fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
-            }
-            if(fnGoodsSkuVo.getGoodsId()!=null){
-                String supplierNames ="";
-                List<Map> mapList= gsGoodsSkuMapper.fnSkuListSupplier(fnGoodsSkuVo.getGoodsId());
-                for (Map sumap: mapList) {
-                    if(sumap!=null&&sumap.size()>0&&sumap.get("supplierName")!=null){
-                        if(supplierNames.indexOf(sumap.get("supplierName")+",")<0){
-                            supplierNames+=sumap.get("supplierName")+",";
-                        }
+        //        List<OccupancyVo> res=new CopyOnWriteArrayList<>();
+        Double num=Math.ceil(list.size()/ Constants.suffiex);
+        CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
+
+
+        for (int i=1;i<=num;i++) {
+            final int y = i;
+            ThreadPoolUtils.execute(() -> {
+                try {
+                    int windex = Constants.suffiex * (y - 1);
+                    int enddex = 0;
+
+                    if (y == num) {
+
+                        enddex = list.size();
+                    } else {
+                        enddex = windex + Constants.suffiex;
+
                     }
-                }
-                if(supplierNames.length()>2){
-                    fnGoodsSkuVo.setSupplieName(supplierNames.substring(0,supplierNames.length()-1));
-                }
-            }
-            if(fnGoodsSkuVo.getSClass()!=null){
-                Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
-                if(cbpa!=null){
-                    fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
-                    if(cbpa.getCbpa09()!=null){
-                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
-                        if(cbpa2!=null){
-                            fnGoodsSkuVo.setBClass(cbpa2.getCbpa07());
+
+                    for (int w=windex;w<enddex;w++) {
+                        FnGoodsSkuVo fnGoodsSkuVo= list.get(w);
+                        if(fnGoodsSkuVo.getBrand()!=null){
+                            fnGoodsSkuVo.setBrand(brandMap.get(Integer.parseInt(fnGoodsSkuVo.getBrand())));
                         }
-                    }
-                }
-            }
-            Double saleOutQty=0.0;
-            Double totalQty=0.0;
-            Double badQty=0.0;
-            Double firstQty=0.0;
-            Double makeQty=0.0;
-            Double skuQty=0.0;
+                        if(fnGoodsSkuVo.getGoodsId()!=null){
+                            String supplierNames ="";
+                            List<Map> mapList= gsGoodsSkuMapper.fnSkuListSupplier(fnGoodsSkuVo.getGoodsId());
+                            for (Map sumap: mapList) {
+                                if(sumap!=null&&sumap.size()>0&&sumap.get("supplierName")!=null){
+                                    if(supplierNames.indexOf(sumap.get("supplierName")+",")<0){
+                                        supplierNames+=sumap.get("supplierName")+",";
+                                    }
+                                }
+                            }
+                            if(supplierNames.length()>2){
+                                fnGoodsSkuVo.setSupplieName(supplierNames.substring(0,supplierNames.length()-1));
+                            }
+                        }
+                        if(fnGoodsSkuVo.getSClass()!=null){
+                            Cbpa cbpa = classMap.get(Integer.parseInt(fnGoodsSkuVo.getSClass()));
+                            if(cbpa!=null){
+                                fnGoodsSkuVo.setSClass(cbpa.getCbpa07());
+                                if(cbpa.getCbpa09()!=null){
+                                    Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                                    if(cbpa2!=null){
+                                        fnGoodsSkuVo.setBClass(cbpa2.getCbpa07());
+                                    }
+                                }
+                            }
+                        }
+                        Double saleOutQty=0.0;
+                        Double totalQty=0.0;
+                        Double badQty=0.0;
+                        Double firstQty=0.0;
+                        Double makeQty=0.0;
+                        Double skuQty=0.0;
 //            for (int i=0;i<cbibs.size();i++) {
 //                Cbib cbib = cbibs.get(i);
 //                if(cbib)
 //            }
-            List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId());
-            if(mpibs==null){
-                fnGoodsSkuVo.setOutSaleQty(saleOutQty);
-                fnGoodsSkuVo.setBadQty(Double.valueOf(badQty));
+                        List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId());
+                        if(mpibs==null){
+                            fnGoodsSkuVo.setOutSaleQty(saleOutQty);
+                            fnGoodsSkuVo.setBadQty(Double.valueOf(badQty));
 
-                fnGoodsSkuVo.setFirstQty(firstQty);
-                fnGoodsSkuVo.setMakeQty(makeQty);
-                fnGoodsSkuVo.setSkuQty(skuQty);
-                if(makeQty==0){
-                    fnGoodsSkuVo.setTotalQty(0.0);
-                }else {
-                    fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+                            fnGoodsSkuVo.setFirstQty(firstQty);
+                            fnGoodsSkuVo.setMakeQty(makeQty);
+                            fnGoodsSkuVo.setSkuQty(skuQty);
+                            if(makeQty==0){
+                                fnGoodsSkuVo.setTotalQty(0.0);
+                            }else {
+                                fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+                            }
+                            continue;
+                        }
+                        List<Cbib> newCrList= mpibs.stream().sorted(Comparator.comparing(Cbib::getCbib04).reversed())
+                                .collect(Collectors.toList());
+                        for(int o=0;o<newCrList.size();o++){
+                            Cbib cbib = newCrList.get(o);
+                            if(o==0){
+                                skuQty=cbib.getCbib15();
+                            }
+                            if(o==newCrList.size()-1){
+                                firstQty=cbib.getCbib09();
+                            }
+                            if(TaskType.xcckd.getMsg().equals(cbib.getCbib17())){
+                                saleOutQty=saleOutQty+cbib.getCbib13();
+                            }
+
+                            if(cbib.getCbib11()>0){
+                                makeQty=makeQty+cbib.getCbib11();
+                            }
+
+
+
+                        }
+                        fnGoodsSkuDto.setGoodsId(fnGoodsSkuVo.getGoodsId());
+                        List<Cbqb> res=  cbqbMapper.selectGoodsBadkcqk(fnGoodsSkuDto);
+                        fnGoodsSkuVo.setOutSaleQty(saleOutQty);
+                        fnGoodsSkuVo.setBadQty(Double.valueOf(res.size()));
+
+                        fnGoodsSkuVo.setFirstQty(firstQty);
+                        fnGoodsSkuVo.setMakeQty(makeQty);
+                        fnGoodsSkuVo.setSkuQty(skuQty);
+                        if(makeQty==0){
+                            fnGoodsSkuVo.setTotalQty(0.0);
+                        }else {
+                            fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+                        }
+
+
+
+
+
+                    }
+                } finally {
+                    countDownLatch.countDown();
                 }
-                continue;
-            }
-            List<Cbib> newCrList= mpibs.stream().sorted(Comparator.comparing(Cbib::getCbib04).reversed())
-                    .collect(Collectors.toList());
-            for(int i=0;i<newCrList.size();i++){
-                Cbib cbib = newCrList.get(i);
-                if(i==0){
-                    skuQty=cbib.getCbib15();
-                }
-                if(i==newCrList.size()-1){
-                    firstQty=cbib.getCbib09();
-                }
-                if(TaskType.xcckd.getMsg().equals(cbib.getCbib17())){
-                    saleOutQty=saleOutQty+cbib.getCbib13();
-                }
 
-                if(cbib.getCbib11()>0){
-                    makeQty=makeQty+cbib.getCbib11();
-                }
-
-
-
-            }
-            fnGoodsSkuDto.setGoodsId(fnGoodsSkuVo.getGoodsId());
-            List<Cbqb> res=  cbqbMapper.selectGoodsBadkcqk(fnGoodsSkuDto);
-            fnGoodsSkuVo.setOutSaleQty(saleOutQty);
-            fnGoodsSkuVo.setBadQty(Double.valueOf(res.size()));
-
-            fnGoodsSkuVo.setFirstQty(firstQty);
-            fnGoodsSkuVo.setMakeQty(makeQty);
-            fnGoodsSkuVo.setSkuQty(skuQty);
-            if(makeQty==0){
-                fnGoodsSkuVo.setTotalQty(0.0);
-            }else {
-                fnGoodsSkuVo.setTotalQty(makeQty-badQty);
-            }
-
-
-
-
-
+            });
         }
+        countDownLatch.await(60, TimeUnit.SECONDS);
+
+
 
 
 //        for (FnGoodsSkuVo fnGoodsSkuVo : list) {

@@ -2,6 +2,7 @@ package com.ruoyi.framework.web.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -66,7 +67,7 @@ public class CountQueryServiceImpl implements CountQueryService {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
-    @DataScope(deptAlias = "u")
+//    @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException {
         inwuquDto.setDeptId(SecurityUtils.getDeptId());
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
@@ -74,7 +75,75 @@ public class CountQueryServiceImpl implements CountQueryService {
 
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
+        Double num=Math.ceil(inwuquVos.size()/suffex);
+        CountDownLatch countDownLatch = new CountDownLatch(num.intValue());
 
+        for (int i=1;i<=num;i++) {
+            final int y = i;
+            ThreadPoolUtils.execute(() -> {
+                try {
+                    int windex = Constants.suffiex * (y - 1);
+                    int enddex = 0;
+
+                    if (y == num) {
+
+                        enddex = inwuquVos.size();
+                    } else {
+                        enddex = windex + Constants.suffiex;
+
+                    }
+
+                    for (int w=windex;w<enddex;w++) {
+                        if(inwuquVos.get(w)!=null){
+
+
+
+   /*       double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+                inwuquVos.get(0).setTotallockQty(sum2);*/
+
+                            if(inwuquVos.get(w).getCbpb10()!=null){
+                                inwuquVos.get(w).setCala08(brandMap.get(inwuquVos.get(w).getCbpb10()));
+                            }
+                            if(inwuquVos.get(w).getCbpb14()!=null){
+                                Cbpa cbpa = classMap.get(inwuquVos.get(w).getCbpb14());
+                                if(cbpa!=null){
+                                    inwuquVos.get(w).setCbpa07(cbpa.getCbpa07());
+                                    if(cbpa.getCbpa09()!=null){
+                                        Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+                                        if(cbpa2!=null){
+                                            inwuquVos.get(w).setTotalclassify(cbpa2.getCbpa07());
+                                        }
+                                    }
+                                }
+                            }
+                            if(inwuquVos.get(w).getCbib02()!=null&&inwuquVos.get(w).getCbib08()!=null){
+                                List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(w).getCbib02(),inwuquVos.get(w).getCbib08());
+                                Double sum =0d;
+                                for(int j=0;j<gsGoodsUses.size();j++){
+                                    if(gsGoodsUses.get(j).getLockQty()!=null){
+                                        sum+=gsGoodsUses.get(j).getLockQty();
+                                    }
+                                }
+                                if(inwuquVos.get(w).getCbib15()!=null){
+                                    inwuquVos.get(w).setLockQty(inwuquVos.get(w).getCbib15()-sum);
+                                }
+                            }else {
+                                if(inwuquVos.get(w).getCbib15()!=null){
+                                    inwuquVos.get(w).setLockQty(inwuquVos.get(w).getCbib15());
+                                }
+                            }
+
+                        }else {
+                            InwuquVo inwuquVo =new InwuquVo();
+                            inwuquVo.setCbib01(-1);
+                            inwuquVo.setLockQty(0d);
+                            inwuquVos.set(w,inwuquVo);
+                        }
+                    }}finally {
+                    countDownLatch.countDown();
+                }
+                    });
+        }
         for(int i=0;i<inwuquVos.size();i++){
 
             if(inwuquVos.get(i)!=null){
@@ -123,6 +192,7 @@ public class CountQueryServiceImpl implements CountQueryService {
             }
 
         }
+        countDownLatch.await(60, TimeUnit.SECONDS);
      /*   CompletableFuture<List<InwuquVo>> f2 =
                 CompletableFuture.supplyAsync(() -> {
                     List<InwuquVo> inwuquVos1 = selectInventorysummaryquerys(inwuquDto);
@@ -742,8 +812,22 @@ public class CountQueryServiceImpl implements CountQueryService {
 //        }
 //
 //        countDownLatch.await(60, TimeUnit.SECONDS);
-
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+          Double countOrderQty=0.0;
+        Double countSendQty=0.0;
+        List<OccupancyVo> countRES=new ArrayList<>();
+        ThreadPoolUtils.execute(() -> {
+            try {
+                List<OccupancyVo> count = cbifMapper.selectInventorysmsmaryquerysCount(occupancyVo);
+                if(count.size()>0){
+                    countRES .add(count.get(0)) ;
+                }
+            }finally {
+                countDownLatch.countDown();
+            }
+        });
         for (OccupancyVo occupancyVo2:occupancyVos) {
+
             CbodCriteria cbodCriteria = new CbodCriteria();
             cbodCriteria.createCriteria().andCbobidEqualTo(occupancyVo2.getCbob01());
             cbodCriteria.setOrderByClause("CBOD03 asc");
@@ -768,10 +852,20 @@ public class CountQueryServiceImpl implements CountQueryService {
             }
             occupancyVo2.setLockQty(num1-num2-num3);
         }
+        countDownLatch.await(60, TimeUnit.SECONDS);
         /*if(occupancyVos.size()>0){
 
 
         }*/
+        if(countRES.size()>0){
+            for (OccupancyVo vo : occupancyVos) {
+                vo.setCountOrderQty(countRES.get(0).getCountOrderQty());
+                vo.setCountSendQty(countRES.get(0).getCountSendQty());
+                vo.setCountNoSendQty(vo.getCountOrderQty()-vo.getCountSendQty());
+
+            }
+        }
+
         return occupancyVos;
     }
 

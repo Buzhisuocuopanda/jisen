@@ -320,7 +320,8 @@
     sku.goods_id as goodsId,
     sku.wh_id as whId,
     sku.qty as skuQty,
-    wa.CBWA09
+    wa.CBWA09,
+    ( pb.CBPB12+0 > 0) boolNum
     FROM
     `gs_goods_sku` sku
     LEFT JOIN CBPB pb ON pb.CBPB01 = sku.goods_id
@@ -359,7 +360,7 @@
 <!--    <if test="endTime != null">-->
 <!--      and sku.create_time &lt;=#{endTime}-->
 <!--    </if>-->
-    order by sku.create_time desc
+    order by   boolNum DESC, (pb.CBPB12+0), pb.CBPB12;
   </select>
 
 

@@ -776,6 +776,7 @@ where
         f.CALA01=c.CBPB10
 
 where a.CBOA06=0 and e.CBOB07 =0
+    and a.CBOA11!=4 and  a.CBOA11!=6
     <if test="cbpa07 != null and cbpa07 != ''">
     and  d.CBPA07 like concat('%', #{cbpa07}, '%')
     </if>
@@ -789,6 +790,48 @@ where a.CBOA06=0 and e.CBOB07 =0
 
     order by a.CBOA02 desc
   </select>
+  <select id="selectInventorysmsmaryquerysCount" resultType="com.ruoyi.system.domain.vo.OccupancyVo">
+    select
+    sum(e.CBOB09) as countOrderQty,sum(e.CBOB10) as countSendQty
+    from
+    CBOA a
+    LEFT JOIN
+    CBCA b
+    ON
+    b.CBCA01=a.CBOA09
+    LEFT JOIN
+    CBOB e
+    ON
+    e.CBOA01=a.CBOA01
+    LEFT JOIN
+    CBPB c
+    ON
+    c.CBPB01=e.CBOB08
+    LEFT JOIN
+    CBPA d
+    ON
+    d.CBPA01=c.CBPB14
+    LEFT JOIN
+    CALA  f
+    ON
+    f.CALA01=c.CBPB10
+
+    where a.CBOA06=0 and e.CBOB07 =0
+    and a.CBOA11!=4 and  a.CBOA11!=6
+    <if test="cbpa07 != null and cbpa07 != ''">
+      and  d.CBPA07 like concat('%', #{cbpa07}, '%')
+    </if>
+    <if test="cala08 != null and cala08 != ''">
+      and f.cala08 like concat('%', #{cala08}, '%')
+    </if>
+
+    <if test="cbpb01 != null ">
+      and   c.CBPB01=#{cbpb01}
+    </if>
+
+    order by a.CBOA02 desc
+  </select>
+
 <!--  <select id="selectInventorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccupancyVo">-->
 <!--    select-->
 <!--    a.CBOA01,a.CBOA07,b.CBCA08,a.CBOA25,d.CBPA07,f.CALA08,c.CBPB12,g.lock_qty as lockQty,-->

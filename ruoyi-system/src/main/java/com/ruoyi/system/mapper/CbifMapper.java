@@ -54,4 +54,6 @@ public interface CbifMapper {
     List<OutofstockregistrationVo> selectInntorysummaryquery(OutofstockregistrationVo outofstockregistrationVo);
 
     List<SczddVo> selectInntoryummaryquery(SczddVo sczddVo);
+
+    List<OccupancyVo> selectInventorysmsmaryquerysCount(OccupancyVo occupancyVo);
 }
