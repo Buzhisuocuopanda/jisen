@@ -473,8 +473,15 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //        List<Cbib> cbibs = cbibMapper.fnSkuListCbib(fnGoodsSkuDto);
 
 
-        List<FnGoodsSkuVo> list=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
-
+        List<FnGoodsSkuVo> list2=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
+        Map<String,Integer> distnt=new HashMap<>();
+        List<FnGoodsSkuVo> list=new ArrayList<>();
+        for (FnGoodsSkuVo fnGoodsSkuVo : list2) {
+            if(!distnt.containsKey(fnGoodsSkuVo.getGoodsId()+fnGoodsSkuVo.getWhId()+"")){
+                distnt.put(fnGoodsSkuVo.getGoodsId()+fnGoodsSkuVo.getWhId()+"",1);
+                list.add(fnGoodsSkuVo);
+            }
+        }
         Map<Integer, String> brandMap = baseCheckService.brandMap();
         Map<Integer, Cbpa> classMap = baseCheckService.classMap();
 //        CbibCriteria ibex=new CbibCriteria();

@@ -472,8 +472,8 @@ public class CountQueryServiceImpl implements CountQueryService {
                     for (int w=windex;w<windex+suffex;w++) {
                         Cbpb cbpb=npbs.get(w);
                         InwuquVo   res=new InwuquVo();
-                        if(cbpb.getCbpb01()!=null){
-                            res.setCala08(brandMap.get(cbpb.getCbpb01()));
+                        if(cbpb.getCbpb10()!=null){
+                            res.setCala08(brandMap.get(cbpb.getCbpb10()));
                         }
 
                         //根据分类id查询商品分类名称和大类名称
@@ -504,6 +504,7 @@ public class CountQueryServiceImpl implements CountQueryService {
 //                    res.setCbib15(qtyMsgVo2.getCanUseNum());
 //                }
                         }
+                        res.setCbpb08(cbpb.getCbpb08());
 
                         res.setCbpb12(cbpb.getCbpb12());
                         res.setCbpb15(cbpb.getCbpb15());
