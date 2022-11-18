@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.SysUserCriteria;
 import java.util.List;
 
+import com.ruoyi.system.domain.dto.BaseSelectDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -143,4 +144,6 @@ public interface SysUserMapper {
      * @return 结果
      */
     public com.ruoyi.common.core.domain.entity.SysUser checkEmailUnique(String email);
+
+    List<SysUser> selectSaleUser(BaseSelectDto baseSelectDto);
 }

@@ -287,12 +287,12 @@ public class SwJsCustomerServiceImpl implements ISwJsCustomerService {
         if(baseSelectDto.getSelectMsg()==null){
             baseSelectDto.setSelectMsg("");
         }
-        SysUserCriteria example=new SysUserCriteria();
-        example.createCriteria()
-                .andDelFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().toString())
-                .andStatusEqualTo("0")
-                .andNickNameLike("%" +baseSelectDto.getSelectMsg()+"%");
-        List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+//        SysUserCriteria example=new SysUserCriteria();
+//        example.createCriteria()
+//                .andDelFlagEqualTo(DeleteFlagEnum.NOT_DELETE.getCode().toString())
+//                .andStatusEqualTo("0")
+//                .andNickNameLike("%" +baseSelectDto.getSelectMsg()+"%");
+        List<SysUser> sysUsers = sysUserMapper.selectSaleUser(baseSelectDto);
         List<BaseSelectVo> res=new ArrayList<>();
         BaseSelectVo bv=null;
         for (SysUser sysUser : sysUsers) {

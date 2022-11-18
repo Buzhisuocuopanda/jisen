@@ -313,6 +313,7 @@
 
   <select id="fnSkuList" resultType="com.ruoyi.system.domain.vo.FnGoodsSkuVo">
     SELECT
+
     pb.CBPB10 as brand,
     pb.CBPB14 as sClass,
     pb.CBPB12 as model,

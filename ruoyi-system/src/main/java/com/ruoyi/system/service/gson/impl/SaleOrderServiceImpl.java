@@ -1802,13 +1802,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
            Date date = new Date();
            if (cbpfs.size() > 0 && cbpfs.get(0).getCbpf07().getTime() <= date.getTime()) {
                res.setNormalPrice(cbpfs.get(0).getCbpf05());
+
            }
         }
 
 
         res.setGoodsId(goodsPriceAndSkuDto.getGoodsId());
 
-
+        res.setPrice(res.getNormalPrice());
         //查库存
         CheckSkuDo chekDo = new CheckSkuDo();
         chekDo.setGoodsId(goodsPriceAndSkuDto.getGoodsId());
