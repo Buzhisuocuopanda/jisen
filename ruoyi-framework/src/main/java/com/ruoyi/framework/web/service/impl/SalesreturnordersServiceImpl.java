@@ -574,6 +574,51 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                 cbibDo.setCbib19(cbsfs.get(j).getCbsf15());
                 taskService.InsertCBIB(cbibDo);
             }
+
+            CbsgCriteria example2 = new CbsgCriteria();
+            example2.createCriteria().andCbse01EqualTo(cbseDo.getCbse01());
+            List<Cbsg> cbsgss = cbsgMapper.selectByExample(example2);
+            if(cbsgss.size()>0){
+                for(Cbsg cbsgsss : cbsgss){
+                    String sn = cbsgsss.getCbsg09();
+                    Integer localskuid = cbsgsss.getCbsg10();
+                    Integer goodsid = cbsgsss.getCbsg08();
+                    GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
+                    examples.createCriteria().andSnEqualTo(sn);
+                    List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);
+
+                    if(gsGoodsSns.size()>0){
+
+                        GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                        gsGoodsSn.setSn(sn);
+                        gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
+                        gsGoodsSn.setUpdateTime(date);
+                        gsGoodsSn.setLocationId(localskuid);
+                        gsGoodsSn.setGroudStatus(TaskStatus.sh.getCode().byteValue());
+                        GsGoodsSnCriteria example11 = new GsGoodsSnCriteria();
+                        example11.createCriteria().andSnEqualTo(sn);
+                        gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example11);
+                    }
+                    else{
+                        GsGoodsSn gsGoodsSnDo = new GsGoodsSn();
+                        gsGoodsSnDo.setCreateBy(Math.toIntExact(userid));
+                        gsGoodsSnDo.setCreateTime(date);
+                        gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
+                        gsGoodsSnDo.setUpdateTime(date);
+                        gsGoodsSnDo.setGoodsId(goodsid);
+                        gsGoodsSnDo.setWhId(cbse.getCbse10());
+                        gsGoodsSnDo.setLocationId(localskuid);
+                        gsGoodsSnDo.setInTime(date);
+                        gsGoodsSnDo.setSn(sn);
+                        gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+                        gsGoodsSnDo.setOutTime(date);
+                        gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
+                        gsGoodsSnMapper.insertSelective(gsGoodsSnDo);
+                    }
+                }
+            }
+
+
             return cbseMapper.updateByExampleSelective(cbse,example1);
         }
     }
@@ -726,7 +771,6 @@ log.info("sn为"+itemList.getCbsg09());
                 CbsgCriteria example1 = new CbsgCriteria();
                 example1.createCriteria().andCbsg09EqualTo(itemList.getCbsg09());
                  cbsgMapper.updateByExampleSelective(cbsg,example1);
-
             }
 
 
@@ -738,25 +782,29 @@ log.info("sn为"+itemList.getCbsg09());
                 throw new SwException("该sn不存在与库存表");
             }*/
         Cbse cbse = cbseMapper.selectByPrimaryKey(itemList.getCbse01());
-
-
-        if(gsGoodsSns.size()>0){
-               if(gsGoodsSns.get(0).getStatus()==1){
-                   throw new SwException("该sn已经入库");
-               }
+        //sn更新为上架状态
+            if(gsGoodsSns.size()>0){
+                if(gsGoodsSns.get(0).getStatus()==1){
+                    throw new SwException("该sn已经入库");
+                }
+                if(gsGoodsSns.get(0).getGroudStatus()==1){
+                    throw new SwException("该sn已上架");
+                }
                GsGoodsSn gsGoodsSn = new GsGoodsSn();
                 gsGoodsSn.setSn(itemList.getCbsg09());
-                gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
                gsGoodsSn.setUpdateTime(date);
             gsGoodsSn.setLocationId(itemList.getCbsg10());
-            gsGoodsSn.setGroudStatus(TaskStatus.sh.getCode().byteValue());
+            gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
                 GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
                 example1.createCriteria().andSnEqualTo(itemList.getCbsg09());
                 gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+
+
                if(!uio.contains(gsGoodsSns.get(0).getGoodsId())){
                    throw new SwException("该商品不在采购退货单明细中");
                }
-            }else{
+            }
+            else{
                GsGoodsSn gsGoodsSnDo = new GsGoodsSn();
                gsGoodsSnDo.setCreateBy(Math.toIntExact(userid));
                gsGoodsSnDo.setCreateTime(date);
@@ -767,7 +815,7 @@ log.info("sn为"+itemList.getCbsg09());
                gsGoodsSnDo.setLocationId(itemList.getCbsg10());
                gsGoodsSnDo.setInTime(date);
                gsGoodsSnDo.setSn(itemList.getCbsg09());
-               gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
+               gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
                gsGoodsSnDo.setOutTime(date);
                gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
                gsGoodsSnMapper.insertSelective(gsGoodsSnDo);

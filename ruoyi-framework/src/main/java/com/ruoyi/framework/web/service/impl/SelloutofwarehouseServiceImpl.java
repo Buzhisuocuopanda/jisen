@@ -790,6 +790,29 @@ if(itemList.get(i).getTakegoodsid()!=null){
                 taskService.InsertCBIB(cbibDo);
             }
 */
+            //更新sn表
+            CbsdCriteria example7 = new CbsdCriteria();
+            example7.createCriteria().andCbsb01EqualTo(cbsb1.getCbsb01());
+            List<Cbsd> cbsds1 = cbsdMapper.selectByExample(example7);
+            if(cbsds1.size()>0){
+            for (Cbsd cbsd : cbsds1){
+                String cbsd09 = cbsd.getCbsd09();
+                //更新sn表
+                GsGoodsSnDo   gsGoodsSnDo = new GsGoodsSnDo();
+                gsGoodsSnDo.setUpdateTime(date);
+                gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSnDo.setSn(cbsd09);
+                gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+                gsGoodsSnDo.setOutTime(date);
+                gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+                taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+            }
+
+            }
+
+
+
             return cbsbMapper.updateByExampleSelective(cbsb, example1);
         }
         //数量
@@ -1292,7 +1315,7 @@ else{
         CbsbsVo cbsbsVo = new CbsbsVo();
         cbsbsVo.setCbsb01(itemList.getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
-if(cbsbsVos.size()>0){
+        if(cbsbsVos.size()>0){
         if(cbsbsVos.get(0).getSaomanums()!=null){
             double v = cbsbsVos.get(0).getSaomanums().doubleValue();
 
@@ -1421,14 +1444,22 @@ if(cbsbsVos.size()>0){
                      }
                  }
             //判断是否在提货单里
-
-
+            //判断sn是不是下架状态
+           GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+            gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbsd09());
+            List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+            if(gsGoodsSnList.size()>0){
+                if (gsGoodsSnList.get(0).getGroudStatus()!=null) {
+                    if(gsGoodsSnList.get(0).getGroudStatus()!=1){
+                        throw new SwException("该sn已下架");
+                    }
+                }
+            }
 
 
             //更新sn表
             gsGoodsSnDo = new GsGoodsSnDo();
             gsGoodsSnDo.setSn(itemList.getCbsd09());
-            gsGoodsSnDo.setStatus(GoodsType.ckz.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
 

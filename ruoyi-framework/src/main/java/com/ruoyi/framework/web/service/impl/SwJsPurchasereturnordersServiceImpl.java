@@ -25,6 +25,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.Unsafe;
+import sun.misc.VM;
+import sun.reflect.CallerSensitive;
+import sun.reflect.Reflection;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -272,7 +276,11 @@ Cbpg cbpgs = new Cbpg();
             if (gsGoodsSnss.size() == 0) {
                 throw new SwException("商品条码不存在");
             }
-
+            if(gsGoodsSnss.get(0).getGroudStatus()!=null){
+                if(gsGoodsSnss.get(0).getGroudStatus()!=1){
+                    throw new SwException("该商品不是上架状态");
+                }
+            }
 
             if(gsGoodsSnss.get(0).getStatus()!=null){
                 if(gsGoodsSnss.get(0).getStatus()==2){
@@ -353,7 +361,6 @@ Cbpg cbpgs = new Cbpg();
             gsGoodsSnDo.setUpdateTime(date);
             gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
             gsGoodsSnDo.setSn(itemList.getCbpi09());
-            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
             gsGoodsSnDo.setOutTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
         }
@@ -1131,7 +1138,14 @@ if(infoss.size()>0) {
                         gsGoodsSkuDo1.setGoodsId(selectbyid.get(k).getGoodsId());
                         gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
                         if(qty-selectbyid.get(k).getNums()<0){
-                            throw new SwException("库存数量不足");
+                            Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
+                            if(cbla!=null){
+                                throw new SwException("库存数量不足,库位码为"+cbla.getCbla09());
+                            }
+                            else {
+                                throw new SwException("库存数量不足");
+                            }
+                          //  throw new SwException("库存数量不足");
                         }
                         gsGoodsSkuDo1.setQty(qty-selectbyid.get(k).getNums());
                         taskService.updateGsGoodsSku(gsGoodsSkuDo1);
@@ -1248,6 +1262,27 @@ if(infoss.size()>0) {
             example.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01())
                     .andCbpg06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
 
+
+            //更新sn表
+            CbpiCriteria cbpiCriteria = new CbpiCriteria();
+            cbpiCriteria.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+            List<Cbpi> cbpis = cbpiMapper.selectByExample(cbpiCriteria);
+            if(cbpis.size()>0){
+                for (Cbpi cbpi : cbpis) {
+                    String sn = cbpi.getCbpi09();
+                   GsGoodsSnDo gsGoodsSnDo  = new GsGoodsSnDo();
+                    gsGoodsSnDo.setUpdateTime(date);
+                    gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
+                    gsGoodsSnDo.setSn(sn);
+                    gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
+                    gsGoodsSnDo.setOutTime(date);
+                    gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+                    taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+                }
+            }
+
+
             return cbpgMapper.updateByExampleSelective(cbpg, example);
         }
     }
@@ -1263,4 +1298,8 @@ if(infoss.size()>0) {
         }
         return infosss;
     }
+
+
+
+
 }
