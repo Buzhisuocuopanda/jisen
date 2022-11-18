@@ -1215,7 +1215,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     cbib.setCbib12(0.0);
 
 
-                    cbib.setCbib17(TaskType.cgrkd.getMsg());
+                    cbib.setCbib17("采购入库单取消完成");
                     cbib.setCbib19(cbpc2.getCbpc09());
                     Cbib cbib1 = cbibMapper.selectLastByGoodsIdAndStoreId(cbib.getCbib08(), cbib.getCbib02());
                     if(cbib1!=null){

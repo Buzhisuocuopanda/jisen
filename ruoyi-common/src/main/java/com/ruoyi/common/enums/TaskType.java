@@ -21,6 +21,7 @@ public enum TaskType {
     yybgd(new Byte("14"), "预订单变更单"),
 
     zjrkde(new Byte("15"), "直接入库删除"),
+    cgtkqxwc(new Byte("16"), "采购退库单取消完成"),
 
 
 

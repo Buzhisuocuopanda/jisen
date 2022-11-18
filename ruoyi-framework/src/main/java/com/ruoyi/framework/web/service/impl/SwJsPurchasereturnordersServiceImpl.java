@@ -37,6 +37,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * @author 15698
+ */
 @Slf4j
 @Service
 public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturnordersService {
@@ -103,7 +106,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public IdVo insertSwJsSkuBarcodes(CbpgDto cbpgDto) {
 
@@ -143,7 +146,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
      * @param itemList 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertSwJsSkuBarcodess(List<Cbph> itemList) {
         if(itemList.size()==0){
@@ -196,7 +199,7 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
             itemList.get(i).setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
             itemList.get(i).setUserId(Math.toIntExact(userid));
             mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次
+            if (i % 10 == 9) {
                 session.commit();
                 session.clearCache();
             }
@@ -219,7 +222,7 @@ Cbpg cbpgs = new Cbpg();
      * @param itemList 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertSwJsSkuBarcodesm(Cbpi itemList) {
         //id 商品id，库位id，
@@ -386,7 +389,7 @@ Cbpg cbpgs = new Cbpg();
         return 1;
     }
     //导入新增
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertSwJsStores(List<CbpgDo> itemList) {
         if(Objects.isNull(itemList.get(0).getSuppierName())){
@@ -482,7 +485,7 @@ Cbpg cbpgs = new Cbpg();
             itemList.get(i).setCbph13(itemList.get(0).getCbph13());
 
             mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次
+            if (i % 10 == 9) {
                 session.commit();
                 session.clearCache();
             }
@@ -492,7 +495,7 @@ Cbpg cbpgs = new Cbpg();
         return 1;
     }
 //导入
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Override
     public String importSwJsGoods(List<CbpgDo> swJsGoodsList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(swJsGoodsList) || swJsGoodsList.size() == 0)
@@ -517,8 +520,8 @@ Cbpg cbpgs = new Cbpg();
         }
         return successMsg.toString();    }
 
-        @Transactional
-    @Override
+          @Transactional(rollbackFor = Exception.class)
+        @Override
     public void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto) {
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
         if(!cbpg1.getCbpg11().equals(TaskStatus.mr.getCode())){
@@ -578,7 +581,7 @@ return;
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int deleteSwJsSkuBarcodsById(CbpgDto cbpgDto) {
 
@@ -620,7 +623,7 @@ for(int i=0;i<cbphs.size();i++) {
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateSwJsSkuBarcodes(CbpgDto cbpgDto) {
         //标记完成不可删除
@@ -746,7 +749,7 @@ if(infoss.size()>0) {
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int SwJsSkuBarcodeshs(CbpgDto cbpgDto) {
         Cbpg cbpg1 = cbpgMapper.selectByPrimaryKey(cbpgDto.getCbpg01());
@@ -775,7 +778,7 @@ if(infoss.size()>0) {
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int SwJsSkuBarcodesh(CbpgDto cbpgDto) {
 
@@ -817,7 +820,7 @@ if(infoss.size()>0) {
      * @return 结果
      */
     @SneakyThrows
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int SwJsSkuBarcodeshss(CbpgDto cbpgDto) {
 
@@ -924,7 +927,7 @@ if(infoss.size()>0) {
                 CbibDo cbibDo = new CbibDo();
                 cbibDo.setCbib02(cbpg1.getCbpg10());
                 cbibDo.setCbib03(cbpg1.getCbpg07());
-                cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
+                cbibDo.setCbib05(String.valueOf(TaskType.cgtkqxwc.getCode()));
                // cbibDo.setCbib06(cbsa.getCbsa08());
                 cbibDo.setCbib07(cbpg1.getCbpg01());
                 cbibDo.setCbib08(cbpds1.get(j).getCbph08());
@@ -933,7 +936,7 @@ if(infoss.size()>0) {
                 cbibDo.setCbib12(cbpds1.get(j).getCbph11()*cbpds1.get(j).getCbph09());
 
 
-                cbibDo.setCbib17(TaskType.cgrkd.getMsg());
+                cbibDo.setCbib17(TaskType.cgtkqxwc.getMsg());
                 cbibDo.setCbib19(cbpg1.getCbpg09());
                     taskService.InsertCBIB(cbibDo);
 
@@ -948,7 +951,7 @@ if(infoss.size()>0) {
      * @param cbpgDto 审核信息
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int SwJsSkuBarcodes(CbpgDto cbpgDto) throws InterruptedException {
         if(cbpgDto.getCbpg01()==null){

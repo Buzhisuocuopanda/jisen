@@ -181,6 +181,15 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib16(cbibDo.getCbib12());
 
             }
+            //采购退库单取消完成
+            if(cbibDo.getCbib17().equals(TaskType.cgtkqxwc.getMsg())){
+
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbibDo.getCbib11());
+                cbib.setCbib16(cbibDo.getCbib12());
+
+            }
            //调拨单调出
             if(cbibDo.getCbib17().equals(TaskType.zjd.getMsg())){
                 cbib.setCbib09((double) 0);
@@ -246,6 +255,22 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib16(cbib1.getCbib16()+cbibDo.getCbib12());
 
             }
+            if(cbibDo.getCbib17().equals(TaskType.cgtkqxwc.getMsg())){
+                if(cbib1.getCbib15()==null){
+                    cbib1.setCbib15((double) 0);
+                }
+                if(cbib1.getCbib16()==null){
+                    cbib1.setCbib16((double) 0);
+                }
+                cbib.setCbib09(cbib1.getCbib15());
+                cbib.setCbib10(cbib1.getCbib16());
+                cbib.setCbib13((double) 0);
+                cbib.setCbib14((double) 0);
+                cbib.setCbib15(cbib1.getCbib15()+cbibDo.getCbib11());
+                cbib.setCbib16(cbib1.getCbib16()+cbibDo.getCbib12());
+
+            }
+
 
             //直接入库
             if(Objects.equals(cbibDo.getCbib17(), TaskType.zjrk.getMsg())){
