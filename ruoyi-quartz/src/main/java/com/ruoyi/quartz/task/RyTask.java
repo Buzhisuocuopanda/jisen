@@ -3,9 +3,13 @@ package com.ruoyi.quartz.task;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.utils.StringUtils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 定时任务调度测试
- * 
+ *
  * @author ruoyi
  */
 @Component("ryTask")
@@ -39,5 +43,80 @@ public class RyTask
             System.out.println("删除失败");
         }
     }
+
+
+    public void deleteBYMenuFiles(){
+        String basePath = "D:\\ruoyi\\uploadPath";
+        File dir = new File(basePath);
+
+        List<File> allFileList = new ArrayList<>();
+
+        // 判断文件夹是否存在
+        if (!dir.exists()) {
+            System.out.println("目录不存在");
+            return;
+        }
+        getAllFile(dir, allFileList);
+
+        for (File file : allFileList) {
+            String name = file.getName();
+            if (name.length() >28){
+                if(file.getName().equals(name)){
+                    file.delete();
+                    System.out.println("删除文件"+file.getName());
+                }
+            }
+            //  System.out.println(file.getName());
+        }
+
+
+    }
+/*
+    public static void main(String[] args) {
+
+        String basePath = "D:\\work\\test";
+        File dir = new File(basePath);
+
+        List<File> allFileList = new ArrayList<>();
+
+        // 判断文件夹是否存在
+        if (!dir.exists()) {
+            System.out.println("目录不存在");
+            return;
+        }
+        getAllFile(dir, allFileList);
+
+        for (File file : allFileList) {
+            String name = file.getName();
+            if (name.length() >28){
+                if(file.getName().equals(name)){
+                    file.delete();
+                    System.out.println("删除文件"+file.getName());
+                }
+            }
+          //  System.out.println(file.getName());
+        }
+
+        System.out.println("该文件夹下共有" + allFileList.size() + "个文件");
+    }
+*/
+
+
+    public static void getAllFile(File fileInput, List<File> allFileList) {
+        // 获取文件列表
+        File[] fileList = fileInput.listFiles();
+        assert fileList != null;
+        for (File file : fileList) {
+            if (file.isDirectory()) {
+                // 递归处理文件夹
+                // 如果不想统计子文件夹则可以将下一行注释掉
+                getAllFile(file, allFileList);
+            } else {
+                // 如果是文件则将其加入到文件数组中
+                allFileList.add(file);
+            }
+        }
+    }
+
 
 }

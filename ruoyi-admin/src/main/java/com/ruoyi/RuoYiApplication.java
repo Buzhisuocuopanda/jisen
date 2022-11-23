@@ -4,6 +4,8 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 启动程序
@@ -29,4 +31,7 @@ public class RuoYiApplication
 //                " |  |  \\    /  \\      /           \n" +
 //                " ''-'   `'-'    `-..-'              ");
     }
+
+
+
 }

@@ -66,6 +66,7 @@ public class SwJsPurchaseinboundController extends BaseController {
         IdVo res=null;
 
         try {
+
             ValidUtils.bindvaild(bindingResult);
           res=swJsPurchaseinboundService.insertSwJsSkuBarcodes(cbpdDto);
             return AjaxResult.success(res);

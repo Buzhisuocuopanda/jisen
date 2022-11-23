@@ -3080,7 +3080,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
 
-        } else {
+        }
+        else {
 
             //更新操作
             Double qty = updateGjQtyDto.getQty();
