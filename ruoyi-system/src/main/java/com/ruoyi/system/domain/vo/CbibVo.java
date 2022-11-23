@@ -2,6 +2,7 @@ package com.ruoyi.system.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
+import org.apache.poi.ss.formula.functions.Count;
 
 import java.util.Date;
 
@@ -60,6 +61,12 @@ public class CbibVo {
     private Double inCount;
     @Excel(name = "出库数量")
     private Double outCount;
+
+    @Excel(name = "采购退库数量")
+    private Double cgOutCount;
+
+    @Excel(name = "产出差")
+    private Double outPutCount;
 
     private String[] monthlys;
 

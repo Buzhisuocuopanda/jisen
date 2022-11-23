@@ -266,7 +266,7 @@ public class FinanceQueryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('query:monthlyStockInAndOut:list')")
     public AjaxResult<TableDataInfo> monthlyStockInAndOut(CbibVo cbibVo) {
         try {
-            startPage();
+//            startPage();
             List<CbibVo> list = financeQueryService.monthlyStockInAndOut(cbibVo);
             return  AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
