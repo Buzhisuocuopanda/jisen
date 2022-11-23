@@ -7,6 +7,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.File;
+
 /**
  * 定时任务调度测试
  *
@@ -32,17 +34,44 @@ public class RyTask
 
     public void deleteBYMenuFile()
     {
-        String cmd ="rm -f /data/ruoyidata/";
+//        String cmd ="rm -f /data/ruoyidata/";
+//        try{
+//            Process process = Runtime.getRuntime().exec(cmd);
+//            System.out.println("执行删除Linux目录下文件");
+//            process.waitFor();
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.println("删除失败");
+//        }
+
         try{
-            Process process = Runtime.getRuntime().exec(cmd);
-            System.out.println("执行删除Linux目录下文件");
-            process.waitFor();
+            File index = new File("D:\\ruoyi\\uploadPath\\data");
+            File[] files = index.listFiles();
+            for (File file : files) {
+//                if (file.isDirectory())
+//                    delFile(file);
+                file.delete();
+            }
 
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("删除失败");
         }
     }
+    //删除文件及文件夹方法
+    public static void delFile(File index){
+        if (index.isDirectory()){
+            File[] files = index.listFiles();
+            for (File in: files) {
+                delFile(in);
+            }
+        }
+        index.delete();
+        //出现几次删除成功代表有几个文件和文本文件
+        System.out.println("删除成功");
+    }
+
 
 
     public void deleteBYMenuFiles(){

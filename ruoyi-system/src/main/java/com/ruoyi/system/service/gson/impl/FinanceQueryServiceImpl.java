@@ -469,7 +469,8 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //
 //    }
     public List<FnGoodsSkuVo> fnSkuList(FnGoodsSkuDto fnGoodsSkuDto) throws InterruptedException {
-        // 期初库存上次结存 生产入库的所有入库的  累计的是生产入库(如果生产是0累计也是0)的不良的 销售出库出库的
+        // 正常的库存情况 当天入 当天有不良返工（采购退库） 累计期初加生产减去不良 库存累积减去销售出库
+        //没有入库的 累积 期初减去不良
 //        List<Cbib> cbibs = cbibMapper.fnSkuListCbib(fnGoodsSkuDto);
 
 
@@ -477,6 +478,9 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         Map<String,Integer> distnt=new HashMap<>();
         List<FnGoodsSkuVo> list=new ArrayList<>();
         for (FnGoodsSkuVo fnGoodsSkuVo : list2) {
+            if(fnGoodsSkuVo.getGoodsId()==null || fnGoodsSkuVo.getWhId()==null){
+                continue;
+            }
             if(!distnt.containsKey(fnGoodsSkuVo.getGoodsId()+fnGoodsSkuVo.getWhId()+"")){
                 distnt.put(fnGoodsSkuVo.getGoodsId()+fnGoodsSkuVo.getWhId()+"",1);
                 list.add(fnGoodsSkuVo);
@@ -591,6 +595,18 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //            }
                         List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId());
                         if(mpibs==null){
+                            //查该商品最新的一条
+                            CbibCriteria ibex=new CbibCriteria();
+                            ibex.createCriteria()
+                                    .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId());
+                            ibex.setOrderByClause("CBIB04 DESC");
+                            List<Cbib> newibs = cbibMapper.selectByExample(ibex);
+                            if(newibs.size()!=0){
+                                Cbib cbib = newibs.get(0);
+                                firstQty=cbib.getCbib15();
+                                skuQty=cbib.getCbib15();
+                            }
+
                             fnGoodsSkuVo.setOutSaleQty(saleOutQty);
                             fnGoodsSkuVo.setBadQty(Double.valueOf(badQty));
 
@@ -622,22 +638,31 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                                 makeQty=makeQty+cbib.getCbib11();
                             }
 
+                            if(!TaskType.xcckd.getMsg().equals(cbib.getCbib17()) && !TaskType.cgtkd.getMsg().equals(cbib.getCbib17())){
+                                makeQty=makeQty-cbib.getCbib13();
+                            }
+
+                            if(TaskType.cgtkd.getMsg().equals(cbib.getCbib17())){
+                                badQty=badQty+cbib.getCbib13();
+                            }
 
 
                         }
                         fnGoodsSkuDto.setGoodsId(fnGoodsSkuVo.getGoodsId());
-                        List<Cbqb> res=  cbqbMapper.selectGoodsBadkcqk(fnGoodsSkuDto);
+//                        List<Cbqb> res=  cbqbMapper.selectGoodsBadkcqk(fnGoodsSkuDto);
                         fnGoodsSkuVo.setOutSaleQty(saleOutQty);
-                        fnGoodsSkuVo.setBadQty(Double.valueOf(res.size()));
+                        fnGoodsSkuVo.setBadQty(badQty);
 
                         fnGoodsSkuVo.setFirstQty(firstQty);
                         fnGoodsSkuVo.setMakeQty(makeQty);
-                        fnGoodsSkuVo.setSkuQty(skuQty);
-                        if(makeQty==0){
-                            fnGoodsSkuVo.setTotalQty(0.0);
-                        }else {
-                            fnGoodsSkuVo.setTotalQty(makeQty-badQty);
-                        }
+                        fnGoodsSkuVo.setTotalQty(makeQty);
+
+                        fnGoodsSkuVo.setSkuQty(fnGoodsSkuVo.getFirstQty()+fnGoodsSkuVo.getMakeQty()-fnGoodsSkuVo.getBadQty()-fnGoodsSkuVo.getOutSaleQty());
+//                        if(makeQty==0){
+//                            fnGoodsSkuVo.setTotalQty(0.0);
+//                        }else {
+//                            fnGoodsSkuVo.setTotalQty(makeQty-badQty);
+//                        }
 
 
 
@@ -850,36 +875,81 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
     @Override
     public List<CbibVo> monthlyStockInAndOut(CbibVo cbibVo) {
-        List<CbibVo> cbibVos = cbibMapper.monthlyStockInAndOut(cbibVo);
-        List<CbibVo> cbibVoss=new ArrayList<>();
-        for (int i = 0; i < cbibVos.size(); i++) {
+        List<CbibVo> cbibVosdb = cbibMapper.monthlyStockInAndOut(cbibVo);
+        Map<Integer,List<CbibVo>> resMap=new HashMap<>();
+
+        for (CbibVo vo : cbibVosdb) {
+            if(resMap.containsKey(vo.getCbib08())){
+                resMap.get(vo.getCbib08()).add(vo);
+
+            }else {
+                List<CbibVo> list=new ArrayList<>();
+                list.add(vo);
+                resMap.put(vo.getCbib08(),list);
+            }
+        }
+//        List<CbibVo> reslist = cbibMapper.monthlyStockInAndOut(cbibVo);
+        List<CbibVo> reslist=new ArrayList<>();
+        for (Integer integer : resMap.keySet()) {
+            List<CbibVo> cbibVos = resMap.get(integer);
+            Double inQty=0.0;
+            Double outQty=0.0;
+            Double cgOutQty=0.0;
+            CbibVo resVo=new CbibVo();
+            for (int i = 0; i < cbibVos.size(); i++) {
+                resVo=cbibVos.get(i);
+                inQty=inQty+resVo.getCbib11();
+
+                if(TaskType.cgtkd.getMsg().equals(resVo.getCbib17())){
+                    cgOutQty=cgOutQty+resVo.getCbib13();
+                }
+
+                else if(TaskType.xcckd.getMsg().equals(resVo.getCbib17())){
+                    outQty=outQty+resVo.getCbib13();
+                }else {
+                    inQty=inQty-resVo.getCbib13();
+                }
+
+            }
+
+            resVo.setOutCount(outQty);
+            resVo.setInCount(inQty);
+            resVo.setCgOutCount(cgOutQty);
+            resVo.setOutPutCount(inQty-outQty);
+            if(inQty!=0 || outQty!=0 || cgOutQty!=0){
+                reslist.add(resVo);
+            }
+
+
+
+
             //直接入库数量减去直接入库删除数量
 
-            if(cbibVos.get(i).getInCount()!=null && cbibVos.get(i).getCbib02()!=null
-            && cbibVos.get(i).getCbib08()!=null){
-
-                    CbibCriteria ibex = new CbibCriteria();
-                    ibex.createCriteria().andCbib02EqualTo(cbibVos.get(i).getCbib02())
-                            .andCbib08EqualTo(cbibVos.get(i).getCbib08())
-                            .andCbib17EqualTo("直接入库删除");
-                    List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
-                    if(cbibs.size()>0){
-                        cbibVos.get(i).setInCount(cbibVos.get(i).getInCount()-cbibs.size());
-                    }
-
-
-
-            }
-            if (cbibVos.get(i).getCbib17() != null) {
-                if (!TaskType.xcckd.getMsg().equals(cbibVos.get(i).getCbib17())) {
-                    cbibVos.get(i).setOutCount(0.0);
-                }
-            }
-          if(cbibVos.get(i).getInCount()==0 && cbibVos.get(i).getOutCount()==0){
-              cbibVos.remove(cbibVos.get(i));
-           }
+//            if(cbibVos.get(i).getInCount()!=null && cbibVos.get(i).getCbib02()!=null
+//            && cbibVos.get(i).getCbib08()!=null){
+//
+//                    CbibCriteria ibex = new CbibCriteria();
+//                    ibex.createCriteria().andCbib02EqualTo(cbibVos.get(i).getCbib02())
+//                            .andCbib08EqualTo(cbibVos.get(i).getCbib08())
+//                            .andCbib17EqualTo("直接入库删除");
+//                    List<Cbib> cbibs = cbibMapper.selectByExample(ibex);
+//                    if(cbibs.size()>0){
+//                        cbibVos.get(i).setInCount(cbibVos.get(i).getInCount()-cbibs.size());
+//                    }
+//
+//
+//
+//            }
+//            if (cbibVos.get(i).getCbib17() != null) {
+//                if (!TaskType.xcckd.getMsg().equals(cbibVos.get(i).getCbib17())) {
+//                    cbibVos.get(i).setOutCount(0.0);
+//                }
+//            }
+//          if(cbibVos.get(i).getInCount()==0 && cbibVos.get(i).getOutCount()==0){
+//              cbibVos.remove(cbibVos.get(i));
+//           }
         }
-        return cbibVos;
+        return reslist;
 
     }
     @Override
