@@ -1450,9 +1450,7 @@ else{
             List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
             if(gsGoodsSnList.size()>0){
                 if (gsGoodsSnList.get(0).getGroudStatus()!=null) {
-                    if(gsGoodsSnList.get(0).getGroudStatus()!=1){
-                        throw new SwException("该sn已下架");
-                    }
+
                 }
             }
 
