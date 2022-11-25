@@ -53,4 +53,6 @@ public interface ISWQualityinspectionlistService {
     void SwJsPurchaseinboundeditone(CbqaDo cbqaDo);
 
     List<CbqaVo> swJsGoodslistsssy(CbqaVo cbqaVo);
+
+    int insertSwJsSkuBarcodesplus(CbqaDo cbqaDo);
 }

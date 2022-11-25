@@ -33,4 +33,6 @@ public interface ISalesreturnordersService {
     int insertSwJsSkuBarcodergqr(CbseDo cbseDo);
 
     void Selloutofwarehousedeitone(CbseDo cbseDo);
+
+    int insertSelloutofwarehouseplus(CbseDo cbseDo);
 }

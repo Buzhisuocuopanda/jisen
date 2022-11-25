@@ -52,4 +52,6 @@ public interface ISwJsPurchaseinboundService {
     int insertSwJsSkuBarcsodesm(List<Cbpd> itemList);
 
     void SwJsPurchaseinboundeditone(CbpdDto cbpdDto);
+
+    int insertSwJsSkuBarcodesplus(CbpdDto cbpdDto);
 }

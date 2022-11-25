@@ -35,4 +35,6 @@ public interface ISelloutofwarehouseService {
     int insertSwJsSkuBarcodedit(CbsbDo cbsbDo);
 
     void Selloutofwarehouseeditone(CbsbDo cbsbDo);
+
+    int insertSelloutofwarehouseplus(CbsbDo cbsbDo);
 }

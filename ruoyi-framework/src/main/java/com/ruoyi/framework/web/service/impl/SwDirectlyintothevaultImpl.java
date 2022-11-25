@@ -24,17 +24,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.stream.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -146,37 +141,19 @@ if(cbicDto.size()==0){
 
         ///
 
-        /*CbiwVo cbiwVo = new CbiwVo();
-        cbiwVo.setUser(Math.toIntExact(userid));
-        List<CbiwVo> selectbystoreandgoods = cbiwMapper.selectbystoreandgoods(cbiwVo);
-        if(selectbystoreandgoods.size()>0){
-            for(int m=0;m<selectbystoreandgoods.size();m++){
-                     //台账
-        CbibDo cbibDo = new CbibDo();
-        cbibDo.setCbib02(selectbystoreandgoods.get(m).getStoreid());
-        cbibDo.setCbib04(date);
-        cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
-        cbibDo.setCbib08(selectbystoreandgoods.get(m).getGoodsid());
-        cbibDo.setCbib11(selectbystoreandgoods.get(m).getSum());
-        cbibDo.setCbib17(TaskType.zjrk.getMsg());
 
-        taskService.InsertCBIB(cbibDo);
-            }
-        }*/
-
-
-        for (int i=0;i<cbicDto.size();i++) {
+        for (CbicDto dto : cbicDto) {
 
 
             CbpbCriteria exampe = new CbpbCriteria();
-            exampe.createCriteria().andCbpb15EqualTo(cbicDto.get(i).getUpc());
+            exampe.createCriteria().andCbpb15EqualTo(dto.getUpc());
             List<Cbpb> cbpbs = cbbpbMapper.selectByExample(exampe);
-            if(cbpbs.size()==0){
+            if (cbpbs.size() == 0) {
                 throw new SwException("该upc没有对应商品");
             }
 
-           //删除临时表
-            String cbic10 = cbicDto.get(i).getSn();
+            //删除临时表
+            String cbic10 = dto.getSn();
         /*    CbiwCriteria cbiwCriteria = new CbiwCriteria();
             cbiwCriteria.createCriteria().andSnEqualTo(cbic10);
             cbiwMapper.deleteByExample(cbiwCriteria);
@@ -184,21 +161,20 @@ if(cbicDto.size()==0){
 
             String uuid = UUID.randomUUID().toString();
             Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
-            if (!lock) {
+            if (Boolean.FALSE.equals(lock)) {
                 throw new SwException("sn重复，请勿重复提交");
             }
-            String s = redisTemplate.opsForValue().get(cbic10);
+            redisTemplate.opsForValue().get(cbic10);
 
 
             try {
 
 
-
-               // Long userid = SecurityUtils.getUserId();
+                // Long userid = SecurityUtils.getUserId();
 
                 //获取仓库id
                 CblaCriteria example = new CblaCriteria();
-                example.createCriteria().andCbla09EqualTo(cbicDto.get(i).getStoresku());
+                example.createCriteria().andCbla09EqualTo(dto.getStoresku());
                 List<Cbla> cbla = cblaMapper.selectByExample(example);
 
                 if (cbla == null) {
@@ -216,54 +192,54 @@ if(cbicDto.size()==0){
                 DirectWarehousingVo directWarehousingVo = orderDistributionService.directWarehousing(directWarehousingDto);
 
                 CbicCriteria example1 = new CbicCriteria();
-                example1.createCriteria().andCbic10EqualTo(cbicDto.get(i).getSn());
+                example1.createCriteria().andCbic10EqualTo(dto.getSn());
                 List<Cbic> cbicss = cbicMapper.selectByExample(example1);
 
 
-                if(cbicss.size()>0){
+                if (cbicss.size() > 0) {
                     CbicCriteria asf = new CbicCriteria();
-                    asf.createCriteria().andCbic10EqualTo(cbicDto.get(i).getSn());
-                    cbicDto.get(i).setCbic02(date);
-                    cbicDto.get(i).setCbic03(date);
-                    cbicDto.get(i).setCbic04(Math.toIntExact(userid));
-                    cbicDto.get(i).setCbic05(Math.toIntExact(userid));
-                    cbicDto.get(i).setCbic07(cbicss.get(0).getCbic07());
-                    cbicDto.get(i).setCbic09(cbicss.get(0).getCbic09());
-                    cbicDto.get(i).setCbic08(cbicss.get(0).getCbic08());
-                    cbicDto.get(i).setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
+                    asf.createCriteria().andCbic10EqualTo(dto.getSn());
+                    dto.setCbic02(date);
+                    dto.setCbic03(date);
+                    dto.setCbic04(Math.toIntExact(userid));
+                    dto.setCbic05(Math.toIntExact(userid));
+                    dto.setCbic07(cbicss.get(0).getCbic07());
+                    dto.setCbic09(cbicss.get(0).getCbic09());
+                    dto.setCbic08(cbicss.get(0).getCbic08());
+                    dto.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
 
-                    cbicMapper.updateByExampleSelective(cbicDto.get(i),asf);
+                    cbicMapper.updateByExampleSelective(dto, asf);
 
                 }
                 //添加
                 else {
                     // Cbic cbic =new Cbic();
-                    cbicDto.get(i).setCbic02(date);
-                    cbicDto.get(i).setCbic03(date);
-                    cbicDto.get(i).setCbic04(Math.toIntExact(userid));
-                    cbicDto.get(i).setCbic05(Math.toIntExact(userid));
-                    cbicDto.get(i).setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
-                    cbicDto.get(i).setCbic09(cbpbs.get(0).getCbpb01());
-                    cbicDto.get(i).setCbic12(date);
-                    cbicDto.get(i).setCbic15(directWarehousingVo.getOrderType());
-                    cbicDto.get(i).setCbic10(cbicDto.get(i).getSn());
-                    cbicDto.get(i).setCbic09(cbpbs.get(0).getCbpb01());
-                    cbicDto.get(i).setCbic07(cbla.get(0).getCbla10());
-                    cbicDto.get(i).setCbic08(cbla.get(0).getCbla01());
-                    cbicDto.get(i).setUserId(Math.toIntExact(userid));
-                    cbicMapper.insertSelective(cbicDto.get(i));
+                    dto.setCbic02(date);
+                    dto.setCbic03(date);
+                    dto.setCbic04(Math.toIntExact(userid));
+                    dto.setCbic05(Math.toIntExact(userid));
+                    dto.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
+                    dto.setCbic09(cbpbs.get(0).getCbpb01());
+                    dto.setCbic12(date);
+                    dto.setCbic15(directWarehousingVo.getOrderType());
+                    dto.setCbic10(dto.getSn());
+                    dto.setCbic09(cbpbs.get(0).getCbpb01());
+                    dto.setCbic07(cbla.get(0).getCbla10());
+                    dto.setCbic08(cbla.get(0).getCbla01());
+                    dto.setUserId(Math.toIntExact(userid));
+                    cbicMapper.insertSelective(dto);
                 }
                 //  cbicMapper.insertSelective(cbic);
                 GsGoodsSnCriteria exampler = new GsGoodsSnCriteria();
-                exampler.createCriteria().andSnEqualTo(cbicDto.get(i).getSn());
+                exampler.createCriteria().andSnEqualTo(dto.getSn());
                 List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(exampler);
 
-                if (gsGoodsSns.size() > 0 ) {
-                    if(gsGoodsSns.get(0).getStatus()==1){
+                if (gsGoodsSns.size() > 0) {
+                    if (gsGoodsSns.get(0).getStatus() == 1) {
                         throw new SwException("该商品sn已入库");
                     }
 
-                    GsGoodsSn  gsGoodsSn=new GsGoodsSn();
+                    GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setRepairStatus(0);
                     gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
                     gsGoodsSn.setUpdateTime(date);
@@ -271,15 +247,14 @@ if(cbicDto.size()==0){
                     gsGoodsSn.setGoodsId(gsGoodsSns.get(0).getGoodsId());
                     gsGoodsSn.setLocationId(gsGoodsSns.get(0).getLocationId());
                     GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
-                    tyui.createCriteria().andSnEqualTo(cbicDto.get(i).getSn());
+                    tyui.createCriteria().andSnEqualTo(dto.getSn());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, tyui);
                     //台账
 
-                }
-                else {
+                } else {
                     //加sn表
                     GsGoodsSnDo gsGoodsSnDo = new GsGoodsSnDo();
-                    gsGoodsSnDo.setSn(cbicDto.get(i).getSn());
+                    gsGoodsSnDo.setSn(dto.getSn());
                     gsGoodsSnDo.setGoodsId(cbpbs.get(0).getCbpb01());
                     gsGoodsSnDo.setWhId(cbla.get(0).getCbla10());
                     gsGoodsSnDo.setLocationId(cbla.get(0).getCbla01());
@@ -290,8 +265,6 @@ if(cbicDto.size()==0){
 
 
                 }
-
-
 
 
                 GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
@@ -309,13 +282,13 @@ if(cbicDto.size()==0){
                     GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
                     example21.createCriteria()
                             .andLocationIdEqualTo(cbla.get(0).getCbla01());
-                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
-                    if(gsGoodsSkus1.size()>0){
-                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                        if(sum +1>cbla.get(0).getCbla11()){
-                          //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
-                        }
-                    }
+                    gsGoodsSkuMapper.selectByExample(example21);
+                   /* if (gsGoodsSkus1.size() > 0) {
+                      //  gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                     *//*   if (sum + 1 > cbla.get(0).getCbla11()) {
+                            //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                        }*//*
+                    }*/
 
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                     gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
@@ -330,13 +303,13 @@ if(cbicDto.size()==0){
                     GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
                     example21.createCriteria()
                             .andLocationIdEqualTo(cbla.get(0).getCbla01());
-                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
-                    if(gsGoodsSkus1.size()>0){
-                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                        if(sum +1>cbla.get(0).getCbla11()){
-                          //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
-                        }
-                    }
+                    gsGoodsSkuMapper.selectByExample(example21);
+                    /*if (gsGoodsSkus1.size() > 0) {
+                       // gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                    *//*    if (sum + 1 > cbla.get(0).getCbla11()) {
+                            //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                        }*//*
+                    }*/
 
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
@@ -352,15 +325,11 @@ if(cbicDto.size()==0){
                 }
 
                 CbicCriteria cbicCriteria = new CbicCriteria();
-                cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.get(i).getSn());
-                List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
+                cbicCriteria.createCriteria().andCbic10EqualTo(dto.getSn());
+                cbicMapper.selectByExample(cbicCriteria);
 
 
-
-
-
-
-            }  finally {
+            } finally {
 
                 String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                         "then " +
@@ -368,9 +337,9 @@ if(cbicDto.size()==0){
                         "else " +
                         "return 0 " +
                         "end";
-              this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList("lock"), uuid);
+                this.redisTemplate.execute(new DefaultRedisScript<>(script, Boolean.class), Collections.singletonList("lock"), uuid);
             }
-          //  mapper.insertSelective(cbicDto.get(i));
+            //  mapper.insertSelective(cbicDto.get(i));
 
         }
     /*    session.commit();
@@ -421,7 +390,7 @@ if(cbicDto.size()==0){
 //库位容量控制
         CbiwCriteria dfg= new CbiwCriteria();
         dfg.createCriteria().andStoreskuEqualTo(cbiw.getStoresku());
-        List<Cbiw> cbicDtos1 = cbiwMapper.selectByExample(dfg);
+        cbiwMapper.selectByExample(dfg);
 
         CblaCriteria cblaCriteria = new CblaCriteria();
         cblaCriteria.createCriteria().andCbla09EqualTo(cbiw.getStoresku());
@@ -433,21 +402,6 @@ if(cbicDto.size()==0){
                 }
             }
             //库位容量
-       /*     Double nums = cblas.get(0).getCbla11();
-            GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
-            gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
-            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
-            if(gsGoodsSkus.size()>0){
-                double skusum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                if (skusum+cbicDtos1.size()>=nums) {
-                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
-                }
-            }else {
-                if (cbicDtos1.size()>=nums) {
-                    throw new SwException("库位容量不足，库位码为"+cblas.get(0).getCbla09());
-                }
-
-            }*/
 
 
         }
@@ -526,30 +480,13 @@ if(cbicDto.size()==0){
         String cbic10 = cbicDto.getCbic10();
         String uuid = UUID.randomUUID().toString();
         Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
-        if (!lock) {
+        if (Boolean.FALSE.equals(lock)) {
             throw new SwException("sn重复，请勿重复提交");
         }
-        String s = redisTemplate.opsForValue().get(cbic10);
+        redisTemplate.opsForValue().get(cbic10);
 
 
         try {
-
-          /*  CbicCriteria example1 = new CbicCriteria();
-            example1.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
-            List<Cbic> cbicss = cbicMapper.selectByExample(example1);
-            if (cbicss.size() > 0) {
-                throw new SwException("该sn已经存在");
-            }else{
-
-            }
-
-
-            GsGoodsSnCriteria example = new GsGoodsSnCriteria();
-            example.createCriteria().andSnEqualTo(cbicDto.getCbic10());
-            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example);
-            if (gsGoodsSns.size() > 0) {
-                throw new SwException("该sn已经存在仓库中");
-            }*/
 
             // 检查供应商
             // baseCheckService.checksupplier(cbicDto.getCbic13());
@@ -577,141 +514,6 @@ if(cbicDto.size()==0){
             CbicCriteria example1 = new CbicCriteria();
             example1.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
             List<Cbic> cbicss = cbicMapper.selectByExample(example1);
-      /*      if (cbicss.size() > 0) {
-
-
-                Cbic cbic=new Cbic();
-                cbic.setCbic02(date);
-                CbicCriteria example2 = new CbicCriteria();
-                example2.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
-                cbicMapper.updateByExampleSelective(cbic,example2);
-
-                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-                //获取仓库id
-                gsGoodsSkuDo.setWhId(cbicDto.getCbic07());
-                //获取商品id
-                gsGoodsSkuDo.setGoodsId(cbpbs.get(0).getCbpb01());
-                //获取库位id
-                gsGoodsSkuDo.setLocationId(cbicDto.getCbic08());
-                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-                //通过仓库id和货物id判断是否存在
-                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-                if (gsGoodsSkus.size() == 0) {
-                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
-                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
-                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
-                    gsGoodsSkuDo1.setQty(1.0);
-                    taskService.addGsGoodsSku(gsGoodsSkuDo1);
-                }
-                //如果存在则更新库存数量
-                else {
-                    //加锁
-                    baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
-                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
-                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
-                    //查出
-                    Double qty = gsGoodsSkus.get(0).getQty();
-                    gsGoodsSkuDo1.setQty(qty + 1.0);
-                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
-
-                }
-
-                CbicCriteria cbicCriteria = new CbicCriteria();
-                cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
-                List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
-
-                // Integer cbic13 = cbicDto.getCbic13();
-                //  Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
-
-                CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
-                cbibDo.setCbib02(storeid);
-                cbibDo.setCbib04(date);
-                cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
-                // cbibDo.setCbib06(cbsa1.getCbsa08());
-                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
-                // cbibDo.setCbib06(cbsa.getCbsa08());
-
-                cbibDo.setCbib07(cbics.get(0).getCbic01());
-                cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
-
-                cbibDo.setCbib17(TaskType.zjrk.getMsg());
-                cbibDo.setCbib19(cbicDto.getCbic13());
-
-                taskService.InsertCBIB(cbibDo);
-            }
-            else{
-                //添加
-                Cbic cbic = BeanCopyUtils.coypToClass(cbicDto, Cbic.class, null);
-                cbic.setCbic02(date);
-                cbic.setCbic03(date);
-                cbic.setCbic04(Math.toIntExact(userid));
-                cbic.setCbic05(Math.toIntExact(userid));
-                cbic.setCbic06(DeleteFlagEnum.NOT_DELETE.getCode());
-                cbic.setCbic09(cbpbs.get(0).getCbpb01());
-                cbic.setCbic12(date);
-                cbic.setCbic15(directWarehousingVo.getOrderType());
-                cbic.setUserId(Math.toIntExact(userid));
-                cbicMapper.insertSelective(cbic);
-
-                GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
-                //获取仓库id
-                gsGoodsSkuDo.setWhId(cbicDto.getCbic07());
-                //获取商品id
-                gsGoodsSkuDo.setGoodsId(cbpbs.get(0).getCbpb01());
-                //获取库位id
-                gsGoodsSkuDo.setLocationId(cbicDto.getCbic08());
-                gsGoodsSkuDo.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
-                //通过仓库id和货物id判断是否存在
-                List<GsGoodsSku> gsGoodsSkus = taskService.checkGsGoodsSku(gsGoodsSkuDo);
-                if (gsGoodsSkus.size() == 0) {
-                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
-                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
-                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
-                    gsGoodsSkuDo1.setQty(1.0);
-                    taskService.addGsGoodsSku(gsGoodsSkuDo1);
-                }
-                //如果存在则更新库存数量
-                else {
-                    //加锁
-                    baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
-                    GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
-                    gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
-                    gsGoodsSkuDo1.setWhId(cbicDto.getCbic07());
-                    gsGoodsSkuDo1.setLocationId(cbicDto.getCbic08());
-                    //查出
-                    Double qty = gsGoodsSkus.get(0).getQty();
-                    gsGoodsSkuDo1.setQty(qty + 1.0);
-                    taskService.updateGsGoodsSku(gsGoodsSkuDo1);
-
-                }
-
-                CbicCriteria cbicCriteria = new CbicCriteria();
-                cbicCriteria.createCriteria().andCbic10EqualTo(cbicDto.getCbic10());
-                List<Cbic> cbics = cbicMapper.selectByExample(cbicCriteria);
-
-                // Integer cbic13 = cbicDto.getCbic13();
-                //  Cbsa cbsa1 = cbsaMapper.selectByPrimaryKey(cbic13);
-
-                CbibDo cbibDo = BeanCopyUtils.coypToClass(cbic, CbibDo.class, null);
-                cbibDo.setCbib02(storeid);
-                cbibDo.setCbib04(date);
-                cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
-                // cbibDo.setCbib06(cbsa1.getCbsa08());
-                Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
-                // cbibDo.setCbib06(cbsa.getCbsa08());
-
-                cbibDo.setCbib07(cbics.get(0).getCbic01());
-                cbibDo.setCbib08(cbpbs.get(0).getCbpb01());
-
-                cbibDo.setCbib17(TaskType.zjrk.getMsg());
-                cbibDo.setCbib19(cbicDto.getCbic13());
-
-                taskService.InsertCBIB(cbibDo);
-            }*/
 
             if(cbicss.size()>0){
                 throw new SwException("sn重复");
@@ -775,7 +577,7 @@ if(cbicDto.size()==0){
             cbibDo.setCbib04(date);
             cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
             // cbibDo.setCbib06(cbsa1.getCbsa08());
-            Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
+        cbsaMapper.selectByPrimaryKey(cbicDto.getCbic13());
             // cbibDo.setCbib06(cbsa.getCbsa08());
 
             cbibDo.setCbib07(cbics.get(0).getCbic01());
@@ -828,7 +630,7 @@ if(cbicDto.size()==0){
                     "else " +
                     "return 0 " +
                     "end";
-            this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList("lock"), uuid);
+            this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Collections.singletonList("lock"), uuid);
         }
         return 1;
 
@@ -856,10 +658,6 @@ if(cbicDto.size()==0){
                     if(gsGoodsSns.get(0).getStatus()!=1){
                         throw new SwException("该商品sn不是入库状态");
                     }
-                 /*   GsGoodsSn gsGoodsSn=new GsGoodsSn();
-                    gsGoodsSn.setStatus(TaskStatus.qxwc.getCode().byteValue());
-                    gsGoodsSn.setUpdateTime(new Date());
-                    gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());*/
                     GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
                     tyui.createCriteria().andSnEqualTo(cbic1.getCbic10());
                     gsGoodsSnMapper.deleteByExample(tyui);
@@ -1007,17 +805,17 @@ if(cbsds.size()>0) {
             .andCbsc08EqualTo(cbsds.get(0).getCbsd08());
     List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
     if (cbscList.size() > 0) {
-        for (int i = 0; i < cbscList.size(); i++) {
-            if (cbscList.get(i).getScannum()!= null) {
-                if(cbscList.get(i).getScannum() - 1.0 >= 0){
+        for (Cbsc cbsc : cbscList) {
+            if (cbsc.getScannum() != null) {
+                if (cbsc.getScannum() - 1.0 >= 0) {
 
-                    cbscList.get(i).setScannum(cbscList.get(i).getScannum() - 1);
-                    cbscMapper.updateByPrimaryKeySelective(cbscList.get(i));
+                    cbsc.setScannum(cbsc.getScannum() - 1);
+                    cbscMapper.updateByPrimaryKeySelective(cbsc);
                     break;
                 }
-                if(cbscList.get(i).getScannum() - 1.0 <0)continue;
+                if (cbsc.getScannum() - 1.0 < 0) continue;
             } else {
-                 throw new SwException("扫描数量不能为空");
+                throw new SwException("扫描数量不能为空");
 
             }
         }
@@ -1052,17 +850,6 @@ if(cbsds.size()>0) {
             CbacCriteria example = new CbacCriteria();
             example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                     .andCbaa01EqualTo(cbiw.getId());
-            List<Cbac> cbacs = cbacMapper.selectByExample(example);
-          /*  if(cbacs.size()>0){
-                //恢复调出仓库
-                if(cbacs.get(0).getCbac11()!=null){
-                GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.getType().byteValue());
-                gsGoodsSn.setSn(cbiw.getSn());
-                GsGoodsSnCriteria exampwle = new GsGoodsSnCriteria();
-                exampwle.createCriteria().andSnEqualTo(cbiw.getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,exampwle);}
-            }*/
             Cbac cbac =  Cbac.getInstance();
             cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
             cbacMapper.deleteByExample(example);
@@ -1080,7 +867,7 @@ if(cbsds.size()>0) {
             Cbaa cbaa = cbaaMapper.selectByPrimaryKey(cbiw.getId());
             if(cbaa!=null){
                 if(cbaa.getCbaa11()!=null){
-                    if(cbaa.getCbaa11().equals("4")){
+                    if(cbaa.getCbaa11().equals(4)){
                         throw new SwException("调拨单已经标记完成，不能删除");
                     }
                 }
@@ -1090,7 +877,7 @@ if(cbsds.size()>0) {
                         CbacCriteria example = new CbacCriteria();
                         example.createCriteria().andCbac09EqualTo(cbiw.getSn())
                                 .andCbaa01EqualTo(cbiw.getId());
-                        int i = cbacMapper.deleteByExample(example);
+                         cbacMapper.deleteByExample(example);
                     }else {
                         CbacCriteria example = new CbacCriteria();
                         example.createCriteria().andCbac09EqualTo(cbiw.getSn())
@@ -1185,12 +972,12 @@ if(cbsds.size()>0) {
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbiwMapper mapper = session.getMapper(CbiwMapper.class);
-        for (int i = 0; i < cbiw.size(); i++) {
-            if(cbiw.get(i).getSn()==null){
+        for (Cbiw value : cbiw) {
+            if (value.getSn() == null) {
                 throw new SwException("sn不能为空");
             }
             CbiwCriteria example = new CbiwCriteria();
-            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn())
+            example.createCriteria().andSnEqualTo(value.getSn())
                     .andUserEqualTo(Math.toIntExact(userid));
 
             mapper.deleteByExample(example);
@@ -1204,135 +991,134 @@ if(cbsds.size()>0) {
     public int deletelessws(List<deleteVo> cbiw) {
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         GsGoodsSnMapper mapper = session.getMapper(GsGoodsSnMapper.class);
-        for(int i=0;i<cbiw.size();i++){
-            if(cbiw.get(i).getSn()==null){
+        for (com.ruoyi.system.domain.vo.deleteVo deleteVo : cbiw) {
+            if (deleteVo.getSn() == null) {
                 throw new SwException("sn不能为空");
             }
-            if(cbiw.get(i).getType()==null){
+            if (deleteVo.getType() == null) {
                 throw new SwException("类型不能为空");
             }
-            if(cbiw.get(i).getTypes()==null){
+            if (deleteVo.getTypes() == null) {
                 throw new SwException("订单类型不能为空");
             }
-            if(cbiw.get(i).getTypes()==1){
+            if (deleteVo.getTypes() == 1) {
                 CbpeCriteria example = new CbpeCriteria();
-                example.createCriteria().andCbpe09EqualTo(cbiw.get(i).getSn())
-                        .andCbpc01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbpe09EqualTo(deleteVo.getSn())
+                        .andCbpc01EqualTo(deleteVo.getId());
                 cbpeMapper.deleteByExample(example);
 
 
-
-                GsGoodsSnCriteria saf=new GsGoodsSnCriteria();
-                saf.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
+                GsGoodsSnCriteria saf = new GsGoodsSnCriteria();
+                saf.createCriteria().andSnEqualTo(deleteVo.getSn());
                 gsGoodsSnMapper.deleteByExample(saf);
             }
-            if(cbiw.get(i).getTypes()==2){
+            if (deleteVo.getTypes() == 2) {
                 CbpiCriteria example = new CbpiCriteria();
-                example.createCriteria().andCbpi09EqualTo(cbiw.get(i).getSn())
-                        .andCbpg01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbpi09EqualTo(deleteVo.getSn())
+                        .andCbpg01EqualTo(deleteVo.getId());
                 cbpiMapper.deleteByExample(example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
-            if(cbiw.get(i).getTypes()==3){
+            if (deleteVo.getTypes() == 3) {
                 CbsdCriteria example = new CbsdCriteria();
-                example.createCriteria().andCbsd09EqualTo(cbiw.get(i).getSn())
-                        .andCbsb01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbsd09EqualTo(deleteVo.getSn())
+                        .andCbsb01EqualTo(deleteVo.getId());
                 cbsdMapper.deleteByExample(example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
-            if(cbiw.get(i).getTypes()==4){
+            if (deleteVo.getTypes() == 4) {
                 CbsgCriteria example = new CbsgCriteria();
-                example.createCriteria().andCbsg09EqualTo(cbiw.get(i).getSn())
-                        .andCbse01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbsg09EqualTo(deleteVo.getSn())
+                        .andCbse01EqualTo(deleteVo.getId());
                 cbsgMapper.deleteByExample(example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
             //调拨单调出删除
-            if(cbiw.get(i).getTypes()==6){
+            if (deleteVo.getTypes() == 6) {
                 CbacCriteria example = new CbacCriteria();
-                example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
-                        .andCbaa01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbac09EqualTo(deleteVo.getSn())
+                        .andCbaa01EqualTo(deleteVo.getId());
                 Cbac cbac = Cbac.getInstance();
                 cbac.setCbac07(DeleteFlagEnum.DELETE.getCode());
-                cbacMapper.updateByExampleSelective(cbac,example);
+                cbacMapper.updateByExampleSelective(cbac, example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
             //调拨单调入删除
-            if(cbiw.get(i).getTypes()==5){
+            if (deleteVo.getTypes() == 5) {
                 CbacCriteria example = new CbacCriteria();
-                example.createCriteria().andCbac09EqualTo(cbiw.get(i).getSn())
-                        .andCbaa01EqualTo(cbiw.get(i).getId());
-                Cbac cbac =Cbac.getInstance();
+                example.createCriteria().andCbac09EqualTo(deleteVo.getSn())
+                        .andCbaa01EqualTo(deleteVo.getId());
+                Cbac cbac = Cbac.getInstance();
                 cbac.setCbac14(1);
-                cbacMapper.updateByExampleSelective(cbac,example);
+                cbacMapper.updateByExampleSelective(cbac, example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
-            if(cbiw.get(i).getTypes()==7){
+            if (deleteVo.getTypes() == 7) {
                 CbpmCriteria example = new CbpmCriteria();
-                example.createCriteria().andCbpm09EqualTo(cbiw.get(i).getSn())
-                        .andCbpk01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbpm09EqualTo(deleteVo.getSn())
+                        .andCbpk01EqualTo(deleteVo.getId());
                 Cbpm cbpm = new Cbpm();
                 cbpm.setCbpm11(0);
-                cbpmMapper.updateByExampleSelective(cbpm,example);
+                cbpmMapper.updateByExampleSelective(cbpm, example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
 
-            if(cbiw.get(i).getTypes()==8){
+            if (deleteVo.getTypes() == 8) {
                 CbsjCriteria example = new CbsjCriteria();
-                example.createCriteria().andCbsj09EqualTo(cbiw.get(i).getSn())
-                        .andCbsh01EqualTo(cbiw.get(i).getId());
+                example.createCriteria().andCbsj09EqualTo(deleteVo.getSn())
+                        .andCbsh01EqualTo(deleteVo.getId());
                 cbsjMapper.deleteByExample(example);
 
                 GsGoodsSn gsGoodsSn = new GsGoodsSn();
-                gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-                gsGoodsSn.setSn(cbiw.get(i).getSn());
+                gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+                gsGoodsSn.setSn(deleteVo.getSn());
                 GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
-                examples.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,examples);
+                examples.createCriteria().andSnEqualTo(deleteVo.getSn());
+                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, examples);
             }
 
             GsGoodsSn gsGoodsSn = new GsGoodsSn();
-            gsGoodsSn.setStatus(cbiw.get(i).getType().byteValue());
-            gsGoodsSn.setSn(cbiw.get(i).getSn());
+            gsGoodsSn.setStatus(deleteVo.getType().byteValue());
+            gsGoodsSn.setSn(deleteVo.getSn());
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
-            example.createCriteria().andSnEqualTo(cbiw.get(i).getSn());
-            mapper.updateByExampleSelective(gsGoodsSn,example);
+            example.createCriteria().andSnEqualTo(deleteVo.getSn());
+            mapper.updateByExampleSelective(gsGoodsSn, example);
         }
         session.commit();
         session.clearCache();
@@ -1351,8 +1137,7 @@ if(cbpb.size()>0){
     throw new SwException("1");
 }
 
-String S="0";
-        return S;
+        return "0";
     }
 
     @Override
@@ -1381,9 +1166,7 @@ String S="0";
 
     @Override
     public Cbiw addlessui(Cbiw cbiw) {
-        Long userid = SecurityUtils.getUserId();
 
-        Date date = new Date();
         if(cbiw.getSn()==null){
             throw new SwException("sn不能为空");
         }
@@ -1453,21 +1236,6 @@ String S="0";
 
         return cbiw;
     }
-
-    public int afsfs(String sn,String upc){
-        CbpbCriteria example = new CbpbCriteria();
-        example.createCriteria().andCbpb15EqualTo(upc);
-    List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
-    if(cbpbs.size()>0){
-        if(Objects.equals(cbpbs.get(0).getCbpb12(), sn)){
-            throw new SwException("sn不正确");
-        }
-    }
-
-
-    return 1;
-}
-
 
 
 }

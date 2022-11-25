@@ -829,7 +829,7 @@ WHERE
 	oa.CBOA06 = 0
 	AND oa.CBOA11 =5
     AND pb.type=1
-
+    AND oa.CBOA23 is null
     <if test="customerId != null ">
 
 

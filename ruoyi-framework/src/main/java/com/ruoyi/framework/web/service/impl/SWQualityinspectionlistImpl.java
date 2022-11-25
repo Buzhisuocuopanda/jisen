@@ -1,13 +1,13 @@
 package com.ruoyi.framework.web.service.impl;
 
-import com.ruoyi.common.enums.*;
+import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.Groudstatus;
+import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
-import com.ruoyi.system.domain.Do.CbofDo;
 import com.ruoyi.system.domain.Do.CbqaDo;
-import com.ruoyi.system.domain.Do.CbqbDo;
 import com.ruoyi.system.domain.vo.CbqaVo;
 import com.ruoyi.system.domain.vo.IdVo;
 import com.ruoyi.system.mapper.*;
@@ -142,7 +142,6 @@ private CbpmMapper cbpmMapper;
                 GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
                 example1.createCriteria().andSnEqualTo(itemList.get(i).getCbqb09()).andDeleteFlagEqualTo(new Byte(DeleteFlagEnum.NOT_DELETE.getCode()+""));
                 List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
-                Integer goodsId;
                 if (gsGoodsSns1.size() > 0) {
 //                    goodsId = gsGoodsSns1.get(0).getGoodsId();
                     locationId = gsGoodsSns1.get(0).getLocationId();
@@ -344,7 +343,6 @@ private CbpmMapper cbpmMapper;
                 GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
                 example1.createCriteria().andSnEqualTo(itemList.get(i).getCbqb09());
                 List<GsGoodsSn> gsGoodsSns1 = gsGoodsSnMapper.selectByExample(example1);
-                Integer goodsId;
                 if (gsGoodsSns1.size() > 0) {
 //                    goodsId = gsGoodsSns1.get(0).getGoodsId();
 //                    locationId = gsGoodsSns1.get(0).getLocationId();
@@ -483,7 +481,6 @@ private CbpmMapper cbpmMapper;
 
         Long userid = SecurityUtils.getUserId();
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
-        Date date = new Date();
         cbqa.setCbqa05(Math.toIntExact(userid));
         cbqa.setCbqa09(TaskStatus.sh.getCode());
         CbqaCriteria example1 = new CbqaCriteria();
@@ -538,7 +535,6 @@ private CbpmMapper cbpmMapper;
 
         Long userid = SecurityUtils.getUserId();
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
-        Date date = new Date();
         cbqa.setCbqa05(Math.toIntExact(userid));
         cbqa.setCbqa09(TaskStatus.mr.getCode());
         CbqaCriteria example1 = new CbqaCriteria();
@@ -577,7 +573,6 @@ private CbpmMapper cbpmMapper;
 
         Long userid = SecurityUtils.getUserId();
         Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
-        Date date = new Date();
         cbqa.setCbqa05(Math.toIntExact(userid));
         cbqa.setCbqa09(TaskStatus.bjwc.getCode());
         CbqaCriteria example1 = new CbqaCriteria();
@@ -723,5 +718,66 @@ private CbpmMapper cbpmMapper;
     @Override
     public List<CbqaVo> swJsGoodslistsssy(CbqaVo cbqaVo) {
         return cbqaMapper.SwJsSkuBarcodeselectss(cbqaVo);
+    }
+
+    @Override
+    public int insertSwJsSkuBarcodesplus(CbqaDo cbqaDo) {
+
+        List<Cbqb> goods = cbqaDo.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        String qualityinspectionlistNo = numberGenerate.getQualityinspectionlistNo();
+
+        Long userid = SecurityUtils.getUserId();
+
+        Cbqa cbqa = BeanCopyUtils.coypToClass(cbqaDo, Cbqa.class, null);
+        Date date = new Date();
+        cbqa.setCbqa02(date);
+        cbqa.setCbqa03(Math.toIntExact(userid));
+        cbqa.setCbqa04(date);
+        cbqa.setCbqa05(Math.toIntExact(userid));
+        cbqa.setCbqa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbqa.setCbqa07(qualityinspectionlistNo);
+        cbqa.setCbqa08(date);
+        cbqa.setCbqa09(TaskStatus.sh.getCode());
+        cbqa.setCbqa10(Math.toIntExact(userid));
+        cbqa.setCbqa11(date);
+        cbqa.setUserId(Math.toIntExact(userid));
+        cbqaMapper.insertSelective(cbqa);
+
+        CbqaCriteria example = new CbqaCriteria();
+        example.createCriteria().andCbqa07EqualTo(qualityinspectionlistNo);
+        List<Cbqa> cbqas = cbqaMapper.selectByExample(example);
+
+        Cbqb cbqb = null;
+        for(Cbqb good:goods){
+            cbqb = new Cbqb();
+
+//            if(!uio.contains(good.getCbqb01())){
+//                throw new SwException("质检单明细id不存在");
+//            }
+            cbqb.setCbqb01(good.getCbqb01());
+            cbqb.setCbqb02(good.getCbqb02());
+            cbqb.setCbqb03(good.getCbqb03());
+            cbqb.setCbqb04(good.getCbqb04());
+            cbqb.setCbqb05(date);
+            cbqb.setCbqb06(Math.toIntExact(userid));
+            cbqb.setCbqb07(good.getCbqb07());
+            cbqb.setCbqb08(good.getCbqb08());
+            cbqb.setCbqb09(good.getCbqb09());
+            cbqb.setCbqb10(good.getCbqb10());
+            if(cbqas.size()>0){
+                Cbqa cbqa1 = cbqas.get(0);
+                cbqb.setCbqa01(cbqa1.getCbqa01());
+            }
+
+
+            cbqbMapper.insertSelective(cbqb);
+
+        }
+
+
+        return 1;
     }
 }

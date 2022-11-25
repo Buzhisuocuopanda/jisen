@@ -1,6 +1,5 @@
 package com.ruoyi.web.controller.gson.warehousemanagement;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -9,34 +8,28 @@ import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.ValidUtils;
-import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.Cbiw;
 import com.ruoyi.system.domain.dto.CbicDto;
-import com.ruoyi.system.domain.dto.CbpdDto;
-import com.ruoyi.system.domain.dto.GoodsSelectDto;
 import com.ruoyi.system.domain.dto.GsOrdersInDto;
-import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.domain.vo.CbicVo;
+import com.ruoyi.system.domain.vo.CbiwVo;
+import com.ruoyi.system.domain.vo.GsOrdersInVo;
+import com.ruoyi.system.domain.vo.deleteVo;
 import com.ruoyi.system.mapper.CbiwMapper;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
-import io.netty.channel.Channel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Unsafe;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicStampedReference;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * 直接入库单Controller
@@ -101,9 +94,8 @@ public class DirectlyIntothEvaultController extends BaseController {
     public AjaxResult swJsPurchaseinboundadds(@Valid @RequestBody  List<CbicDto> cbicDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
-            int i = 0;
 
-             return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
+            return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodess(cbicDto));
            // return toAjax(i);
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
@@ -160,8 +152,8 @@ public class DirectlyIntothEvaultController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:directly:remove')")
     public AjaxResult swJsPurchaseinboundremove(@RequestBody List<CbicDto> cbicDto) {
         try {
-            for(int i=0;i<cbicDto.size();i++){
-                swDirectlyintothevaultService.deleteSwJsSkuBarcodsById(cbicDto.get(i));
+            for (CbicDto dto : cbicDto) {
+                swDirectlyintothevaultService.deleteSwJsSkuBarcodsById(dto);
             }
 
             return AjaxResult.success();
@@ -243,8 +235,8 @@ public class DirectlyIntothEvaultController extends BaseController {
     }
 
     /**
-     *@author: zhaoguoliang
-     *@date: Create in 2022/10/26 11:14
+     *&#064;author:  zhaoguoliang
+     *&#064;date:  Create in 2022/10/26 11:14
      */
     @ApiOperation(
             value ="直接入库单条件查询2",
@@ -541,7 +533,6 @@ public class DirectlyIntothEvaultController extends BaseController {
 
 
     public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
     }
 
 }

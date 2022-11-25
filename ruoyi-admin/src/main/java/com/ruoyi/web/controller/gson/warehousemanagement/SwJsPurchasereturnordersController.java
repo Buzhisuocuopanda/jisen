@@ -52,6 +52,37 @@ import java.util.List;
 public class SwJsPurchasereturnordersController extends BaseController {
     @Resource
     private ISwJsPurchasereturnordersService swJsPurchasereturnordersService;
+
+    /**
+     * 新增采购退货单
+     */
+    @ApiOperation(
+            value ="新增采购退货单",
+            notes = "新增采购退货单"
+    )
+    @PostMapping("/SwJsPurchasereturnordersaddplus")
+    @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:add')")
+    public AjaxResult swJsPurchasereturnordersaddplus(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+           swJsPurchasereturnordersService.insertSwJsSkuBarcodesplus(cbpgDto);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【新增采购退货单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpgDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【新增采购退货单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpgDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【新增采购退货单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpgDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     /**
      * 新增采购退货单主单
      */
@@ -61,7 +92,7 @@ public class SwJsPurchasereturnordersController extends BaseController {
     )
     @PostMapping("/SwJsPurchasereturnordersadd")
     @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:add')")
-    public AjaxResult<IdVo> swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
+    public AjaxResult swJsPurchasereturnordersadd(@Valid @RequestBody CbpgDto cbpgDto, BindingResult bindingResult) {
         IdVo res=null;
         try {
             ValidUtils.bindvaild(bindingResult);

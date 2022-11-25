@@ -1302,7 +1302,64 @@ if(infoss.size()>0) {
         return infosss;
     }
 
+    @Override
+    public int insertSwJsSkuBarcodesplus(CbpgDto cbpgDto) {
 
+        List<Cbph> goods = cbpgDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+        Long userid = SecurityUtils.getUserId();
+        Cbpg cbpg = BeanCopyUtils.coypToClass(cbpgDto, Cbpg.class, null);
+        Date date = new Date();
+        cbpg.setCbpg02(date);
+        cbpg.setCbpg03(Math.toIntExact(userid));
+        cbpg.setCbpg04(date);
+        cbpg.setCbpg05(Math.toIntExact(userid));
+        cbpg.setCbpg06(DeleteFlagEnum.DELETE.getCode());
+        cbpg.setCbpg10(cbpgDto.getCbpg10());
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
+        cbpg.setCbpg12(Math.toIntExact(userid));
+        String purchasereturnNo = numberGenerate.getPurchasereturnNo(cbpgDto.getCbpg10());
+        cbpg.setCbpg07(purchasereturnNo);
+        cbpg.setCbpg08(date);
+        cbpg.setCbpg11(TaskStatus.mr.getCode());
+        cbpg.setUserId(Math.toIntExact(userid));
+        cbpgMapper.insertSelective(cbpg);
+
+        CbpgCriteria example = new CbpgCriteria();
+        example.createCriteria().andCbpg07EqualTo(purchasereturnNo);
+        List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
+
+
+        Cbph cbph = null;
+        for(Cbph good:goods){
+            cbph = new Cbph();
+           /* if(good.getCbph01()==null){
+                throw new SwException("采购退库单明细id不能为空");
+            }*/
+            // cbph.setCbph01(good.getCbph01());
+            cbph.setCbph02(good.getCbph02());
+            cbph.setCbph03(date);
+           cbph.setCbph04(Math.toIntExact(userid));
+            cbph.setCbph05(date);
+            cbph.setCbph06(Math.toIntExact(userid));
+            cbph.setCbph07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbph.setCbph08(good.getCbph08());
+            cbph.setCbph09(good.getCbph09());
+            cbph.setCbph10(good.getCbph10());
+            cbph.setCbph11(good.getCbph11());
+            cbph.setCbph12(good.getCbph12());
+            cbph.setCbph13(good.getCbph13());
+            cbph.setCbpg01(cbpgDto.getCbpg01());
+            if(cbpgs.size()>0){
+                Cbpg cbpg1 = cbpgs.get(0);
+                cbph.setCbpg01(cbpg1.getCbpg01());
+            }
+            cbphMapper.insertSelective(cbph);
+        }
+        return 1;
+    }
 
 
 }
