@@ -80,7 +80,7 @@ public class CbpbDto extends Cbpf {
     private Integer cbpf06;
     @Excel(name = "生效时间")
     private Date cbpf07;
-    @Excel(name = "货币")
+    @Excel(name = "货币" ,readConverterExp = "6=CNY,5=USD")
     private String moneyType;
     @Excel(name = "类型", readConverterExp = "0=配件,1=商品")
     private String type;

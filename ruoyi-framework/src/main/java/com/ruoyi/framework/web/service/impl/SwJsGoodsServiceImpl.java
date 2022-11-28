@@ -210,7 +210,7 @@ private CbpaMapper cbpaMapper;
             cbpf.setCbpf03(good.getCbpf03());
             cbpf.setCbpf04(good.getCbpf04());
             cbpf.setCbpf05(good.getCbpf05());
-            cbpf.setCbpf07(date);
+            cbpf.setCbpf07(good.getCbpf07());
              cbpfMapper.insertSelective(cbpf);
         }
         return 1;
@@ -508,7 +508,8 @@ private CbpaMapper cbpaMapper;
         example.createCriteria().andCbpb15EqualTo(cbpb15)
                 .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
         List<Cbpb> cbpbs = cbpbMapper.selectByExample(example);
-        if(cbpbs.size()>0){
+        if(cbpbs.size()>0)
+        {
             Cbpb cbpb = new Cbpb();
             cbpb.setCbpb02(date);
             cbpb.setCbpb03(date);
@@ -525,11 +526,13 @@ private CbpaMapper cbpaMapper;
                 cbpb.setType(Integer.valueOf(itemList.get(i).getType()));
             }
             CbpbCriteria cbpbCriteria = new CbpbCriteria();
-            cbpbCriteria.createCriteria().andCbpb15EqualTo(cbpb15);
+            cbpbCriteria.createCriteria().andCbpb15EqualTo(cbpb15)
+                            .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
             cbpbMapper.updateByExampleSelective(cbpb,cbpbCriteria);
 
             CbpbCriteria cbpbCriteria1 = new CbpbCriteria();
-            cbpbCriteria1.createCriteria().andCbpb15EqualTo(cbpb15);
+            cbpbCriteria1.createCriteria().andCbpb15EqualTo(cbpb15)
+                    .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
             List<Cbpb> cbpbList = cbpbMapper.selectByExample(cbpbCriteria1);
 
             Cbpf cbpf = new Cbpf();
@@ -539,19 +542,17 @@ private CbpaMapper cbpaMapper;
             cbpf.setCbpf05(itemList.get(i).getCbpf05());
             CalaCriteria calaCriteria1 = new CalaCriteria();
             calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
-            List<Cala> calas = calaMapper.selectByExample(calaCriteria);
-            if(calas.size()==0){
-                // throw new SwException("货币类型不存在！");
-            }
 
-             cbpf.setCbpf06(calas.get(0).getCala01());
+
+             cbpf.setCbpf06(Integer.valueOf(itemList.get(i).getMoneyType()));
             if(cbpbList.size()>0){
                 cbpf.setCbpb01(cbpbList.get(0).getCbpb01());
             }
-            cbpf.setCbpf07(date);
-            cbpfMapper.insertSelective(cbpf);
+            cbpf.setCbpf07(itemList.get(i).getCbpf07());
+        return    cbpfMapper.insertSelective(cbpf);
 
-        }else{
+        }
+        else{
         Cbpb cbpb = new Cbpb();
         cbpb.setCbpb02(date);
         cbpb.setCbpb03(date);
@@ -587,22 +588,15 @@ private CbpaMapper cbpaMapper;
             if(itemList.get(i).getCbpf05()==null){
               //  throw new SwException("标准销货价不能为空！");
             }
-          /*  if(itemList.get(i).getCbpf06()==null){
-                throw new SwException("货币id不能为空！");
-            }*/
-           /* if(itemList.get(i).getCbpf07()==null){
-                throw new SwException("生效时间不能为空！");
-            }*/
-            if(itemList.get(i).getMoneyType()==null){
-              //  throw new SwException("货币类型不能为空！");
-            }
-            CalaCriteria calaCriteria1 = new CalaCriteria();
-            calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
-            List<Cala> calas = calaMapper.selectByExample(calaCriteria);
-            if(calas.size()==0){
-               // throw new SwException("货币类型不存在！");
-            }
-            itemList.get(i).setCbpf06(calas.get(0).getCala01());
+            CbpbCriteria cbpbCriteria1 = new CbpbCriteria();
+            cbpbCriteria1.createCriteria().andCbpb15EqualTo(cbpb15)
+                    .andCbpb06EqualTo(DeleteFlagEnum1.NOT_DELETE.getCode());
+            List<Cbpb> cbpbList = cbpbMapper.selectByExample(cbpbCriteria1);
+            itemList.get(i).setCbpb01(cbpbList.get(0).getCbpb01());
+
+
+
+            itemList.get(i).setCbpf06(Integer.valueOf(itemList.get(i).getMoneyType()));
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -649,8 +643,12 @@ private CbpaMapper cbpaMapper;
         for(int i=0;i<cbpbVos.size();i++){
        if(cbpbVos.get(i).getCbpb01()!=null){
            CbpfCriteria example = new CbpfCriteria();
+           example.setOrderByClause("cbpf07 desc");
            example.createCriteria().andCbpb01EqualTo(cbpbVos.get(i).getCbpb01());
+
            List<Cbpf> cbpfs = cbpfMapper.selectByExample(example);
+
+
        for(int j=0;j<cbpfs.size();j++){
            if(cbpfs.size()==1){
            cbpbVos.get(i).setCbpf02(cbpfs.get(0).getCbpf02());

@@ -819,7 +819,7 @@ where a.CBOA06=0 and e.CBOB07 =0
     f.CALA01=c.CBPB10
 
     where a.CBOA06=0 and e.CBOB07 =0
-    and a.CBOA11!=4 and  a.CBOA11!=6
+    and a.CBOA11!=4 and  a.CBOA11!=6 and  a.CBOA11!=0
     <if test="cbpa07 != null and cbpa07 != ''">
       and  d.CBPA07 like concat('%', #{cbpa07}, '%')
     </if>
