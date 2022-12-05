@@ -17,17 +17,19 @@ public class SczddVo {
     @Excel(name="描述")
     private String cbpb08;
 
-    @Excel(name="订单数量")
+    @Excel(name="订单数量",cellType = Excel.ColumnType.NUMERIC)
     private Double cbba09;
 
-    @Excel(name="已发货数量")
+    @Excel(name="已发货数量",cellType = Excel.ColumnType.NUMERIC)
     private Double cbba11;
 
 //    @Excel(name="已生产数量")
     private Double cbba13;
-    @Excel(name="已生产数量")
+
+    @Excel(name="已生产数量",cellType = Excel.ColumnType.NUMERIC)
     private Double producedNum;
-    @Excel(name="缺货数量")
+
+    @Excel(name="缺货数量",cellType = Excel.ColumnType.NUMERIC)
     private Double stockoutNum;
   /*  @Excel(name="缺货数量")*/
     private Double cbba14;
@@ -38,6 +40,9 @@ public class SczddVo {
     private Integer cbpb01;
 
     private String sortKey;
+
+
+    private String sortType;
 
     //订单总数
     private Double totalOrderNum;

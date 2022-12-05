@@ -106,9 +106,9 @@ private CbpmMapper cbpmMapper;
     public int insertSwJsSkuBarcodess(List<CbicDto> cbicDto) throws InterruptedException {
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
-if(cbicDto.size()==0){
-    throw  new SwException("请扫码");
-}
+     if(cbicDto.size()==0){
+         throw  new SwException("请扫码");
+      }
         if(cbicDto.get(0).getUpc()==null){
             throw new SwException("upc没输入");
         }
@@ -154,10 +154,7 @@ if(cbicDto.size()==0){
 
             //删除临时表
             String cbic10 = dto.getSn();
-        /*    CbiwCriteria cbiwCriteria = new CbiwCriteria();
-            cbiwCriteria.createCriteria().andSnEqualTo(cbic10);
-            cbiwMapper.deleteByExample(cbiwCriteria);
-*/
+
 
             String uuid = UUID.randomUUID().toString();
             Boolean lock = redisTemplate.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
@@ -282,13 +279,14 @@ if(cbicDto.size()==0){
                     GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
                     example21.createCriteria()
                             .andLocationIdEqualTo(cbla.get(0).getCbla01());
-                    gsGoodsSkuMapper.selectByExample(example21);
-                   /* if (gsGoodsSkus1.size() > 0) {
-                      //  gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                     *//*   if (sum + 1 > cbla.get(0).getCbla11()) {
-                            //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
-                        }*//*
-                    }*/
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+                    //校验库位逻辑
+                    if (gsGoodsSkus1.size() > 0) {
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if (sum + 1 > cbla.get(0).getCbla11()) {
+                              throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                        }
+                    }
 
                     GsGoodsSkuDo gsGoodsSkuDo1 = new GsGoodsSkuDo();
                     gsGoodsSkuDo1.setGoodsId(cbpbs.get(0).getCbpb01());
@@ -303,13 +301,15 @@ if(cbicDto.size()==0){
                     GsGoodsSkuCriteria example21 = new GsGoodsSkuCriteria();
                     example21.createCriteria()
                             .andLocationIdEqualTo(cbla.get(0).getCbla01());
-                    gsGoodsSkuMapper.selectByExample(example21);
-                    /*if (gsGoodsSkus1.size() > 0) {
-                       // gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                    *//*    if (sum + 1 > cbla.get(0).getCbla11()) {
-                            //  throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
-                        }*//*
-                    }*/
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example21);
+
+                    //校验库位逻辑
+                    if (gsGoodsSkus1.size() > 0) {
+                        double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                        if (sum + 1 > cbla.get(0).getCbla11()) {
+                              throw new SwException("库位容量不足，库位码为"+cbla.get(0).getCbla09());
+                        }
+                    }
 
                     //加锁
                     baseCheckService.checkGoodsSkuForUpdate(gsGoodsSkus.get(0).getId());
@@ -1166,7 +1166,7 @@ if(cbpb.size()>0){
 
     @Override
     public Cbiw addlessui(Cbiw cbiw) {
-
+         //型号
         if(cbiw.getSn()==null){
             throw new SwException("sn不能为空");
         }
@@ -1205,9 +1205,22 @@ if(cbpb.size()>0){
                 if(cblas.get(0).getCbla10()!=5){
                     throw new SwException("库位不属于GQW仓库");
                 }
+
+
             }
             //库位容量
-
+           GsGoodsSkuCriteria gsGoodskuCriteria = new GsGoodsSkuCriteria();
+            gsGoodskuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodskuCriteria);
+            if(gsGoodsSkus.size()>0){
+                if(gsGoodsSkus.get(0).getQty()!=null){
+                    if(gsGoodsSkus.get(0).getQty()>0){
+                        if(gsGoodsSkus.get(0).getQty()+1>cblas.get(0).getCbla11()){
+                            throw new SwException("库位容量不足,库位码为"+cblas.get(0).getCbla09());
+                        }
+                    }
+                }
+            }
 
 
         }

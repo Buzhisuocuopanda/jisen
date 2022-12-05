@@ -469,7 +469,7 @@ Cbpg cbpgs = new Cbpg();
             if(cbpbs.size()==0){
                 throw new SwException("商品不存在");
             }
-            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+            Integer cbpb01 = cbpbs.get(0).getCbpb01();
 
 
             itemList.get(i).setCbph03(date);
@@ -516,7 +516,7 @@ Cbpg cbpgs = new Cbpg();
         }
         else
         {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
         }
         return successMsg.toString();    }
 

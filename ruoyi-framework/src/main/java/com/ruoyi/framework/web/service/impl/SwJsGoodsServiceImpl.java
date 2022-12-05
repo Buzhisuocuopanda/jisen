@@ -549,7 +549,7 @@ private CbpaMapper cbpaMapper;
                 cbpf.setCbpb01(cbpbList.get(0).getCbpb01());
             }
             cbpf.setCbpf07(itemList.get(i).getCbpf07());
-        return    cbpfMapper.insertSelective(cbpf);
+            cbpfMapper.insertSelective(cbpf);
 
         }
         else{
@@ -641,7 +641,13 @@ private CbpaMapper cbpaMapper;
     public List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo) {
         List<CbpbVo> cbpbVos = cbpbMapper.selectSwJsGoodsListout(cbpbVo);
         for(int i=0;i<cbpbVos.size();i++){
+            if(cbpbVos.get(i).getType().equals(1)){
+                cbpbVos.get(i).setTypes("商品");
+            }else {
+                cbpbVos.get(i).setTypes("配件");
+            }
        if(cbpbVos.get(i).getCbpb01()!=null){
+
            CbpfCriteria example = new CbpfCriteria();
            example.setOrderByClause("cbpf07 desc");
            example.createCriteria().andCbpb01EqualTo(cbpbVos.get(i).getCbpb01());

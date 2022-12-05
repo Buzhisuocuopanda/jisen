@@ -1635,8 +1635,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     Cbba cbba = cbbas.get(0);
 
                     Double canUserQty=cbba.getCbba13()-cbba.getCbba14();
-                    if(cbob.getCbob09()>canUserQty){
-
+                    if(saleOrderExcelDto.getQty()>canUserQty){
                         String goodsMsg="";
                         if(cbpb!=null){
                             goodsMsg=cbpb.getCbpb12();
@@ -1657,7 +1656,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     cbob.setCbob09(saleOrderExcelDto.getQty());
                     cbob.setCbob10(0.0);
                     cbob.setCbob11(saleOrderExcelDto.getPrice());
-                    cbob.setCbob12(saleOrderExcelDto.getPrice() * saleOrderExcelDto.getQty());
+                    if(saleOrderExcelDto.getPrice()==null){
+                        cbob.setCbob12(0.0);
+                    }else {
+                        cbob.setCbob12(saleOrderExcelDto.getPrice() * saleOrderExcelDto.getQty());
+                    }
+                    //cbob.setCbob12(saleOrderExcelDto.getPrice() * saleOrderExcelDto.getQty());
                     cbob.setCbob13(saleOrderExcelDto.getRemark());
                     cbob.setCboa01(cboa.getCboa01());
                     cbob.setCbob14(normalPrice);

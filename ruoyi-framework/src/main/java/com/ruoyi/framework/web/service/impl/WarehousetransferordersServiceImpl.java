@@ -2110,8 +2110,9 @@ else {
         if(cbaas.size()>0){
             Integer cbaa01 = cbaas.get(0).getCbaa01();
         }
-
+        cbaaDto cbaaDto1 = swJsGoodsList.get(0);
         for (com.ruoyi.system.domain.dto.cbaaDto cbaaDto : swJsGoodsList) {
+
             if (cbaaDto.getSupplierName() == null) {
                 throw new SwException("供应商不能为空");
             }
@@ -2153,6 +2154,7 @@ else {
             cbab.setCbab11(cbaaDto.getPrice());
             cbab.setCbab12(cbaaDto.getNum() * cbaaDto.getPrice());
             cbab.setCbab13(cbaaDto.getMark());
+            cbab.setCbab14(cbsas.get(0).getCbsa01());
             if (cbaas.size() > 0) {
                 Integer cbaa01 = cbaas.get(0).getCbaa01();
                 cbab.setCbaa01(cbaa01);

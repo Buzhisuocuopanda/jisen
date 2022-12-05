@@ -43,6 +43,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
@@ -323,6 +324,7 @@ public class SwJsGoodsController extends BaseController {
     @ResponseBody
     public AjaxResult importSwJsCustomer(MultipartFile file, boolean updateSupport) {
         try {
+           // WeakReference<String> wrf = new WeakReference<String>("123");
             ExcelUtil<Cbpf> util = new ExcelUtil<>(Cbpf.class);
             List<Cbpf> swJsCustomersList = util.importExcel(file.getInputStream());
             String operName = getUsername();
@@ -417,9 +419,9 @@ public class SwJsGoodsController extends BaseController {
         File is = new File(excelPaht2);
         wb = new XSSFWorkbook(is);
 
-        File file = new File("text.java");
+        /*File file = new File("text.java");
 
-        String filePath = file.getAbsolutePath();
+        String filePath = file.getAbsolutePath();*/
         saveExcelToDisk(wb, excelPaht);
 
         //  saveExcelToDisk(wb, name);

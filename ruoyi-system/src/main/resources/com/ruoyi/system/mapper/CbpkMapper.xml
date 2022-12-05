@@ -728,7 +728,7 @@
     where pk.CBPK06=0
     AND pk.CBPK11=4
     AND cbsb.CBSB11 is null
-    AND cbsb.CBSB06=0
+#     AND cbsb.CBSB06=0
     <if test="startTime != null">
       and pk.CBPK08  &gt;= #{startTime}
     </if>
