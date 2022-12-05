@@ -41,4 +41,10 @@ public class PathConstant {
     public static final String STORESKU_ORDER_SCANSER_EXCEL = "库位信息导入模板.xlsx";
     public static final String SUPPIER_ORDER_SCANSER_EXCEL = "供应商信息导入模板.xlsx";
 
+    public static final String BUY_ORDER_SCANSEWASTYY_EXCEL = "采购入库单导入模板.xlsx";
+    public static final String RETURN_ORDER_SCANSEWASTYY_EXCEL = "采购退库单导入模板.xlsx";
+
+    public static final String WITH_ORDER_SCANSEWASTYY_EXCEL = "仓库调拨单导入模板.xlsx";
+
+
 }

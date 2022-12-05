@@ -435,13 +435,13 @@ public class TaskServiceImpl implements TaskService {
 
         //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());
 
-        CbibCriteria example = new CbibCriteria();
+       /* CbibCriteria example = new CbibCriteria();
         example.createCriteria()
                 .andCbib02EqualTo(cbibDo.getCbib02())
                 .andCbib08EqualTo(cbibDo.getCbib08());
         Cbib cbib3=new Cbib();
         cbib3.setCbib19(1);
-        cbibMapper.updateByExampleSelective(cbib3,example);
+        cbibMapper.updateByExampleSelective(cbib3,example);*/
         return cbib;
     }
 

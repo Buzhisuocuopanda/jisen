@@ -44,6 +44,8 @@ public class Excel2PdfUtil {
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.setOnePagePerSheet(true);//参数true把内容放在一张PDF页面上；
+          //  pdfSaveOptions.setPrintingPageType(PrintingPageType.DEFAULT);
+
             wb.save(fileOS, pdfSaveOptions);
             fileOS.close();
         } catch (Exception e) {

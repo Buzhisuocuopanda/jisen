@@ -350,7 +350,7 @@ WHERE
 
 ORDER BY
 	c.CBIB04 DESC limit 1
-    for update
+
   </select>
   <select id="selectLastByGoodsId" resultMap="BaseResultMap">
         SELECT

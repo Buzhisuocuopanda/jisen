@@ -19,6 +19,7 @@ public class CbpbVo {
   private String cbpa07;
   @Excel(name = "品牌")
   private String cala08;
+
   private Integer type;
   @Excel(name = "型号")
   private String cbpb12;
@@ -51,6 +52,8 @@ public class CbpbVo {
     @Excel(name = "upc")
     private String cbpb15;
 
+  @Excel(name = "商品类型")
+  private String types;
 
   private String sfqy;
   @Excel(name = "是否启用")
