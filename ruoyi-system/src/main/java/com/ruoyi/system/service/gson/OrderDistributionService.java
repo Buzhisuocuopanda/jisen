@@ -97,6 +97,7 @@ public interface OrderDistributionService {
      */
 
     QtyMsgVo checkSku(CheckSkuDo checkSkuDo);
+    QtyMsgVo checkSkuGuoji(CheckSkuDo checkSkuDo);
 
     /**
      * 检查商品总库存
