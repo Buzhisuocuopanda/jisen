@@ -1766,7 +1766,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbba12EqualTo(TotalOrderConstants.NO)
                     .andCbba08EqualTo(checkSkuDo.getGoodsId())
-                    .andCbba07Like("%"+"GBSH" + "%");
+                    .andCbba07NotLike("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(example);
             Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
             GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();

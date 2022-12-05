@@ -1593,6 +1593,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     //检查是否有可用库存
                     CheckSkuDo checkSkuDo=new CheckSkuDo();
                     checkSkuDo.setGoodsId(cbpb.getCbpb01());
+//                    checkSkuDo.setTotalOrderNo();
                     checkSkuDo.setOrderClass(OrderTypeEnum.GUOJIDINGDAN.getCode());
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
 
