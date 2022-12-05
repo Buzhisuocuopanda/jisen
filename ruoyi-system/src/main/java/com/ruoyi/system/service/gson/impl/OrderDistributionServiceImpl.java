@@ -1869,6 +1869,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
         } else {
             CbbaCriteria example = new CbbaCriteria();
             example.createCriteria()
+                    .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                     .andCbba07EqualTo(checkSkuDo.getTotalOrderNo());
             List<Cbba> cbbas = cbbaMapper.selectByExample(example);
             Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
