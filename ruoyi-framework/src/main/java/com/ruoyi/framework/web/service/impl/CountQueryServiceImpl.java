@@ -857,10 +857,7 @@ public class CountQueryServiceImpl implements CountQueryService {
             occupancyVo2.setLockQty(num1-num2-num3);
         }
         countDownLatch.await(60, TimeUnit.SECONDS);
-        /*if(occupancyVos.size()>0){
 
-
-        }*/
         if(countRES.size()>0){
             for (OccupancyVo vo : occupancyVos) {
                 vo.setCountOrderQty(countRES.get(0).getCountOrderQty());

@@ -54,6 +54,39 @@ public class SwJsPurchaseinboundController extends BaseController {
     private ISwJsPurchaseinboundService swJsPurchaseinboundService;
 
     /**
+     * 新增采购入库单
+     */
+    @ApiOperation(
+            value ="新增采购入库单",
+            notes = "新增采购入库单"
+    )
+    @PostMapping("/SwJsPurchaseinboundaddplus")
+    @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")
+    public AjaxResult swJsPurchaseinboundaddplus(@Valid @RequestBody CbpdDto cbpdDto, BindingResult bindingResult) {
+
+        try {
+
+            ValidUtils.bindvaild(bindingResult);
+            swJsPurchaseinboundService.insertSwJsSkuBarcodesplus(cbpdDto);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【新增采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【新增采购入库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增采购入库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpdDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
      * 新增采购入库单主表
      */
     @ApiOperation(
@@ -66,6 +99,7 @@ public class SwJsPurchaseinboundController extends BaseController {
         IdVo res=null;
 
         try {
+
             ValidUtils.bindvaild(bindingResult);
           res=swJsPurchaseinboundService.insertSwJsSkuBarcodes(cbpdDto);
             return AjaxResult.success(res);

@@ -44,6 +44,40 @@ public class QualityinspectionlistController  extends BaseController {
     @Resource
     private ISWQualityinspectionlistService swQualityinspectionlistService;
 
+
+    /**
+     * 新增质检单plus
+     */
+    @ApiOperation(
+            value ="新增质检单plus",
+            notes = "新增质检单plus"
+    )
+    @PostMapping("/SwJsPurchaseinboundaddplus")
+    @PreAuthorize("@ss.hasPermi('system:qualityin:add')")
+    public AjaxResult swJsPurchaseinboundaddplus(@Valid @RequestBody CbqaDo cbqaDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+       swQualityinspectionlistService.insertSwJsSkuBarcodesplus(cbqaDo);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【新增质检单plus】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【新增质检单plus】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【新增质检单plus】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      * 新增质检单
      */

@@ -7,6 +7,10 @@ package com.ruoyi.web.utils;
  * Date 2022/9/9 8:35
  */
 import com.aspose.cells.*;
+import com.aspose.words.Document;
+import com.aspose.words.Orientation;
+import com.aspose.words.Section;
+import com.aspose.words.SectionCollection;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +41,7 @@ public class Excel2PdfUtil {
             Workbook wb = new Workbook(excelstream, loadOptions);
 //            Workbook wb = new Workbook(excelstream);// excel路径，这里是先把数据放进缓存表里，然后把缓存表转化成PDF
             FileOutputStream fileOS = new FileOutputStream(pdfFile);
+
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.setOnePagePerSheet(true);//参数true把内容放在一张PDF页面上；
             wb.save(fileOS, pdfSaveOptions);
@@ -45,6 +50,26 @@ public class Excel2PdfUtil {
             e.printStackTrace();
         }
     }
+
+
+    public void testAsposeConvertDocx2Pdf( String filename,  String docNmae) throws  Exception {
+
+//        String docNmae = "C:\\Users\\Liz\\Desktop\\test.xls";
+        File pdfFile = new File(filename);
+        FileOutputStream os = new FileOutputStream(pdfFile);
+        com.aspose.words.Document doc = new Document(docNmae);
+
+        SectionCollection sections = doc.getSections();
+
+        for (Section section : sections) {
+            int a = Orientation.LANDSCAPE;//横向
+            int b = Orientation.PORTRAIT;//竖向
+            section.getPageSetup().getOrientation();
+        }
+        doc.save(os, SaveFormat.PDF);
+
+    }
+
 
     //获取认证，去除水印
     public static boolean getLicense() {

@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.gson.warehousemanagement;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
+import com.aspose.cells.Workbook;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.PathConstant;
 import com.ruoyi.common.core.controller.BaseController;
@@ -59,6 +60,40 @@ public class SelloutofwarehouseController extends BaseController {
     private ISelloutofwarehouseService sellerofwarehouseService;
 
     /**
+     * 新增销售出库单
+     */
+    @ApiOperation(
+            value ="新增销售出库单",
+            notes = "新增销售出库单"
+    )
+    @PostMapping("/Selloutofwarehouseaddplus")
+    @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:add')")
+    public AjaxResult Selloutofwarehouseaddplus(@Valid @RequestBody CbsbDo cbsbDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+             sellerofwarehouseService.insertSelloutofwarehouseplus(cbsbDo);
+            return AjaxResult.success();
+
+
+        }catch (SwException e) {
+            log.error("【新增销售出库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【新增销售出库单】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【新增销售出库单】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
      * 新增销售出库单主表
      */
     @ApiOperation(
@@ -68,7 +103,7 @@ public class SelloutofwarehouseController extends BaseController {
     @PostMapping("/Selloutofwarehouseadd")
     @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:add')")
     public AjaxResult<IdVo> Selloutofwarehouseadd(@Valid @RequestBody CbsbDo cbsbDo, BindingResult bindingResult) {
-        IdVo res=null;
+        IdVo res;
         try {
             ValidUtils.bindvaild(bindingResult);
             res = sellerofwarehouseService.insertSelloutofwarehouse(cbsbDo);
@@ -492,6 +527,7 @@ public class SelloutofwarehouseController extends BaseController {
            // String filePath = file.getAbsolutePath();
             saveExcelToDisk(wb, excelPaht);
 
+
             //转成pdf
             pdfPath=RuoYiConfig.getSwprofile()+"销售出货单_"+res.getCbsb07()+time+".pdf";
             Excel2PdfUtil.excel2pdf(excelPaht,pdfPath);
@@ -536,9 +572,9 @@ public class SelloutofwarehouseController extends BaseController {
         sheet1.setForceFormulaRecalculation(true);
 //        sheet2.setForceFormulaRecalculation(true);
 
-        /***设置单个单元格内容*********************************/
+        /*设置单个单元格内容*********************************/
 //        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
-        /***第一个表格*********************************/
+        /*第一个表格*********************************/
 //        ExampleData ea = new ExampleData();
 //        List<List<Object>> data1 = ea.getData1(10);
         int addRows = 0;
@@ -588,20 +624,18 @@ public class SelloutofwarehouseController extends BaseController {
 
         List<List<Object>> data1 = new ArrayList<>();
         Double sum = 0.0;
-        for (int i = 0; i < goods.size(); i++) {
+        for (CbsbsVo good : goods) {
             List<Object> rlist = new ArrayList<>();
-//        SaleOrderSkuVo res=new SaleOrderSkuVo();
-//        res.setGoodsName("aa");
-            rlist.add(goods.get(i).getCala08());
-            rlist.add(goods.get(i).getCbpb12());
-            rlist.add(goods.get(i).getCbpb08());
-            rlist.add(goods.get(i).getCbsc09());
-            rlist.add(goods.get(i).getCbsc09());
-            rlist.add(goods.get(i).getCbsc13());
+            rlist.add(good.getCala08());
+            rlist.add(good.getCbpb12());
+            rlist.add(good.getCbpb08());
+            rlist.add(good.getCbsc09());
+            rlist.add(good.getCbsc09());
+            rlist.add(good.getCbsc13());
             data1.add(rlist);
-            Double cbsc09 = goods.get(i).getCbsc09();
-            if(cbsc09!=null){
-                sum+=cbsc09;
+            Double cbsc09 = good.getCbsc09();
+            if (cbsc09 != null) {
+                sum += cbsc09;
             }
         }
         FormExcelUtil.setCellData(sheet1, sum, 11, 5);
@@ -720,9 +754,9 @@ public class SelloutofwarehouseController extends BaseController {
         sheet1.setForceFormulaRecalculation(true);
 //        sheet2.setForceFormulaRecalculation(true);
 
-        /***设置单个单元格内容*********************************/
+        /**设置单个单元格内容*********************************/
 //        FormExcelUtil.setCellData(sheet1, "2020-07报告", 1, 1);
-        /***第一个表格*********************************/
+        /**第一个表格*********************************/
 //        ExampleData ea = new ExampleData();
 //        List<List<Object>> data1 = ea.getData1(10);
         int addRows = 0;

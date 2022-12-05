@@ -604,6 +604,77 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
     }
 
+    @Override
+    @Transactional
+    public int insertSwJsSkuBarcodesplus(CbpdDto cbpdDto) {
+        // 检查供应商
+        baseCheckService.checksupplier(cbpdDto.getCbpc09());
+        //检查仓库
+        baseCheckService.checkStore(cbpdDto.getCbpc10());
+        //检查商品
+        //  baseCheckService.checkGoods(cbpdDto.getCbpd08());
+
+        List<Cbpd> goods = cbpdDto.getGoods();
+        if(goods==null||goods.size()==0){
+            throw new SwException("请至少添加一件货物");
+        }
+
+        CbpcCriteria example = new CbpcCriteria();
+        example.createCriteria().andCbpc07EqualTo(cbpdDto.getCbpc07())
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs = cbpcMapper.selectByExample(example);
+        //主表根据输入编号查不到数据，添加数据
+        Long userid = SecurityUtils.getUserId();
+        Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
+        Date date = new Date();
+        cbpc.setCbpc02(date);
+        cbpc.setCbpc03(Math.toIntExact(userid));
+        cbpc.setCbpc04(date);
+        cbpc.setCbpc05(Math.toIntExact(userid));
+        cbpc.setCbpc08(date);
+        cbpc.setCbpc11(TaskStatus.mr.getCode());
+        cbpc.setCbpc06(DeleteFlagEnum.NOT_DELETE.getCode());
+        String purchaseinboundNo = numberGenerate.getPurchaseinboundNo(cbpdDto.getCbpc10());
+        cbpc.setCbpc07(purchaseinboundNo);
+        cbpc.setCbpc13(date);
+        cbpc.setCbpc15(date);
+        cbpc.setUserId(Math.toIntExact(userid));
+        cbpcMapper.insertSelective(cbpc);
+
+        CbpcCriteria example1 = new CbpcCriteria();
+        example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
+                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
+
+        Cbpd cbpd = null;
+        for(Cbpd good:goods){
+            cbpd = new Cbpd();
+            if(good.getCbpd01()==null){
+                throw new SwException("采购订单明细id不能为空");
+            }
+            cbpd.setCbpd03(date);
+            cbpd.setCbpd04(Math.toIntExact(userid));
+            cbpd.setCbpd05(date);
+            cbpd.setCbpd06(Math.toIntExact(userid));
+            cbpd.setCbpd07(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbpd.setCbpd08(good.getCbpd08());
+            cbpd.setCbpd09(good.getCbpd09());
+            cbpd.setCbpd10(good.getCbpd10());
+            cbpd.setCbpd11(good.getCbpd11());
+            cbpd.setCbpd12(good.getCbpd12());
+            cbpd.setCbpd13(good.getCbpd13());
+            if(cbpcs1.size()>0){
+                Cbpc cbpc1 = cbpcs1.get(0);
+                cbpd.setCbpc01(cbpc1.getCbpc01());
+
+            }
+
+
+            cbpdMapper.insertSelective(cbpd);
+        }
+        return 1;
+    }
+
     /**
      * 审核采购入库单
      *

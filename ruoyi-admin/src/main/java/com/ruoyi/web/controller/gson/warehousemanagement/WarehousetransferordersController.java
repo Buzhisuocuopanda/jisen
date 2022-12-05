@@ -54,6 +54,35 @@ public class WarehousetransferordersController extends BaseController {
     private IWarehousetransferordersService warehousetransferordersService;
 
     @ApiOperation(
+            value ="仓库调拨单新增",
+            notes = "仓库调拨单新增"
+    )
+    @PostMapping("/Warehousetransferordersaddplus")
+    @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:add')")
+    public AjaxResult Warehousetransferordersaddplus(@Valid @RequestBody CbaaDo cbaaDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+             warehousetransferordersService.insertSwJsStoreplus(cbaaDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【仓库调拨单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【仓库调拨单新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库调拨单新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    @ApiOperation(
             value ="仓库调拨单新增主表",
             notes = "仓库调拨单新增主表"
     )

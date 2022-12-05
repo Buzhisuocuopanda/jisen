@@ -47,4 +47,6 @@ public interface ISwJsPurchasereturnordersService {
     void SwJsPurchasereturnorderseditone(CbpgDto cbpgDto);
 
     List<GsGoodsSnsVo> selectSwJsTaskGoodsRelListssS(GsGoodsSnsVo gsGoodsSnsVo);
+
+    int insertSwJsSkuBarcodesplus(CbpgDto cbpgDto);
 }

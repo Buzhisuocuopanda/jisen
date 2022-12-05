@@ -1597,7 +1597,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             int i = cbpmMapper.deleteByExample(plex);
             cbpk.setCbpk11(SaleOrderStatusEnums.WEITIJIAO.getCode());
 
-        } else if (auditTakeOrderDto.getOpType().equals(3)) {
+        }
+        else if (auditTakeOrderDto.getOpType().equals(3)) {
             //反审 库建议的货品改为未出库
 
             if (!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())) {
@@ -1628,7 +1629,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
 
-        } else if (auditTakeOrderDto.getOpType().equals(4)) {
+        }
+        else if (auditTakeOrderDto.getOpType().equals(4)) {
             //标记完成
 
             if (!SaleOrderStatusEnums.YISHENHE.getCode().equals(cbpk.getCbpk11())) {
@@ -1686,8 +1688,14 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
                 }
 
-
+                double sum = cbobs.stream().mapToDouble(Cbob::getCbob09).sum();
+                if(sum ==cbpms.size()){
+                    cboa.setCboa23(1);
+                    cboaMapper.updateByPrimaryKeySelective(cboa);
+                }
             }
+
+            //提货单标记完成以后，提货单数量和销售订单数量一致，列表排除销售订单
 
 
         } else if (auditTakeOrderDto.getOpType().equals(5)) {

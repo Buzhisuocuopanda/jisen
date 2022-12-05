@@ -54,4 +54,6 @@ public interface IWarehousetransferordersService {
     List<CbacVo> swJsGoodslistsss(CbacVo cbacVo);
 
     String importSwJsGoods(List<cbaaDto> swJsGoodsList, boolean updateSupport, String operName);
+
+    int insertSwJsStoreplus(CbaaDo cbaaDo);
 }

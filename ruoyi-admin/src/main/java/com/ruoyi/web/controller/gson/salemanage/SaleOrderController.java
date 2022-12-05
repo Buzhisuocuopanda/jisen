@@ -563,7 +563,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单详情"
     )
     @GetMapping("/saleOderDetail")
-    @PreAuthorize("@ss.hasPermi('sale:saleOrder:detail')")
+   // @PreAuthorize("@ss.hasPermi('sale:saleOrder:detail')")
     public AjaxResult<SaleOrderDetailVo> saleOderDetail(@RequestParam Integer orderId) {
         try {
 
@@ -620,7 +620,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单状态更改 包含指定结束"
     )
     @PostMapping("/auditSaleOrder")
-    @PreAuthorize("@ss.hasPermi('sale:saleOrder:audit')")
+  //  @PreAuthorize("@ss.hasPermi('sale:saleOrder:audit')")
     public AjaxResult auditSaleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -650,7 +650,7 @@ public class SaleOrderController extends BaseController {
             notes = "销售订单状态更改 包含指定结束国际"
     )
     @PostMapping("/auditSaleOrderGj")
-    @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:audit')")
+  //  @PreAuthorize("@ss.hasPermi('sale:saleOrderGj:audit')")
     public AjaxResult auditSaleOrderGj(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -679,7 +679,7 @@ public class SaleOrderController extends BaseController {
             notes = "确认或取消库存操作"
     )
     @PostMapping("/confirmSkuSaleOrder")
-    @PreAuthorize("@ss.hasPermi('sale:saleOrder:confirm')")
+   // @PreAuthorize("@ss.hasPermi('sale:saleOrder:confirm')")
     public AjaxResult confirmSkuSaleOrder(@Valid @RequestBody ConfirmSkuDto confirmSkuDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -708,7 +708,7 @@ public class SaleOrderController extends BaseController {
             notes = "修改销售订单"
     )
     @PostMapping("/mdfSaleOrder")
-    @PreAuthorize("@ss.hasPermi('sale:saleOrder:edit')")
+  //  @PreAuthorize("@ss.hasPermi('sale:saleOrder:edit')")
     public AjaxResult mdfSaleOrder(@Valid @RequestBody SaleOrderAddDto saleOrderAddDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
@@ -1102,7 +1102,7 @@ public class SaleOrderController extends BaseController {
             notes = "财务复审"
     )
     @PostMapping("/auditFinSaleOrder")
-    @PreAuthorize("@ss.hasPermi('system:finsaleOrder:fs')")
+   // @PreAuthorize("@ss.hasPermi('system:finsaleOrder:fs')")
     public AjaxResult auditSaauditFinSaleOrderleOrder(@Valid @RequestBody AuditSaleOrderDto auditSaleOrderDto, BindingResult bindingResult) {
         try {
             ValidUtils.bindvaild(bindingResult);
