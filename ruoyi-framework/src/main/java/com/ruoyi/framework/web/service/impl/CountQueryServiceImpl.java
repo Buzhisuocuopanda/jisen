@@ -7,7 +7,9 @@ import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.OrderTypeEnum;
+import com.ruoyi.common.enums.TaskType;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Id;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.CheckSkuDo;
@@ -19,6 +21,7 @@ import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.FinanceQueryServiceImpl;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +31,7 @@ import com.ruoyi.system.utils.ThreadPoolUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -65,6 +65,9 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Resource
    private FinanceQueryServiceImpl financeQueryService;
+
+    @Resource
+    private TaskService taskService;
 
     int suffex=5;
 
@@ -376,6 +379,11 @@ public class CountQueryServiceImpl implements CountQueryService {
       //  InwuquDto inwuquDto = new InwuquDto();
        //库存情况报表
         List<CheckVo> checkVo=new ArrayList<>();
+        CbibCriteria cbibCriteria = new CbibCriteria();
+
+
+
+
         FnGoodsSkuDto fnGoodsSkuDto = new FnGoodsSkuDto();
         List<FnGoodsSkuVo> userListB  = financeQueryService.fnSkuList(fnGoodsSkuDto);
         for(int i=0;i<userListB.size();i++){
@@ -388,11 +396,22 @@ public class CountQueryServiceImpl implements CountQueryService {
                 checkVo1.setSkunum(userListB.get(i).getSkuQty());
                 checkVo1.setCbibnum(inwuquVos.get(0).getCbib15());
                 checkVo1.setGoodsId(userListB.get(i).getGoodsId());
-                checkVo1.setNum(inwuquVos.get(0).getCbib15()-userListB.get(i).getSkuQty());
+                checkVo1.setNum(userListB.get(i).getSkuQty()-inwuquVos.get(0).getCbib15());
                 checkVo.add(checkVo1);
             }}
         }
+for(int i=0;i<checkVo.size();i++){
+    CbibDo cbibDo = new CbibDo();
+    Date date = new Date();
+    cbibDo.setCbib02(5);
+    cbibDo.setCbib04(date);
+    cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+    cbibDo.setCbib08(checkVo.get(i).getGoodsId());
+    cbibDo.setCbib11(checkVo.get(i).getNum());
+    cbibDo.setCbib17(TaskType.zjrk.getMsg());
+    taskService.InsertCBIB(cbibDo);
 
+}
 
         return checkVo;
     }
