@@ -291,7 +291,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 //            useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
 //
 //        }
-        useNum=cbba.getCbba14();
+        useNum=cbba.getCbba14()+cbba.getCbba11();
         if (orderNum < useNum) {
             throw new SwException("修改订单数量不能小于该订单的占用数量");
         }
