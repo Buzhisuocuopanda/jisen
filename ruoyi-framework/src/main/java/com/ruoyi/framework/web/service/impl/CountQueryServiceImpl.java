@@ -146,54 +146,54 @@ public class CountQueryServiceImpl implements CountQueryService {
                 }
                     });
         }
-        for(int i=0;i<inwuquVos.size();i++){
-
-            if(inwuquVos.get(i)!=null){
-
-
-   /*       double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
-                inwuquVos.get(0).setTotallockQty(sum2);*/
-
-                if(inwuquVos.get(i).getCbpb10()!=null){
-                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
-                }
-                if(inwuquVos.get(i).getCbpb14()!=null){
-                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
-                    if(cbpa!=null){
-                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
-                        if(cbpa.getCbpa09()!=null){
-                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
-                            if(cbpa2!=null){
-                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
-                            }
-                        }
-                    }
-                }
-                if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
-                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
-                    Double sum =0d;
-                    for(int j=0;j<gsGoodsUses.size();j++){
-                        if(gsGoodsUses.get(j).getLockQty()!=null){
-                            sum+=gsGoodsUses.get(j).getLockQty();
-                        }
-                    }
-                    if(inwuquVos.get(i).getCbib15()!=null){
-                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
-                    }
-                }else {
-                    if(inwuquVos.get(i).getCbib15()!=null){
-                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
-                    }
-                }
-
-            }else {
-                InwuquVo inwuquVo =new InwuquVo();
-                inwuquVo.setCbib01(-1);
-                inwuquVo.setLockQty(0d);
-                inwuquVos.set(i,inwuquVo);
-            }
-
-        }
+//        for(int i=0;i<inwuquVos.size();i++){
+//
+//            if(inwuquVos.get(i)!=null){
+//
+//
+//   /*       double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
+//                inwuquVos.get(0).setTotallockQty(sum2);*/
+//
+//                if(inwuquVos.get(i).getCbpb10()!=null){
+//                    inwuquVos.get(i).setCala08(brandMap.get(inwuquVos.get(i).getCbpb10()));
+//                }
+//                if(inwuquVos.get(i).getCbpb14()!=null){
+//                    Cbpa cbpa = classMap.get(inwuquVos.get(i).getCbpb14());
+//                    if(cbpa!=null){
+//                        inwuquVos.get(i).setCbpa07(cbpa.getCbpa07());
+//                        if(cbpa.getCbpa09()!=null){
+//                            Cbpa cbpa2 = classMap.get(cbpa.getCbpa09());
+//                            if(cbpa2!=null){
+//                                inwuquVos.get(i).setTotalclassify(cbpa2.getCbpa07());
+//                            }
+//                        }
+//                    }
+//                }
+//                if(inwuquVos.get(i).getCbib02()!=null&&inwuquVos.get(i).getCbib08()!=null){
+//                    List<GsGoodsUse> gsGoodsUses=gsGoodsUseMapper.selectByWhIdAndGoodsId(inwuquVos.get(i).getCbib02(),inwuquVos.get(i).getCbib08());
+//                    Double sum =0d;
+//                    for(int j=0;j<gsGoodsUses.size();j++){
+//                        if(gsGoodsUses.get(j).getLockQty()!=null){
+//                            sum+=gsGoodsUses.get(j).getLockQty();
+//                        }
+//                    }
+//                    if(inwuquVos.get(i).getCbib15()!=null){
+//                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15()-sum);
+//                    }
+//                }else {
+//                    if(inwuquVos.get(i).getCbib15()!=null){
+//                        inwuquVos.get(i).setLockQty(inwuquVos.get(i).getCbib15());
+//                    }
+//                }
+//
+//            }else {
+//                InwuquVo inwuquVo =new InwuquVo();
+//                inwuquVo.setCbib01(-1);
+//                inwuquVo.setLockQty(0d);
+//                inwuquVos.set(i,inwuquVo);
+//            }
+//
+//        }
         countDownLatch.await(60, TimeUnit.SECONDS);
      /*   CompletableFuture<List<InwuquVo>> f2 =
                 CompletableFuture.supplyAsync(() -> {
