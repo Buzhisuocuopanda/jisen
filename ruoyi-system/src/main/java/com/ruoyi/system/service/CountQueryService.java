@@ -30,4 +30,6 @@ public interface CountQueryService {
     List<GsSalesOrdersDetailsVo> saleOrderListCountquery(GsSalesOrdersDetailsDto2 gsSalesOrdersDetailsDto);
 
     List<CheckVo> check() throws ExecutionException, InterruptedException;
+
+    void update(List<CheckVo> checkVo) throws InterruptedException;
 }

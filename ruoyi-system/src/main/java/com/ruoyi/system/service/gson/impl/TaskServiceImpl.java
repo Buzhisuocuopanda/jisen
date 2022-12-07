@@ -284,6 +284,7 @@ public class TaskServiceImpl implements TaskService {
                 cbib.setCbib14((double) 0);
                 cbib.setCbib15(cbib.getCbib09()+cbib.getCbib11());
                 cbib.setCbib16((double) 0);
+               // cbib.setCbib11(0.0);
             }
 
             //直接入库删除
@@ -431,6 +432,9 @@ public class TaskServiceImpl implements TaskService {
 
 
         cbibMapper.insertSelective(cbib);
+
+
+        cbibMapper.updateByPrimaryKeySelective(cbib1);
       //  Thread.sleep(100+new Random().nextInt(100));
 
         //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());

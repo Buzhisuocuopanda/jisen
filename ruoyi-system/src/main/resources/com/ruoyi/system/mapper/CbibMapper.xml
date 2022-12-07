@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.CbibMapper">
   <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Cbib">
-    <result column="CBIB01" jdbcType="INTEGER" property="cbib01" />
+    <id column="CBIB01" jdbcType="INTEGER" property="cbib01" />
     <result column="CBIB02" jdbcType="INTEGER" property="cbib02" />
     <result column="CBIB03" jdbcType="VARCHAR" property="cbib03" />
     <result column="CBIB04" jdbcType="TIMESTAMP" property="cbib04" />
@@ -90,7 +90,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from `CBIB`
+    from `cbib`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -98,14 +98,24 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `cbib`
+    where CBIB01 = #{cbib01,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `cbib`
+    where CBIB01 = #{cbib01,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.ruoyi.system.domain.CbibCriteria">
-    delete from `CBIB`
+    delete from `cbib`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.ruoyi.system.domain.Cbib">
-    insert into `CBIB` (CBIB01, CBIB02, CBIB03,
+    insert into `cbib` (CBIB01, CBIB02, CBIB03,
       CBIB04, CBIB05, CBIB06,
       CBIB07, CBIB08, CBIB09,
       CBIB10, CBIB11, CBIB12,
@@ -121,7 +131,7 @@
       #{cbib19,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbib">
-    insert into `CBIB`
+    insert into `cbib`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cbib01 != null">
         CBIB01,
@@ -242,13 +252,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.ruoyi.system.domain.CbibCriteria" resultType="java.lang.Long">
-    select count(*) from `CBIB`
+    select count(*) from `cbib`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update `CBIB`
+    update `cbib`
     <set>
       <if test="record.cbib01 != null">
         CBIB01 = #{record.cbib01,jdbcType=INTEGER},
@@ -313,7 +323,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update `CBIB`
+    update `cbib`
     set CBIB01 = #{record.cbib01,jdbcType=INTEGER},
       CBIB02 = #{record.cbib02,jdbcType=INTEGER},
       CBIB03 = #{record.cbib03,jdbcType=VARCHAR},
@@ -337,6 +347,89 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.system.domain.Cbib">
+    update `cbib`
+    <set>
+      <if test="cbib02 != null">
+        CBIB02 = #{cbib02,jdbcType=INTEGER},
+      </if>
+      <if test="cbib03 != null">
+        CBIB03 = #{cbib03,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib04 != null">
+        CBIB04 = #{cbib04,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cbib05 != null">
+        CBIB05 = #{cbib05,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib06 != null">
+        CBIB06 = #{cbib06,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib07 != null">
+        CBIB07 = #{cbib07,jdbcType=INTEGER},
+      </if>
+      <if test="cbib08 != null">
+        CBIB08 = #{cbib08,jdbcType=INTEGER},
+      </if>
+      <if test="cbib09 != null">
+        CBIB09 = #{cbib09,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib10 != null">
+        CBIB10 = #{cbib10,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib11 != null">
+        CBIB11 = #{cbib11,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib12 != null">
+        CBIB12 = #{cbib12,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib13 != null">
+        CBIB13 = #{cbib13,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib14 != null">
+        CBIB14 = #{cbib14,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib15 != null">
+        CBIB15 = #{cbib15,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib16 != null">
+        CBIB16 = #{cbib16,jdbcType=DOUBLE},
+      </if>
+      <if test="cbib17 != null">
+        CBIB17 = #{cbib17,jdbcType=VARCHAR},
+      </if>
+      <if test="cbib18 != null">
+        CBIB18 = #{cbib18,jdbcType=INTEGER},
+      </if>
+      <if test="cbib19 != null">
+        CBIB19 = #{cbib19,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CBIB01 = #{cbib01,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.system.domain.Cbib">
+    update `cbib`
+    set CBIB02 = #{cbib02,jdbcType=INTEGER},
+      CBIB03 = #{cbib03,jdbcType=VARCHAR},
+      CBIB04 = #{cbib04,jdbcType=TIMESTAMP},
+      CBIB05 = #{cbib05,jdbcType=VARCHAR},
+      CBIB06 = #{cbib06,jdbcType=VARCHAR},
+      CBIB07 = #{cbib07,jdbcType=INTEGER},
+      CBIB08 = #{cbib08,jdbcType=INTEGER},
+      CBIB09 = #{cbib09,jdbcType=DOUBLE},
+      CBIB10 = #{cbib10,jdbcType=DOUBLE},
+      CBIB11 = #{cbib11,jdbcType=DOUBLE},
+      CBIB12 = #{cbib12,jdbcType=DOUBLE},
+      CBIB13 = #{cbib13,jdbcType=DOUBLE},
+      CBIB14 = #{cbib14,jdbcType=DOUBLE},
+      CBIB15 = #{cbib15,jdbcType=DOUBLE},
+      CBIB16 = #{cbib16,jdbcType=DOUBLE},
+      CBIB17 = #{cbib17,jdbcType=VARCHAR},
+      CBIB18 = #{cbib18,jdbcType=INTEGER},
+      CBIB19 = #{cbib19,jdbcType=INTEGER}
+    where CBIB01 = #{cbib01,jdbcType=INTEGER}
+  </update>
+
 
 <!--  根据货物id和仓库id获取最新的台账数据-->
   <select id="selectLastByGoodsIdAndStoreId" resultMap="BaseResultMap">
@@ -350,6 +443,7 @@ WHERE
 
 ORDER BY
 	c.CBIB04 DESC limit 1
+ for update
 
   </select>
   <select id="selectLastByGoodsId" resultMap="BaseResultMap">
@@ -433,7 +527,7 @@ ORDER BY
     c.CBIB04 DESC limit 1
   </select>
 
-<!--  <select id="monthlyStockInAndOut" resultType="com.ruoyi.system.domain.vo.CbibVo">-->
+<!--  &lt;select id="monthlyStockInAndOut" resultType="com.ruoyi.system.domain.vo.CbibVo"&gt;-->
 <!--     SELECT-->
 <!--			a.CBIB02,a.CBIB08,-->
 <!--            c.CBPB08 as goodsName,b.CBWA09 as winName,c.CBPB12,-->
@@ -446,20 +540,20 @@ ORDER BY
 <!--    where a.CBIB04 is not null-->
 
 <!--    GROUP BY a.CBIB02,a.CBIB08,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1-->
-<!--  <if test="cbpb12!=null and cbpb12!=''">-->
+<!--  &lt;if test="cbpb12!=null and cbpb12!=''"&gt;-->
 <!--    and c.CBPB12 like concat('%', #{cbpb12}, '%')-->
-<!--  </if>-->
-<!--    <if test="cbib02!=null and cbib02!=''">-->
+<!--  &lt;/if&gt;-->
+<!--    &lt;if test="cbib02!=null and cbib02!=''"&gt;-->
 <!--      and a.cbib02 = #{cbib02}-->
-<!--    </if>-->
-<!--    <if test="monthlys!=null">-->
+<!--    &lt;/if&gt;-->
+<!--    &lt;if test="monthlys!=null"&gt;-->
 <!--      and yearAndMonth in-->
-<!--      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">-->
+<!--      &lt;foreach item="monthly" collection="monthlys" open="(" separator="," close=")"&gt;-->
 <!--        #{monthly}-->
-<!--      </foreach>-->
-<!--    </if>-->
+<!--      &lt;/foreach&gt;-->
+<!--    &lt;/if&gt;-->
 <!--    order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc-->
-<!--  </select>-->
+<!--  &lt;/select&gt;-->
 
   <select id="monthlyStockInAndOut" resultType="com.ruoyi.system.domain.vo.CbibVo">
     SELECT
@@ -484,7 +578,7 @@ ORDER BY
       and
         DATE_FORMAT(a.CBIB04,'%Y-%m')
               in
-      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+      <foreach close=")" collection="monthlys" item="monthly" open="(" separator=",">
         #{monthly}
       </foreach>
     </if>
@@ -499,15 +593,15 @@ ORDER BY
     left join CBCA ca on ca.CBCA01 = a.CBIB19
     WHERE a.CBIB05 = 5 and a.CBIB19 is not null
     GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
-    <!--<if test="cbpb12!=null and cbpb12!=''">
+    <!--&lt;if test="cbpb12!=null and cbpb12!=''"&gt;
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
-    </if>-->
+    &lt;/if&gt;-->
     <if test="customerId!=null">
       and a.cbib19 = #{customerId}
     </if>
     <if test="monthlys!=null">
       and yearAndMonth in
-      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+      <foreach close=")" collection="monthlys" item="monthly" open="(" separator=",">
         #{monthly}
       </foreach>
     </if>
@@ -523,15 +617,15 @@ ORDER BY
     left join CBCA ca on ca.CBCA01 = a.CBIB19
     WHERE a.CBIB05 = 5 and a.CBIB19 is not null
     GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
-    <!--<if test="cbpb12!=null and cbpb12!=''">
+    <!--&lt;if test="cbpb12!=null and cbpb12!=''"&gt;
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
-    </if>-->
+    &lt;/if&gt;-->
     <if test="customerId!=null">
       and a.cbib19 = #{customerId}
     </if>
     <if test="monthlys!=null">
       and yearAndMonth in
-      <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
+      <foreach close=")" collection="monthlys" item="monthly" open="(" separator=",">
         #{monthly}
       </foreach>
     </if>) as ib group by ib.CBIB19
@@ -562,30 +656,30 @@ ORDER BY
 
     <if test="whIds != null">
       and cbib.CBIB02 in
-      <foreach item="whIdItem" collection="whIds" open="(" separator="," close=")">
+      <foreach close=")" collection="whIds" item="whIdItem" open="(" separator=",">
         #{whIdItem}
       </foreach>
     </if>
 
     <if test="goodsIds != null">
       and cbib.CBIB08 in
-      <foreach item="goodsItem" collection="goodsIds" open="(" separator="," close=")">
+      <foreach close=")" collection="goodsIds" item="goodsItem" open="(" separator=",">
         #{goodsItem}
       </foreach>
     </if>
-    <!-- <if test="goodsId !=null">
+    <!-- &lt;if test="goodsId !=null"&gt;
          AND sku.goods_id = #{goodsId}
-     </if>-->
+     &lt;/if&gt;-->
 
     <if test="brandIds != null">
       and pb.CBPB10 in
-      <foreach item="brandItem" collection="brandIds" open="(" separator="," close=")">
+      <foreach close=")" collection="brandIds" item="brandItem" open="(" separator=",">
         #{brandItem}
       </foreach>
     </if>
-    <!--<if test="brandId !=null">
+    <!--&lt;if test="brandId !=null"&gt;
       AND pb.CBPB10 = #{brandId}
-    </if>-->
+    &lt;/if&gt;-->
         <if test="startTime != null">
           and cbib.CBIB04 &gt;= #{startTime}
         </if>
@@ -594,6 +688,17 @@ ORDER BY
         </if>
     order by cbib.CBIB04 desc
   </select>
+    <select id="selectgroupnum" resultType="com.ruoyi.system.domain.vo.CheckVo">
+      SELECT
+        sum(a.qty) as qty,
+        a.goods_id as goodsId
+      from
+
+        gs_goods_sku a
+      GROUP BY
+        a.goods_id
+
+    </select>
 
 
 </mapper>

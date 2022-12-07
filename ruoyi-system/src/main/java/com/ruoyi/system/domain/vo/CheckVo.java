@@ -8,6 +8,7 @@ import java.util.Date;
 public class CheckVo {
     private Integer goodsId;
 
+    private Integer size;
 
     private Double num;
 
@@ -16,6 +17,7 @@ public class CheckVo {
     private Date cbictime;
 
     private Date cbibtime;
+    private Double qty;
 
 
     private Double cbibnum;

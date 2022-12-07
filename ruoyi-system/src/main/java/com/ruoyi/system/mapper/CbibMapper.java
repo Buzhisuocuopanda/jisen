@@ -8,6 +8,7 @@ import java.util.Map;
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.vo.CbibVo;
 import com.ruoyi.system.domain.vo.CbibVo2;
+import com.ruoyi.system.domain.vo.CheckVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbibMapper {
@@ -15,15 +16,23 @@ public interface CbibMapper {
 
     int deleteByExample(CbibCriteria example);
 
+    int deleteByPrimaryKey(Integer cbib01);
+
     int insert(Cbib record);
 
     int insertSelective(Cbib record);
 
     List<Cbib> selectByExample(CbibCriteria example);
 
+    Cbib selectByPrimaryKey(Integer cbib01);
+
     int updateByExampleSelective(@Param("record") Cbib record, @Param("example") CbibCriteria example);
 
     int updateByExample(@Param("record") Cbib record, @Param("example") CbibCriteria example);
+
+    int updateByPrimaryKeySelective(Cbib record);
+
+    int updateByPrimaryKey(Cbib record);
 
     Cbib selectLastByGoodsIdAndStoreId(@Param("goodsId") Integer goodsId, @Param("storeId") Integer storeId);
 
@@ -72,4 +81,6 @@ public interface CbibMapper {
     List<Cbib> fnSkuListCbib(FnGoodsSkuDto fnGoodsSkuDto);
 
     List<Cbib> selectByKcqkbaobiao(FnGoodsSkuDto fnGoodsSkuDto);
+
+    List<CheckVo> selectgroupnum();
 }
