@@ -1585,7 +1585,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             }
 
 
-        } else if (auditTakeOrderDto.getOpType().equals(2)) {
+        }
+        else if (auditTakeOrderDto.getOpType().equals(2)) {
             //撤销 提交状态变成未提交状态
             if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(cbpk.getCbpk11())) {
                 throw new SwException("必须在待审核状态下才能撤销");
@@ -1698,7 +1699,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             //提货单标记完成以后，提货单数量和销售订单数量一致，列表排除销售订单
 
 
-        } else if (auditTakeOrderDto.getOpType().equals(5)) {
+        }
+        else if (auditTakeOrderDto.getOpType().equals(5)) {
             //取消完成
 
             if (!SaleOrderStatusEnums.YIWANCHENG.getCode().equals(cbpk.getCbpk11())) {
@@ -1733,7 +1735,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
 
             }
 
-        } else if (auditTakeOrderDto.getOpType().equals(6)) {
+        }
+        else if (auditTakeOrderDto.getOpType().equals(6)) {
             if (cbpk.getCheckStatus().equals(new Byte("1"))) {
                 throw new SwException("该提货单已质检完成");
             }

@@ -481,7 +481,9 @@ ORDER BY
       and a.cbib02 = #{cbib02}
     </if>
     <if test="monthlys!=null">
-      and yearAndMonth in
+      and
+        DATE_FORMAT(a.CBIB04,'%Y-%m')
+              in
       <foreach item="monthly" collection="monthlys" open="(" separator="," close=")">
         #{monthly}
       </foreach>

@@ -45,9 +45,9 @@ public class QualityinspectionlistController  extends BaseController {
     private ISWQualityinspectionlistService swQualityinspectionlistService;
 
 
-    /**
+  /*  *//**
      * 新增质检单plus
-     */
+     *//*
     @ApiOperation(
             value ="新增质检单plus",
             notes = "新增质检单plus"
@@ -77,6 +77,7 @@ public class QualityinspectionlistController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+*/
 
     /**
      * 新增质检单

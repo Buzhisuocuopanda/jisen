@@ -69,7 +69,7 @@ private CbpmMapper cbpmMapper;
         cbqa.setCbqa03(Math.toIntExact(userid));
         cbqa.setCbqa04(date);
         cbqa.setCbqa05(Math.toIntExact(userid));
-        cbqa.setCbqa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbqa.setCbqa06(DeleteFlagEnum.DELETE.getCode());
         cbqa.setCbqa07(qualityinspectionlistNo);
         cbqa.setCbqa08(date);
         cbqa.setCbqa09(TaskStatus.sh.getCode());
@@ -79,7 +79,7 @@ private CbpmMapper cbpmMapper;
          cbqaMapper.insertSelective(cbqa);
         CbqaCriteria example1 = new CbqaCriteria();
         example1.createCriteria().andCbqa07EqualTo(qualityinspectionlistNo)
-                .andCbqa06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                .andCbqa06EqualTo(DeleteFlagEnum.DELETE.getCode());
         List<Cbqa> cbqass = cbqaMapper.selectByExample(example1);
         IdVo idVo = new IdVo();
         idVo.setId(cbqass.get(0).getCbqa01());
@@ -234,7 +234,15 @@ private CbpmMapper cbpmMapper;
         session.commit();
         session.clearCache();
         /////////////////////////////zgl添加
-
+if(itemList.size() > 0){
+    if(itemList.get(0).getCbqa01()!= null){
+        Integer cbqa01 = itemList.get(0).getCbqa01();
+        Cbqa cbqa = new Cbqa();
+        cbqa.setCbqa01(cbqa01);
+        cbqa.setCbqa06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbqaMapper.updateByPrimaryKeySelective(cbqa);
+    }
+}
         //遍历新增的质检单明细
         for(Cbqb cbqb:cbqbList){
             //判断替换sn为null,就使其原商品对应的提货单良品数量减一

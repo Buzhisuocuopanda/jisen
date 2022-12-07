@@ -1308,12 +1308,14 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                         throw new SwException("无法撤销，占用数对不上，请联系管理员");
                     }
                     gqwGsUse.setLockQty(gqwGsUse.getLockQty()-cbob09);
-
+                    gqwGsUse.setUpdateTime(date);
+                    gsGoodsUseMapper.updateByPrimaryKey(gqwGsUse);
                     CbbaCriteria baex=new CbbaCriteria();
                     baex.createCriteria()
                             .andCbba08EqualTo(cbob.getCbob08())
                             .andCbba12EqualTo(0)
-                            .andCbba07Like("%"+"GBSH" + "%");
+                            .andCbba07Like("%"+"GBSH" + "%")
+                            .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
                     baex.setOrderByClause("CBBA15 asc");
                     List<Cbba> cbbas = cbbaMapper.selectByExample(baex);
                     for (Cbba cbba : cbbas) {
@@ -1323,7 +1325,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                             cbbaMapper.updateByPrimaryKey(cbba);
                             cbob09=0.0;
                         }else {
-                            cbob09=cbba.getCbba14()-cbob09;
+                            cbob09=cbob09-cbba.getCbba14();
                             cbba.setCbba14(0.0);
                             cbba.setCbba04(date);
                             cbbaMapper.updateByPrimaryKey(cbba);

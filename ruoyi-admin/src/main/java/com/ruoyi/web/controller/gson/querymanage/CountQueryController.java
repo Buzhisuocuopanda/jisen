@@ -415,7 +415,7 @@ public class CountQueryController  extends BaseController {
     @PostMapping("/InventsorysummaryqueryExcelList")
     @PreAuthorize("@ss.hasPermi('countQuery:inventsorysummaryquery:export')")
     public void InventsorysummaryqueryExcelList(InwuquDto inwuquDto, HttpServletResponse response) throws ExecutionException, InterruptedException {
-        List<InwuquVo> list = countQueryService.selectInventorysummaryquery(inwuquDto);
+        List<InwuquVo> list = countQueryService.selectInventorysummaryquery2(inwuquDto);
         ExcelUtil<InwuquVo> util = new ExcelUtil<>(InwuquVo.class);
         util.exportExcel(response, list, "销售库存查询数据");
     }

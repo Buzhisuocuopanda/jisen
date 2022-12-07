@@ -1454,6 +1454,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     CbbaCriteria baex = new CbbaCriteria();
                     baex.createCriteria()
                             .andCbba08EqualTo(goodsOperationDo.getGoodsId())
+                            .andCbba06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
                             .andCbba12EqualTo(TotalOrderConstants.NO)
                             .andCbba07Like("%"+"GBSH" + "%");
                     baex.setOrderByClause("CBBA15 asc");
@@ -1543,7 +1544,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                         cbbaMapper.updateByPrimaryKey(cbba);
                     }else {
                         cbba.setCbba14(cbba.getCbba13());
-                        qty=qty-canUseNum;
+                        qty=qty-canuseqty;
                         cbba.setCbba04(date);
                         cbbaMapper.updateByPrimaryKey(cbba);
                     }
