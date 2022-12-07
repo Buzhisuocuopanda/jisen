@@ -1893,8 +1893,8 @@ public class SaleOrderController extends BaseController {
 
         // FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
         // FormExcelUtil.setCellData(sheet1,res.getCurrency(),5,6);
-        FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
-        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
+       // FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
+     //   FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,4);
         FormExcelUtil.setCellData(sheet1,"合计数量",8,3);
 
         Double sumQty = res.getSumQty()==null?0:res.getSumQty();
