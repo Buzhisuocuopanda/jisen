@@ -1340,7 +1340,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 //台账
                 //供应商名称
                 Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbab.getCbab14());
-                String vendername = cbsa.getCbsa08();
+
+
                 //商品id
 
 
@@ -1349,7 +1350,11 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                 cbibDo1.setCbib02(cbaa1.getCbaa09());
                 cbibDo1.setCbib03(cbaa1.getCbaa07());
                 cbibDo1.setCbib05(String.valueOf(TaskType.zjd.getCode()));
-                cbibDo1.setCbib06(vendername);
+                if(cbsa!=null){
+                    String vendername = cbsa.getCbsa08();
+                    cbibDo1.setCbib06(vendername);
+
+                }
                 cbibDo1.setCbib07(cbaa1.getCbaa01());
                 cbibDo1.setCbib08(goodsid);
                 cbibDo1.setCbib11((double) 0);
@@ -1873,7 +1878,6 @@ else {
             for (Cbab cbab : cbabs) {
                 //供应商名称
                 Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbab.getCbab14());
-                String vendername = cbsa.getCbsa08();
                 //商品id
                 Integer goodsid = cbab.getCbab08();
 
@@ -1882,7 +1886,9 @@ else {
                 cbibDo.setCbib02(cbaa2.getCbaa10());
                 cbibDo.setCbib03(cbaa2.getCbaa07());
                 cbibDo.setCbib05(String.valueOf(TaskType.xsthd.getCode()));
-                cbibDo.setCbib06(vendername);
+                if(cbsa!=null){
+                String vendername = cbsa.getCbsa08();
+                cbibDo.setCbib06(vendername);}
                 cbibDo.setCbib07(cbaa2.getCbaa01());
                 cbibDo.setCbib08(goodsid);
                 cbibDo.setCbib11((double) cbab.getCbab09());
