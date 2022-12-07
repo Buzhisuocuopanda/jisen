@@ -952,7 +952,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 //国内订单根据优先级来
                 //如果出库仓库是GQW
                 if(WareHouseType.GQWWHID.equals(saleOrderExitDo.getWhId())){
-                    cbbas = cbbaMapper.selectByGoodsId(saleOrderExitDo.getGoodsId());
+                    cbbas = cbbaMapper.selectByGoodsIdGn(saleOrderExitDo.getGoodsId());
                 }
 
 
