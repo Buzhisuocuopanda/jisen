@@ -1770,13 +1770,13 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                     .andCbba07NotLike("%"+"GBSH" + "%");
             List<Cbba> cbbas = cbbaMapper.selectByExample(example);
             Double gqwMakeQty = cbbas.stream().collect(Collectors.summingDouble(Cbba::getCbba13));
-            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
-            gqwEx.createCriteria()
-                    .andWhIdEqualTo(WareHouseType.GQWWHID)
-
-                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
-            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
-            Double sum = gsGoodsUses.stream().mapToDouble(GsGoodsUse::getLockQty).sum();
+//            GsGoodsUseCriteria gqwEx = new GsGoodsUseCriteria();
+//            gqwEx.createCriteria()
+//                    .andWhIdEqualTo(WareHouseType.GQWWHID)
+//
+//                    .andGoodsIdEqualTo(checkSkuDo.getGoodsId());
+//            List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(gqwEx);
+            Double sum = cbbas.stream().mapToDouble(Cbba::getCbba14).sum();
 
             Double gqwQty = gqwMakeQty - sum;
             canUseNum = gqwQty;

@@ -1596,9 +1596,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     CheckSkuDo checkSkuDo=new CheckSkuDo();
                     checkSkuDo.setGoodsId(cbpb.getCbpb01());
                     checkSkuDo.setTotalOrderNo(saleOrderExcelDto.getTotalOrderNo());
+
 //                    checkSkuDo.setTotalOrderNo();
                     checkSkuDo.setOrderClass(OrderTypeEnum.GUOJIDINGDAN.getCode());
-                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSkuGuoji(checkSkuDo);
+                    QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
 
                     if(qtyMsgVo.getCanUseNum()<saleOrderExcelDto.getQty()){
                         errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku();

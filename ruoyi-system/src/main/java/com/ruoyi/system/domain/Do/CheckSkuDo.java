@@ -16,6 +16,8 @@ public class CheckSkuDo {
 
     private String totalOrderNo;
 
+    private Integer cbbaId;
+
 //    private Integer cb;
 
 
