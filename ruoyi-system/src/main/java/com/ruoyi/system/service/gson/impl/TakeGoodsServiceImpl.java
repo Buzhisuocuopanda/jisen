@@ -1950,7 +1950,8 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
 
                     gsGoodsSkuMapper.deleteByPrimaryKey(gsGoodsSkus.get(0).getId());
-                } else {
+                }
+                else {
                     GsGoodsSku gsGoodsSku = new GsGoodsSku();
                     gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
                     gsGoodsSku.setCreateTime(date);

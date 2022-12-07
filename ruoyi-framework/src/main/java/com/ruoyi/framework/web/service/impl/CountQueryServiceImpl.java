@@ -19,6 +19,7 @@ import com.ruoyi.system.service.CountQueryService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
+import com.ruoyi.system.service.gson.impl.FinanceQueryServiceImpl;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CountQueryServiceImpl implements CountQueryService {
@@ -60,6 +62,9 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Resource
     private CboaMapper cboaMapper;
+
+    @Resource
+   private FinanceQueryServiceImpl financeQueryService;
 
     int suffex=5;
 
@@ -363,6 +368,33 @@ public class CountQueryServiceImpl implements CountQueryService {
         TableDataInfo t2 = getDataTable(result);
         t2.setTotal(t.getTotal());
         return t2;*/
+    }
+
+    @Override
+    public List<CheckVo> check() throws ExecutionException, InterruptedException {
+        //汇总查询
+      //  InwuquDto inwuquDto = new InwuquDto();
+       //库存情况报表
+        List<CheckVo> checkVo=new ArrayList<>();
+        FnGoodsSkuDto fnGoodsSkuDto = new FnGoodsSkuDto();
+        List<FnGoodsSkuVo> userListB  = financeQueryService.fnSkuList(fnGoodsSkuDto);
+        for(int i=0;i<userListB.size();i++){
+            InwuquDto inwuquDto = new InwuquDto();
+            inwuquDto.setCbpb01(userListB.get(i).getGoodsId());
+            List<InwuquVo> inwuquVos = this.selectInventorysummaryquery(inwuquDto);
+            if(inwuquVos.size()>0){
+            if(inwuquVos.get(0).getCbib15()-userListB.get(i).getSkuQty()!=0){
+                CheckVo checkVo1=new CheckVo();
+                checkVo1.setSkunum(userListB.get(i).getSkuQty());
+                checkVo1.setCbibnum(inwuquVos.get(0).getCbib15());
+                checkVo1.setGoodsId(userListB.get(i).getGoodsId());
+                checkVo1.setNum(inwuquVos.get(0).getCbib15()-userListB.get(i).getSkuQty());
+                checkVo.add(checkVo1);
+            }}
+        }
+
+
+        return checkVo;
     }
 
     @Override

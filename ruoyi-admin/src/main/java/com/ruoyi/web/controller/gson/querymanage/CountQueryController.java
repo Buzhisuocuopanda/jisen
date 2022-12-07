@@ -681,6 +681,29 @@ public class CountQueryController  extends BaseController {
         }
     }
 
-
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/23 13:37
+     *
+     */
+    @ApiOperation(
+            value ="检查库存",
+            notes = "检查库存"
+    )
+    @GetMapping("/check")
+    public AjaxResult check() {
+        try{
+            List<CheckVo> list = countQueryService.check();
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        } catch (ServiceException e) {
+            log.error("【检查库存】接口出现异常,参数${},异常${}$", ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (Exception e) {
+            log.error("【检查库存】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 }

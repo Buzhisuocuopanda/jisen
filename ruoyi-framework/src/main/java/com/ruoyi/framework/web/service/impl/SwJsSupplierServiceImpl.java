@@ -195,6 +195,12 @@ private CbsaMapper cbsaMapper;
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();    }
+
+    @Override
+    public List<Cbsa> check() {
+        return null;
+    }
+
     public int insertCBSA(Cbsa cbsa)
     {
         return cbsaMapper.insertCBSA(cbsa);
