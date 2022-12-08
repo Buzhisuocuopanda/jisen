@@ -706,4 +706,25 @@ public class CountQueryController  extends BaseController {
         }
     }
 
+
+
+    @ApiOperation(
+            value ="更新台账",
+            notes = "更新台账"
+    )
+    @PostMapping("/update")
+    public AjaxResult mdfSaleOrderChange(@RequestBody List<CheckVo> checkVo) {
+        try {
+             countQueryService.update(checkVo);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售订单变更单修改】接口出现异常,参数${}$,异常${}$", JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 }
