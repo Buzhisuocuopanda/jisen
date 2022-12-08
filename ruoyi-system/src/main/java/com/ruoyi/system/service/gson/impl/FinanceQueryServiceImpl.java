@@ -522,7 +522,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                 ibs.add(cbib);
 
             }
-            map.put(cbib.getCbib08(),ibs);
+            map.put(cbib.getCbib08()+cbib.getCbib02(),ibs);
         }
 
 
@@ -593,7 +593,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 //                Cbib cbib = cbibs.get(i);
 //                if(cbib)
 //            }
-                        List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId());
+                        List<Cbib> mpibs = map.get(fnGoodsSkuVo.getGoodsId()+fnGoodsSkuVo.getWhId());
                         if(mpibs==null){
                             //查该商品最新的一条
                             CbibCriteria ibex=new CbibCriteria();
