@@ -513,7 +513,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
 
 
         for (Cbib cbib : cbibs) {
-            List<Cbib> ibs = map.get(cbib.getCbib08());
+            List<Cbib> ibs = map.get(cbib.getCbib08()+cbib.getCbib02());
             if(ibs==null){
                 ibs=new ArrayList<>();
                 ibs.add(cbib);
