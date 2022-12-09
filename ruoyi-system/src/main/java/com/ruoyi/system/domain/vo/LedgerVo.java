@@ -29,11 +29,16 @@ public class LedgerVo extends BaseEntity {
     @Excel(name="SKU")
     private String cbpb12;
 
+    private Integer cbib08;
+
+
     @Excel(name="上次结存数量")
     private Double cbib09;
 
     @Excel(name="上次结存成本金额")
     private Double cbib10;
+
+    private Integer cbib02;
 
 
     private String cbwa11;

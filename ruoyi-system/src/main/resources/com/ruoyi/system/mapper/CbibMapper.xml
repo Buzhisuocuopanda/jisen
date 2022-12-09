@@ -699,6 +699,9 @@ ORDER BY
         a.goods_id
 
     </select>
+    <select id="selectall" resultType="com.ruoyi.system.domain.vo.LedgerVo">
+      select * from CBIB
+    </select>
 
 
 </mapper>

@@ -49,6 +49,9 @@ public class CbaaDo {
 
     private Integer userId;
 
+    private Integer goodsId;
+
+
 
     private List<Cbab> goods=new ArrayList<>();
 

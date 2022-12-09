@@ -48,4 +48,7 @@ public class OccuspancyVo extends BaseEntity {
 
     private Date endTime;
 
+    private String cbob18;
+
+
 }

@@ -81,4 +81,20 @@ public class TotalOrderListVo {
     public Double getQty() {
         return orderQty;
     }
+
+
+    @ApiModelProperty("总订单数量")
+    private Double totalorderQty;
+
+    @ApiModelProperty("总生产数量")
+    private Double totalmakeQty;
+
+    @ApiModelProperty("占用数量")
+    private Double totaluseQty;
+
+    @ApiModelProperty("总已发货数量")
+    private Double totalshippedQty;
+
+    @ApiModelProperty("总现有订单数量")
+    private Double totalcurrentOrderQty;
 }

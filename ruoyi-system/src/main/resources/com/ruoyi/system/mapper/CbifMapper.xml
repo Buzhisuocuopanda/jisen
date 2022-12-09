@@ -881,7 +881,7 @@ where a.CBOA06=0 and e.CBOB07 =0
   <select id="selectInvntorysmsmaryquerys" resultType="com.ruoyi.system.domain.vo.OccuspancyVo">
     SELECT
       a.CBOA07,a.CBOA08,c.CBCA08,d.nick_name as caua17,f.CALA08,g.CBPA08,e.CBPB12,b.CBOB10,b.CBOB09,
-      (b.CBOB09-b.CBOB10)as num,b.CBOB11,b.CBOB12
+      (b.CBOB09-b.CBOB10)as num,b.CBOB11,b.CBOB12,b.CBOB18
     FROM
       CBOA a
         LEFT JOIN

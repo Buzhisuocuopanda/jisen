@@ -72,6 +72,9 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Resource
             private CbibMapper cbibMapper;
 
+    @Resource
+    private CbwaMapper cbwaMapper;
+
     int suffex=5;
 
     @Autowired
@@ -829,9 +832,55 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo) {
+        if(ledgerVo.getCbib17()==null &&
+                ledgerVo.getCbwa01()==null &&
+                ledgerVo.getCbib04()==null && ledgerVo.getCbpb01()==null){
+            return selectInventorysmmaryqueryss(ledgerVo);
+        }
         return cbifMapper.selectInventorysmmaryquerys(ledgerVo);
     }
+    public List<LedgerVo> selectInventorysmmaryqueryss(LedgerVo ledgerVo) {
+        List<LedgerVo> selectall = cbibMapper.selectall();
+           for(int i=0;i<selectall.size();i++){
 
+               int finalI1 = i;
+               ThreadPoolUtils.execute(() -> {
+                   int finalI = finalI1;
+                   CompletableFuture f1 =
+                           CompletableFuture.runAsync(()->{
+                               Cbpb cbpb = cbpbMapper.selectByPrimaryKey(selectall.get(finalI).getCbib08());
+                               selectall.get(finalI).setCbpb08(cbpb.getCbpb08());
+                               selectall.get(finalI).setCbpb12(cbpb.getCbpb12());
+                               selectall.get(finalI).setCbpb01(cbpb.getCbpb01());
+                           });
+                   CompletableFuture f2 =
+                           CompletableFuture.runAsync(()->{
+                               Cbwa cbwa = cbwaMapper.selectByPrimaryKey(selectall.get(finalI).getCbib02());
+                               selectall.get(finalI).setCbwa09(cbwa.getCbwa09());
+                               selectall.get(finalI).setCbwa11(cbwa.getCbwa11());
+                               selectall.get(finalI).setCbwa01(cbwa.getCbwa01());
+                           });
+               });
+         /* int finalI = i;
+          CompletableFuture f1 =
+                  CompletableFuture.runAsync(()->{
+                      Cbpb cbpb = cbpbMapper.selectByPrimaryKey(selectall.get(finalI).getCbib08());
+                      selectall.get(finalI).setCbpb08(cbpb.getCbpb08());
+                        selectall.get(finalI).setCbpb12(cbpb.getCbpb12());
+                      selectall.get(finalI).setCbpb01(cbpb.getCbpb01());
+                  });
+          CompletableFuture f2 =
+                  CompletableFuture.runAsync(()->{
+                      Cbwa cbwa = cbwaMapper.selectByPrimaryKey(selectall.get(finalI).getCbib02());
+                        selectall.get(finalI).setCbwa09(cbwa.getCbwa09());
+                        selectall.get(finalI).setCbwa11(cbwa.getCbwa11());
+                        selectall.get(finalI).setCbwa01(cbwa.getCbwa01());
+                  });*/
+
+       }
+        //ThreadPoolUtils.shutdown();
+        return selectall;
+    }
 //    @SneakyThrows
     @Override
     public List<OccupancyVo> selectInventorysmsmaryquerys(OccupancyVo occupancyVo) throws InterruptedException {
