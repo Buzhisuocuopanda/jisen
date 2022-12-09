@@ -170,6 +170,7 @@ private CbpmMapper cbpmMapper;
                 //不是上架就更新上架（暂不上架）
 //                gsGoodsSn.setStatus(new Byte("1"));
 //                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                gsGoodsSn.setUpdateTime(date);
                 gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
@@ -390,7 +391,7 @@ if(itemList.size() > 0){
                 }
                 //如果没查到对应的提货单扫码记录,则删除该条质检单明细
                 if(index ==0){
-                    throw new SwException("没查到对应的提货单扫码记录");
+               //     throw new SwException("没查到对应的提货单扫码记录");
                 }
             }
 

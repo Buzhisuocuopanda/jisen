@@ -44,6 +44,9 @@ public class InwuquDto extends BaseEntity {
 
     private Integer shopping;
 
+    private Integer type;
+
+
     //可用库存总数
     private Double totallockQty;
     //库存总数

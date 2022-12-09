@@ -609,6 +609,7 @@ WHERE
         <if test="classId != null "> and pb.CBPB14 = #{classId} </if>
         <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
         <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
+        <if test="type != null"> and pb.type = #{type}</if>
     </select>
 
 </mapper>

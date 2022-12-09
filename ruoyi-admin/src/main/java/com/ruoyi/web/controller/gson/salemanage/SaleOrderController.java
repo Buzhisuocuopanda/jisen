@@ -1678,8 +1678,8 @@ public class SaleOrderController extends BaseController {
 
 //        in =Thread.currentThread().getContextClassLoader().getResourceAsStream("D:\\data\\模板.xlsx");
            // File is = new File("D:\\data\\模板1.xlsx");
-            excelPaht=   RuoYiConfig.getSwdataprofile()+"销售订单_"+res.getOrderNo()+time+".xlsx";
-            excelPaht2 = RuoYiConfig.getSwprofile() + "模板销售订单_" + res.getOrderNo() + time + ".xlsx";
+            excelPaht=   RuoYiConfig.getSwdataprofile()+"销售订单_"+res.getOrderNo()+time+".xls";
+            excelPaht2 = RuoYiConfig.getSwprofile() + "模板销售订单_" + res.getOrderNo() + time + ".xls";
             FileCopyUtils.copyFile(new File(RuoYiConfig.getSwprofile()+ PathConstant.TAKE_ORDER_SCANSEWASTYY_EXCEL),new File(excelPaht2));
 
             File is = new File(excelPaht2);
@@ -1694,7 +1694,7 @@ public class SaleOrderController extends BaseController {
             saveExcelToDisk(wb, excelPaht);
 
           //  saveExcelToDisk(wb, name);
-            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xlsx");
+            FileUtils.setAttachmentResponseHeader(response, "销售订单_"+res.getOrderNo()+time+".xls");
             FileUtils.writeBytes(excelPaht, response.getOutputStream());
 
         } catch (SwException e) {
