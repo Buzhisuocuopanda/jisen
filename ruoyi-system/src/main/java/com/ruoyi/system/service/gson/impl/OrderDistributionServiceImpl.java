@@ -197,6 +197,7 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
     @Transactional
     public Cbba reassign(OrderDistributionDo orderDistributionDo) {
         Cbba cbba = null;
+        log.info("执行重新分配逻辑"+ JSON.toJSON(orderDistributionDo)+"时间："+new Date());
         try {
             //总订单重新分配 需要先判断其他订单有没有进行分配
 //            lockTotalOrder();
