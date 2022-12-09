@@ -373,7 +373,6 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             if (oldgoodsId.equals(totalOrderAddDto.getGoodsId())) {
 
 
-
                 Long oldPoririty = cbba.getCbba15();
 
                 Double oldQty = cbba.getCbba09();
@@ -403,55 +402,55 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 cbba.setCbba04(new Date());
 
                 cbbaMapper.updateByPrimaryKey(cbba);
-
-            } else {
-                Double useNum = 0.0;
-                baseCheckService.checkGoods(totalOrderAddDto.getGoodsId(), null);
-                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
-                useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
-
-
-//                if (gsGoodsUses.size() > 0) {
-//                    useNum = gsGoodsUses.get(0).getLockQty();
-//                }
-
-                if (cbba.getCbba11() != 0.0) {
-                    throw new SwException("该订单已有发货数量，不能修改商品");
-                }
-
-                if (useNum != 0.0) {
-                    throw new SwException("该订单已有占用数量，不能修改商品");
-                }
-                //先清空旧的分配
-                Double cbba09 = cbba.getCbba09();
-                cbba.setCbba09(0.0);
-                if (cbba.getCbba13() != 0.0) {
-                    send.setNum(0.0);
-                    send.setOldNum(cbba.getCbba09());
-
-                    send.setPriority(cbba.getCbba15());
-                    send.setType(TotalOrderOperateEnum.MDFQTY.getCode());
-                    Cbba cbbadel = orderDistributionService.reassign(send);
-
-                }
-                cbba.setCbba09(totalOrderAddDto.getQty());
-                cbba.setCbba08(totalOrderAddDto.getGoodsId());
-
-                OrderDistributionDo sendAdd = new OrderDistributionDo();
-                sendAdd.setCbba(cbba);
-                sendAdd.setGoodsId(totalOrderAddDto.getGoodsId());
-                sendAdd.setNum(totalOrderAddDto.getQty());
-
-                sendAdd.setPriority(totalOrderAddDto.getPriority());
-                sendAdd.setType(TotalOrderOperateEnum.MAKEORDER.getCode());
-                cbba = orderDistributionService.reassign(sendAdd);
-                //再增加新的分配
-                cbba.setCbba07(totalOrderAddDto.getOrderNo());
-                cbba.setCbba05(totalOrderAddDto.getUserId());
-                cbba.setCbba04(new Date());
-                cbbaMapper.updateByPrimaryKey(cbba);
-
             }
+//            } else {
+//                Double useNum = 0.0;
+//                baseCheckService.checkGoods(totalOrderAddDto.getGoodsId(), null);
+//                List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByTotalOrderNo(cbba.getCbba08(),cbba.getCbba07());
+//                useNum = gsGoodsUses.stream().collect(Collectors.summingDouble(GsGoodsUse::getLockQty));
+//
+//
+////                if (gsGoodsUses.size() > 0) {
+////                    useNum = gsGoodsUses.get(0).getLockQty();
+////                }
+//
+//                if (cbba.getCbba11() != 0.0) {
+//                    throw new SwException("该订单已有发货数量，不能修改商品");
+//                }
+//
+//                if (useNum != 0.0) {
+//                    throw new SwException("该订单已有占用数量，不能修改商品");
+//                }
+//                //先清空旧的分配
+//                Double cbba09 = cbba.getCbba09();
+//                cbba.setCbba09(0.0);
+//                if (cbba.getCbba13() != 0.0) {
+//                    send.setNum(0.0);
+//                    send.setOldNum(cbba.getCbba09());
+//
+//                    send.setPriority(cbba.getCbba15());
+//                    send.setType(TotalOrderOperateEnum.MDFQTY.getCode());
+//                    Cbba cbbadel = orderDistributionService.reassign(send);
+//
+//                }
+//                cbba.setCbba09(totalOrderAddDto.getQty());
+//                cbba.setCbba08(totalOrderAddDto.getGoodsId());
+//
+//                OrderDistributionDo sendAdd = new OrderDistributionDo();
+//                sendAdd.setCbba(cbba);
+//                sendAdd.setGoodsId(totalOrderAddDto.getGoodsId());
+//                sendAdd.setNum(totalOrderAddDto.getQty());
+//
+//                sendAdd.setPriority(totalOrderAddDto.getPriority());
+//                sendAdd.setType(TotalOrderOperateEnum.MAKEORDER.getCode());
+//                cbba = orderDistributionService.reassign(sendAdd);
+//                //再增加新的分配
+//                cbba.setCbba07(totalOrderAddDto.getOrderNo());
+//                cbba.setCbba05(totalOrderAddDto.getUserId());
+//                cbba.setCbba04(new Date());
+//                cbbaMapper.updateByPrimaryKey(cbba);
+//
+//            }
 
         }
         return cbba;
