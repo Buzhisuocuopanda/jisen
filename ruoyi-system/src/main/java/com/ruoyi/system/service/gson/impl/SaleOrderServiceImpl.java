@@ -3553,6 +3553,25 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
     }
 
+    @Override
+    public void getChongfuUse() {
+        GsGoodsUseCriteria example=new GsGoodsUseCriteria();
+        List<GsGoodsUse> gsGoodsUses = gsGoodsUseMapper.selectByExample(example);
+
+        Map<String,Integer> map=new HashMap<>();
+        List<Integer> list=new ArrayList<>();
+        for (GsGoodsUse use : gsGoodsUses) {
+            if(map.containsKey(use.getGoodsId()+"仓库"+use.getWhId())){
+                list.add(use.getGoodsId());
+            }else {
+                map.put(use.getGoodsId()+"仓库"+use.getWhId(),1);
+            }
+
+        }
+
+        return;
+    }
+
 
 //    @Override
 //    public GsWorkInstance createTask() {

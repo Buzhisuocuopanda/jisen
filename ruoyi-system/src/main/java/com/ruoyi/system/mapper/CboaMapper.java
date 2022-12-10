@@ -55,4 +55,7 @@ public interface CboaMapper {
     int selectMinnumber();
 
     List<Id> selectid();
+
+    Cboa selectByPrimaryKeyForUpdate(Integer id);
+
 }

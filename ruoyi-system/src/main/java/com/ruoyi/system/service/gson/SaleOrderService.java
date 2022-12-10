@@ -107,6 +107,9 @@ public interface SaleOrderService {
 
     List<Integer> plDelete(List<Integer> ids);
 
+    void getChongfuUse();
+
+
 
 //    GsWorkInstance createTask();
 
