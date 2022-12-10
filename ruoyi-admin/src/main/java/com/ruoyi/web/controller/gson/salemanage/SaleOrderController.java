@@ -2339,11 +2339,16 @@ public class SaleOrderController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PostMapping("ceshi")
+    @PostMapping("/ceshi")
     public AjaxResult ceshi(@RequestBody TranUseQtyDo saleOrderExitDto){
 //        SaleOrderExitDo saleOrderExitDto=new SaleOrderExitDo();
-        orderDistributionService.diaoboUseOp(saleOrderExitDto);
+//        orderDistributionService.diaoboUseOp(saleOrderExitDto);
+        saleOrderService.getChongfuUse();
         return AjaxResult.success();
     }
+
+
+
+
 
 }

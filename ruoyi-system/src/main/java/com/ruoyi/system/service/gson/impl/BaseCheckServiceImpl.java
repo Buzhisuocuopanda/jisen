@@ -332,7 +332,7 @@ public class BaseCheckServiceImpl implements BaseCheckService {
     @Override
     public Cboa checkSaleOrder(Integer orderId) {
 
-        Cboa cboa = cboaMapper.selectByPrimaryKey(orderId);
+        Cboa cboa = cboaMapper.selectByPrimaryKeyForUpdate(orderId);
         if(cboa==null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cboa.getCboa06())){
             throw new SwException("没有查到该销售订单订单");
         }

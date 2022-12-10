@@ -873,4 +873,12 @@ limit 1
     </select>
 
 
+
+  <select id="selectByPrimaryKeyForUpdate" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `CBOA`
+    where CBOA01 = #{cboa01,jdbcType=INTEGER} for update
+  </select>
+
 </mapper>
