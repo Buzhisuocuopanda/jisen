@@ -504,6 +504,7 @@ FROM
     LEFT JOIN CBPC pc ON pc.CBPC01 = pd.CBPC01
      LEFT JOIN CBSA sa ON sa.CBSA01 = pc.CBPC09
     where sd.CBSD07 = 0
+      and sb.CBSB11 = 4
     <if test="saleOrderNo != null and saleOrderNo != ''">
       AND oa.CBOA07 like concat('%', #{saleOrderNo}, '%')
     </if>

@@ -9,6 +9,7 @@ import com.ruoyi.system.domain.Do.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.gson.TaskService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -153,6 +154,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public synchronized Cbib InsertCBIB(CbibDo cbibDo) throws InterruptedException {
         //Thread.sleep(100+new Random().nextInt(100));
 
@@ -434,7 +436,9 @@ public class TaskServiceImpl implements TaskService {
         cbibMapper.insertSelective(cbib);
 
 
-        cbibMapper.updateByPrimaryKeySelective(cbib1);
+
+        //cbibMapper.updateByPrimaryKeySelective(cbib1);
+
       //  Thread.sleep(100+new Random().nextInt(100));
 
         //Cbib cbib1=cbibMapper.selectByPrimaryKey(cbib.getCbib01());

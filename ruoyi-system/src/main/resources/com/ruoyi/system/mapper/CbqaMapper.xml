@@ -414,6 +414,7 @@ order by a.CBQA08 desc
     where
     c.delete_flag = 0
       and c.status=1
+      and c.groud_status=1
     <if test="cbpm09!=null">
       and c.sn like concat('%',  #{cbpm09}, '%')
     </if>

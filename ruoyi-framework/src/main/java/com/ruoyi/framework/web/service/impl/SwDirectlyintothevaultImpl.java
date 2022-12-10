@@ -235,7 +235,9 @@ private CbpmMapper cbpmMapper;
                     if (gsGoodsSns.get(0).getStatus() == 1) {
                         throw new SwException("该商品sn已入库");
                     }
-
+                    if (gsGoodsSns.get(0).getStatus() == 2) {
+                        throw new SwException("该商品sn处于出库中,不能入库");
+                    }
                     GsGoodsSn gsGoodsSn = new GsGoodsSn();
                     gsGoodsSn.setRepairStatus(0);
                     gsGoodsSn.setStatus(TaskStatus.sh.getCode().byteValue());
@@ -1224,8 +1226,6 @@ if(cbpb.size()>0){
                     }
                 }
             }
-
-
         }
 
         else {

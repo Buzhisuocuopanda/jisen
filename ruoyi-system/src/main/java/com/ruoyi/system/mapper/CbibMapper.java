@@ -9,6 +9,7 @@ import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
 import com.ruoyi.system.domain.vo.CbibVo;
 import com.ruoyi.system.domain.vo.CbibVo2;
 import com.ruoyi.system.domain.vo.CheckVo;
+import com.ruoyi.system.domain.vo.LedgerVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbibMapper {
@@ -83,4 +84,6 @@ public interface CbibMapper {
     List<Cbib> selectByKcqkbaobiao(FnGoodsSkuDto fnGoodsSkuDto);
 
     List<CheckVo> selectgroupnum();
+
+    List<LedgerVo> selectall();
 }

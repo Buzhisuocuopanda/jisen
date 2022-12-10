@@ -19,6 +19,7 @@ import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.system.service.gson.TaskService;
+import lombok.SneakyThrows;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -163,6 +165,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
      * @return
      */
     @Override
+    @SneakyThrows
     public List<TotalOrderListVo> totalOrderList(TotalOrderListDto totalOrderListDto) {
 
 
@@ -186,6 +189,40 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 //                re.setOrderType(OrderTypeEnum.GUOJIDINGDAN.getCode());
 //            }
 
+        }
+        CompletableFuture<List<TotalOrderListVo>> f1 =
+                CompletableFuture.supplyAsync(()->{
+                    List<TotalOrderListVo> outofstockregistrationVos =
+                            totalOrderLists(totalOrderListDto);
+                    return outofstockregistrationVos;
+                });
+        List<TotalOrderListVo> totalOrderListVos = f1.get();
+        if(totalOrderListVos.size()>0 && res.size()>0){
+            res.get(0).setTotalorderQty(totalOrderListVos.get(0).getTotalorderQty());
+            res.get(0).setTotalmakeQty(totalOrderListVos.get(0).getTotalmakeQty());
+            res.get(0).setTotaluseQty(totalOrderListVos.get(0).getTotaluseQty());
+            res.get(0).setTotalshippedQty(totalOrderListVos.get(0).getTotalshippedQty());
+            res.get(0).setTotalcurrentOrderQty(totalOrderListVos.get(0).getTotalcurrentOrderQty());
+        }
+        return res;
+
+    }
+
+    public List<TotalOrderListVo> totalOrderLists(TotalOrderListDto totalOrderListDto) {
+
+
+        List<TotalOrderListVo> res = cbbaMapper.totalOrderList(totalOrderListDto);
+        double sum = res.stream().mapToDouble(TotalOrderListVo::getOrderQty).sum();
+        double sum1 = res.stream().mapToDouble(TotalOrderListVo::getMakeQty).sum();
+        double sum2 = res.stream().mapToDouble(TotalOrderListVo::getUseQty).sum();
+        double sum3 = res.stream().mapToDouble(TotalOrderListVo::getShippedQty).sum();
+        double totalcurrentorderqty=sum-sum3;
+        if(res.size()>0){
+            res.get(0).setTotalorderQty(sum);
+            res.get(0).setTotalmakeQty(sum1);
+            res.get(0).setTotaluseQty(sum2);
+            res.get(0).setTotalshippedQty(sum3);
+            res.get(0).setTotalcurrentOrderQty(totalcurrentorderqty);
         }
 
         return res;

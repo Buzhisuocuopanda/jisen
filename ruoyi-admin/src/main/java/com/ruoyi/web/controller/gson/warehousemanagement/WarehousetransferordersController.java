@@ -799,5 +799,34 @@ public class WarehousetransferordersController extends BaseController {
         }
     }
 
+    /**
+     * 调拨单调出库位容量
+     */
+    @ApiOperation(
+            value ="调拨单调出库位容量",
+            notes = "调拨单调出库位容量"
+    )
+    @PostMapping("/check")
+    public AjaxResult check( @RequestBody CbaaDo cbaaDo) {
+        try {
+            ValueVo check = warehousetransferordersService.check(cbaaDo);
+            return AjaxResult.success(check);
 
+
+        }catch (SwException e) {
+            log.error("【调拨单调出库位容量】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【调拨单调出库位容量】接口出现异常,参数${},异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【调拨单调出库位容量】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbaaDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 }

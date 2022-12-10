@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.Do.*;
+import com.ruoyi.system.domain.dto.CbicDto;
 import com.ruoyi.system.domain.dto.cbaaDto;
 import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
@@ -856,6 +857,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int transferordersout(Cbac itemList) {
+
         log.info("线程名"+Thread.currentThread().getName()+itemList.getCbac09());
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -983,13 +985,52 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
             return 1;
     }
+
+    public int update(CbaasVo cbaasVo) {
+        List<CbaasVo> cbaasVos = selectSwJsTaskGoodsRelListss(cbaasVo);
+        if (cbaasVos.size() > 0) {
+            List<ScanVo> goods = cbaasVos.get(0).getGoods();
+            Map<String, Long> map = goods.stream().collect(Collectors.groupingBy(ScanVo::getKwm, Collectors.counting()));
+            for (Map.Entry<String, Long> entry : map.entrySet()) {
+                System.out.println("key ：" + entry.getKey() + ", value ：" + entry.getValue());
+                CbibDo cbibDo = new CbibDo();
+                CblaCriteria cblaCriteria = new CblaCriteria();
+                cblaCriteria.createCriteria().andCbla09EqualTo(entry.getKey());
+                List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
+                if (cblas.size() > 0) {
+                    Double cblasku = cblas.get(0).getCbla11();
+                    GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
+                    gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
+                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
+                    if (gsGoodsSkus.size() > 0) {
+                        Double gsGoodsSku = gsGoodsSkus.get(0).getQty();
+                        if (gsGoodsSku + entry.getValue() + 1 > cblasku) {
+                            throw new SwException("库位" + entry.getKey() + "库存不足");
+                        }
+                    } else {
+                        if (entry.getValue() + 1 > cblasku) {
+                            throw new SwException("库位" + entry.getKey() + "库存不足");
+                        }
+                    }
+
+
+                }
+
+            }
+
+
+        }
+        return 1;
+    }
+
 //调拨单入库扫码
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int transferordersin(Cbac itemList) {
 
-
-
+        CbaasVo cbaasVo = new CbaasVo();
+        cbaasVo.setCbaa01(itemList.getCbaa01());
+        update(cbaasVo);
 
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -1239,7 +1280,8 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
 
             return     cbacMapper.updateByExampleSelective(itemList, cbacCriteria);
             }
-        } finally {
+        }
+        finally {
 
             String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
                     "then " +
@@ -2054,6 +2096,22 @@ else {
 
         }
         return 1;
+    }
+
+    @Override
+    public ValueVo check(CbaaDo cbaaDo) {
+        ValueVo valueVo = new ValueVo();
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria().andWhIdEqualTo(cbaaDo.getCbaa09())
+                .andGoodsIdEqualTo(cbaaDo.getGoodsId());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        if(gsGoodsSkus.size()>0){
+            double sum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+            valueVo.setNum(sum);
+            return valueVo;
+        }
+        valueVo.setNum(0.0);
+        return valueVo;
     }
 
     private void inserttake(List<cbaaDto> swJsGoodsList) {
