@@ -260,7 +260,7 @@ public class CountQueryController  extends BaseController {
             if(ledgerVo.getEndTime()!=null){
                 ledgerVo.setEndTime(new Date(ledgerVo.getEndTime().getTime()+24*60*60*1000-1));
             }
-//            startPage();
+            startPage();
             List<LedgerVo> list = countQueryService.selectInventorysmmaryquerys(ledgerVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

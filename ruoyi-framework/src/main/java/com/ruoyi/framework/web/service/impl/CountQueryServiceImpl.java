@@ -832,12 +832,13 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Override
     public List<LedgerVo> selectInventorysmmaryquerys(LedgerVo ledgerVo) {
-        if(ledgerVo.getCbib17()==null &&
-                ledgerVo.getCbwa01()==null &&
-                ledgerVo.getCbib04()==null && ledgerVo.getCbpb01()==null){
-            return selectInventorysmmaryqueryss(ledgerVo);
-        }
         return cbifMapper.selectInventorysmmaryquerys(ledgerVo);
+
+//        if(ledgerVo.getCbib17()==null &&
+//                ledgerVo.getCbwa01()==null &&
+//                ledgerVo.getCbib04()==null && ledgerVo.getCbpb01()==null){
+//            return selectInventorysmmaryqueryss(ledgerVo);
+//        }
     }
     public List<LedgerVo> selectInventorysmmaryqueryss(LedgerVo ledgerVo) {
         List<LedgerVo> selectall = cbibMapper.selectall();
