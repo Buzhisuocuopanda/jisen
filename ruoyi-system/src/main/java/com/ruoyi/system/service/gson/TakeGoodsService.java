@@ -50,4 +50,6 @@ public interface TakeGoodsService {
     TakeGoodsOrderDetailVo takeOrderDetailIds(List<Integer> ids);
 
     TakeGoodsOrderDetailVo saleExitDetailByIds(SaleExitDetailByIdsDto saleExitDetailByIdsDto);
+
+    int TakeGoodsOrdersmtotal(List<Cbpm> itemList);
 }

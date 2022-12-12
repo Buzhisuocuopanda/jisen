@@ -789,6 +789,15 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
             String format = sd.format(res.getOrderDate());
             res.setOrderDateMsg(format);
         }
+
+        if(res.getScans()==null){
+            res.setScannum(0.0);
+            res.setNoscannum(res.getSumQty());
+        }else {
+            res.setScannum((double) res.getScans().size());
+            res.setNoscannum(res.getSumQty() - res.getScannum());
+        }
+
         return res;
     }
 
@@ -2482,6 +2491,186 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         res.setGoods(goods);
         return res;
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int TakeGoodsOrdersmtotal(List<Cbpm> itemLists) {
+        if (itemLists.size() == 0) {
+            throw new SwException("请选择要扫码的商品");
+        }
+
+
+        Date date = new Date();
+        Long userid = SecurityUtils.getUserId();
+        Cbpk cbpk = cbpkMapper.selectByPrimaryKey(itemLists.get(0).getCbpk01());
+        if (!cbpk.getCbpk11().equals(2)) {
+            throw new SwException("审核状态才能扫码");
+        }
+
+        for (Cbpm itemList : itemLists) {
+            CbpmCriteria example = new CbpmCriteria();
+            example.createCriteria()
+                    .andCbpk01EqualTo(cbpk.getCbpk01())
+                    .andCbpm09EqualTo(itemList.getCbpm09());
+            List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+            if (cbpms.size() == 0) {
+                throw new SwException("您选择的Sn商品不在出库建议表中");
+            }
+
+
+/*GsGoodsSnCriteria example0=new GsGoodsSnCriteria();
+            example0.createCriteria()
+                    .andSnEqualTo(itemList.get(i).getCbpm09());
+            List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(example0);
+            if(gsGoodsSnss.size()>0){
+                throw new SwException("替换后sn已存在" );
+            }*/
+            CbpmCriteria sfgu = new CbpmCriteria();
+            sfgu.createCriteria()
+                    .andCbpm09EqualTo(itemList.getCbpm09())
+                    .andCbpm11EqualTo(ScanStatusEnum.YISAOMA.getCode())
+                    .andCbpk01EqualTo(itemList.getCbpk01());
+            List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
+            if (cbpmss.size() > 0) {
+                throw new SwException("sn已扫码");
+            }
+
+
+            itemList.setCbpm05(date);
+            itemList.setCbpm06(Math.toIntExact(userid));
+            itemList.setCbpm11(ScanStatusEnum.YISAOMA.getCode());
+
+
+            GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+            example1.createCriteria()
+                    .andSnEqualTo(itemList.getCbpm09());
+            List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
+            if (gsGoodsSns.size() == 0) {
+                throw new SwException("您选择的Sn商品不在货物SN表中");
+            }
+
+            GsGoodsSnCriteria example6 = new GsGoodsSnCriteria();
+            example6.createCriteria()
+                    .andSnEqualTo(itemList.getCbpm09())
+                    .andStatusEqualTo(GoodsType.yck.getCode());
+            List<GsGoodsSn> gsGoodsSnss = gsGoodsSnMapper.selectByExample(example6);
+            if (gsGoodsSnss.size() > 0) {
+                throw new SwException("您选择的Sn商品已经出库");
+            }
+
+
+            if(gsGoodsSns.get(0).getGoodsId()==null){
+                throw new SwException("您选择的Sn商品没有绑定商品");
+            }
+            if(gsGoodsSns.get(0).getLocationId()==null){
+                throw new SwException("您选择的Sn商品没有绑定库位");
+            }
+            if(gsGoodsSns.get(0).getWhId()==null){
+                throw new SwException("您选择的Sn商品没有绑定仓库");
+            }
+            //库存释放,
+            GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+            tuiw.createCriteria()
+                    .andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
+                    .andLocationIdEqualTo(gsGoodsSns.get(0).getLocationId())
+                    .andWhIdEqualTo(gsGoodsSns.get(0).getWhId());
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
+            if (gsGoodsSkus.size()> 0) {
+                //库位所在容量等于1
+                if(gsGoodsSkus.get(0).getQty()==1) {
+
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                    if (gsGoodsSkus1.size() > 0) {
+                        GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                        gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                        gsGoodsSku.setUpdateTime(date);
+                        gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() + gsGoodsSkus1.get(0).getQty());
+                        gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                        gsGoodsSkuMapper.deleteByPrimaryKey(gsGoodsSkus.get(0).getId());
+                    }
+                    else {
+                        GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                        gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                        gsGoodsSku.setCreateTime(date);
+                        gsGoodsSku.setUpdateTime(date);
+                        gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                        gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                        gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                        gsGoodsSku.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                        gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
+                        gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
+                        gsGoodsSku.setLocationId(null);
+                        gsGoodsSkuMapper.updateByExample(gsGoodsSku, tuiw);
+                    }
+                }
+                //库位数量大于1
+                else{
+                    //释放一个库位加到数量仓库
+                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                    gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                    gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty()-1);
+                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                    if (gsGoodsSkus1.size() > 0) {
+                        GsGoodsSku gsGoodsSkuc = new GsGoodsSku();
+                        gsGoodsSkuc.setId(gsGoodsSkus1.get(0).getId());
+                        gsGoodsSkuc.setUpdateTime(date);
+                        gsGoodsSkuc.setQty(gsGoodsSkus1.get(0).getQty() + 1);
+                        gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuc);
+                    }else{
+                        GsGoodsSku gsGoodsSkud = new GsGoodsSku();
+                        // gsGoodsSkud.setId(gsGoodsSkus.get(0).getId());
+                        gsGoodsSkud.setCreateTime(date);
+                        gsGoodsSkud.setUpdateTime(date);
+                        gsGoodsSkud.setCreateBy(Math.toIntExact(userid));
+                        gsGoodsSkud.setUpdateBy(Math.toIntExact(userid));
+                        gsGoodsSkud.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                        gsGoodsSkud.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                        gsGoodsSkud.setWhId(gsGoodsSns.get(0).getWhId());
+                        gsGoodsSkud.setQty(1.0);
+                        gsGoodsSkud.setLocationId(null);
+                        gsGoodsSkuMapper.insert(gsGoodsSkud);
+                    }
+                }
+
+            }
+
+
+            GsGoodsSn goodsSn = new GsGoodsSn();
+            goodsSn = gsGoodsSns.get(0);
+            goodsSn.setId(gsGoodsSns.get(0).getId());
+            goodsSn.setCreateTime(gsGoodsSns.get(0).getCreateTime());
+            goodsSn.setCreateBy(gsGoodsSns.get(0).getCreateBy());
+            goodsSn.setUpdateTime(date);
+            goodsSn.setUpdateBy(Math.toIntExact(userid));
+            goodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+            goodsSn.setWhId(gsGoodsSns.get(0).getWhId());
+            goodsSn.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+            goodsSn.setSn(itemList.getCbpm09());
+            goodsSn.setGroudStatus(Groudstatus.XJ.getCode());
+            goodsSn.setStatus(GoodsType.ckz.getCode());
+            goodsSn.setLocationId(null);
+            if (gsGoodsSns.get(0).getInTime() != null) {
+                goodsSn.setInTime(gsGoodsSns.get(0).getInTime());
+            }
+
+
+            goodsSn.setInTime(gsGoodsSns.get(0).getInTime());
+
+
+            GsGoodsSnCriteria example2 = new GsGoodsSnCriteria();
+            example2.createCriteria()
+                    .andSnEqualTo(itemList.getCbpm09());
+            gsGoodsSnMapper.updateByExample(goodsSn, example2);
+
+            cbpmMapper.updateByExampleSelective(itemList, example);
+        }
+
+
+        return 1;
     }
 
 }

@@ -139,4 +139,9 @@ public class TakeGoodsOrderDetailVo {
 
     private String orderDateMsg;
 
+    @ApiModelProperty("以扫数量")
+    private Double scannum;
+
+    @ApiModelProperty("未扫数量")
+    private Double noscannum;
 }

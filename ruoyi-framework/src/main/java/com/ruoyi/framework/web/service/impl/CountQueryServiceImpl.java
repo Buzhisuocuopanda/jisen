@@ -568,7 +568,8 @@ public class CountQueryServiceImpl implements CountQueryService {
 
 
                     }
-                }else {
+                }
+                else {
                     int windex= suffex*(y-1);
                     for (int w=windex;w<windex+suffex;w++) {
                         Cbpb cbpb=npbs.get(w);

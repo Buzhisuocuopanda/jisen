@@ -399,6 +399,36 @@ public class TakeGoodsController extends BaseController {
         }
     }
 
+
+    /**
+     * 提货单扫码批量
+     */
+    @ApiOperation(
+            value ="提货单扫码批量",
+            notes = "提货单扫码批量"
+    )
+    @PostMapping("/TakeGoodsOrdersmtotal")
+    public AjaxResult TakeGoodsOrdersmtotal(@Valid @RequestBody List<Cbpm> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(takeGoodsService.TakeGoodsOrdersmtotal(itemList));
+        }catch (SwException e) {
+            log.error("【提货单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【提货单扫码】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【提货单扫码】接口出现异常,参数${}$,异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      * 导出提货单excel详情
      */
