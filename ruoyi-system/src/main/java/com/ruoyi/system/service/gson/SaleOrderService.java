@@ -109,6 +109,8 @@ public interface SaleOrderService {
 
     void getChongfuUse();
 
+    void getDayuUse();
+
 
 
 //    GsWorkInstance createTask();

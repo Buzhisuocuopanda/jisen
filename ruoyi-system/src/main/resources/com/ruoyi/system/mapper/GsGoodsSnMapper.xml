@@ -431,6 +431,7 @@ WHERE
 	goods_id = #{goodsId}
 	AND wh_id = #{whId}
 	AND status=1
+	AND repair_status = 0
 ORDER BY
 	create_time
 	LIMIT #{lockQty}
