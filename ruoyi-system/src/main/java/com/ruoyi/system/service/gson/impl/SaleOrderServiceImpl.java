@@ -1287,7 +1287,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
      */
     @Override
     public void revokeSaleOrder(Integer orderId, Integer userId) {
-        Cboa cboa = cboaMapper.selectByPrimaryKey(orderId);
+        Cboa cboa = cboaMapper.selectByPrimaryKeyForUpdate(orderId);
         if (cboa == null || !DeleteFlagEnum.NOT_DELETE.getCode().equals(cboa.getCboa06())) {
             throw new SwException("没有查到该订单");
         }
@@ -1984,6 +1984,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
         } else if(auditSaleOrderDto.getOpeateType().equals(2)){
             revokeSaleOrder(auditSaleOrderDto.getOrderId(),auditSaleOrderDto.getUserId());
+            return;
         }else if (auditSaleOrderDto.getOpeateType().equals(3)) {
             String errors="";
             //审核通过
