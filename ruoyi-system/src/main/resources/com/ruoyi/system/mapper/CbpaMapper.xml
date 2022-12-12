@@ -276,7 +276,7 @@
       <if test="cbpa12 != null  and cbpa12 != ''"> and CBPA12 = #{cbpa12}</if>
     </where>
   </select>
-  <insert id="insertCBPA" parameterType="Cbpa">
+    <insert id="insertCBPA" parameterType="Cbpa">
     insert into CBPA
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cbpa01 != null">CBPA01,</if>

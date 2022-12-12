@@ -34,6 +34,7 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CountQueryServiceImpl implements CountQueryService {
@@ -71,7 +72,8 @@ public class CountQueryServiceImpl implements CountQueryService {
 
     @Resource
             private CbibMapper cbibMapper;
-
+    @Resource
+    private CbqaMapper cbqaMapper;
     @Resource
     private CbwaMapper cbwaMapper;
 
@@ -467,6 +469,11 @@ public class CountQueryServiceImpl implements CountQueryService {
     }
 
     @Override
+    public List<CbqaVo> selectcbQbQueryList(CbqaVo cbqaVo) {
+        return cbqaMapper.selectSwJsTaskGoodsRelListsss(cbqaVo);
+    }
+
+    @Override
     public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) throws InterruptedException {
 //        List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery3(inwuquDto);
 
@@ -732,7 +739,8 @@ public class CountQueryServiceImpl implements CountQueryService {
 //            }
 //
 //        }
-        return list;
+        Stream<InwuquVo> sorted = list.stream().sorted(Comparator.comparing(InwuquVo::getCbpb12));
+        return sorted.collect(Collectors.toList());
     }
 
 //    @Override

@@ -1903,7 +1903,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                 .andCbpk01EqualTo(itemList.getCbpk01());
         List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
         if (cbpmss.size() > 0) {
-            throw new SwException("sn已扫码");
+            throw new SwException("sn已扫码"+itemList.getCbpm09());
         }
 
 
@@ -2533,7 +2533,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
                     .andCbpk01EqualTo(itemList.getCbpk01());
             List<Cbpm> cbpmss = cbpmMapper.selectByExample(sfgu);
             if (cbpmss.size() > 0) {
-                throw new SwException("sn已扫码");
+                throw new SwException("sn已扫码"+itemList.getCbpm09());
             }
 
 

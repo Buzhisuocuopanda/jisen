@@ -479,7 +479,29 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 质检单明细查询
+     */
+    @ApiOperation(
+            value ="质检单明细查询",
+            notes = "质检单明细查询"
+    )
+    @GetMapping("/cbQbQueryList")
+    public AjaxResult<TableDataInfo> cbQbQueryList(CbqaVo cbqaVo) {
+        try {
+            startPage();
+            List<CbqaVo> list = countQueryService.selectcbQbQueryList(cbqaVo);
+            TableDataInfo t = getDataTable(list);
+            return AjaxResult.success(t);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【质检单明细查询】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbqaVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
     @ApiOperation(
             value ="导出生产总订单查询",
             notes = "导出生产总订单查询"

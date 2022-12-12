@@ -32,4 +32,6 @@ public interface CountQueryService {
     List<CheckVo> check() throws ExecutionException, InterruptedException;
 
     void update(List<CheckVo> checkVo) throws InterruptedException;
+
+    List<CbqaVo> selectcbQbQueryList(CbqaVo cbqaVo);
 }

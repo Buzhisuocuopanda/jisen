@@ -40,4 +40,6 @@ public interface CbqaMapper {
     List<CbqaVo> SwJsSkuBarcodeselects(CbqaVo cbqaVo);
 
     List<CbqaVo> SwJsSkuBarcodeselectss(CbqaVo cbqaVo);
+
+    List<CbqaVo> selectSwJsTaskGoodsRelListsss(CbqaVo cbqaVo);
 }

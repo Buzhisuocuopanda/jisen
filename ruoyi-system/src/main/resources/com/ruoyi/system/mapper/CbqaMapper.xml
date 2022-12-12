@@ -426,5 +426,32 @@ order by a.CBQA08 desc
     limit 50
 
   </select>
+  <select id="selectSwJsTaskGoodsRelListsss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
+    SELECT
+      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB10,a.CBQA01,e.CBPK07, f.CBQA07,a.CBQB03,a.CBQA01,a.CBQB01 as cbqb01,b.CBPM08
+    from
+      CBQB a
+        LEFT JOIN
+      CBPM b
+      on
+        b.CBPM01=a.CBQB08
+
+        LEFT JOIN gs_goods_sn sn on sn.sn=a.CBQB10
+        LEFT JOIN CBPB c on c.CBPB01=sn.goods_id
+
+        LEFT JOIN
+      CALA d
+      on
+        d.CALA01=c.CBPB10
+        LEFT JOIN
+      CBPK e
+      on
+        e.CBPK01=b.CBPK01
+        LEFT JOIN
+      CBQA f
+      on
+        f.CBQA01=a.CBQA01
+
+  </select>
 
 </mapper>

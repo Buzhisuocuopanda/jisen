@@ -27,4 +27,5 @@ public interface CbpaMapper {
     int insertCBPA(Cbpa cbpa);
 
     int updateCBPB(Cbpa cbpa);
+
 }
