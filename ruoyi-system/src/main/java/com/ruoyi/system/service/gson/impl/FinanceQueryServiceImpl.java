@@ -4,6 +4,7 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.enums.DeleteFlagEnum;
 import com.ruoyi.common.enums.TaskType;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.common.enums.TaskType;
 import com.ruoyi.system.domain.Cbib;
@@ -473,6 +474,13 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
         //没有入库的 累积 期初减去不良
 //        List<Cbib> cbibs = cbibMapper.fnSkuListCbib(fnGoodsSkuDto);
 
+        Long deptId = SecurityUtils.getDeptId();
+        if(deptId!=null ){
+            if(deptId==111 || deptId==110 ){
+                fnGoodsSkuDto.setWhId(5);
+            }
+
+        }
 
         List<FnGoodsSkuVo> list2=gsGoodsSkuMapper.fnSkuList(fnGoodsSkuDto);
         Map<String,Integer> distnt=new HashMap<>();

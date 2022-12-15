@@ -26,6 +26,7 @@ public class InwuqusDto extends BaseEntity {
     //商品状态 1：已入库 2：出库中 3：已出库
     private Integer status;
 
+    private Integer whid;
 
     private Long deptId;
 
@@ -34,4 +35,5 @@ public class InwuqusDto extends BaseEntity {
     private Date startTime;
 
     private Date endTime;
+
 }

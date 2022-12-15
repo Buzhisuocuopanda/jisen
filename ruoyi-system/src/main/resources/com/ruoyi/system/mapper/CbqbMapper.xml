@@ -330,7 +330,7 @@ LEFT JOIN
 gs_goods_sn sn on sn.sn =qb.CBQB10
 where sn.goods_id =#{goodsId}
 and sn.wh_id =#{whId}
-
+and sn.repair_status=1
 
 
   </select>
@@ -363,6 +363,20 @@ and qb.CBQB03 &lt;=#{endTime}
     </if>
 
   </select>
+    <select id="selectGoodslockqty" resultType="com.ruoyi.system.domain.vo.UIOVo">
+      SELECT
+        u.lock_qty AS price,
+        u.goods_id,
+        u.wh_id
+
+      FROM
+        gs_goods_use u
+      where u.goods_id =#{goodsId}
+        and u.wh_id =#{whId}
+
+      GROUP BY
+        u.goods_id,u.wh_id
+    </select>
 
 
 </mapper>

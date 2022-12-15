@@ -1638,7 +1638,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                     QtyMsgVo qtyMsgVo = orderDistributionService.checkSku(checkSkuDo);
 
                     if(qtyMsgVo.getCanUseNum()<saleOrderExcelDto.getQty()){
-                        errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku();
+                        errors=errors+"商品库存不够，商品：" + saleOrderExcelDto.getSku()+"数字"+i+"占用"+qtyMsgVo.getCanUseNum()+"可用"+saleOrderExcelDto.getQty();
 
 //                        throw new SwException("该商品库存，商品：" + saleOrderExcelDto.getSku());
                         continue;
@@ -1683,7 +1683,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
                         }
 
-                        errors=errors+"商品库存不够，商品："+goodsMsg;
+                        errors=errors+"商品库存不够，商品："+goodsMsg+saleOrderExcelDto.getQty()+">"+canUserQty+"cbbaid"+cbba.getCbba01();
                         continue;
                     }
                     cbob = new Cbob();
@@ -1982,10 +1982,12 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             }
 
 
-        } else if(auditSaleOrderDto.getOpeateType().equals(2)){
+        }
+        else if(auditSaleOrderDto.getOpeateType().equals(2)){
             revokeSaleOrder(auditSaleOrderDto.getOrderId(),auditSaleOrderDto.getUserId());
             return;
-        }else if (auditSaleOrderDto.getOpeateType().equals(3)) {
+        }
+        else if (auditSaleOrderDto.getOpeateType().equals(3)) {
             String errors="";
             //审核通过
             if (!SaleOrderStatusEnums.YITIJIAO.getCode().equals(orderStatus)) {
@@ -2021,7 +2023,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
                         }
 
-                        errors=errors+"商品库存不够，商品："+goodsMsg;
+                        errors=errors+"商品库存不够，商品："+goodsMsg+cbob.getCbob09()+">"+canUserQty;
                         continue;
                     }
 
@@ -2034,7 +2036,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
                         }
 
-                        errors=errors+"商品库存不够，商品："+goodsMsg;
+                        errors=errors+"商品库存不够，商品："+goodsMsg+qtyMsgVo.getCanUseNum()+"<"+cbob.getCbob09();
                         continue;
                     }else {
                         //增加占用
@@ -2073,7 +2075,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cabraa.setCabraa11(auditSaleOrderDto.getUserId());
             cabraaMapper.insert(cabraa);
 
-        } else if (auditSaleOrderDto.getOpeateType().equals(6)) {
+        }
+        else if (auditSaleOrderDto.getOpeateType().equals(6)) {
             //反审
 
 
@@ -2083,7 +2086,8 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             cboa.setCboa11(SaleOrderStatusEnums.YITIJIAO.getCode());
 
 
-        } else if (auditSaleOrderDto.getOpeateType().equals(5)) {
+        }
+        else if (auditSaleOrderDto.getOpeateType().equals(5)) {
 
             if (!SaleOrderStatusEnums.YIFUSHEN.getCode().equals(orderStatus)) {
                 throw new SwException("只有在已复审的状态下才能指定结束");
@@ -3576,6 +3580,24 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     @Override
     public void getDayuUse() {
 //        cbobMapper.selectAll
+    }
+
+    @Override
+    public List<TotalOrderListVo> totalOrderListss(TotalOrderListDto totalOrderListDto) {
+        return  cbbaMapper.selectorderno(totalOrderListDto);
+    }
+
+    @Override
+    public List<SaleOrderListVo> saleChangeListwithSaleOrder(SaleOrderListDto saleOrderListDto) {
+        List<SaleOrderListVo> l1 = new ArrayList<>();
+        List<SaleOrderListVo> saleOrderListVos = this.saleOrderList(saleOrderListDto);
+        List<SaleOrderListVo> saleOrderListVos1 = this.saleChangeList(saleOrderListDto);
+        for(int i=0;i<saleOrderListVos1.size();i++){
+            saleOrderListVos1.get(i).setOrderTypeMsg("销售订单变更单");
+            l1.add(saleOrderListVos1.get(i));
+        }
+        l1.addAll(saleOrderListVos);
+        return l1;
     }
 
 

@@ -659,6 +659,9 @@
     <if test="status != null and status !=-1">
       and oa.CBOA11 =#{status}
     </if>
+    <if test="cboa10 != null">
+      and oa.CBOA10 =#{cboa10}
+    </if>
     <if test="status != null and status ==-1">
       and (oa.CBOA11 =5 or oa.CBOA11 =2)
     </if>

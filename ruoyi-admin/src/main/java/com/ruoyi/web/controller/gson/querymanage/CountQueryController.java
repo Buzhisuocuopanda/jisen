@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.gson.querymanage;
 
 import com.alibaba.fastjson2.JSON;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.Cbpa;
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -85,6 +86,7 @@ public class CountQueryController  extends BaseController {
             value ="库存汇总查询",
             notes = "库存汇总查询"
     )
+   // @DataScope(userAlias = "ib")
     @GetMapping("/Inventorysummaryquery")
     @PreAuthorize("@ss.hasPermi('countQuery:inventorysummaryquery:list')")
     public AjaxResult<TableDataInfo> Inventorysummaryquery(InwuquDto inwuquDto) {
@@ -537,6 +539,31 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    @ApiOperation(
+            value ="查询商品下拉列表（不分页）",
+            notes = "查询商品下拉列表（不分页）"
+    )
+    @GetMapping("/SwJsGoodsAlls")
+    /**
+     *@author: zhaoguoliang
+     *@date: Create in 2022/9/19 15:44
+     */
+    public AjaxResult<List<CbpbVo>> swJsGoodsAlls(CbpbVo cbpbVo) {
+        try {
+            startPage();
+            List<CbpbVo> list = swJsGoodsService.selectSwJsGoodsAlls(cbpbVo);
+            return AjaxResult.success(list);
+        }catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【查询商品列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbpbVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/9/19 15:43

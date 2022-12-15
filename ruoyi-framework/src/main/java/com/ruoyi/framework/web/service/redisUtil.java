@@ -28,4 +28,55 @@ public class redisUtil {
         }
     }
 
-}
+    public void set(String key, Object value){
+        try {
+            redisTemplate.opsForValue().set(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object get(String key){
+        try {
+            return redisTemplate.opsForValue().get(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void del(String key){
+        try {
+            redisTemplate.delete(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void lpush(String key, Object value){
+        try {
+            redisTemplate.opsForList().leftPush(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void rpush(String key, Object value){
+        try {
+            redisTemplate.opsForList().rightPush(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object lpop(String key){
+        try {
+            return redisTemplate.opsForList().leftPop(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    }

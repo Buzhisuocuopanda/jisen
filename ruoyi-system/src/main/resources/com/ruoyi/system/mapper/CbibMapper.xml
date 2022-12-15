@@ -571,6 +571,12 @@ ORDER BY
     <if test="cbpb12!=null and cbpb12!=''">
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
     </if>
+    <if test="cbpb12s != null">
+      and c.CBPB12 in
+      <foreach item="cbwaItem" collection="cbpb12s" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
+    </if>
     <if test="cbib02!=null and cbib02!=''">
       and a.cbib02 = #{cbib02}
     </if>

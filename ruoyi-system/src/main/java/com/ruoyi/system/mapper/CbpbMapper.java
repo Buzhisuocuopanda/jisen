@@ -49,4 +49,6 @@ public interface CbpbMapper {
     List<Cbpb> selectGnXs(InwuquDto inwuquDto);
 
     List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo);
+
+    List<CbpbVo> selectSwJsGoodsAlls(CbpbVo cbpbVo);
 }

@@ -124,7 +124,7 @@ private CbpbMapper cbpbMapper;
         goodsSn.setUpdateTime(date);
         goodsSn.setUpdateBy(Math.toIntExact(userid));
         goodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-
+        goodsSn.setRepairStatus(0);
         goodsSn.setLocationId(goodsSnDo.getLocationId());
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andSnEqualTo(goodsSnDo.getSn());

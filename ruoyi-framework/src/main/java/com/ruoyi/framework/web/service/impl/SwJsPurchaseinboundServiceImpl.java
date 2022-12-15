@@ -334,7 +334,7 @@ CbpdCriteria example1 = new CbpdCriteria();
                           gsGoodsSnCriteria1.createCriteria().andSnEqualTo(sn);
                           gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria1);
                    }
-                   throw new SwException("该sn已存在库存sn表里");
+                  // throw new SwException("该sn已存在库存sn表里");
                }
               /* CbpdCriteria cbpdCriteria =new CbpdCriteria();
                cbpdCriteria.createCriteria().andCbpc01EqualTo(cbpcs.getCbpc01()).andCbpd08EqualTo(itemList.getCbpe08());
@@ -473,7 +473,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             cbpbCriteria.createCriteria().andCbpb12EqualTo(itemList.get(i).getGoodtype());
             List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
             if(cbpbs.size()==0){
-                throw new SwException("商品不存在");
+                throw new SwException("商品不存在"+itemList.get(i).getGoodtype());
             }
             Integer cbpb01 = cbpbs.get(0).getCbpb01();
 

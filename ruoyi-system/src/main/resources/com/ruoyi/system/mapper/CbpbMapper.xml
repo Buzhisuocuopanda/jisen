@@ -549,6 +549,7 @@
         c.CALA01=a.CBPB10
         where
         CBPB06=0
+
         <if test="cbpb08 != null || cbpb12 != null || cbpb15 != null">
         and (
             <if test="cbpb08 != null "> a.CBPB08 like concat('%', #{cbpb08}, '%')</if>
@@ -612,6 +613,24 @@ WHERE
         <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
         <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
         <if test="type != null"> and pb.type = #{type}</if>
+    </select>
+    <select id="selectSwJsGoodsAlls" resultType="com.ruoyi.system.domain.vo.CbpbVo">
+        SELECT
+            b.CBPA07,c.CALA08,a.CBPB12,a.CBPB15,a.CBPB08,a.CBPB07,a.CBPB13,a.CBPB01,a.CBPB10,a.CBPB15,a.CBPB01
+        FROM
+            CBPB a
+                LEFT JOIN
+            CBPA b
+            on
+                b.CBPA01=a.CBPB14
+                LEFT JOIN
+            CALA c
+            ON
+                c.CALA01=a.CBPB10
+        where
+            CBPB06=0
+        <if test="cbpb12 != null ">and a.CBPB12 like concat('%', #{cbpb12}, '%')</if>
+
     </select>
 
 </mapper>

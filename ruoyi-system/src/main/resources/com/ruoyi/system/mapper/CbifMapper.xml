@@ -507,6 +507,7 @@ where
     SELECT
     ib.CBIB01,
     ib.CBIB02,
+    ib.CBIB02 as whid,
     ib.CBIB08,
     ib.CBIB15,
     pb.CBPB08,
@@ -530,9 +531,10 @@ where
         #{cbwaItem}
       </foreach>
     </if>
+    <if test="whid != null "> and ib.CBIB02 != #{whid}   </if>
+    <if test="cbib02 != null "> and ib.CBIB02 = #{cbib02} </if>
     <if test="cbpb10 != null "> and pb.CBPB10 = #{cbpb10} </if>
     <if test="cbpb01 != null "> and pb.CBPB01 = #{cbpb01}</if>
-
     order by   boolNum DESC, (pb.CBPB12+0), pb.CBPB12;
 
   </select>
@@ -567,7 +569,8 @@ where
     <select id="selectInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo">
       SELECT
         sn.id,c.CBWA09,d.CBLA09,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB08,e.CBPB15,sn.sn,sn.in_time as inTime,
-        sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,sn.location_id as locationId
+        sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,
+        sn.location_id as locationId,sn.wh_id
       FROM
         gs_goods_sn sn
 
@@ -595,7 +598,7 @@ where
         CALA h
         ON
           h.CALA01=e.CBPB10
-      LEFT JOIN sys_user u ON u.user_id = sn.create_by
+#       LEFT JOIN sys_user u ON u.user_id = sn.create_by
       WHERE
           (sn.delete_flag =0 or sn.delete_flag is null) and sn.status!=3
       <if test="cbwa09s != null">
@@ -614,6 +617,10 @@ where
       <if test="cbig09 != null ">
         and sn.goods_id =#{cbig09}
       </if>
+
+      <if test="whid != null ">
+        and sn.wh_id !=#{whid}
+      </if>
       <if test="cbig10 != null and cbig10 !=''">
         and sn.sn like concat('%', #{cbig10}, '%')
       </if>
@@ -630,7 +637,7 @@ where
       <if test="groudStatus != null">
         and sn.groud_status =#{groudStatus}
       </if>
-      ${params.dataScope}
+#       ${params.dataScope}
         order by sn.create_time desc
 
     </select>
@@ -638,7 +645,8 @@ where
   <select id="selectOutInventorysummaryquerys" resultType="com.ruoyi.system.domain.vo.InwuqusVo2">
     SELECT
     sn.id,c.CBWA09,d.CBLA09,f.CBPA07,h.CALA08,e.CBPB12,e.CBPB08,e.CBPB15,sn.sn,sn.in_time as inTime,sn.out_time as outTime,
-    sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,sn.location_id as locationId
+    sn.status,sn.groud_status as groudStatus,sn.repair_status as repairStatus,sn.goods_id as goodsId,
+    sn.location_id as locationId
     FROM
     gs_goods_sn sn
 
@@ -708,7 +716,10 @@ where
     <if test="endTime != null">
       and sn.out_time &lt;=#{endTime}
     </if>
-    ${params.dataScope}
+    <if test="whid != null ">
+      and sn.wh_id !=#{whid}
+    </if>
+#     ${params.dataScope}
     order by sn.create_time desc
 
   </select>

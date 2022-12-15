@@ -66,4 +66,6 @@ public interface ISwJsGoodsService {
     List<Cbpf> selectcbpfList(Cbpf cbpf);
 
     List<CbpbVo> selectSwJsGoodsListout(CbpbVo cbpbVo);
+
+    List<CbpbVo> selectSwJsGoodsAlls(CbpbVo cbpbVo);
 }

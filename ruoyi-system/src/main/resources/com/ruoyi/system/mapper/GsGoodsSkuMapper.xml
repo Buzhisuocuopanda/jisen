@@ -335,6 +335,7 @@
         #{whIdItem}
       </foreach>
     </if>
+    <if test="whId != null "> and  sku.wh_id != #{whId} </if>
 
     <if test="goodsIds != null">
       and sku.goods_id in

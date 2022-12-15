@@ -99,6 +99,7 @@ public class SaleOrderListVo {
     @ApiModelProperty("状态")
     private String statusMsg;
 
+    private Integer cboa10;
 
 
     private Integer confirmSkuStatus;

@@ -64,6 +64,8 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Resource
     private CboaMapper cboaMapper;
 
+
+
     @Resource
    private FinanceQueryServiceImpl financeQueryService;
 
@@ -77,6 +79,9 @@ public class CountQueryServiceImpl implements CountQueryService {
     @Resource
     private CbwaMapper cbwaMapper;
 
+    @Resource
+    private CbqbMapper cbqbMapper;
+
     int suffex=5;
 
     @Autowired
@@ -87,6 +92,13 @@ public class CountQueryServiceImpl implements CountQueryService {
 //    @DataScope(deptAlias = "u")
     public List<InwuquVo> selectInventorysummaryquery(InwuquDto inwuquDto) throws ExecutionException, InterruptedException {
         inwuquDto.setDeptId(SecurityUtils.getDeptId());
+        Long deptId = SecurityUtils.getDeptId();
+        if(deptId!=null ){
+            if(deptId==111 || deptId==110 ){
+                inwuquDto.setWhid(5);
+            }
+
+        }
         List<InwuquVo> inwuquVos = cbifMapper.selectInventorysummaryquery4(inwuquDto);
 
 
@@ -225,6 +237,24 @@ public class CountQueryServiceImpl implements CountQueryService {
             inwuquVos.get(0).setTotallockQty(inwuquVos1.get(0).getTotallockQty());
             inwuquVos.get(0).setTotalcbib15(inwuquVos1.get(0).getTotalcbib15());
         }*/
+        for(int i=0;i<inwuquVos.size();i++){
+            List<Cbqb> cbqbs = cbqbMapper.selectGoodsBad(inwuquVos.get(i).getCbpb01(), inwuquVos.get(i).getWhid());
+            inwuquVos.get(i).setBadqty((double) cbqbs.size());
+            List<UIOVo> uioVos = cbqbMapper.selectGoodslockqty(inwuquVos.get(i).getCbpb01(), inwuquVos.get(i).getWhid());
+           if(uioVos.size()>0){
+               inwuquVos.get(i).setLockuseqty(uioVos.get(0).getPrice());
+           }else {
+               inwuquVos.get(i).setLockuseqty(0.0);
+           }
+        }
+/*        CompletableFuture f3 =
+                CompletableFuture.runAsync(() -> {
+                    List<InwuquVo> inwuquVos1 = selectInventorysummaryquerys(inwuquDto);
+                    if(inwuquVos1.size()>0 && inwuquVos.size()>0){
+                        inwuquVos.get(0).setTotalbadqty(inwuquVos1.get(0).getTotalbadqty());
+                        inwuquVos.get(0).setTotallockuseqty(inwuquVos1.get(0).getTotallockuseqty());
+                    }
+                });*/
 
         return inwuquVos;
     }
@@ -287,11 +317,23 @@ public class CountQueryServiceImpl implements CountQueryService {
             }
 
         }
-
-        if (inwuquVos.size() > 0) {
-            double sum2 = inwuquVos.stream().mapToDouble(InwuquVo::getLockQty).sum();
-            inwuquVos.get(0).setTotallockQty(sum2);
+        for(int i=0;i<inwuquVos.size();i++){
+            List<Cbqb> cbqbs = cbqbMapper.selectGoodsBad(inwuquVos.get(i).getCbpb01(), inwuquVos.get(i).getWhid());
+            inwuquVos.get(i).setBadqty((double) cbqbs.size());
+            List<UIOVo> uioVos = cbqbMapper.selectGoodslockqty(inwuquVos.get(i).getCbpb01(), inwuquVos.get(i).getWhid());
+            if(uioVos.size()>0){
+                inwuquVos.get(i).setLockuseqty(uioVos.get(0).getPrice());
+            }else {
+                inwuquVos.get(i).setLockuseqty(0.0);
+            }
         }
+        if(inwuquVos.size()>0){
+            double sum = inwuquVos.stream().mapToDouble(InwuquVo::getBadqty).sum();
+            inwuquVos.get(0).setTotalbadqty(sum);
+            double sum1 = inwuquVos.stream().mapToDouble(InwuquVo::getLockuseqty).sum();
+            inwuquVos.get(0).setTotallockuseqty(sum1);
+        }
+
         return inwuquVos;
     }
 
@@ -823,19 +865,32 @@ public class CountQueryServiceImpl implements CountQueryService {
 //    }
 
     @Override
-    @DataScope(deptAlias = "u")
+  //  @DataScope(deptAlias = "u")
     public List<InwuqusVo> selectInventorysummaryquerys(InwuqusDto inwuqusDto) {
-        inwuqusDto.setDeptId(SecurityUtils.getDeptId());
-        inwuqusDto.setDeptId(SecurityUtils.getUserId());
-        return cbifMapper.selectInventorysummaryquerys(inwuqusDto);
+     //   inwuqusDto.setDeptId(SecurityUtils.getDeptId());
+     //   inwuqusDto.setDeptId(SecurityUtils.getUserId());
+        Long deptId = SecurityUtils.getDeptId();
+        if(deptId!=null ){
+            if(deptId==111 || deptId==110 ){
+                inwuqusDto.setWhid(5);
+            }
+
+        }        return cbifMapper.selectInventorysummaryquerys(inwuqusDto);
     }
 
 
     @Override
-    @DataScope(deptAlias = "u")
+  //  @DataScope(deptAlias = "u")
     public List<InwuqusVo2> selectOutInventorysummaryquerys(InwuqusDto inwuqusDto) {
-        inwuqusDto.setDeptId(SecurityUtils.getDeptId());
-        inwuqusDto.setDeptId(SecurityUtils.getUserId());
+      //  inwuqusDto.setDeptId(SecurityUtils.getDeptId());
+     //   inwuqusDto.setDeptId(SecurityUtils.getUserId());
+        Long deptId = SecurityUtils.getDeptId();
+        if(deptId!=null ){
+            if(deptId==111 || deptId==110 ){
+                inwuqusDto.setWhid(5);
+            }
+
+        }
         return cbifMapper.selectOutInventorysummaryquerys(inwuqusDto);
     }
 

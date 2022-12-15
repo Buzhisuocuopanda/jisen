@@ -46,9 +46,13 @@ public class InwuquDto extends BaseEntity {
 
     private Integer type;
 
+    private Integer cbib02;
 
     //可用库存总数
     private Double totallockQty;
     //库存总数
     private Double totalcbib15;
+
+    private Integer whid;
+
 }

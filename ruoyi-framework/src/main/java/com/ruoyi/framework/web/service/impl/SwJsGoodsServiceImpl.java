@@ -861,6 +861,11 @@ private CbpaMapper cbpaMapper;
     }
 
     @Override
+    public List<CbpbVo> selectSwJsGoodsAlls(CbpbVo cbpbVo) {
+        return cbpbMapper.selectSwJsGoodsAlls(cbpbVo);
+    }
+
+    @Override
     public List<CbpbVo> selectSwJsGoodsAll(CbpbVo cbpbVo) {
         return cbpbMapper.selectSwJsGoodsAll(cbpbVo);
     }

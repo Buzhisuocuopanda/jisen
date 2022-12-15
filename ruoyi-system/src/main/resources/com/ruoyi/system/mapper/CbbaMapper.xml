@@ -545,6 +545,14 @@ WHERE
       order by ba.CBBA13 DESC
 
     </if>
+    <if test="sortKey=='useQty' and sortType=='ascending'">
+      order by ba.CBBA14
+
+    </if>
+    <if test="sortKey=='useQty' and sortType=='descending'">
+      order by ba.CBBA14 DESC
+
+    </if>
     <if test="sortKey==null ">
       order by ba.CBBA15
 
@@ -585,6 +593,17 @@ ORDER BY
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
       #{id}
     </foreach>
+  </select>
+  <select id="selectorderno" resultType="com.ruoyi.system.domain.vo.TotalOrderListVo">
+    SELECT
+    ba.CBBA07 as orderNo
+    FROM
+    `CBBA` ba
+    WHERE
+    ba.CBBA06 = 0
+    <if test="orderNo != null and orderNo != ''">
+      AND  ba.CBBA07 like concat('%', #{orderNo}, '%')
+    </if>
   </select>
 
 

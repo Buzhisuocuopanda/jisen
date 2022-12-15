@@ -48,5 +48,6 @@ public class InwuqusVo {
     private Integer goodsId;
 
     private Integer locationId;
+    private Integer whid;
 
 }

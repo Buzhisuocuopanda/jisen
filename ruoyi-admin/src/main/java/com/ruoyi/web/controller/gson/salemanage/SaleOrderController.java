@@ -176,7 +176,31 @@ public class SaleOrderController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    /**
+     * 生产总订单下拉列表(分页)
+     *
+     * @param totalOrderListDto
+     * @return
+     */
+    @ApiOperation(
+            value ="生产总订单下拉列表(分页)",
+            notes = "生产总订单下拉列表(分页)"
+    )
+    @GetMapping("/totalOrderListss")
+    public AjaxResult<TableDataInfo> totalOrderListss( TotalOrderListDto totalOrderListDto) {
+        try {
+            startPage();
+            List<TotalOrderListVo> res = saleOrderService.totalOrderListss(totalOrderListDto);
+            return AjaxResult.success(getDataTable(res));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
+        } catch (Exception e) {
+            log.error("【获取生产总订单列表】接口出现异常,参数${}$,异常${}$", JSON.toJSON(totalOrderListDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 添加生产总订单
@@ -435,6 +459,10 @@ public class SaleOrderController extends BaseController {
         }
 
     }
+
+
+
+
 
 
     /**
@@ -1288,6 +1316,30 @@ public class SaleOrderController extends BaseController {
         }
     }
 
+
+    /**
+     * 销售变更单列表加销售订单列表主页
+     */
+    @ApiOperation(
+            value ="销售变更单列表加销售订单列表主页",
+            notes = "销售变更单列表加销售订单列表主页"
+    )
+    @GetMapping("/saleChangeListwithSaleOrder")
+   // @PreAuthorize("@ss.hasPermi('system:saleChange:list')")
+    public AjaxResult<TableDataInfo> saleChangeListwithSaleOrder( SaleOrderListDto saleOrderListDto) {
+        try {
+            startPage();
+            List<SaleOrderListVo> list= saleOrderService.saleChangeListwithSaleOrder(saleOrderListDto);
+            return AjaxResult.success(getDataTable(list));
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【销售变更单列表加销售订单列表主页】接口出现异常,参数${}$,异常${}$",JSON.toJSON(getUserId()), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
 
     /**

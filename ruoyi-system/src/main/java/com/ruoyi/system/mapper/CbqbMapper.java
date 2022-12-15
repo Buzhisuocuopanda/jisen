@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.CbqbCriteria;
 import java.util.List;
 
 import com.ruoyi.system.domain.dto.FnGoodsSkuDto;
+import com.ruoyi.system.domain.vo.UIOVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbqbMapper {
@@ -33,5 +34,9 @@ public interface CbqbMapper {
     List<Cbqb> selectGoodsBad(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
 
     List<Cbqb> selectGoodsBadkcqk(FnGoodsSkuDto fnGoodsSkuDto);
+
+
+    List<UIOVo> selectGoodslockqty(@Param("goodsId")Integer goodsId, @Param("whId")Integer whId);
+
 
 }

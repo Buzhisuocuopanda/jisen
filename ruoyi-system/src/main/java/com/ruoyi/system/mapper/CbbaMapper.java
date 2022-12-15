@@ -54,4 +54,6 @@ public interface CbbaMapper {
     void plDeleByIds(@Param("ids") List<Integer> ids);
 
     List<Cbba> selectByGoodsIdGn(Integer goodsId);
+
+    List<TotalOrderListVo> selectorderno(TotalOrderListDto totalOrderListDto);
 }

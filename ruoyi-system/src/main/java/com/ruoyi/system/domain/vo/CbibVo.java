@@ -54,6 +54,9 @@ public class CbibVo {
     private String winName;
     @Excel(name = "型号")
     private String cbpb12;
+
+    private String[] cbpb12s;
+
     @Excel(name = "商品")
     private String goodsName;
 

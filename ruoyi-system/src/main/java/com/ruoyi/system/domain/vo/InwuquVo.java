@@ -57,6 +57,15 @@ public class InwuquVo extends BaseEntity {
     private Integer cbpb14;
 
 
+    private Integer whid;
 
+    @Excel(name = "不良数量")
+    private Double badqty;
+    @Excel(name = "已占用数量")
+    private Double lockuseqty;
+
+    private Double totalbadqty;
+
+    private Double totallockuseqty;
 
 }

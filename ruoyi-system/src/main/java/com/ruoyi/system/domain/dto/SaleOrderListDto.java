@@ -55,6 +55,10 @@ public class SaleOrderListDto {
     @ApiModelProperty("客户名称")
     private String customerName;
 
+    private Integer cboa10;
+
+
+
 
 
 

@@ -428,7 +428,7 @@ order by a.CBQA08 desc
   </select>
   <select id="selectSwJsTaskGoodsRelListsss" resultType="com.ruoyi.system.domain.vo.CbqaVo">
     SELECT
-      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB10,a.CBQA01,e.CBPK07, f.CBQA07,a.CBQB03,a.CBQA01,a.CBQB01 as cbqb01,b.CBPM08
+      d.CALA08,c.CBPB12,c.CBPB08,a.CBQB09,a.CBQB10,a.CBQA01,e.CBPK07, f.CBQA07,f.CBQA08, a.CBQB03,a.CBQA01,a.CBQB01 as cbqb01,b.CBPM08
     from
       CBQB a
         LEFT JOIN
@@ -451,7 +451,17 @@ order by a.CBQA08 desc
       CBQA f
       on
         f.CBQA01=a.CBQA01
-
+    where
+    f.CBQA06=0
+    <if test='cbqa07 != null and cbqa07 != ""'>and  f.CBQA07  like concat('%', #{cbqa07}, '%')</if>
+<!--    <if test='startTime != null and startTime != ""'>and  f.CBQA08 <![CDATA[>=]]> #{startTime}</if>-->
+<!--    <if test='endTime != null and endTime != ""'>and f.CBQA08  <![CDATA[<=]]>#{endTime}</if>-->
+    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(f.CBQA08,'%y-%m-%d') &gt;= date_format(#{params.beginTime},'%y-%m-%d')
+    </if>
+    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(f.CBQA08,'%y-%m-%d') &lt;= date_format(#{params.endTime},'%y-%m-%d')
+    </if>
   </select>
 
 </mapper>

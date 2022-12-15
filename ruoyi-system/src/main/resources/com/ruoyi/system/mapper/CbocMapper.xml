@@ -575,6 +575,9 @@
     <if test="status != null">
       and oa.CBOC11 =#{status}
     </if>
+    <if test="cboa10 != null">
+      and oa.CBOC10 =#{cboa10}
+    </if>
     <if test="orderNo != null and orderNo != ''">
       and oa.CBOC07 like concat('%', #{orderNo}, '%')
     </if>

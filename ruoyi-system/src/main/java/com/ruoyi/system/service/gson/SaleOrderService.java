@@ -111,6 +111,9 @@ public interface SaleOrderService {
 
     void getDayuUse();
 
+    List<TotalOrderListVo> totalOrderListss(TotalOrderListDto totalOrderListDto);
+
+    List<SaleOrderListVo> saleChangeListwithSaleOrder(SaleOrderListDto saleOrderListDto);
 
 
 //    GsWorkInstance createTask();
