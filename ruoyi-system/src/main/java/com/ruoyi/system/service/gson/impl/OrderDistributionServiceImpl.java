@@ -983,39 +983,65 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
 
 
             }
-            Double num = saleOrderExitDo.getQty();
+//            Double num = saleOrderExitDo.getQty();
+            Double unum = saleOrderExitDo.getQty();
+            Date date = new Date();
 //            Double subNum=0.0;
+//            for (Cbba cbba : cbbas) {
+//                //减去分配数量 增加发货数量
+//                Double subNum = 0.0;
+//                Double makNum = cbba.getCbba13();
+//                Double userNum = cbba.getCbba14();
+//                if (makNum > num) {
+//                    cbba.setCbba13(makNum - num);
+//                    cbba.setCbba11(cbba.getCbba11() + num);
+////                    cbba.setCbba14(cbba.getCbba14()-num);
+//                    num = 0.0;
+//
+//                } else {
+//
+//                    cbba.setCbba13(0.0);
+//                    cbba.setCbba11(cbba.getCbba11() + makNum);
+////                    cbba.setCbba14(cbba.getCbba14()-makNum);
+//                    num = num - makNum;
+//
+//                }
+//
+//                cbba.setCbba04(date);
+//                cbbaMapper.updateByPrimaryKey(cbba);
+//                if (num == 0.0) {
+//                    break;
+//                }
+//
+//            }
+
             for (Cbba cbba : cbbas) {
                 //减去分配数量 增加发货数量
                 Double subNum = 0.0;
                 Double makNum = cbba.getCbba13();
-                if (makNum > num) {
-                    cbba.setCbba13(makNum - num);
-                    cbba.setCbba11(cbba.getCbba11() + num);
-                    cbba.setCbba14(cbba.getCbba14()-num);
-                    num = 0.0;
+                Double useNum = cbba.getCbba14();
+                if (useNum > unum) {
+                    cbba.setCbba13(makNum - unum);
+                    cbba.setCbba11(cbba.getCbba11() + unum);
+                    cbba.setCbba14(cbba.getCbba14()-unum);
+                    unum = 0.0;
 
                 } else {
 
-                    cbba.setCbba13(0.0);
-                    cbba.setCbba11(cbba.getCbba11() + makNum);
-                    cbba.setCbba14(cbba.getCbba14()-makNum);
-                    num = num - makNum;
+                    cbba.setCbba13(makNum - useNum);
+                    cbba.setCbba11(cbba.getCbba11() + useNum);
+                    cbba.setCbba14(cbba.getCbba14()-useNum);
+                    unum = unum - useNum;
 
                 }
 
-                if (cbba.getCbba11().equals(cbba.getCbba09())) {
-                    cbba.setCbba12(4);
-                }
-
-
+                cbba.setCbba04(date);
                 cbbaMapper.updateByPrimaryKey(cbba);
-                if (num == 0.0) {
+                if (unum == 0.0) {
                     break;
                 }
 
             }
-
 
             //扣除占用数量
 
