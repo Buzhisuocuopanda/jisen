@@ -320,7 +320,8 @@ CbpdCriteria example1 = new CbpdCriteria();
                if (gsGoodsSns.size() > 0) {
                    if(gsGoodsSns.get(0).getStatus().equals(TaskStatus.sh.getCode().byteValue())){
                        throw new SwException("该sn已存在库存sn表里入库状态");
-                   }else {
+                   }
+                   else {
                        GsGoodsSn  gsGoodsSn = new GsGoodsSn();
                        gsGoodsSn.setStatus(GoodsType.yrk.getCode());
                        gsGoodsSn.setGroudStatus(GoodsType.yrk.getCode());
@@ -334,11 +335,9 @@ CbpdCriteria example1 = new CbpdCriteria();
                           gsGoodsSnCriteria1.createCriteria().andSnEqualTo(sn);
                           gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,gsGoodsSnCriteria1);
                    }
-                  // throw new SwException("该sn已存在库存sn表里");
+               //    throw new SwException("该sn已存在库存sn表里");
                }
-              /* CbpdCriteria cbpdCriteria =new CbpdCriteria();
-               cbpdCriteria.createCriteria().andCbpc01EqualTo(cbpcs.getCbpc01()).andCbpd08EqualTo(itemList.getCbpe08());
-               List<Cbpd> cbpdList = cbpdMapper.selectByExample(cbpdCriteria);*/
+          else{
                GsGoodsSn  gsGoodsSn = new GsGoodsSn();
                gsGoodsSn.setCreateTime(date);
                gsGoodsSn.setUpdateTime(date);
@@ -362,6 +361,7 @@ CbpdCriteria example1 = new CbpdCriteria();
                }
 */
                gsGoodsSnMapper.insertSelective(gsGoodsSn);
+          }
            } finally {
 
                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +

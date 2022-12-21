@@ -37,4 +37,8 @@ public interface ISelloutofwarehouseService {
     void Selloutofwarehouseeditone(CbsbDo cbsbDo);
 
     int insertSelloutofwarehouseplus(CbsbDo cbsbDo);
+
+    List<CbsbsVo> swJsGoodslistcheck(CbsbsVo cbsbsVo) throws ExecutionException, InterruptedException;
+
+    int insertSwJsStoresslist(List<Cbsd> itemLists);
 }

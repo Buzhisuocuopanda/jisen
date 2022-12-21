@@ -78,4 +78,6 @@ public class CbibVo2 {
     @Excel(name = "出库总价值占比(%)")
     private String outMoneyTotal100;
 
+    private Integer[] cbwa09s;
+
 }

@@ -22,6 +22,9 @@ public class TotalOrderListVo {
     @ApiModelProperty("订单号")
 
     private String orderNo;
+
+    private String[] orderNos;
+    private String[] models;
     private Integer goodsId;
 
     @Excel(name = "型号")

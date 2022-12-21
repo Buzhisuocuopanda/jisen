@@ -72,6 +72,9 @@ public class TakeGoodsOrderAddDto {
     private List<TakeOrderGoodsDto> goods=new ArrayList<>();
 
 
+    private String oldsn;
+
+    private String newsn;
 
 
 }

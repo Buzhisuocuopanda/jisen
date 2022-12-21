@@ -52,4 +52,6 @@ public interface TakeGoodsService {
     TakeGoodsOrderDetailVo saleExitDetailByIds(SaleExitDetailByIdsDto saleExitDetailByIdsDto);
 
     int TakeGoodsOrdersmtotal(List<Cbpm> itemList);
+
+    int editTakeGoodsOrdersn(TakeGoodsOrderAddDto takeGoodsOrderAddDto);
 }

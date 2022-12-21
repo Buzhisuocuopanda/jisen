@@ -1623,7 +1623,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
 
 
                     if (cbpbs.size() == 0) {
-                        errors=errors+"商品不可用，商品：" + saleOrderExcelDto.getSku();
+                        errors=errors+"商品不可用，商品：" + saleOrderExcelDto.getSku()+"请检查商品是否禁用";
 //                        throw new SwException("该商品不可用，商品：" + saleOrderExcelDto.getSku());
                         continue;
                     }

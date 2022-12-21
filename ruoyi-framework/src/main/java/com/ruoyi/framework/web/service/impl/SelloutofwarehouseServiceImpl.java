@@ -13,6 +13,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISelloutofwarehouseService;
 import com.ruoyi.system.service.gson.*;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -1219,11 +1220,14 @@ else{
             }
             sum+=cbsbsVos.get(i).getCbsc09();
         }*/
-        cbsbsVos.get(0).setSaomanums(scanVos.size());
+        if(cbsbsVos.size()>0){
+            cbsbsVos.get(0).setSaomanums(scanVos.size());
 
-        cbsbsVos.get(0).setGoods(scanVos);
-        cbsbsVos.get(0).setNums(sum);
-        cbsbsVos.get(0).setOutsuggestion(takeOrderSugestVos);
+            cbsbsVos.get(0).setGoods(scanVos);
+            cbsbsVos.get(0).setNums(sum);
+            cbsbsVos.get(0).setOutsuggestion(takeOrderSugestVos);
+        }
+
         return cbsbsVos;
         }
 
@@ -1232,9 +1236,11 @@ else{
     @Override
     public int insertSwJsStoress(Cbsd itemList) throws ExecutionException, InterruptedException {
 //id,sn
+
         if(itemList==null){
             throw new SwException("请扫描商品");
         }
+
         CbsbsVo cbsbsVo = new CbsbsVo();
         cbsbsVo.setCbsb01(itemList.getCbsb01());
         List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
@@ -1245,6 +1251,14 @@ else{
             if( v==cbsbsVos.get(0).getNums()){
             throw new SwException("该销售出库单已扫描完成");
         }
+       if(cbsbsVos.get(0).getOutsuggestion().size()>0){
+           List<String> collect = cbsbsVos.get(0).getOutsuggestion().stream().map(TakeOrderSugestVo::getSn).collect(Collectors.toList());
+           String cbsd09 = itemList.getCbsd09();
+           if(!collect.contains(cbsd09)){
+               throw new SwException("该商品sn不在建议出库列表中"+cbsd09);
+           }
+
+       }
         }}
 
 
@@ -1299,7 +1313,7 @@ else{
                     .andCbsb01EqualTo(itemList.getCbsb01());
             List<Cbsd> cbsds = cbsdMapper.selectByExample(IOP);
             if (cbsds.size() > 0) {
-                throw new SwException("SN码已存在销售出库扫码记录");
+                throw new SwException("SN码已存在销售出库扫码记录"+itemList.getCbsd09());
             }
 
             CbpmCriteria examplew = new CbpmCriteria();
@@ -1310,7 +1324,7 @@ else{
             examples.createCriteria().andSnEqualTo( itemList.get(i).getCbsd09());
             List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);*/
             if(cbpms.size()==0){
-                throw new SwException("该sn不存在");
+                throw new SwException("该sn不存在"+itemList.getCbsd09());
             }
 
 /*if(gsGoodsSns.get(0).getLocationId()==null){
@@ -1572,6 +1586,225 @@ else{
             example.createCriteria().andCbsc01EqualTo(good.getCbsc01());*/
             cbscMapper.insertSelective(cbsc);
         }
+        return 1;
+    }
+
+    @Override
+    public List<CbsbsVo> swJsGoodslistcheck(CbsbsVo cbsbsVo) throws ExecutionException, InterruptedException {
+
+        List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
+        List<ScanVo> goods = cbsbsVos.get(0).getGoods();
+        List<String> scan = goods.stream().map(ScanVo::getSn).collect(Collectors.toList());
+        List<TakeOrderSugestVo> outsuggestion = cbsbsVos.get(0).getOutsuggestion();
+
+        return null;
+    }
+
+    @SneakyThrows
+    @Override
+    public int insertSwJsStoresslist(List<Cbsd> itemLists) {
+
+        //id,sn
+
+        if(itemLists==null){
+            throw new SwException("请扫描商品");
+        }
+
+        for (Cbsd itemList : itemLists) {
+            CbsbsVo cbsbsVo = new CbsbsVo();
+            cbsbsVo.setCbsb01(itemList.getCbsb01());
+            List<CbsbsVo> cbsbsVos = selectSwJsTaskGoodsRelListss(cbsbsVo);
+            if(cbsbsVos.size()>0){
+                if(cbsbsVos.get(0).getSaomanums()!=null){
+                    double v = cbsbsVos.get(0).getSaomanums().doubleValue();
+
+                    if( v==cbsbsVos.get(0).getNums()){
+                        throw new SwException("该销售出库单已扫描完成");
+                    }
+                    if(cbsbsVos.get(0).getOutsuggestion().size()>0){
+                        List<String> collect = cbsbsVos.get(0).getOutsuggestion().stream().map(TakeOrderSugestVo::getSn).collect(Collectors.toList());
+                        String cbsd09 = itemList.getCbsd09();
+                        if(!collect.contains(cbsd09)){
+                            throw new SwException("该商品sn不在建议出库列表中"+cbsd09);
+                        }
+
+                    }
+                }}
+
+
+            //对比sn和sku
+            if(itemList.getCbsd08()!=null) {
+                Cbpb cbpb = cbpbMapper.selectByPrimaryKey(itemList.getCbsd08());
+                if(cbpb!=null){
+                    if(Objects.equals(cbpb.getCbpb12(), itemList.getCbsd09())){
+                        throw new SwException("sn不正确"+itemList.getCbsd09());
+                    }
+                }
+            }
+
+            if (itemList.getCbsb01() == null) {
+                throw new SwException("销售出库单主表id不能为空");
+            }
+            Cbsb cbsb2s = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
+            if(cbsb2s==null){
+                throw new SwException("销售出库单主表不存在");
+            }
+//锁
+            String cbic10 = itemList.getCbsd09();
+            String uuid = UUID.randomUUID().toString();
+            Boolean lock = redisTemplates.opsForValue().setIfAbsent(cbic10, uuid, 3, TimeUnit.SECONDS);
+            if (!lock) {
+                throw new SwException("sn重复，请勿重复提交"+cbic10);
+            }
+            //  String s = redisTemplates.opsForValue().get(cbic10);
+
+            GsGoodsSnDo gsGoodsSnDo;
+            try {
+                CbscCriteria cas = new CbscCriteria();
+                cas.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                        .andCbsc07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+                List<Cbsc> cbphs = cbscMapper.selectByExample(cas);
+                if (cbphs.size() == 0) {
+                    throw new SwException("销售出库单明细为空");
+                }
+                Set<Integer> uio = cbphs.stream().map(Cbsc::getCbsc08).collect(Collectors.toSet());
+
+
+                Cbsb cbsb1 = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
+                if (!cbsb1.getCbsb11().equals(TaskStatus.sh.getCode())) {
+                    throw new SwException(" 审核状态才能扫码");
+                }
+                SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+                CbsdMapper mapper = session.getMapper(CbsdMapper.class);
+                Date date = new Date();
+                Long userid = SecurityUtils.getUserId();
+                CbsdCriteria IOP = new CbsdCriteria();
+                IOP.createCriteria().andCbsd09EqualTo(itemList.getCbsd09())
+                        .andCbsb01EqualTo(itemList.getCbsb01());
+                List<Cbsd> cbsds = cbsdMapper.selectByExample(IOP);
+                if (cbsds.size() > 0) {
+                    throw new SwException("SN码已存在销售出库扫码记录"+itemList.getCbsd09());
+                }
+
+                CbpmCriteria examplew = new CbpmCriteria();
+                examplew.createCriteria().andCbpm09EqualTo(itemList.getCbsd09());
+                List<Cbpm> cbpms = cbpmMapper.selectByExample(examplew);
+
+    /*            GsGoodsSnCriteria examples = new GsGoodsSnCriteria();
+                examples.createCriteria().andSnEqualTo( itemList.get(i).getCbsd09());
+                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(examples);*/
+                if(cbpms.size()==0){
+                    throw new SwException("该sn不存在"+itemList.getCbsd09());
+                }
+
+    /*if(gsGoodsSns.get(0).getLocationId()==null){
+        throw new SwException("库位id为空");
+
+    }*/
+               /* Cbla cbla = cblaMapper.selectByPrimaryKey(cbpms.get(0).getCbpm10());
+                if (cbla == null) {
+                    throw new SwException("提货单扫描表库位不存在");
+                }
+                if (!cbla.getCbla10().equals(storeid)) {
+                    throw new SwException("库位不属于该仓库");
+                }*/
+
+                if (cbpms.get(0).getCbpm08() == null) {
+                    throw new SwException("商品id不能为空");
+                }
+                if(!uio.contains(cbpms.get(0).getCbpm08())){
+                    throw new SwException("该商品不在销售出库单明细中");
+                }
+
+
+                itemList.setCbsd03(date);
+                itemList.setCbsd04(Math.toIntExact(userid));
+                itemList.setCbsd05(date);
+                itemList.setCbsd06(Math.toIntExact(userid));
+                itemList.setCbsd08(cbpms.get(0).getCbpm08());
+                itemList.setCbsd10(cbpms.get(0).getCbpm10());
+                itemList.setCbsd07(DeleteFlagEnum.NOT_DELETE.getCode());
+                itemList.setCbsd11(ScanStatusEnum.YISAOMA.getCode());
+                itemList.setUserId(Math.toIntExact(userid));
+                itemList.setCbsb01(itemList.getCbsb01());
+
+                //如果查不到添加信息到库存表
+                Cbsb cbsb = cbsbMapper.selectByPrimaryKey(itemList.getCbsb01());
+                CbscCriteria examplae = new CbscCriteria();
+                examplae.createCriteria().andCbsb01EqualTo(itemList.getCbsb01());
+                List<Cbsc> cbscs = cbscMapper.selectByExample(examplae);
+                if(cbscs.size()>0){
+                    for (Cbsc cbsc : cbscs) {
+                        if (cbsc.getTakegoodsid() != null) {
+                            CbpkCriteria example = new CbpkCriteria();
+                            example.createCriteria().andCbpk09EqualTo(cbsb.getCbsb09())
+                                    .andCbpk01EqualTo(cbsc.getTakegoodsid());
+    //                    .andCheckStatusEqualTo(checkstatusEnum.ZJWC.getCode());
+                            List<Cbpk> cbpkList = cbpkMapper.selectByExample(example);
+                            if (cbpkList.size() == 0) {
+                                throw new SwException("该商品不在提货单里");
+                            }
+                        }
+                    }
+                }
+                //判断是否在提货单里
+                //判断sn是不是下架状态
+                GsGoodsSnCriteria gsGoodsSnCriteria = new GsGoodsSnCriteria();
+                gsGoodsSnCriteria.createCriteria().andSnEqualTo(itemList.getCbsd09());
+                List<GsGoodsSn> gsGoodsSnList = gsGoodsSnMapper.selectByExample(gsGoodsSnCriteria);
+                if(gsGoodsSnList.size()>0){
+                    if (gsGoodsSnList.get(0).getGroudStatus()!=null) {
+
+                    }
+                }
+
+
+                //更新sn表
+                gsGoodsSnDo = new GsGoodsSnDo();
+                gsGoodsSnDo.setSn(itemList.getCbsd09());
+                gsGoodsSnDo.setOutTime(date);
+                gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
+
+                CbscCriteria example1 = new CbscCriteria();
+                example1.createCriteria().andCbsb01EqualTo(itemList.getCbsb01())
+                        .andCbsc08EqualTo(itemList.getCbsd08());
+                List<Cbsc> cbscList = cbscMapper.selectByExample(example1);
+                if(cbscList.size()>0){
+                    for (Cbsc cbsc : cbscList) {
+                        if (cbsc.getScannum() == null || cbsc.getScannum() == 0) {
+                            cbsc.setScannum(1);
+                            cbscMapper.updateByPrimaryKeySelective(cbsc);
+                            break;
+                        } else {
+                            if (cbsc.getScannum() + 1 > cbsc.getCbsc09()) continue;
+
+                            cbsc.setScannum(cbsc.getScannum() + 1);
+                            cbscMapper.updateByPrimaryKeySelective(cbsc);
+                            break;
+
+                        }
+                    }
+                }
+
+
+            } finally {
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] " +
+                        "then " +
+                        "return redis.call('del', KEYS[1]) " +
+                        "else " +
+                        "return 0 " +
+                        "end";
+                this.redisTemplates.execute(new DefaultRedisScript<>(script, Boolean.class), Arrays.asList("lock"), uuid);
+
+            }
+
+
+            taskService.updateGsGoodsSn(gsGoodsSnDo);
+
+
+            cbsdMapper.insertSelective(itemList);
+        }
+
         return 1;
     }
 

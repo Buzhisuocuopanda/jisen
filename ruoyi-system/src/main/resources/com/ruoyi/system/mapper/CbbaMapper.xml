@@ -509,8 +509,22 @@ WHERE
     <if test="orderNo != null and orderNo != ''">
       AND  ba.CBBA07 like concat('%', #{orderNo}, '%')
     </if>
+    <if test="orderNos != null ">
+      AND  ba.CBBA07 in
+      <foreach item="cbwaItem" collection="orderNos" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
+    </if>
+
     <if test="model != null and model != ''">
       AND  pb.CBPB12 like concat('%', #{model}, '%')
+    </if>
+
+    <if test="models != null ">
+      AND  pb.CBPB12 in
+      <foreach item="modelItem" collection="models" open="(" separator="," close=")">
+        #{modelItem}
+      </foreach>
     </if>
     <if test="status != null ">
       AND  ba.CBBA12 = #{status}

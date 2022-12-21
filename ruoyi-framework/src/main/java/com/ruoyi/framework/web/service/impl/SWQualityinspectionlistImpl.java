@@ -1,6 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
 import com.ruoyi.common.enums.DeleteFlagEnum;
+import com.ruoyi.common.enums.DeleteFlagEnum1;
 import com.ruoyi.common.enums.Groudstatus;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.exception.SwException;
@@ -45,6 +46,9 @@ private CbpmMapper cbpmMapper;
     private SqlSessionFactory sqlSessionFactory;
     @Resource
     private NumberGenerate numberGenerate;
+
+    @Resource
+    private GsGoodsSkuMapper gsGoodsSkuMapper;
     /**
      * 新增质检单
      */
@@ -150,7 +154,82 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSns1.get(0).setGroudStatus(Groudstatus.XJ.getCode());
 //                    gsGoodsSns1.get(0).setGoodsId(goodsId);
                     gsGoodsSns1.get(0).setLocationId(null);
+
+
+
                     gsGoodsSnMapper.updateByPrimaryKey(gsGoodsSns1.get(0));
+
+
+                    if(locationId!=null) {
+                        //释放库存
+                        GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+                        tuiw.createCriteria()
+                                .andGoodsIdEqualTo(gsGoodsSns1.get(0).getGoodsId())
+                                .andLocationIdEqualTo(locationId)
+                                .andWhIdEqualTo(gsGoodsSns1.get(0).getWhId());
+                        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
+                        if (gsGoodsSkus.size() > 0) {
+                            //库位所在容量等于1
+                            if (gsGoodsSkus.get(0).getQty() == 1) {
+
+                                List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns1.get(0).getGoodsId(), gsGoodsSns1.get(0).getWhId());
+                                if (gsGoodsSkus1.size() > 0) {
+                                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                                    gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                                    gsGoodsSku.setUpdateTime(date);
+                                    gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() + gsGoodsSkus1.get(0).getQty());
+                                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                                    gsGoodsSkus.get(0).setQty(0.0);
+                                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkus.get(0));
+                                } else {
+                                    GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                                    gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                                    gsGoodsSku.setCreateTime(date);
+                                    gsGoodsSku.setUpdateTime(date);
+                                    gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                                    gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                                    gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                                    gsGoodsSku.setGoodsId(gsGoodsSns1.get(0).getGoodsId());
+                                    gsGoodsSku.setWhId(gsGoodsSns1.get(0).getWhId());
+                                    gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
+                                    gsGoodsSku.setLocationId(null);
+                                    gsGoodsSkuMapper.updateByExample(gsGoodsSku, tuiw);
+                                }
+                            }
+                            //库位数量大于1
+                            else {
+                                //释放一个库位加到数量仓库
+                                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                                gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() - 1);
+                                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                                List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns1.get(0).getGoodsId(), gsGoodsSns1.get(0).getWhId());
+                                if (gsGoodsSkus1.size() > 0) {
+                                    GsGoodsSku gsGoodsSkuc = new GsGoodsSku();
+                                    gsGoodsSkuc.setId(gsGoodsSkus1.get(0).getId());
+                                    gsGoodsSkuc.setUpdateTime(date);
+                                    gsGoodsSkuc.setQty(gsGoodsSkus1.get(0).getQty() + 1);
+                                    gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuc);
+                                } else {
+                                    GsGoodsSku gsGoodsSkud = new GsGoodsSku();
+                                    // gsGoodsSkud.setId(gsGoodsSkus.get(0).getId());
+                                    gsGoodsSkud.setCreateTime(date);
+                                    gsGoodsSkud.setUpdateTime(date);
+                                    gsGoodsSkud.setCreateBy(Math.toIntExact(userid));
+                                    gsGoodsSkud.setUpdateBy(Math.toIntExact(userid));
+                                    gsGoodsSkud.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                                    gsGoodsSkud.setGoodsId(gsGoodsSns1.get(0).getGoodsId());
+                                    gsGoodsSkud.setWhId(gsGoodsSns1.get(0).getWhId());
+                                    gsGoodsSkud.setQty(1.0);
+                                    gsGoodsSkud.setLocationId(null);
+                                    gsGoodsSkuMapper.insert(gsGoodsSkud);
+                                }
+                            }
+
+                        }
+                    }
                 } else {
                     throw new SwException("替换商品sn不存在或已删除");
 
@@ -159,7 +238,7 @@ private CbpmMapper cbpmMapper;
 
             //sku库位修改
 
-
+            Integer locationId1 = null;
             //校验原商品sn，使其维修状态为1
             GsGoodsSnCriteria example = new GsGoodsSnCriteria();
             example.createCriteria().andSnEqualTo(itemList.get(i).getCbqb10());
@@ -167,16 +246,98 @@ private CbpmMapper cbpmMapper;
             if (gsGoodsSns.size() > 0) {
 
                 GsGoodsSn gsGoodsSn = gsGoodsSns.get(0);
+                locationId1 = gsGoodsSns.get(0).getLocationId();
                 //不是上架就更新上架（暂不上架）
 //                gsGoodsSn.setStatus(new Byte("1"));
-//                gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
-                gsGoodsSn.setUpdateTime(date);
-                gsGoodsSn.setLocationId(locationId);
+//
+//               gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                gsGoodsSn.setId(gsGoodsSns.get(0).getId());
+                gsGoodsSn.setCreateTime(gsGoodsSns.get(0).getCreateTime());
+                gsGoodsSn.setUpdateTime(new Date());
+                gsGoodsSn.setCreateBy(gsGoodsSns.get(0).getCreateBy());
+                gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSn.setDeleteFlag(new Byte("0"));
+                gsGoodsSn.setSn(gsGoodsSns.get(0).getSn());
+                gsGoodsSn.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                gsGoodsSn.setStatus(new Byte("1"));
+               // gsGoodsSn.setLocationId(locationId);
                 gsGoodsSn.setInTime(new Date());
                 gsGoodsSn.setRepairStatus(1);
-                gsGoodsSn.setStatus(new Byte("1"));
+                gsGoodsSn.setLocationId(null);
                 gsGoodsSn.setGroudStatus(Groudstatus.XJ.getCode());
-                gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, example);
+                gsGoodsSnMapper.updateByExample(gsGoodsSn, example);
+
+                if(locationId1!=null) {
+                    //释放库存
+                    GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
+                    tuiw.createCriteria()
+                            .andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
+                            .andLocationIdEqualTo(locationId1)
+                            .andWhIdEqualTo(gsGoodsSns.get(0).getWhId());
+                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(tuiw);
+                    if (gsGoodsSkus.size() > 0) {
+                        //库位所在容量等于1
+                        if (gsGoodsSkus.get(0).getQty() == 1) {
+
+                            List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                            if (gsGoodsSkus1.size() > 0) {
+                                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                                gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                                gsGoodsSku.setUpdateTime(date);
+                                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() + gsGoodsSkus1.get(0).getQty());
+                                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                                gsGoodsSkus.get(0).setQty(0.0);
+                                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkus.get(0));
+                            } else {
+                                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                                gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                                gsGoodsSku.setCreateTime(date);
+                                gsGoodsSku.setUpdateTime(date);
+                                gsGoodsSku.setCreateBy(Math.toIntExact(userid));
+                                gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
+                                gsGoodsSku.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                                gsGoodsSku.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                                gsGoodsSku.setWhId(gsGoodsSns.get(0).getWhId());
+                                gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty());
+                                gsGoodsSku.setLocationId(null);
+                                gsGoodsSkuMapper.updateByExample(gsGoodsSku, tuiw);
+                            }
+                        }
+                        //库位数量大于1
+                        else {
+                            //释放一个库位加到数量仓库
+                            GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                            gsGoodsSku.setId(gsGoodsSkus.get(0).getId());
+                            gsGoodsSku.setQty(gsGoodsSkus.get(0).getQty() - 1);
+                            gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                            List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+                            if (gsGoodsSkus1.size() > 0) {
+                                GsGoodsSku gsGoodsSkuc = new GsGoodsSku();
+                                gsGoodsSkuc.setId(gsGoodsSkus1.get(0).getId());
+                                gsGoodsSkuc.setUpdateTime(date);
+                                gsGoodsSkuc.setQty(gsGoodsSkus1.get(0).getQty() + 1);
+                                gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSkuc);
+                            } else {
+                                GsGoodsSku gsGoodsSkud = new GsGoodsSku();
+                                // gsGoodsSkud.setId(gsGoodsSkus.get(0).getId());
+                                gsGoodsSkud.setCreateTime(date);
+                                gsGoodsSkud.setUpdateTime(date);
+                                gsGoodsSkud.setCreateBy(Math.toIntExact(userid));
+                                gsGoodsSkud.setUpdateBy(Math.toIntExact(userid));
+                                gsGoodsSkud.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                                gsGoodsSkud.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                                gsGoodsSkud.setWhId(gsGoodsSns.get(0).getWhId());
+                                gsGoodsSkud.setQty(1.0);
+                                gsGoodsSkud.setLocationId(null);
+                                gsGoodsSkuMapper.insert(gsGoodsSkud);
+                            }
+                        }
+
+                    }
+                }
+
             } else {
                 throw new SwException("原商品sn不存在");
             }

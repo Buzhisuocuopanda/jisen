@@ -232,8 +232,9 @@ private CbpmMapper cbpmMapper;
                 List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(exampler);
 
                 if (gsGoodsSns.size() > 0) {
-                    if (gsGoodsSns.get(0).getStatus() == 1) {
-                        throw new SwException("该商品sn已入库");
+                    //在库存且是维修状态是正常
+                    if (gsGoodsSns.get(0).getStatus() == 1 && gsGoodsSns.get(0).getRepairStatus()==0) {
+                        throw new SwException("该商品sn已入库,维修状态为正常"+gsGoodsSns.get(0).getSn());
                     }
                     if (gsGoodsSns.get(0).getStatus() == 2) {
                         throw new SwException("该商品sn处于出库中,不能入库");
@@ -248,6 +249,7 @@ private CbpmMapper cbpmMapper;
                     gsGoodsSn.setLocationId(cbla.get(0).getCbla01());
                     gsGoodsSn.setStatus(GoodsType.yrk.getCode());
                     gsGoodsSn.setGroudStatus(Groudstatus.SJ.getCode());
+                    gsGoodsSn.setRepairStatus(0);
                     GsGoodsSnCriteria tyui = new GsGoodsSnCriteria();
                     tyui.createCriteria().andSnEqualTo(dto.getSn());
                     gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn, tyui);

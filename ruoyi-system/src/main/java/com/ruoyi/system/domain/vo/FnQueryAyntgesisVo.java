@@ -22,6 +22,9 @@ public class FnQueryAyntgesisVo {
     @Excel(name = "入库时间")
     private String inWhTimeMsg;
 
+    @Excel(name = "工厂")
+    private String factory;
+
 
     private Date outWhTime;
 

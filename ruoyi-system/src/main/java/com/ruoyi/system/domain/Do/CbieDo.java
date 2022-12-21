@@ -40,17 +40,19 @@ public class CbieDo  extends Cbig {
     private Integer cbie16;
 
     private Integer userId;
-
-    @Excel(name = "供应商")
-    private String SuppierName;
     @Excel(name = "仓库")
     private String storename;
+    @Excel(name = "供应商")
+    private String SuppierName;
+
     @Excel(name = "库位码")
     private String storeskunumber;
     @Excel(name = "商品型号")
     private String goodtype;
     @Excel(name = "upc")
     private String goodupc;
+    @Excel(name = "序列号")
+    private String sn;
     @Excel(name = "价格")
     private Double cbig13;
     @Excel(name = "结算货币")

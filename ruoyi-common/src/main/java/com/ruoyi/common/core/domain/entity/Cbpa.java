@@ -25,19 +25,16 @@ public class Cbpa implements Serializable {
   //  @Excel(name = "是否删除")
 
     private Integer cbpa06;
-   // @Excel(name = "分类名称")
-
+    @Excel(name = "分类名称")
     private String cbpa07;
   //  @Excel(name = "名称1")
 
     private String cbpa08;
-  //  @Excel(name = "父节点id")
-
+    @Excel(name = "父节点编号")
     private Integer cbpa09;
-  //  @Excel(name = "分类编号")
-
+   @Excel(name = "分类编号")
     private String cbpa11;
-   // @Excel(name = "父节点编号")
+    @Excel(name = "父节点编号")
 
     private String cbpa12;
 

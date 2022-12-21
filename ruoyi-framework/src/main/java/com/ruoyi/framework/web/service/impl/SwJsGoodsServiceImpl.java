@@ -343,7 +343,14 @@ private CbpaMapper cbpaMapper;
         }
         else
         {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下：");
+            StringBuilder chu = new StringBuilder();
+            for(CbpbDto cbpbDto:swJsGoodsList){
+                if(cbpbDto.getCbpb12()!=null){
+
+                    chu.append(cbpbDto.getCbpb12());
+                }
+            }
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + swJsGoodsList.size() + " 条，数据如下："+chu);
         }
         return successMsg.toString();    }
 
@@ -540,11 +547,13 @@ private CbpaMapper cbpaMapper;
             cbpf.setCbpf03(itemList.get(i).getCbpf03());
             cbpf.setCbpf04(itemList.get(i).getCbpf04());
             cbpf.setCbpf05(itemList.get(i).getCbpf05());
-            CalaCriteria calaCriteria1 = new CalaCriteria();
-            calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
+          //  CalaCriteria calaCriteria1 = new CalaCriteria();
+         //   calaCriteria.createCriteria().andCala08EqualTo(itemList.get(i).getMoneyType());
 
+if(itemList.get(i).getMoneyType()!=null && !itemList.get(i).getMoneyType().equals("")) {
+    cbpf.setCbpf06(Integer.valueOf(itemList.get(i).getMoneyType()));
 
-             cbpf.setCbpf06(Integer.valueOf(itemList.get(i).getMoneyType()));
+}
             if(cbpbList.size()>0){
                 cbpf.setCbpb01(cbpbList.get(0).getCbpb01());
             }

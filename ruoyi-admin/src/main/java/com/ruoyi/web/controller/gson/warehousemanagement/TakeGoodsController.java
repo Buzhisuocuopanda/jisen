@@ -1055,6 +1055,32 @@ public class TakeGoodsController extends BaseController {
         }
     }
 
+
+    /**
+     * 修改提货单好sn
+     * @return
+     */
+    @ApiOperation(
+            value ="修改提货单好sn",
+            notes = "修改提货单好sn"
+    )
+    @PostMapping("/editTakeGoodsOrdersn")
+    public AjaxResult editTakeGoodsOrdersn(@RequestBody TakeGoodsOrderAddDto takeGoodsOrderAddDto){
+        try {
+            takeGoodsOrderAddDto.setUserId(getUserId().intValue());
+            takeGoodsService.editTakeGoodsOrdersn(takeGoodsOrderAddDto);
+            return AjaxResult.success();
+        } catch (SwException e) {
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【修改提货单好sn】接口出现异常,参数${}$,异常${}$", JSON.toJSON(takeGoodsOrderAddDto), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
     /**
      *@author: zhaoguoliang
      *@date: Create in 2022/9/30 8:52

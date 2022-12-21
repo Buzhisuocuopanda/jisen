@@ -31,4 +31,8 @@ public interface ISWarehousedetailsinitializeService {
     int swJsStoreendds(CbieDo cbieDo);
 
     String importWarehousedetailsinitialize(List<CbieDo> swJsGoodsList, boolean updateSupport, String operName);
+
+    int updatesnintime(CbigDo cbigDo);
+
+    int updatesnintimes();
 }

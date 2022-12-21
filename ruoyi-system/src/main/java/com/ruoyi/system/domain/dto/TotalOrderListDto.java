@@ -31,6 +31,8 @@ public class TotalOrderListDto {
 
     private String sortType;
 
+    private String[] models;
+    private String[]  orderNos;
 
     private Integer orderClass;
 

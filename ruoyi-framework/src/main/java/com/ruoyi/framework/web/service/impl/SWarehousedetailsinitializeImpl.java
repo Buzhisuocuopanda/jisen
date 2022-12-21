@@ -11,16 +11,17 @@ import com.ruoyi.system.domain.Do.CbibDo;
 import com.ruoyi.system.domain.Do.CbieDo;
 import com.ruoyi.system.domain.Do.CbigDo;
 import com.ruoyi.system.domain.Do.GsGoodsSnDo;
-import com.ruoyi.system.domain.vo.CbieVo;
-import com.ruoyi.system.domain.vo.CbigVo;
-import com.ruoyi.system.domain.vo.IdVo;
-import com.ruoyi.system.domain.vo.UIOVo;
+import com.ruoyi.system.domain.dto.CbicDto;
+import com.ruoyi.system.domain.dto.FnQueryAynthesisDto;
+import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISWarehousedetailsinitializeService;
 import com.ruoyi.system.service.gson.BaseCheckService;
+import com.ruoyi.system.service.gson.FinanceQueryService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.NumberGenerate;
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -32,7 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -70,6 +73,12 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
     @Resource
     private BaseCheckService baseCheckService;
+
+    @Resource
+    private GsGoodsSnMapper gsGoodsSnMapper;
+
+    @Resource
+    private FinanceQueryService financeQueryService;
 
     @Transactional
     @Override
@@ -255,6 +264,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return  cbieMapper.selectSwJsStoreList(cbigVo);
     }
      //审核
+     @SneakyThrows
      @Transactional
      @Override
     public int swJsStoreendd(CbieDo cbieDo) {
@@ -272,12 +282,29 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             gsGoodsSnDo.setSn(cbigs.get(i).getCbig10());
             gsGoodsSnDo.setGoodsId(cbigs.get(i).getCbig09());
             gsGoodsSnDo.setWhId(uio.getCbie09());
+            gsGoodsSnDo.setSn(cbigs.get(i).getCbig10());
             gsGoodsSnDo.setLocationId(cbigs.get(i).getCbig08());
             gsGoodsSnDo.setStatus(GoodsType.yrk.getCode());
             gsGoodsSnDo.setInTime(date);
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSns(gsGoodsSnDo);
         }
+
+         Map<Integer, Long> map  = cbigs.stream().collect(Collectors.groupingBy(Cbig::getCbig09, Collectors.counting()));
+         for(Map.Entry<Integer, Long> entry : map.entrySet()){
+             System.out.println("key ："+entry.getKey()+", value ："+entry.getValue());
+             CbibDo cbibDo = new CbibDo();
+
+             cbibDo.setCbib02(1);
+             cbibDo.setCbib04(date);
+             cbibDo.setCbib05(String.valueOf(TaskType.cqrk.getCode()));
+             cbibDo.setCbib08(entry.getKey());
+             cbibDo.setCbib11(Double.valueOf(entry.getValue()));
+             cbibDo.setCbib17(TaskType.zjrk.getMsg());
+
+             taskService.InsertCBIB(cbibDo);
+         }
+
 
          List<UIOVo> selectbyid = cbigMapper.wegsele(cbieDo.getCbie01());
          if(selectbyid.size()>0){
@@ -304,6 +331,22 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
                      gsGoodsSku.setLocationId(selectbyid.get(k).getStoreskuid());
                      gsGoodsSkuMapper.insertSelective(gsGoodsSku);
 
+            /*         CbibDo cbibDo = new CbibDo();
+                     cbibDo.setCbib02(uio.getCbie09());
+                     cbibDo.setCbib03(uio.getCbie07());
+                     cbibDo.setCbib05(String.valueOf(TaskType.zjrk.getCode()));
+                     cbibDo.setCbib07(uio.getCbie01());
+                     cbibDo.setCbib08(selectbyid.get(k).getGoodsId());
+                     //本次入库数量
+                     cbibDo.setCbib11((double) selectbyid.get(k).getNums());
+                     Double cbpd11 = selectbyid.get(k).getPrice();
+                     Double prices = cbpd11 *  selectbyid.get(k).getNums();
+                     cbibDo.setCbib12(prices);
+
+                     cbibDo.setCbib17(TaskType.zjrk.getMsg());
+
+                     taskService.InsertCBIB(cbibDo);*/
+
                  }
                  else {
 
@@ -325,27 +368,26 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
                      gsGoodsSku.setUpdateBy(Math.toIntExact(userid));
                      gsGoodsSku.setUpdateTime(date);
                      gsGoodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+         /*            CbibDo cbibDo = new CbibDo();
+                     cbibDo.setCbib02(uio.getCbie09());
+                     cbibDo.setCbib03(uio.getCbie07());
+                     cbibDo.setCbib05(String.valueOf(TaskType.zjrk.getCode()));
+                     cbibDo.setCbib07(uio.getCbie01());
+                     cbibDo.setCbib08(selectbyid.get(k).getGoodsId());
+                     //本次入库数量
+                     cbibDo.setCbib11((double) selectbyid.get(k).getNums());
+                     Double cbpd11 = selectbyid.get(k).getPrice();
+                     Double prices = cbpd11 *  selectbyid.get(k).getNums();
+                     cbibDo.setCbib12(prices);
+
+                     cbibDo.setCbib17(TaskType.zjrk.getMsg());
+
+                     taskService.InsertCBIB(cbibDo);*/
                  }
 
-                 CbibDo cbibDo = new CbibDo();
-                 cbibDo.setCbib02(uio.getCbie09());
-                 cbibDo.setCbib03(uio.getCbie07());
-                 cbibDo.setCbib05(String.valueOf(TaskType.cgrkd.getCode()));
-                 cbibDo.setCbib07(uio.getCbie01());
-                 cbibDo.setCbib08(selectbyid.get(k).getGoodsId());
-                 //本次入库数量
-                 cbibDo.setCbib11((double) selectbyid.get(k).getNums());
-                 Double cbpd11 = selectbyid.get(k).getPrice();
-                 Double prices = cbpd11 *  selectbyid.get(k).getNums();
-                 cbibDo.setCbib12(prices);
 
-                 cbibDo.setCbib17(TaskType.cgrkd.getMsg());
-                 //cbibDo.setCbib19(cbpc1.getCbpc09());
-                 try {
-                     taskService.InsertCBIB(cbibDo);
-                 } catch (InterruptedException e) {
-                     throw new RuntimeException(e);
-                 }
+
              }
          }
 
@@ -452,6 +494,59 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         }
         return successMsg.toString();    }
 
+    @Override
+    public int updatesnintime(CbigDo cbigDo) {
+        CbigCriteria example = new CbigCriteria();
+        example.createCriteria().andCbie01EqualTo(cbigDo.getCbie01());
+        List<Cbig> cbigs = cbigMapper.selectByExample(example);
+        if(cbigs.size()>0){
+            for(int i=0;i<cbigs.size();i++){
+                GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+                example1.createCriteria().andSnEqualTo(cbigs.get(i).getCbig10());
+                List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
+                if(gsGoodsSns.size()>0){
+                    GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                    gsGoodsSn.setSn(cbigs.get(i).getCbig10());
+                    Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbigs.get(i).getCbig14());
+                    if(cbsa!=null){
+                        gsGoodsSn.setFactory(cbsa.getCbsa08());
+                    }
+                    gsGoodsSn.setPrice(cbigs.get(i).getCbig13());
+                    gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+                }
+
+            }
+        }
+
+        return 1;
+    }
+
+    @Override
+    public int updatesnintimes() {
+        FnQueryAynthesisDto fnQueryAynthesisDto = new FnQueryAynthesisDto();
+        List<FnQueryAyntgesisVo> fnQueryAyntgesisVos = financeQueryService.fnSynthesis(fnQueryAynthesisDto);
+        if(fnQueryAyntgesisVos.size()>0){
+            for(int i=0;i<fnQueryAyntgesisVos.size();i++){
+                if(fnQueryAyntgesisVos.get(i).getGc()!=null){
+                    if(fnQueryAyntgesisVos.get(i).getFactory()==null){
+                        GsGoodsSnCriteria example1 = new GsGoodsSnCriteria();
+                        example1.createCriteria().andSnEqualTo(fnQueryAyntgesisVos.get(i).getSn());
+                        List<GsGoodsSn> gsGoodsSns = gsGoodsSnMapper.selectByExample(example1);
+                        if(gsGoodsSns.size()>0){
+                            GsGoodsSn gsGoodsSn = new GsGoodsSn();
+                            gsGoodsSn.setFactory(fnQueryAyntgesisVos.get(i).getGc());
+                           gsGoodsSnMapper.updateByExampleSelective(gsGoodsSn,example1);
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        return 1;
+    }
+
     private void insertSwJsStoress(List<CbieDo> itemList) {
         if(itemList.size()==0){
             throw new SwException("导入数据为空");
@@ -500,8 +595,8 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         List<Cbie> cbies = cbieMapper.selectByExample(cbieCriteria);
         Integer cbie01 = cbies.get(0).getCbie01();
 
-        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        CbigMapper mapper = session.getMapper(CbigMapper.class);
+       // SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+   //     CbigMapper mapper = session.getMapper(CbigMapper.class);
         for (int i = 0; i < itemList.size(); i++) {
             if(Objects.isNull(itemList.get(i).getGoodtype())){
                 throw new SwException("商品型号不能为空");
@@ -515,7 +610,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             if(cbpbs.size()==0){
                 throw new SwException("商品不存在");
             }
-            Integer cbpb01 = cbpbs.get(i).getCbpb01();
+            Integer cbpb01 = cbpbs.get(0).getCbpb01();
             if(Objects.isNull(itemList.get(i).getSuppierName())){
                 throw new SwException("供应商名称不能为空");
 
@@ -526,7 +621,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             if(cbsas.size()==0){
                 throw new SwException("供应商不存在");
             }
-            Integer cbsa01 = cbsas.get(i).getCbsa01();
+            Integer cbsa01 = cbsas.get(0).getCbsa01();
 
             if(Objects.isNull(itemList.get(i).getStoreskunumber())){
                 throw new SwException("库位码不能为空");
@@ -538,7 +633,7 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             if(cblas.size()==0){
                 throw new SwException("库位码不存在");
             }
-            Integer cbla01 = cblas.get(i).getCbla01();
+            Integer cbla01 = cblas.get(0).getCbla01();
 
             itemList.get(i).setCbig03(date);
             itemList.get(i).setCbig04(Math.toIntExact(userid));
@@ -548,16 +643,14 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
             itemList.get(i).setUserId(Math.toIntExact(userid));
             itemList.get(i).setCbig08(cbla01);
             itemList.get(i).setCbig09(cbpb01);
+            itemList.get(i).setCbig10(itemList.get(i).getSn());
             itemList.get(i).setCbig11(itemList.get(i).getCbig11());
             itemList.get(i).setCbig13(itemList.get(i).getCbig13());
             itemList.get(i).setCbig14(cbsa01);
 
             itemList.get(i).setCbie01(cbie01);
-            mapper.insertSelective(itemList.get(i));
-            if (i % 10 == 9) {//每10条提交一次
-                session.commit();
-                session.clearCache();
-            }
+            cbigMapper.insertSelective(itemList.get(i));
+
         }
 
     }

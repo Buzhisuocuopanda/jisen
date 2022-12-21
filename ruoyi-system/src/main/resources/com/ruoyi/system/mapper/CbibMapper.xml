@@ -602,8 +602,14 @@ ORDER BY
     <!--&lt;if test="cbpb12!=null and cbpb12!=''"&gt;
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
     &lt;/if&gt;-->
-    <if test="customerId!=null">
-      and a.cbib19 = #{customerId}
+<!--    <if test="customerId!=null">-->
+<!--      and a.cbib19 = #{customerId}-->
+<!--    </if>-->
+    <if test="cbwa09s != null">
+      and a.cbib19 in
+      <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
     </if>
     <if test="monthlys!=null">
       and yearAndMonth in

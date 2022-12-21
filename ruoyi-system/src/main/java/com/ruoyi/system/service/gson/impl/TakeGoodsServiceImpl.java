@@ -2673,4 +2673,56 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         return 1;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int editTakeGoodsOrdersn(TakeGoodsOrderAddDto takeGoodsOrderAddDto) {
+
+        //更新旧sn状态，已入库
+        GsGoodsSnCriteria oldsnexample = new GsGoodsSnCriteria();
+        oldsnexample.createCriteria()
+                .andSnEqualTo(takeGoodsOrderAddDto.getOldsn());
+        List<GsGoodsSn> oldgsGoodsSns = gsGoodsSnMapper.selectByExample(oldsnexample);
+        if(oldgsGoodsSns.size()>0){
+            GsGoodsSn oldgoodsSn = new GsGoodsSn();
+            oldgoodsSn.setStatus(GoodsType.yrk.getCode());
+            gsGoodsSnMapper.updateByPrimaryKeySelective(oldgoodsSn);
+        }
+        else {
+            throw new SwException("旧sn不存在");
+        }
+
+       //新sn出库中
+        GsGoodsSnCriteria newsnexample = new GsGoodsSnCriteria();
+        newsnexample.createCriteria()
+                .andSnEqualTo(takeGoodsOrderAddDto.getNewsn());
+        List<GsGoodsSn> newgsGoodsSns = gsGoodsSnMapper.selectByExample(newsnexample);
+        if(newgsGoodsSns.size()>0){
+            GsGoodsSn newgoodsSn = new GsGoodsSn();
+            newgoodsSn.setStatus(GoodsType.ckz.getCode());
+            gsGoodsSnMapper.updateByPrimaryKeySelective(newgoodsSn);
+        }else {
+            throw new SwException("替换sn不存在");
+        }
+
+
+
+        //替换sn
+        CbpmCriteria example = new CbpmCriteria();
+        example.createCriteria().andCbpm09EqualTo(takeGoodsOrderAddDto.getOldsn())
+                .andCbpk01EqualTo(takeGoodsOrderAddDto.getId());
+        List<Cbpm> cbpms = cbpmMapper.selectByExample(example);
+        if(cbpms.size() > 0){
+            Cbpm cbpm = new Cbpm();
+            cbpm.setCbpm09(takeGoodsOrderAddDto.getNewsn());
+            if(newgsGoodsSns.size()>0) {
+               cbpm.setCbpm10(newgsGoodsSns.get(0).getLocationId());
+
+            }
+            cbpmMapper.updateByExampleSelective(cbpm, example);
+        }
+
+
+        return 1;
+    }
+
 }

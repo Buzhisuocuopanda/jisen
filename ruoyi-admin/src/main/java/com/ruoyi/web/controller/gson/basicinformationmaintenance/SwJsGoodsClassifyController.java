@@ -4,6 +4,7 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
@@ -13,6 +14,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Do.CbpaDo;
 import com.ruoyi.system.domain.Do.CbpgDo;
 import com.ruoyi.system.domain.dto.CbpbDto;
+import com.ruoyi.system.domain.vo.CbpbVo;
 import com.ruoyi.system.service.ISwJsGoodsClassifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -154,6 +156,21 @@ public class SwJsGoodsClassifyController extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     * 导出商品分类列表
+     */
+    @ApiOperation(
+            value ="导出商品分类列表",
+            notes = "导出商品分类列表"
+    )
+    @PostMapping("/SwJsGoodsexportss")
+    public void swJsGoodsexport(HttpServletResponse response,Cbpa cbpa) {
+        List<Cbpa> depts = swJsGoodsClassifyService.selectDeptList(cbpa);
+        ExcelUtil<Cbpa> util = new ExcelUtil<>(Cbpa.class);
+        util.exportExcel(response, depts, "商品分类列表");
+    }
+
 
     /**
      * 导入商品分类

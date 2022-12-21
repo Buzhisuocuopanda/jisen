@@ -211,6 +211,31 @@ public class SelloutofwarehouseController extends BaseController {
         }
     }
 
+    @ApiOperation(
+            value ="新增销售出库扫码批量提交",
+            notes = "新增销售出库扫码批量提交"
+    )
+    @PostMapping("/Selloutofwarehouseaddlist")
+    public AjaxResult Selloutofwarehouseaddlist(@Valid @RequestBody List<Cbsd> itemList, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            return toAjax(sellerofwarehouseService.insertSwJsStoresslist(itemList));
+        }catch (SwException e) {
+            log.error("【新增销售出库扫码批量提交】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【新增销售出库扫码批量提交】接口出现异常,参数${},异常${}$", JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【新增销售出库扫码批量提交】接口出现异常,参数${}$,异常${}$",JSON.toJSON(itemList), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     /**
      * 销售出库单审核
@@ -412,6 +437,37 @@ public class SelloutofwarehouseController extends BaseController {
         try {
            // startPage();
             List<CbsbsVo> list = sellerofwarehouseService.selectSwJsTaskGoodsRelListss(cbsbsVo);
+            return AjaxResult.success(getDataTable(list));
+        }catch (SwException e) {
+            log.error("【销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【销售出库单详情】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbsbsVo),ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+    /**
+     * 销售出库单详情
+     */
+    @ApiOperation(
+            value ="销售出库单check",
+            notes = "销售出库单check"
+    )
+    @GetMapping("/swJsGoodslistcheck")
+    public AjaxResult<TableDataInfo> swJsGoodslistcheck(CbsbsVo cbsbsVo) {
+        try {
+            // startPage();
+            List<CbsbsVo> list = sellerofwarehouseService.swJsGoodslistcheck(cbsbsVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             log.error("【销售出库单详情】接口出现异常,参数${},异常${}$", JSON.toJSON(cbsbsVo), ExceptionUtils.getStackTrace(e));

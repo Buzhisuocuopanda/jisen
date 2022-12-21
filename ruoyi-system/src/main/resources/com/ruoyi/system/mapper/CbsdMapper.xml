@@ -487,6 +487,7 @@ FROM
 
 	sn.in_time AS inWhTime,
     sa.CBSA08 AS gc,
+    sn.factory AS factory,
 	sn.price AS cgRprice,
     sn.currency as cbpc16,ob.CBOB18 as totalOrderNo
 FROM
@@ -528,7 +529,9 @@ FROM
     <if test="endTime != null">
       and sd.CBSD03  &lt;=#{endTime}
     </if>
+    group by  sd.CBSD09
     ORDER BY sd.CBSD03 DESC
+
 
 
   </select>

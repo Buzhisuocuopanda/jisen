@@ -33,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
+
 /**
  * 库存明细初始化Controller
  *
@@ -341,12 +343,12 @@ public class WarehousedetailsinitializeController extends BaseController {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         } catch (ServiceException e) {
-            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSON.toJSON(file), ExceptionUtils.getStackTrace(e));
+            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSON.toJSON(message), ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
 
         }catch (Exception e) {
-            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSON.toJSON(file),ExceptionUtils.getStackTrace(e));
+            log.error("【导入库存明细初始化主表】接口出现异常,参数${},异常${}$", JSON.toJSON(message),ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
@@ -364,6 +366,61 @@ public class WarehousedetailsinitializeController extends BaseController {
     {
         ExcelUtil<CbieDo> util = new ExcelUtil<CbieDo>(CbieDo.class);
         util.importTemplateExcel(response,"导入库存明细初始化");
+    }
+
+
+    /**
+     * 更新sn时间
+     */
+    @ApiOperation(
+            value ="更新sn时间",
+            notes = "更新sn时间"
+    )
+    @PostMapping("/updatesnintime")
+    public AjaxResult updatesnintime(  CbigDo cbigDo ) {
+        try {
+            return toAjax(swarehousedetailsinitializeService.updatesnintime(cbigDo));
+        }catch (ServiceException e) {
+            log.error("【更新sn时间】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbigDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (SwException e) {
+            log.error("【更新sn时间】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbigDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【更新sn时间】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbigDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+    /**
+     * 更新工厂
+     */
+    @ApiOperation(
+            value ="更新工厂",
+            notes = "更新工厂"
+    )
+    @PostMapping("/updatesnintimes")
+    public AjaxResult updatesnintimes() {
+        try {
+            return toAjax(swarehousedetailsinitializeService.updatesnintimes());
+        }catch (ServiceException e) {
+            log.error("【更新工厂】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (SwException e) {
+            log.error("【更新工厂】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【更新工厂】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
     }
 
 }

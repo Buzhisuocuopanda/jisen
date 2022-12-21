@@ -20,6 +20,7 @@
     <result column="repair_status" jdbcType="INTEGER" property="repairStatus" />
     <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="currency" jdbcType="INTEGER" property="currency" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,7 +83,7 @@
   <sql id="Base_Column_List">
     id, create_time, update_time, create_by, update_by, delete_flag, sn, goods_id, location_id,
     `status`, wh_id, in_time, out_time, prd_date, groud_status, repair_status, price,
-    currency
+    currency, factory
   </sql>
   <select id="selectByExample" parameterType="com.ruoyi.system.domain.GsGoodsSnCriteria" resultMap="BaseResultMap">
     select
@@ -120,15 +121,15 @@
       sn, goods_id, location_id,
       `status`, wh_id, in_time,
       out_time, prd_date, groud_status,
-      repair_status, price, currency
-      )
+      repair_status, price, currency,
+      factory)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, #{deleteFlag,jdbcType=TINYINT},
       #{sn,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{locationId,jdbcType=INTEGER},
       #{status,jdbcType=TINYINT}, #{whId,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP},
       #{outTime,jdbcType=TIMESTAMP}, #{prdDate,jdbcType=DATE}, #{groudStatus,jdbcType=TINYINT},
-      #{repairStatus,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE}, #{currency,jdbcType=INTEGER}
-      )
+      #{repairStatus,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE}, #{currency,jdbcType=INTEGER},
+      #{factory,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ruoyi.system.domain.GsGoodsSn">
     insert into `gs_goods_sn`
@@ -187,6 +188,9 @@
       <if test="currency != null">
         currency,
       </if>
+      <if test="factory != null">
+        factory,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -242,6 +246,9 @@
       </if>
       <if test="currency != null">
         #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -308,6 +315,9 @@
       <if test="record.currency != null">
         currency = #{record.currency,jdbcType=INTEGER},
       </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -332,7 +342,8 @@
       groud_status = #{record.groudStatus,jdbcType=TINYINT},
       repair_status = #{record.repairStatus,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DOUBLE},
-      currency = #{record.currency,jdbcType=INTEGER}
+      currency = #{record.currency,jdbcType=INTEGER},
+      factory = #{record.factory,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -391,6 +402,9 @@
       <if test="currency != null">
         currency = #{currency,jdbcType=INTEGER},
       </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -412,9 +426,12 @@
       groud_status = #{groudStatus,jdbcType=TINYINT},
       repair_status = #{repairStatus,jdbcType=INTEGER},
       price = #{price,jdbcType=DOUBLE},
-      currency = #{currency,jdbcType=INTEGER}
+      currency = #{currency,jdbcType=INTEGER},
+      factory = #{factory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 
 
 
@@ -562,12 +579,12 @@ ORDER BY
     <if test="sn != null">
       and a.sn like concat('%', #{sn}, '%')
     </if>
-<!--    &amp;amp;lt;if test="startTime != null"&amp;amp;gt;-->
-<!--      and pk.CBPK08  &amp;amp;amp;gt;= #{startTime}-->
-<!--    &amp;amp;lt;/if&amp;amp;gt;-->
-<!--    &amp;amp;lt;if test="endTime != null"&amp;amp;gt;-->
-<!--      and pk.CBPK08  &amp;amp;amp;lt;=#{endTime}-->
-<!--    &amp;amp;lt;/if&amp;amp;gt;-->
+<!--    &amp;amp;amp;lt;if test="startTime != null"&amp;amp;amp;gt;-->
+<!--      and pk.CBPK08  &amp;amp;amp;amp;gt;= #{startTime}-->
+<!--    &amp;amp;amp;lt;/if&amp;amp;amp;gt;-->
+<!--    &amp;amp;amp;lt;if test="endTime != null"&amp;amp;amp;gt;-->
+<!--      and pk.CBPK08  &amp;amp;amp;amp;lt;=#{endTime}-->
+<!--    &amp;amp;amp;lt;/if&amp;amp;amp;gt;-->
     <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
        and date_format(a.update_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
     </if>

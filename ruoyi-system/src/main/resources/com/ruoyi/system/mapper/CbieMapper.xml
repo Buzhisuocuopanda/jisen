@@ -440,8 +440,8 @@ order by a.CBIE02 desc
   </select>
   <select id="selectSwJsStoreList" resultType="com.ruoyi.system.domain.vo.CbigVo">
     SELECT
-      a.CBIE07,CBIE02,b.CBWA09,c.CALA08,e.CBSA08,f.CBLA09,h.CBPA07,i.CALA08,g.CBPB12,
-      g.CBPB15,g.cbpb08,d.CBIG10,d.CBIG13,d.CBIG15,d.CBIG15,a.CBIE01
+      a.CBIE07,CBIE02,b.CBWA09,i.CALA08,e.CBSA08,f.CBLA09,h.CBPA07,i.CALA08,g.CBPB12,
+      g.CBPB15,g.cbpb08,d.CBIG10,d.CBIG13,d.CBIG15,d.CBIG15,a.CBIE01,d.CBIG12
     from
       CBIE a
         LEFT JOIN

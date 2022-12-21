@@ -559,6 +559,7 @@ public class TaskServiceImpl implements TaskService {
         gsGoodsSn.setCreateBy(Math.toIntExact(userid));
         gsGoodsSn.setUpdateBy(Math.toIntExact(userid));
         gsGoodsSn.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+        gsGoodsSn.setRepairStatus(0);
         gsGoodsSnMapper.insertSelective(gsGoodsSn);
         return gsGoodsSn;    }
 

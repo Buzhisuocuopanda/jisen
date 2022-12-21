@@ -39,6 +39,10 @@ private CblaMapper cblaMapper;
 
 @Resource
 private CbpbMapper cbpbMapper;
+
+
+@Resource
+private GsGoodsSkuMapper goodsSkuMapper;
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(GsGoodsSnDo goodsSnDo) {
@@ -129,6 +133,75 @@ private CbpbMapper cbpbMapper;
         GsGoodsSnCriteria example = new GsGoodsSnCriteria();
         example.createCriteria().andSnEqualTo(goodsSnDo.getSn());
          goodsSnMapper.updateByExampleSelective(goodsSn, example);
+
+        GsGoodsSkuCriteria example2 = new GsGoodsSkuCriteria();
+        example2.createCriteria().andGoodsIdEqualTo(gsGoodsSns.get(0).getGoodsId())
+                .andLocationIdEqualTo(goodsSnDo.getLocationId());
+        List<GsGoodsSku> gsGoodsSkus = goodsSkuMapper.selectByExample(example2);
+        List<GsGoodsSku> gsGoodsSkus1 = goodsSkuMapper.selectByGoodsIdAndWhId(gsGoodsSns.get(0).getGoodsId(), gsGoodsSns.get(0).getWhId());
+        if(gsGoodsSkus1.size()>0){
+            if(gsGoodsSkus1.get(0).getQty()==1){
+                GsGoodsSku gsGoodsSku = gsGoodsSkus1.get(0);
+                gsGoodsSku.setLocationId(goodsSnDo.getLocationId());
+                goodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+            }else if(gsGoodsSkus.size()>0 &&gsGoodsSkus1.get(0).getQty()>1){
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setQty(gsGoodsSkus1.get(0).getQty() - 1);
+                goodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                GsGoodsSku gsGoodsSku1 = new GsGoodsSku();
+                gsGoodsSku1.setId(gsGoodsSkus.get(0).getId());
+                gsGoodsSku1.setQty(gsGoodsSkus.get(0).getQty()+1);
+                goodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku1);
+
+
+            }else if(gsGoodsSkus.size()==0 &&gsGoodsSkus1.get(0).getQty()>1){
+                GsGoodsSku gsGoodsSku = new GsGoodsSku();
+                gsGoodsSku.setId(gsGoodsSkus1.get(0).getId());
+                gsGoodsSku.setUpdateTime(date);
+                gsGoodsSku.setQty(gsGoodsSkus1.get(0).getQty() - 1);
+                goodsSkuMapper.updateByPrimaryKeySelective(gsGoodsSku);
+
+                GsGoodsSkuCriteria example3 = new GsGoodsSkuCriteria();
+                example3.createCriteria().andLocationIdEqualTo(goodsSnDo.getLocationId());
+                List<GsGoodsSku> gsGoodsSkus2 = goodsSkuMapper.selectByExample(example3);
+                if(gsGoodsSkus2.size()>0){
+                 if(gsGoodsSkus2.get(0).getQty()==1){
+                     throw new SwException("该库位已经有该商品");
+                 }
+                }
+                GsGoodsSku gsGoodsSkuss = new GsGoodsSku();
+                gsGoodsSkuss.setId(gsGoodsSkus.get(0).getId());
+                gsGoodsSkuss.setCreateTime(date);
+                gsGoodsSkuss.setUpdateTime(date);
+                gsGoodsSkuss.setCreateBy(Math.toIntExact(userid));
+                gsGoodsSkuss.setUpdateBy(Math.toIntExact(userid));
+                gsGoodsSkuss.setDeleteFlag(DeleteFlagEnum1.NOT_DELETE.getCode());
+                gsGoodsSkuss.setGoodsId(gsGoodsSns.get(0).getGoodsId());
+                gsGoodsSkuss.setWhId(gsGoodsSns.get(0).getWhId());
+                gsGoodsSkuss.setQty(1.0);
+                gsGoodsSkuss.setLocationId(goodsSnDo.getLocationId());
+                goodsSkuMapper.insertSelective(gsGoodsSkuss);
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         return 1;
     }
 
