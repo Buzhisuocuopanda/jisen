@@ -606,6 +606,7 @@ public class FinanceQueryServiceImpl implements FinanceQueryService {
                             //查该商品最新的一条
                             CbibCriteria ibex=new CbibCriteria();
                             ibex.createCriteria()
+                                    .andCbib02EqualTo(fnGoodsSkuVo.getWhId())
                                     .andCbib08EqualTo(fnGoodsSkuVo.getGoodsId());
                             ibex.setOrderByClause("CBIB04 DESC");
                             List<Cbib> newibs = cbibMapper.selectByExample(ibex);

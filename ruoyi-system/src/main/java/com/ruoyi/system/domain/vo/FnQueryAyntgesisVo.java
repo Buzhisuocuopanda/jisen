@@ -22,8 +22,7 @@ public class FnQueryAyntgesisVo {
     @Excel(name = "入库时间")
     private String inWhTimeMsg;
 
-    @Excel(name = "工厂")
-    private String factory;
+
 
 
     private Date outWhTime;
@@ -55,8 +54,11 @@ public class FnQueryAyntgesisVo {
     private String suplierName;
     @Excel(name = "品牌")
     private String brand;
-    @Excel(name = "工厂")
+//    @Excel(name = "供应商")
     private String gc;
+
+    @Excel(name = "供应商")
+    private String factory;
     //数据库注释 单价 表cbpd
     @Excel(name = "采购单价U")
     private Double cgUprice;

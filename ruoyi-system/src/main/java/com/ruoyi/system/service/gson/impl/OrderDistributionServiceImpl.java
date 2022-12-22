@@ -1036,6 +1036,11 @@ public class OrderDistributionServiceImpl implements OrderDistributionService {
                 }
 
                 cbba.setCbba04(date);
+
+                if(cbba.getCbba11().equals(cbba.getCbba09())){
+                    cbba.setCbba12(TotalOrderConstants.OK);
+                }
+
                 cbbaMapper.updateByPrimaryKey(cbba);
                 if (unum == 0.0) {
                     break;
