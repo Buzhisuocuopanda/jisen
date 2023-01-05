@@ -398,6 +398,7 @@ where
       ON
         a.CBSH10=b.CBWA01
 where a.CBSH06=0
+and a.CBSH13=1
   </select>
   <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbsiVo">
     SELECT
@@ -410,6 +411,7 @@ where a.CBSH06=0
         a.CBSH10=b.CBWA01
 where
     a.CBSH06=0
+  and a.CBSH13=1
     <if test='cbsh07 != null and cbsh07 != ""'> and a.CBSH07  like concat('%', #{cbsh07}, '%')</if>
     <if test='startTime != null and startTime != ""'>and  a.cbsh08 <![CDATA[>=]]> #{startTime}</if>
     <if test='endTime != null and endTime != ""'>and a.cbsh08 <![CDATA[<=]]>#{endTime}</if>

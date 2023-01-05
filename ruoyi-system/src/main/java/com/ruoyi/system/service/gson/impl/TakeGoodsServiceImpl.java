@@ -1933,12 +1933,16 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         if(gsGoodsSns.get(0).getGoodsId()==null){
             throw new SwException("您选择的Sn商品没有绑定商品");
         }
-        if(gsGoodsSns.get(0).getLocationId()==null){
-            throw new SwException("您选择的Sn商品没有绑定库位");
-        }
+
         if(gsGoodsSns.get(0).getWhId()==null){
             throw new SwException("您选择的Sn商品没有绑定仓库");
         }
+
+//        if(gsGoodsSns.get(0).getLocationId()==null){
+//            throw new SwException("您选择的Sn商品没有绑定库位");
+//        }
+        if(gsGoodsSns.get(0).getLocationId()!=null){
+
         //库存释放,
         GsGoodsSkuCriteria tuiw = new GsGoodsSkuCriteria();
         tuiw.createCriteria()
@@ -2040,7 +2044,7 @@ public class TakeGoodsServiceImpl implements TakeGoodsService {
         example2.createCriteria()
                 .andSnEqualTo(itemList.getCbpm09());
         gsGoodsSnMapper.updateByExample(goodsSn, example2);
-
+        }
         cbpmMapper.updateByExampleSelective(itemList, example);
 
 

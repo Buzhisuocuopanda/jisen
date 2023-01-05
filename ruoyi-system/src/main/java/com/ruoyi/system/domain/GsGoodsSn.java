@@ -42,6 +42,8 @@ public class GsGoodsSn implements Serializable {
 
     private String factory;
 
+    private Integer locationids;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -196,6 +198,14 @@ public class GsGoodsSn implements Serializable {
         this.factory = factory == null ? null : factory.trim();
     }
 
+    public Integer getLocationids() {
+        return locationids;
+    }
+
+    public void setLocationids(Integer locationids) {
+        this.locationids = locationids;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -226,7 +236,8 @@ public class GsGoodsSn implements Serializable {
             && (this.getRepairStatus() == null ? other.getRepairStatus() == null : this.getRepairStatus().equals(other.getRepairStatus()))
             && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
             && (this.getCurrency() == null ? other.getCurrency() == null : this.getCurrency().equals(other.getCurrency()))
-            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()));
+            && (this.getFactory() == null ? other.getFactory() == null : this.getFactory().equals(other.getFactory()))
+            && (this.getLocationids() == null ? other.getLocationids() == null : this.getLocationids().equals(other.getLocationids()));
     }
 
     @Override
@@ -252,6 +263,7 @@ public class GsGoodsSn implements Serializable {
         result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
         result = prime * result + ((getCurrency() == null) ? 0 : getCurrency().hashCode());
         result = prime * result + ((getFactory() == null) ? 0 : getFactory().hashCode());
+        result = prime * result + ((getLocationids() == null) ? 0 : getLocationids().hashCode());
         return result;
     }
 
@@ -280,6 +292,7 @@ public class GsGoodsSn implements Serializable {
         sb.append(", price=").append(price);
         sb.append(", currency=").append(currency);
         sb.append(", factory=").append(factory);
+        sb.append(", locationids=").append(locationids);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

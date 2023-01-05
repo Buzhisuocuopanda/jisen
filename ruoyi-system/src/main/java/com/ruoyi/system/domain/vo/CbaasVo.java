@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class CbaasVo {
 
+    private String cbac12;
+
     private String pinpai;
 
 

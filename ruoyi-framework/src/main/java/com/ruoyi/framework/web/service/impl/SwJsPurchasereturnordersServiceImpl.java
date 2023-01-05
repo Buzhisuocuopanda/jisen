@@ -97,6 +97,9 @@ public class SwJsPurchasereturnordersServiceImpl implements ISwJsPurchasereturno
     @Resource
     private CbpbMapper cbpbMapper;
 
+    @Resource
+    private CbqbMapper cbqbMapper;
+
     @Autowired
     private StringRedisTemplate redisTemplate;
 
@@ -992,7 +995,22 @@ if(infoss.size()>0) {
         cbpg.setCbpg12(Math.toIntExact(userid));
         cbpg.setCbpg13(date);
 
-        if(sio.contains(cbpg1.getCbpg10())){
+int iop=0;
+
+        CbpiCriteria cbpiCriteriaS =new CbpiCriteria();
+        cbpiCriteriaS.createCriteria().andCbpg01EqualTo(cbpgDto.getCbpg01());
+        List<Cbpi> cbpis1 = cbpiMapper.selectByExample(cbpiCriteriaS);
+        if(cbpis1.size()>0){
+            for(int i=0;i<cbpis1.size();i++){
+                CbqbCriteria cbqbCriteria =new CbqbCriteria();
+                cbqbCriteria.createCriteria().andCbqb10EqualTo(cbpis1.get(i).getCbpi09());
+                List<Cbqb> cbqbs = cbqbMapper.selectByExample(cbqbCriteria);
+                if(cbqbs.size()>0)iop++;
+
+            }
+        }
+       // Optional.ofNullable(iop).orElseThrow(() -> new SwException("没有条码不能标记完成"));
+        if(sio.contains(cbpg1.getCbpg10()) || iop>0){
             //zgl 判断扫码数量未空则修改gs_goods_sku和cbib表数据
 //            Long userid = SecurityUtils.getUserId();
 

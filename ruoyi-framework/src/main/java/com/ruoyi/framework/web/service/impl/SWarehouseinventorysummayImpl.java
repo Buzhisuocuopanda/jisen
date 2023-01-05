@@ -70,26 +70,28 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbshDo cbshDo) {
-        if(!cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
-                cbshDo.getCbsh09().equals(WarehouseSelect.GLW.getCode())){
+        if(!cbshDo.getCbsh10().equals(WarehouseSelect.CBW.getCode()) &&
+                !cbshDo.getCbsh10().equals(WarehouseSelect.GLW.getCode())){
             throw new SwException("请选择数量仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbshDo.getCbsh10());
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNoss(cbshDo.getCbsh10());
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
         Date date = new Date();
         cbsh.setCbsh02(date);
         cbsh.setCbsh03(date);
         cbsh.setCbsh04(Math.toIntExact(userId));
         cbsh.setCbsh05(Math.toIntExact(userId));
-        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
         cbsh.setCbsh07(warehouseinitializationNo);
         cbsh.setCbsh08(date);
+        cbsh.setCbsh09(TaskStatus.mr.getCode());
+        cbsh.setCbsh13(1);
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);
         CbshCriteria example = new CbshCriteria();
-        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo)
-                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo);
+             //   .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
         IdVo idVo = new IdVo();
         idVo.setId(cbshes.get(0).getCbsh01());
@@ -110,12 +112,13 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
             itemList.get(i).setCbsi05(Math.toIntExact(userid));
             itemList.get(i).setCbsi06(Math.toIntExact(userid));
             itemList.get(i).setCbsi07(DeleteFlagEnum.NOT_DELETE.getCode());
+            itemList.get(i).setCbsi08(itemList.get(i).getCbsi08());
             itemList.get(i).setUserId(Math.toIntExact(userid));
             BigDecimal num = BigDecimal.valueOf( itemList.get(i).getCbsi09());
-            BigDecimal price = BigDecimal.valueOf(itemList.get(i).getCbsi12());
-            BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
-            double v = b.doubleValue();
-            itemList.get(i).setCbsi13(v);
+//            BigDecimal price = BigDecimal.valueOf(itemList.get(i).getCbsi12());
+         //   BigDecimal b =num.multiply(price).setScale(2, RoundingMode.HALF_UP);
+        //    double v = b.doubleValue();
+       //     itemList.get(i).setCbsi13(v);
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
                 session.commit();
@@ -124,6 +127,11 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         }
         session.commit();
         session.clearCache();
+
+        Cbsh cbsh = new Cbsh();
+        cbsh.setCbsh01(itemList.get(0).getCbsh01());
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbshMapper.updateByPrimaryKeySelective(cbsh);
         return 1;
 
     }

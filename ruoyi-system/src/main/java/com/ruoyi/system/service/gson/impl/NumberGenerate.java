@@ -548,6 +548,49 @@ private CbieMapper cbieMapper;
 
     }
 
+
+    //仓库盘点单编号
+    public synchronized String getWarehouseinitializationNoss(int storeId) {
+        //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        String format = sd.format(new Date());
+        String orderNo = "";
+
+        if (storeId / 10 == 0) {
+            String s = "ST0" + storeId + format;
+            orderNo=s;
+        }
+        else if(storeId/10>0&&storeId/10<10){
+            String s = "ST" + storeId + format;
+            orderNo=s;
+        }else {
+            int i = storeId % 3;
+            String s = "ST0" + i + format;
+            orderNo=s;
+        }
+        CbshCriteria example=new CbshCriteria();
+        example.createCriteria()
+                .andCbsh07Like("%"+format+"%");
+        List<Cbsh> cbpks = cbshMapper.selectByExample(example);
+        if(cbpks.size()==0){
+            return orderNo+"0001";
+        }else {
+
+            Integer num=0;
+            for (Cbsh res : cbpks) {
+                Integer no = getNum(res.getCbsh07(),12);
+                if(num<no){
+                    num=no;
+                }
+
+            }
+
+            return  createOrderNo(orderNo,num);
+
+        }
+
+    }
+
     //调拨单
     public synchronized String getWarehouseinitializationNos(int storeId) {
         //拼接规则 PI01 20220717 0001 PI01 +年月日 +四位数数量自增

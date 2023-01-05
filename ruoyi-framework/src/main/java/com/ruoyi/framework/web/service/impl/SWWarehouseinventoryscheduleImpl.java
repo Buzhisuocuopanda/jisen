@@ -69,22 +69,23 @@ private CbsjMapper cbbsjMapper;
             throw new SwException("请选择扫码仓库");
         }
         Long userId = SecurityUtils.getUserId();
-        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbshDo.getCbsh10());
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNoss(cbshDo.getCbsh10());
         Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
         Date date = new Date();
         cbsh.setCbsh02(date);
         cbsh.setCbsh03(date);
         cbsh.setCbsh04(Math.toIntExact(userId));
         cbsh.setCbsh05(Math.toIntExact(userId));
-        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
         cbsh.setCbsh07(warehouseinitializationNo);
         cbsh.setCbsh08(cbshDo.getCbsh08());
         cbsh.setCbsh09(TaskStatus.mr.getCode());
+        cbsh.setCbsh13(0);
         cbsh.setUserId(Math.toIntExact(userId));
         cbshMapper.insertSelective(cbsh);
         CbshCriteria example = new CbshCriteria();
-        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo)
-                .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+        example.createCriteria().andCbsh07EqualTo(warehouseinitializationNo);
+               // .andCbsh06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         List<Cbsh> cbshes = cbshMapper.selectByExample(example);
         IdVo idVo = new IdVo();
         idVo.setId(cbshes.get(0).getCbsh01());
@@ -475,7 +476,7 @@ private CbsjMapper cbbsjMapper;
             itemList.get(i).setCbsh01(itemList.get(i).getCbsh01());
 
             //如果查不到添加信息到库存表
-            Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.get(i).getCbsh01());
+         //   Cbsh cbsh = cbshMapper.selectByPrimaryKey(itemList.get(i).getCbsh01());
           /*  GsGoodsSkuDo gsGoodsSkuDo = new GsGoodsSkuDo();
             //获取仓库id
             gsGoodsSkuDo.setWhId(cbsh.getCbsh10());
@@ -515,8 +516,8 @@ private CbsjMapper cbbsjMapper;
             gsGoodsSnDo.setGroudStatus(Groudstatus.SJ.getCode());
             taskService.addGsGoodsSn(gsGoodsSnDo);*/
 
-            CbsjCriteria example2 = new CbsjCriteria();
-            example2.createCriteria().andCbsj09EqualTo(itemList.get(i).getCbsj09());
+//            CbsjCriteria example2 = new CbsjCriteria();
+//            example2.createCriteria().andCbsj09EqualTo(itemList.get(i).getCbsj09());
 
             mapper.insertSelective(itemList.get(i));
             if (i % 10 == 9) {//每10条提交一次
@@ -530,6 +531,11 @@ private CbsjMapper cbbsjMapper;
         this.swJsStoreend(cbshDo);*/
         session.commit();
         session.clearCache();
+
+        Cbsh cbsh = new Cbsh();
+        cbsh.setCbsh01(itemList.get(0).getCbsh01());
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbshMapper.updateByPrimaryKeySelective(cbsh);
         return 1;    }
 
 

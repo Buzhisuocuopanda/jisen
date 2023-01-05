@@ -1291,6 +1291,66 @@ public class GsGoodsSnCriteria {
             addCriterion("factory not between", value1, value2, "factory");
             return (Criteria) this;
         }
+
+        public Criteria andLocationidsIsNull() {
+            addCriterion("locationids is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsIsNotNull() {
+            addCriterion("locationids is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsEqualTo(Integer value) {
+            addCriterion("locationids =", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsNotEqualTo(Integer value) {
+            addCriterion("locationids <>", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsGreaterThan(Integer value) {
+            addCriterion("locationids >", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("locationids >=", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsLessThan(Integer value) {
+            addCriterion("locationids <", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsLessThanOrEqualTo(Integer value) {
+            addCriterion("locationids <=", value, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsIn(List<Integer> values) {
+            addCriterion("locationids in", values, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsNotIn(List<Integer> values) {
+            addCriterion("locationids not in", values, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsBetween(Integer value1, Integer value2) {
+            addCriterion("locationids between", value1, value2, "locationids");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationidsNotBetween(Integer value1, Integer value2) {
+            addCriterion("locationids not between", value1, value2, "locationids");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -10,8 +10,16 @@ import com.ruoyi.system.domain.vo.deleteVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Spliterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static java.util.Spliterators.spliterator;
+
 @Service
 public interface ISwDirectlyintothevaultService{
+
+
     int insertSwJsSkuBarcodes(CbicDto cbicDto);
 
     int deleteSwJsSkuBarcodsById(CbicDto cbicDto);

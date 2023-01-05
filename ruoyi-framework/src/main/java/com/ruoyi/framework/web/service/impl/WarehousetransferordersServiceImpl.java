@@ -34,6 +34,11 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
 @Slf4j
 @Service
 public class WarehousetransferordersServiceImpl implements IWarehousetransferordersService {
@@ -986,117 +991,100 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             return 1;
     }
 
-    public int update(CbaasVo cbaasVo) {
+
+    public int updates(CbaasVo cbaasVo){
         List<CbaasVo> cbaasVos = selectSwJsTaskGoodsRelListss(cbaasVo);
-        if (cbaasVos.size() > 0) {
-
-            double sum1 = cbaasVos.stream().mapToDouble(CbaasVo::getCbab09).sum();
-            List<ScanVo> goods = cbaasVos.get(0).getGoods();
-            if (goods.size() > 0) {
-            //调出扫码，调入扫码
-            if(sum1==goods.size()){
-                List<ScanVo> list = new ArrayList<>();
-                for(int i=0;i<goods.size();i++){
-                    if(goods.get(i).getKwm()!=null){
-                        list.add(goods.get(i));
+        Optional.ofNullable(cbaasVo.getCbac10()).orElseThrow(() -> new SwException("调拨单库位不能为空"));
+        Optional.ofNullable(cbaasVo.getCbac12()).orElseThrow(() -> new SwException("调拨单商品不能为空"));
+        Cbla cbla = cblaMapper.selectByPrimaryKey(cbaasVo.getCbac10());
+        Optional.ofNullable(cbla.getCbla09()).orElseThrow(() -> new SwException("调拨单库位不存在"));
+        String cbla09 = cbla.getCbla09();
+        if(cbaasVos.size()>0){
+            int size=0;
+            if(cbaasVos.get(0).getGoods().size()>0){
+                if(cbaasVos.get(0).getGoods().stream().filter(s -> s.getKwm()!=null).count()>0){
+                    List<ScanVo> collect = cbaasVos.get(0).getGoods().stream().filter(s -> s.getKwm().equals(cbla09)).collect(Collectors.toList());
+                    if(collect.size()>0){
+                        size = collect.size();
                     }
-
                 }
 
-                Map<String, Long> map = list.stream().collect(Collectors.groupingBy(ScanVo::getKwm, Collectors.counting()));
-                for (Map.Entry<String, Long> entry : map.entrySet()) {
-                    System.out.println("key ：" + entry.getKey() + ", value ：" + entry.getValue());
-                    CbibDo cbibDo = new CbibDo();
-                    CblaCriteria cblaCriteria = new CblaCriteria();
-                    cblaCriteria.createCriteria().andCbla09EqualTo(entry.getKey());
-                    List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
-                    if (cblas.size() > 0) {
-                        Double cblasku = cblas.get(0).getCbla11();
-                        GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
-                        gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
-                        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
-                        if (gsGoodsSkus.size() > 0) {
-                            double gsGoodsSku = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                            // Double gsGoodsSku = gsGoodsSkus.get(0).getQty();
-                            if (gsGoodsSku + entry.getValue()  >=cblasku) {
-                                throw new SwException("库位" + entry.getKey() + "库存不足");
-                            }
-                        } else {
-                            if (entry.getValue() + 1 > cblasku) {
-                                throw new SwException("库位" + entry.getKey() + "库存不足");
-                            }
-                        }
 
-
-                    }
-
-
+      GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
+            gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cbaasVo.getCbac10());
+            List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
+            if(gsGoodsSkus.size()>0){
+                double sum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                if(size+sum+1>cbla.getCbla11()){
+                    throw new SwException("库位已满,库位"+cbla09);
+                }
+            }else{
+                if(size+1>cbla.getCbla11()){
+                    throw new SwException("库位已满,库位"+cbla09);
                 }
             }
-            else {
 
+                int goodsize = 0;
+            //校验扫码数量
+                List<ScanVo> collects = cbaasVos.get(0).getGoods().stream().filter(s -> s.getCbpb15().equals(cbaasVo.getCbac12())).collect(Collectors.toList());
+                if(collects.size()>0){
+                     goodsize = collects.size();
+                }
+                CbpbCriteria cbpbCriteria = new CbpbCriteria();
+                cbpbCriteria.createCriteria().andCbpb15EqualTo(cbaasVo.getCbac12());
+                List<Cbpb> cbpbs = cbpbMapper.selectByExample(cbpbCriteria);
+                if(cbpbs.size()==0){
+                    throw new SwException("商品不存在");
+                }
+                Optional.ofNullable(cbpbs.get(0).getCbpb01()).orElseThrow(() -> new SwException("商品id为空"));
 
-                List<ScanVo> list = new ArrayList<>();
-                for (int i = 0; i < goods.size(); i++) {
-                    if (goods.get(i).getKwm() != null) {
-                        list.add(goods.get(i));
-                    }
-
+                double sum = cbaasVos.stream().filter(s -> s.getCbab08().equals(cbpbs.get(0).getCbpb01()))
+                        .collect(Collectors.toList()).stream().mapToDouble(CbaasVo::getCbab09).sum();
+                if(goodsize+1>sum){
+                    throw new SwException("该商品扫码数量等于任务数量");
                 }
 
-                Map<String, Long> map = list.stream().collect(Collectors.groupingBy(ScanVo::getKwm, Collectors.counting()));
-                for (Map.Entry<String, Long> entry : map.entrySet()) {
-                    System.out.println("key ：" + entry.getKey() + ", value ：" + entry.getValue());
-                    CbibDo cbibDo = new CbibDo();
-                    CblaCriteria cblaCriteria = new CblaCriteria();
-                    cblaCriteria.createCriteria().andCbla09EqualTo(entry.getKey());
-                    List<Cbla> cblas = cblaMapper.selectByExample(cblaCriteria);
-                    if (cblas.size() > 0) {
-                        Double cblasku = cblas.get(0).getCbla11();
-                        GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
-                        gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cblas.get(0).getCbla01());
-                        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
-                        double gsGoodsSku = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-
-                        if (gsGoodsSkus.size() > 0) {
-                            // Double gsGoodsSku = gsGoodsSkus.get(0).getQty();
-                            if (gsGoodsSku + entry.getValue()+1 > cblasku) {
-                                throw new SwException("库位" + entry.getKey() + "库存不足");
-                            }
-                        } else  {
-                            if (entry.getValue() + 1 > cblasku) {
-                                throw new SwException("库位" + entry.getKey() + "库存不足");
-                            }
-                            if(gsGoodsSku+1>cblasku){
-                                throw new SwException("库位" + entry.getKey() + "库存不足");
-                            }
-                        }
-
-
-                    }
-
-
-                }
-
-            }    }
-            else {
-                Cbla cbla = cblaMapper.selectByPrimaryKey(cbaasVo.getCbac10());
-                if(cbla!=null){
-                    GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
-                    gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cbla.getCbla01());
-                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
-                    if(gsGoodsSkus.size()>0){
-                        double sum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
-                        if(sum+1>cbla.getCbla11()){
-                            throw new SwException("库位"+cbla.getCbla09()+"库存不足");
-                        }
-                    }
-                }
 
             }
         }
+        return 1;
+    }
+    public int update(CbaasVo cbaasVo){
+        List<CbaasVo> cbaasVos = selectSwJsTaskGoodsRelListss(cbaasVo);
+        Optional.ofNullable(cbaasVo.getCbac10()).orElseThrow(() -> new SwException("调拨单库位不能为空"));
+        Optional.ofNullable(cbaasVo.getCbac12()).orElseThrow(() -> new SwException("调拨单商品不能为空"));
+        Cbla cbla = cblaMapper.selectByPrimaryKey(cbaasVo.getCbac10());
+        Optional.ofNullable(cbla.getCbla09()).orElseThrow(() -> new SwException("调拨单库位不存在"));
+        String cbla09 = cbla.getCbla09();
+        if(cbaasVos.size()>0){
+            int size=0;
+            if(cbaasVos.get(0).getGoods().size()>0){
+                if(cbaasVos.get(0).getGoods().stream().filter(s -> s.getKwm()!=null).count()>0){
+                    List<ScanVo> collect = cbaasVos.get(0).getGoods().stream().filter(s -> s.getKwm().equals(cbla09)).collect(Collectors.toList());
+                    if(collect.size()>0){
+                        size = collect.size();
+                    }
+                }
 
 
+                GsGoodsSkuCriteria gsGoodsSkuCriteria = new GsGoodsSkuCriteria();
+                gsGoodsSkuCriteria.createCriteria().andLocationIdEqualTo(cbaasVo.getCbac10());
+                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(gsGoodsSkuCriteria);
+                if(gsGoodsSkus.size()>0){
+                    double sum = gsGoodsSkus.stream().mapToDouble(GsGoodsSku::getQty).sum();
+                    if(size+sum+1>cbla.getCbla11()){
+                        throw new SwException("库位已满,库位"+cbla09);
+                    }
+                }else{
+                    if(size+1>cbla.getCbla11()){
+                        throw new SwException("库位已满,库位"+cbla09);
+                    }
+                }
+
+
+
+            }
+        }
         return 1;
     }
 
@@ -1105,10 +1093,7 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
     @Transactional(rollbackFor = Exception.class)
     public int transferordersin(Cbac itemList) {
 
-        CbaasVo cbaasVo = new CbaasVo();
-        cbaasVo.setCbaa01(itemList.getCbaa01());
-        cbaasVo.setCbac10(itemList.getCbac10());
-        update(cbaasVo);
+
 
         Date date = new Date();
         Long userid = SecurityUtils.getUserId();
@@ -1187,6 +1172,11 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
             Cbaa cbaa1 = cbaaMapper.selectByPrimaryKey(cbaa01);
             if(fhji.contains(cbaa1.getCbaa09()) ){
 
+                CbaasVo cbaasVo = new CbaasVo();
+                cbaasVo.setCbaa01(itemList.getCbaa01());
+                cbaasVo.setCbac10(itemList.getCbac10());
+                cbaasVo.setCbac12(itemList.getCbac12());
+                updates(cbaasVo);
 
                 Cbla cbla = cblaMapper.selectByPrimaryKey(itemList.getCbac10());
                 if(cbla!=null){
@@ -1273,6 +1263,12 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                }
             }
             else{
+                CbaasVo cbaasVo = new CbaasVo();
+                cbaasVo.setCbaa01(itemList.getCbaa01());
+                cbaasVo.setCbac10(itemList.getCbac10());
+                cbaasVo.setCbac12(itemList.getCbac12());
+                update(cbaasVo);
+
                 //判断调出扫码是否完成
                 CbacCriteria cbacCriterias = new CbacCriteria();
                 cbacCriterias.createCriteria().andCbaa01EqualTo(itemList.getCbaa01())
@@ -2048,17 +2044,22 @@ else {
                 throw new SwException("调拨单明细为空");
             }
             List<Double> collect = cbabs.stream().map(Cbab::getCbab09).collect(Collectors.toList());
-            Double sum = 0.0;
+        Double sum1 = 0.0;
+
+        if(collect.size()>0){
+                 sum1 = cbabs.stream().mapToDouble(Cbab::getCbab09).sum();
+            }
+        Double sum = 0.0;
         for (Double aDouble : collect) {
             sum += aDouble;
         }
             List<CbacVo> cbacVos = cbacMapper.selectSwJsTaskGoodsRelListsss(cbacVo);
-            res.setNums(sum);
+            res.setNums(sum1);
 
             cbacVos.add(res);
             if (cbacVos.size() > 1) {
                 cbacVos.get(0).setSaoma(cbacVos.size() - 1);
-                cbacVos.get(0).setNums(sum);
+                cbacVos.get(0).setNums(sum1);
             }
 
             return cbacVos;

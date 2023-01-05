@@ -471,9 +471,7 @@ private CbpmMapper cbpmMapper;
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
         Date date = new Date();
 
-        if(cbicDto.getUpc()==null){
-            throw new SwException("upc没输入");
-        }
+        Optional.ofNullable(cbicDto.getUpc()).orElseThrow(() -> new SwException("upc没输入"));
         log.info("获取的upc为"+cbicDto.getUpc()+"长度为"+cbicDto.getUpc().length());
 
         CbpbCriteria exampe = new CbpbCriteria();

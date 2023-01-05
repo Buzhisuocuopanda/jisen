@@ -404,6 +404,8 @@ where
         CBWA b
         on
           a.CBSH10=b.CBWA01
+        where
+            a.CBSH13=0
     </select>
   <select id="SwJsStorelistss" resultType="com.ruoyi.system.domain.vo.CbshVo">
     SELECT
@@ -416,6 +418,7 @@ where
         a.CBSH10=b.CBWA01
 where
 a.CBSH06=0
+  and a.CBSH13=0
     <if test='cbwa09 != null and cbwa09 != ""'> and b.CBWA09  like concat('%', #{cbwa09}, '%')</if>
 
     <if test='cbsh09 != null and cbsh09 != ""'> and a.CBSH09  like concat('%', #{cbsh09}, '%')</if>

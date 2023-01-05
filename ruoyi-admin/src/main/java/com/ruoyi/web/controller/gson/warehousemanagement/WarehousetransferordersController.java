@@ -621,7 +621,7 @@ public class WarehousetransferordersController extends BaseController {
     @GetMapping("/transferordersoutlist")
     public AjaxResult<TableDataInfo> swJsGoodslistss( CbacVo cbacVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbacVo> list = warehousetransferordersService.selectSwJsTaskGoodsRelListsss(cbacVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
@@ -652,7 +652,7 @@ public class WarehousetransferordersController extends BaseController {
     @GetMapping("/transferordersinlist")
     public AjaxResult<TableDataInfo> swJsGoodslistsss( CbacVo cbacVo) {
         try {
-            startPage();
+          //  startPage();
             List<CbacVo> list = warehousetransferordersService.swJsGoodslistsss(cbacVo);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {

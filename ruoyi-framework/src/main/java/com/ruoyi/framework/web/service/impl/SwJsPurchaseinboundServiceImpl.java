@@ -204,8 +204,7 @@ if(itemList.getCbpe08()!=null) {
        if (cbphs.size() == 0) {
            throw new SwException("采购入库单明细为空");
        }
-       List<Integer> goodsids = cbphs.stream().map(Cbpd::getCbpd08).collect(Collectors.toList());
-       Set<Integer> sio = new HashSet<>(goodsids);
+       Set<Integer> sio = cbphs.stream().map(Cbpd::getCbpd08).collect(Collectors.toSet());
 
 
 
@@ -327,6 +326,7 @@ CbpdCriteria example1 = new CbpdCriteria();
                        gsGoodsSn.setGroudStatus(GoodsType.yrk.getCode());
                        gsGoodsSn.setSn(itemList.getCbpe09());
                        gsGoodsSn.setCurrency(cbpc.getCbpc16());
+                       gsGoodsSn.setLocationId(itemList.getCbpe10());
                        if(cbpds.size()>0){
                            gsGoodsSn.setPrice(cbpds.get(0).getCbpd11());
 

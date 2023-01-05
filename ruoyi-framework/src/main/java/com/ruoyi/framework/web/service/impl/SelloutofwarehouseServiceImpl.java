@@ -612,7 +612,8 @@ private CbcaMapper cbcaMapper;
                         //查出
                         Double qty = gsGoodsSkus.get(0).getQty();
                         if (qty == 0) {
-                            throw new SwException("库存数量不足" + "商品id为" + gsGoodsSkus.get(0).getGoodsId() + "仓库id为" + gsGoodsSkus.get(0).getWhId());
+                            Cbpb cbpb = cbpbMapper.selectByPrimaryKey(gsGoodsSkus.get(0).getGoodsId());
+                            throw new SwException("库存数量不足" + "商品型号为" + cbpb.getCbpb12() );
                         }
                         gsGoodsSkuDo1.setId(gsGoodsSkus.get(0).getId());
                         //获取仓库id
