@@ -107,7 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbqa">
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbqa" useGeneratedKeys="true" keyProperty="cbqa01">
     insert into `CBQA` (CBQA01, CBQA02, CBQA03,
       CBQA04, CBQA05, CBQA06,
       CBQA07, CBQA08, CBQA09,
@@ -119,7 +119,7 @@
       #{cbqa10,jdbcType=INTEGER}, #{cbqa11,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbqa">
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbqa" >
     insert into `CBQA`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cbqa01 != null">

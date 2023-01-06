@@ -374,6 +374,33 @@ CbifCriteria rty = new CbifCriteria();
         }
         return successMsg.toString();    }
 
+    @Override
+    public int swJsStoreaddplus(CbieDo cbieDo) {
+        if (!cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
+                cbieDo.getCbie09().equals(WarehouseSelect.GLW.getCode())) {
+            throw new SwException("请选择数量仓库");
+        }
+        Long userId = SecurityUtils.getUserId();
+        String binitinitializationNo = numberGenerate.getBinitinitializationNo(cbieDo.getCbie09());
+        Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
+        Date date = new Date();
+        cbie.setCbie02(date);
+        cbie.setCbie03(Math.toIntExact(userId));
+        cbie.setCbie04(date);
+        cbie.setCbie05(Math.toIntExact(userId));
+        cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbie.setCbie07(binitinitializationNo);
+        cbie.setUserId(Math.toIntExact(userId));
+        cbie.setCbie10(TaskStatus.mr.getCode());
+        int insert = cbieMapper.insert(cbie);
+        List<Cbif> itemList =cbieDo.getItemList();
+        for (Cbif cbif : itemList) {
+            cbif.setCbie01(insert);
+        }
+        insertSwJsStores( itemList);
+    return 1;
+    }
+
     private void insertSwJsStoress(List<cbifsDo> itemList) {
         if(itemList.size()==0){
             throw new SwException("导入数据为空");

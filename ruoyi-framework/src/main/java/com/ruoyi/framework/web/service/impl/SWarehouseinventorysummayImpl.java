@@ -207,5 +207,34 @@ public class SWarehouseinventorysummayImpl implements ISWarehouseinventorysummar
         return   cbshMapper.SwJsStorlistsss(cbsisVo);
     }
 
+    @Override
+    public int SwJsStoreaddplus(CbshDo cbshDo) {
+        if(!cbshDo.getCbsh10().equals(WarehouseSelect.CBW.getCode()) &&
+                !cbshDo.getCbsh10().equals(WarehouseSelect.GLW.getCode())){
+            throw new SwException("请选择数量仓库");
+        }
+        Long userId = SecurityUtils.getUserId();
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNoss(cbshDo.getCbsh10());
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh02(date);
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh04(Math.toIntExact(userId));
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
+        cbsh.setCbsh07(warehouseinitializationNo);
+        cbsh.setCbsh08(date);
+        cbsh.setCbsh09(TaskStatus.mr.getCode());
+        cbsh.setCbsh13(1);
+        cbsh.setUserId(Math.toIntExact(userId));
+        int insert = cbshMapper.insert(cbsh);
+        List<Cbsi> itemList =cbshDo.getItemLists();
+        for (Cbsi cbsi : itemList) {
+            cbsi.setCbsh01(insert);
+        }
+        insertSwJsStores( itemList);
+        return 1;
+    }
+
 
 }

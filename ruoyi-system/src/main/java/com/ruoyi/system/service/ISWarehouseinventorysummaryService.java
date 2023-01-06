@@ -36,4 +36,6 @@ public interface ISWarehouseinventorysummaryService {
     int swJsStoreendd(CbshDo cbshDo);
 
     List<CbsisVo> SwJsStorelistsss(CbsisVo cbsisVo);
+
+    int SwJsStoreaddplus(CbshDo cbshDo);
 }

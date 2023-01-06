@@ -53,6 +53,36 @@ public class WarehousedetailsinitializeController extends BaseController {
     private ISWarehousedetailsinitializeService swarehousedetailsinitializeService;
 
     @ApiOperation(
+            value ="库存明细初始化新增",
+            notes = "库存明细初始化新增"
+    )
+    @PostMapping("/swJsStoreaddplus")
+    public AjaxResult<IdVo> swJsStoreaddplus(@Valid @RequestBody CbieDo cbieDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+             swarehousedetailsinitializeService.swJsStoreaddplus(cbieDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【库存明细初始化新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【库存明细初始化新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【库存明细初始化新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+
+    @ApiOperation(
             value ="库存明细初始化新增主表",
             notes = "库存明细初始化新增主表"
     )

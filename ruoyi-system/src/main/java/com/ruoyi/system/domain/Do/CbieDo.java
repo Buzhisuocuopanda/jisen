@@ -1,10 +1,14 @@
 package com.ruoyi.system.domain.Do;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.system.domain.Cbif;
 import com.ruoyi.system.domain.Cbig;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbieDo  extends Cbig {
     private Integer cbie01;
@@ -59,7 +63,7 @@ public class CbieDo  extends Cbig {
     private String moneytype;
     @Excel(name = "入库时间")
     private Date cbig03;
-
+    List<Cbif> itemList = new ArrayList<>();
 
 
 

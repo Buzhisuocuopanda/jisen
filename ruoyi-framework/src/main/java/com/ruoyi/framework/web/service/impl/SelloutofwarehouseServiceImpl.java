@@ -1548,45 +1548,17 @@ else{
         cbsb.setUserId(Math.toIntExact(userid));
 
 
-        cbsbMapper.insertSelective(cbsb);
-        CbsbCriteria example = new CbsbCriteria();
-        example.createCriteria().andCbsb07EqualTo(sellofwarehouseNo);
-        List<Cbsb> cbsbs = cbsbMapper.selectByExample(example);
+        int insert = cbsbMapper.insert(cbsb);
 
-        List<Cbsc> goods = cbsbDo.getGoods();
-        if(goods==null||goods.size()==0){
-            throw new SwException("请至少添加一件货物");
-        }
-        Cbsc cbsc;
-        for (Cbsc good : goods) {
-            cbsc = new Cbsc();
-            if(good.getCbsc01()==null){
-                throw new SwException("销售出库单明细id不能为空");
-            }
-            cbsc.setCbsc02(good.getCbsc02());
-            cbsc.setCbsc03(date);
-     //       cbsc.setCbsc04(Math.toIntExact(userid));
-            cbsc.setCbsc05(date);
-    //        cbsc.setCbsc06(Math.toIntExact(userid));
-            cbsc.setCbsc07(DeleteFlagEnum.NOT_DELETE.getCode());
-            cbsc.setCbsc08(good.getCbsc08());
-            cbsc.setCbsc09(good.getCbsc09());
-            cbsc.setCbsc10(good.getCbsc10());
-            cbsc.setCbsc11(good.getCbsc11());
-            cbsc.setCbsc12(good.getCbsc12());
-            cbsc.setCbsc13(good.getCbsc13());
-            cbsc.setCbsc15(good.getCbsc15());
-            cbsc.setCbsc16(good.getCbsc16());
-            cbsc.setCbsc17(good.getCbsc17());
-            if(cbsbs.size()>0){
-                Cbsb cbsb1 = cbsbs.get(0);
-                cbsc.setCbsb01(cbsb1.getCbsb01());
-            }
 
-      /*      CbscCriteria example = new CbscCriteria();
-            example.createCriteria().andCbsc01EqualTo(good.getCbsc01());*/
-            cbscMapper.insertSelective(cbsc);
+
+        List<Cbsc> itemList = cbsbDo.getItemList();
+        for (Cbsc cbsc : itemList) {
+            cbsc.setCbsb01(insert);
+
         }
+        insertSwJsStores(itemList);
+
         return 1;
     }
 

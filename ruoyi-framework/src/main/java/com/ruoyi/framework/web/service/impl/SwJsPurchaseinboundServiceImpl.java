@@ -639,12 +639,8 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         cbpc.setCbpc13(date);
         cbpc.setCbpc15(date);
         cbpc.setUserId(Math.toIntExact(userid));
-        cbpcMapper.insertSelective(cbpc);
+        int insert = cbpcMapper.insert(cbpc);
 
-        CbpcCriteria example1 = new CbpcCriteria();
-        example1.createCriteria().andCbpc07EqualTo(purchaseinboundNo)
-                .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
-        List<Cbpc> cbpcs1 = cbpcMapper.selectByExample(example1);
 
         Cbpd cbpd = null;
         for(Cbpd good:goods){
@@ -663,11 +659,9 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             cbpd.setCbpd11(good.getCbpd11());
             cbpd.setCbpd12(good.getCbpd12());
             cbpd.setCbpd13(good.getCbpd13());
-            if(cbpcs1.size()>0){
-                Cbpc cbpc1 = cbpcs1.get(0);
-                cbpd.setCbpc01(cbpc1.getCbpc01());
+                cbpd.setCbpc01(insert);
 
-            }
+
 
 
             cbpdMapper.insertSelective(cbpd);

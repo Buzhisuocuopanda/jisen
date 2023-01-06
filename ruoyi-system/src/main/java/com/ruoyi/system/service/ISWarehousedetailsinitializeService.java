@@ -35,4 +35,6 @@ public interface ISWarehousedetailsinitializeService {
     int updatesnintime(CbigDo cbigDo);
 
     int updatesnintimes();
+
+    int swJsStoreaddplus(CbieDo cbieDo);
 }

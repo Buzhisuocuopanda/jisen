@@ -90,6 +90,7 @@ public class CbsbDo {
     private Integer takeId;
 
 
+    List<Cbsc> itemList = new ArrayList<>();
 
 
 

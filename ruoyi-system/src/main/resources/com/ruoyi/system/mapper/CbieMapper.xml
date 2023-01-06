@@ -112,7 +112,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbie">
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbie" useGeneratedKeys="true" keyProperty="cbie01">
     insert into `CBIE` (CBIE01, CBIE02, CBIE03,
       CBIE04, CBIE05, CBIE06,
       CBIE07, CBIE08, CBIE09,

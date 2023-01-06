@@ -1,11 +1,16 @@
 package com.ruoyi.system.domain.Do;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.system.domain.Cbsi;
+import com.ruoyi.system.domain.Cbsj;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class CbshDo {
     private Integer cbsh01;
@@ -37,4 +42,7 @@ public class CbshDo {
     private Date cbsh14;
 
     private Integer userId;
+
+    List<Cbsj> itemList =new ArrayList<>();
+    List<Cbsi> itemLists =new ArrayList<>();
 }

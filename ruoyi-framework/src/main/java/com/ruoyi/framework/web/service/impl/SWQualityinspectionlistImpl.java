@@ -1436,6 +1436,7 @@ private CbpmMapper cbpmMapper;
     }
 
     @Override
+    @Transactional
     public int insertSwJsSkuBarcodesplus(CbqaDo cbqaDo) {
 
         List<Cbqb> goods = cbqaDo.getGoods();
@@ -1459,39 +1460,14 @@ private CbpmMapper cbpmMapper;
         cbqa.setCbqa10(Math.toIntExact(userid));
         cbqa.setCbqa11(date);
         cbqa.setUserId(Math.toIntExact(userid));
-        cbqaMapper.insertSelective(cbqa);
-
-        CbqaCriteria example = new CbqaCriteria();
-        example.createCriteria().andCbqa07EqualTo(qualityinspectionlistNo);
-        List<Cbqa> cbqas = cbqaMapper.selectByExample(example);
-
-        Cbqb cbqb = null;
-        for(Cbqb good:goods){
-            cbqb = new Cbqb();
-
-//            if(!uio.contains(good.getCbqb01())){
-//                throw new SwException("质检单明细id不存在");
-//            }
-            cbqb.setCbqb01(good.getCbqb01());
-            cbqb.setCbqb02(good.getCbqb02());
-            cbqb.setCbqb03(good.getCbqb03());
-            cbqb.setCbqb04(good.getCbqb04());
-            cbqb.setCbqb05(date);
-            cbqb.setCbqb06(Math.toIntExact(userid));
-            cbqb.setCbqb07(good.getCbqb07());
-            cbqb.setCbqb08(good.getCbqb08());
-            cbqb.setCbqb09(good.getCbqb09());
-            cbqb.setCbqb10(good.getCbqb10());
-            if(cbqas.size()>0){
-                Cbqa cbqa1 = cbqas.get(0);
-                cbqb.setCbqa01(cbqa1.getCbqa01());
-            }
+        int insert = cbqaMapper.insert(cbqa);
 
 
-            cbqbMapper.insertSelective(cbqb);
-
+        List<Cbqb> itemList = cbqaDo.getItemList();
+        for (Cbqb cbqb : itemList) {
+            cbqb.setCbqa01(insert);
         }
-
+        insertSwJsSkuBarcode( itemList);
 
         return 1;
     }

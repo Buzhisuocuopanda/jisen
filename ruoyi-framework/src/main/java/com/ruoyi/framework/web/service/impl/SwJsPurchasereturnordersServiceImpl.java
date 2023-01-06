@@ -300,10 +300,10 @@ Cbpg cbpgs = new Cbpg();
                 throw new SwException("商品id不存在");
             }
             Integer goodsId = gsGoodsSnss.get(0).getGoodsId();
-            if(gsGoodsSnss.get(0).getLocationId()==null){
-                throw new SwException("库位id不存在");
-            }
-            Integer locationId = gsGoodsSnss.get(0).getLocationId();
+//            if(gsGoodsSnss.get(0).getLocationId()==null){
+//                throw new SwException("库位id不存在");
+//            }
+           // Integer locationId = gsGoodsSnss.get(0).getLocationId();
 
 
             if (goodsId == null) {
@@ -314,13 +314,13 @@ Cbpg cbpgs = new Cbpg();
             if(!uio.contains(goodsId)){
                  throw new SwException("该商品不在采购退货单明细中");
              }
-            Cbla cbla = cblaMapper.selectByPrimaryKey(locationId);
-            if (cbla == null) {
-                throw new SwException("库位不存在");
-            }
-            if (!cbla.getCbla10().equals(storeid)) {
-                throw new SwException("库位不属于该仓库");
-            }
+//            Cbla cbla = cblaMapper.selectByPrimaryKey(locationId);
+//            if (cbla == null) {
+//                throw new SwException("库位不存在");
+//            }
+//            if (!cbla.getCbla10().equals(storeid)) {
+//                throw new SwException("库位不属于该仓库");
+//            }
             String sn = itemList.getCbpi09();
 
 
@@ -351,7 +351,7 @@ Cbpg cbpgs = new Cbpg();
             itemList.setUserId(Math.toIntExact(userid));
             itemList.setCbpi11(ScanStatusEnum.YISAOMA.getCode());
             itemList.setCbpi08(goodsId);
-            itemList.setCbpi10(locationId);
+           // itemList.setCbpi10(locationId);
             itemList.setCbpi09(itemList.getCbpi09());
 
 
@@ -368,6 +368,7 @@ Cbpg cbpgs = new Cbpg();
             gsGoodsSnDo.setUpdateBy(Math.toIntExact(userid));
             gsGoodsSnDo.setSn(itemList.getCbpi09());
             gsGoodsSnDo.setOutTime(date);
+            gsGoodsSnDo.setStatus(GoodsType.yck.getCode());
             gsGoodsSnDo.setGroudStatus(Groudstatus.XJ.getCode());
         }
         finally {
@@ -699,10 +700,9 @@ for(int i=0;i<cbphs.size();i++) {
                     scanVo.setCbpb15(infoss.get(i).getCbpb15());
                     scanVo.setSn(cbpis.get(j).getCbpi09());
                     Cbla cbla = cblaMapper.selectByPrimaryKey(cbpis.get(j).getCbpi10());
-                    if(cbla==null){
-                        throw new SwException("没有该库位信息");
+                    if(cbla!=null){
+                        scanVo.setKwm(cbla.getCbla09());
                     }
-                    scanVo.setKwm(cbla.getCbla09());
                     scanVo.setCbpe03(cbpis.get(j).getCbpi03());
                     goods.add(scanVo);
                 }
@@ -1343,11 +1343,7 @@ int iop=0;
         cbpg.setCbpg08(date);
         cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setUserId(Math.toIntExact(userid));
-        cbpgMapper.insertSelective(cbpg);
-
-        CbpgCriteria example = new CbpgCriteria();
-        example.createCriteria().andCbpg07EqualTo(purchasereturnNo);
-        List<Cbpg> cbpgs = cbpgMapper.selectByExample(example);
+        int insert = cbpgMapper.insert(cbpg);
 
 
         Cbph cbph = null;
@@ -1370,10 +1366,8 @@ int iop=0;
             cbph.setCbph12(good.getCbph12());
             cbph.setCbph13(good.getCbph13());
             cbph.setCbpg01(cbpgDto.getCbpg01());
-            if(cbpgs.size()>0){
-                Cbpg cbpg1 = cbpgs.get(0);
-                cbph.setCbpg01(cbpg1.getCbpg01());
-            }
+                cbph.setCbpg01(insert);
+
             cbphMapper.insertSelective(cbph);
         }
         return 1;

@@ -113,7 +113,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpc">
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpc" useGeneratedKeys="true" keyProperty="cbpc01">
     insert into `CBPC` (CBPC01, CBPC02, CBPC03,
       CBPC04, CBPC05, CBPC06,
       CBPC07, CBPC08, CBPC09,
@@ -129,7 +129,7 @@
       #{cbpc16,jdbcType=INTEGER}, #{cbpc17,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpc">
+  <insert id="insertSelective" parameterType="com.ruoyi.system.domain.Cbpc" >
     insert into `CBPC`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cbpc01 != null">

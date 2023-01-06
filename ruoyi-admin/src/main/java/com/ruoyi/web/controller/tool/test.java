@@ -1,20 +1,41 @@
 package com.ruoyi.web.controller.tool;
 
+import com.ruoyi.system.domain.vo.SaleAnalysisVo;
+import com.ruoyi.system.utils.ThreadPoolUtils;
+
+import java.util.List;
+import java.util.concurrent.*;
+
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 public class test {
 
-    public static void main (String [] args) {
-        System.out.println("提前加载数据到缓存" +
-                "增加缓存的存储空间" +
-                "调整缓存的存储数据类型" +
-                "提升缓存的更新频率" +
-                "单独创建fork一个子线程" +
-                "将当前父进程的数据库复制到子进程的内存中，再有" +
-                "纯内存操作，单线程操作，避免频繁的上下文切换" +
-                "采用非阻塞i/o多路复用" +
-                "cpu不是redis的瓶颈，" +
-                "redis的瓶颈最有可能是机器内存大小或者网络带宽"
-        );
+    public static void main(String[] args) {
+        final int count = 10; // 计数次数
+        final CountDownLatch latch = new CountDownLatch(count);
+        for (int i = 0; i < count; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // do anything
+                        System.out.println("线程"
+                                + Thread.currentThread().getId());
+                    } catch (Throwable e) {
+                        // whatever
+                    } finally {
+                        // 很关键, 无论上面程序是否异常必须执行countDown,否则await无法释放
+                        latch.countDown();
+                    }
+                }
+            }).start();
+        }
+        try {
+            // 10个线程countDown()都执行之后才会释放当前线程,程序才能继续往后执行
+            latch.await();
+        } catch (InterruptedException e) {
+            // whatever
+        }
+        System.out.println("Finish");
 
-}
-
-}
+    }}

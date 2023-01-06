@@ -52,6 +52,33 @@ import java.util.List;
 public class WarehouseInventoryrollupController extends BaseController {
     @Resource
     private ISwarehouseInventoryrollupService swarehouseInventoryrollupService;
+    @ApiOperation(
+            value ="库存汇总初始化新增",
+            notes = "库存汇总初始化新增"
+    )
+    @PostMapping("/swJsStoreaddplus")
+    @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:add')")
+    public AjaxResult<IdVo> swJsStoreaddplus(@Valid @RequestBody CbieDo cbieDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            swarehouseInventoryrollupService.swJsStoreaddplus(cbieDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【库存汇总初始化新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【库存汇总初始化新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【库存汇总初始化新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbieDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
 
     @ApiOperation(
             value ="库存汇总初始化新增主表",

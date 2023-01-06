@@ -538,5 +538,34 @@ private CbsjMapper cbbsjMapper;
         cbshMapper.updateByPrimaryKeySelective(cbsh);
         return 1;    }
 
+    @Override
+    public int swJsStoreaddplus(CbshDo cbshDo) {
+        if(cbshDo.getCbsh09().equals(WarehouseSelect.CBW.getCode()) ||
+                cbshDo.getCbsh09().equals(WarehouseSelect.GLW.getCode())){
+            throw new SwException("请选择扫码仓库");
+        }
+        Long userId = SecurityUtils.getUserId();
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNoss(cbshDo.getCbsh10());
+        Cbsh cbsh = BeanCopyUtils.coypToClass(cbshDo, Cbsh.class, null);
+        Date date = new Date();
+        cbsh.setCbsh02(date);
+        cbsh.setCbsh03(date);
+        cbsh.setCbsh04(Math.toIntExact(userId));
+        cbsh.setCbsh05(Math.toIntExact(userId));
+        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
+        cbsh.setCbsh07(warehouseinitializationNo);
+        cbsh.setCbsh08(cbshDo.getCbsh08());
+        cbsh.setCbsh09(TaskStatus.mr.getCode());
+        cbsh.setCbsh13(0);
+        cbsh.setUserId(Math.toIntExact(userId));
+        int insert = cbshMapper.insert(cbsh);
+        List<Cbsj> itemList = cbshDo.getItemList();
+        for (Cbsj cbsj : itemList) {
+            cbsj.setCbsh01(insert);
+        }
+        insertSwJsStoress(itemList);
+    return 1;
+    }
+
 
 }

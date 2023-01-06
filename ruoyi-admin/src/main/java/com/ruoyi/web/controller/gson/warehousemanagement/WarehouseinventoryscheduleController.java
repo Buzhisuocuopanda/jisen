@@ -46,6 +46,37 @@ public class WarehouseinventoryscheduleController extends BaseController {
     @Resource
     ISWWarehouseinventoryscheduleService warehouseinventoryscheduleService;
 
+
+    @ApiOperation(
+            value ="仓库盘点明细新增",
+            notes = "仓库盘点明细新增"
+    )
+    @PostMapping("/swJsStoreaddplus")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:add')")
+    public AjaxResult<IdVo> swJsStoreaddplus(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+           warehouseinventoryscheduleService.swJsStoreaddplus(cbshDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【仓库盘点明细新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (ServiceException e) {
+            log.error("【仓库盘点明细新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (Exception e) {
+            log.error("【仓库盘点明细新增】接口出现异常,参数${}$,异常${}$",JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
     /**
      * 仓库盘点明细新建列表查询
      */

@@ -47,6 +47,34 @@ public class WarehouseinventorysummaryController  extends BaseController {
 
     @Resource
     private ISWarehouseinventorysummaryService swarehouseinventorysummaryService;
+    @ApiOperation(
+            value ="仓库盘点汇总新增",
+            notes = "仓库盘汇总新增"
+    )
+    @PostMapping("/SwJsStoreaddplus")
+    @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:add')")
+    public AjaxResult<IdVo> SwJsStoreaddplus(@Valid @RequestBody CbshDo cbshDo, BindingResult bindingResult) {
+        try {
+            ValidUtils.bindvaild(bindingResult);
+            swarehouseinventorysummaryService.SwJsStoreaddplus(cbshDo);
+            return AjaxResult.success();
+        }catch (SwException e) {
+            log.error("【仓库盘点汇总新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        }catch (ServiceException e) {
+            log.error("【仓库盘点汇总新增】接口出现异常,参数${},异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【仓库盘点汇总新增】接口出现异常,参数${}$,异常${}$", JSON.toJSON(cbshDo), ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
 
 
     @ApiOperation(
@@ -77,6 +105,7 @@ public class WarehouseinventorysummaryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
 
 
     @ApiOperation(

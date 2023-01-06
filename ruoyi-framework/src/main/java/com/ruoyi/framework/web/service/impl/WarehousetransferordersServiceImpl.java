@@ -1263,11 +1263,11 @@ if(!cbaa1.getCbaa11().equals(TaskStatus.mr.getCode())){
                }
             }
             else{
-                CbaasVo cbaasVo = new CbaasVo();
-                cbaasVo.setCbaa01(itemList.getCbaa01());
-                cbaasVo.setCbac10(itemList.getCbac10());
-                cbaasVo.setCbac12(itemList.getCbac12());
-                update(cbaasVo);
+//                CbaasVo cbaasVo = new CbaasVo();
+//                cbaasVo.setCbaa01(itemList.getCbaa01());
+//                cbaasVo.setCbac10(itemList.getCbac10());
+//                cbaasVo.setCbac12(itemList.getCbac12());
+//                update(cbaasVo);
 
                 //判断调出扫码是否完成
                 CbacCriteria cbacCriterias = new CbacCriteria();
@@ -2143,11 +2143,8 @@ else {
         cbaa.setCbaa11(TaskStatus.mr.getCode());
         cbaa.setCbaa08(date);
         cbaa.setUserId(Math.toIntExact(userId));
-        cbaaMapper.insertSelective(cbaa);
-        CbaaCriteria example = new CbaaCriteria();
-        example.createCriteria().andCbaa07EqualTo(warehouseinitializationNo)
-                .andCbaa06EqualTo(DeleteFlagEnum.DELETE.getCode());
-        List<Cbaa> cbaas = cbaaMapper.selectByExample(example);
+        int insert = cbaaMapper.insert(cbaa);
+
 
         Cbab cbab;
         for (Cbab good : goods) {
@@ -2167,10 +2164,8 @@ else {
             cbab.setCbab15(good.getCbab15());
             cbab.setCbab16(good.getCbab16());
             cbab.setCbab17(good.getCbab17());
-            if(cbaas.size()>0){
-                Cbaa cbaa1 = cbaas.get(0);
-                cbab.setCbaa01(cbaa1.getCbaa01());
-            }
+                cbab.setCbaa01(insert);
+
             cbabMapper.insertSelective(cbab);
 
         }

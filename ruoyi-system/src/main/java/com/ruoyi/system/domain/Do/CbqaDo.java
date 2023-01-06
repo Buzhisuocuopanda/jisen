@@ -36,4 +36,6 @@ public class CbqaDo {
 
     private List<Cbqb> goods=new ArrayList<>();
 
+    List<Cbqb> itemList=new ArrayList<>();
+
 }

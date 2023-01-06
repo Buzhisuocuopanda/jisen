@@ -110,7 +110,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsh">
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbsh" useGeneratedKeys="true" keyProperty="cbsh01">
     insert into `CBSH` (CBSH01, CBSH02, CBSH03,
       CBSH04, CBSH05, CBSH06,
       CBSH07, CBSH08, CBSH09,

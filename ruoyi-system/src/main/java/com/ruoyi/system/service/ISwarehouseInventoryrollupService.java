@@ -34,4 +34,6 @@ public interface ISwarehouseInventoryrollupService {
     List<CbifVo> selectSwJsStoreList(CbifVo cbifVo);
 
     String importWarehousedetailsinitialize(List<cbifsDo> swJsGoodsList, boolean updateSupport, String operName);
+
+    int swJsStoreaddplus(CbieDo cbieDo);
 }

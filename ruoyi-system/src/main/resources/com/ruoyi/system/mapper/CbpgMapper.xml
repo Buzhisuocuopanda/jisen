@@ -113,7 +113,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpg">
+  <insert id="insert" parameterType="com.ruoyi.system.domain.Cbpg" useGeneratedKeys="true" keyProperty="cbpg01">
     insert into `CBPG` (CBPG01, CBPG02, CBPG03,
       CBPG04, CBPG05, CBPG06,
       CBPG07, CBPG08, CBPG09,

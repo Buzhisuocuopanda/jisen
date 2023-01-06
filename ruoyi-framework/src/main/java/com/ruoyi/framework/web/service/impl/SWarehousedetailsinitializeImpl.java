@@ -547,6 +547,33 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         return 1;
     }
 
+    @Override
+    public int swJsStoreaddplus(CbieDo cbieDo) {
+        if(cbieDo.getCbie09().equals(WarehouseSelect.CBW.getCode()) ||
+                cbieDo.getCbie09().equals(WarehouseSelect.GLW.getCode())){
+            throw new SwException("请选择扫码仓库");
+        }
+        Long userId = SecurityUtils.getUserId();
+        String warehouseinitializationNo = numberGenerate.getWarehouseinitializationNo(cbieDo.getCbie09());
+        Cbie cbie = BeanCopyUtils.coypToClass(cbieDo, Cbie.class, null);
+        Date date = new Date();
+        cbie.setCbie02(date);
+        cbie.setCbie03(Math.toIntExact(userId));
+        cbie.setCbie04(date);
+        cbie.setCbie05(Math.toIntExact(userId));
+        cbie.setCbie06(DeleteFlagEnum.NOT_DELETE.getCode());
+        cbie.setCbie07(warehouseinitializationNo);
+        cbie.setCbie10(TaskStatus.mr.getCode());
+        cbie.setUserId(Math.toIntExact(userId));
+        int insert = cbieMapper.insert(cbie);
+        List<Cbig> itemList = cbieDo.getItemList();
+        for (Cbig cbig : itemList) {
+            cbig.setCbie01(insert);
+        }
+        insertSwJsStores(itemList);
+        return 1;
+    }
+
     private void insertSwJsStoress(List<CbieDo> itemList) {
         if(itemList.size()==0){
             throw new SwException("导入数据为空");

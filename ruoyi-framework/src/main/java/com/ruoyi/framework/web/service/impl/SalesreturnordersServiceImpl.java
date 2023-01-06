@@ -1000,11 +1000,8 @@ log.info("sn为"+itemList.getCbsg09());
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
         cbse.setUserId(Math.toIntExact(userid));
-         cbseMapper.insertSelective(cbse);
+        int insert = cbseMapper.insert(cbse);
 
-         CbseCriteria cbseCriteria = new CbseCriteria();
-            cbseCriteria.createCriteria().andCbse07EqualTo(salesreturnordersNo);
-            List<Cbse> cbseList = cbseMapper.selectByExample(cbseCriteria);
 
 
         Cbsf cbsf;
@@ -1012,11 +1009,7 @@ log.info("sn为"+itemList.getCbsg09());
             cbsf=new Cbsf();
 
 
-            if(cbseList.size()>0){
-                Cbse cbse1 = cbseList.get(0);
-                cbsf.setCbse01(cbse1.getCbse01());
-
-            }
+            cbsf.setCbse01(insert);
             cbsf.setCbsf02(good.getCbsf02());
             cbsf.setCbsf03(date);
             cbsf.setCbsf04(Math.toIntExact(userid));
