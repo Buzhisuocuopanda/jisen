@@ -351,6 +351,11 @@ Cbpg cbpgs = new Cbpg();
             itemList.setUserId(Math.toIntExact(userid));
             itemList.setCbpi11(ScanStatusEnum.YISAOMA.getCode());
             itemList.setCbpi08(goodsId);
+            if(gsGoodsSnss.size()>0){
+                if(gsGoodsSnss.get(0).getLocationId()!=null){
+                    itemList.setCbpi10(gsGoodsSnss.get(0).getLocationId());
+                }
+            }
            // itemList.setCbpi10(locationId);
             itemList.setCbpi09(itemList.getCbpi09());
 
@@ -1043,7 +1048,7 @@ int iop=0;
                     //查出
                     Double qty = gsGoodsSkus.get(0).getQty();
                     if(qty==0){
-                        throw new SwException("库存数量不足");
+                        //throw new SwException("库存数量不足"+gsGoodsSkus.get(0).getGoodsId());
                     }
                     //获取仓库id
                     gsGoodsSkuDo1.setWhId(cbpg1.getCbpg10());
@@ -1051,9 +1056,11 @@ int iop=0;
                     gsGoodsSkuDo1.setGoodsId(cbph.getCbph08());
 //                    gsGoodsSkuDo1.setLocationId(selectbyid.get(k).getStoreskuid());
                     if(qty-cbph.getCbph09()<0){
-                        throw new SwException("库存数量不足");
+                      //  throw new SwException("库存数量不足");
+                        gsGoodsSkuDo1.setQty(0.0);
+                    }else{
+                        gsGoodsSkuDo1.setQty(qty-cbph.getCbph09());
                     }
-                    gsGoodsSkuDo1.setQty(qty-cbph.getCbph09());
 //                    Long userid = SecurityUtils.getUserId();
                     GsGoodsSku gsGoodsSku = BeanCopyUtils.coypToClass(gsGoodsSkuDo1, GsGoodsSku.class, null);
                     gsGoodsSku.setUpdateTime(new Date());
@@ -1151,7 +1158,7 @@ int iop=0;
                         //查出
                         Double qty = gsGoodsSkus.get(0).getQty();
                         if(qty==0){
-                            throw new SwException("库存数量不足");
+                          //  throw new SwException("库存数量不足");
                         }
                         //获取仓库id
                         gsGoodsSkuDo1.setWhId(cbpg1.getCbpg10());
@@ -1164,6 +1171,8 @@ int iop=0;
                                 throw new SwException("库存数量不足,库位码为"+cbla.getCbla09());
                             }
                             else {
+                            //    gsGoodsSkuDo1.setQty(0.0);
+
                                 throw new SwException("库存数量不足");
                             }
                           //  throw new SwException("库存数量不足");
@@ -1334,7 +1343,7 @@ int iop=0;
         cbpg.setCbpg03(Math.toIntExact(userid));
         cbpg.setCbpg04(date);
         cbpg.setCbpg05(Math.toIntExact(userid));
-        cbpg.setCbpg06(DeleteFlagEnum.DELETE.getCode());
+        cbpg.setCbpg06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbpg.setCbpg10(cbpgDto.getCbpg10());
         cbpg.setCbpg11(TaskStatus.mr.getCode());
         cbpg.setCbpg12(Math.toIntExact(userid));
@@ -1366,7 +1375,7 @@ int iop=0;
             cbph.setCbph12(good.getCbph12());
             cbph.setCbph13(good.getCbph13());
             cbph.setCbpg01(cbpgDto.getCbpg01());
-                cbph.setCbpg01(insert);
+                cbph.setCbpg01(cbpg.getCbpg01());
 
             cbphMapper.insertSelective(cbph);
         }

@@ -62,8 +62,8 @@ public class WarehousetransferordersController extends BaseController {
     private IWarehousetransferordersService warehousetransferordersService;
 
     @ApiOperation(
-            value ="仓库调拨单新增",
-            notes = "仓库调拨单新增"
+            value ="仓库调拨单新增plus",
+            notes = "仓库调拨单新增plus"
     )
     @PostMapping("/Warehousetransferordersaddplus")
     @PreAuthorize("@ss.hasPermi('system:warehousetransferordersController:add')")

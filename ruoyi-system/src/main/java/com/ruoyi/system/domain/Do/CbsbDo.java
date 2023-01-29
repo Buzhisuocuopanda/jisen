@@ -90,7 +90,7 @@ public class CbsbDo {
     private Integer takeId;
 
 
-    List<Cbsc> itemList = new ArrayList<>();
+   // List<Cbsc> goods = new ArrayList<>();
 
 
 

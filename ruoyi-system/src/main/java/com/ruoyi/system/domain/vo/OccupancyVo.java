@@ -29,19 +29,19 @@ public class OccupancyVo {
     @ApiModelProperty("商品型号")
     private String cbpb12;
 
-    @Excel(name = "占用数量")
+    @Excel(name = "占用数量",cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("占用数量")
     private Double lockQty;
 
-    @Excel(name = "订单数量")
+    @Excel(name = "订单数量",cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("订单数量")
     private Double cbob09;
 
-    @Excel(name = "已发数量")
+    @Excel(name = "已发数量",cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("已发数量")
     private Double cbob10;
 
-    @Excel(name = "取消数量")
+    @Excel(name = "取消数量",cellType = Excel.ColumnType.NUMERIC)
     @ApiModelProperty("取消数量")
     private Double cbob15;
 

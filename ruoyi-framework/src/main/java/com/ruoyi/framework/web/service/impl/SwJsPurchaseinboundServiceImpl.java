@@ -326,6 +326,7 @@ CbpdCriteria example1 = new CbpdCriteria();
                        gsGoodsSn.setGroudStatus(GoodsType.yrk.getCode());
                        gsGoodsSn.setSn(itemList.getCbpe09());
                        gsGoodsSn.setCurrency(cbpc.getCbpc16());
+                       gsGoodsSn.setRepairStatus(TaskStatus.mr.getCode());
                        gsGoodsSn.setLocationId(itemList.getCbpe10());
                        if(cbpds.size()>0){
                            gsGoodsSn.setPrice(cbpds.get(0).getCbpd11());
@@ -516,9 +517,26 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             if(Objects.isNull(itemList.get(i).getCbpc01())){
                 throw new SwException("采购入库主表id不能为空");
             }
+            String cbsa09 = null;
+            Cbpc cbpc = cbpcMapper.selectByPrimaryKey(itemList.get(i).getCbpc01());
+            if(cbpc!=null){
+                if(cbpc.getCbpc09()!=null) {
+                    Cbsa cbsa = cbsaMapper.selectByPrimaryKey(cbpc.getCbpc09());
+                    if(cbsa!=null){
+                         cbsa09 = cbsa.getCbsa09();
+                    }
+                }
+            }
             if(Objects.isNull(itemList.get(i).getCbpd08())){
                 throw new SwException("商品不能为空");
             }
+
+            GsGoodsSnCriteria gs =new GsGoodsSnCriteria();
+            gs.createCriteria().andGoodsIdEqualTo(itemList.get(i).getCbpd08());
+            GsGoodsSn gsd=new GsGoodsSn();
+            gsd.setFactory(cbsa09);
+            gsGoodsSnMapper.updateByExampleSelective(gsd,gs);
+
             if(Objects.isNull(itemList.get(i).getCbpd09())){
                 throw new SwException("数量不能为空");
             }
@@ -645,9 +663,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         Cbpd cbpd = null;
         for(Cbpd good:goods){
             cbpd = new Cbpd();
-            if(good.getCbpd01()==null){
-                throw new SwException("采购订单明细id不能为空");
-            }
+
             cbpd.setCbpd03(date);
             cbpd.setCbpd04(Math.toIntExact(userid));
             cbpd.setCbpd05(date);
@@ -659,7 +675,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             cbpd.setCbpd11(good.getCbpd11());
             cbpd.setCbpd12(good.getCbpd12());
             cbpd.setCbpd13(good.getCbpd13());
-                cbpd.setCbpc01(insert);
+                cbpd.setCbpc01(cbpc.getCbpc01());
 
 
 
@@ -684,9 +700,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
 
-        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
-            throw new SwException("不是未审核状态");
-        }
+        extracted(cbpc1);
 
         Long userid = SecurityUtils.getUserId();
         Cbpc cbpc = BeanCopyUtils.coypToClass(cbpdDto, Cbpc.class, null);
@@ -704,6 +718,13 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return cbpcMapper.updateByExampleSelective(cbpc, example);
     }
+
+    private void extracted(Cbpc cbpc1) {
+        if(!cbpc1.getCbpc11().equals(TaskStatus.mr.getCode())){
+            throw new SwException("不是未审核状态");
+        }
+    }
+
     /**
      * 反审采购入库单
      *
@@ -714,9 +735,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
     @Override
     public int SwJsSkuBarcodeshss(CbpdDto cbpdDto) {
 
-        CbpeCriteria example1 = new CbpeCriteria();
-        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
-        List<Cbpe> cbpes = cbpeMapper.selectByExample(example1);
+        List<Cbpe> cbpes = getCbpes(cbpdDto);
         if(cbpes.size()>0 ){
             int size = cbpes.size();
             for(int i=0;i<size;i++){
@@ -747,6 +766,13 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 .andCbpc06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
         return cbpcMapper.updateByExampleSelective(cbpc, example);
     }
+
+    private List<Cbpe> getCbpes(CbpdDto cbpdDto) {
+        CbpeCriteria example1 = new CbpeCriteria();
+        example1.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+        return cbpeMapper.selectByExample(example1);
+    }
+
     /**
      * 采购入库单标记完成
      *
@@ -758,15 +784,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
     public int SwJsSkuBarcodeshsss(CbpdDto cbpdDto) throws InterruptedException {
 
         Cbpc cbpc1 = cbpcMapper.selectByPrimaryKey(cbpdDto.getCbpc01());
-        if(cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())||cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){}
-        else {
-            throw new SwException("不是审核状态或反审状态不能标记完成");
-        }
-
-
-
-
-
+        extracted1(cbpc1);
 
 
         Long userid = SecurityUtils.getUserId();
@@ -779,15 +797,10 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         cbpc.setCbpc12(cbpdDto.getCbpc12());
         cbpc.setCbpc13(cbpdDto.getCbpc13());
 
-        Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpc1.getCbpc09());
-        if(cbsa==null){
-            throw new SwException("供应商不存在");
-        }
+        Cbsa cbsa = getCbsa(cbpc1);
 
         //
-        CbwaCriteria exampse1 = new CbwaCriteria();
-        exampse1.createCriteria().andCbwa12EqualTo("数量管理");
-        List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
+        List<Cbwa> cbwas = getCbwas();
         List<Integer> goodsids = cbwas.stream().map(Cbwa::getCbwa01).collect(Collectors.toList());
         Set<Integer> sio = new HashSet<>(goodsids);
 
@@ -796,10 +809,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         //判断是哪个仓库  数量仓库
         if(sio.contains(cbpc1.getCbpc10())){
             //数量管理查找商品id和仓库id，没有就加入
-            CbpdCriteria cbpdexample1=new CbpdCriteria();
-            cbpdexample1.createCriteria()
-                    .andCbpc01EqualTo(cbpdDto.getCbpc01());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(cbpdexample1);
+            List<Cbpd> cbpds = getCbpds(cbpdDto);
             //得到数量
             List<Double> collect2 = cbpds.stream().map(Cbpd::getCbpd09).collect(Collectors.toList());
             double[] doubles = collect2.stream().mapToDouble(Double::doubleValue).toArray();
@@ -912,22 +922,14 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
             List<UIOVo> selectbyid = cbpeMapper.selectbyid(uioVo);
             if(selectbyid.size()>0){
                 for(int k=0;k<selectbyid.size();k++){
-                GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
-                example.createCriteria()
-                        .andGoodsIdEqualTo(selectbyid.get(k).getGoodsId())
-                        .andWhIdEqualTo(cbpc1.getCbpc10())
-                        .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
-                List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
-                // double num = doubles[i];
+                    List<GsGoodsSku> gsGoodsSkus = getGsGoodsSkus(cbpc1, selectbyid, k);
+                    // double num = doubles[i];
                 //对库存表的操作
                 if (gsGoodsSkus.size() == 0) {
                     Cbla cbla = cblaMapper.selectByPrimaryKey(selectbyid.get(k).getStoreskuid());
                     Double cbla11 = cbla.getCbla11();
 
-                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
-                    example1.createCriteria()
-                            .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
-                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example1);
+                    List<GsGoodsSku> gsGoodsSkus1 = getGsGoodsSkus(selectbyid, k);
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum + selectbyid.get(k).getNums()>cbla11){
@@ -964,10 +966,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                     Integer id = gsGoodsSkus.get(0).getId();
                     GsGoodsSku gsGoodsSku = baseCheckService.checkGoodsSkuForUpdate(id);
                     gsGoodsSku.setId(id);
-                    GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
-                    example1.createCriteria()
-                            .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
-                    List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example1);
+                    List<GsGoodsSku> gsGoodsSkus1 = getGoodsSkus(selectbyid, k);
                     if(gsGoodsSkus1.size()>0){
                         double sum = gsGoodsSkus1.stream().mapToDouble(GsGoodsSku::getQty).sum();
                         if(sum + selectbyid.get(k).getNums()>cbla11){
@@ -1063,11 +1062,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
                 //台账操作
                 //调用台账方法，最后加
-                CbpdCriteria example3 = new CbpdCriteria();
-                example3.createCriteria()
-                        .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
-                        .andCbpc01EqualTo(cbpdDto.getCbpc01());
-                List<Cbpd> cbpds1 = cbpdMapper.selectByExample(example3);
+                List<Cbpd> cbpds1 = getCbpdList(cbpdDto);
 
                 CbibDo cbibDo = new CbibDo();
                 cbibDo.setCbib02(cbpc1.getCbpc10());
@@ -1186,6 +1181,70 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
              cbpcMapper.updateByExampleSelective(cbpc, example);
         return 1;
     }
+
+    private List<GsGoodsSku> getGoodsSkus(List<UIOVo> selectbyid, int k) {
+        GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+        example1.createCriteria()
+                .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+        List<GsGoodsSku> gsGoodsSkus1 = gsGoodsSkuMapper.selectByExample(example1);
+        return gsGoodsSkus1;
+    }
+
+    private List<GsGoodsSku> getGsGoodsSkus(Cbpc cbpc1, List<UIOVo> selectbyid, int k) {
+        GsGoodsSkuCriteria example = new GsGoodsSkuCriteria();
+        example.createCriteria()
+                .andGoodsIdEqualTo(selectbyid.get(k).getGoodsId())
+                .andWhIdEqualTo(cbpc1.getCbpc10())
+                .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(example);
+        return gsGoodsSkus;
+    }
+
+    private List<GsGoodsSku> getGsGoodsSkus(List<UIOVo> selectbyid, int k) {
+        GsGoodsSkuCriteria example1 = new GsGoodsSkuCriteria();
+        example1.createCriteria()
+                .andLocationIdEqualTo(selectbyid.get(k).getStoreskuid());
+        return gsGoodsSkuMapper.selectByExample(example1);
+    }
+
+    private List<Cbpd> getCbpdList(CbpdDto cbpdDto) {
+        CbpdCriteria example3 = new CbpdCriteria();
+        example3.createCriteria()
+                .andCbpd07EqualTo(DeleteFlagEnum.NOT_DELETE.getCode())
+                .andCbpc01EqualTo(cbpdDto.getCbpc01());
+        return cbpdMapper.selectByExample(example3);
+    }
+
+    private List<Cbpd> getCbpds(CbpdDto cbpdDto) {
+        CbpdCriteria cbpdexample1=new CbpdCriteria();
+        cbpdexample1.createCriteria()
+                .andCbpc01EqualTo(cbpdDto.getCbpc01());
+        List<Cbpd> cbpds = cbpdMapper.selectByExample(cbpdexample1);
+        return cbpds;
+    }
+
+    private List<Cbwa> getCbwas() {
+        CbwaCriteria exampse1 = new CbwaCriteria();
+        exampse1.createCriteria().andCbwa12EqualTo("数量管理");
+        List<Cbwa> cbwas = cbwaMapper.selectByExample(exampse1);
+        return cbwas;
+    }
+
+    private Cbsa getCbsa(Cbpc cbpc1) {
+        Cbsa cbsa = cbasMapper.selectByPrimaryKey(cbpc1.getCbpc09());
+        if(cbsa==null){
+            throw new SwException("供应商不存在");
+        }
+        return cbsa;
+    }
+
+    private void extracted1(Cbpc cbpc1) {
+        if(cbpc1.getCbpc11().equals(TaskStatus.sh.getCode())|| cbpc1.getCbpc11().equals(TaskStatus.fsh.getCode())){}
+        else {
+            throw new SwException("不是审核状态或反审状态不能标记完成");
+        }
+    }
+
     /**
      * 采购入库单取消完成
      *
@@ -1214,18 +1273,13 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
         Cbwa cbwa = cbwaMapper.selectByPrimaryKey(storeid);
         if(Objects.equals(cbwa.getCbwa12(), "数量管理")){
 
-            CbpdCriteria exawple = new CbpdCriteria();
-            exawple.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
-            List<Cbpd> cbpds = cbpdMapper.selectByExample(exawple);
+            List<Cbpd> cbpds = getList(cbpdDto);
             if(cbpds.size()>0){
                 for(int i=0;i< cbpds.size();i++){
                     Integer goodsid = cbpds.get(i).getCbpd08();
                     Double qty = cbpds.get(i).getCbpd09();
                     //对库存进行更新操作
-                    GsGoodsSkuCriteria exoample = new GsGoodsSkuCriteria();
-                    exoample.createCriteria().andGoodsIdEqualTo(goodsid)
-                                               .andWhIdEqualTo(storeid);
-                    List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(exoample);
+                    List<GsGoodsSku> gsGoodsSkus = getGsGoodsSkus(storeid, goodsid);
 
                     //检查是否有可用库存
                     CheckSkuDo checkSkuDo=new CheckSkuDo();
@@ -1260,10 +1314,7 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
                 }
                 //台账操作
                 //调用台账方法，最后加
-                CbpdCriteria example3 = new CbpdCriteria();
-                example3.createCriteria()
-                        .andCbpc01EqualTo(cbpdDto.getCbpc01());
-                List<Cbpd> cbpds1 = cbpdMapper.selectByExample(example3);
+                List<Cbpd> cbpds1 = getCbpds1(cbpdDto);
                 for(int j=0;j<cbpds1.size();j++) {
                     CbibDo cbibDo = new CbibDo();
                     Cbib cbib = BeanCopyUtils.coypToClass(cbibDo, Cbib.class, null);
@@ -1333,6 +1384,29 @@ CbpcCriteria cbpcCriteria = new CbpcCriteria();
 
          cbpcMapper.updateByExampleSelective(cbpc, example);
         return 1;
+    }
+
+    private List<Cbpd> getCbpds1(CbpdDto cbpdDto) {
+        CbpdCriteria example3 = new CbpdCriteria();
+        example3.createCriteria()
+                .andCbpc01EqualTo(cbpdDto.getCbpc01());
+        List<Cbpd> cbpds1 = cbpdMapper.selectByExample(example3);
+        return cbpds1;
+    }
+
+    private List<GsGoodsSku> getGsGoodsSkus(Integer storeid, Integer goodsid) {
+        GsGoodsSkuCriteria exoample = new GsGoodsSkuCriteria();
+        exoample.createCriteria().andGoodsIdEqualTo(goodsid)
+                                   .andWhIdEqualTo(storeid);
+        List<GsGoodsSku> gsGoodsSkus = gsGoodsSkuMapper.selectByExample(exoample);
+        return gsGoodsSkus;
+    }
+
+    private List<Cbpd> getList(CbpdDto cbpdDto) {
+        CbpdCriteria exawple = new CbpdCriteria();
+        exawple.createCriteria().andCbpc01EqualTo(cbpdDto.getCbpc01());
+        List<Cbpd> cbpds = cbpdMapper.selectByExample(exawple);
+        return cbpds;
     }
 
     @Override

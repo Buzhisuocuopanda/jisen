@@ -500,7 +500,8 @@ WHERE
     ba.CBBA11 as ShippedQty,
     pb.CBPB01 as goodsId,
     pb.CBPB10 as brand,
-    ba.CBBA14 as useQty
+    ba.CBBA14 as useQty,
+    (ba.CBBA09- ba.CBBA11) as currentOrderQty
     FROM
     `CBBA` ba
     LEFT JOIN CBPB pb ON pb.CBPB01 = ba.CBBA08
@@ -571,6 +572,13 @@ WHERE
       order by ba.CBBA15
 
     </if>
+    <if test="sortKey=='currentOrderQty' and sortType=='descending'">
+      order by  (ba.CBBA09- ba.CBBA11) DESC
+    </if>
+    <if test="sortKey=='currentOrderQty' and sortType=='ascending'">
+      order by  (ba.CBBA09- ba.CBBA11) DESC
+    </if>
+
   </select>
 
   <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap">
@@ -610,6 +618,7 @@ ORDER BY
   </select>
   <select id="selectorderno" resultType="com.ruoyi.system.domain.vo.TotalOrderListVo">
     SELECT
+        distinct
     ba.CBBA07 as orderNo
     FROM
     `CBBA` ba

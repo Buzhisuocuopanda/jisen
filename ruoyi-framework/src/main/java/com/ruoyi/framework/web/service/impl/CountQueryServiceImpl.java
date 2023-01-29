@@ -1149,7 +1149,7 @@ return outofstockregistrationVos;
         if(sczddVos.size()>0){
             double sum = sczddVos.stream().mapToDouble(SczddVo::getCbba09).sum();
             double sum1 = sczddVos.stream().mapToDouble(SczddVo::getCbba11).sum();
-            double sum2 = sczddVos.stream().mapToDouble(SczddVo::getProducedNum).sum();
+            double sum2 = sczddVos.stream().mapToDouble(SczddVo::getCbba13).sum();
             double sum3 = sczddVos.stream().mapToDouble(SczddVo::getStockoutNum).sum();
 
             sczddVos.get(0).setTotalOrderNum(sum);

@@ -62,11 +62,11 @@ public class SwJsPurchasereturnordersController extends BaseController {
     private ISwJsPurchasereturnordersService swJsPurchasereturnordersService;
 
     /**
-     * 新增采购退货单
+     * 新增采购退货单plus
      */
     @ApiOperation(
-            value ="新增采购退货单",
-            notes = "新增采购退货单"
+            value ="新增采购退货单plus",
+            notes = "新增采购退货单plus"
     )
     @PostMapping("/SwJsPurchasereturnordersaddplus")
     @PreAuthorize("@ss.hasPermi('system:purchasereturnorders:add')")

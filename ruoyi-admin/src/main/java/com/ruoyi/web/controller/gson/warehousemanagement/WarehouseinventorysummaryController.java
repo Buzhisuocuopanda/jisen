@@ -48,8 +48,8 @@ public class WarehouseinventorysummaryController  extends BaseController {
     @Resource
     private ISWarehouseinventorysummaryService swarehouseinventorysummaryService;
     @ApiOperation(
-            value ="仓库盘点汇总新增",
-            notes = "仓库盘汇总新增"
+            value ="仓库盘点汇总新增plus",
+            notes = "仓库盘汇总新增plus"
     )
     @PostMapping("/SwJsStoreaddplus")
     @PreAuthorize("@ss.hasPermi('system:warehouseinventorysummary:add')")

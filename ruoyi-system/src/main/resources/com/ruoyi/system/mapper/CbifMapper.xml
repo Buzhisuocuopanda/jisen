@@ -994,7 +994,7 @@ where
   </select>
   <select id="selectInntoryummaryquery" resultType="com.ruoyi.system.domain.vo.SczddVo">
     SELECT
-      a.CBBA07,c.CALA08,b.CBPB12,b.CBPB08,a.CBBA09,a.CBBA11,a.CBBA14,a.CBBA13,a.CBBA12,
+      a.CBBA07,c.CALA08,b.CBPB12,b.CBPB08,a.CBBA09,a.CBBA11,a.CBBA14,a.CBBA13,a.CBBA12,a.CBBA15,
       (a.CBBA11+a.CBBA13) as producedNum,(a.CBBA09-a.CBBA11-a.CBBA13) as stockoutNum
     FROM
       CBBA a

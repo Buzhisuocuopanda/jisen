@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain.Do;
 
 import com.ruoyi.system.domain.Cbab;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Data
 public class CbaaDo {
+    @ApiModelProperty("主键id")
     private Integer cbaa01;
 
     private Date cbaa02;

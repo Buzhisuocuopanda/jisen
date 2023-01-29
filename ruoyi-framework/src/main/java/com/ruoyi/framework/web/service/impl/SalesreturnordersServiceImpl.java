@@ -346,7 +346,15 @@ public class SalesreturnordersServiceImpl implements ISalesreturnordersService {
                     taskService.InsertCBIB(cbibDo);
                 }
             }
+            Cbse cbse = BeanCopyUtils.coypToClass(cbseDo, Cbse.class, null);
 
+            cbse.setCbse04(date);
+            cbse.setCbse05(Math.toIntExact(userid));
+            cbse.setCbse11(TaskStatus.bjwc.getCode());
+            CbseCriteria example1 = new CbseCriteria();
+            example1.createCriteria().andCbse01EqualTo(cbseDo.getCbse01())
+                    .andCbse06EqualTo(DeleteFlagEnum.NOT_DELETE.getCode());
+            cbseMapper.updateByExampleSelective(cbse, example1);
             return 1;
         }
         else {
@@ -995,7 +1003,7 @@ log.info("sn为"+itemList.getCbsg09());
         cbse.setCbse03(Math.toIntExact(userid));
         cbse.setCbse04(date);
         cbse.setCbse05(Math.toIntExact(userid));
-        cbse.setCbse06(DeleteFlagEnum.DELETE.getCode());
+        cbse.setCbse06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbse.setCbse07(salesreturnordersNo);
         cbse.setCbse08(date);
         cbse.setCbse11(TaskStatus.mr.getCode());
@@ -1009,7 +1017,7 @@ log.info("sn为"+itemList.getCbsg09());
             cbsf=new Cbsf();
 
 
-            cbsf.setCbse01(insert);
+            cbsf.setCbse01(cbse.getCbse01());
             cbsf.setCbsf02(good.getCbsf02());
             cbsf.setCbsf03(date);
             cbsf.setCbsf04(Math.toIntExact(userid));

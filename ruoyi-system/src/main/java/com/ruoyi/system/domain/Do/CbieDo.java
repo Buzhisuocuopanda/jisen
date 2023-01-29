@@ -63,8 +63,9 @@ public class CbieDo  extends Cbig {
     private String moneytype;
     @Excel(name = "入库时间")
     private Date cbig03;
-    List<Cbif> itemList = new ArrayList<>();
+    List<Cbig> itemList = new ArrayList<>();
 
+    List<Cbif> itemLists = new ArrayList<>();
 
 
 }

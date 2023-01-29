@@ -597,8 +597,18 @@ ORDER BY
     SUM(a.CBIB13) as outCount,SUM(a.CBIB14) as outMoney
     FROM CBIB a
     left join CBCA ca on ca.CBCA01 = a.CBIB19
-    WHERE a.CBIB05 = 5 and a.CBIB19 is not null
-    GROUP BY a.CBIB19,DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
+    WHERE a.CBIB05 = 5
+    <if test="startTime != null">
+      AND DATE_FORMAT(a.CBIB04,'%Y-%m')>=#{startTime}
+    </if>
+
+    <if test="endTime != null">
+      and DATE_FORMAT(a.CBIB04,'%Y-%m') &lt;=#{endTime}
+    </if>
+     -- and a.CBIB19 is not null
+    GROUP BY
+      --  a.CBIB19,
+        DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
     <!--&lt;if test="cbpb12!=null and cbpb12!=''"&gt;
       and c.CBPB12 like concat('%', #{cbpb12}, '%')
     &lt;/if&gt;-->
@@ -611,12 +621,12 @@ ORDER BY
         #{cbwaItem}
       </foreach>
     </if>
-    <if test="monthlys!=null">
-      and yearAndMonth in
-      <foreach close=")" collection="monthlys" item="monthly" open="(" separator=",">
-        #{monthly}
-      </foreach>
-    </if>
+<!--    <if test="monthlys!=null">-->
+<!--      and yearAndMonth in-->
+<!--      <foreach close=")" collection="monthlys" item="monthly" open="(" separator=",">-->
+<!--        #{monthly}-->
+<!--      </foreach>-->
+<!--    </if>-->
     order  by  DATE_FORMAT(a.CBIB04,'%Y-%m') desc
   </select>
 
@@ -649,7 +659,8 @@ ORDER BY
     SUM(a.CBIB13) as outCountTotal,SUM(a.CBIB14) as outMoneyTotal
     FROM CBIB a
     left join CBCA ca on ca.CBCA01 = a.CBIB19
-    WHERE a.CBIB05 = 5 and a.CBIB19 is not null
+    WHERE a.CBIB05 = 5
+     --  and a.CBIB19 is not null
     GROUP BY DATE_FORMAT(a.CBIB04,'%Y-%m') HAVING 1=1
 
   </select>
@@ -714,6 +725,72 @@ ORDER BY
     <select id="selectall" resultType="com.ruoyi.system.domain.vo.LedgerVo">
       select * from CBIB
     </select>
+  <select id="monthlySaless" resultType="com.ruoyi.system.domain.vo.CbibVo2">
+    SELECT
+      ca.CBCA08 as customerName,DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+      SUM(a.CBIB13) as outCount,SUM(a.CBIB14) as outMoney,ca.CBCA01
+    FROM CBIB a
+           left join
+         CBSB b
+         on
+           a.CBIB03=b.CBSB07
+           LEFT JOIN
+         CBCA ca on ca.CBCA01 = b.CBSB09
+    WHERE a.CBIB05 = 5
+    <if test="startTime != null">
+      AND DATE_FORMAT(a.CBIB04,'%Y-%m')>=#{startTime}
+    </if>
+
+    <if test="endTime != null">
+      and DATE_FORMAT(a.CBIB04,'%Y-%m') &lt;=#{endTime}
+    </if>
+    <if test="nowTime != null">
+      and DATE_FORMAT(a.CBIB04,'%Y-%m') = #{nowTime}
+    </if>
+
+    GROUP BY
+      ca.CBCA01
+    <if test="nowTime != null " >
+      ,DATE_FORMAT(a.CBIB04,'%Y-%m')
+    </if>
+    HAVING 1=1
+
+    <if test="cbwa09s != null">
+      and ca.CBCA01 in
+      <foreach item="cbwaItem" collection="cbwa09s" open="(" separator="," close=")">
+        #{cbwaItem}
+      </foreach>
+    </if>
+
+    ORDER BY outMoney DESC
+
+  </select>
+  <select id="monthlySalesTotal2s" resultType="com.ruoyi.system.domain.vo.CbibVo2">
+    SELECT
+      ca.CBCA08 as customerName,DATE_FORMAT(a.CBIB04,'%Y-%m') as yearAndMonth,
+      SUM(a.CBIB13) as outCountTotal,SUM(a.CBIB14) as outMoneyTotal,ca.CBCA01
+    FROM CBIB a
+           left join
+         CBSB b
+         on
+           a.CBIB03=b.CBSB07
+           LEFT JOIN
+         CBCA ca on ca.CBCA01 = b.CBSB09
+    WHERE a.CBIB05 = 5
+    <if test="startTime != null">
+      AND DATE_FORMAT(a.CBIB04,'%Y-%m')>=#{startTime}
+    </if>
+
+    <if test="endTime != null">
+      and DATE_FORMAT(a.CBIB04,'%Y-%m') &lt;=#{endTime}
+    </if>
+    <if test="nowTime != null">
+      and DATE_FORMAT(a.CBIB04,'%Y-%m') =#{nowTime}
+    </if>
+
+    GROUP BY
+      DATE_FORMAT(a.CBIB04,'%Y-%m')
+  </select>
 
 
 </mapper>

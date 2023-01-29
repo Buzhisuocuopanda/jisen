@@ -48,8 +48,8 @@ public class WarehouseinventoryscheduleController extends BaseController {
 
 
     @ApiOperation(
-            value ="仓库盘点明细新增",
-            notes = "仓库盘点明细新增"
+            value ="仓库盘点明细新增plus",
+            notes = "仓库盘点明细新增plus"
     )
     @PostMapping("/swJsStoreaddplus")
     @PreAuthorize("@ss.hasPermi('system:warehouseinventoryschedule:add')")

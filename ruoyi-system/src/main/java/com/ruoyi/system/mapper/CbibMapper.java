@@ -86,4 +86,8 @@ public interface CbibMapper {
     List<CheckVo> selectgroupnum();
 
     List<LedgerVo> selectall();
+
+    List<CbibVo2> monthlySaless(CbibVo2 cbibVo);
+
+    List<CbibVo2> monthlySalesTotal2s(CbibVo2 cbibVo);
 }

@@ -53,8 +53,8 @@ public class WarehousedetailsinitializeController extends BaseController {
     private ISWarehousedetailsinitializeService swarehousedetailsinitializeService;
 
     @ApiOperation(
-            value ="库存明细初始化新增",
-            notes = "库存明细初始化新增"
+            value ="库存明细初始化新增plus",
+            notes = "库存明细初始化新增plus"
     )
     @PostMapping("/swJsStoreaddplus")
     public AjaxResult<IdVo> swJsStoreaddplus(@Valid @RequestBody CbieDo cbieDo, BindingResult bindingResult) {
@@ -448,6 +448,35 @@ public class WarehousedetailsinitializeController extends BaseController {
 
         } catch (Exception e) {
             log.error("【更新工厂】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
+        }
+    }
+
+
+
+    /**
+     * 更新工厂调拨单
+     */
+    @ApiOperation(
+            value ="更新工厂调拨单",
+            notes = "更新工厂调拨单"
+    )
+    @PostMapping("/updatefactorybycbba")
+    public AjaxResult updatefactorybycbba() {
+        try {
+            return toAjax(swarehousedetailsinitializeService.updatefactorybycbba());
+        }catch (ServiceException e) {
+            log.error("【更新工厂调拨单】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+        }catch (SwException e) {
+            log.error("【更新工厂调拨单】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
+
+            return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());
+
+        } catch (Exception e) {
+            log.error("【更新工厂调拨单】接口出现异常,参数${}$,异常${}$", ExceptionUtils.getStackTrace(e));
 
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }

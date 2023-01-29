@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.ErrCode;
 import lombok.extern.log4j.Log4j;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -62,5 +63,9 @@ public class ResubmitDataAspect {
         }
     }
 
+    @After("@annotation(com.ruoyi.web.controller.tool.Resubmit)")
+    public void printTakeOrderOrder(){
+        System.out.println("后置通知");
+    }
 }
 

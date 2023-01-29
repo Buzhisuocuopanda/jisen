@@ -3,6 +3,8 @@ package com.ruoyi.system.mapper;
 import com.ruoyi.system.domain.Cbab;
 import com.ruoyi.system.domain.CbabCriteria;
 import java.util.List;
+
+import com.ruoyi.system.domain.factoryVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CbabMapper {
@@ -27,4 +29,6 @@ public interface CbabMapper {
     int updateByPrimaryKeySelective(Cbab record);
 
     int updateByPrimaryKey(Cbab record);
+
+    List<factoryVo> selectbygs();
 }

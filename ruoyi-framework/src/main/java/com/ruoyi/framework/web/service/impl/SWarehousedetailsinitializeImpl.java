@@ -80,6 +80,10 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
     @Resource
     private FinanceQueryService financeQueryService;
 
+
+    @Resource
+    private CbabMapper cbabMapper;
+
     @Transactional
     @Override
     public IdVo insertSwJsStore(CbieDo cbieDo) {
@@ -568,11 +572,13 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
         int insert = cbieMapper.insert(cbie);
         List<Cbig> itemList = cbieDo.getItemList();
         for (Cbig cbig : itemList) {
-            cbig.setCbie01(insert);
+            cbig.setCbie01(cbie.getCbie01());
         }
         insertSwJsStores(itemList);
         return 1;
     }
+
+
 
     private void insertSwJsStoress(List<CbieDo> itemList) {
         if(itemList.size()==0){
@@ -680,5 +686,22 @@ public class SWarehousedetailsinitializeImpl implements ISWarehousedetailsinitia
 
         }
 
+    }
+
+    @Override
+    public int updatefactorybycbba() {
+        List<factoryVo> selectbyg = cbabMapper.selectbygs();
+        if(selectbyg.size()>0){
+            List<factoryVo> selectbygs = selectbyg.stream().filter(s -> s.getSuppliername() != null).collect(Collectors.toList());
+            for(factoryVo aa: selectbygs){
+                GsGoodsSnCriteria gs=new GsGoodsSnCriteria();
+                        gs.createCriteria().andGoodsIdEqualTo(aa.getGoodsId());
+                GsGoodsSn sn=new GsGoodsSn();
+                        sn.setFactory(aa.getSuppliername());
+                        gsGoodsSnMapper.updateByExampleSelective(sn,gs);
+
+            }
+        }
+        return 1;
     }
 }

@@ -18,6 +18,7 @@ import com.ruoyi.system.domain.vo.deleteVo;
 import com.ruoyi.system.mapper.CbiwMapper;
 import com.ruoyi.system.mapper.CblaMapper;
 import com.ruoyi.system.service.ISwDirectlyintothevaultService;
+import com.ruoyi.web.controller.gson.salemanage.SaleOrderController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +63,9 @@ public class DirectlyIntothEvaultController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:directly:add')")
     public AjaxResult swJsPurchaseinboundadd(@Valid @RequestBody  CbicDto cbicDto, BindingResult bindingResult) {
         try {
+
+
+
             ValidUtils.bindvaild(bindingResult);
             return toAjax(swDirectlyintothevaultService.insertSwJsSkuBarcodes(cbicDto));
 

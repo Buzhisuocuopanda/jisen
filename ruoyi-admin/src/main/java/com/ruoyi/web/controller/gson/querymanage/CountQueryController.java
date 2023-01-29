@@ -18,6 +18,7 @@ import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.*;
 import com.ruoyi.system.service.gson.ApprovalService;
 import com.ruoyi.system.service.impl.SysUserServiceImpl;
+import com.ruoyi.web.controller.gson.salemanage.SaleOrderController;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -343,6 +346,13 @@ public class CountQueryController  extends BaseController {
         }
     }
 
+    public static void main(String[] args) {
+        Class clazz= SaleOrderController.class;
+        Method[] method=clazz.getDeclaredMethods();
+        for(Method m:method){
+
+            System.out.println(m.toString());
+        }    }
 
     /**
      *  销售订单明细查询

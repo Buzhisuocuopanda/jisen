@@ -1465,7 +1465,7 @@ private CbpmMapper cbpmMapper;
 
         List<Cbqb> itemList = cbqaDo.getItemList();
         for (Cbqb cbqb : itemList) {
-            cbqb.setCbqa01(insert);
+            cbqb.setCbqa01(cbqa.getCbqa01());
         }
         insertSwJsSkuBarcode( itemList);
 

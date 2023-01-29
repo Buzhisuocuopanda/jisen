@@ -1,7 +1,9 @@
 package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -9,6 +11,9 @@ import java.util.Date;
 public class CbibVo2 {
     @Excel(name = "月份")
     private String yearAndMonth;
+
+    private Integer cbca01;
+
 
     private Integer cbib01;
 
@@ -79,5 +84,13 @@ public class CbibVo2 {
     private String outMoneyTotal100;
 
     private Integer[] cbwa09s;
+    private String startTime;
+    private String endTime;
 
+    private String nowTime;
+
+
+    private Integer status;
+
+    private String customer;
 }

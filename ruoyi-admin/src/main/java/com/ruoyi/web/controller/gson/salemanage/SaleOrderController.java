@@ -1939,7 +1939,7 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,format,2,7);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),3,2);
         FormExcelUtil.setCellData(sheet1,res.getReceivePhone(),3,4);
-        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),3,6);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),3,7);
         FormExcelUtil.setCellData(sheet1,res.getAddress(),4,2);
        // FormExcelUtil.setCellData(sheet1,res.getOrderType(),4,6);
 
@@ -2036,7 +2036,7 @@ public class SaleOrderController extends BaseController {
         FormExcelUtil.setCellData(sheet1,res.getSaleUser(),5,4);
         FormExcelUtil.setCellData(sheet1,res.getCurrencyMsg(),5,7);
         FormExcelUtil.setCellData(sheet1,res.getReceiveName(),6,2);
-        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,6);
+        FormExcelUtil.setCellData(sheet1,res.getInvoiceType(),6,7);
         FormExcelUtil.setCellData(sheet1,res.getAddress(),7,2);
        // FormExcelUtil.setCellData(sheet1,res.getOrderType(),7,6);
         FormExcelUtil.setCellData(sheet1,res.getFcNumber(),8,2);

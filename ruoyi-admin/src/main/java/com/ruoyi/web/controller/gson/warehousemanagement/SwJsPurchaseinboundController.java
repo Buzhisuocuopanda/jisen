@@ -60,11 +60,11 @@ public class SwJsPurchaseinboundController extends BaseController {
     private ISwJsPurchaseinboundService swJsPurchaseinboundService;
 
     /**
-     * 新增采购入库单
+     * 新增采购入库单plus
      */
     @ApiOperation(
-            value ="新增采购入库单",
-            notes = "新增采购入库单"
+            value ="新增采购入库单plus",
+            notes = "新增采购入库单plus"
     )
     @PostMapping("/SwJsPurchaseinboundaddplus")
     @PreAuthorize("@ss.hasPermi('system:purchaseinbound:add')")

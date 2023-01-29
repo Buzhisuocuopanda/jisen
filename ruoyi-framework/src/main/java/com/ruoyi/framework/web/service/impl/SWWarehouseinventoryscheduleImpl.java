@@ -96,9 +96,9 @@ private CbsjMapper cbbsjMapper;
     @Override
     public int insertSwJsStores(Cbsj itemList) {
         Cbsh cbsh1 = cbshMapper.selectByPrimaryKey(itemList.getCbsh01());
-        if(!cbsh1.getCbsh09().equals(TaskStatus.sh.getCode())){
-            throw new SwException("审核状态才能扫码");
-        }
+//        if(!cbsh1.getCbsh09().equals(TaskStatus.sh.getCode())){
+//            throw new SwException("审核状态才能扫码");
+//        }
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         CbsjMapper mapper = session.getMapper(CbsjMapper.class);
         Date date = new Date();
@@ -218,7 +218,8 @@ private CbsjMapper cbbsjMapper;
         }
 
         CbsjCriteria example2 = new CbsjCriteria();
-            example2.createCriteria().andCbsj09EqualTo(itemList.getCbsj09());
+            example2.createCriteria().andCbsj09EqualTo(itemList.getCbsj09())
+                    .andCbsh01EqualTo(itemList.getCbsh01());
 
         cbsjMapper.updateByExampleSelective(itemList,example2);
 
@@ -552,7 +553,7 @@ private CbsjMapper cbbsjMapper;
         cbsh.setCbsh03(date);
         cbsh.setCbsh04(Math.toIntExact(userId));
         cbsh.setCbsh05(Math.toIntExact(userId));
-        cbsh.setCbsh06(DeleteFlagEnum.DELETE.getCode());
+        cbsh.setCbsh06(DeleteFlagEnum.NOT_DELETE.getCode());
         cbsh.setCbsh07(warehouseinitializationNo);
         cbsh.setCbsh08(cbshDo.getCbsh08());
         cbsh.setCbsh09(TaskStatus.mr.getCode());
@@ -561,7 +562,7 @@ private CbsjMapper cbbsjMapper;
         int insert = cbshMapper.insert(cbsh);
         List<Cbsj> itemList = cbshDo.getItemList();
         for (Cbsj cbsj : itemList) {
-            cbsj.setCbsh01(insert);
+            cbsj.setCbsh01(cbsh.getCbsh01());
         }
         insertSwJsStoress(itemList);
     return 1;

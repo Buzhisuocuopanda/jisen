@@ -34,6 +34,8 @@ public class SczddVo {
   /*  @Excel(name="缺货数量")*/
     private Double cbba14;
 
+    private Double cbba15;
+
     @Excel(name="状态",readConverterExp = "0=NO,4=OK")
     private Integer cbba12;
 

@@ -49,8 +49,8 @@ public class SalesreturnordersController extends BaseController {
      * 新增销售退库单
      */
     @ApiOperation(
-            value ="新增销售退库单",
-            notes = "新增销售退库单"
+            value ="新增销售退库单plus",
+            notes = "新增销售退库单plus"
     )
     @PostMapping("/Selloutofwarehouseaddplus")
     @PreAuthorize("@ss.hasPermi('system:salesreturnorderss:add')")

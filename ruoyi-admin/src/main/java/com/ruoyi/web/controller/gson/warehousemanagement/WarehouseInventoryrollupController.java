@@ -53,8 +53,8 @@ public class WarehouseInventoryrollupController extends BaseController {
     @Resource
     private ISwarehouseInventoryrollupService swarehouseInventoryrollupService;
     @ApiOperation(
-            value ="库存汇总初始化新增",
-            notes = "库存汇总初始化新增"
+            value ="库存汇总初始化新增plus",
+            notes = "库存汇总初始化新增plus"
     )
     @PostMapping("/swJsStoreaddplus")
     @PreAuthorize("@ss.hasPermi('system:warehouseInventoryrollup:add')")

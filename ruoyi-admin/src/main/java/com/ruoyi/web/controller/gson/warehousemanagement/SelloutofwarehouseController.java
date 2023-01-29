@@ -60,11 +60,11 @@ public class SelloutofwarehouseController extends BaseController {
     private ISelloutofwarehouseService sellerofwarehouseService;
 
     /**
-     * 新增销售出库单
+     * 新增销售出库单plus
      */
     @ApiOperation(
-            value ="新增销售出库单",
-            notes = "新增销售出库单"
+            value ="新增销售出库单plus",
+            notes = "新增销售出库单plus"
     )
     @PostMapping("/Selloutofwarehouseaddplus")
     @PreAuthorize("@ss.hasPermi('system:selloutofwarehouse:add')")

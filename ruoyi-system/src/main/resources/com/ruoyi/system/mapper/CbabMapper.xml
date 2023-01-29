@@ -257,7 +257,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <update id="updateByExampleSelective" parameterType="map">
     update `CBAB`
     <set>
       <if test="record.cbab01 != null">
@@ -431,5 +431,20 @@
   </update>
 
 
+  <select id="selectbygs" resultType="com.ruoyi.system.domain.factoryVo">
+    SELECT
+      a.CBAB08 as goodsId,
+      a.CBAB14,
+      b.CBSA09 as suppliername
+
+    from
+      CBAB a
+        LEFT JOIN
+      CBSA b
+      ON
+        a.CBAB14=b.CBSA01
+    GROUP BY
+      a.CBAB08
+  </select>
 
 </mapper>

@@ -27,14 +27,14 @@ public class InwuquVo extends BaseEntity {
 
  /*   @Excel(name = "数量")
     private Double cbif09;*/
-     @Excel(name = "数量")
+     @Excel(name = "数量",cellType = Excel.ColumnType.NUMERIC)
      private Double cbib15;
 
     @Excel(name = "仓库")
     private String cbwa09;
     private String[] cbwa09s;
 
-    @Excel(name = "可用库存数量")
+    @Excel(name = "可用库存数量",cellType = Excel.ColumnType.NUMERIC)
     private Double lockQty;
     //可用库存总数
     private Double totallockQty;
@@ -59,9 +59,9 @@ public class InwuquVo extends BaseEntity {
 
     private Integer whid;
 
-    @Excel(name = "不良数量")
+    @Excel(name = "不良数量",cellType = Excel.ColumnType.NUMERIC)
     private Double badqty;
-    @Excel(name = "已占用数量")
+    @Excel(name = "已占用数量",cellType = Excel.ColumnType.NUMERIC)
     private Double lockuseqty;
 
     private Double totalbadqty;

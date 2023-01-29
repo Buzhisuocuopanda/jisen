@@ -393,11 +393,11 @@ CbifCriteria rty = new CbifCriteria();
         cbie.setUserId(Math.toIntExact(userId));
         cbie.setCbie10(TaskStatus.mr.getCode());
         int insert = cbieMapper.insert(cbie);
-        List<Cbif> itemList =cbieDo.getItemList();
-        for (Cbif cbif : itemList) {
-            cbif.setCbie01(insert);
+        List<Cbif> itemLists =cbieDo.getItemLists();
+        for (Cbif cbif : itemLists) {
+            cbif.setCbie01(cbie.getCbie01());
         }
-        insertSwJsStores( itemList);
+        insertSwJsStores( itemLists);
     return 1;
     }
 
