@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
@@ -380,7 +381,18 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+    @ApiOperation(
+            value ="getin",
+            notes = "getin"
+    )
+    // @DataScope(userAlias = "ib")
+    @GetMapping("/getin")
+    public  void getin( ) throws ExecutionException, InterruptedException, IOException {
 
+//            startPage();
+        countQueryService.getin();
+
+    }
     @ApiOperation(
             value ="导出销售订单明细查询",
             notes = "导出销售订单明细查询"

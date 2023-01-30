@@ -328,6 +328,7 @@ CbpdCriteria example1 = new CbpdCriteria();
                        gsGoodsSn.setCurrency(cbpc.getCbpc16());
                        gsGoodsSn.setRepairStatus(TaskStatus.mr.getCode());
                        gsGoodsSn.setLocationId(itemList.getCbpe10());
+                       gsGoodsSn.setWhId(cbpc.getCbpc10());
                        if(cbpds.size()>0){
                            gsGoodsSn.setPrice(cbpds.get(0).getCbpd11());
 

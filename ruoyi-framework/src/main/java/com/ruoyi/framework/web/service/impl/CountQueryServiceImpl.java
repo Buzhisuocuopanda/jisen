@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.Constants;
@@ -24,6 +26,16 @@ import com.ruoyi.system.service.gson.SaleOrderService;
 import com.ruoyi.system.service.gson.TaskService;
 import com.ruoyi.system.service.gson.impl.FinanceQueryServiceImpl;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -31,12 +43,14 @@ import com.ruoyi.system.utils.ThreadPoolUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class CountQueryServiceImpl implements CountQueryService {
     @Resource
     private CbifMapper cbifMapper;
@@ -514,6 +528,44 @@ public class CountQueryServiceImpl implements CountQueryService {
     public List<CbqaVo> selectcbQbQueryList(CbqaVo cbqaVo) {
         return cbqaMapper.selectSwJsTaskGoodsRelListsss(cbqaVo);
     }
+    public static final RequestOptions COMMON_OPTIONS;
+    static {
+        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
+        // builder.addHeader("Authorization", "Bearer " + TOKEN);
+        // builder.setHttpAsyncResponseConsumerFactory(
+        //         new HttpAsyncResponseConsumerFactory
+        //                 .HeapBufferedResponseConsumerFactory(30 * 1024 * 1024 * 1024));
+        COMMON_OPTIONS = builder.build();
+    }
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
+    @Override
+    public void getin() throws ExecutionException, InterruptedException, IOException {
+        List<BlogDO> blogDOS = new ArrayList<>();
+        blogDOS.add(new BlogDO("ElasticSearch究竟是个什么东西", "Java鱼仔"));
+        blogDOS.add(new BlogDO("SpringBoot+SpringSecurity实现基于真实数据的授权认证", "Java鱼仔"));
+        blogDOS.add(new BlogDO("Dubbo两小时快速上手教程（直接代码、Spring、SpringBoot）", "Java鱼仔"));
+        blogDOS.add(new BlogDO("浅析五种最常用的Java加密算法", "Java鱼仔"));
+        blogDOS.add(new BlogDO("Java程序员需要知道的操作系统知识汇总", "Java鱼仔"));
+        blogDOS.add(new BlogDO("一步步教你如何在SpringBoot项目中引入支付功能", "Java鱼仔"));
+        blogDOS.add(new BlogDO("Zookeeper实现分布式锁的原理是什么？", "Java鱼仔"));
+        blogDOS.add(new BlogDO("一个成熟的Java项目如何优雅地处理异常", "Java鱼仔"));
+        blogDOS.add(new BlogDO("基于SpringBoot实现文件的上传下载", "Java鱼仔"));
+        blogDOS.add(new BlogDO("如何用Java写一个规范的http接口？", "Java鱼仔"));
+        BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.timeout("10s");
+        blogDOS.stream().forEach(x -> {
+            bulkRequest.add(new IndexRequest("blog_index").source(JSON.toJSONString(x), XContentType.JSON));
+        });
+        BulkResponse responses=null;
+        try {
+            responses = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public List<InwuquVo> selectInventorysummaryquery2(InwuquDto inwuquDto) throws InterruptedException {

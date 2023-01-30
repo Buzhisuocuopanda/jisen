@@ -6,6 +6,7 @@ import com.ruoyi.system.domain.dto.*;
 import com.ruoyi.system.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -34,4 +35,6 @@ public interface CountQueryService {
     void update(List<CheckVo> checkVo) throws InterruptedException;
 
     List<CbqaVo> selectcbQbQueryList(CbqaVo cbqaVo);
+
+    void getin() throws ExecutionException, InterruptedException, IOException;
 }
