@@ -84,7 +84,9 @@ public class SwJsGoodsClassifyServiceImpl implements ISwJsGoodsClassifyService{
         cbpa.setCbpa07(cbpaDo.getCbpa07());
         cbpa.setCbpa08(cbpaDo.getCbpa07());
        // if(cbpaDo.getCbpa09()==null){
+        if(cbpaDo.getCbpa12()!=null){
             cbpa.setCbpa09(Integer.valueOf(cbpaDo.getCbpa12()));
+        }
       //  }
 
         cbpa.setCbpa11(cbpaDo.getCbpa11());

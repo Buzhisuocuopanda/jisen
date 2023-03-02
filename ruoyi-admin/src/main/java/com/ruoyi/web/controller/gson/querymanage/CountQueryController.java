@@ -1,14 +1,13 @@
 package com.ruoyi.web.controller.gson.querymanage;
 
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.Cbpa;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.ErrCode;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.service.SearchParam;
 import com.ruoyi.system.domain.Cala;
 import com.ruoyi.system.domain.Cbca;
 import com.ruoyi.system.domain.Cbsa;
@@ -22,16 +21,11 @@ import com.ruoyi.web.controller.gson.salemanage.SaleOrderController;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.alibaba.druid.support.json.JSONUtils;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.enums.ErrCode;
-import com.ruoyi.common.exception.SwException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +34,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -381,6 +374,22 @@ public class CountQueryController  extends BaseController {
             return AjaxResult.error((int) ErrCode.UNKNOW_ERROR.getErrCode(), "操作失败");
         }
     }
+
+    /**
+     *  essearch
+     */
+    @ApiOperation(
+            value ="essearch",
+            notes = "essearch"
+    )
+    @GetMapping("/essearch")
+    public List<InwuquVo> essearch(SearchParam param) throws IOException {
+
+        List<InwuquVo> essearch = countQueryService.essearch(param);
+        return essearch;
+
+    }
+
     @ApiOperation(
             value ="getin",
             notes = "getin"
@@ -421,7 +430,8 @@ public class CountQueryController  extends BaseController {
     public AjaxResult<TableDataInfo> Inventsorysummaryquery(InwuquDto inwuquDto) {
         try {
 //            startPage();
-            List<InwuquVo> list = countQueryService.selectInventorysummaryquery2(inwuquDto);
+            //原来selectInventorysummaryquery2
+            List<InwuquVo> list = countQueryService.selectInventorysummaryquery22(inwuquDto);
             return AjaxResult.success(getDataTable(list));
         }catch (SwException e) {
             return AjaxResult.error((int) ErrCode.SYS_PARAMETER_ERROR.getErrCode(), e.getMessage());

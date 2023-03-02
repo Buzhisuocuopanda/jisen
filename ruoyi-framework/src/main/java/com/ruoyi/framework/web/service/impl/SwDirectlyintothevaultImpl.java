@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.enums.*;
 import com.ruoyi.common.exception.SwException;
 import com.ruoyi.common.utils.BeanCopyUtils;
@@ -17,10 +19,12 @@ import com.ruoyi.system.service.ISwDirectlyintothevaultService;
 import com.ruoyi.system.service.gson.BaseCheckService;
 import com.ruoyi.system.service.gson.OrderDistributionService;
 import com.ruoyi.system.service.gson.TaskService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -482,7 +486,9 @@ static int value=Integer.MIN_VALUE;
 
 
 
-
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @SneakyThrows
     @Transactional
     @Override
     public int insertSwJsSkuBarcodes(CbicDto cbicDto) {
@@ -566,7 +572,13 @@ static int value=Integer.MIN_VALUE;
                 //加sn表
                 extracted(cbicDto.getCbic10(), cbpbs, cbicDto.getCbic07(), cbicDto.getCbic08(), date);
             }
+            ObjectMapper objectMapper = new ObjectMapper();
+            GsGoodsSn po=new GsGoodsSn();
+            po.setSn(cbicDto.getCbic10());
+         //   String jsonStr = objectMapper.writeValueAsString(po);
 
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME,
+                    "boot.haha",po);
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -581,6 +593,11 @@ static int value=Integer.MIN_VALUE;
                     "end";
             this.redisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Collections.singletonList("lock"), uuid);
         }
+
+
+
+
+
         return 1;
 
     }

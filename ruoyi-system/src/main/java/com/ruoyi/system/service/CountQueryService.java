@@ -37,4 +37,8 @@ public interface CountQueryService {
     List<CbqaVo> selectcbQbQueryList(CbqaVo cbqaVo);
 
     void getin() throws ExecutionException, InterruptedException, IOException;
+
+    List<InwuquVo> essearch(SearchParam param) throws IOException;
+
+    List<InwuquVo> selectInventorysummaryquery22(InwuquDto inwuquDto);
 }

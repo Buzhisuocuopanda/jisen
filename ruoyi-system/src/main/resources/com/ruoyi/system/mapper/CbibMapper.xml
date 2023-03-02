@@ -443,7 +443,7 @@ WHERE
 
 ORDER BY
 	c.CBIB04 DESC limit 1
- for update
+#  for update
 
   </select>
   <select id="selectLastByGoodsId" resultMap="BaseResultMap">
